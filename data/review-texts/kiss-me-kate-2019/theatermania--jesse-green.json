@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production succeeds in making the show feel both classical and contemporary, honoring Porter's sophisticated score while updating the gender dynamics for modern audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This production succeeds in making the show feel both classical and contemporary, honoring Porter's sophisticated score while updating the gender dynamics for modern audiences.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production succeeds in making the show feel both classical and contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment using 'succeeds' with specific praise for the production's approach to the material and modernization, though brief and without strong superlatives. | GPT-4o: The review praises the production for successfully balancing classical and contemporary elements, indicating a solid recommendation. However, the short length of the excerpt limits the confidence level. | Gemini: The review indicates success in honoring the original score while updating the gender dynamics, suggesting a positive experience with some reservations. | Kimi: The critic clearly praises the production for successfully balancing classical elements with modern updates, using positive evaluative language ('succeeds', 'honoring'), though the brevity of the excerpt limits confidence in the full scope of the recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:31:43.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

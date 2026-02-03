@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Robert Downey Jr. makes a commanding Broadway debut in this thought-provoking play about artificial intelligence and the creative process, though the material doesn't always match the star's magnetic presence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Robert Downey Jr. makes a commanding Broadway debut in this thought-provoking play about artificial intelligence and the creative process, though the material doesn't always match the star's magnetic presence.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Robert Downey Jr. makes a commanding Broadway debut in this thought-provoking play about artificial intelligence and the creative process, though the material doesn't always match the star's magnetic presence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear mixed verdict - praises Downey Jr.'s 'commanding' performance and calls the play 'thought-provoking,' but the 'though' signals significant reservation about the material not matching the star's presence. | GPT-4o: The review praises Robert Downey Jr.'s performance and describes the play as thought-provoking, indicating a positive recommendation. However, it notes that the material doesn't always match the star's presence, suggesting some reservations. | Gemini: The review praises Downey Jr.'s performance but notes that the material isn't always up to par, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic delivers a qualified recommendation, praising Downey Jr.'s 'commanding' and 'magnetic' performance while noting the material falls short of the star's caliber. The 'thought-provoking' descriptor and emphasis on the lead's debut suggest it's worth seeing despite the script's limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:51:16.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

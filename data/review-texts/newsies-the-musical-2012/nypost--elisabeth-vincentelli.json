@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Disney musical about the 1899 newspaper strike is a crowd-pleaser that combines old-fashioned razzle-dazzle with contemporary energy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Disney musical about the 1899 newspaper strike is a crowd-pleaser that combines old-fashioned razzle-dazzle with contemporary energy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Disney musical about the 1899 newspaper strike is a crowd-pleaser that combines old-fashioned razzle-dazzle with contemporary energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive language calling it a 'crowd-pleaser' and praises the combination of traditional and contemporary elements, indicating a solid recommendation despite the brief excerpt. | GPT-4o: The review describes the show as a 'crowd-pleaser' with a positive mix of 'old-fashioned razzle-dazzle' and 'contemporary energy', indicating a solid recommendation. | Gemini: The review calls the show a \"crowd-pleaser\" and combines \"old-fashioned razzle-dazzle with contemporary energy\", which is a positive assessment. | Kimi: The critic describes the show as a 'crowd-pleaser' and praises its energetic blend of classic and contemporary styles, indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:20:01.501Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald brings a lived-in authenticity to Holiday that goes beyond mere impersonation, capturing both the jazz legend's defiant spirit and her profound vulnerability.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "McDonald brings a lived-in authenticity to Holiday that goes beyond mere impersonation, capturing both the jazz legend's defiant spirit and her profound vulnerability.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald brings a lived-in authenticity to Holiday that goes beyond mere impersonation, capturing both the jazz legend's defiant spirit and her profound vulnerability.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for lead performance with sophisticated language about authenticity and emotional depth. However, this appears to be a truncated excerpt focusing only on the star, so confidence is medium due to limited scope. | Gemini: The review excerpt focuses on the lead performance, praising its authenticity and depth. Given the original rating of 87, I'm placing it in the positive bucket with a score reflecting strong praise, but lowering confidence due to the limited text. | Kimi: This brief excerpt offers unqualified praise for the lead performance using superlatives ('lived-in authenticity', 'beyond mere impersonation'), and the provided original rating of 87 confirms placement in the Rave bucket despite the truncated length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:26:44.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

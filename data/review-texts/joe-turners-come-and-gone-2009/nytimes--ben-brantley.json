@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This superb revival of August Wilson's 1988 drama arrives at the Belasco Theater with the mystical intensity of a fever dream and the cleansing catharsis of a spiritual awakening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This superb revival of August Wilson's 1988 drama arrives at the Belasco Theater with the mystical intensity of a fever dream and the cleansing catharsis of a spiritual awakening.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This superb revival arrives with the mystical intensity of a fever dream and the cleansing catharsis of a spiritual awakening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Opens with 'superb revival' and uses powerful, mystical language ('fever dream', 'spiritual awakening') that suggests profound theatrical impact and unqualified praise. | GPT-4o: The review uses superlatives like 'superb' and 'mystical intensity,' indicating a highly enthusiastic recommendation without any reservations. | Gemini: The review uses strong positive language such as \"superb,\" \"mystical intensity,\" and \"cleansing catharsis,\" indicating a rave review. | Kimi: The critic employs superlatives and powerful metaphors describing the production as 'superb' with 'mystical intensity' and 'cleansing catharsis,' indicating an enthusiastic, unqualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:13:49.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

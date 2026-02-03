@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "August Wilson's Joe Turner's Come and Gone is receiving a revival that honors both the playwright's memory and his work with a staging that captures the right mixture of earthiness and spirituality that makes this particular play so moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "August Wilson's Joe Turner's Come and Gone is receiving a revival that honors both the playwright's memory and his work with a staging that captures the right mixture of earthiness and spirituality that makes this particular play so moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a revival that honors both the playwright's memory and his work with a staging that captures the right mixture of earthiness and spirituality",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment praising the revival for honoring Wilson's work and capturing the play's essential qualities, though the brief excerpt limits confidence in the full verdict. | GPT-4o: The review praises the revival for capturing the essence of the play, suggesting a highly positive assessment with no reservations. | Gemini: The review explicitly states that the revival honors the playwright's memory and work, capturing the essence of the play, indicating a positive recommendation. | Kimi: The critic offers clear praise for the revival, noting it honors Wilson's memory and work while delivering a moving theatrical experience with the right tonal balance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:09:29.737Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

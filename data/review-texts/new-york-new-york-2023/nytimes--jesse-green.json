@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'New York, New York' is a big, expensive love letter to the city that never sleeps, but it's also a show that never quite wakes up to its own potential.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new musical 'New York, New York' is a big, expensive love letter to the city that never sleeps, but it's also a show that never quite wakes up to its own potential.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a show that never quite wakes up to its own potential",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show's ambition ('big, expensive love letter') but criticizes its execution ('never quite wakes up to its own potential'), indicating neither recommendation nor strong discouragement. | GPT-4o: The review suggests that while the show is ambitious, it fails to deliver on its promise, indicating a lack of recommendation. | Gemini: The review is mixed, describing the show as a 'love letter' but also stating it 'never quite wakes up to its own potential,' indicating it has both positive and negative aspects. | Kimi: The critic acknowledges the production's scale and ambition ('big, expensive love letter') but delivers a pointed criticism about its execution ('never quite wakes up'), suggesting disappointment rather than a clear recommendation or rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:19:13.564Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

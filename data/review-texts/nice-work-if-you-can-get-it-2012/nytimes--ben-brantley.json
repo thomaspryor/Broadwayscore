@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully synthetic show about bootleggers and blue bloods in the 1920s doesn't have an original thought in its head. But it does have Matthew Broderick and Kelli O'Hara, along with a glorious Gershwin score, and that turns out to be more than enough.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This cheerfully synthetic show about bootleggers and blue bloods in the 1920s doesn't have an original thought in its head. But it does have Matthew Broderick and Kelli O'Hara, along with a glorious Gershwin score, and that turns out to be more than enough.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (44 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But it does have Matthew Broderick and Kelli O'Hara, along with a glorious Gershwin score, and that turns out to be more than enough.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the show's lack of originality, the critic concludes it's 'more than enough' due to strong performances and score - a clear positive recommendation with reservations. | GPT-4o: The review acknowledges the show's lack of originality but ultimately recommends it due to the performances and music, indicating a positive verdict with some reservations. | Gemini: The review acknowledges a lack of originality but ultimately recommends the show due to the presence of the stars and the Gershwin score. | Kimi: While the critic dismisses the show as synthetic and unoriginal, the final verdict clearly recommends seeing it based on the star performances and Gershwin score, deeming these elements 'more than enough' to overcome the material's flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:15:23.315Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

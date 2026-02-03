@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical adaptation of the 2004 movie is a crowd-pleaser that delivers exactly what fans expect, with Tina Fey's book staying faithful to the source material while adding some contemporary updates.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a crowd-pleaser that delivers exactly what fans expect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review calls it a 'crowd-pleaser that delivers' which is positive language, but the qualifier 'exactly what fans expect' suggests it meets but doesn't exceed expectations. This is a solid but not enthusiastic recommendation. | GPT-4o: The review describes the show as a 'crowd-pleaser' and highlights its faithfulness to the source material, suggesting a positive reception with some updates. The tone is clearly positive, though not overwhelmingly enthusiastic. | Gemini: The review states the show is a crowd-pleaser and delivers what fans expect, indicating a positive, but not rave, recommendation. | Kimi: The reviewer describes the show as a 'crowd-pleaser' that meets audience expectations with a faithful adaptation, indicating a solid recommendation without ecstatic praise or significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:04:56.448Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

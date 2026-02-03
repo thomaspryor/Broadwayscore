@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Mamet has created a president so foul-mouthed, so thoroughly debased and so openly contemptuous of the democratic process that he makes Richard Nixon look like a choirboy.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T18:13:55.638Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a single sentence fragment that appears to be describing a character, not a complete review with any evaluation of the theatrical production; openai: The text is a quote about a character, not an evaluation of the show itself.; gemini: This is a single sentence, likely an excerpt or quote, lacking any evaluative content about the show itself. It describes a character, not the production.",
+  "promptVersion": "5.2.0"
 }

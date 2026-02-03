@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. McDonald doesn't just channel Billie Holiday; she becomes her, with a completeness that is both luminous and devastating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,58 @@
   "showScoreExcerpt": "Ms. McDonald doesn't just channel Billie Holiday; she becomes her, with a completeness that is both luminous and devastating.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. McDonald doesn't just channel Billie Holiday; she becomes her, with a completeness that is both luminous and devastating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Extremely high praise using superlatives 'luminous and devastating' for what appears to be a transformative performance, but confidence is low due to very brief excerpt that may not represent the full review. | Gemini: The review uses strong positive language to describe Audra McDonald's performance, indicating a highly positive experience. | Kimi: The excerpt contains the highest possible praise for the central performance ('becomes her,' 'luminous and devastating'), indicating an enthusiastic recommendation, though the low confidence reflects that this is a very brief excerpt lacking broader production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:34:55.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

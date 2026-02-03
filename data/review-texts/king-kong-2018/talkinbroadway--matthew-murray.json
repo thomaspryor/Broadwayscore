@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "King Kong is a technical marvel that succeeds admirably at bringing a beloved story to vivid theatrical life, even if it doesn't always soar as high emotionally as it does literally.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "King Kong is a technical marvel that succeeds admirably at bringing a beloved story to vivid theatrical life, even if it doesn't always soar as high emotionally as it does literally.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "King Kong is a technical marvel that succeeds admirably at bringing a beloved story to vivid theatrical life",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it a 'technical marvel' that 'succeeds admirably,' but with the caveat that it doesn't fully succeed emotionally, indicating a solid recommendation with reservations. | GPT-4o: The review praises the technical aspects and overall success of the show, despite noting some emotional shortcomings. This suggests a positive recommendation with some reservations. | Gemini: The review is mostly positive, calling the show a \"technical marvel\" and saying it \"succeeds admirably.\" However, it also notes that it \"doesn't always soar as high emotionally,\" indicating a reservation. | Kimi: The critic praises the production as a 'technical marvel' that brings the story to vivid life, but notes significant reservations about its emotional impact, resulting in a qualified but solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:20:00.646Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

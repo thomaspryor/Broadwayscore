@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Matilda is a marvel, a musical that manages to be both sweet and subversive, honoring Dahl's darkness while adding enough light to make it bearable for younger viewers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This Matilda is a marvel, a musical that manages to be both sweet and subversive, honoring Dahl's darkness while adding enough light to make it bearable for younger viewers.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Matilda is a marvel, a musical that manages to be both sweet and subversive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses the superlative 'marvel' and praises the show's ability to balance multiple qualities successfully, indicating strong enthusiasm. | GPT-4o: The review uses strong positive language ('marvel') and praises the show's ability to balance sweetness and subversion, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"marvel\" and praises the show's ability to balance darkness and light, indicating a strong positive recommendation. | Kimi: The critic employs the superlative 'marvel' and praises the production's deft balance of subversive and sweet elements, offering a strong recommendation despite the brevity of the excerpt. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:50:09.848Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

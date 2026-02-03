@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "spectacular in places but feels more like a theme park ride than a cohesive piece of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges spectacle but criticizes it as theme park entertainment rather than proper theater. Neither recommends nor discourages. | GPT-4o: The review highlights spectacle but criticizes the show for lacking cohesion, likening it to a theme park ride, which indicates a negative assessment. | Gemini: The review acknowledges spectacular elements but ultimately compares the show to a theme park ride, suggesting a lack of theatrical cohesion. This indicates a mixed assessment. | Kimi: The critic acknowledges the spectacular production values but fundamentally criticizes the show for lacking theatrical cohesion, comparing it unfavorably to a theme park ride. The text is very brief, suggesting this may be an excerpt or capsule review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:14:30.294Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

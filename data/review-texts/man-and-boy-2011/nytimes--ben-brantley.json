@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Langella gives a performance of such blazing intensity that you may find yourself holding your breath for minutes at a time. This is acting that seems to incinerate the air around it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,8 +18,58 @@
   "showScoreExcerpt": "Mr. Langella gives a performance of such blazing intensity that you may find yourself holding your breath for minutes at a time. This is acting that seems to incinerate the air around it.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated",
-  "sources": [
-    "web-search"
-  ]
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is acting that seems to incinerate the air around it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Extreme superlatives ('blazing intensity', 'incinerate the air') with visceral impact described ('holding your breath'). Clear rave-level praise for an extraordinary performance. | Gemini: The review uses strong positive language such as \"blazing intensity\" and \"incinerate the air around it,\" indicating a highly favorable assessment of the performance. | Kimi: Though this is a brief excerpt, the language ('blazing intensity,' 'incinerate the air') represents unqualified ecstatic praise typical of a rave review. Scored at 94 within the Rave range given the extreme enthusiasm, with confidence set to low due to the truncated nature of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:57:32.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 83,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McNeal's play is a lightweight but genuinely funny backstage comedy that provides a perfect vehicle for this stellar cast to showcase their considerable comic talents.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "McNeal's play is a lightweight but genuinely funny backstage comedy that provides a perfect vehicle for this stellar cast to showcase their considerable comic talents.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal's play is a lightweight but genuinely funny backstage comedy that provides a perfect vehicle for this stellar cast to showcase their considerable comic talents.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it 'genuinely funny' and praising the 'stellar cast,' though 'lightweight' suggests some reservations about depth. | GPT-4o: The review describes the play as 'genuinely funny' and praises the cast's comic talents, indicating a strong recommendation. | Gemini: The review states the play is \"genuinely funny\" and a \"perfect vehicle\" for the cast, indicating a positive, but not overwhelmingly enthusiastic, recommendation. The \"lightweight\" comment suggests a reservation. | Kimi: The critic praises the show as genuinely funny with a stellar cast and perfect comic vehicle, though noting it is lightweight, suggesting solid but not unreserved enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:07:04.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

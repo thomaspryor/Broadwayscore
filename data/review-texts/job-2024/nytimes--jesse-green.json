@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the songs are often beautiful and the staging by Michael Mayer is inventive, the musical feels more like a meditation on faith than a fully realized drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,12 +18,59 @@
   "showScoreExcerpt": "Though the songs are often beautiful and the staging by Michael Mayer is inventive, the musical feels more like a meditation on faith than a fully realized drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "playbillVerdictUrl": "https://www.nytimes.com/2024/07/30/theater/job-review-broadway.html?searchResultPosition=1",
-  "sources": [
-    "web-search",
-    "playbill-verdict",
-    "nyc-theatre"
-  ],
-  "nycTheatreExcerpt": "Taymor's production is entirely sympathetic - to the characters and to the text. Though thrilling in its refusal to tamp down the show's sometimes anarchic spirit, it does not ignore the dangers of abandon. Sink's Shelby is beautifully positioned just at the spot where you can't tell the difference between impulse and illness. The other girls stratify at in-between altitudes, from Scott's firmly grounded Nell to Strazza's high-pitched Beth.",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the musical feels more like a meditation on faith than a fully realized drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges positive elements (beautiful songs, inventive staging) but the key verdict finds it lacks full dramatic realization, indicating neither clear recommendation nor dismissal. | GPT-4o: The review acknowledges positive elements like beautiful songs and inventive staging but ultimately suggests the musical lacks dramatic substance, resulting in a mixed verdict. | Gemini: The review acknowledges positive aspects like the songs and staging, but ultimately concludes that the musical is not a fully realized drama, indicating a mixed assessment. | Kimi: The critic concedes that the songs and staging have merit ('beautiful,' 'inventive') but uses a concessional structure ('Though') to emphasize that the work ultimately fails to cohere as a 'fully realized drama,' landing in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:08:59.737Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

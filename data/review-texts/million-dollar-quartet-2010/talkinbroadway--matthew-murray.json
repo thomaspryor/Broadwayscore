@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Million Dollar Quartet succeeds because it doesn't try to be anything more than what it is: a loving tribute to four legends and the music that made them immortal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Million Dollar Quartet succeeds because it doesn't try to be anything more than what it is: a loving tribute to four legends and the music that made them immortal.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Million Dollar Quartet succeeds because it doesn't try to be anything more than what it is: a loving tribute to four legends and the music that made them immortal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict stating the show 'succeeds' as a 'loving tribute,' but the praise is measured rather than enthusiastic, and the brief excerpt limits confidence in the full critical assessment. | GPT-4o: The review provides a clear positive evaluation, emphasizing the show's success as a tribute. The tone is enthusiastic and unambiguous. | Gemini: The review is positive, calling the show a \"loving tribute.\" While not a rave, it's a clear recommendation. | Kimi: The review offers a clear positive verdict with 'succeeds' and 'loving tribute,' recommending the show, though the extreme brevity (under 30 words) warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:07:37.391Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

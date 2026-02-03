@@ -9,8 +9,63 @@
   "isFullReview": true,
   "source": "nysr-api",
   "sources": [
-    "nysr-api"
+    "nysr-api",
+    "playbill-verdict"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those are minor quibbles about this enthralling, wildly imaginative production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for spectacular stagecraft and puppetry. Despite noting the story feels 'thin' and 'drawn out,' the critic calls it 'enthralling' and 'wildly imaginative' with only 'minor quibbles.' The truncation warning requires medium confidence, but the final sentence available strongly supports the positive rating. | GPT-4o: The review praises the production's visual and technical elements and describes it as 'enthralling' and 'wildly imaginative,' despite noting some minor issues. The original 4/5 star rating supports a positive classification. | Gemini: Despite some reservations about the story's depth and length, the review praises the puppetry, staging, and overall experience, giving it 4/5 stars. The truncated text makes confidence medium. | Kimi: The critic awards the production 4/5 stars and lavishes praise on the 'spectacular' stagecraft, 'virtuosic puppetry,' and 'stunning' design, while explicitly dismissing concerns about the thin narrative and drawn-out runtime as 'minor quibbles.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:41:33.537Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

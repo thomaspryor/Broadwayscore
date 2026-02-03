@@ -18,58 +18,10 @@
   "showScoreExcerpt": "This musical adaptation of the 1993 Bill Murray movie about a man trapped in temporal purgatory is that rarest of creatures: a stage version that enhances rather than just replicates its source material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "llmScore": {
-    "score": 79,
-    "confidence": "high",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "a stage version that enhances rather than just replicates its source material",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise calling it 'rarest of creatures' that 'enhances' the beloved film source, but limited text prevents higher confidence assessment. | Gemini: The review states that the stage version enhances the source material, which is a positive assessment, indicating a recommendation. | Kimi: The excerpt offers strong praise for the adaptation's ability to improve upon the original film, indicating a clear recommendation despite the limited text available.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:00:49.705Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": null,
-    "geminiScore": 78,
-    "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "https://www.nytimes.com/2017/04/17/theater/groundhog-day-review-andy-karl.html",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

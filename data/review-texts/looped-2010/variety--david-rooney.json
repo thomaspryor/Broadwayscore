@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Valerie Harper gives a committed performance as Tallulah Bankhead in this slight but entertaining biographical play about the legendary actress struggling through post-sync work on her final film.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Valerie Harper gives a committed performance as Tallulah Bankhead in this slight but entertaining biographical play about the legendary actress struggling through post-sync work on her final film.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "slight but entertaining biographical play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive evaluation with 'entertaining' and praise for Harper's 'committed performance,' but qualified by 'slight,' indicating a modest recommendation. | GPT-4o: The review describes the play as 'slight but entertaining,' indicating a positive but modest recommendation. The praise for Valerie Harper's performance supports a positive score, though the 'slight' descriptor suggests some reservations. | Gemini: The review describes the play as \"slight but entertaining\" and praises Valerie Harper's performance, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: While the critic finds the play 'slight' (insubstantial), the description 'entertaining' and praise for Harper's 'committed performance' constitutes a qualified recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:41:12.738Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

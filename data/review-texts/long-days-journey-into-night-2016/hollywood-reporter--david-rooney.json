@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jessica Lange gives a magnificent, career-defining performance as Mary Tyrone in Eugene O'Neill's masterpiece, anchoring a production that finds fresh emotional truth in this familiar American tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Jessica Lange gives a magnificent, career-defining performance as Mary Tyrone in Eugene O'Neill's masterpiece, anchoring a production that finds fresh emotional truth in this familiar American tragedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Lange gives a magnificent, career-defining performance as Mary Tyrone in Eugene O'Neill's masterpiece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language ('magnificent', 'career-defining', 'masterpiece') with no reservations. Praises both lead performance and overall production for finding 'fresh emotional truth'. | GPT-4o: The review uses strong praise ('magnificent', 'career-defining') and describes the production as finding 'fresh emotional truth', indicating a highly positive assessment. | Gemini: The review uses strong positive language such as \"magnificent\" and \"masterpiece\", indicating a rave review. The phrase \"career-defining performance\" further emphasizes the high praise. | Kimi: The review employs superlatives without reservation, praising the lead performance as 'career-defining' and the production for finding 'fresh emotional truth,' indicating strong enthusiasm despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:48:16.282Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 89,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

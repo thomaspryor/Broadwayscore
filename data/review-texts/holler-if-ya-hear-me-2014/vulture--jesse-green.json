@@ -18,59 +18,10 @@
   "showScoreExcerpt": "The show feels less like a musical than like a very long and expensive music video, with a wisp of a story providing the thinnest possible excuse for a Tupac concert.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "llmScore": {
-    "score": 44,
-    "confidence": "medium",
-    "range": {
-      "low": 39,
-      "high": 49
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The show feels less like a musical than like a very long and expensive music video, with a wisp of a story providing the thinnest possible excuse for a Tupac concert.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment dismissing the show as lacking substance - 'wisp of a story' and 'thinnest possible excuse' indicate fundamental structural problems that make it not worth recommending. | GPT-4o: The critic describes the show as lacking substance and merely an excuse for a concert, indicating a strong negative opinion. | Gemini: The critic compares the show unfavorably to a music video, criticizing the story as thin and the production as expensive but lacking substance. This indicates a negative assessment. | Kimi: The critic dismisses the production as a shallow, overlong music video lacking narrative substance, offering a clear recommendation against.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:16:31.264Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 20,
-    "geminiScore": 45,
-    "kimiScore": 42,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 25,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://www.vulture.com/2014/06/theater-review-holler-if-ya-hear-me.html",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

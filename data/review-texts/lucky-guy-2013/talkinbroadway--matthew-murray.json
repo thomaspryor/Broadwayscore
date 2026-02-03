@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lucky Guy is a solid, workmanlike biographical drama that benefits enormously from Tom Hanks's charismatic and committed performance as Mike McAlary, but it never quite transcends its conventional structure to become the gripping journalism thriller it wants to be.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Lucky Guy is a solid, workmanlike biographical drama that benefits enormously from Tom Hanks's charismatic and committed performance as Mike McAlary, but it never quite transcends its conventional structure to become the gripping journalism thriller it wants to be.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lucky Guy is a solid, workmanlike biographical drama that benefits enormously from Tom Hanks's charismatic and committed performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises Hanks's performance and calls the show 'solid' but criticizes it as 'conventional' and says it 'never quite transcends' to become what it wants to be. Clear mixed verdict with no recommendation either way. | GPT-4o: The review acknowledges the strengths of Tom Hanks's performance but criticizes the play for not transcending its conventional structure. This suggests a mixed verdict with no strong recommendation or discouragement. | Gemini: The review is generally positive, highlighting Hanks's performance, but notes that the play doesn't fully achieve its potential. This suggests a recommendation with reservations. | Kimi: The critic praises Hanks's performance as 'enormously' beneficial and calls the show 'solid,' but criticizes the conventional structure and failure to transcend into a gripping thriller, indicating a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:51:57.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

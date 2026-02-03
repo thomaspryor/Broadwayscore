@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The cosmic debris that rains down in 'Meteor Shower' is more like cosmic junk. Steve Martin's new comedy, which opened Wednesday night at the Booth Theater, offers a universe of good intentions but delivers a meteor shower of misfired jokes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The cosmic debris that rains down in 'Meteor Shower' is more like cosmic junk. Steve Martin's new comedy, which opened Wednesday night at the Booth Theater, offers a universe of good intentions but delivers a meteor shower of misfired jokes.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (40 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers a meteor shower of misfired jokes",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict using 'cosmic junk' and 'misfired jokes' metaphors, acknowledging good intentions but criticizing execution. | GPT-4o: The review criticizes the show for failing to deliver humor, describing it as 'cosmic junk' and 'misfired jokes', indicating a negative assessment. | Gemini: The review uses negative language such as \"cosmic junk\" and \"misfired jokes,\" indicating a negative assessment of the show. | Kimi: The critic describes the show as 'cosmic junk' with 'misfired jokes,' indicating that despite good intentions, the production fails to deliver laughs.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:06:04.420Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

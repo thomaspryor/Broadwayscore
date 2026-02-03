@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dan Lauria brings gruff authenticity to his portrayal of the legendary Green Bay Packers coach, but the play itself fumbles in its attempt to find dramatic coherence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Dan Lauria brings gruff authenticity to his portrayal of the legendary Green Bay Packers coach, but the play itself fumbles in its attempt to find dramatic coherence.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself fumbles in its attempt to find dramatic coherence",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: While praising Lauria's authentic performance, the critic clearly states the play 'fumbles' and lacks 'dramatic coherence,' indicating a negative overall assessment despite the strong lead. | GPT-4o: While the performance of Dan Lauria is praised, the overall play is criticized for lacking dramatic coherence, indicating a negative assessment. | Gemini: The review praises the actor's performance but criticizes the play's dramatic coherence, indicating a mixed assessment. | Kimi: While Lauria's performance is commended, the critic explicitly states the play 'fumbles' and lacks dramatic coherence, indicating a negative overall verdict. Confidence is low due to the text's extreme brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:47:27.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

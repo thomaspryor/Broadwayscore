@@ -18,59 +18,8 @@
   "showScoreExcerpt": "The musical about four New Jersey high school friends reuniting after graduation is earnest but dramatically inert, with bland songs that fail to lift the pedestrian material.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "llmScore": {
-    "score": 44,
-    "confidence": "medium",
-    "range": {
-      "low": 39,
-      "high": 49
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The musical about four New Jersey high school friends reuniting after graduation is earnest but dramatically inert, with bland songs that fail to lift the pedestrian material.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show 'dramatically inert' with 'bland songs' and 'pedestrian material.' Despite acknowledging it's 'earnest,' the overall verdict is clearly against recommendation. | GPT-4o: The review describes the musical as 'dramatically inert' with 'bland songs,' indicating a lack of recommendation. The tone is clearly negative, focusing on the shortcomings of the material. | Gemini: The review explicitly states the musical is \"dramatically inert\" with \"bland songs\" and \"pedestrian material,\" indicating a negative assessment. | Kimi: The critic describes the show as dramatically lifeless with bland songs and pedestrian writing, offering no reason to see it despite its earnestness.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:52:23.542Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 48,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
-  }
+  "textQuality": "truncated",
+  "sources": [
+    "web-search"
+  ]
 }

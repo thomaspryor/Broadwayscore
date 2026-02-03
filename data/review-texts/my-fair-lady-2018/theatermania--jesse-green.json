@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of My Fair Lady at Lincoln Center Theater is a handsome, well-sung production that honors the original while finding new ways to illuminate its tensions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This revival of My Fair Lady at Lincoln Center Theater is a handsome, well-sung production that honors the original while finding new ways to illuminate its tensions.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a handsome, well-sung production that honors the original while finding new ways to illuminate its tensions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'handsome' and 'well-sung' with praise for honoring the original while adding new insights indicates a solid recommendation, though the language is measured rather than enthusiastic. | GPT-4o: The review praises the production as 'handsome' and 'well-sung', and notes it honors the original while adding new insights, indicating a solid recommendation. | Gemini: The review is positive, describing the production as \"handsome\" and \"well-sung\" while also noting that it \"honors the original.\" It is a recommendation, but not an overly enthusiastic one. | Kimi: While brief, the review offers unqualified praise for the production values ('handsome'), performances ('well-sung'), and direction ('finding new ways to illuminate'), indicating a clear recommendation without the ecstatic superlatives of a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:14:11.239Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

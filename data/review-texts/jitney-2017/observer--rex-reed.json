@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under the skilled direction of Ruben Santiago-Hudson, Jitney is a masterpiece of ensemble acting that brings August Wilson's vivid characters to vibrant life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Under the skilled direction of Ruben Santiago-Hudson, Jitney is a masterpiece of ensemble acting that brings August Wilson's vivid characters to vibrant life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jitney is a masterpiece of ensemble acting that brings August Wilson's vivid characters to vibrant life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative 'masterpiece' with unqualified praise for direction and performances, clear enthusiastic recommendation. | GPT-4o: The review uses strong, unqualified praise, calling the production a 'masterpiece' and highlighting the vibrant life brought to the characters, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word 'masterpiece' and praises the direction and acting, indicating a very positive and enthusiastic recommendation. | Kimi: The critic employs the superlative 'masterpiece' and offers unqualified praise for the direction and ensemble performances without any reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:06:51.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -18,59 +18,10 @@
   "showScoreExcerpt": "Larry David's Broadway debut is a comedy that's dead in the water. The 'Seinfeld' and 'Curb Your Enthusiasm' creator has written a play that feels like a very long, very unfunny episode of his HBO show.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (36 words)",
-  "llmScore": {
-    "score": 21,
-    "confidence": "medium",
-    "range": {
-      "low": 16,
-      "high": 26
-    },
-    "bucket": "Pan",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "a comedy that's dead in the water",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Clear negative assessment calling the show 'dead in the water' and 'very unfunny' with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, describing the play as 'dead in the water' and 'very unfunny.' There are no redeeming qualities mentioned, placing it firmly in the Pan category. | Gemini: The review explicitly states the play is not funny and compares it unfavorably to his HBO show, indicating a strong negative opinion. | Kimi: The critic delivers an unambiguous pan with devastating language ('dead in the water', 'very unfunny') and no mentioned redeeming qualities.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:28:29.722Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 20,
-    "geminiScore": 25,
-    "kimiScore": 18,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
-    "geminiBucket": "Pan",
-    "kimiBucket": "Pan",
-    "scoreDelta": 20,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Pan"
-  }
+  "textQuality": "truncated",
+  "playbillVerdictUrl": "http://nypost.com/2015/03/05/larry-david-delivers-larry-david-ness-in-broadway-debut-fish-in-the-dark/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has genuine sweetness without being cloying, and it treats its characters' pain with respect while still mining laughs from their circumstances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment praising the show's balanced tone and respectful character treatment, but this appears to be a brief excerpt with limited context for a fuller evaluation. | GPT-4o: The review praises the show's ability to balance sweetness and humor with respect for its characters' pain, indicating a positive but not overly enthusiastic recommendation. The excerpt is short, so confidence is low. | Gemini: The review highlights the show's positive qualities, such as its sweetness and respectful treatment of characters, suggesting a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: Though only an excerpt, the text offers unqualified praise for the show's tonal balance and emotional intelligence, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:17:34.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

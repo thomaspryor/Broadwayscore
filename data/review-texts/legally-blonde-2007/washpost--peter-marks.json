@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What 'Legally Blonde' lacks in narrative sophistication, it makes up for in sheer enthusiasm and a buoyant performance by Laura Bell Bundy as the pink-obsessed law student Elle Woods.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "What 'Legally Blonde' lacks in narrative sophistication, it makes up for in sheer enthusiasm and a buoyant performance by Laura Bell Bundy as the pink-obsessed law student Elle Woods.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What 'Legally Blonde' lacks in narrative sophistication, it makes up for in sheer enthusiasm and a buoyant performance by Laura Bell Bundy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges significant flaw (lack of narrative sophistication) but balances with praise for energy and lead performance. Classic positive-with-reservations review. | GPT-4o: The review acknowledges a lack of narrative sophistication but highlights enthusiasm and a strong lead performance, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges a narrative weakness but praises the enthusiasm and lead performance, suggesting a positive but qualified recommendation. | Kimi: The review acknowledges narrative weaknesses but clearly states the show compensates with enthusiasm and a strong lead performance, indicating a recommendation tempered by minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:25:46.852Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

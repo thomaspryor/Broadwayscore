@@ -456,6 +456,30 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 **Why this architecture?** Parallel workflows (gather-reviews, collect-review-texts) can't rebuild `reviews.json` without merge conflicts. They write only to their show-specific `review-texts/` directory. The daily rebuild consolidates all changes, and manual trigger allows immediate sync after bulk work.
 
+### Workflow Robustness Checklist
+
+**When creating or modifying any GitHub Actions workflow, follow ALL of these rules:**
+
+1. **Parallel-safe by default.** Any workflow that processes multiple shows MUST use matrix strategy to split work across parallel runners. Never put 700+ items in a single job — if it fails at item 600, you lose everything. Use the `gather-reviews.yml` prepare/matrix pattern (round-robin split, 30s stagger delays).
+
+2. **Incremental progress.** Each parallel batch MUST commit and push its own results independently. Use the standard 5-retry push loop with `git pull --rebase -X theirs`, `rebase --abort` fallback, and random 10-30s backoff. Only commit the files your job wrote (e.g., `review-texts/`, `aggregator-archive/`), NOT shared derived files like `reviews.json`.
+
+3. **Idempotent / re-runnable.** Workflows MUST be safe to re-run. Use caching (archive files, skip-if-exists checks) so repeat runs cost ~0 API calls. If a run partially fails, re-running should pick up where it left off, not redo completed work.
+
+4. **Test before bulk runs.** Before triggering a workflow on hundreds of shows, test with a small batch first (e.g., `parallel_jobs=1` with 1-2 shows). Verify the job completes, commits correctly, and the rebuild succeeds.
+
+5. **Budget-aware.** Track API credit costs. Log how many API calls were made vs. cache hits. Use `continue-on-error: true` for enrichment steps that aren't critical to the pipeline. Set `timeout-minutes` on every job to prevent runaway costs.
+
+6. **Non-blocking enrichment.** Supplementary data gathering (aggregator scraping, image fetching) should use `continue-on-error: true` so downstream jobs (rebuild, scoring) always run regardless of enrichment failures.
+
+7. **No conflicts with concurrent workflows.** Parallel-safe workflows only commit to their own file paths (e.g., `review-texts/{specific-show}/`). Derived files (`reviews.json`, `critic-registry.json`) are rebuilt in a final single job after all parallel work completes.
+
+8. **Secrets in env blocks.** Always pass secrets via explicit `env:` blocks — they are NOT automatically available to scripts. (See section below.)
+
+9. **Reasonable timeouts.** Set `timeout-minutes` on every job. Batch processing jobs: 60 min. Rebuild jobs: 15 min. Enrichment/scraping: 30 min. Single-show operations: 10 min.
+
+10. **Observable.** Log progress clearly — show counts, cache hit rates, API calls made, errors encountered. Use `echo` statements at key milestones so logs are useful for debugging mid-run.
+
 ### CRITICAL: GitHub Secrets in Workflows
 
 **Secrets are NOT automatically available to scripts.** You MUST explicitly pass them via `env:` blocks.

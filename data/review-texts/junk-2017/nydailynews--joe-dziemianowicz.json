@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play, which runs nearly three hours, feels like a marathon. And not in a good way.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The play, which runs nearly three hours, feels like a marathon. And not in a good way.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textQuality": "excerpt"
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play, which runs nearly three hours, feels like a marathon. And not in a good way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict comparing the show to an endurance test with explicit clarification that this is not praise. The critic finds the length tedious rather than engaging. | GPT-4o: The review is concise but clearly negative, describing the play as a marathon 'not in a good way,' indicating a strong negative impression. | Gemini: The review explicitly states the play feels like a marathon 'and not in a good way', indicating a negative experience. | Kimi: The critic explicitly criticizes the show's pacing and length, describing the three-hour runtime as an exhausting negative experience with the phrase 'not in a good way,' indicating a clear recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:25:23.792Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

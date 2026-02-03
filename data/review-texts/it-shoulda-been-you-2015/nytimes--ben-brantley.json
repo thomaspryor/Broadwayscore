@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The comparison to a telenovela and criticism of lack of subtlety indicates a negative assessment, though not a complete pan. | GPT-4o: The review criticizes the musical for its lack of subtlety and excessive plot twists, suggesting a negative view without any positive elements mentioned. | Gemini: The review compares the musical to a telenovela, implying it lacks subtlety, which is a negative assessment. The overall tone suggests a lack of recommendation. | Kimi: The critic offers a backhanded compliment ('determinedly cheerful') while criticizing the plotting as melodramatic ('telenovela') and lacking sophistication, resulting in a balanced mixed assessment without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:14:39.931Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

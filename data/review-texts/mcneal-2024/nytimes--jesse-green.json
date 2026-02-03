@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though Lincoln Center Theater's production of 'McNeal' offers Lincoln as a magnetic presence, the play itself feels more like a demonstration than a drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,10 +18,59 @@
   "showScoreExcerpt": "Though Lincoln Center Theater's production of 'McNeal' offers Lincoln as a magnetic presence, the play itself feels more like a demonstration than a drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "playbillVerdictUrl": "https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ],
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play itself feels more like a demonstration than a drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Lincoln's magnetic performance but criticizes the play as feeling more like a demonstration than drama, indicating neither strong recommendation nor discouragement. | GPT-4o: The review suggests that while the production offers a strong performance, the play lacks dramatic impact, leading to an overall negative impression. | Gemini: The review acknowledges a positive aspect (Lincoln's performance) but ultimately finds the play lacking as a drama, suggesting a mixed or neutral overall assessment. | Kimi: The review praises the lead actor as a 'magnetic presence' but criticizes the play itself as 'more like a demonstration than a drama,' creating a balanced mixed assessment without clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:53:42.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

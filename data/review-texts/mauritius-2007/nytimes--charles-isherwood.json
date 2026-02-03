@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Rebeck has written a tight, well-constructed thriller that keeps you guessing about the motivations and loyalties of its characters right up to the final blackout.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Ms. Rebeck has written a tight, well-constructed thriller that keeps you guessing about the motivations and loyalties of its characters right up to the final blackout.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Rebeck has written a tight, well-constructed thriller that keeps you guessing about the motivations and loyalties of its characters right up to the final blackout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the writing quality and construction with positive descriptors like 'tight' and 'well-constructed,' but this appears to be an excerpt with very limited content to assess full critical verdict. | GPT-4o: The review praises the writing as 'tight' and 'well-constructed', indicating a positive assessment of the show. The phrase 'keeps you guessing' suggests engagement and intrigue, supporting a solid recommendation. | Gemini: The review praises the play as a \"tight, well-constructed thriller\" that keeps the audience guessing, indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the play's construction and suspense elements, calling it a 'tight, well-constructed thriller' that sustains tension throughout, indicating a clear recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:01:29.671Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

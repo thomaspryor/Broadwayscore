@@ -9,10 +9,62 @@
   "isFullReview": true,
   "source": "nysr-api",
   "sources": [
-    "nysr-api",
-    "nyc-theatre"
+    "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "nycTheatreExcerpt": "Downey Jr.'s performance is the linchpin of the entire production, and it's a tribute to his gifts as an actor that he turns the work into an engrossing study of the intersection of art and the powers of cyber science. His McNeal is a deeply flawed individual and yet one who recognizes his shortcomings, though not enough to change. He explains \"computers are our fondest enablers.",
-  "textQuality": "partial"
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Downey brings such charisma and magnetism to McNeal that it's easy to overlook the play's flaws.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for Downey's compelling performance and production values, but acknowledges significant flaws in the play itself. The critic finds it worth seeing primarily for the star power despite the problematic script. | GPT-4o: The review acknowledges significant flaws in the play's writing and emotional engagement but highlights Robert Downey Jr.'s compelling performance and the strong supporting cast. The original 4/5 star rating suggests a positive recommendation despite the reservations. | Gemini: The review acknowledges flaws in the play itself, but strongly praises Downey Jr.'s performance, suggesting it's compelling enough to make the show worth seeing. The 4/5 star rating supports a positive classification, despite the truncated text. | Kimi: The critic awards 4/5 stars and highly recommends the production primarily for Robert Downey Jr.'s magnetic stage presence, while acknowledging significant weaknesses in the play's formulaic plot and underdeveloped characters.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:02:16.827Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

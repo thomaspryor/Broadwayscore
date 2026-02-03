@@ -12,5 +12,59 @@
     "nysr-api"
   ],
   "originalScore": "4/5 stars",
-  "textQuality": "partial"
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My Name Is Lucy Barton, the very fine (and very faithful) stage adaptation of Elizabeth Strout's mother-daughter–focused novel.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise calling it 'very fine' and lauding Linney's performance ('will smash your heart to bits'). Confidence is medium due to truncated text potentially missing final verdict, but the rating and opening praise strongly indicate positive recommendation. | GPT-4o: The review praises the adaptation as 'very fine' and highlights Laura Linney's performance. The 4/5 star rating suggests a positive recommendation, but the truncated nature of the text means the final verdict might be missing, hence the low confidence. | Gemini: The review is positive, calling the adaptation \"very fine\" and \"very faithful.\" The 4/5 star rating also indicates a positive assessment. However, the truncated text and lack of a clear concluding statement reduce confidence. | Kimi: The critic awards 4/5 stars and praises the 'very fine' adaptation and Linney's heartbreaking performance, indicating a solid recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:15:30.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

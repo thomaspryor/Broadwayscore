@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kimberly Akimbo is a rare thing: a musical that feels both deeply personal and universally resonant, finding profound beauty in life's briefest moments.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Kimberly Akimbo is a rare thing: a musical that feels both deeply personal and universally resonant, finding profound beauty in life's briefest moments.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a musical that feels both deeply personal and universally resonant, finding profound beauty in life's briefest moments",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling it 'a rare thing' with deeply appreciative language about finding 'profound beauty.' Clear enthusiastic recommendation despite brief format. | GPT-4o: The review uses superlatives like 'rare thing' and 'profound beauty', indicating a strong recommendation and high praise for the musical. | Gemini: The review is highly positive, using terms like \"deeply personal,\" \"universally resonant,\" and \"profound beauty,\" indicating a strong recommendation. | Kimi: The critic offers unqualified praise, calling the show a 'rare thing' with 'profound beauty' that resonates universally, indicating a strong recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:12:01.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

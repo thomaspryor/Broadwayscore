@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Next Fall is a play that wants to be about faith, love, and acceptance, but it's really about the difficulty of writing a play about faith, love, and acceptance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Next Fall is a play that wants to be about faith, love, and acceptance, but it's really about the difficulty of writing a play about faith, love, and acceptance.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Next Fall is a play that wants to be about faith, love, and acceptance, but it's really about the difficulty of writing a play about faith, love, and acceptance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic suggests the play fails to achieve its thematic goals, but this appears to be a very brief excerpt or truncated review, making a definitive assessment difficult. | GPT-4o: The review suggests that the play fails to effectively address its themes, indicating a negative assessment of its execution. | Gemini: The critic is saying the play fails to achieve its goals, which is a negative assessment. | Kimi: This brief excerpt delivers a concise critical verdict that the play fails to achieve its intended thematic goals, instead devolving into meta-commentary on its own creation. The wit masks a fundamental criticism of the writing, indicating a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:10:22.941Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

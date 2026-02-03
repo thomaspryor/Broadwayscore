@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a masterpiece of found drama, turning the FBI's interrogation transcript into something that feels both inevitable and impossible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The play is a masterpiece of found drama, turning the FBI's interrogation transcript into something that feels both inevitable and impossible.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a masterpiece of found drama, turning the FBI's interrogation transcript into something that feels both inevitable and impossible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic explicitly calls the play 'a masterpiece' with praise for its dramatic transformation of source material, though the excerpt is very brief which limits confidence. | GPT-4o: The critic uses strong, unqualified praise by calling the play a 'masterpiece' and emphasizing its dramatic impact, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"masterpiece,\" which indicates a rave review. The critic also praises the play's ability to transform the interrogation transcript into something both inevitable and impossible. | Kimi: Explicit designation as a 'masterpiece' with praise for the dramatic construction indicates the highest level of recommendation, though the excerpt's brevity limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:05:06.031Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

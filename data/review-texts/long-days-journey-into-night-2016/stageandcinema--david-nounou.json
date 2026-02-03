@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Long Day's Journey Into Night is a masterclass in acting, with Jessica Lange delivering a powerhouse performance that anchors the entire evening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This production of Long Day's Journey Into Night is a masterclass in acting, with Jessica Lange delivering a powerhouse performance that anchors the entire evening.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of Long Day's Journey Into Night is a masterclass in acting, with Jessica Lange delivering a powerhouse performance that anchors the entire evening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise calling it a 'masterclass in acting' with a 'powerhouse performance,' but extremely brief excerpt limits confidence in overall assessment. | GPT-4o: The review uses strong, enthusiastic language such as 'masterclass in acting' and 'powerhouse performance,' indicating a highly positive recommendation. | Gemini: The review uses strong positive language like \"masterclass\" and \"powerhouse performance,\" indicating a strong recommendation. | Kimi: The critic uses superlatives like 'masterclass' and 'powerhouse' to praise the acting, indicating strong enthusiasm, though the excerpt's brevity limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:48:47.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

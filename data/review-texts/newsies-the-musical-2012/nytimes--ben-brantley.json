@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This shamelessly sentimental musical about underdogs who get their day has been given a production of such energetic professionalism that resistance seems not just futile but churlish.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This shamelessly sentimental musical about underdogs who get their day has been given a production of such energetic professionalism that resistance seems not just futile but churlish.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This shamelessly sentimental musical about underdogs who get their day has been given a production of such energetic professionalism that resistance seems not just futile but churlish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley acknowledges the show's formulaic nature but praises the production quality so highly that he suggests resistance would be 'churlish' - a clear positive recommendation despite reservations about the material. | GPT-4o: The review praises the production's energetic professionalism and suggests that not enjoying it would be unreasonable, indicating a strong recommendation. | Gemini: The review suggests that the production is enjoyable despite being \"shamelessly sentimental\", indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic acknowledges the show's sentimental nature but praises the production's 'energetic professionalism' so highly that they suggest disliking it would be unreasonable, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T18:12:18.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

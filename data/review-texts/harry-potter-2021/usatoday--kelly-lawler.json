@@ -1,0 +1,76 @@
+{
+  "showId": "harry-potter-2021",
+  "outletId": "usatoday",
+  "outlet": "USA Today",
+  "criticName": "Kelly Lawler",
+  "url": "https://www.usatoday.com/story/life/theater/2018/04/22/harry-potter-cursed-child-broadway-review/539260002/",
+  "publishDate": "April 22, 2018",
+  "fullText": "The two-part play is a theatrical marvel that uses every inch of the stage and every trick in the book to create magic that feels, well, magical.",
+  "isFullReview": false,
+  "dtliExcerpt": "The two-part play is a theatrical marvel that uses every inch of the stage and every trick in the book to create magic that feels, well, magical.",
+  "originalScore": null,
+  "assignedScore": 91,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The two-part play is a theatrical marvel that uses every inch of the stage and every trick in the book to create magic that feels, well, magical.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two-part play is a theatrical marvel that uses every inch of the stage and every trick in the book to create magic that feels, well, magical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the production a 'theatrical marvel' with praise for stagecraft and magical effects, but this appears to be a brief excerpt which limits confidence in the full critical assessment. | GPT-4o: The review uses superlatives like 'theatrical marvel' and describes the production as 'magical,' indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language like \"theatrical marvel\" and \"magic\" to describe the play, indicating a rave review. | Kimi: The critic employs superlatives ('theatrical marvel') and enthusiastically praises the production's stagecraft and magical effect, indicating an unqualified, strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:07:44.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
+}

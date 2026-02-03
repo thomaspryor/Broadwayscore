@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a love letter to Broadway written by someone who knows its every wrinkle and flaw but adores it anyway. McNeal's affection for the theater comes through in every line.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The play is a love letter to Broadway written by someone who knows its every wrinkle and flaw but adores it anyway. McNeal's affection for the theater comes through in every line.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McNeal's affection for the theater comes through in every line.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment describing the play as a 'love letter' with authentic theatrical knowledge, though lacks stronger superlatives for higher scoring. | GPT-4o: The review expresses a positive sentiment, highlighting the playwright's affection for Broadway. The tone suggests a recommendation, though it lacks superlatives or detailed praise, placing it in the positive range. | Gemini: The review expresses a positive sentiment, describing the play as a love letter to Broadway, indicating a recommendation. | Kimi: The critic describes the play as a 'love letter' filled with 'affection,' indicating genuine enthusiasm despite acknowledging flaws, though the extreme brevity limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:15:58.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

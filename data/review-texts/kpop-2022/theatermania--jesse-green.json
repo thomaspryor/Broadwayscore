@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "KPOP is a show that wants to have it all ways: to be both a celebration of Korean pop music and a critique of the industry that produces it.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T17:23:51.939Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review that can be scored for recommendation strength.; openai: The text is a brief statement about the show's dual intentions, not an evaluative review or recommendation.",
+  "promptVersion": "5.2.0"
 }

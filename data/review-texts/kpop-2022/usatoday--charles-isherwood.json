@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical captures the slick professionalism and manufactured glamour of the K-pop industry, but struggles to find its own authentic voice beneath the glossy surface.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical captures the slick professionalism and manufactured glamour of the K-pop industry, but struggles to find its own authentic voice beneath the glossy surface.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical captures the slick professionalism and manufactured glamour of the K-pop industry, but struggles to find its own authentic voice beneath the glossy surface.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the production's technical polish but criticizes its lack of authenticity. The 'but struggles' formulation indicates significant reservations that prevent a positive recommendation. | GPT-4o: The review acknowledges the show's ability to capture the essence of the K-pop industry but criticizes it for lacking authenticity. This suggests a balanced view with both positive and negative elements, fitting the Mixed bucket. | Gemini: The review acknowledges the show's strengths in capturing the K-pop industry's aesthetic but criticizes its lack of authenticity, resulting in a mixed assessment. | Kimi: Brief review praises the production's technical proficiency while criticizing its lack of substantive artistic identity, resulting in an ambivalent assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:33:00.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

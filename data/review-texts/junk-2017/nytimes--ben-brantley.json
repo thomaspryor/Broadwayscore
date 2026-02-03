@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sprawling financial drama about corporate raiders in the 1980s is stuffed with more characters than a Dickens novel, yet it never quite achieves the human depth that would make us care about their fates.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This sprawling financial drama about corporate raiders in the 1980s is stuffed with more characters than a Dickens novel, yet it never quite achieves the human depth that would make us care about their fates.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it never quite achieves the human depth that would make us care about their fates",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review criticizes the show's lack of emotional connection despite ambitious scope. Neither recommends nor discourages attendance - a neutral assessment. | GPT-4o: The review criticizes the show for lacking human depth and emotional engagement, suggesting a negative overall impression. | Gemini: The review explicitly states the show fails to make the audience care about the characters, indicating a negative experience. The comparison to a Dickens novel highlights the quantity of characters but emphasizes the lack of depth. | Kimi: The critic faults the show for lacking the human depth required to make audiences invest in the characters, despite its sprawling scope and numerous characters.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:10:33.901Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's book, by Jason Kim, offers a behind-the-scenes look at the pressures and artifice of the K-pop industry, but the storytelling feels as manufactured as the pop confections it depicts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical's book, by Jason Kim, offers a behind-the-scenes look at the pressures and artifice of the K-pop industry, but the storytelling feels as manufactured as the pop confections it depicts.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the storytelling feels as manufactured as the pop confections it depicts",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly criticizes the book as feeling 'manufactured' - a clear negative assessment of the storytelling quality, though not a complete pan. | GPT-4o: The review criticizes the storytelling as manufactured, implying a lack of authenticity or depth, which suggests a negative view of the production. | Gemini: The review explicitly states the storytelling feels manufactured, indicating a negative assessment of the show's book. | Kimi: The critic finds the book artificial and 'manufactured,' offering a clear negative assessment of the core storytelling, though the brevity suggests this is an excerpt from a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:33:26.652Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

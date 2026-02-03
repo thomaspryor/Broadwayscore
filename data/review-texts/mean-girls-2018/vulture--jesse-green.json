@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical Mean Girls, which opened Sunday at the August Wilson Theatre, is a lot like its heroine, Cady Heron: basically decent, intermittently charming, but fatally eager to please.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The musical Mean Girls, which opened Sunday at the August Wilson Theatre, is a lot like its heroine, Cady Heron: basically decent, intermittently charming, but fatally eager to please.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "basically decent, intermittently charming, but fatally eager to please",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic uses qualified praise ('basically decent', 'intermittently charming') but the key descriptor 'fatally eager to please' suggests significant flaws that undermine the production's effectiveness. | GPT-4o: The review describes the show as having both positive and negative qualities, with no strong recommendation or discouragement, fitting a mixed verdict. | Gemini: The review uses mixed language, describing the show as \"basically decent\" and \"intermittently charming\" but also \"fatally eager to please,\" suggesting a mixed or lukewarm reception. | Kimi: The review offers faint praise ('basically decent,' 'intermittently charming') but balances it with a significant criticism ('fatally eager to please'), resulting in an ambivalent assessment without a clear recommendation to see or skip the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T17:56:44.428Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
