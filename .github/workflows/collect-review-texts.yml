@@ -171,11 +171,15 @@ jobs:
             git commit -m "feat: Collect review texts ($JOB_LABEL)
 
           Co-Authored-By: GitHub Action <action@github.com>"
-            git pull --rebase origin main || {
-              git rebase --abort || true
-              git pull --no-rebase -X ours origin main
-            }
-            git push
+            # Robust retry loop for push conflicts with parallel runs
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main && git push && break || {
+                echo "Push attempt $i failed, retrying..."
+                sleep $((RANDOM % 10 + 5))
+                git rebase --abort 2>/dev/null || true
+                git pull --no-rebase -X ours origin main
+              }
+            done
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
