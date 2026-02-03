@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This exuberant rock musical about a young black artist's journey of self-discovery crackles with authenticity, humor and heart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This exuberant rock musical about a young black artist's journey of self-discovery crackles with authenticity, humor and heart.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This exuberant rock musical crackles with authenticity, humor and heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('exuberant', 'crackles with authenticity, humor and heart') indicates enthusiastic recommendation, though the brevity prevents higher confidence. | GPT-4o: The review uses strong positive language such as 'exuberant', 'crackles with authenticity', and 'heart', indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language like \"exuberant\", \"authenticity\", \"humor\", and \"heart\", indicating a strong recommendation. | Kimi: The critic offers strong unqualified praise, describing the show as 'exuberant' and praising its 'authenticity, humor and heart,' indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:54:47.602Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

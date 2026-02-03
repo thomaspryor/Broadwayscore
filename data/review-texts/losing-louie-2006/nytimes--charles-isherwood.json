@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Rebeck has created a play that feels more like a rough draft of a family drama than a finished work, with characters who remain stubbornly opaque and conflicts that are resolved too neatly.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Rebeck has created a play that feels more like a rough draft of a family drama than a finished work, with characters who remain stubbornly opaque and conflicts that are resolved too neatly.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Rebeck has created a play that feels more like a rough draft of a family drama than a finished work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the play as feeling like a 'rough draft' rather than a 'finished work' and criticizes fundamental elements like character development and plot resolution. This indicates a clear negative assessment despite being only an excerpt. | GPT-4o: The excerpt criticizes the play as unfinished and characterizes it as having unresolved conflicts, indicating a negative assessment. However, with only one excerpt, the confidence is low. | Gemini: The review excerpt indicates that the play feels unfinished and the characters are opaque, suggesting a negative assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers unambiguous criticism of the play's writing, describing it as an unfinished rough draft with opaque characters and contrived resolutions, indicating a fundamentally flawed production with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:22:18.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

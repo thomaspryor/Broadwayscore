@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "But it all comes back to Groff. Buoyed by Andrew Resnick and Michael Thurber’s kicky orchestrations, his renditions of Darin’s standards—the brassy, hard-edged “Mack the Knife,” with those insistent key changes, and the absolutely manic, horn-crazed “Once in a Lifetime”—are thrilling. The show is a ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his renditions of Darin's standards are thrilling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the lead's performance ('thrilling'), but text cuts off mid-sentence. Given the enthusiastic language and single-excerpt warning suggesting this reflects the overall positive verdict, scored in upper Positive range. | GPT-4o: The excerpt praises Groff's performance as 'thrilling' with 'kicky orchestrations,' suggesting a strong positive impression. However, with only one excerpt available, confidence is low. | Gemini: The excerpt focuses on the thrilling performances and orchestrations, indicating a positive experience. However, due to the truncated nature and single excerpt, confidence is low, but the enthusiasm suggests a score on the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:16:06.868Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

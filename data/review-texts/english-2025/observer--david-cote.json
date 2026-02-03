@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Knud Adams translates his impeccable production to a Broadway venue without losing any of the original intimacy or fine-grained naturalism. The director smartly brings his superlative designers from the Atlantic: Marsha Ginsberg with her modular, deracinated classroom rotating in black void; evocative sunlight and streetlight by Reza Behjat filtering through pale amber curtains; and Enver Chakartash's costumesWestern streetwear accented with jewel-toned scarves and accessories. Between this intensely focused and sensitive staging and his no-less powerful handling of Primary Trust, Adams must be on top of every young playwright's vision board. Whatever dialect he's speaking, it's welcome on the ear.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Adams translates his impeccable production to a Broadway venue without losing any of the original intimacy or fine-grained naturalism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction ('impeccable', 'superlative', 'intensely focused and sensitive') and design elements, with enthusiastic endorsement of the director's work. Single excerpt warning requires caution, but language is clearly positive without reservations. | GPT-4o: The excerpt provides high praise for the director's work and the production's design elements, using terms like 'impeccable' and 'intensely focused'. The lack of a full review text and single excerpt warning suggests using the upper end of the bucket. | Gemini: The review uses very positive language such as \"impeccable production\", \"smartly\", \"superlative designers\", \"intensely focused and sensitive staging\", and \"no-less powerful handling\". Given the single excerpt warning, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the director's 'impeccable' staging and 'superlative' design team, placing it in the upper Positive range despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:57:32.923Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

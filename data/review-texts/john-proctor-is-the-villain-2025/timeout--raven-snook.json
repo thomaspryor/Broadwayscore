@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "But although themes and incidents from The Crucible reverberate throughout this work, you don't need to be an expert on Miller's drama to appreciate this one. Belflower's first Broadway play is a galvanizing accomplishment all on its own. Remember her name.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Belflower's first Broadway play is a galvanizing accomplishment all on its own.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the play a 'galvanizing accomplishment' with directive to 'remember her name' indicates enthusiastic recommendation, but single excerpt limits confidence. | GPT-4o: The excerpt describes the play as a 'galvanizing accomplishment,' which suggests strong praise. The recommendation to 'remember her name' implies a standout success. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review excerpt is highly positive, calling the play a \"galvanizing accomplishment\" and recommending that the reader remember the playwright's name. This indicates a strong recommendation. | Kimi: The excerpt offers strong praise ('galvanizing accomplishment') and encouragement to discover this new playwright's work, indicating a solid recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:13:31.651Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

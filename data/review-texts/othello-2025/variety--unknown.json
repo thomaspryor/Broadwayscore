@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Clumsily staged by director Kenny Leon, this \"Othello\" seems to have little on its mind beyond a gritted-teeth determination to carry across the text of the play. \"Othello\" is \"Othello\"  one of the richest and most wrenching of Shakespeare's tragedies. It would take a wildly misbegotten production to spoil it entirely. But that hypothetical wildly misbegotten production might contain some genuinely big risks; this production, instead, simply falls flat.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production, instead, simply falls flat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the production as 'clumsily staged' with only 'gritted-teeth determination' and concludes it 'simply falls flat.' While noting the play itself is great, the assessment of this specific production is clearly negative. | GPT-4o: The review criticizes the staging as clumsy and lacking ambition, stating it 'falls flat.' This indicates a negative assessment without redeeming qualities, fitting a Negative bucket. | Gemini: The review states the production \"falls flat\" and is \"clumsily staged,\" indicating a negative assessment despite acknowledging the strength of the source material. | Kimi: The critic describes the staging as 'clumsy' and concludes the production 'simply falls flat,' indicating a clear negative assessment of this revival despite acknowledging the richness of Shakespeare's original text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:46:41.920Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

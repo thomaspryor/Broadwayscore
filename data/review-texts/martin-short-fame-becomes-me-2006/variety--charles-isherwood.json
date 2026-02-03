@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Short's engaging stage presence and comic timing help compensate for material that ranges from inspired to merely serviceable in this autobiographical musical revue.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Short's engaging stage presence and comic timing help compensate for material that ranges from inspired to merely serviceable in this autobiographical musical revue.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Short's engaging stage presence and comic timing help compensate for material that ranges from inspired to merely serviceable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows qualified praise - acknowledges Short's strong performance but notes material quality is inconsistent ('inspired to merely serviceable'). The word 'compensate' suggests weaknesses that need overcoming. Low confidence due to single curated quote. | GPT-4o: The excerpt suggests a mixed review, highlighting both strengths (Short's performance) and weaknesses (inconsistent material). The lack of full context and single excerpt warning necessitate a low confidence score. | Gemini: The review acknowledges Short's strengths but also points out that the material is inconsistent, ranging from \"inspired to merely serviceable.\" This suggests a mixed experience. | Kimi: The critic offers qualified praise, highlighting Short's engaging performance as the primary draw while noting the material itself is inconsistent and only 'merely serviceable.' This represents a recommendation based on star power rather than overall quality. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:24:54.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

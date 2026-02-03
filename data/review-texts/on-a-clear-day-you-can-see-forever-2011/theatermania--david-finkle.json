@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's book problems haven't been solved, but Harry Connick Jr. and Jessie Mueller give performances that make this revival worth seeing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show's book problems haven't been solved, but Harry Connick Jr. and Jessie Mueller give performances that make this revival worth seeing.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harry Connick Jr. and Jessie Mueller give performances that make this revival worth seeing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worth seeing') despite acknowledged flaws in the book. The performances are strong enough to overcome the material's problems. | GPT-4o: The review acknowledges unresolved issues with the show's book but recommends seeing it for the performances, indicating a positive but qualified recommendation. | Gemini: The review explicitly states the show is \"worth seeing\" due to the performances, despite acknowledging book problems. This indicates a positive but qualified recommendation. | Kimi: The critic explicitly recommends the revival ('worth seeing') despite acknowledging significant unresolved issues with the book, citing the strength of the lead performances as the primary reason to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:33:59.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

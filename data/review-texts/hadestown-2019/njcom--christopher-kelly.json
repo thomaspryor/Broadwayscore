@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Still, if this is your first visit to \"Hadestown,\" it's likely to be a satisfying one. Mitchell and director Rachel Chavkin (\"Natasha, Pierre and the Great Comet of 1812\") do an impressive job updating an oft-recounted myth; in this telling, Orpheus (Reeve Carney) falls in love with Eurydice (Eva No...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, if this is your first visit to \"Hadestown,\" it's likely to be a satisfying one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt suggests a qualified recommendation (\"satisfying\") with praise for the creative team's work (\"impressive job\"), but the conditional phrasing and single excerpt availability warrant lower confidence and score within positive range. | GPT-4o: The excerpt suggests a positive experience for first-time viewers, highlighting the impressive job by the creators. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review excerpt suggests a positive experience, particularly for first-time viewers, but the limited text and lack of a clear, enthusiastic recommendation lead to a score in the lower-middle of the positive range. | Kimi: The excerpt offers qualified praise, describing the production as \"satisfying\" and the director's work as \"impressive,\" though the caveat about \"first visit\" suggests some reservations for repeat viewers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:05:36.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

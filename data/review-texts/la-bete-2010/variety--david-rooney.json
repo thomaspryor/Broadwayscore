@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While Mark Rylance's bravura performance as the insufferable poetaster Valere provides moments of genuine hilarity, David Hirson's verbose comedy proves as much an endurance test for audiences as it is for the fictional theatrical troupe forced to accommodate the bombastic fool.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While Mark Rylance's bravura performance as the insufferable poetaster Valere provides moments of genuine hilarity, David Hirson's verbose comedy proves as much an endurance test for audiences as it is for the fictional theatrical troupe forced to accommodate the bombastic fool.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "proves as much an endurance test for audiences as it is for the fictional theatrical troupe",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Rylance's 'bravura performance' and acknowledges 'genuine hilarity,' but describes the play itself as 'verbose' and an 'endurance test for audiences' - indicating neither clear recommendation nor discouragement. | GPT-4o: The excerpt highlights a strong performance but criticizes the play as an 'endurance test,' suggesting a mixed impression. The single excerpt limits confidence in fully capturing the review's sentiment. | Gemini: The review praises Rylance's performance but also describes the play as an \"endurance test,\" indicating a mixed experience. The single excerpt and truncated nature lower confidence. | Kimi: The excerpt praises the lead performance but condemns the play as an 'endurance test,' indicating suffering for audiences. As a single curated quote, confidence is low, but the language suggests a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:18:17.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

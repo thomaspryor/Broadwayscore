@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here is far and away the most dynamic performance of the night, a riveting, turbo-charged interpretation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Gyllenhaal's performance with vivid, enthusiastic language ('riveting', 'turbo-charged', 'far and away the most dynamic'). However, this is only one excerpt focusing on a single performance, so confidence is low as the overall verdict may differ. | GPT-4o: The excerpt praises Gyllenhaal's performance as dynamic and riveting, suggesting a positive view of the production. However, with only one excerpt available, the overall sentiment of the review is uncertain, leading to a low confidence score. | Gemini: The excerpt focuses on Gyllenhaal's performance as Iago, calling it the most dynamic of the night and praising its interpretation. Given the single excerpt, I am placing it in the positive bucket with a high score. | Kimi: Single excerpt contains enthusiastic praise for Gyllenhaal's performance ('riveting', 'turbo-charged', 'most dynamic'), suggesting a positive recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:45:47.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

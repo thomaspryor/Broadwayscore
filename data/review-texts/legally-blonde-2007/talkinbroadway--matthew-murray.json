@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Legally Blonde is a show that succeeds in spite of itself, delivering genuine entertainment value even when its individual components don't always measure up to Broadway standards.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Legally Blonde is a show that succeeds in spite of itself, delivering genuine entertainment value even when its individual components don't always measure up to Broadway standards.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Legally Blonde is a show that succeeds in spite of itself, delivering genuine entertainment value even when its individual components don't always measure up to Broadway standards.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws ('don't always measure up to Broadway standards') but ultimately finds the show succeeds in delivering 'genuine entertainment value.' This is a qualified positive recommendation, placing it in the lower end of the Positive range. | GPT-4o: The excerpt indicates that the show is entertaining despite some shortcomings. The positive note on entertainment value suggests a recommendation, but the mention of not meeting Broadway standards tempers enthusiasm. Given the single excerpt warning, the score reflects a cautious, barely positive assessment. | Gemini: The review suggests the show is entertaining despite some shortcomings, indicating a positive but not rave recommendation. Confidence is low due to the single excerpt. | Kimi: The critic acknowledges the show has elements that fall short of Broadway standards but finds it ultimately succeeds and delivers genuine entertainment value, indicating a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:19:11.185Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

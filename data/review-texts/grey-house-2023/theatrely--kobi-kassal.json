@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Mantello allows a deliberate clash between his horror-y staging and Holloway’s penchant for knowing humor. The clash sometimes works. Max is initially unfazed by the children’s creepy behavior, even meeting their strangeness with gallows humor. (When Marlow bemoans the difficulty of killing her with...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The clash sometimes works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt describes a 'deliberate clash' that 'sometimes works' - neutral language suggesting mixed results. However, excerpt appears cut off mid-sentence and may not capture full verdict. | GPT-4o: The excerpt suggests a mixed reception, noting that the clash between staging and humor 'sometimes works'. The lack of a full review and single excerpt warning suggests caution in interpretation, leading to a low confidence score. | Gemini: The excerpt indicates a mixed reaction to the staging and humor, suggesting neither a strong recommendation nor a strong discouragement. The limited text makes it difficult to assess the overall verdict with high confidence. | Kimi: The excerpt offers qualified praise that the directorial clash between horror and humor 'sometimes works,' implying inconsistent success. As a single curated excerpt with truncated text, the overall verdict is ambiguous, but the tone suggests neither strong recommendation nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:04:37.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

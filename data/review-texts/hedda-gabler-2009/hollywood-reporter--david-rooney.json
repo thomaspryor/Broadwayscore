@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary-Louise Parker brings fierce intelligence and psychological complexity to Ibsen's manipulative heroine, making this revival crackle with dangerous energy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary-Louise Parker brings fierce intelligence and psychological complexity to Ibsen's manipulative heroine, making this revival crackle with dangerous energy.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary-Louise Parker brings fierce intelligence and psychological complexity to Ibsen's manipulative heroine, making this revival crackle with dangerous energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance with vivid language ('crackle with dangerous energy'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises Parker's performance and the overall energy of the revival, suggesting a strong positive impression. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt strongly praises Mary-Louise Parker's performance and the overall energy of the revival, suggesting a positive recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt offers strong praise for the lead performance and overall production energy ('crackle with dangerous energy'), warranting a score in the upper Positive range. However, with only one curated excerpt available, confidence remains low regarding the complete review's final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:06:46.397Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

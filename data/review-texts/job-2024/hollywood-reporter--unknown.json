@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a testament to the subtle brilliance of Kimberly Belflower's writing and Danya Tamor's direction that you can hardly feel the 105-minute, no-intermission runtime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises 'subtle brilliance' of writing/direction and notes excellent pacing. Since this sounds clearly positive and is likely cherry-picked, scoring upper end of Positive bucket, but low confidence due to limited text. | GPT-4o: The excerpt praises the writing and direction as 'subtle brilliance' and notes the seamless experience of the runtime, indicating a strong positive impression. Given the single excerpt warning, the upper end of the Positive range is used. | Gemini: The excerpt praises the writing and direction, indicating a positive experience. The phrase \"subtle brilliance\" suggests a strong positive sentiment. | Kimi: The excerpt offers unqualified praise for the writing ('subtle brilliance') and direction (pacing that makes runtime unnoticeable), indicating a strong recommendation. However, confidence is low as only a single curated excerpt is available, which may not represent the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:10:37.007Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What we get instead is a production that feels more like a high school staging of O'Neill than a Broadway revival worthy of the material's stature.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 40,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What we get instead is a production that feels more like a high school staging of O'Neill than a Broadway revival worthy of the material's stature.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we get instead is a production that feels more like a high school staging of O'Neill than a Broadway revival worthy of the material's stature.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic directly compares the production to high school theater and states it's unworthy of Broadway stature - clear negative verdict. Medium confidence due to single excerpt limitation. | GPT-4o: The excerpt compares the production unfavorably to a high school staging, suggesting it falls far short of Broadway standards. However, with only one excerpt, the confidence is low. | Gemini: The single excerpt compares the production unfavorably to a high school staging, indicating a negative assessment. Given the limited text, confidence is low. | Kimi: The critic delivers a harsh assessment comparing the production to amateur theater, finding it unworthy of the material's stature. Given this is a single curated excerpt, the score reflects a solid negative verdict while acknowledging the limited context available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:55:27.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 36,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

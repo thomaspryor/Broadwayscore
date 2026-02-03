@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Taymor's production is entirely sympathetic - to the characters and to the text. Though thrilling in its refusal to tamp down the show's sometimes anarchic spirit, it does not ignore the dangers of abandon. Sink's Shelby is beautifully positioned just at the spot where you can't tell the difference between impulse and illness. The other girls stratify at in-between altitudes, from Scott's firmly grounded Nell to Strazza's high-pitched Beth.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taymor's production is entirely sympathetic - to the characters and to the text.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows consistent praise for Taymor's direction and Sink's performance with descriptive approval ('beautifully positioned', 'thrilling'). However, with only one excerpt available, confidence is low as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the production's sympathetic approach and highlights specific performances, suggesting a positive view. However, the single excerpt and lack of a clear verdict lower confidence. | Gemini: The review excerpt praises the production and performances, indicating a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the limited text available. | Kimi: Despite limited excerpt availability, the text offers strong praise for Taymor's direction ('entirely sympathetic', 'thrilling') and Sink's performance ('beautifully positioned'), indicating clear enthusiasm for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:12:51.958Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

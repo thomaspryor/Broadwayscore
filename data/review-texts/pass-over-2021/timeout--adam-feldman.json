@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pass Over is a powerful and urgent work that transforms a simple premise into something profound and necessary. The production crackles with energy and purpose.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pass Over is a powerful and urgent work that transforms a simple premise into something profound and necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('powerful', 'urgent', 'profound', 'necessary') with energetic praise for the production. The critic's 80 rating confirms positive recommendation territory. | GPT-4o: The review praises the show as 'powerful and urgent' with 'energy and purpose', aligning with the original rating of 80, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"powerful,\" \"urgent,\" \"profound,\" and \"necessary,\" indicating a positive recommendation. The critic's rating of 80 supports this classification. | Kimi: The critic provides enthusiastic praise using words like 'powerful,' 'profound,' and 'necessary,' and explicitly rates the show 80/100, indicating a strong recommendation for this energetic production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:53:40.811Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Franco and Chris O'Dowd make for an oddly touching pair as George and Lennie in this solid revival of John Steinbeck's Depression-era tale.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Franco and Chris O'Dowd make for an oddly touching pair as George and Lennie in this solid revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Describes the revival as 'solid' and praises the lead performances as 'oddly touching,' indicating a positive assessment. However, confidence is low due to the very brief excerpt providing limited evaluative content. | GPT-4o: The review describes the production as 'solid' and praises the performances of the lead actors, indicating a positive recommendation with some reservations. | Gemini: The review calls the production a \"solid revival\" and praises the performances of the two leads, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers clear praise for the lead performances ('oddly touching') and labels the production a 'solid revival,' indicating a positive recommendation without exceptional enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:30:36.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

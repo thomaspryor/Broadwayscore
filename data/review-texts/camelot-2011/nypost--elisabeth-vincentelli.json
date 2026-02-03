@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1960 Lerner and Loewe musical is so lifeless, it makes you wonder if the show was ever any good to begin with.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 39,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1960 Lerner and Loewe musical is so lifeless, it makes you wonder if the show was ever any good to begin with.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the 1960 Lerner and Loewe musical is so lifeless, it makes you wonder if the show was ever any good to begin with.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt shows harsh criticism calling the revival 'lifeless' and questioning the source material's quality. However, confidence is low due to limited text - the full review context could modify this assessment. | GPT-4o: The excerpt is strongly negative, describing the revival as 'lifeless' and questioning the original show's quality. However, with only one excerpt, the confidence is low. | Gemini: The excerpt expresses a negative sentiment, describing the revival as \"lifeless\" and questioning the show's original quality. This suggests a negative review. | Kimi: The excerpt delivers a damning assessment of the production as 'lifeless' and questions the fundamental quality of the source material, indicating a strong negative verdict. As a single curated excerpt, the confidence is reduced, but the language clearly falls in the negative range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:49:54.068Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

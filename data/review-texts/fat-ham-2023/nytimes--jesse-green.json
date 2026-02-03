@@ -11,6 +11,11 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "Let's start with Camelot. A classic musical from 1960 that last saw a revival on Broadway in 1980, many were anticipating good things from the Lincoln Center's newest re-imagining, following director Bartlet Sherr's successes with The King and I and My Fair Lady. However it looks like the legend of King Arthur's court may have been too much.  led the charge with their less-than-positive review, asking:",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "tierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-03T21:00:09.999Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a summary or intro mentioning other outlets' reviews rather than Jesse Green's actual review content; openai: The text is a setup discussing expectations and previous productions, not an evaluative review of the current show.; gemini: This is not a complete review, it's just the opening of one that references another review.",
+  "promptVersion": "5.2.0"
 }

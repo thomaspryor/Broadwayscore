@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Law brings a welcome sense of urgency and psychological complexity to the role, making this a Hamlet worth seeing despite some uneven elements in the production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Law brings a welcome sense of urgency and psychological complexity to the role, making this a Hamlet worth seeing despite some uneven elements in the production.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Law brings a welcome sense of urgency and psychological complexity to the role, making this a Hamlet worth seeing despite some uneven elements in the production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worth seeing') but with significant caveats about 'uneven elements.' Single excerpt warning suggests caution - this qualified positive gets lower end of Positive range. | GPT-4o: The excerpt praises Law's performance and recommends seeing the show, but notes uneven elements, indicating a positive review with reservations. Given the single excerpt warning, the lower end of the Positive range is appropriate. | Gemini: The review explicitly states that the production is \"worth seeing\" despite some uneven elements, indicating a positive but not rave recommendation. Given that only one excerpt is available, I am scoring it cautiously. | Kimi: The critic explicitly recommends the production as 'worth seeing,' which places it in the Positive bucket, while the caveat about 'uneven elements' indicates qualified rather than enthusiastic praise. Given this is a single excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:06:18.812Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

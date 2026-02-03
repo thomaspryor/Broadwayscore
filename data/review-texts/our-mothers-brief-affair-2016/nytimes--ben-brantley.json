@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play feels less like a memory play than like a therapy session that has gone on too long, with diminishing returns for both patient and audience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play feels less like a memory play than like a therapy session that has gone on too long, with diminishing returns for both patient and audience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play feels less like a memory play than like a therapy session that has gone on too long, with diminishing returns for both patient and audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt shows clear negative assessment - comparing the play to an overlong therapy session with 'diminishing returns' for the audience is a direct criticism of the theatrical experience. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt suggests a negative view, likening the play to an overextended therapy session with diminishing returns, indicating a lack of engagement or satisfaction. | Gemini: The excerpt expresses a negative sentiment, suggesting the play is tedious and unrewarding. Given the single excerpt and negative tone, I placed it in the negative bucket. | Kimi: The critic uses the metaphor of an overlong therapy session to describe a tedious experience that fails to justify its length, explicitly stating the audience receives 'diminishing returns'—a clear indication not to recommend the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:47:05.168Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

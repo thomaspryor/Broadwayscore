@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "There's a moment in the play featuring a song by Lorde that elicited in me a dizzy gasp, then an eye-roll, then gave way to a moment of catharsis. In one gesture, it brilliantly tied up the play's themes, aesthetics and narratives in a genuinely thrilling way, while getting me to consider a long-beloved favorite in a new light. John Proctor Is the Villain is much like that: a heady rush of glee, shock and understanding that takes you by surprise, and leaves you happy you came.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Proctor Is the Villain is much like that: a heady rush of glee, shock and understanding that takes you by surprise, and leaves you happy you came.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong positive language ('brilliantly tied up', 'genuinely thrilling', 'heady rush of glee', 'leaves you happy you came') suggests enthusiastic recommendation. Low confidence due to limited text. | GPT-4o: The excerpt describes the play as a 'heady rush' that leaves the viewer 'happy you came', indicating strong enthusiasm and a must-see recommendation. The single excerpt warning suggests using the upper end of the bucket. | Gemini: The review excerpt is overwhelmingly positive, describing the play as a \"genuinely thrilling\" experience that leaves the reviewer \"happy\" they came. This warrants a score in the higher end of the positive range. | Kimi: The excerpt describes a visceral, positive theatrical experience with words like 'brilliantly' and 'genuinely thrilling,' concluding that the viewer is 'happy you came,' indicating a strong recommendation. However, as a single curated excerpt, confidence remains low regarding the full review's overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:10:57.883Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

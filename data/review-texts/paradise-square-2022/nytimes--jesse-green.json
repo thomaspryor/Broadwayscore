@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges positive elements (talented cast, good intentions) but identifies fundamental structural problems (unfocused themes, lack of development). Neither recommends nor discourages - classic mixed review. | GPT-4o: The review highlights a lack of coherent direction and underdeveloped themes, indicating a negative assessment despite acknowledging a talented cast. | Gemini: The review acknowledges talent and ambition but ultimately finds the musical unfocused and underdeveloped, suggesting a mixed or neutral stance. | Kimi: While acknowledging the cast and ambitions, the critic finds the show fundamentally incoherent and underdeveloped, delivering a clear negative verdict without any recommendation to see it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:51:37.665Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }
