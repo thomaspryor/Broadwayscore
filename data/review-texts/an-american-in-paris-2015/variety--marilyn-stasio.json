@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This adaptation of the beloved 1951 MGM musical is a feast for the eyes and a tonic for the soul, even if the story creaks a bit in its transition from screen to stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20251112162856",
   "archiveOrgUrl": "http://web.archive.org/web/20251112162856/https://variety.com/2015/legit/reviews/american-in-paris-review-broadway-1201471069/",
   "wordCount": 862,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This unorthodox transformation of a bright and cheerful All-American musical into an enchanting but more reflective and deeply moving experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistently glowing review praising direction, choreography, performances, and adaptation. Despite minor song choice quibbles, the critic finds the production 'ravishing' and 'triumphant' with strong praise throughout. | GPT-4o: The review is filled with superlatives and strong praise for the production, performances, and innovative adaptation. It describes the show as 'ravishing', 'triumphant', and 'deeply moving', indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the dancing, performances, and the show's transformation into a more reflective experience. The critic uses words like \"ravishing\" and \"beauty\" to describe the production. | Kimi: The critic offers unqualified praise for the choreography, performances, and adaptation, using superlatives like 'ravishing' and 'triumphant' with virtually no reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:46:19.692Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of Anything Goes is exactly what a Broadway revival should be: a glorious celebration of everything that made the original so special, enhanced rather than diminished by the passage of time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new production of Anything Goes is exactly what a Broadway revival should be: a glorious celebration of everything that made the original so special, enhanced rather than diminished by the passage of time.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production of Anything Goes is exactly what a Broadway revival should be: a glorious celebration of everything that made the original so special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlative language ('glorious celebration', 'exactly what a Broadway revival should be') and no reservations expressed. The enhancement language suggests this exceeds expectations. | GPT-4o: The review uses highly positive language, describing the production as a 'glorious celebration' and suggesting it enhances the original, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"glorious celebration\" and states that the revival enhances the original, indicating a rave review. | Kimi: Unqualified praise with superlatives ('glorious', 'exactly what...should be') and no reservations, though the brevity of the text limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:10:56.160Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

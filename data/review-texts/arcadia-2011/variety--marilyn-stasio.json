@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tom Stoppard's brilliant 1993 play about the nature of knowledge gets a handsome Broadway revival that honors both the wit and the complexity of this demanding work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,59 @@
     "Show title not found in text"
   ],
   "wordCount": 671,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Weaknesses lie with the book, music and lyrics, a kiss of death for most musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Review acknowledges spectacular physical production and audience appreciation but identifies fatal flaws in book, music, and lyrics. Neither recommends nor discourages, treating it as an unfinished work still in development. | Gemini: The review acknowledges spectacular physical production and impressive aerial sequences, but criticizes the book, music, and lyrics. The overall tone is mixed, neither strongly recommending nor discouraging. | Kimi: While acknowledging the impressive aerial sequences and visual spectacle, the critic delivers harsh judgments on the show's essential elements, calling the story 'sketchy and ill-formed' and the music 'an endless and repetitive soundtrack,' finding that the production values cannot overcome fatal creative flaws in the core material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:17:14.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

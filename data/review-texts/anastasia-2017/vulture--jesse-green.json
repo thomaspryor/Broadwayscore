@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical Anastasia, which opened Thursday at the Broadhurst Theatre, is a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 34,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical Anastasia, which opened Thursday at the Broadhurst Theatre, is a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 29,
+      "high": 39
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a show that seems determined to exhaust every possible iteration of its source material while somehow draining it of all its magic",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict criticizing the show for being exhausting and lacking magic, indicating the critic does not recommend it. | GPT-4o: The review is strongly negative, describing the show as exhausting and devoid of magic, indicating a clear recommendation against seeing it. | Gemini: The review explicitly states that the show drains the source material of its magic, indicating a negative assessment. | Kimi: The critic delivers a harsh indictment, accusing the production of exploiting every iteration of its source while actively removing its enchantment, which constitutes a clear pan. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:55:44.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

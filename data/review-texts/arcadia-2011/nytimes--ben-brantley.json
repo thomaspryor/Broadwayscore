@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Tom Stoppard's 1993 play about the nature of knowledge and the elusiveness of truth is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Tom Stoppard's 1993 play about the nature of knowledge and the elusiveness of truth is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production is as entertaining as it is enlightening, a rare combination that justifies the revival's move to Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for both entertainment value and intellectual merit, explicitly justifying the Broadway production. | GPT-4o: The review praises the production as both entertaining and enlightening, justifying its Broadway revival, indicating a strong recommendation. | Gemini: The review explicitly states that the production is \"entertaining\" and \"enlightening\", justifying its move to Broadway, which indicates a positive recommendation, though not a rave. | Kimi: The critic offers clear praise without reservations, describing the production as both entertaining and enlightening while explicitly validating its worthiness for a Broadway transfer.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:15:58.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

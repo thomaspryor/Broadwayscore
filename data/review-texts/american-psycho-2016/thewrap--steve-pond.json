@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is slick and stylish and bloody, with a terrific lead performance by Benjamin Walker, but it's also hollow at its core, which may be the point but doesn't make for a satisfying night at the theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is slick and stylish and bloody, with a terrific lead performance by Benjamin Walker, but it's also hollow at its core, which may be the point but doesn't make for a satisfying night at the theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's also hollow at its core, which may be the point but doesn't make for a satisfying night at the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: While praising the style and Walker's performance, the critic clearly states it doesn't make for 'a satisfying night at the theater' - a neutral-to-negative verdict that places this in mixed territory. | GPT-4o: The review acknowledges some positive aspects like the lead performance and style but ultimately criticizes the show as hollow and unsatisfying, leading to a negative verdict. | Gemini: The review praises the performance and style but ultimately finds the show unsatisfying and hollow, leading to a mixed assessment. | Kimi: While praising Benjamin Walker's terrific lead performance and the slick production values, the critic ultimately deems the show 'hollow' and explicitly states it 'doesn't make for a satisfying night at the theater,' constituting a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:27:09.496Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This vigorous stage adaptation of Green Day's 2004 concept album manages to turn what was essentially an extended temper tantrum into a surprisingly moving coming-of-age story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This vigorous stage adaptation of Green Day's 2004 concept album manages to turn what was essentially an extended temper tantrum into a surprisingly moving coming-of-age story.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to turn what was essentially an extended temper tantrum into a surprisingly moving coming-of-age story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict praising the adaptation's success in creating something 'surprisingly moving' from the source material. The word 'vigorous' and overall tone indicate a solid recommendation. | GPT-4o: The review describes the adaptation as 'vigorous' and 'surprisingly moving', indicating a positive recommendation despite initial reservations about the source material. | Gemini: The review describes the adaptation as \"surprisingly moving,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. | Kimi: The critic clearly recommends the show, praising it as 'vigorous' and 'surprisingly moving' while appreciating its successful transformation of the source material. Confidence is low due to the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:22:27.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

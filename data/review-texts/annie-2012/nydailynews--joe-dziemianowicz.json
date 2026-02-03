@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The sun may come out tomorrow for little Annie, but this revival could use more warmth today. Still, there's enough charm and energy to keep families entertained.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The sun may come out tomorrow for little Annie, but this revival could use more warmth today. Still, there's enough charm and energy to keep families entertained.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, there's enough charm and energy to keep families entertained.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic gives clear reservations ('could use more warmth') but acknowledges entertainment value for the target audience, landing squarely in mixed territory. | GPT-4o: The critic acknowledges charm and energy but notes a lack of warmth, aligning with the original rating of 60, indicating a mixed review. | Gemini: The review acknowledges a lack of warmth but notes enough charm and energy for entertainment, resulting in a mixed assessment. The original rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic's own 60/100 rating combined with the qualified assessment—that the revival 'could use more warmth' yet has 'enough charm and energy'—places this squarely in the Mixed bucket, suggesting competent but unexceptional entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:06:01.848Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

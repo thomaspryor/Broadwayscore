@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Christy Altomare brings both vocal power and emotional depth to the title role, while Derek Klena provides strong support as the romantic lead Dmitry.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 398,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Christy Altomare brings both vocal power and emotional depth to the title role, while Derek Klena provides strong support as the romantic lead Dmitry.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances suggests positive reception, but limited text prevents assessment of overall show verdict. Scored at lower end of Positive range due to single excerpt limitation. | GPT-4o: The excerpt praises the performances of the lead actors, indicating a positive view of their contributions. However, without more context, it's unclear if the overall production is recommended. The confidence is low due to the single excerpt limitation. | Gemini: The excerpt praises the performances of the leads, suggesting a positive experience, but without more context, it's difficult to gauge the overall strength of the recommendation. I'm scoring it as positive but with low confidence. | Kimi: Single excerpt offers clear praise for lead performances ('vocal power,' 'emotional depth,' 'strong support'), indicating a positive assessment, though limited scope warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:51:59.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

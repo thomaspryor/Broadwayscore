@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Leguizamo, Cedric the Entertainer, and Haley Joel Osment have been cast in roles that, quite simply, don't suit them, and David Mamet's potent 1975 drama about three small-time crooks planning a coin heist suffers considerably as a result.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Leguizamo, Cedric the Entertainer, and Haley Joel Osment have been cast in roles that, quite simply, don't suit them, and David Mamet's potent 1975 drama about three small-time crooks planning a coin heist suffers considerably as a result.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (39 words)"
+  "contentTierReason": "Short text (39 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "have been cast in roles that, quite simply, don't suit them",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic clearly states the production 'suffers considerably' due to fundamental casting problems, indicating a negative assessment despite the strength of Mamet's original material. | GPT-4o: The review criticizes the casting choices, stating they don't suit the roles, and indicates that the play suffers considerably because of this, suggesting a negative recommendation. | Gemini: The review explicitly states that the casting choices are poor and that the play suffers considerably as a result, indicating a negative assessment. | Kimi: The critic states that the three leads are miscast in roles that don't suit them, causing the production to 'suffer considerably,' which constitutes a clear negative verdict against this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:12:33.242Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

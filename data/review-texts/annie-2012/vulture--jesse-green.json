@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new Annie, which opened Sunday at the Palace Theatre, is a show that knows what it wants to be: a crowd-pleaser that doesn't apologize for its sentimentality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20250416012508",
   "archiveOrgUrl": "http://web.archive.org/web/20250416012508/https://www.vulture.com/2012/11/theater-review-annie.html",
   "wordCount": 1013,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The real measure of any Annie is the chemistry between its Annie and its Warbucks, and here, the Lapine reboot succeeds.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green praises the central performances, chemistry between leads, and acknowledges the show's enduring appeal, though he notes some staging issues and contrasts with previous productions. Overall positive assessment. | Gemini: While the review has some reservations about the staging and the Annie's portrayal, it ultimately concludes that the chemistry between Annie and Warbucks is successful, making it a positive review overall. | Kimi: The critic praises the cast performances (particularly Crawford, Warlow, and Finneran) and declares the production a success, though with minor quibbles about overly busy staging. The review is truncated at the end.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:08:01.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

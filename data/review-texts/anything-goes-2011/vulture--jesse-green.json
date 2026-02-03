@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new revival of Anything Goes is so good it makes you wonder why anyone ever bothered with other musicals. It's a nearly perfect entertainment machine, restored to its original艦-class splendor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250827070017",
   "archiveOrgUrl": "http://web.archive.org/web/20250827070017/https://www.vulture.com/2011/04/theater_review_just_about_ever.html",
   "wordCount": 928,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is, in other words, a fun-machine, and it's got precious few bugs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with terms like 'enormously encouraging,' 'fun-machine,' and 'precious few bugs.' Celebrates performances, direction, and the show's effectiveness despite minor structural critiques. | GPT-4o: The review is filled with praise for the performances, direction, and overall experience of the show. The critic highlights the timeless appeal and execution of the production, making it a must-see for musical theater lovers. | Gemini: The review is overwhelmingly positive, highlighting the talents of the cast, the quality of the songs, and the overall fun and engaging nature of the production. | Kimi: The review offers unqualified praise for the direction, choreography, and performances, calling the production 'enormously encouraging,' a 'perfect egg carton' for Porter's songs, and a 'privilege not to be missed.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:13:19.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

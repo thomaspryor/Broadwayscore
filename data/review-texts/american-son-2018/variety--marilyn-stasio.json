@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Kerry Washington gives a powerhouse performance as Kendra, a psychology professor whose biracial teenage son has been detained by police after a traffic stop.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (24 words)",
   "textWordCount": 931,
   "archivePath": "data/archives/reviews/american-son-2018/variety--marilyn-stasio_2026-02-03.html",
@@ -58,5 +58,10 @@
     "Show title not found in text"
   ],
   "wordCount": 931,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-03T13:34:14.756Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation menu or homepage content with repeated text blocks about various entertainment topics, not a theater review; openai: The text provided is a collection of unrelated headlines and snippets, not a coherent review of the target show.; gemini: This is a collection of article titles and snippets, not a review of a specific show.; kimi: The provided text is a jumble of unrelated Variety headlines and article snippets (Super Bowl ads, Grammy coverage, movie reviews, TV show listings) rather than a coherent Broadway review. While it contains brief fragments about theater productions, it lacks the structure of a single review and does not contain the content described in the aggregator context (Kerry Washington in the specified role).",
+  "promptVersion": "5.2.0"
 }

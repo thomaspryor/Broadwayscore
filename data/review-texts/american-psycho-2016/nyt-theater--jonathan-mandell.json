@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical version of American Psycho is slick and stylish, with a strong performance by Benjamin Walker as Patrick Bateman, but it feels emotionally hollow.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
     "Word count too low: 127 (min: 300)"
   ],
   "wordCount": 127,
-  "tierReason": "Short text (127 words)"
+  "tierReason": "Short text (127 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical version of American Psycho is slick and stylish, with a strong performance by Benjamin Walker as Patrick Bateman, but it feels emotionally hollow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt with balanced positive (slick, stylish, strong performance) and negative (emotionally hollow) elements suggests mixed reception. Low confidence due to limited text and potential cherry-picking. | GPT-4o: The excerpt praises the style and a lead performance but criticizes the show as 'emotionally hollow.' With only one excerpt, the overall sentiment is unclear, leading to a mixed classification with low confidence. | Gemini: The review acknowledges positive aspects (slick, stylish, strong performance) but ultimately finds the show emotionally hollow, indicating a mixed reaction. | Kimi: The excerpt praises the production's style and lead performance but offers a fundamental criticism of its emotional emptiness, suggesting a mixed assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:24:59.466Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

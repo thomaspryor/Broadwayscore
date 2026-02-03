@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tom Stoppard's brainy 1993 play about the nature of knowledge, the elusiveness of truth and the chaos theory of human attraction gets a sterling revival that makes even its most abstruse concepts seem accessible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20220703054418",
   "archiveOrgUrl": "http://web.archive.org/web/20220703054418/https://www.hollywoodreporter.com/movies/movie-reviews/arcadia-theater-review-168928/",
   "wordCount": 844,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is not without rewards, but for a play of this complexity to land both intellectually and emotionally, it requires a seamless ensemble of actors who really listen to one another.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Despite praising some performances (Crudup, Riley, Esparza) and Stoppard's writing, the critic finds the production 'stubbornly unaffecting,' 'wan,' and hampered by an 'uneven cast' that fails to serve the material's emotional core. | GPT-4o: The review highlights both strengths and weaknesses, praising some performances and the play's structure but criticizing the overall emotional impact and uneven cast. The truncated nature of the text suggests caution, but the mixed assessment is clear. | Gemini: The review praises some performances and the play's structure, but criticizes the overall effect as \"a little wan\" and the cast as \"uneven.\" The truncated text makes the final verdict less clear, but the overall tone is mixed. | Kimi: While praising Stoppard's script and acknowledging 'sharp work' from several actors, the critic finds David Leveaux's direction 'stubbornly unaffecting' with a 'deadening effect,' calling the overall production 'wan' and the cast 'uneven.' The truncation warning and aggregator excerpt describing a 'sterling revival' suggest the final verdict may be more positive than the visible text indicates.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:15:26.918Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

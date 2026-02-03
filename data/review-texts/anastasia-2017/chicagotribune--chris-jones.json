@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical 'Anastasia' is a handsome production with a fine leading lady in Christy Altomare, but it's also a show that feels oddly listless and lacking in the kind of soaring emotional moments that make for a truly memorable Broadway musical.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical 'Anastasia' is a handsome production with a fine leading lady in Christy Altomare, but it's also a show that feels oddly listless and lacking in the kind of soaring emotional moments that make for a truly memorable Broadway musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (42 words)"
+  "contentTierReason": "Short text (42 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a handsome production with a fine leading lady in Christy Altomare, but it's also a show that feels oddly listless",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic gives measured praise (handsome production, fine leading lady) but significant criticism (listless, lacking emotional moments). The original 40 rating confirms this falls in the lower Mixed range. | GPT-4o: The review acknowledges a 'fine leading lady' but criticizes the show as 'listless' and lacking memorable moments, aligning with the critic's original rating of 40. | Gemini: The review acknowledges positive aspects like the leading lady and handsome production, but ultimately finds the show lacking in emotional impact, leading to a negative classification. The critic's rating of 40 supports this. | Kimi: While the critic compliments the production values and lead performance, the overall verdict is that the show lacks emotional resonance and fails to be memorable. The critic's original rating of 40 confirms this is a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:49:58.638Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

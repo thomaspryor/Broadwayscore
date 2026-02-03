@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Laurence Fishburne, Sam Rockwell, and Darren Criss make David Mamet's profanity-laden 1975 play about small-time crooks planning a burglary feel both contemporary and classical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Laurence Fishburne, Sam Rockwell, and Darren Criss make David Mamet's profanity-laden 1975 play about small-time crooks planning a burglary feel both contemporary and classical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Laurence Fishburne, Sam Rockwell, and Darren Criss make David Mamet's profanity-laden 1975 play about small-time crooks planning a burglary feel both contemporary and classical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be a brief excerpt praising the lead performances for making the material feel 'contemporary and classical,' which suggests positive evaluation. However, confidence is low due to the very limited text available. | Gemini: The critic highlights the strong performances of the three leads and how they make the play feel both contemporary and classical, indicating a positive experience. | Kimi: The critic praises the lead performances and the production's successful balance of contemporary relevance and classical style, indicating a solid recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:19:18.973Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Anastasia is a sumptuous production that dazzles the eye and ear, even if the story sometimes feels as elusive as the grand duchess herself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Anastasia is a sumptuous production that dazzles the eye and ear, even if the story sometimes feels as elusive as the grand duchess herself.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anastasia is a sumptuous production that dazzles the eye and ear, even if the story sometimes feels as elusive as the grand duchess herself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the visual and musical elements ('sumptuous', 'dazzles') but criticizes the story as 'elusive', creating a balanced mixed assessment without a clear recommendation either way. | GPT-4o: The review praises the production's visual and auditory appeal, indicating a positive recommendation despite noting some story elusiveness. | Gemini: The review is positive overall, describing the production as \"sumptuous\" and \"dazzling,\" but notes that the story sometimes feels elusive, indicating a reservation. | Kimi: The critic offers strong praise for the production values ('sumptuous,' 'dazzles') with only a mild reservation about the story's clarity, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:53:06.242Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

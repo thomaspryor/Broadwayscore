@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new production of 'Anything Goes' is a sublime spectacle that captures the effervescent spirit of Cole Porter's maritime musical with style and panache.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new production of 'Anything Goes' is a sublime spectacle that captures the effervescent spirit of Cole Porter's maritime musical with style and panache.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new production of 'Anything Goes' is a sublime spectacle that captures the effervescent spirit of Cole Porter's maritime musical with style and panache.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong praise language ('sublime spectacle') with positive descriptors ('effervescent spirit', 'style and panache'), clearly recommending the production. | GPT-4o: The review uses highly positive language ('sublime spectacle', 'style and panache') indicating a strong recommendation without reservations. | Gemini: The review uses strong positive language like \"sublime spectacle\" and \"effervescent spirit,\" indicating a very enthusiastic recommendation. | Kimi: Unqualified rave using superlatives ('sublime', 'effervescent') with no reservations or criticism whatsoever.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:13:41.804Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

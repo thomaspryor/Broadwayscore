@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This effervescent musical adaptation of the beloved French film manages to capture both the whimsical spirit and emotional depth of the original, though it sometimes struggles under the weight of its own theatrical ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This effervescent musical adaptation of the beloved French film manages to capture both the whimsical spirit and emotional depth of the original, though it sometimes struggles under the weight of its own theatrical ambitions.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This effervescent musical adaptation manages to capture both the whimsical spirit and emotional depth of the original, though it sometimes struggles under the weight of its own theatrical ambitions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises the adaptation's ability to capture the source material's qualities ('effervescent', 'whimsical spirit and emotional depth') but expresses clear reservations about theatrical execution ('struggles under the weight of its own theatrical ambitions'). The balanced positive and negative elements without a clear recommendation places this in mixed territory. | GPT-4o: The review praises the musical for capturing the spirit and depth of the original film, indicating a positive recommendation. However, it notes some struggles, suggesting reservations. | Gemini: The review is generally positive, noting that the musical captures the spirit and depth of the original film, but it also mentions that the show \"sometimes struggles under the weight of its own theatrical ambitions,\" indicating a reservation. | Kimi: The critic praises the show as 'effervescent' and successful in capturing the source material's spirit and depth, though the reservation about struggling under theatrical ambitions prevents an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:09:02.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

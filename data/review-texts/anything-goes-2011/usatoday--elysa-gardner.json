@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Anything Goes is a buoyant, exuberant celebration that captures both the sophistication and silliness of Porter's era.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Anything Goes is a buoyant, exuberant celebration that captures both the sophistication and silliness of Porter's era.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of Anything Goes is a buoyant, exuberant celebration that captures both the sophistication and silliness of Porter's era.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language with 'buoyant, exuberant celebration' but brief excerpt limits ability to assess full critical perspective and any reservations. | GPT-4o: The review uses highly positive language ('buoyant', 'exuberant celebration') suggesting a strong recommendation without reservations. | Gemini: The review uses strong positive language like \"buoyant\" and \"exuberant celebration,\" indicating a highly positive recommendation. | Kimi: The critic employs enthusiastic, celebratory language ('buoyant,' 'exuberant') without any visible reservations, indicating a strong recommendation. However, confidence is reduced due to the excerpt's brevity (well under 150 words).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:11:25.342Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

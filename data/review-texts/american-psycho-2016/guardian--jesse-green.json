@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem isn't that American Psycho is offensive – it's that it's boring. The musical version of Bret Easton Ellis's novel feels like a very expensive student production.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 40,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem isn't that American Psycho is offensive – it's that it's boring. The musical version of Bret Easton Ellis's novel feels like a very expensive student production.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 40,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem isn't that American Psycho is offensive – it's that it's boring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the show boring and comparing it unfavorably to student theater. The original 40 rating aligns perfectly with the Negative bucket (35-54). | GPT-4o: The review describes the show as boring and likens it to a 'very expensive student production,' indicating a negative assessment. The original rating of 40 aligns with a negative bucket classification. | Gemini: The critic explicitly states the show is boring and compares it unfavorably to a student production, indicating a negative assessment. The original rating of 40 aligns with the Negative bucket. | Kimi: The critic's provided rating of 40/100 and dismissal of the show as boring and resembling an expensive student production indicate a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:24:08.394Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

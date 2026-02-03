@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This lavish new musical adaptation of the 1951 MGM movie manages to capture much of the original's romantic sweep and visual splendor, even if it can't quite match Gene Kelly's effortless charisma.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This lavish new musical adaptation of the 1951 MGM movie manages to capture much of the original's romantic sweep and visual splendor, even if it can't quite match Gene Kelly's effortless charisma.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This lavish new musical adaptation manages to capture much of the original's romantic sweep and visual splendor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises the production as 'lavish' and credits it with capturing the original's 'romantic sweep and visual splendor,' but the qualifier 'even if it can't quite match' Kelly's charisma indicates some reservation. The original 87 rating supports positive territory. | GPT-4o: The review praises the adaptation for capturing the original's essence, despite a minor reservation about matching Gene Kelly's charisma. The original rating of 87 supports a strong positive classification. | Gemini: The review is positive, highlighting the show's romantic sweep and visual splendor, but notes it doesn't quite match Gene Kelly's charisma. This suggests a recommendation with reservations. | Kimi: The critic praises the lavish production for successfully capturing the original film's romantic sweep and visual splendor, with only a minor reservation about matching the original star's charisma. The provided original rating of 87 confirms this falls in the Rave range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:39:16.764Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 84,
+    "geminiScore": 78,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

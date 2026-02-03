@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tom Stoppard's 'Arcadia' is arguably the finest play by a living dramatist, a work that manages to be simultaneously profound and entertaining, intellectually rigorous and emotionally satisfying.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tom Stoppard's 'Arcadia' is arguably the finest play by a living dramatist, a work that manages to be simultaneously profound and entertaining, intellectually rigorous and emotionally satisfying.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tom Stoppard's 'Arcadia' is arguably the finest play by a living dramatist, a work that manages to be simultaneously profound and entertaining, intellectually rigorous and emotionally satisfying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic calls it 'arguably the finest play by a living dramatist' with unqualified superlatives across multiple dimensions - profound, entertaining, rigorous, and satisfying. This represents the highest level of critical praise. | GPT-4o: The review uses superlative language ('finest play by a living dramatist') and praises the play as both 'profound and entertaining', indicating a strong recommendation. | Gemini: The review uses superlative language, calling it the 'finest play' and highlighting its profound and entertaining qualities, indicating a rave review. | Kimi: The excerpt contains unqualified superlatives, declaring the work 'arguably the finest play by a living dramatist' and praising it as profound, entertaining, and satisfying, indicating the highest possible recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:17:53.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

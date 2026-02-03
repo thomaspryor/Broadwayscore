@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The dancing is superb throughout, and Christopher Wheeldon's choreography, inspired by the original ballets that Gene Kelly created for the 1951 film, rises on occasion to the level of the sublime.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The dancing is superb throughout, and Christopher Wheeldon's choreography, inspired by the original ballets that Gene Kelly created for the 1951 film, rises on occasion to the level of the sublime.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The dancing is superb throughout, and Christopher Wheeldon's choreography rises on occasion to the level of the sublime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review offers strong praise for the choreography and dancing, indicating a positive recommendation. However, the limited text does not provide a comprehensive view of the entire production, leading to medium confidence. | Gemini: The review praises the dancing as superb and the choreography as sublime, indicating a strong positive assessment. | Kimi: The critic employs superlatives ('superb', 'sublime') to praise the dancing and choreography, indicating enthusiastic recommendation, though the brief excerpt limits confidence in the overall production verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:48:21.502Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

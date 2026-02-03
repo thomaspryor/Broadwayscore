@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical American Psycho, which opened on Broadway Thursday night, is a slick, bloody, and ultimately hollow entertainment that seems to mistake stylishness for substance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical American Psycho, which opened on Broadway Thursday night, is a slick, bloody, and ultimately hollow entertainment that seems to mistake stylishness for substance.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a slick, bloody, and ultimately hollow entertainment that seems to mistake stylishness for substance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the show 'hollow' and critiquing it for mistaking style for substance, indicating the critic does not recommend it. | GPT-4o: The review criticizes the show as 'hollow' and suggests it prioritizes style over substance, indicating a negative assessment. | Gemini: The review explicitly states the show is \"hollow\" and \"mistakes stylishness for substance,\" indicating a negative assessment. | Kimi: While acknowledging the production's stylish surface ('slick, bloody'), the critic delivers a clear negative verdict by calling it 'ultimately hollow' and criticizing its lack of substance, indicating it is not worth seeing despite its visual polish.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:30:55.919Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of David Mamet's 1975 play about small-time crooks planning a coin heist is a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of David Mamet's 1975 play about small-time crooks planning a coin heist is a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (37 words)"
+  "contentTierReason": "Short text (37 words)",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The critic calls it 'a master class' and praises the lead performances as 'brutal and tender,' indicating strong appreciation for the production's artistic merit and execution. | GPT-4o: The critic describes the production as a 'master class' with performances that are 'both brutal and tender', indicating high praise and strong recommendation. | Gemini: The review praises the performances as \"brutal and tender\" and calls the play a \"master class,\" indicating a positive assessment, though without the enthusiasm of a rave. | Kimi: The critic employs the superlative 'master class' and praises the ensemble's performances as 'both brutal and tender,' indicating strong enthusiasm, though the brevity of the excerpt necessitates lower confidence. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:15:11.077Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

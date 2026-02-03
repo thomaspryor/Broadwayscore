@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three-man cast, led by Laurence Fishburne, Sam Rockwell, and Darren Criss, brings David Mamet's profanity-laced drama to vivid life in Neil Pepe's smartly directed revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The three-man cast, led by Laurence Fishburne, Sam Rockwell, and Darren Criss, brings David Mamet's profanity-laced drama to vivid life in Neil Pepe's smartly directed revival.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings David Mamet's profanity-laced drama to vivid life in Neil Pepe's smartly directed revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt with clear positive language ('vivid life', 'smartly directed') but insufficient text to gauge full recommendation strength or any reservations. | GPT-4o: The review praises the cast and direction, indicating a strong production. The use of 'vivid life' and 'smartly directed' suggests a positive experience, though the brevity of the review limits confidence. | Gemini: The review praises the cast and direction, indicating a positive experience. The phrase \"brings...to vivid life\" suggests a strong performance. | Kimi: Clear praise for the cast and direction ('vivid life', 'smartly directed') indicates a solid recommendation, though the brief excerpt limits confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:16:13.497Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

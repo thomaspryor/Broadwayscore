@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Under Neil Pepe's direction, the production feels stagnant and lifeless, failing to capture the raw energy and desperation that makes Mamet's work so compelling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20230309155531",
   "archiveOrgUrl": "http://web.archive.org/web/20230309155531/https://variety.com/2022/legit/reviews/american-buffalo-review-broadway-david-mametsam-rockwell-laurence-fishburne-1235232931/",
   "wordCount": 896,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production, laden with reputation, demonstrates the way we stage the works of the unquestioned greats, without quite convincing us why Mamet is among their league.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the production disappointing overall, praising Rockwell and Fishburne's performances but criticizing the direction, Criss's performance, and the production's lack of vitality. The review concludes that the revival fails to make a case for Mamet's continued relevance. | GPT-4o: The review criticizes the production for lacking vitality and specificity, with performances that don't fully convince. Despite some praise for Rockwell and Fishburne, the overall tone is negative, questioning the relevance of the revival. | Gemini: The review praises Rockwell and Fishburne's performances but criticizes the direction, pacing, and overall impact of the production. It acknowledges some positive aspects but ultimately finds the production lacking vitality and curiosity, resulting in a mixed assessment. | Kimi: Despite praising Rockwell's compelling performance and Fishburne's gravity, the critic finds the production lacks vitality and specificity, with awkward staging and a conclusion that feels overdue, ultimately failing to make a case for Mamet's continued relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:18:55.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

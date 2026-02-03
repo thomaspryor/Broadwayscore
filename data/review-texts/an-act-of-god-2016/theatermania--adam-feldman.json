@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jim Parsons brings his trademark nervous energy to the role of the Almighty in David Javerbaum's comedy, though the material feels more suited to sketch comedy than a full Broadway production.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jim Parsons brings his trademark nervous energy to the role of the Almighty in David Javerbaum's comedy, though the material feels more suited to sketch comedy than a full Broadway production.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the material feels more suited to sketch comedy than a full Broadway production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: While praising Parsons' performance, the critic suggests the material isn't substantial enough for Broadway, indicating neither a clear recommendation nor complete dismissal. | GPT-4o: The review mentions Jim Parsons' performance positively but criticizes the material as being more appropriate for sketch comedy, suggesting a mixed assessment without a clear recommendation. | Gemini: The review acknowledges Parsons' performance but suggests the material is better suited for sketch comedy, indicating a mixed assessment of the overall production. | Kimi: The review offers qualified praise for Parsons' performance while criticizing the material as insufficient for a full Broadway production, resulting in an ambivalent assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:37:09.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -43,5 +43,11 @@
     "Show title not found in text"
   ],
   "wordCount": 525,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T13:37:24.065Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Ahmanson Theatre, not the current Broadway run.; kimi: This review covers the production at the Ahmanson Theatre in Los Angeles, not the Broadway production. The text explicitly mentions the 'Ahmanson' venue multiple times and refers to Jim Parsons having done the show on Broadway 'last year,' indicating this is a regional/L.A. production rather than the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

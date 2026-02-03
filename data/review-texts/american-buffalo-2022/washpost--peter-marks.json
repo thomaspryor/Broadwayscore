@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of David Mamet's 1975 drama about three small-time crooks plotting a coin heist is a master class in profanity and paranoia, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that crackle with desperate energy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of David Mamet's 1975 drama about three small-time crooks plotting a coin heist is a master class in profanity and paranoia, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that crackle with desperate energy.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (38 words)"
+  "contentTierReason": "Short text (38 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a master class in profanity and paranoia, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that crackle with desperate energy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Calls the production 'a master class' and praises performances that 'crackle with desperate energy' - clear positive evaluation with strong language, though brief excerpt limits full assessment. | GPT-4o: The review uses strong positive language ('master class', 'crackle with desperate energy') and highlights the performances, indicating a highly enthusiastic recommendation. | Gemini: The review describes the performances as \"crackle with desperate energy,\" indicating a positive assessment. The phrase \"master class\" also suggests a high level of quality, leading to a positive score. | Kimi: The critic employs superlative language ('master class') and praises the principal performances as crackling with 'desperate energy,' delivering an unqualified enthusiastic recommendation without caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:20:08.427Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

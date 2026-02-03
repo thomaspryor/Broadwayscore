@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a few memorable songs and some dazzling production values, American Psycho never finds a way to make its central character compelling or its story emotionally engaging.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite a few memorable songs and some dazzling production values, American Psycho never finds a way to make its central character compelling or its story emotionally engaging.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Psycho never finds a way to make its central character compelling or its story emotionally engaging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict focusing on fundamental failures of character and story engagement, despite acknowledging some positive production elements. | GPT-4o: The review acknowledges some positive elements like memorable songs and production values, but ultimately criticizes the show for failing to engage emotionally or make the central character compelling, leading to a negative verdict. | Gemini: The review acknowledges some positive aspects (memorable songs, production values) but ultimately concludes that the show fails to engage emotionally or make its central character compelling, indicating a negative overall assessment. | Kimi: While the critic acknowledges some positive technical elements (memorable songs, production values), the decisive verdict is that the show fails to deliver a compelling central character or emotionally engaging story, constituting a clear non-recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:25:17.219Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

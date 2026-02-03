@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three-man cast, led by Laurence Fishburne, Sam Rockwell and Darren Criss, brings depth and humanity to Mamet's profanity-laden characters in this Circle in the Square Theatre revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The three-man cast, led by Laurence Fishburne, Sam Rockwell and Darren Criss, brings depth and humanity to Mamet's profanity-laden characters in this Circle in the Square Theatre revival.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings depth and humanity to Mamet's profanity-laden characters",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be an excerpt praising the cast performances, but lacks sufficient evaluative content about the overall production to determine a clear recommendation strength. | Gemini: The review praises the cast's performance, indicating a positive experience, but it is brief and lacks further detail, suggesting a recommendation with reservations. | Kimi: The critic offers genuine praise for the cast's performances, noting they bring 'depth and humanity' to the roles, which constitutes a recommendation. However, the text appears to be a brief excerpt or truncated review, focusing only on the actors without assessing direction, writing, or overall production quality, warranting a conservative score within the Positive range and low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:18:05.342Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

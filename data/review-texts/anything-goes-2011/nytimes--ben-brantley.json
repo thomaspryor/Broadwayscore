@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of 'Anything Goes' is so good that it makes you want to tap-dance on the ceiling. Sutton Foster gives a performance of such blazing talent that she seems to shoot sparks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of 'Anything Goes' is so good that it makes you want to tap-dance on the ceiling. Sutton Foster gives a performance of such blazing talent that she seems to shoot sparks.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (33 words)"
+  "contentTierReason": "Short text (33 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of 'Anything Goes' is so good that it makes you want to tap-dance on the ceiling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with vivid superlatives ('so good that it makes you want to tap-dance on the ceiling', 'blazing talent', 'shoot sparks'). Clear rave language with no reservations. | GPT-4o: The review uses highly enthusiastic language, describing the production as exceptionally good and Sutton Foster's performance as 'blazing talent'. | Gemini: The review uses extremely positive language, such as \"so good that it makes you want to tap-dance on the ceiling\" and \"blazing talent,\" indicating a rave review. | Kimi: The critic employs exuberant imagery and superlatives to praise the production and Sutton Foster's performance without reservation, indicating a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:09:55.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three men bring distinct energies to their roles, but the production feels oddly muted for a play that should crackle with tension and profanity-laced desperation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The three men bring distinct energies to their roles, but the production feels oddly muted for a play that should crackle with tension and profanity-laced desperation.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production feels oddly muted for a play that should crackle with tension and profanity-laced desperation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges strong individual performances but criticizes the overall production for lacking the essential energy and tension the play requires. The 'oddly muted' description suggests significant disappointment with the execution. | GPT-4o: The review acknowledges distinct performances but criticizes the overall production for lacking expected tension, indicating a mixed reception. | Gemini: The review acknowledges positive aspects (distinct energies of the actors) but ultimately finds the production lacking in tension and desperation, suggesting a mixed or lukewarm experience. | Kimi: The critic praises the cast's distinct energies but criticizes the production as 'oddly muted' and failing to deliver the necessary tension, resulting in a balanced but disappointed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:13:17.557Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

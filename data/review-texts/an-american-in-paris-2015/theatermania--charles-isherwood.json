@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Christopher Wheeldon's new musical An American in Paris is a gorgeous piece of work that succeeds in translating the dreamy romanticism of the 1951 film into a theatrical idiom that feels fresh and vital.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Christopher Wheeldon's new musical An American in Paris is a gorgeous piece of work that succeeds in translating the dreamy romanticism of the 1951 film into a theatrical idiom that feels fresh and vital.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a gorgeous piece of work that succeeds in translating the dreamy romanticism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'gorgeous' and crediting it with successful adaptation that feels 'fresh and vital' indicates clear enthusiasm and recommendation. | GPT-4o: The review uses strong positive language ('gorgeous', 'fresh and vital') indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"gorgeous\" and \"fresh and vital\" to describe the musical, indicating a positive recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'gorgeous' and 'fresh and vital' with no reservations, indicating an enthusiastic recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:43:50.484Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

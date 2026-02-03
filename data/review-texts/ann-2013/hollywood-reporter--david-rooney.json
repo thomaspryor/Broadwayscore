@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While Carnelia brings fierce intelligence and unwavering commitment to her portrayal of Richards, the monodrama feels more like an earnest history lesson than compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While Carnelia brings fierce intelligence and unwavering commitment to her portrayal of Richards, the monodrama feels more like an earnest history lesson than compelling theater.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the monodrama feels more like an earnest history lesson than compelling theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the lead performance ('fierce intelligence and unwavering commitment'), the critic finds the show fundamentally flawed as theater, calling it more like a 'history lesson than compelling theater.' The performer praise doesn't redeem the overall negative assessment of the theatrical experience. | GPT-4o: The review acknowledges the lead's performance but criticizes the overall production as lacking in theatrical engagement, suggesting it is not recommended. | Gemini: The review praises the performance but ultimately finds the play lacking as compelling theater, suggesting it's more of a history lesson. This indicates a negative overall assessment. | Kimi: While acknowledging the lead performer's fierce commitment, the critic ultimately judges the show itself to be dry and theatrically inert, offering a clear thumbs-down on the overall experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:03:40.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

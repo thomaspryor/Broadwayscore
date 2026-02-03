@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "American Psycho is a bloody awful musical that fails to find the dark humor or social commentary that made the novel and film work.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "American Psycho is a bloody awful musical that fails to find the dark humor or social commentary that made the novel and film work.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Psycho is a bloody awful musical that fails to find the dark humor or social commentary that made the novel and film work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Unambiguous pan with harsh language ('bloody awful') and fundamental criticism that the musical fails at its core purpose compared to source material. | GPT-4o: The review uses strong negative language ('bloody awful') and criticizes the musical for failing to capture key elements of the source material, indicating a strong recommendation against seeing it. | Gemini: The review explicitly states that the musical is \"bloody awful,\" indicating a strong negative opinion and placing it firmly in the Pan category. | Kimi: The critic delivers a categorical rejection using devastating language ('bloody awful') and states the production completely fails at its core objectives, offering no redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:24:31.377Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }
