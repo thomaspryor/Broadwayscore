@@ -523,21 +523,35 @@
       }
     },
     "the-roommate": {
-      "designation": "Easy Winner",
+      "designation": "Fizzle",
       "capitalization": 4800000,
-      "capitalizationSource": "SEC filing / Reddit",
-      "weeklyRunningCost": null,
-      "recouped": true,
-      "recoupedDate": "2024-12",
-      "recoupedSource": "Unverified -- no trade press confirmation. Plausible given $4.8M cap and strong grosses but needs verification.",
-      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Jan 2025. Low capitalization ($4.8M) compared to other Broadway shows. Recoupment plausible but unverified by trade press — previous source was circular ('Inferred from Easy Winner designation').",
+      "capitalizationSource": "SEC filing / industry sources (comparable to All In at $4.8M per SEC Form D)",
+      "weeklyRunningCost": 450000,
+      "weeklyRunningCostRange": { "min": 400000, "max": 500000 },
+      "weeklyRunningCostSource": "Industry estimates: $400-500K/week for two-star play (LuPone/Farrow salaries + Tony-winning creative team). Comparable: Play That Goes Wrong <$300K, but star vehicle costs significantly more.",
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Not recouped. No trade press confirmation (Deadline, Variety, Playbill, Broadway Journal all silent). Other 2024-25 plays that recouped (Oh, Mary!, Romeo + Juliet) were explicitly reported.",
+      "estimatedRecoupmentPct": [5, 65],
+      "estimatedRecoupmentSource": "Low end: ~5% from operating profit alone ($6.97M gross over 15 weeks, ~$465K/week avg vs ~$450K/week nut). High end: ~65% if NY State tax credit (up to $3M) is received.",
+      "estimatedRecoupmentDate": "2026-02-03",
+      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). $4.8M cap, but weekly grosses (~$465K avg) barely covered estimated $400-500K weekly nut. Total all-time gross $6.97M over 113 performances. Operating profit was negligible (0-5% of cap). Eligible for NY State tax credit (up to $3M), which could push investor recovery to 60-70% — but payout is slow and not confirmed. No SVOG (post-pandemic). Producer: Chris Harper. Playwright royalties (Jen Silverman) carved out as operating expense.",
+      "sources": [
+        { "type": "manual", "url": "https://broadwayscorecard.com", "date": "2026-02-03", "excerpt": "Detailed financial analysis: did not recoup. Weekly grosses barely covered nut. Eligible for NY State tax credit up to $3M." }
+      ],
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "deepResearch": {
         "verifiedFields": [
-          "capitalization"
+          "capitalization",
+          "recouped",
+          "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: Recoupment is UNCONFIRMED. No official trade press announcement. $4.8M cap confirmed. Weekly cost not publicly reported."
+        "verifiedBy": "deep-research",
+        "notes": "Feb 2026: Recoupment corrected to false (was incorrectly true). No trade press confirmed recoupment. Weekly grosses (~$465K) barely covered $400-500K nut. Designation changed from Easy Winner to Fizzle. Previous recouped:true was based on circular reasoning."
       }
     },
     "our-town": {
@@ -1032,24 +1046,29 @@
       "designation": "Miracle",
       "productionType": "original",
       "capitalization": 10000000,
-      "capitalizationSource": "Playbill / Judy Craymer interviews (original 2001 production)",
+      "capitalizationSource": "Playbill / Judy Craymer interviews (original 2001 production). Universal Music contributed ~50% of the $10M investment.",
       "weeklyRunningCost": 550000,
-      "weeklyRunningCostSource": "GPT DR Batch 3: ~$550K weekly operating cost (2001 dollars). Higher than $400K previous estimate due to large ensemble cast + live orchestra.",
+      "weeklyRunningCostSource": "Multiple sources confirm $500-600K range (2001 dollars). GPT DR Batch 3 estimated ~$550K. 2005 WhatsOnStage column cited ~$600K for comparable large musical.",
       "recouped": true,
       "recoupedDate": "2002-05",
       "recoupedWeeks": 28,
-      "recoupedSource": "Producer confirmation (Judy Craymer / Littlestar Services)",
-      "notes": "Original production ran 14 years / 5,773 performances. $10M cap confirmed. Recouped late May 2002 (~27.5 weeks/7 months from Oct 18, 2001 opening — faster than previously reported 'June'). Weekly nut ~$550K. Benny Andersson and Björn Ulvaeus (ABBA) served as both songwriters AND lead producers — unusual dual role that maximized their financial participation. $7B+ grossed across all global productions (40+ companies worldwide). Judy Craymer conceived and produced. Ran 14 years in NYC. Phyllida Lloyd directed original. One of the fastest returns on investment in Broadway history.",
+      "recoupedSource": "Playbill (late May 2002): 'recouped its entire $10 million Broadway investment' in 'less than 28 weeks'",
+      "notes": "Original production ran 14 years / 5,773 performances (closed Sept 12, 2015). $10M cap confirmed — Universal Music (ABBA's record label) contributed ~half. Recouped late May 2002 (~27.5 weeks from Oct 18, 2001 opening). Weekly nut ~$550K ($500-600K range). All three ABBA members invested: Ulvaeus and Andersson as songwriters AND lead producers (unusual dual role), Lyngstad as investor. Littlestar Services (Craymer/Ulvaeus/Andersson) paid £5.7M in fees to principals in one year including production income + music royalties, plus £900K dividend (Guardian, Jan 2024). $7B+ grossed across 40+ global productions. Judy Craymer conceived and produced. Phyllida Lloyd directed original. One of the fastest returns on investment in Broadway history.",
       "costMethodology": "deep-research",
+      "sources": [
+        { "type": "trade", "url": "https://playbill.com", "date": "2002-05-29", "excerpt": "Recouped entire $10M investment in less than 28 weeks" },
+        { "type": "manual", "url": "https://broadwayscorecard.com", "date": "2026-02-03", "excerpt": "Detailed financial analysis: Universal Music contributed ~50% of $10M. All 3 ABBA members were investors. Littlestar paid £5.7M fees + £900K dividend." }
+      ],
       "deepResearch": {
         "verifiedFields": [
           "weeklyRunningCost",
           "recoupedDate",
-          "recoupedWeeks"
+          "recoupedWeeks",
+          "capitalization"
         ],
         "verifiedDate": "2026-02-03",
         "verifiedBy": "deep-research",
-        "notes": "GPT DR Batch 3: Weekly nut ~$550K (corrected from $400K). Recouped late May 2002 (27.5 weeks, not June). Benny/Björn were both songwriters AND lead producers."
+        "notes": "GPT DR Batch 3 + Feb 2026 analysis: Weekly nut ~$550K ($500-600K range confirmed). Recouped late May 2002 (27.5 weeks). Universal Music funded ~50% of cap. All 3 ABBA members invested (Ulvaeus, Andersson, Lyngstad). Benny/Björn were both songwriters AND lead producers."
       }
     },
     "queen-of-versailles": {
