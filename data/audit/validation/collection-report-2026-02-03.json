@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-02-03T02:18:24.137Z",
+  "runDate": "2026-02-03T02:42:14.728Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
@@ -11,34 +11,34 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 98,
-    "failed": 26,
+    "processed": 108,
+    "failed": 38,
     "skipped": 0,
-    "successRate": "79.0%"
+    "successRate": "74.0%"
   },
   "tierBreakdown": {
     "playwright": 18,
     "browserbase": 6,
     "scrapingbee": 11,
-    "brightdata": 8,
-    "archive": 59
+    "brightdata": 16,
+    "archive": 61
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 18,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 1,
-    "tier2Attempts": 24,
-    "tier2Success": 9,
-    "tier3Attempts": 15,
-    "tier3Success": 13,
-    "tier4Attempts": 86,
-    "tier4Success": 55,
-    "totalFailed": 13,
-    "scrapingBeeCreditsUsed": 123,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 16.4,
-    "urlDiscoveryAttempts": 3,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
+    "tier1_5Attempts": 16,
+    "tier1_5Success": 0,
+    "tier2Attempts": 17,
+    "tier2Success": 2,
+    "tier3Attempts": 16,
+    "tier3Success": 14,
+    "tier4Attempts": 21,
+    "tier4Success": 8,
+    "totalFailed": 12,
+    "scrapingBeeCreditsUsed": 91,
+    "browserbaseSessionsUsed": 16,
+    "browserbaseMinutesUsed": 18.6,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -140,7 +140,17 @@
     "suffs-2024/the-times--nancy-durrant.json",
     "the-cottage-2023/amny--unknown.json",
     "the-outsiders-2024/culturesauce--thom-geier.json",
-    "wicked-2003/washpost--peter-marks.json"
+    "wicked-2003/washpost--peter-marks.json",
+    "doubt-2024/wsj--charles-isherwood.json",
+    "gutenberg-2023/theatermania--jesse-green.json",
+    "mary-jane-2024/theatermania--jesse-green.json",
+    "our-town-2024/theatermania--jesse-green.json",
+    "six-2021/theatermania--jesse-green.json",
+    "the-roommate-2024/theatermania--jesse-green.json",
+    "the-shark-is-broken-2023/theatermania--jesse-green.json",
+    "uncle-vanya-2024/theatermania--jesse-green.json",
+    "wicked-2003/ew--alice-king.json",
+    "book-of-mormon-2011/ny-1--roma-torre.json"
   ],
   "failed": [
     "patriots-2024/deadline--greg-evans.json",
@@ -168,6 +178,18 @@
     "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
     "wicked-2003/ew--alice-king.json",
     "book-of-mormon-2011/ny-1--roma-torre.json",
+    "purlie-victorious-2023/washpost--peter-marks.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "the-notebook-2024/hollywood-reporter--david-rooney.json",
+    "two-strangers-bway-2025/nytimes--laura-collins-hughes.json",
+    "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "bug-2026/wsj--charles-isherwood.json",
+    "cabaret-2024/wsj--charles-isherwood.json",
+    "death-becomes-her-2024/wsj--charles-isherwood.json",
+    "i-need-that-2023/timeout--will-gleason.json",
+    "liberation-2025/wsj--charles-isherwood.json",
+    "patriots-2024/deadline--greg-evans.json",
+    "queen-versailles-2025/theatre-reviews-limited--david-roberts.json",
     "purlie-victorious-2023/washpost--peter-marks.json"
   ],
   "tierDetails": {
@@ -220,7 +242,15 @@
       "moulin-rouge-2019/wsj--terry-teachout.json",
       "oedipus-2025/wsj--charles-isherwood.json",
       "oh-mary-2024/theatermania--adam-feldman.json",
-      "prayer-for-the-french-republic-2024/theatermania--jesse-green.json"
+      "prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
+      "doubt-2024/wsj--charles-isherwood.json",
+      "gutenberg-2023/theatermania--jesse-green.json",
+      "mary-jane-2024/theatermania--jesse-green.json",
+      "our-town-2024/theatermania--jesse-green.json",
+      "six-2021/theatermania--jesse-green.json",
+      "the-roommate-2024/theatermania--jesse-green.json",
+      "the-shark-is-broken-2023/theatermania--jesse-green.json",
+      "uncle-vanya-2024/theatermania--jesse-green.json"
     ],
     "archive": [
       "patriots-2024/broadwaynews--brittani-samuel.json",
@@ -281,7 +311,9 @@
       "harry-potter-2021/the-times--ann-treneman.json",
       "maybe-happy-ending-2024/washpost--naveen-kumar.json",
       "moulin-rouge-2019/telegraph--diane-snyder.json",
-      "the-cottage-2023/amny--unknown.json"
+      "the-cottage-2023/amny--unknown.json",
+      "wicked-2003/ew--alice-king.json",
+      "book-of-mormon-2011/ny-1--roma-torre.json"
     ]
   },
   "failuresByOutlet": {
@@ -291,20 +323,6 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "Entertainment Weekly": {
-      "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NY1": {
-      "count": 1,
-      "domain": "ny1.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
