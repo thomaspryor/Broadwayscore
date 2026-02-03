@@ -292,16 +292,17 @@
       "recoupedDate": "2024-11",
       "recoupedWeeks": 19,
       "recoupedSource": "Broadway News / Deadline (Nov 25, 2024)",
-      "notes": "First show of 2024-2025 season to recoup. Transferred from sold-out Off-Broadway run. Set Lyceum box office records. Weekly cost ~$300K. First show of 2024-25 season to recoup (Nov 25, 2024). Broke Lyceum house gross record 10 times, most recently $1.226M/week.",
-      "costMethodology": "industry-estimate",
+      "notes": "First show of 2024-2025 season to recoup. Transferred from sold-out Off-Broadway run. Weekly nut ~$300K (one of lowest on Broadway). Profit margin ~75%+ of gross. Broke Lyceum's 121-year box office record 9+ times, highest $1.354M/week. Total gross ~$91.8M on $4.525M investment. Cole Escola as writer/performer earned significant royalties + salary. U.S. tour planned 2026. Reddit: 'hard to see how it isn't one of the most profitable shows on Broadway post-pandemic.'",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
+          "capitalization",
           "weeklyRunningCost",
           "recoupedDate"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$300K weekly. Recouped Nov 25, 2024. Broke Lyceum record 10 times. First 2024-25 season recoup."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 2: $300K nut confirmed. $91.8M total gross. 75%+ profit margin. Lyceum record 9+ times. Tour planned 2026."
       }
     },
     "hells-kitchen": {
@@ -1113,45 +1114,51 @@
     "othello-2025": {
       "designation": "Easy Winner",
       "capitalization": 9000000,
-      "capitalizationSource": "GPT Deep Research",
-      "weeklyRunningCost": null,
+      "capitalizationSource": "SEC filing / NPR (~$8.5M cited). Range $7-9M.",
+      "weeklyRunningCost": 800000,
+      "weeklyRunningCostSource": "GPT DR Batch 2: ~$800K+ inferred. 'Insiders joked 80% of cost goes to the stars.' Higher than Hamilton's $600K due to A-list talent.",
+      "costMethodology": "deep-research",
       "recouped": true,
       "recoupedDate": "2025-05",
-      "recoupedWeeks": 10,
-      "recoupedSource": "Playbill / Washington Post",
-      "notes": "Denzel Washington & Jake Gyllenhaal. $9M capitalization. Recouped in ~10 weeks (by May 1, 2025). Grosses routinely hit $2.8M/week. Premium tickets nearing $900. Highest-grossing play revival in world history.",
+      "recoupedWeeks": 9,
+      "recoupedSource": "Variety / Playbill (May 1, 2025, announced alongside Tony nominations)",
+      "notes": "Denzel Washington & Jake Gyllenhaal. $9M cap. Recouped in 9 weeks (May 1, 2025). Shattered weekly Broadway play record with $2.82M gross (topping Harry Potter). Premium tickets reached $921. Highest-grossing play revival in world history. Expected ~$2M NY tax credit. 15-week limited run closed day of Tony Awards. Tony snub but producers announced recoupment as rejoinder. Washington likely had gross percentage deal.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
+          "weeklyRunningCost",
           "recouped",
           "recoupedDate",
           "recoupedWeeks"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $9M cap. Recouped in ~10 weeks (May 1, 2025). Denzel/Gyllenhaal. $2.8M/week, premium tickets ~$900."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 2: $9M (SEC/NPR). 9 weeks (corrected from 10). $800K+ nut. $2.82M record week. $2M tax credit. Premium seats $921."
       }
     },
     "glengarry-glen-ross-2025": {
       "designation": "Easy Winner",
       "capitalization": 7500000,
-      "capitalizationSource": "GPT Deep Research",
-      "weeklyRunningCost": null,
+      "capitalizationSource": "SEC filing / Variety",
+      "weeklyRunningCost": 925000,
+      "weeklyRunningCostSource": "GPT DR Batch 2: ~$900-950K inferred from star-heavy cast + large theater. Early weeks roughly broke even at ~$944K net vs ~$950K nut.",
+      "costMethodology": "deep-research",
       "recouped": true,
       "recoupedDate": "2025-05",
       "recoupedWeeks": 9,
-      "recoupedSource": "Playbill / Washington Post",
-      "notes": "Kieran Culkin, Bob Odenkirk, Bill Burr revival. $7.5M capitalization. Recouped in 9 weeks (by May 12, 2025). Weekly grosses peaked at $2.4M. Limited 16-week run.",
+      "recoupedSource": "Variety / Playbill (May 2025)",
+      "notes": "Kieran Culkin, Bob Odenkirk, Bill Burr revival (all Broadway debuts). $7.5M cap (SEC confirmed). Recouped in 9 weeks (May 12, 2025). Broke Palace Theatre box-office record ($2.4M gross). Weekly nut ~$925K — early weeks roughly broke even, then $1M+ weeks drove quick recoupment. Expected ~$1.9M NY state tax credit (25% of costs). Run extended twice. All-male cast throughout.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
+          "weeklyRunningCost",
           "recouped",
           "recoupedDate",
           "recoupedWeeks"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $7.5M cap. Recouped in 9 weeks (May 12, 2025). Culkin/Odenkirk/Burr. Peaked at $2.4M/week."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 2: $7.5M (SEC/Variety). Weekly nut ~$925K. $1.9M tax credit expected. Broke Palace record. 9-week recoup."
       }
     },
     "waiting-for-godot-2025": {
@@ -1246,17 +1253,18 @@
       "recouped": true,
       "recoupedDate": "2024-06",
       "recoupedSource": "Deadline / Hollywood Reporter / Playbill (Jun 10, 2024)",
-      "notes": "Jeremy Strong and Michael Imperioli starred in Amy Herzog's new adaptation of the Ibsen classic. $5.5M capitalization recouped during the run at Circle in the Square Theatre. Broke Circle in the Square box office record. Strong won Tony for Best Actor in a Play.",
-      "costMethodology": "industry-estimate",
+      "notes": "Jeremy Strong and Michael Imperioli in Amy Herzog's Ibsen adaptation. $5.5M cap recouped during run at Circle in the Square (840 seats). Broke CITS weekly gross record 16 times during run. Final week record: $1,266,338 (prev record $917K by Hugh Jackman in The River). Joined Broadway's $1M Club for weekly grosses — almost unheard of for a non-musical. Strong won Tony for Best Actor. Digital lottery + cancellation line ensured 100%+ capacity some weeks. Eligible for ~$1.3M tax credit.",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
+          "capitalization",
           "weeklyRunningCost",
           "recouped",
           "recoupedDate"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$400-500K weekly. Recouped June 2024. Jeremy Strong/Imperioli. Broke Circle in the Square records."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 2: $450K nut confirmed. Broke CITS record 16 times (not just once). Final week $1,266,338. $1M Club for plays."
       }
     },
     "romeo-juliet-2024": {
@@ -1267,19 +1275,20 @@
       "recouped": true,
       "recoupedDate": "2025-02",
       "recoupedSource": "Deadline / Playbill / People (Feb 17-18, 2025)",
-      "notes": "Kit Connor and Rachel Zegler starred in Sam Gold's production at Circle in the Square Theatre. $7M capitalization fully recouped during extended, sold-out run. Total gross $21.8M. Highest gross of run was $1.48M in final week. Reported youngest average audience in Broadway history.",
+      "weeklyRunningCostSource": "GPT DR Batch 2: ~$600-700K inferred. Breakeven ~$960K gross, exceeded virtually every week after opening.",
+      "notes": "Kit Connor and Rachel Zegler in Sam Gold's immersive production at Circle in the Square (794 seats). $7M cap recouped during 20-week run — 'rare industry feat' for Shakespeare. Final week $1.48M. Highest-grossing limited engagement in CITS history. 14% of buyers age 18-24 (youngest Broadway audience demographics ever). Jack Antonoff provided music. Sonya Tayeh choreography. Run extended twice. ATP $150-180 via dynamic pricing. SRO tickets sold for additional revenue. Eligible for up to $1.75M tax credit.",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
+          "weeklyRunningCost",
           "recouped",
-          "recoupedDate",
-          "weeklyRunningCost"
+          "recoupedDate"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $7M cap. Recouped Feb 2025. Weekly cost ~$600-700K. Total gross $21.8M. Record-young audiences."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 2: $650K nut confirmed. Breakeven ~$960K gross. 14% age 18-24 buyers. Highest-grossing CITS limited engagement."
       },
-      "costMethodology": "industry-estimate"
+      "costMethodology": "deep-research"
     },
     "good-night-and-good-luck-2025": {
       "designation": "Easy Winner",
