@@ -13,7 +13,7 @@
   "dtliThumb": "Down",
   "llmScore": {
     "score": 44,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 39,
       "high": 49
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Despite praising individual performances and musical elements, Feldman delivers a clear negative verdict, calling the book 'arguably worse than ever' and saying the show 'goes down in forfeit' with plot problems that 'defy comprehension.' | GPT-4o: The review highlights significant issues with the new book, confusing plot, and poor dialogue, despite some strong performances and staging. The overall tone suggests that the production is not worth seeing due to these major flaws. | Gemini: The review highlights both strengths (songs, staging, performances) and weaknesses (book, dialogue, plot). The critic acknowledges the good elements but ultimately finds the show flawed, leading to a 'Mixed' classification.",
+    "keyPhrases": [
+      {
+        "quote": "Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite praising individual performances. Critic systematically dismantles the book, direction, and overall production while acknowledging the cast's talents cannot save the show. | GPT-4o: The review acknowledges some positive elements like performances and songs but ultimately criticizes the storytelling and book heavily, leading to a negative overall verdict. | Gemini: Despite praising the cast and some musical numbers, the review ultimately concludes that the show fails due to a poor book and confusing plot, leading to an overall negative assessment. | Kimi: While the critic praises the talented cast (Michele, Tveit, Christopher) and memorable songs, the final verdict is that the new book is 'arguably worse than ever,' with 'corny' dialogue and a confusing plot that wastes the production's assets. The phrase 'goes down in forfeit' signals a clear recommendation against.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,9 +42,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:24:53.085Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:27:16.742Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
@@ -47,17 +53,19 @@
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 45,
-    "geminiScore": 62,
+    "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "dtliExcerpt": "The production at Broadway’s Imperial Theatre, directed by Michael Mayer, has plenty of good moves. Memorable and tuneful songs, including some bona fide bangers? Check! Slickly staged musical numbers? Check! Talented actor-singers Lea Michele, Aaron Tveit and Nicholas Christopher in the lead roles? Check, check, check!—but no checkmate. Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
   "sources": [

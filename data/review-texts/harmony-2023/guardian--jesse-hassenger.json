@@ -10,26 +10,32 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 60,
+    "score": 54,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 49,
+      "high": 59
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Despite acknowledging some pleasures and good production design, the critic consistently criticizes the show's confused structure, maudlin tone, overworked grandiosity, and fundamental failure to make its subject compelling, concluding it's an 'overworked tizzy.' | GPT-4o: The review acknowledges some positive aspects, such as the production design and moments of quiet heartbreak, but overall criticizes the show for being overworked and maudlin. The tone suggests a mixed reception with some redeeming qualities. | Gemini: The review points out flaws in the show's book and pacing, but also acknowledges some enjoyable aspects like the production design and the Harmonists' vocal performance. It doesn't strongly recommend or discourage seeing the show.",
+    "keyPhrases": [
+      {
+        "quote": "Much of the show has all the signs of a would-be magnum opus allowed, over the course of so many years, to spin itself into a overworked tizzy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges some pleasures (production design, ensemble sound) but finds the show fundamentally flawed - maudlin, overworked, with intrusive framing and awkward grandiosity. The overall assessment is clearly negative despite isolated bright spots. | GPT-4o: The review highlights significant flaws in the production, such as its lack of compelling storytelling and overworked nature, despite acknowledging some positive aspects like the production design and ensemble performance. | Gemini: The review acknowledges some positive aspects like production design and vocal performance, but ultimately finds the show overworked and frustratingly opaque. This indicates a mixed reaction, leaning slightly negative. | Kimi: While praising the ensemble performances and production design, the critic finds the book frustratingly opaque and the tone maudlin, concluding the show feels overworked after its long development. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:32.079Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:54:47.781Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 52,
+    "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 58,
+    "openaiScore": 45,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
     "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "dateUnknown": true,
   "dateSource": "historical-review",

@@ -94,5 +94,11 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-02T18:02:47.479Z",
   "wordCount": 1065,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T07:23:35.805Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the production of Hamilton at the Public Theater, not the current Broadway run.; kimi: This review covers the Off-Broadway premiere at the Public Theater, not the current Broadway production.",
+  "promptVersion": "5.2.0"
 }

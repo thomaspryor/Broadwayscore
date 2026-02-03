@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 95,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 90,
       "high": 100
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic places Hamilton among great American musicals and suggests it could be the nation's greatest, with language indicating it's exceptionally rare quality that may not be matched for a decade. | GPT-4o: The excerpt is overwhelmingly positive, placing 'Hamilton' among the greatest American musicals and suggesting it could be the greatest. This strong language indicates a rave review. | Gemini: The review excerpt contains extremely high praise, suggesting the show is a 'great American musical' and potentially the 'nation's greatest musical', indicating a 'Rave' classification.",
+    "keyPhrases": [
+      {
+        "quote": "Considered as an American musical dealing directly with Americana an argument could eventually be made for 'Hamilton' as the nation's greatest musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlatives calling it potentially 'the nation's greatest musical' and suggesting no comparable work will emerge for a decade. This is extreme praise warranting the highest rave scores. | GPT-4o: The excerpt uses superlative language, placing 'Hamilton' among the greatest American musicals and suggesting it may be the greatest ever. This indicates a strong, enthusiastic recommendation. | Gemini: The review uses superlatives and strongly suggests that Hamilton is one of the greatest American musicals, indicating a rave review. The excerpt expresses high praise and admiration for the show's quality and impact. | Kimi: While limited to a single excerpt, the provided quote offers unambiguous superlative praise ('nation's greatest musical'), warranting the upper range of the Positive bucket per scoring guidelines for curated excerpts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:03:55.725Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:34:14.600Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 95,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
+    "claudeScore": 97,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 84,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "contentTier": "excerpt",
   "wordCount": 0

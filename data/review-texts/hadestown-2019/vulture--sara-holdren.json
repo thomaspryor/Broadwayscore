@@ -6,13 +6,13 @@
   "bwwExcerpt": "Hadestown has arrived on Broadway. Like so many of its mythic antecedents, it's the product of much metamorphosis, and its current manifestation feels lush, vigorous, and formally exciting, not to mention, in certain moments, witchily prescient.",
   "source": "bww-roundup",
   "showScoreExcerpt": "“’Hadestown’ has arrived...And its current manifestation feels lush, vigorous, and formally exciting, not to mention witchily prescient...As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, ‘Hadestown’ is cause for celebration...Mitchell’s lyrics are image-rich and clever, her tunes exhilarating...Page and Gray are the twin sensations of the show.”",
-  "assignedScore": 79,
+  "assignedScore": 82,
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -22,8 +22,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite acknowledging character imbalances and some reservations about the leads, the critic clearly recommends the show as a 'cause for celebration' and praises its songwriting, performances, and vision as a 'tour de force.' | GPT-4o: The review is overwhelmingly positive, praising the show as a 'tour de force' and 'cause for celebration,' with strong commendations for its songwriting, performances, and visionary production. The few reservations mentioned do not detract from the critic's enthusiastic recommendation. | Gemini: The review praises the songwriting, performances, and collaboration, but notes some imbalance in character development and narrative pathos, leading to a positive but not rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "As an intricate and gorgeous feat of songwriting, as a vehicle for dynamite performances, as a visionary long-term collaboration and a courageous experiment with form, Hadestown is cause for celebration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls the show 'cause for celebration' and praises it as 'lush, vigorous, and formally exciting' with 'dynamite performances.' While noting some character imbalances and that certain moments left her 'under-roused,' the overall verdict is clearly positive with strong enthusiasm for the songwriting, performances, and vision. | GPT-4o: The review is filled with praise for the production's music, performances, and innovative storytelling. Despite minor reservations about character balance, the overall tone is highly enthusiastic and recommends the show as a 'tour de force'. | Gemini: The review is overwhelmingly positive, praising the songwriting, performances, and overall vision of the production. Despite some minor reservations about character development, the critic clearly recommends seeing the show. | Kimi: Despite noting weaknesses in the central love story, the critic celebrates the show as a 'tour de force' of songwriting and performance, praising its formal innovation and the magnificent performances by Gray and Page.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -32,28 +38,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:32.287Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:09:10.910Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 79,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 1500,

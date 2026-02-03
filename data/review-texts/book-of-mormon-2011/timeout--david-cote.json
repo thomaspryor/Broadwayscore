@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\"Brimming with cheerful obscenity, sharp satire and catchy tunes, The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-book-of-mormon",
   "originalScore": 100,
-  "assignedScore": 97,
+  "assignedScore": 96,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 97,
-    "confidence": "high",
+    "score": 96,
+    "confidence": "medium",
     "range": {
-      "low": 92,
-      "high": 102
+      "low": 91,
+      "high": 101
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives a perfect 100 rating and uses superlative language like 'most exuberantly entertaining Broadway musical in years' and 'sick mystic revelation', indicating an enthusiastic must-see recommendation. | GPT-4o: The critic's original rating of 100 and the description of the show as 'the most exuberantly entertaining Broadway musical in years' indicate a strong, enthusiastic recommendation. | Gemini: The review uses extremely positive language like \"cheerful obscenity\", \"sharp satire\", \"catchy tunes\", and \"most exuberantly entertaining Broadway musical in years\", clearly indicating a rave review. The original rating of 100 further supports this classification.",
+    "keyPhrases": [
+      {
+        "quote": "The Book of Mormon is a sick mystic revelation, the most exuberantly entertaining Broadway musical in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic's own 100 rating combined with superlative language ('most exuberantly entertaining...in years', 'sick mystic revelation') indicates an unqualified rave recommendation. | GPT-4o: The review uses superlatives like 'most exuberantly entertaining' and 'sick mystic revelation', indicating a highly enthusiastic recommendation. The original rating of 100 supports a high score within the Rave bucket. | Gemini: The review excerpt contains extremely positive language such as \"most exuberantly entertaining Broadway musical in years,\" indicating a rave review. | Kimi: The critic offers unqualified superlatives ('most exuberantly entertaining Broadway musical in years') and enthusiastic praise for the show's satire and music, supported by the 100-point original rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:47:51.697Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:23:15.164Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.0.0"
+    "previousScore": 97,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 95,
-    "openaiScore": 100,
-    "geminiScore": 95,
+    "openaiScore": 98,
+    "geminiScore": 92,
+    "kimiScore": 98,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "dtliExcerpt": "The Book of Mormon is easily the best new American musical in years, a ravishing entertainment that's both hilarious and surprisingly sweet.",
   "sources": [

@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive with superlative language like 'haunting and beautiful,' 'boldly distinctive,' 'heaven sent,' and calls it both a 'marker in the maturation of American musical' and 'testament to timeless power of storytelling.' The critic praises every aspect from performances to direction to design. | GPT-4o: The review is overwhelmingly positive, praising the production's distinctiveness, emotional resonance, and refined execution. The critic highlights the performances, direction, set design, and overall storytelling as exceptional, culminating in a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, lyrics, performances, direction, and design. The final line seals the recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "HADESTOWN is boldly distinctive, emotionally resonant and uniquely refined.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is overwhelmingly positive with superlative language throughout. The critic calls it 'haunting and beautiful,' 'boldly distinctive,' 'emotionally resonant,' and ends with 'heaven sent.' Multiple elements receive high praise including performances, direction, choreography, and design. The enthusiastic tone and lack of meaningful reservations place this firmly in rave territory. | Gemini: The review is overwhelmingly positive, using strong language like \"heaven sent\" and praising many aspects of the production. The critic clearly recommends seeing the show. | Kimi: Unreserved praise for every production element including performances, direction, and design; calls the show 'boldly distinctive' and 'heaven sent' with no caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,22 +44,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:00:19.590Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:56:47.720Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 93,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 95,
+    "claudeScore": 92,
+    "openaiScore": null,
     "geminiScore": 82,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

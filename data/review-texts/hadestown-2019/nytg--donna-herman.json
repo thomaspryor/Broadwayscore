@@ -57,8 +57,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic opens enthusiastically and praises many elements including Mitchell's score, performances by Page and Gray, costumes, and choreography. However, she notes one significant flaw - the lack of chemistry between the leads, calling it 'the only off note in the production.' | GPT-4o: Despite the truncated text, the review is overwhelmingly positive, highlighting the production's entertainment value, strong performances, and impressive staging. The critic's original 4-star rating and the enthusiastic tone suggest a strong recommendation. | Gemini: The review starts very positively, highlighting the enjoyable experience. However, the truncated nature and a mention of a weak romantic connection suggest some reservations, leading to a 'Positive' classification with a score of 79.",
+    "keyPhrases": [
+      {
+        "quote": "Going to hell has never been as much fun as seeing a performance of Anaïs Mitchell's musical Hadestown.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The 4-star rating and enthusiastic opening ('never been as much fun') indicate a positive recommendation. The critic praises the score, performances (especially Page/Gray), staging, and choreography, with only one noted flaw (lack of chemistry between leads). Text is truncated so final verdict may be missing, warranting medium confidence. | GPT-4o: The review is generally positive, highlighting the fun and accessibility of the production, despite noting a lack of chemistry between the leads. The original 4-star rating supports a positive classification, but the truncated text and noted reservations about the lead performances suggest a score on the lower end of the Positive range. | Gemini: The review is mostly positive, highlighting the music and performances, but notes a lack of chemistry between Orpheus and Eurydice. The 4-star rating supports a positive classification, though the truncated text lowers confidence. | Kimi: The critic awards 4 stars and delivers enthusiastic praise for the performances (particularly Page, Gray, and De Shields), Mitchell's score, and the visual design, calling the experience 'sumptuous' and 'hypnotic.' While one reservation about lead chemistry prevents a perfect score, the overall verdict is highly favorable. Confidence is reduced due to the truncated text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -67,28 +73,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:00:07.503Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:50:16.248Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
+    "claudeScore": 79,
+    "openaiScore": 79,
     "geminiScore": 79,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 85,

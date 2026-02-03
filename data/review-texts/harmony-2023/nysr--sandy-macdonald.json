@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "4/5 stars",
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and final verdict calling it 'ultimately a rewarding experience' clearly indicates a positive recommendation, despite acknowledged flaws in the book and some structural issues. | GPT-4o: The review acknowledges some flaws and challenges in the production but ultimately presents it as a rewarding and timely experience. The original 4/5 star rating supports a strong positive classification. | Gemini: The critic gives the show 4 out of 5 stars and ultimately calls it a \"rewarding experience\" despite some flaws in the script and a \"Holocaust Lite\" treatment of the subject matter. This indicates a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "Harmony is ultimately a rewarding experience, a feisty/funny survivor which remains tragically timely.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: 4/5 stars with clear positive verdict despite acknowledging flaws. Praises performances, direction, and overall impact while noting script weaknesses that cause 'minimal damage.' | GPT-4o: The review acknowledges some flaws and a rocky history but ultimately presents the show as a rewarding experience. The original 4/5 stars rating aligns with a strong positive recommendation with some reservations. | Gemini: The review is mostly positive, highlighting the performances, direction, and choreography. While noting some flaws in the book and lyrics, the critic concludes that it is a \"rewarding experience\" and gives it 4/5 stars.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,22 +44,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:46.812Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:59:38.520Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 79,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": null,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

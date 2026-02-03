@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green acknowledges significant improvements from the previous version and praises many elements (gorgeous production, great score, terrific band), but notes it's 'not yet ideally warm' and can get 'tiring,' indicating a qualified recommendation. | GPT-4o: The review praises the transformation and improvements made to 'Hadestown', highlighting its sumptuous and hypnotic qualities, while acknowledging some remaining abstract elements that could be tiring. Overall, it recommends the show with some reservations. | Gemini: The review is generally positive, highlighting the show's transformation and improvements. However, it also notes that the show is still somewhat abstract and can get tiring, indicating reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The gods, or more likely Ms. Chavkin and her creative team, have saved 'Hadestown' on its way uptown.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Green clearly recommends the show, calling it 'sumptuous, hypnotic' and praising the transformation from its previous incarnation. However, he notes it remains 'somewhat abstract' and 'can get tiring,' suggesting it would be 'better shorter.' The positive verdict outweighs the reservations. | GPT-4o: The review praises the transformation and improvements made to 'Hadestown' since its earlier version, highlighting its visual and musical strengths. However, it notes some abstract qualities and suggests it could be shorter, indicating a strong but slightly qualified recommendation. | Gemini: The review is generally positive, noting significant improvements from a previous production. While not a rave, it indicates the show is \"warmer\" and the story is clearer, though still somewhat abstract. | Kimi: The critic praises the radical transformation from the 2016 Off-Broadway version, calling the production sumptuous, gorgeous, and warm, with terrific performances and music. However, significant reservations about the show's length and abstract narrative layering prevent it from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:00:11.757Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:55:02.414Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "dtli",

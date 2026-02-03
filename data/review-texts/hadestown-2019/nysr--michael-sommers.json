@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and concluding recommendation establish this as positive, though the critic identifies significant flaws like lack of emotional punch and weak character development that prevent it from being a stronger endorsement. | GPT-4o: The review praises the staging, design, and music of Hadestown, while noting some flaws in emotional resonance and character motivation. The original 4/5 star rating and the overall positive tone suggest a solid recommendation with some reservations. | Gemini: The review is mostly positive, highlighting the staging, design, and score. However, it also notes flaws in the storyline and character motivation, particularly the weak link of Reeve Carney. The critic's 4/5 star rating and final statement position it as a recommended show with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "While Hadestown scarcely shapes up into an essential Broadway destination, it is among the better attractions in what so far has been a lackluster season for musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for staging, design, and score, but notes significant flaws in emotional resonance and character development. Clear positive recommendation despite reservations. | GPT-4o: The review awards 4/5 stars, indicating a positive recommendation despite some reservations. The critic praises the staging, design, and score but notes a lack of emotional resonance and character motivation. Overall, it is recommended as one of the better shows in a lackluster season. | Gemini: 4/5 stars. The review praises the staging, design, and score but notes flaws in emotional resonance and character motivation, ultimately recommending it as one of the better musicals of the season. | Kimi: The critic awards 4/5 stars and praises the staging, design, and score as sterling, but criticizes the lead performance and notes the show lacks emotional resonance and vital character motivation, keeping it from essential status while still recommending it as among the season's better attractions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:00:03.663Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:49:37.673Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 78,
-    "geminiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
     "playwright-scraped",

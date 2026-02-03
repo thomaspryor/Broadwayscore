@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite being a single excerpt, the language is clearly enthusiastic with 'never been finer' and 'deeply resonant', indicating strong praise rather than mild positivity. | GPT-4o: The excerpt uses strong positive language, describing the show as 'deeply resonant' and 'defiantly hopeful', suggesting a highly enthusiastic recommendation. | Gemini: The quote is overwhelmingly positive, using phrases like 'never been finer,' 'deeply resonant,' and 'defiantly hopeful,' indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "'Hadestown' delivers a deeply resonant and defiantly hopeful experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('never been finer', 'deeply resonant', 'defiantly hopeful') suggests enthusiastic praise, but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt provides strong praise with phrases like 'deeply resonant' and 'defiantly hopeful', indicating a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"deeply resonant\" and \"defiantly hopeful,\" indicating a positive recommendation. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt contains strong superlative praise ('never been finer', 'deeply resonant'), indicating a clear recommendation for the Broadway production, though the single-excerpt format necessitates lower confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:59:17.602Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:39:43.955Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 77,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 88,
+    "openaiScore": 90,
     "geminiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/frontmezzjunkies--steven-ross_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:34:36.456Z",

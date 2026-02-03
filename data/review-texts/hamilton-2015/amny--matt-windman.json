@@ -33,8 +33,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite the truncated text, the explicit statement 'The musical is a triumph' combined with the context of predicting 'smash hit status' clearly indicates a rave review. | GPT-4o: The review describes 'Hamilton' as a 'triumph' and suggests it is poised for 'smash hit status' and 'awards attention', indicating an enthusiastic, must-see recommendation. | Gemini: The review excerpt uses the word \"triumph,\" which indicates a very positive assessment and strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The musical is a triumph.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic explicitly calls Hamilton 'a triumph' and describes it as a shoo-in for smash hit status. However, confidence is medium due to very limited excerpt text. | GPT-4o: The excerpt describes 'Hamilton' as a 'triumph', indicating a highly positive assessment. The use of 'cultural phenomenon' and 'shoo-in for smash hit status' further supports a rave review, despite the limited text. | Gemini: The review excerpt uses the word \"triumph\" to describe the musical, indicating a rave review. It also mentions its cultural phenomenon status and potential for awards. | Kimi: The excerpt describes the Broadway production as a 'triumph' and 'cultural phenomenon,' predicting smash hit status and major awards, indicating an unqualified enthusiastic recommendation despite the limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:48.332Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:13:21.634Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
+    "previousScore": 91,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 95,
     "geminiScore": 90,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
     "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 85,

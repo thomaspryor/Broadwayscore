@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the performances as 'superb,' calls the production 'elegant and focused,' and describes it as 'ambitious, artful and musically sophisticated.' While noting it's not 'galvanizing,' the overall assessment is positive with the phrase 'effectively sober' serving as measured praise. | GPT-4o: The review highlights the production's ambitious and artful nature, with praise for the performances and musical sophistication. While it notes the demanding nature of the material and some lack of galvanizing impact, the overall tone suggests a positive recommendation, albeit with some reservations. | Gemini: Despite the truncated text, the review praises the performances, direction, and musical sophistication. The closing line, while not a rave, is still positive, suggesting it's worth seeing despite not being 'galvanizing.'",
+    "keyPhrases": [
+      {
+        "quote": "If Days and Wine and Roses isn't exactly galvanizing—it's too classy for that—it is effectively sober.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the sophisticated score, superb performances by O'Hara and James, and elegant production, but notes it's 'not exactly galvanizing' and 'demanding.' The overall tone is appreciative of the artistry while acknowledging it's not thrilling entertainment. | GPT-4o: The review praises the musical's ambition, artfulness, and musical sophistication, highlighting the performances of O'Hara and James as superb. However, it notes that the show is not 'exactly galvanizing' and is 'effectively sober,' suggesting a more reserved recommendation. | Gemini: The review is mostly positive, praising the performances, music, and direction. However, the truncated text and the phrase \"isn’t exactly galvanizing\" suggest some reservations, leading to a score in the positive range but not too high. | Kimi: The critic offers strong praise for the 'superb' performances by O'Hara and James and calls the production 'ambitious, artful and musically sophisticated,' but the reservation that it 'isn't exactly galvanizing' keeps it from rave territory. The aggregators indicate an 'Up' verdict, confirming a solid positive recommendation despite the text truncation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,28 +51,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:24.381Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:29:35.110Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 64,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 77,
     "openaiScore": 78,
-    "geminiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,

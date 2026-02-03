@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": 60,
-  "assignedScore": 47,
+  "assignedScore": 55,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "The show is an efficient crowd-pleaser that hits its marks without transcending them. It's a solid, if unsurprising, adaptation that will satisfy fans of the film trilogy.",
@@ -20,22 +20,28 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 47,
+    "score": 55,
     "confidence": "medium",
     "range": {
-      "low": 42,
-      "high": 52
+      "low": 50,
+      "high": 60
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic uses harsh language throughout ('car crash in slow motion', 'heap', 'general ineptness') and explicitly states the show should be 'sent back', clearly not recommending it despite some individual performance praise. | GPT-4o: The review criticizes the show for its ineptness and lack of understanding of the material, indicating a negative assessment. The critic's original rating of 60 suggests a negative leaning, but the truncated text warning and some positive notes about performances warrant a score at the higher end of the Negative range. | Gemini: The review is largely negative, criticizing the show's lack of understanding of its source material and the ineffectiveness of its musical numbers. The concluding line, \"If this is the future, please send it back,\" clearly indicates a negative recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Attending Back to the Future: The Musical is a bit like watching a car crash in slow motion, except for the part about not being able to look away.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic's 60/100 rating aligns with a negative review that systematically dismantles the show as an 'inept' cash grab with missed opportunities, though acknowledging some individual performances. | GPT-4o: The review is predominantly negative, highlighting the show's lack of understanding of its own material, ineptness, and missed opportunities in musical numbers. The critic's original rating of 60 also places it in the Negative bucket. | Gemini: The review is largely negative, highlighting the show's ineptness and missed opportunities, but acknowledges some redeeming qualities in certain performances. The critic's rating of 60 aligns with a mixed assessment. | Kimi: The critic's own 60/100 rating (equivalent to 3/5 stars) places this firmly in the Mixed range. While the review acknowledges fine performances from Liana Hunt and Hugh Coles, and praises the effective underscoring, it heavily criticizes the original songs, book, and overall adaptation as inept and confusing, comparing the experience to watching a car crash. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:23:05.181Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:22:39.574Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
+    "previousScore": 47,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 54,
-    "geminiScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 12,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,

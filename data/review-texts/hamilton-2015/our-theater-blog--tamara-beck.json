@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses superlative language throughout ('radically new', 'amazing', 'brilliant', 'genius') and explicitly calls it 'the most entertaining history lesson ever devised' while acknowledging previous reviews may have 'understated how great' the musical is. | GPT-4o: The review is overwhelmingly positive, describing the show as 'no less than genius' and 'the most entertaining history lesson ever devised,' indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using terms like \"brilliant,\" \"amazing,\" and \"genius.\" The critic explicitly states it's the \"most entertaining history lesson ever devised,\" indicating a very strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is no less than genius!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified superlative praise throughout - calls it 'genius', 'brilliant', 'amazing', 'most entertaining history lesson ever devised'. No reservations expressed, only enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"genius!\" and \"most entertaining history lesson ever devised.\" The critic clearly raves about the show's direction, cast, and choreography. | Kimi: The critic offers unqualified praise, explicitly calling the show 'genius' and referencing a 'Perfect 10' rating while celebrating the direction, choreography, cast, and score without reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,22 +45,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:03:38.433Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:30:27.029Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 95,
+    "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 95,
+    "claudeScore": 95,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

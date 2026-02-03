@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 93,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic uses overwhelmingly enthusiastic language throughout, calling it 'extraordinary,' 'supremely executed,' 'staggeringly beautiful,' and predicting it will run for 'many years to come' with multiple superlatives and detailed praise for all elements. | GPT-4o: The review is filled with superlatives and praises the show as an extraordinary, entertaining, and moving production that commands attention. The critic highlights the show's innovative approach and its potential for long-term success on Broadway, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"extraordinary\" and praising its music, performances, and direction. The critic clearly believes it is a must-see.",
+    "keyPhrases": [
+      {
+        "quote": "This is, for sure, an extraordinary new show that commands attention",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives like 'extraordinary,' 'supremely executed,' 'audaciously ambitious,' and 'most entertaining civics lesson in Broadway history.' The critic calls performances 'extraordinary' and predicts the show will run 'for many years to come.' | GPT-4o: The review is filled with superlatives and unqualified praise, describing the show as 'extraordinary,' 'thrilling,' and 'a must-see,' with no significant reservations. | Gemini: The review is overwhelmingly positive, using terms like \"supremely executed,\" \"extraordinary,\" and \"sensational.\" The critic clearly believes this is a must-see show. | Kimi: The review offers unqualified praise with superlatives like 'most entertaining... in Broadway history' and 'extraordinary,' enthusiastically recommends the show, and predicts a long successful run.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:02:16.587Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:18:58.143Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "openaiScore": 97,
+    "geminiScore": 94,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,

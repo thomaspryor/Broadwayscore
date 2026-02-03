@@ -113,9 +113,9 @@
   "wordCount": 560,
   "rescoreCompletedAt": "2026-02-02T03:26:24.410Z",
   "isFullReview": false,
-  "rejectedAt": "2026-02-03T05:19:09.343Z",
+  "rejectedAt": "2026-02-03T06:32:55.174Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be website navigation menus and repeated show listings, not a review of any specific production; openai: This text appears to be a list of show titles and venues, not a review.; kimi: This text consists primarily of website navigation menus (repeated lists of show titles, 'Skip to content' links, and venue information) rather than actual review content. No evaluative critique of the show is present.",
+  "rejectionReasoning": "claude: This appears to be website navigation menus and duplicate show listings, not a review of Grey House or any show; openai: This text appears to be a navigation menu or list of shows rather than a review of a specific production.; kimi: This text consists of navigation menus ('Skip to content'), repetitive lists of show titles, and web page artifacts rather than actual review content. The only reference to 'Grey House' is a headline and factual opening date with no evaluative criticism of the production.",
   "promptVersion": "5.2.0"
 }

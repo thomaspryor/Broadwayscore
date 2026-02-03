@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": "5/5 stars",
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives 5/5 stars and uses the highest praise language ('superb', 'race to see it', 'sustained bravos'), calling it a 'memorable enterprise' with outstanding performances across the board. | GPT-4o: The review is overwhelmingly positive, with the critic using strong language such as 'superb' and urging readers to 'race' to see the show. The 5/5 star rating further supports a Rave classification. | Gemini: The critic uses extremely enthusiastic language, including reviving the \"Run, don't walk...\" plug and calling the musical \"superb.\" The 5/5 star rating further reinforces the rave review.",
+    "keyPhrases": [
+      {
+        "quote": "Be advised not even to run but to race to this tale of a six-man Berlin singing group",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with ecstatic language throughout. The critic revives the classic 'run don't walk' recommendation, upgrading it to 'race,' calls it 'superb,' and offers sustained praise for all elements with no reservations. | GPT-4o: The review is filled with superlatives and enthusiastic recommendations, such as 'superb new musical' and 'sustained bravos for him and the entire memorable enterprise.' The 5/5 star rating further supports a Rave classification. | Gemini: The review uses strong positive language such as \"superb\", and the critic explicitly states they are reviving the \"run, don't walk\" recommendation. The 5/5 star rating further supports this classification. | Kimi: The critic awards 5/5 stars and explicitly urges readers to 'race' to see the show, praising it as 'superb' with 'not a clinker in the score' and offering 'sustained bravos' for the entire memorable enterprise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:43.314Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:58:49.218Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 93,

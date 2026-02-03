@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the energy, direction, and choreography as 'inventive and kinetic,' and notes the show 'shines brightest' in character moments, but tempers enthusiasm by saying it's 'not revolutionary' - indicating a solid positive recommendation with reservations. | GPT-4o: The excerpt highlights positive aspects such as the energetic storytelling, inventive direction, and choreography. Despite noting that the show is not 'revolutionary,' the overall tone suggests a strong recommendation. | Gemini: The review expresses 'a lot of love' for the production, praising the direction and choreography, but also notes it's not 'revolutionary' and is 'warmly reassuring,' indicating a positive but not ecstatic assessment.",
+    "keyPhrases": [
+      {
+        "quote": "there's a lot of love for this energetic telling of the story of Alexander Hamilton",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows clear appreciation ('lot of love', 'inventive and kinetic', 'shines brightest') but includes notable reservations ('revolutionary the show is not'). Single excerpt limits confidence in full verdict assessment. | GPT-4o: The excerpt expresses appreciation for the show's energy and direction, but notes it is not 'revolutionary.' The positive elements suggest a recommendation, but the lack of full context and the caveat about not being 'revolutionary' temper the enthusiasm. | Gemini: The review excerpt is generally positive, praising the energy and direction, but also notes it's not \"revolutionary\" and is \"warmly reassuring\". Given the single excerpt and the reservations, a score of 75 seems appropriate. | Kimi: The excerpt praises the production's energy, direction, and choreography as 'inventive and kinetic' and notes 'a lot of love' for the show, though it criticizes the work for being 'warmly reassuring' rather than truly radical. Despite reservations about its artistic ambition, the overall assessment recommends the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:03:22.133Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:28:32.187Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
+    "claudeScore": 74,
+    "openaiScore": 74,
     "geminiScore": 75,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,

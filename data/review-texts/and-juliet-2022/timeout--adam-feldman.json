@@ -7,17 +7,17 @@
   "publishDate": "November 17, 2022",
   "showScoreExcerpt": "\"Its title notwithstanding, '& Juliet' barely takes time to define its heroine; it puts her at the center of the story and then makes her its least interesting character.\"",
   "originalScore": "3/5",
-  "assignedScore": 63,
+  "assignedScore": 69,
   "source": "dtli",
   "dtliThumb": "Meh",
   "scrapedAt": "2026-01-23T22:47:00.000Z",
   "bwwExcerpt": "\"Keep it light, keep it tight, keep it fun, and then we're done!\" That's the pithy advice that the indignant 16th-century housewife Anne Hathaway (Betsy Wolfe) imparts to her neglectful husband, William Shakespeare (Stark Sands), as a way to improve his play Romeo and Juliet, which she considers too much of a downer. It is also the guiding ethos of the new Broadway jukebox musical & Juliet, a quasi-Elizabethan romp through the chart-toppers of Swedish songwriter-producer Max Martin.",
   "llmScore": {
-    "score": 63,
+    "score": 69,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The 3/5 rating and 'diverting' language suggests moderate entertainment value, while 'it is what it is' implies the show meets basic expectations without exceeding them. | GPT-4o: The review describes the show as 'diverting' and mentions it delivers what is expected, suggesting it meets basic entertainment standards but lacks distinction. The 3/5 rating aligns with a mixed assessment. | Gemini: The review, despite being a collection of excerpts, indicates a positive but not overwhelmingly enthusiastic response. The critic acknowledges the show delivers what is expected, suggesting a satisfying but not groundbreaking experience. The 3/5 rating also supports a positive classification.",
+    "keyPhrases": [
+      {
+        "quote": "A diverting synthetic crossbreed that delivers just what you'd expect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: 3/5 stars with consistent praise for performances and entertainment value, but acknowledges significant flaws in character development and narrative thrust. The critic finds it 'often entertaining' but 'pretty disposable' - a qualified positive recommendation. | GPT-4o: The review acknowledges the show's entertainment value and effective music but criticizes its lack of depth and narrative thrust. The 3/5 star rating aligns with a mixed verdict. | Gemini: The critic gives the show 3/5 stars and describes it as \"diverting\" and delivering \"just what you'd expect.\" While praising the music and some performances, they note that the show feels \"pretty disposable\" and lacks narrative thrust, indicating a positive but not rave review. | Kimi: The critic awards 3/5 stars, praising the performances and Max Martin's catchy catalog while criticizing the underdeveloped heroine, lack of narrative stakes, and throwaway nature of the storytelling. The review acknowledges the show delivers exactly what pop fans expect but finds it ultimately insubstantial. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:22:29.017Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:21:52.608Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 72,
     "openaiScore": 65,
     "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
   },
   "textFetchedAt": "2026-02-02T02:41:52.653Z",
   "textFetchMethod": "playwright",

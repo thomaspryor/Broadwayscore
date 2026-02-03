@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -23,11 +23,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -37,8 +37,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a 4/5 rating and praises the show as 'silly-smart, sweet-natured and very funny' with 'hilarious' performances. Despite some reservations about the deliberately amateurish concept, the overall tone is positive and recommending. | GPT-4o: The review, despite being truncated, conveys a strong positive tone with phrases like 'enthusiastic presentation', 'silly-smart, sweet-natured and very funny meta-musical', and 'affection is the key'. The original 4/5 rating and positive aggregator context further support a high positive score. | Gemini: The review is positive, highlighting the show's humor and the performers' chemistry, and the critic gave it 4/5 stars. The aggregator excerpts also point to a positive reception, so despite the truncated text, a positive score is warranted.",
+    "keyPhrases": [
+      {
+        "quote": "The result suggests a cross between Christopher Guest's Waiting for Guffman and the beloved cult musical [title of show].",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for the performances ('hilarious'), direction, and the show's 'silly-smart, sweet-natured and very funny' qualities. Clear recommendation despite acknowledging the deliberately amateurish concept. | GPT-4o: The review praises the performances of Josh Gad and Andrew Rannells, the humor, and the affectionate nature of the show. The original 4/5 star rating aligns with a strong positive recommendation. | Gemini: 4/5 stars from a reputable critic indicates a positive review. The critic praises the performances of Gad and Rannells, and calls the show \"silly-smart, sweet-natured and very funny.\" | Kimi: 4/5 stars with consistent praise for the performances and comedic writing, delivering a warm recommendation despite the show's intentionally amateurish premise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,28 +53,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:58:08.807Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:34:32.046Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 81,
-    "geminiScore": 79,
+    "claudeScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,

@@ -8,15 +8,15 @@
   "showScoreExcerpt": "\" ''Grey Houe' is built around themes of guilt, expiation and retribution, but not very solidly—and as a spectator, you’re too busy puzzling out what is happening to think much about what it means...Amid such excellent atmospherics, you may not care when the play itself creaks.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/grey-house-broadway",
   "originalScore": 60,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's own 60 rating aligns with mixed assessment - praising the production design and atmosphere while criticizing the play's coherence and narrative structure. The review acknowledges strong elements but notes fundamental flaws in the story. | GPT-4o: The review highlights strong production elements and atmosphere but criticizes the play's coherence and thematic execution. The original rating of 60 aligns with a mixed verdict, indicating the show has both strengths and weaknesses. | Gemini: The review acknowledges strong elements like direction, cast, and design, but also criticizes the play's coherence and thematic solidity. The truncated text and the critic's own rating of 60 further support a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "But this is a first-class production: Director Joe Mantello and his committed cast sustain a tone that is consistently unsettling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with mixed territory. Review acknowledges significant story problems (murky information, doesn't cohere) but praises the production values and atmosphere extensively. | GPT-4o: The review acknowledges the production's strong atmosphere and design but criticizes the play's coherence and thematic depth. The original rating of 60 aligns with a mixed assessment. | Gemini: The review acknowledges strong production elements (direction, cast, design) but criticizes the play's narrative coherence and thematic depth. The critic's rating of 60 aligns with a mixed assessment. | Kimi: The critic praises the first-class production values, design, and committed performances but criticizes the incoherent plot mechanics and murky script, resulting in an ambivalent assessment that aligns with the 60/100 rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:56:26.673Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:33:46.950Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": 60,
-    "geminiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "dtliExcerpt": "Grey House is a handsome production with some genuinely creepy moments, but it never quite coalesces into the spine-tingling experience it aspires to be.",
   "sources": [

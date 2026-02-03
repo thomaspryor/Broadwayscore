@@ -7,19 +7,19 @@
   "publishDate": "March 7, 2024",
   "dtliExcerpt": "Twenty years later, all reasonable doubt has been removed from Shanley’s parable. This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale, an ode to those who found the courage to stand up to abusers and side with the young and the vulnerable.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 83,
   "dtliThumb": "Up",
   "source": "dtli",
   "showScoreExcerpt": "\"...a timely and now seemingly timeless piece of art that shed light\"",
   "bwwExcerpt": "Ryan, whose performance is tart, vulnerable, and unstinting, shows us a character slowly realizing that her unswerving belief in the hierarchy she serves — heck, the way she has ordered her entire life — is incompatible with her moral and practical quest. The similarly excellent Kazan, whose teaching nun has the assets and drawbacks of youth, can only stare horrified at a future that she now understands is coming for her, too. It’s just a matter of time. Melissa",
   "bwwThumb": "Up",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:03.498Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:31:27.271Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "sources": [
@@ -97,11 +97,11 @@
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "llmScore": {
-    "score": 81,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -111,8 +111,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review is deeply appreciative of the production, praising performances as 'excellent' and calling it 'gripping.' The critic finds profound meaning in the revival and concludes it exemplifies what American theater should accomplish. | GPT-4o: The review is overwhelmingly positive, praising the production as gripping and highlighting its profound impact and relevance. The critic describes the play as a masterpiece with standout performances and a powerful staging, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting strong performances and the play's enduring relevance. While there's a minor critique of Schreiber's performance, the overall assessment is a recommendation to see the show.",
+    "keyPhrases": [
+      {
+        "quote": "This taut drama, back in a gripping new Broadway production from the Roundabout Theatre Company and director Scott Ellis, plays like a cautionary tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the revival ('gripping'), individual performances ('Ryan's performance is tart, vulnerable, and unstinting'), and calls it 'timely and now seemingly timeless piece of art that shed light and did exactly what the American theater is supposed to do.' Clear recommendation despite minor reservation about Schreiber. | GPT-4o: The review is filled with superlatives and strong praise for the production, performances, and the impact of the play. It describes the play as 'gripping' and 'masterful,' highlighting its emotional and thematic depth, which aligns with a rave review. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and design. The critic emphasizes the play's timeliness and importance, making it a strong recommendation. | Kimi: The critic offers effusive praise for the revival, calling it 'gripping' and 'timeless,' highlighting 'excellent' performances from Amy Ryan and Zoe Kazan, and describing a scene as 'among the best in any American drama of the last 20 years,' with only a minor reservation about Liev Schreiber's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -123,17 +129,19 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 95,
-    "geminiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreCompletedAt": "2026-02-02T03:26:03.498Z",
   "wordCount": 631,

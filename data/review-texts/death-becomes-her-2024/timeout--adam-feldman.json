@@ -8,15 +8,15 @@
   "showScoreExcerpt": "âHaving popped its cork early, the show keeps the bubbles flowing freely for the next two hours.â",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/death-becomes-her-broadway",
   "originalScore": "4/5",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gave 4/5 stars and describes the show as 'savagely funny' with consistent praise for performances, direction, and design elements. The review emphasizes entertainment value and strong execution throughout. | GPT-4o: The review praises the performances, direction, and production quality, highlighting the humor and energy of the show. The critic's original rating of 4/5 supports a strong positive recommendation. | Gemini: The critic gives the show a 4/5 stars and uses positive language throughout the review. The critic highlights the performances, score, and humor, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Having popped its cork early, the show keeps the bubbles flowing freely for the next two hours.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout - calls it 'savagely funny,' highlights strong performances, praises all design elements, and notes the show 'keeps the bubbles flowing freely.' Clear recommendation with enthusiasm but not quite at rave level. | GPT-4o: The review provides consistent praise for the performances, direction, and production design, with a 4/5 star rating indicating a strong recommendation. The critic highlights the humor, visual appeal, and engaging performances, suggesting an overall positive experience. | Gemini: The review is overwhelmingly positive, praising the performances, score, book, and overall production. The 4/5 star rating and enthusiastic tone justify a score in the high positive range. | Kimi: The critic awards 4/5 stars with enthusiastic praise for the lead performances, direction, and humor, describing the show as a 'pleasure to look at' and 'savagely funny,' though minor reservations about secondary elements keep it from the highest tier.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:25:39.977Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:30:16.856Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dtliExcerpt": "They have complementary approaches to pitching jokes: Hilty tends to throw them hard straight over the plate, while Simard favors curveballs. Together they make musical-comedy magic—and musical comedy, when performed this well, never gets old.",
   "sources": [

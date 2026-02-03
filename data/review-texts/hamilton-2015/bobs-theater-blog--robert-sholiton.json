@@ -8,18 +8,18 @@
   "fullText": "When I first saw Lin-Manuel Miranda’s highly anticipated hip-hop musical about the life of one of our most intriguing founding fathers, it was still in previews at the Public Theater. The multi-talented Miranda not only wrote the music, lyrics and book; he is the co-arranger and, last but not least, the original star. This ambitious, inventive show remains strong across the board: the entertaining, informative and emotionally involving book is filled with moments of humor and pathos, the characters are vividly drawn, the lyrics are extremely clever, the deceptively simple scenic design (by David Korins) is effective, the costumes (by Paul Tazewell) are attractive, the choreography (by Andy Blankenbuehler) supports the action brilliantly, the cast is uniformly strong and the direction (by Thomas Kail) is fluid and assured. As for the music, Miranda makes a strong case for the expressive possibilities of hip-hop. Christopher Jackson, the only holdover in a principal role, has just the right gravitas for George Washington. The good news is that the newcomers to the cast are generally fine and the production is as sharp as ever. Javier Munoz’s Hamilton is just as impressive as Miranda’s was. Brandon Victor Dixon is a fine Aaron Burr even though he lacks Leslie Odom Jr’s lean hungry look. Seth Stewart is almost as good as Daveed Diggs was in two juicy roles — Lafayette and Jefferson. The replacements for Eliza (Lexi Lawson) and Angelica (Mandy Gonzalez) were a bit of a letdown after Philllipa Soo and Renée Elise Goldsberry. I miss Brian D’Arcy James’s loopy King George, but Rory O’Malley is good. If the show has a fault, it is that Miranda was overambitious and included too much material. The finale remains a bit flat. I was a bit exhausted by play’s end, but it was a pleasant kind of exhaustion. Running time: 2 hours, 50 minutes including intermission.",
   "showScoreExcerpt": "\"This ambitious, inventive show remains strong across the board: the entertaining, informative and emotionally involving book is filled with moments of humor and pathos, the characters are vividly drawn, the lyrics are extremely clever, the choreography supports the action brilliantly, the cast is uniformly strong and the direction is fluid and assured...The good news is that the newcomers to the cast are generally fine and the production is as sharp as ever.\"",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review offers strong praise for most elements of the production while acknowledging some minor flaws like an overambitious scope and flat finale, but concludes with 'pleasant exhaustion' indicating overall recommendation. | GPT-4o: The review praises the show as ambitious and inventive, with strong performances and production elements. While noting some minor cast changes and a slightly flat finale, the overall tone is highly positive and recommends the show enthusiastically. | Gemini: Despite some reservations about cast replacements and the show's length, the reviewer states the show remains strong and the newcomers are generally fine, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "This ambitious, inventive show remains strong across the board",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise across all production elements with only minor criticisms about length and finale. The critic finds it 'entertaining, informative and emotionally involving' with 'uniformly strong' cast and describes exhaustion as 'pleasant.' Clear recommendation despite acknowledging some replacement cast members as slight letdowns. | Gemini: The review is overwhelmingly positive, praising almost every aspect of the production. While there are minor criticisms (length, finale), the overall tone is enthusiastic and recommends seeing the show. | Kimi: The review offers extensive praise for the production's writing, direction, and performances, calling it 'sharp as ever' and 'ambitious,' while noting specific reservations about the show's length, flat finale, and some weaker cast replacements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,22 +45,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:02:00.647Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:15:05.251Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 79,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

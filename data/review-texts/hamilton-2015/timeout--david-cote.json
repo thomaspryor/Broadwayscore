@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": "5/5",
-  "assignedScore": 97,
+  "assignedScore": 96,
   "source": "bww-roundup",
   "dtliThumb": null,
   "originalScoreNormalized": 100,
@@ -21,11 +21,11 @@
     "show-score"
   ],
   "llmScore": {
-    "score": 97,
+    "score": 96,
     "confidence": "high",
     "range": {
-      "low": 92,
-      "high": 102
+      "low": 91,
+      "high": 101
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The critic gives a perfect 5/5 rating and delivers an unqualified rave, calling it 'the greatest American musical in decades' and expressing pure love for the production with passionate, superlative-filled language throughout. | GPT-4o: The critic's enthusiastic praise and the original 5/5 rating strongly indicate a rave review. The language used is highly positive, with no reservations, and the critic expresses deep admiration for the production. | Gemini: The critic uses extremely enthusiastic language, calling it the \"greatest American musical in decades\" and stating \"I love Hamilton\" with an analogy to his love for New York. The 5/5 rating confirms this classification.",
+    "keyPhrases": [
+      {
+        "quote": "I love Hamilton. I love it like I love New York, or Broadway when it gets it right. And this is so right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: 5/5 stars with unqualified superlatives like 'greatest American musical in decades,' 'sublime conjunction,' and passionate personal endorsement. The critic explicitly states love for the show and calls it transformative. | Gemini: The review is overwhelmingly positive, using phrases like \"greatest American musical in decades\" and \"I love Hamilton.\" The critic awards it 5/5 stars, indicating a rave review. | Kimi: The critic awards 5/5 stars and declares 'I love Hamilton,' calling it 'the greatest American musical in decades' and praising the sublime writing, direction, and performances without reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,22 +51,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:04:29.609Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:39:44.867Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 96,
+    "previousScore": 97,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 95,
-    "openaiScore": 100,
+    "claudeScore": 96,
+    "openaiScore": null,
     "geminiScore": 95,
+    "kimiScore": 97,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 5,
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

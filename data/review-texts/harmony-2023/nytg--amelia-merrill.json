@@ -10,17 +10,17 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 60,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "showScoreExcerpt": "“Though its quality is not consistent throughout, ‘Harmony’ has its high points...This immersive quality is chilling, but doesn’t make up for 'Harmony’s' dissonance.”",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/harmony-broadway",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review identifies serious structural problems and inconsistent quality while acknowledging some strong performances and staging moments. The critic neither recommends nor discourages seeing the show, focusing on both positive elements and significant flaws. | GPT-4o: The review highlights significant structural issues and uneven quality, but acknowledges standout performances and moments of effective staging. The overall tone suggests a mixed experience with both positive and negative elements. | Gemini: The review highlights both significant flaws (structural issues, Rabbi's role) and strengths (performances, choreography). The overall assessment is mixed, indicating neither a strong recommendation nor a discouragement.",
+    "keyPhrases": [
+      {
+        "quote": "Though its quality is not consistent throughout, Harmony has its high points.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges several strong elements (Julie Benko, choreography, staging moments) but criticizes fundamental structural problems that persist after 25+ years, poor integration of the Rabbi character, and offensive simplicity in Holocaust treatment. Neither recommends nor discourages attendance. | GPT-4o: The review highlights both positive elements, such as strong performances and choreography, and significant issues, like structural problems and an awkward narrative device. The overall tone is mixed, acknowledging both strengths and weaknesses. | Gemini: The review highlights both positive and negative aspects of the show, including strong performances and choreography alongside structural issues and an inconsistent narrative. The overall tone is mixed, not leaning strongly towards recommendation or discouragement. | Kimi: While the reviewer praises individual performances by Benko and Telsey and some astute choreography, the overall verdict emphasizes structural flaws, a poorly integrated narrative device, and book issues that render the show disjointed and ultimately unsatisfying.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:54.560Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:02:42.647Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
+    "claudeScore": 58,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "dtliExcerpt": "As the Comedian Harmonists, a ragtag group of male singers in Weimar Germany, gradually find their footing, so does the show: The songs grow more polished, the choreography by director Warren Carlyle more precise, the performances more distinguishable. For a show that debuted over 25 years ago, however, how have subsequent productions, including last year’s Off-Broadway run with the National Yiddish Theatre Folksbiene, not addressed such structural issues?",
   "sources": [

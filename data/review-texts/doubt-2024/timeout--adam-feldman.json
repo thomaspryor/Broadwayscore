@@ -9,7 +9,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": "4/5",
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "originalScoreNormalized": 80,
@@ -22,11 +22,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,8 +36,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 4/5 star rating and 'Recommended' designation clearly indicate a positive review. The critic praises the production overall as 'mostly very effective' with strong performances from most of the cast, though notes one performance issue that slightly tempers the enthusiasm. | GPT-4o: The review praises the production's effectiveness, the performances, and the thematic depth of the play. The original rating of 4/5 supports a strong positive recommendation. | Gemini: The critic gives the production 4/5 stars and states that it is \"mostly very effective\", but notes that Ryan's performance disturbs the equilibrium. This suggests a positive but not rave review.",
+    "keyPhrases": [
+      {
+        "quote": "Roundabout Theatre Company's Broadway revival, directed by Scott Ellis, is mostly very effective.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for most elements (Schreiber 'ideal', Kazan 'sensitive and affecting', Bernstine's 'cutting intelligence', strong design), only noting Ryan's performance as problematic. Strong positive recommendation. | GPT-4o: The review provides a generally positive assessment of the production, highlighting strong performances and effective direction. The original 4/5 star rating aligns with a solid recommendation, though there are minor reservations about Ryan's performance. | Gemini: 4/5 stars indicates a positive review. The critic praises the writing, direction, set design, and most of the performances, but notes that Ryan's performance disturbs the equilibrium. | Kimi: The critic awards 4/5 stars and praises the revival as 'mostly very effective' with strong commendations for Schreiber's performance, the supporting cast, and design elements, though notes that Ryan's performance disturbs the equilibrium.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,28 +52,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:26:19.725Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:32:19.118Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,

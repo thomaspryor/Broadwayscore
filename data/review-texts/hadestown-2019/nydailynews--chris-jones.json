@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic uses superlatives throughout ('masterfully staged', 'true stunner', 'remarkable') and describes the show as having 'political ferocity that has not been matched on Broadway in a good long while', indicating strong enthusiasm and recommendation. | GPT-4o: The review is filled with enthusiastic praise for the production, describing it as thrilling, masterfully staged, and relevant. The critic highlights the powerful music, staging, and performances, indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, praising the music, staging, and performances. The critic highlights the show's relevance and impact, making it a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "the pounding political realities are leavened by lots of sweet songs and scenes concerning themselves with the mysteries of mortal love and trust",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'thrillingly alarmist,' 'masterfully staged,' 'true stunner,' and 'political ferocity that has not been matched on Broadway in a good long while.' Clear rave recommendation. | GPT-4o: The review is filled with superlatives and strong praise for the production, staging, and performances. The critic describes it as 'thrillingly alarmist' and 'a true stunner', indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"thrillingly alarmist\", \"masterfully staged\", and praising the political ferocity and relevance of the musical. The critic clearly recommends seeing the show. | Kimi: The critic offers unqualified praise for Rachel Chavkin's 'masterful' staging, Rachel Hauck's 'true stunner' design, and the show's unmatched political ferocity, describing it as 'thrilling' and 'eye-popping' throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:59:52.384Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:46:50.573Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 90,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
-    "geminiScore": 81,
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,

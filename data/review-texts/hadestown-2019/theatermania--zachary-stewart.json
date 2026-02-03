@@ -91,5 +91,11 @@
   "textWordCount": 790,
   "textQuality": "full",
   "textStatus": "complete",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T07:03:39.974Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at New York Theatre Workshop, not the current Broadway run.; kimi: The review explicitly discusses the production at New York Theatre Workshop (an Off-Broadway venue), not the current Broadway run. It references the venue multiple times ('reigns at New York Theatre Workshop this spring') and treats the Broadway transfer of 'Natasha, Pierre & the Great Comet of 1812' as an upcoming future event, confirming this is the 2016 Off-Broadway premiere rather than the 2019 Broadway production.",
+  "promptVersion": "5.2.0"
 }

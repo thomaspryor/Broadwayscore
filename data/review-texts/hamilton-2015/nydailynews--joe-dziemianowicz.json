@@ -8,7 +8,7 @@
   "bwwExcerpt": "ar and peace inevitably prop up the people in his midst, though his failures are profound on the homefront...Turns out, once you've gotten over the first wow, there's plenty more wow to be uncovered. Joe Dziemianowicz, New York Daily News : With \"Hamilton,\" Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating...It's even richer and more eloquent since its run earlier this year at the Public Theater...Hip hop is one flavor of the score. It's as if the speechmaking Founding Fathers are in the next room. And it's a deft way to depict the often-fractious relationships between these competitive 18th-century power players...But to call this a \"hip hop musical\" is simplistic: rhythm and blues, jazz and Broadway are also part of a work that nods to Rodgers and Hammerstein, Gilbert and Sullivan and beyond. Since the Off-Broadway run, performances have all deepened, including Miranda's. He better conveys Hamilton's cockiness, contrition and all-too-huma",
   "showScoreExcerpt": "\"With 'Hamilton,' Broadway is officially the coolest place on the planet. And the smartest. And most exhilarating. Yes, composer, lyricist, author and leading man Lin-Manuel Miranda’s magical musical tour of the life of the '10-dollar Founding Father,' Alexander Hamilton, is that great. It’s even richer and more eloquent since its run earlier this year at the Public Theater.\"",
   "originalScore": null,
-  "assignedScore": 95,
+  "assignedScore": 94,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Opens-on-Broadway-20150806",
@@ -21,11 +21,11 @@
   "scoreSource": "sentiment-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 95,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 90,
-      "high": 100
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review opens with superlative praise calling Broadway 'the coolest place on the planet' and declares Hamilton 'that great' and 'one for the ages.' Despite minor criticisms about a sluggish second act, the critic concludes it's a 'one-of-a-kind theatrical experience' that 'dazzled so completely.' | GPT-4o: The review is overwhelmingly positive, describing 'Hamilton' as a 'great' and 'one-of-a-kind theatrical experience' with exceptional contributions from the cast and crew. The critic calls it a 'Broadway classic' and praises it as 'dazzling,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using superlatives like \"coolest,\" \"smartest,\" \"most exhilarating,\" and calling the show \"that great.\" The critic also states that \"Hamilton\" is \"one for the ages,\" indicating a very strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "With 'Hamilton,' Broadway is officially the coolest place on the planet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives throughout ('magical', 'that great', 'one for the ages', 'exceptional') with explicit language calling it a classic and one-of-a-kind theatrical experience. Minor critiques about second act pacing don't diminish the overwhelming enthusiasm. | GPT-4o: The review is filled with superlatives and unqualified praise, calling 'Hamilton' a 'one-of-a-kind theatrical experience' and 'a great Broadway classic.' The critic's enthusiasm and the absence of significant reservations place it firmly in the Rave category. | Gemini: The review is overwhelmingly positive, using superlatives like \"magical\", \"great\", \"breathtaking\", and calling the show a \"Broadway classic...for the ages\". The critic only mentions minor flaws, but they don't detract from the overall rave. | Kimi: The review overflows with superlatives ('one for the ages,' 'magical,' 'dazzled so completely') and explicitly dismisses minor flaws as insignificant, delivering an unqualified endorsement of the Broadway production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,28 +51,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:03:18.171Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:27:34.932Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 95,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 95,
     "openaiScore": 95,
-    "geminiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 0,
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "sources": [
     "bww-roundup",

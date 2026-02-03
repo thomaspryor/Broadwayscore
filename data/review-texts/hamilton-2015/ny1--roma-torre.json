@@ -8,18 +8,18 @@
   "fullText": "Celebrated actor and writer Lin-Manuel Miranda returns to Broadway with his highly anticipated musical \"Hamilton,\" which had a sold-out run off-Broadway at The Public Theater earlier this year. NY1's Roma Torre filed a review. It was phenomenal off-Broadway. It's even better now. \"Hamilton\" is that rare musical that fires on all cylinders, even ones we never knew existed. Just as Lin-Manuel Miranda celebrated the city in his first Broadway outing, \"In the Heights,\" \"Hamilton\" turns out to be another quintessential New York story, and I dare anyone to tell Mr. Miranda that the saga of our nation's first Treasury Secretary is ancient history. The costumes may look 18th century, but this is very much a modern work. Ingeniously, Miranda, who composed the music and lyrics, wrote the book and stars, has found a way to translate that chapter of our nation's birth into the language of today. Yes, you will hear a lot of rap music, but Miranda, a student of musical theatre, incorporates traditional conventions as well. And so, mixed in with the clever hip-hop are gorgeous melodic strains and tunes so hummable, you can't get them out of your head. And a big nod to Alex Lacamoire's brilliantly inventive orchestrations. Inspired by Ron Chernow's biography, Miranda has found something of a kindred spirit in Hamilton - his hungry immigrant roots, his intellectual gifts, boundless energy and unyielding ambition. And it's all drawn out on stage in the most exhilarating and heartfelt fashion. Thomas Kail's direction matches Miranda's impassioned approach to the material, and he's joined by Andy Blankenbuehler, whose choreography is poetry in motion. If the cast of multicultural actors doesn't resemble their characters, they're deadringers in spirit. Among them, the excellent Daveed Diggs, double cast as Thomas Jefferson and the Marquis de Lafayette. He's so good in the two roles, you may not realize the faithful Frenchman and the cocky Secretary of State are played by the same man. Miranda is very generous to his company, with 10 principal performers. He makes sure to give each one a chance to shine in the spotlight. Hamilton's devoted wife, Eliza Schuyler, is played by the radiant Phillipa Soo. As her spunky sister Angelica, Renee Elise Goldsberry brings to mind Beyonce's vocal gifts, not to mention her outright beauty. Christopher Jackson, who you may remember from \"In The Heights,\" is a very commanding and human George Washington; Jonathan Groff, in cameo appearances as the petulant King George, is a royal scene-stealer. And in the role of Hamilton's infamous rival, Aaron Burr, Leslie Odom Jr. absolutely kills. In a sense, the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else.",
   "showScoreExcerpt": "\"It was phenomenal off-Broadway. It's even better now. 'Hamilton' is that rare musical that fires on all cylinders, even ones we never knew existed...In a sense, the collective talents of this bravura company pay homage to Broadway's founding fathers - and mothers - by pushing the envelope on an artform that at best, teaches us, enlightens us and entertains us like nothing else.\"",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 95,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/hamilton",
   "sourceMethod": "playwright",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 93,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation warning, the review is overwhelmingly positive with superlative language throughout - 'phenomenal,' 'rare musical that fires on all cylinders,' 'exhilarating,' 'bravura company.' The aggregator excerpt confirms this is a rave review calling it a masterpiece that 'pays homage to Broadway's founding fathers.' | GPT-4o: The review is overwhelmingly positive, praising the production as a groundbreaking and exhilarating experience. The critic highlights the exceptional talent and innovative approach, suggesting it is a must-see show. | Gemini: The review is overwhelmingly positive, using phrases like \"phenomenal,\" \"even better now,\" and \"fires on all cylinders.\" The critic praises various aspects of the production, including the music, lyrics, direction, choreography, and performances, indicating a very strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is that rare musical that fires on all cylinders, even ones we never knew existed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'phenomenal,' 'even better now,' 'exhilarating,' and 'bravura.' The critic praises every aspect - music, performances, direction, choreography - with no reservations whatsoever. | GPT-4o: The review is filled with superlatives and unqualified praise, describing the show as 'phenomenal' and 'exhilarating', with no reservations. The critic highlights the excellence in all aspects of the production, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show phenomenal and highlighting its innovative approach, excellent performances, and overall impact. The critic uses strong language to express their enthusiasm, indicating a rave review. | Kimi: Review offers unqualified praise for the music, performances, direction, and choreography, using superlatives like \"phenomenal\" and \"exhilarating\" with no reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:03:13.955Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:27:00.931Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/ny1--roma-torre_2026-02-03.html",
   "textFetchedAt": "2026-02-03T01:02:11.972Z",

@@ -7,7 +7,7 @@
   "publishDate": "April 17, 2019",
   "dtliExcerpt": "Here’s my advice: Go to hell. And by hell, of course, I mean Hadestown, Anaïs Mitchell’s fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. “It’s an old song,” sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). “And we’re gonna sing it again.” But it’s the newness of Mitchell’s musical account—and Rachel Chavkin’s gracefully dynamic staging—that bring this old story to quivering life.",
   "originalScore": "4/5",
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "Up",
   "archivePath": "data/archives/reviews/hadestown-2019/timeout--adam-feldman_2026-02-02.html",
@@ -23,12 +23,12 @@
   "fetchTier": 4,
   "sourceMethod": "archive",
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:15.107Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:06:35.790Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "designation": "Critics_Choice",
@@ -101,11 +101,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.809Z"
   },
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -115,8 +115,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the stellar ensemble, brilliant music, and calls the show 'something special' and 'a sensory feast,' with only one actor as a weak spot. The 4/5 rating and 'Up' aggregator verdict support strong positive recommendation. | GPT-4o: The review praises the ensemble, music, and overall experience, with only minor reservations about one performer. The original rating of 4/5 and the positive aggregator context support a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the ensemble and music, but notes a weak spot in one performer. The overall sentiment is a recommendation, albeit with a reservation.",
+    "keyPhrases": [
+      {
+        "quote": "Hadestown, moment after lovely moment, sweeps you up in its atmospherics and in the intensity of its eco-Marxist vision of solidarity and the liberating potential of art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 4/5 stars with enthusiastic language throughout. The critic uses vivid praise like 'transporting,' 'thrilling,' 'sweeps you up,' and 'spectacular,' while acknowledging minor flaws in the narrative. The opening 'Go to hell' hook and concluding prediction that audiences will be 'singing it again in your head for days' frame an clearly positive recommendation. | GPT-4o: The review praises the production's atmosphere, music, and staging, despite noting some narrative thinness. The original 4/5 rating aligns with a strong positive recommendation. | Gemini: 4/5 stars. The review is overwhelmingly positive, praising the music, staging, and overall atmosphere, despite acknowledging a thin plot. | Kimi: The critic awards 4/5 stars and explicitly recommends the show, praising the 'joyful' score and 'spectacular' staging while noting the narrative flaws ultimately 'hardly matter'.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -125,19 +131,21 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 87,
     "openaiScore": 82,
-    "geminiScore": 78,
-    "claudeBucket": "Positive",
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "wordCount": 570,
   "fullText": "Photograph: Courtesy Matthew MurphyPreviousNext/7Photograph: Courtesy Matthew MurphyPreviousNext/7Photograph: Courtesy Matthew Murphy | HadestownPreviousNext/7Photograph: Courtesy Matthew MurphyPreviousNext/7Photograph: Courtesy Matthew MurphyPreviousNext/7Photograph: Courtesy Matthew MurphyPreviousNext/7Photograph: Courtesy Matthew MurphyPreviousNext/7Review\n\n4 out of 5 starsAnaïs Mitchell’s transporting musical makes a hit from a myth.Theater, MusicalsWalter Kerr Theatre, Midtown WestOpen runRecommendedWednesday April 17 2019ShareCopy LinkFacebookTwitterPinterestEmailWhatsAppBuy ticketWritten by Adam FeldmanTheater and Dance Editor, Time Out USAAdvertisingTime Out says\nTheater review by Adam Feldman\n\nHere's my advice: Go to hell. And by hell, of course, I mean Hadestown, Ana&iuml;s Mitchell's fizzy, moody, thrilling new Broadway musical. Ostensibly, at least, the show is a modern retelling of the ancient Greek myth of Orpheus and Eurydice: Boy meets girl, boy loses girl, boy goes to the land of the dead in hopes of retrieving girl, boy loses girl again. \"It's an old song,\" sings our narrator, the messenger god Hermes (André De Shields, a master of arch razzle-dazzle). \"And we're gonna sing it again.\" But it's the newness of Mitchell's musical account—and Rachel Chavkin's gracefully dynamic staging—that bring this old story to quivering life.\n\nIn a New Orleans–style bar, hardened waif Eurydice (Eva Noblezada) falls for Orpheus (Reeve Carney), a busboy with an otherworldly high-tenor voice who is working, like Roger in Rent, toward writing one perfect song. But dreams don't pay the bills, so the desperate Eurydice—taunted by the Fates in three-part jazz harmony—opts to sell her soul to the underworld overlord Hades (Patrick Page, intoning jaded come-ons in his unique sub-sepulchral growl, like a malevolent Leonard Cohen). Soon she is forced, by contract, into the ranks of the leather-clad grunts of Hades's filthy factory city; if not actually dead, she is \"dead to the world anyway.\" This Hades is a drawling capitalist patriarch who keeps his minions loyal by giving them the minimum they need to survive. (\"The enemy is poverty,\" he sings to them in the chilling anthem that ends the first act. \"And the wall keeps out the enemy.\") Meanwhile, Hades's miserable, tippling trophy queen, Persephone (the fabulous Amber Gray, a human jolt of absinthe), yearns for the greener pastures of her youth.\n\nAlthough the narrative has gained some bulk since Hadestown's Off Broadway run at New York Theatre Workshop in 2016, it is still wight-thin, especially where the central couple is concerned. Orpheus and Eurydice are defined nearly exclusively by their poverty; Mitchell discards most of the original myth's most interesting details, and barely even dramatizes its now-you-see-her-now-you-don't finale. (The relationship between Hades and Persephone is richer.) Yet somehow that hardly matters: Hadestown, moment after lovely moment, sweeps you up in its atmospherics and in the intensity of its eco-Marxist vision of solidarity and the liberating potential of art. It looks spectacular—thanks to Rachel Hauck's set, which features three turntables in concentric circles, and Bradley King's lighting—but it has a human scale; it feels less like a standard Broadway musical than a concert, a gathering, a happening. (The seven members of the excellent onstage band are called out by name for applause.) And, most important, it has Mitchell's score: a joyful combination of folk, pop, Dixieland and blues that will make you want to rehear it as soon as the lights come up. You'll be singing it again in your head for days.\n\nWalter Kerr Theatre (Broadway). Book, music and lyrics by Ana&iuml;s Mitchell. Directed by Rachel Chavkin. With Reeve Carney, Eva Noblezada, Amber Gray, Patrick Page, André De Shields. Running time: 2hrs 30mins. One intermission.",

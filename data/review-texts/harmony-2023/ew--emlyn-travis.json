@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a B- grade and concludes with strong positive language about the show's power and lasting impact, despite significant structural criticisms about pacing and character development in the first act. | GPT-4o: The review acknowledges issues with the pacing and character development, particularly in the first act, but ultimately praises the emotional impact and performances in the second act. The original rating of B and the positive excerpts suggest a recommendation with some reservations. | Gemini: The review is mostly positive, highlighting the emotional impact and the strength of the second act, but also points out flaws in character development and pacing. The B grade and the aggregator excerpts also support a positive classification.",
+    "keyPhrases": [
+      {
+        "quote": "Despite its caveats, Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B- grade with clear positive verdict. Critic acknowledges significant first-act issues but praises the emotional second act, performances, and lasting impact. Concludes it's 'powerful' and will 'continue to sing out in the minds of audiences.' | GPT-4o: The review acknowledges issues with the first act and character development but ultimately praises the emotional impact and message of the musical. The original B rating and positive excerpts suggest a recommendation despite reservations. | Gemini: The critic gives the show a B and states that it is a powerful musical that makes one's heart break, indicating a positive, but not rave, review. The review also mentions caveats, indicating reservations. | Kimi: While criticizing the first act as saccharine and tonally jarring and noting that characters remain largely undefined, the reviewer praises the emotional second act, timely message about fascism, and strong ensemble performances, ultimately giving the show a B– grade and calling it resonant and powerful.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:27.787Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:53:23.232Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 75,
     "openaiScore": 75,
     "geminiScore": 79,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "dtliExcerpt": "Despite its caveats, Harmony is a powerful musical that, by its conclusion, makes one's heart break for the Comedian Harmonists and all those who were lost to time because of hatred and cruelty, the echoes of which are still ringing out to this day. Its overall message of peace — \"despite our squabbles, we found harmony\" — feels more resonant than ever.",
   "sources": [

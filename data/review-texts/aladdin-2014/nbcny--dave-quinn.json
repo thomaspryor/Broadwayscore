@@ -98,7 +98,7 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "rescoreCompletedAt": "2026-01-31T18:11:36.329Z",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 378,
   "_removedDesignation": {
     "designation": "Recommended",
@@ -111,9 +111,9 @@
   "isFullReview": true,
   "showScoreExcerpt": null,
   "bwwThumb": null,
-  "rejectedAt": "2026-02-03T01:13:16.596Z",
+  "rejectedAt": "2026-02-03T06:18:53.045Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This is a collection of website navigation content, news briefs, and promotional text from NBC New York's website, not a Broadway theater review.; openai: This text is a collection of unrelated news snippets and promotional content, not a review.; gemini: This is a collection of news blurbs and promotional content, not a review of a specific show.; kimi: This text is a collection of news snippets, TV listings, and promotional content from NBC New York, not a critical review of a Broadway show. It contains various entertainment news items but no evaluative content about a specific theatrical production.",
+  "rejectionReasoning": "claude: This appears to be navigation menus, news headlines, or website content aggregation rather than a Broadway theater review; openai: The text is not related to a Broadway show review; it contains various unrelated topics such as the Super Bowl, Grammy Awards, and other entertainment news.; gemini: This is a news roundup, not a review of a specific show.; kimi: This text is a collection of entertainment news headlines and teasers about the Super Bowl, Grammy Awards, and various TV segments. It contains no review of a Broadway theatrical production.",
   "promptVersion": "5.2.0"
 }

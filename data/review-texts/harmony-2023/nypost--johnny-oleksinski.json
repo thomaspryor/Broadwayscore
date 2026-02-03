@@ -59,7 +59,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251002230850/https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
   "llmScore": {
     "score": 64,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 59,
       "high": 69
@@ -72,8 +72,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review explicitly states the show 'still doesn't quite work' and has 'structural flaws' while acknowledging admirable elements like performances and music. The critic's final line encapsulates the mixed assessment. | GPT-4o: The review acknowledges strong performances and a moving score, but criticizes the show's lack of cohesion and pacing issues. While there are elements to admire, the overall production is described as flawed, leading to a mixed recommendation. | Gemini: The review highlights both strengths (catchy score, strong performances, relevant themes) and weaknesses (structural flaws, pacing issues, underdeveloped characters). The final takeaway suggests a mixed experience with redeeming qualities.",
+    "keyPhrases": [
+      {
+        "quote": "not everything is harmonious, but nonetheless there is much that's worth listening to",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds significant structural flaws and pacing issues, especially in Act One, calling it 'lopsided' and 'longwinded.' However, he praises the performances, music, and Act Two's emotional power, concluding with qualified appreciation rather than a clear recommendation either way. | GPT-4o: The review acknowledges strong performances and a relevant message but criticizes the show's structure and pacing, leading to a mixed verdict. | Gemini: The review highlights both positive and negative aspects, praising the score and performances but criticizing the pacing and structural flaws. The final takeaway suggests a qualified recommendation, placing it in the mixed category. | Kimi: The critic praises Manilow's catchy score and the strong performances, particularly Chip Zien's 'blistering' turn, while acknowledging significant structural problems and lopsided pacing, ultimately recommending the show for its musical merits and emotional highlights despite its dramaturgical shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -82,28 +88,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:39.108Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:55:41.085Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 67,
-    "geminiScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "contentTier": "complete",
   "wordCount": 816,

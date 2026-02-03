@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the score as 'supple and often haunting,' highlights 'memorable performances' from key cast members, and finds the contemporary spin on the myth 'a delight to explore,' though it notes some issues with the lead performances. | GPT-4o: The review praises the show's score, performances, and contemporary spin on an ancient story, indicating a positive recommendation. However, there are reservations about the lead performances, particularly Reeve Carney's portrayal of Orpheus. | Gemini: The review highlights several positive aspects of the show, including the score, performances, and contemporary spin on the myth. However, it also points out issues with the portrayal of Orpheus, leading to a 'recommended with reservations' verdict.",
+    "keyPhrases": [
+      {
+        "quote": "there's much that Mitchell & Co. unearth about the Greek myth that's a delight to explore",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review praises the score as 'supple and often haunting,' calls several performances 'memorable' and 'blessed,' and finds much to 'delight' in. However, it notes problems with the lead human characters and vocal straining, preventing a higher positive score. | GPT-4o: The review praises the show's contemporary spin, the score, and memorable performances, but notes some issues with the lead performances. Overall, it recommends the show with some reservations. | Gemini: The review highlights many positive aspects of the show, including the score, performances, and contemporary spin on the ancient story. However, it also mentions some problematic aspects, particularly the portrayal of Orpheus, leading to a positive but not rave recommendation. | Kimi: The critic praises the score as 'supple and often haunting', the Act 1 finale as 'stirring and visually stunning', and highlights memorable performances from Page and Gray, though noting the central performance by Carney is problematic.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:11.349Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:05:46.631Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 77,
     "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "mergedFrom": [
     {

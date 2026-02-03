@@ -10,15 +10,15 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds the stage performances 'wonderfully entertaining' but identifies a fundamental structural problem where 'the offstage drama feels as if it belongs in a different, less polished, play,' creating disharmony in the show overall. | GPT-4o: The review acknowledges the entertaining stage performances and talented singers but criticizes the offstage drama as disjointed and overly emotional. This suggests a mixed experience with both positive and negative elements. | Gemini: The review praises the performances and entertainment value but finds the offstage drama less polished, indicating a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The stage performances by the singing group are wonderfully entertaining, a showcase for some greatly talented singers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the performances and entertainment value but has growing reservations about the emotional manipulation and feels there's a 'disharmony' between the show's two halves. The review balances positive elements (talented singers, entertaining performances) with significant concerns about the Broadway transfer's amplified emotions. | GPT-4o: The review praises the stage performances and talented singers but criticizes the emotional disjunction and disharmony between the entertaining performances and the offstage drama. This mixed assessment suggests neither a strong recommendation nor a discouragement. | Gemini: The reviewer notes a \"disharmony\" between the entertaining stage performances and the heightened, less polished offstage drama. While praising the singing group, they express reservations about the overall emotional impact, resulting in a mixed assessment. | Kimi: The critic praises the singing and staging as 'wonderfully entertaining' but identifies a significant 'disharmony' between the polished musical numbers and the overwrought offstage drama, noting that emotional scenes have been 'pushed to fever pitch' for Broadway in a way that creates disjunction rather than cohesion.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:50.799Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T08:01:58.573Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 76,
+    "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 57,

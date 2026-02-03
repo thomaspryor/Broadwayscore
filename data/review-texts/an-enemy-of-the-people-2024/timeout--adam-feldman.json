@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives a 4/5 rating and uses 'Recommended' in the header. While noting this production has less compelling counterarguments than others, the critic praises its focused environmental message and modern relevance, ultimately viewing it as an effective plea to audiences. | GPT-4o: The original rating of 4/5 suggests a positive review. Despite the truncated text, the excerpts highlight the production's modern relevance and strong performances, indicating a recommendation. | Gemini: The critic gives the show 4/5 stars and states that this production focuses intently on the underlying issue of contamination, both of the environment and of public discourse. While acknowledging other productions may have laid out counterarguments more compellingly, the critic still recommends this production.",
+    "keyPhrases": [
+      {
+        "quote": "This version of the play is a plea to the audience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Strong's performance, Gold's direction, and the production's modern relevance. While noting the protagonist's flaws, the critic finds the revival 'engrossing' and meaningfully focused on environmental/discourse contamination themes. | GPT-4o: The review is generally positive, highlighting strong performances and a modern adaptation, despite some reservations about the delivery of counterarguments. The original 4/5 rating suggests a positive verdict, but the text is truncated, so confidence is medium. | Gemini: The review is largely positive, highlighting the play's modern relevance and Strong's performance, while acknowledging some limitations in laying out counterarguments. The 4/5 star rating supports a positive classification. | Kimi: The review awards 4/5 stars, praising the production as engrossing and pointedly modern with strong central performances, though it notes other productions have laid out counterarguments more compellingly.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:49:02.325Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:20:12.776Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 78,
-    "openaiScore": 80,
+    "openaiScore": 78,
     "geminiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "showScoreExcerpt": "\"Gold’s 'An Enemy of the People'... feels pointedly modern\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/an-enemy-of-the-people-broadway",

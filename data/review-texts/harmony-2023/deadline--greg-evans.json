@@ -6,15 +6,15 @@
   "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
   "publishDate": "November 13, 2023",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -24,8 +24,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds Harmony 'steadily compelling and not infrequently stirring' with solid craftsmanship, praising performances and songs while noting it 'takes fewer chances than one might hope' - a clear positive recommendation with some reservations. | GPT-4o: The review acknowledges some flaws in the musical but ultimately highlights its compelling and stirring nature, as well as the craftsmanship of Manilow and Sussman. The positive aspects are emphasized more than the negatives, leading to a solid recommendation. | Gemini: The review indicates that the musical is \"steadily compelling and not infrequently stirring,\" and while it has some flaws, it is ultimately a worthwhile experience. The phrase \"occasionally soars, occasionally stumbles, but the former more often than the latter\" suggests a positive but not overwhelmingly enthusiastic recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "As a musical, Harmony occasionally soars, occasionally stumbles, but the former more often than the latter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic finds Harmony 'steadily compelling and not infrequently stirring' with strong craftsmanship, praising performances and highlighting musical numbers. Despite noting it 'takes fewer chances than one might hope' and has some stumbles, the overall assessment is positive with clear recommendation. | Gemini: The review is generally positive, noting that the musical is \"steadily compelling and not infrequently stirring.\" While it acknowledges some stumbles, it leans towards a recommendation. | Kimi: While the critic notes occasional stumbles and conservative structural choices, the review offers strong praise for the performances, craftsmanship, and historical resonance, ultimately delivering a clear recommendation to see the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -34,22 +40,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:23.469Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:52:13.539Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 79,
+    "openaiScore": null,
     "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

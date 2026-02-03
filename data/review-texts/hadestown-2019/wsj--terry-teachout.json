@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,11 +17,11 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a show that sounds like no other musical on or off Broadway, one whose score has the craggy authenticity of American folk music at its most uncompromising.",
   "llmScore": {
-    "score": 80,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic clearly recommends the show, praising its freshness and unique sound while acknowledging minor flaws. The positive assessment of its 'kaleidoscopic stylistic variety' and 'craggy authenticity' indicates solid recommendation despite reservations. | GPT-4o: The review praises 'Hadestown' for its originality and fresh approach, encouraging audiences to overlook minor flaws and enjoy the unique musical experience. The tone is enthusiastic and clearly recommends the show. | Gemini: The review explicitly states that the flaws are forgivable and that the show is worth seeing despite them, placing it firmly in the positive bucket. The recommendation is not enthusiastic enough for a 'rave' classification.",
+    "keyPhrases": [
+      {
+        "quote": "Hadestown isn't perfect, but it's so fresh that you'll gladly look past its forgivable flaws and savor the kaleidoscopic stylistic variety.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with enthusiastic praise for the show's freshness and originality. The critic acknowledges minor flaws but frames them as 'forgivable' and emphasizes the show's unique qualities and 'craggy authenticity.' | GPT-4o: The review praises 'Hadestown' for its freshness and uniqueness, encouraging audiences to overlook minor flaws. The tone is enthusiastic, highlighting the show's ambitious and distinctive qualities. | Gemini: The review acknowledges flaws but ultimately recommends the show due to its freshness and unique score. The critic is willing to overlook imperfections, indicating a positive overall experience. | Kimi: The critic praises the show's conceptual ambition and unique folk-influenced score, calling it 'fresh' and unlike any other musical on Broadway, while acknowledging imperfections but urging audiences to see it anyway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:40.620Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:10:39.552Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 80,
     "openaiScore": 82,
-    "geminiScore": 79,
+    "geminiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",

@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 95,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 93,
-    "confidence": "high",
+    "score": 95,
+    "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Despite truncation warning, the review is overwhelmingly enthusiastic throughout with phrases like 'instant classic', 'scores an absolute bull's-eye', 'superlatives are in order', and tells readers to 'stop reading right now and get yer tickets'. The BWW excerpt confirms the rave verdict with praise for Miranda's 'well-deserved gold star'. | GPT-4o: The review is overwhelmingly positive, praising the musical as an 'instant-megahit' and a 'must-see,' with high praise for Lin-Manuel Miranda's talent and the show's innovative approach. The critic strongly recommends seeing the show, despite the truncated text warning. | Gemini: The review is overwhelmingly positive, calling the show an \"instant-megahit\" and stating that Miranda \"doesn't waste his shot, for sure, and scores an absolute bull's-eye.\" The critic uses superlatives and suggests readers get tickets immediately (though acknowledges difficulty). The aggregator excerpt confirms the strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Miranda doesn't waste his shot, for sure, and scores an absolute bull's-eye.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being truncated, this is clearly a rave review with superlatives throughout ('instant classic', 'absolute bull's-eye', 'catapults Miranda to the head of the class') and an explicit recommendation to 'stop reading right now and get yer tickets'. The BWW excerpt confirms the gold star/goldmine conclusion. | GPT-4o: The review is filled with superlatives and high praise for the production, performances, and Miranda's work. Despite the truncation warning, the available text strongly indicates a rave review. | Gemini: The review is overwhelmingly positive, using superlatives like \"instant-megahit\", \"absolute bull's-eye\", and \"instant classic.\" The critic strongly recommends seeing it, calling it something new for musical theatre. | Kimi: Despite the truncated text, the review overflows with superlatives ('instant classic,' 'absolute bull's-eye') and explicitly urges readers to 'get yer tickets,' indicating an unreserved recommendation for this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:02:58.580Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:24:44.677Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 94,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 92,
+    "kimiScore": 98,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,

@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic gives 4/5 stars and uses 'Recommended' as a label, praising the performances, direction, and the play's contemporary relevance. Despite some dark subject matter, the overall assessment is clearly positive. | GPT-4o: Despite the truncated text, the original 4/5 rating and positive excerpts indicate a strong recommendation. The review highlights the play's powerful resonance and engaging performances, suggesting an enthusiastic endorsement. | Gemini: The critic gives the show a 4/5 star rating and describes it as \"engrossing and unsettling.\" The review focuses on the play's themes and the performances, suggesting a positive overall experience, despite the truncated ending.",
+    "keyPhrases": [
+      {
+        "quote": "The slipperiness of ostensible skepticism into utter credulity is what makes Bug continue to resonate so powerfully today.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and the play's contemporary relevance. Critic finds it 'engrossing and unsettling' with 'mounting sense of dread' and calls it powerfully resonant. | GPT-4o: The review provides a detailed analysis of the play's themes and performances, highlighting its powerful resonance and engrossing nature. The original 4/5 rating suggests a positive recommendation, though the text is truncated, which lowers confidence. | Gemini: The review is positive, awarding 4/5 stars. While it describes dark themes, the critic highlights the play's resonance and the actors' performances, indicating a recommendation. | Kimi: The review carries a 4/5 star rating and 'Recommended' designation, with consistent praise for Carrie Coon's 'riveting' performance, David Cromer's direction, and the play's continued relevance. Despite the truncation warning, the available text indicates an enthusiastic endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:24:24.766Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:25:49.792Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 78,
+    "previousScore": 80,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textFetchedAt": "2026-02-02T02:42:40.506Z",
   "textFetchMethod": "playwright-stealth",

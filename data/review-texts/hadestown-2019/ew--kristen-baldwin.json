@@ -18,7 +18,7 @@
   "showScoreExcerpt": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
   "llmScore": {
     "score": 88,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 83,
       "high": 93
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this in Rave territory, and the excerpt uses strong praise language like 'stunning piece of musical theater' with specific positive elements highlighted. | GPT-4o: The critic's original rating of 88 and the excerpt's enthusiastic praise for the production's music, lyrics, and performances strongly suggest a rave review. The language used is highly positive, indicating a must-see recommendation. | Gemini: The review excerpt uses strong positive language like \"stunning,\" \"gorgeous,\" \"poetic,\" and \"masterful,\" indicating a strong recommendation. The critic's original rating of 88 also supports a positive classification.",
+    "keyPhrases": [
+      {
+        "quote": "This folk-opera retelling of the Orpheus and Eurydice myth is a stunning piece of musical theater that weaves together gorgeous melodies, poetic lyrics, and masterful performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic uses strong superlatives ('stunning', 'gorgeous', 'masterful') without any reservations. The original rating of 88 confirms this is a Rave-level recommendation. | GPT-4o: The excerpt uses strong positive language ('stunning', 'gorgeous', 'masterful'), indicating a highly favorable review. The original rating of 88 supports a Rave classification. | Gemini: The critic uses strong positive language such as \"stunning,\" \"gorgeous,\" \"poetic,\" and \"masterful,\" indicating a rave review. The original rating of 88 aligns with this assessment. | Kimi: The excerpt employs superlatives including 'stunning,' 'gorgeous,' and 'masterful' to praise the production, consistent with the critic's original 88 rating, indicating an enthusiastic rave recommendation despite the limitation of a single excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:59:14.073Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:39:09.430Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
+    "previousScore": 88,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 88,
-    "geminiScore": 82,
+    "geminiScore": 88,
+    "kimiScore": 88,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",

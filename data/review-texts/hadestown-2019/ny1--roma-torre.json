@@ -8,19 +8,19 @@
   "fullText": "\"Hadestown\" is no longer an underground hit. In its move up to Broadway, there were so many ways it could have derailed, but at every level, the creative team behind the stunningly visceral production delivered in spades. And while this free-wheeling version of the Orpheus myth may not appeal to everyone, it is a collaborative tour de force.\n\nInspired by the tragic story of Orpheus's great love for Eurydice, Anais Mitchell wrote the book and music as a New Orleans style folk opera. She placed her characters in an apocalyptic setting where cold and hunger rule their lives and, for some, death is the only relief.\n\nHades is the God of the Dead, and here he presides over a thriving but hopeless existence where lost souls are indentured servants are working a factory in a state of perpetual misery.\n\nHades's wife, Persephone, is the Goddess of the Seasons, and as the myth goes, she's allowed to leave the underworld for six months of the year to warm the earth in spring and summer.\n\nOrpheus is a musician whose songs have the power to charm and alter fate, and so when his beloved Eurydice agrees to give up her life, he descends to the underworld to retrieve her.\n\nThe tale's message is all about the power of love over death. But this telling goes further, commenting on current political themes: economic inequality, the environment, and there's even a hauntingly prescient song written nine years ago about Hades's wall.\n\nIt started as a concept album before director Rachel Chavkin worked her own theatrical magic. Known for her Tony-nominated direction of Broadway's \"The Great Comet,\" she's a master at corralling disparate elements into a singular vision.\n\nAnd so, with Mitchell's glorious folk and jazz infused score, Chavkin crafted an exquisitely original production with a dream company featuring terrific choreography and a fabulous cast, including some very feisty Fates, the inimitable Andre De Shields as the all-knowing narrator Hermes, Reeve Carney as the sweet-natured Orpheus, Eva Noblezada's hard-knocks Eurydice, and Broadway's favorite fog-horned villain Patrick Page. Amber Gray's Persephone will bring to mind a young Eartha Kitt, bubbling with attitude and an outrageously infectious sense of abandon.\n\nLove it or not, the theatre gods should be smiling.",
   "showScoreExcerpt": "A stunningly visceral, exquisitely original production. The theatre gods should be smiling. A collaborative tour de force highlighting director Rachel Chavkin's ability to unify diverse creative elements. Chavkin transformed Mitchell's original album into a singularly visceral stage experience. The ensemble cast is praised, particularly Andre De Shields, Reeve Carney, Eva Noblezada, Amber Gray, and Patrick Page for their performances. The reimagined Orpheus myth addresses contemporary themes, including economic inequality and environmental concerns. Amber Gray's Persephone will bring to mind a young Eartha Kitt, bubbling with attitude and an outrageously infectious sense of abandon.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 88,
   "source": "webfetch-scraped",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 81,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 83,
+      "high": 93
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic delivers strong praise calling it a 'collaborative tour de force' and 'exquisitely original production' with a 'dream company,' despite noting it 'may not appeal to everyone.' The positive verdict is clear with praise for all creative elements. | GPT-4o: The review is overwhelmingly positive, highlighting the production as a 'collaborative tour de force' and praising the direction, music, and performances. The critic's language is enthusiastic and suggests that the show is a standout success. | Gemini: The review is overwhelmingly positive, praising the creative team, direction, score, and cast. The phrase \"may not appeal to everyone\" indicates a slight reservation, but the overall tone is enthusiastic, meriting a positive score in the upper range.",
+    "keyPhrases": [
+      {
+        "quote": "At every level, the creative team behind the stunningly visceral production delivered in spades.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistently enthusiastic praise throughout with terms like 'tour de force,' 'delivered in spades,' 'exquisitely original,' and 'dream company.' Strong recommendation despite acknowledging it 'may not appeal to everyone.' | GPT-4o: The review is filled with superlative praise for the production, direction, and performances, describing it as a 'collaborative tour de force' and 'exquisitely original'. The positive tone and strong recommendation indicate a rave review. | Gemini: The review is overwhelmingly positive, using phrases like \"stunningly visceral production\", \"collaborative tour de force\", \"glorious folk and jazz infused score\", and \"exquisitely original production\". The critic only notes that it may not appeal to everyone, but overall, it is a strong recommendation. | Kimi: The review offers effusive praise for the Broadway transfer, calling it 'stunningly visceral,' an 'exquisitely original production,' and a 'collaborative tour de force' while commending the direction, score, choreography, and cast with superlative language. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T17:59:49.049Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:45:44.183Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 81,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 95,
-    "geminiScore": 79,
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 94,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "archivePath": "data/archives/reviews/hadestown-2019/ny1--roma-torre_2026-01-26.html",
   "textFetchedAt": "2026-01-26T22:39:10.174Z",

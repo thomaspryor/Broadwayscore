@@ -47,8 +47,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite being truncated, the review contains overwhelmingly positive language throughout, praising performances as 'amazing', 'spectacular', and 'excellent', and ends with an urgent recommendation to see it immediately. | GPT-4o: The review is filled with praise for the cast, direction, and production elements, culminating in a strong call to action to see the show immediately. Despite the truncation warning, the overall tone and specific recommendation suggest a rave review. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the cast, direction, and design. The final sentence, \"Go see it now, while you can still get tickets,\" clearly indicates a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Go see it now, while you can still get tickets.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation warnings, the review contains a clear enthusiastic recommendation to 'Go see it now' with consistent praise throughout for performances, direction, and design. The critic describes being 'swept along' and calls various elements 'excellent,' 'spectacular,' and 'magical.' | GPT-4o: The review is filled with praise for the cast, direction, and production elements, culminating in a strong recommendation to see the show. Despite the truncation, the available text and aggregator excerpt suggest a highly positive assessment. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the cast, music, and direction. The final line, \"Go see it now, while you can still get tickets,\" indicates a strong recommendation. | Kimi: The review lavishes unqualified praise on the cast, direction, and design using words like 'entrancing,' 'spectacular,' and 'magical,' and concludes with an explicit urgent imperative urging readers to buy tickets immediately.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -57,9 +63,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:00:26.466Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:58:27.877Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
@@ -68,17 +74,19 @@
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 79,
+    "geminiScore": 81,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 11,
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "tierReason": "Full review text"
 }

@@ -7,15 +7,15 @@
   "publishDate": "November 14, 2023",
   "fullText": "Bruce Sussman and Barry Manilow’s conventional new musical does a rudimentary but essential job of reviving a dead historical act.\n\nGood morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Harmony.”\n\nMuch is lost during times of war and savagery: Lives and homes, yes, but also art. Bruce Sussman and Barry Manilow’s new musical “Harmony” reminds us of this loss, filling history’s holes with witty lyrics, satirical jabs at autocracy and, well, harmony. The show follows the true story of six young men — three Jewish, three gentile — from varying economic and professional backgrounds who unite to form a singing group called the Comedian Harmonists in early-20th-century Germany. Director-choreographer Warren Carlyle’s top-notch ensemble bops and croons in all the right places, never falling out of synchronous step while also emitting a blend of chords that inch us closer to Nirvana. The Comedian Harmonists’ ascent is increasingly threatened by the fascist regime gaining power in Germany, but “Harmony” is no in-depth history lesson. Details of occupation remain brief, like a glossed over version of “Nazism for Dummies.” Carlyle, instead, keeps the stakes high with textbook acts of cruelty — intimidating us (and the Harmonists) with “Heils,” swastikas and anti-Semitic outbursts from actors who emerge from the audience. Though “Harmony” is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand. By its end, a palpable grief radiates throughout the Ethel Barrymore Theatre — a palpable shame, as well. One that hopefully urges us to remember our dead and to do everything — everything — in our power to keep their stories alive.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -25,8 +25,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing formulaic elements and calling it 'rudimentary,' the critic concludes it 'successfully completes the task at hand' and praises the ensemble and direction, indicating a qualified recommendation. | GPT-4o: The review acknowledges the musical's formulaic and melancholic aspects but ultimately praises its successful execution and emotional impact, recommending it for its ability to revive historical narratives. | Gemini: The review acknowledges flaws but ultimately concludes that the show successfully achieves its goal, making it a positive recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Though 'Harmony' is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show's historical importance and praises performances, but finds it formulaic and lacking depth. The verdict suggests competent execution without strong recommendation. | GPT-4o: The review praises the ensemble and the show's ability to evoke emotion and remembrance, despite noting its formulaic and brief handling of historical details. The overall tone suggests a recommendation with some reservations. | Gemini: The review acknowledges formulaic elements but ultimately states the show \"successfully completes the task at hand.\" This suggests a positive, but not rave, recommendation. | Kimi: While criticizing the show's conventional structure and rudimentary historical treatment, the critic praises the top-notch ensemble and finds that the show successfully completes its essential task of reviving the historical act with emotional impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -35,28 +41,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:12.003Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:48:24.087Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 78,
-    "geminiScore": 77,
-    "claudeBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "dtliExcerpt": "Though “Harmony” is dampened by its formulaic adherence to melancholic moments and a tragedy-laden chronicling of Jewish heritage, this is a show that successfully completes the task at hand. By its end, a palpable grief radiates throughout the Ethel Barrymore Theatre — a palpable shame, as well. One that hopefully urges us to remember our dead and to do everything — everything — in our power to keep their stories alive.",
   "sources": [

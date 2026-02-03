@@ -95,6 +95,11 @@
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,
   "rescoreCompletedAt": "2026-01-29T01:53:22.904Z",
-  "contentTier": "complete",
-  "wordCount": 2226
+  "contentTier": "invalid",
+  "wordCount": 2226,
+  "rejectedAt": "2026-02-03T06:44:41.792Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a multi-show roundup reviewing four different Broadway shows (Gary, Hillary and Clinton, Burn This, and Hadestown) rather than a focused review of a single target show.; openai: The review text discusses multiple shows including 'Gary: A Sequel to Titus Andronicus', 'Hillary and Clinton', 'Burn This', and 'Hadestown', but not the current Broadway production of 'Gary: A Sequel to Titus Andronicus'.",
+  "promptVersion": "5.2.0"
 }

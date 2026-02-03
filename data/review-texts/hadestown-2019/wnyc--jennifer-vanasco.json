@@ -8,16 +8,16 @@
   "fullText": "The ill-fated lovers of the ancient Greek myth Orpheus and Eurydice are at the center of the new Broadway musical \"Hadestown.\" They live in a 1930s New Orleans-flavored neverland that is trudging through an endless winter: Hades (a gravel-voiced Patrick Page), the ruler of the underworld, is keeping his wife Persephone (Amber Gray) to himself. Without her, there's no warmth, no flowers, no spring. The harshness of that life makes Eurydice (a winning Eva Noblezada) bitter and cynical, until she meets and falls in love with the sunny songwriter Orpheus (Reeve Carney, too much of a blank slate in this production). Orpheus, however, is distracted by his music, which he believes can help heal the earth. Even worse, he's poor and leaves Eurydice alone, hungry and cold. When Hades makes her an offer to come to the warm underworld, she takes it — how can she refuse? And, of course, Orpheus goes to find her. Those familiar with the story know how that ends. Anaïs Mitchell, a singer/songwriter, originally wrote this show as a concept album, and it shows in her richly textured, roots-inspired songs. She connected with director Rachel Chavkin (\"Natasha, Pierre & the Great Comet of 1812\") and the result is a stylish, resonant, high-energy musical, much fuller than the Off Broadway version at New York Theater Workshop in 2016. Chavkin's staging is exquisite, with a set by Rachel Hauck and lighting design from Bradley King. In one scene, Hades' enslaved workers swing giant pendant lights through the fog of the underworld and the result is haunting. But the most provocative part of this show has been there since the beginning. Hades is something like a corporate tyrant, using his workers to build a wall to keep the starving people of earth out. Unless they sign away their souls to him, he doesn't want them to sneak in and receive the warmth of his underworld. There are obvious parallels to today's politics — especially in the song \"Why We Build the Wall,\" which has the lyric \"The enemy is poverty/And the wall keeps out the enemy/And we build the wall to keep us free.\" But Mitchell wrote the song during the George W. Bush administration. The more things change, the more they stay the same. That might make \"Hadestown\" seem despairing (much of the show does take place in Hell, after all) but its message is actually the opposite: life might seem like it will be dark forever. But there's always a chance that with courage and perseverance, even the most familiar story can, in the end, turn out a different way. \"Hadestown,\" music, lyrics and book by Anaïs Mitchell, directed and co-developed by Rachel Chavkin, at the Walter Kerr Theatre in an open run.",
   "showScoreExcerpt": "A stylish, resonant, high-energy musical...There are obvious parallels to today's politics.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 81,
   "source": "show-score",
   "sourceMethod": "playwright",
   "scoreSource": null,
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the staging as 'exquisite,' calls it 'stylish, resonant, high-energy,' and highlights the show's provocative themes and uplifting message, with only minor criticism of one performance. | GPT-4o: The review is highly positive, praising the music, staging, and thematic resonance of 'Hadestown'. The critic describes the production as 'stylish, resonant, high-energy' and highlights its exquisite staging and relevant themes, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the stylish staging and resonant music. However, it also notes some reservations, such as Reeve Carney's performance as Orpheus being a \"blank slate.\"",
+    "keyPhrases": [
+      {
+        "quote": "The result is a stylish, resonant, high-energy musical, much fuller than the Off Broadway version.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production with specific positive descriptors ('stylish, resonant, high-energy', 'exquisite staging') and detailed appreciation of technical elements, despite minor criticism of one performance. | GPT-4o: The review praises the production as 'stylish, resonant, high-energy' and highlights the 'exquisite' staging and 'richly textured' songs. The positive tone and specific commendations indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the music, staging, and overall impact of the show. The critic highlights the show's resonance and energy, indicating a strong recommendation. | Kimi: Review offers strong praise for Chavkin's 'exquisite' staging, Mitchell's 'richly textured' songs, and calls the production 'stylish, resonant, high-energy,' with only minor criticism of Reeve Carney's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:35.901Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:09:48.776Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 78,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 92,
-    "geminiScore": 78,
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "wordCount": 457,

@@ -15,7 +15,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 93,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 88,
       "high": 98
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: The review is overwhelmingly positive with superlatives like 'masterful,' 'finest,' and 'most dynamic new musicals to hit the stage in decades.' The critic enthusiastically recommends reserving tickets immediately and calls it an unmissable event. | GPT-4o: The review is overwhelmingly positive, praising the production as masterful and dynamic, with a strong recommendation to reserve tickets immediately. The critic highlights the unique storytelling, performances, and choreography, indicating a rave review. | Gemini: The review is overwhelmingly positive, using phrases like \"truly masterful\" and emphasizing the unique and enjoyable qualities of the production. The enthusiastic tone and strong recommendation to reserve tickets indicate a Rave classification.",
+    "keyPhrases": [
+      {
+        "quote": "This production is truly masterful, and brings a modern twist to nearly 300 year old history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified enthusiasm with superlatives like 'masterful', 'finest', 'most dynamic new musicals to hit the stage in decades'. Clear must-see recommendation with detailed praise for all elements. | Gemini: The review is overwhelmingly positive, using terms like \"masterful\" and highlighting the unique and dynamic nature of the musical. The critic clearly recommends seeing the show. | Kimi: The review offers unqualified praise with superlatives like 'masterful' and 'finest,' explicitly urges readers to reserve tickets, and finds no faults with the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:04:25.295Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:39:04.943Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "scoreDelta": 3,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/thisbroadsway--sandra-mcfarland_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:20:10.999Z",

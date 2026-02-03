@@ -97,5 +97,11 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-02T17:59:25.554Z",
   "wordCount": 1041,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-03T06:40:50.797Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the National's Olivier theatre in London, not the current Broadway run.; kimi: This review explicitly covers the London production at the National Theatre's Olivier Theatre (opening with 'Olivier, London' and specifying 'At the National's Olivier theatre, London, until 26 January'), not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

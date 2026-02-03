@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, Antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
@@ -19,22 +19,28 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 60,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic identifies the fascinating source material but finds the execution deeply flawed, calling it 'shakily constructed' with 'misfiring elements' and characters that 'seem insubstantial.' While acknowledging some effective moments and performances, the overall assessment emphasizes structural problems and missed opportunities rather than recommending the show. | GPT-4o: The review criticizes the musical for its lack of compelling storytelling, insubstantial characters, and ineffective comedic elements. Despite some strong performances, the production fails to make a convincing case for its historical subjects, leading to a recommendation to skip it. | Gemini: The review highlights several flaws in the musical's construction, character development, and comedic elements, while acknowledging the importance of the story and the impact of certain moments. The overall assessment is that the show is uneven and doesn't fully succeed in its aims.",
+    "keyPhrases": [
+      {
+        "quote": "The unevenly staged Harmony is a shakily constructed set of misfiring elements, whose most compelling beats around Nazism, antisemitism, and bigotry—all points resoundingly and rightly made—feel imposed and didactic rather than flowing naturally from the source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Consistently negative assessment calling the show 'shakily constructed' with 'misfiring elements,' criticizing weak characterization, ineffective comedy, and hollow storytelling despite acknowledging the importance of its subject matter. | Gemini: The review highlights both positive and negative aspects of the show, ultimately concluding that it is uneven and has misfiring elements. The critic acknowledges the importance of the themes but finds them imposed rather than organic. | Kimi: The critic finds the show structurally flawed and emotionally hollow, criticizing the shaky construction, unfunny comedy, and underdeveloped characters, despite praising individual performances by Julie Benko and Chip Zien.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -43,28 +49,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:20.011Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:51:30.959Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 40,
+    "claudeScore": 42,
+    "openaiScore": null,
     "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 22,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 31,

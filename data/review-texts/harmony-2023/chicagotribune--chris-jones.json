@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "bww-roundup",
   "dtliThumb": null,
   "dtliExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German singing group that was torn apart by the Nazis, is deeply sincere but dramatically inert.",
@@ -20,11 +20,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones acknowledges structural flaws and a 'not deeply sophisticated book' but clearly recommends the show, praising Manilow's score, specific performances, and the production's emotional impact and timeliness. | GPT-4o: The review acknowledges structural flaws and some choppy narration but praises the emotional impact, performances, and musical score. The critic ends on a reflective note, indicating a positive overall experience despite the reservations. | Gemini: The review acknowledges structural flaws and choppiness, but praises the score, performances, and emotional impact, ultimately recommending the show despite its issues.",
+    "keyPhrases": [
+      {
+        "quote": "The Broadway transfer also is greatly enhanced by the addition of Sierra Borgess as Mary and, especially, Julie Benko in the role of Ruth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Jones acknowledges significant structural flaws in the book and pacing issues, but praises Manilow's sophisticated score, the enhanced emotional weight due to current events, strong performances (especially Benko), and sophisticated vocal arrangements. The review concludes positively with the critic reflecting on the show's important message. | GPT-4o: The review praises the emotional impact, the score by Barry Manilow, and the performances, particularly highlighting Julie Benko. Despite noting some structural flaws, the overall tone is positive and recommends the show for its emotional depth and musical sophistication. | Gemini: The review acknowledges structural flaws but praises the score, performances, and emotional impact, ultimately recommending the show despite reservations about the book and narration. | Kimi: While acknowledging structural flaws in the book and choppy narration, the critic strongly praises Manilow's sophisticated score, the emotionally charged production, and standout performances, concluding the show earned its Broadway transfer and achieves significant emotional impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,9 +50,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:05:15.888Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:49:48.268Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 77,
@@ -54,18 +60,20 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 71,

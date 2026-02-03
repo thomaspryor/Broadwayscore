@@ -16,7 +16,7 @@
   "scoreConfidence": "medium",
   "llmScore": {
     "score": 94,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 89,
       "high": 99
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The reviewer gives an explicit '10 out of 10' rating, calls it 'magnificent' and 'THE most amazing experience,' and describes it as a 'bona-fide hit' they will 'treasure.' Despite some context about price and accessibility concerns, the verdict is unambiguously enthusiastic praise. | GPT-4o: The critic describes the show as 'magnificent' and 'a 10 out of 10', indicating a strong, enthusiastic recommendation. The review is overwhelmingly positive, highlighting the performances and the overall experience as exceptional. | Gemini: The reviewer states the show is a \"10 out of 10\" and \"magnificent\" even with swing cast members. They are thankful for the ticket and will treasure the experience.",
+    "keyPhrases": [
+      {
+        "quote": "This show, despite a major cast change, is a 10 out of 10.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear 10/10 rating with superlatives like 'magnificent', 'amazing experience', and 'bona-fide hit'. Despite acknowledging complexity and cast changes, the critic's verdict is unqualifiedly positive with no meaningful reservations. | GPT-4o: The review is overwhelmingly positive, with superlatives like 'magnificent' and '10 out of 10', indicating a strong recommendation. The critic expresses immense satisfaction with the performance, even with a swing cast, and highlights the ensemble's hard work. | Gemini: The critic gives the show a 10/10 rating and uses superlatives such as \"amazing\", \"magnificent\", and \"incredibly thankful\" to describe their experience, indicating a rave review. | Kimi: The reviewer explicitly gives the show a 10/10 rating and describes it as 'magnificent,' 'genius,' and a 'bona-fide hit' with no substantive criticism, indicating an unqualified rave recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:01:45.520Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:11:40.993Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 94,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 93,
     "openaiScore": 95,
-    "geminiScore": 82,
+    "geminiScore": 92,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/hamilton-2015/act-three--doug-marino_2026-01-26.html",
   "textFetchedAt": "2026-01-26T15:35:52.663Z",

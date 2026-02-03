@@ -10,18 +10,18 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
     "bww-roundup"
   ],
   "llmScore": {
-    "score": 92,
+    "score": 91,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic gives an unequivocal positive answer to whether Hamilton lives up to the hype, comparing Miranda to legendary composers, calling multiple songs 'infectious showstoppers,' and praising the production elements as 'dazzling' and a 'real breakthrough.' | GPT-4o: The review is overwhelmingly positive, comparing Lin-Manuel Miranda to legendary composers and praising the show's music, choreography, and innovation. The few minor critiques do not detract from the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the music, choreography, and performances. Despite a minor critique of Miranda's stage presence, the overall recommendation is strong.",
+    "keyPhrases": [
+      {
+        "quote": "Yes, 'Hamilton' is that good, and the still youthful Lin-Manuel Miranda can be mentioned in the same sentence with Sondheim and even Cole Porter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'breakthrough,' comparing Miranda to legendary composers Sondheim and Porter, calling multiple songs 'infectious showstoppers,' and praising every production element. Only minor critique is about Miranda's stage personality, but overall verdict is clearly a rave. | GPT-4o: The review is overwhelmingly positive, with high praise for Lin-Manuel Miranda's work, the music, and the production. The critic compares Miranda to legendary composers, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the show \"that good\" and praising Miranda's talent. The critic highlights several aspects of the show, including the music, choreography, and performances, with only minor reservations about Miranda's stage presence. | Kimi: The critic explicitly confirms the show lives up to its hype, comparing Miranda to Sondheim and Porter, while praising the score, choreography, and direction as dazzling and infectious despite minor reservations about the lead performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:04:21.607Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:38:04.577Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 86,
+    "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 89,
-    "openaiScore": 95,
-    "geminiScore": 81,
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 95,

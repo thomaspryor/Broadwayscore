@@ -68,6 +68,11 @@
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 89,
   "rescoreCompletedAt": "2026-02-02T03:27:47.973Z",
-  "contentTier": "complete",
-  "wordCount": 606
+  "contentTier": "invalid",
+  "wordCount": 606,
+  "rejectedAt": "2026-02-03T07:17:28.272Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text is a review of the Hamilton book 'Hamilton: The Revolution', not a review of the Broadway show Hamilton itself; openai: The text is a review of the book 'Hamilton: The Revolution' rather than a review of the Broadway show 'Hamilton'.; kimi: This text is a review of the companion book 'Hamilton: The Revolution,' not a review of the Broadway production of 'Hamilton' itself. The critic discusses a book signing event, the physical book's design, and its contents rather than evaluating the theatrical production.",
+  "promptVersion": "5.2.0"
 }

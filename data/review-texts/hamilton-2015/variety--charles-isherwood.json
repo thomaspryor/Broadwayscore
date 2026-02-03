@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,13 +17,13 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
   "llmScore": {
-    "score": 89,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -31,8 +31,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review praises the show with terms like 'wit, intelligence and infectious energy' and notes that even a three-hour runtime 'flies by,' indicating strong enthusiasm and recommendation. | GPT-4o: The review praises the show for its wit, intelligence, and energy, suggesting a highly positive experience that transcends its long runtime. | Gemini: The review praises the musical's wit, intelligence, and energy, indicating a positive experience and recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "This is a musical that makes the Founding Fathers seem like real people rather than figures imprisoned in history books, and does so with wit, intelligence and an infectious energy that makes the show's nearly three-hour length fly by.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the show's wit, intelligence, and infectious energy, with the critic noting that even the nearly three-hour length 'flies by' - indicating genuine engagement and enthusiasm. | GPT-4o: The excerpt praises the show for its wit, intelligence, and energy, suggesting a strong positive impression. The lack of full context and single excerpt warning lowers confidence, but the tone is clearly enthusiastic. | Gemini: The review excerpt uses strong positive language like \"wit, intelligence and an infectious energy\" and indicates that the show's length \"fly[s] by,\" suggesting a highly enjoyable experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Single excerpt offers enthusiastic praise for the show's wit, intelligence and infectious energy, strongly recommending the production despite the limited context available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -41,28 +47,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:04:40.844Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T07:42:43.080Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 89,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": 82,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "excerpt",
   "contentTierReason": "fullText was copy of excerpt from web-search import",

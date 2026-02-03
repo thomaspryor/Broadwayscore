@@ -9,7 +9,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 40,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "For this you should leave home? Pick up your knitting, your book, your broom, whatever. Life’s too short for this Cabaret.",
@@ -19,9 +19,9 @@
     "dtli"
   ],
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:24:28.250Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T06:26:34.274Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 43,
@@ -86,11 +86,11 @@
     "invalidatedAt": "2026-02-01T04:02:00.807Z"
   },
   "llmScore": {
-    "score": 43,
-    "confidence": "high",
+    "score": 40,
+    "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 35,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -100,8 +100,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The opening focuses on disappointment and unmet expectations, with aggregator context confirming negative verdicts, though the truncated text limits confidence in the final assessment. | GPT-4o: The review opens with a setup about high expectations and the risk of disappointment, suggesting that the production did not meet those expectations. The aggregator context supports a negative verdict, though the text is truncated, which lowers confidence slightly. | Gemini: The review excerpt focuses on the potential for disappointment and the high bar set by previous productions, suggesting a negative assessment of the current show. The aggregator verdicts also indicate a negative reception.",
+    "keyPhrases": [
+      {
+        "quote": "Great expectations can be a problem when you're seeing a Broadway show: You don't always get what you hope for.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The text is clearly truncated at a critical juncture, cutting off mid-sentence about the cast. The opening focuses on potential disappointment and the 'risk' of not meeting expectations, suggesting concerns about this production. However, with aggregators indicating 'Down' verdicts and the warning tone about disappointment, this appears to lean negative within the mixed range. | GPT-4o: The excerpt suggests a theme of disappointment, especially given the high expectations set by previous productions and a talented cast. The aggregator context also indicates a negative reception. | Kimi: The review establishes a thesis of disappointed expectations and unfulfilled hopes regarding this revival, framing it as a letdown given the source material's masterpiece status. Aggregator consensus confirms a negative verdict, though the truncated text limits certainty.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -110,19 +116,20 @@
     }
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 60,
     "openaiScore": 40,
-    "geminiScore": 45,
-    "claudeBucket": "Negative",
+    "geminiScore": null,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "contentTier": "complete",
   "wordCount": 989,
