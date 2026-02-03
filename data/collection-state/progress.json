@@ -1,24 +1,32 @@
 {
   "processed": [
-    "33-variations-2009/variety--charles-isherwood.json"
+    "art-2025/nytg--allison-considine.json",
+    "art-2025/nydailynews--chris-jones.json",
+    "art-2025/nypost--johnny-oleksinski.json"
   ],
   "failed": [
-    "13-2008/nytimes--charles-isherwood.json",
-    "13-2008/variety--david-rooney.json",
-    "33-variations-2009/nytimes--ben-brantley.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json"
+    "art-2025/nytimes--elisabeth-vincentelli.json",
+    "art-2025/variety--daniel-d-addario.json",
+    "art-2025/vulture--sara-holdren.json",
+    "art-2025/deadline--greg-evans.json",
+    "art-2025/guardian--adrian-horton.json",
+    "art-2025/observer--david-cote.json",
+    "art-2025/theatermania--hayley-levitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "art-2025/nytg--allison-considine.json"
+    ],
     "browserbase": [],
     "scrapingbee": [],
-    "brightdata": [
-      "33-variations-2009/variety--charles-isherwood.json"
-    ],
-    "archive": []
+    "brightdata": [],
+    "archive": [
+      "art-2025/nydailynews--chris-jones.json",
+      "art-2025/nypost--johnny-oleksinski.json"
+    ]
   },
-  "startTime": "2026-02-03T22:02:03.954Z",
-  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
+  "startTime": "2026-02-03T22:19:52.528Z",
+  "lastProcessed": "art-2025/theatermania--hayley-levitt.json",
   "log": []
 }
