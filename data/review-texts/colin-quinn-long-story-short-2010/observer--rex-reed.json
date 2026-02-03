@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Quinn's one-man show is a thoughtful, funny and surprisingly moving meditation on the rise and fall of civilizations, told through the lens of his own Brooklyn Irish-Catholic upbringing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Quinn's one-man show is a thoughtful, funny and surprisingly moving meditation on the rise and fall of civilizations, told through the lens of his own Brooklyn Irish-Catholic upbringing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Quinn's one-man show is a thoughtful, funny and surprisingly moving meditation on the rise and fall of civilizations",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language (thoughtful, funny, surprisingly moving) but very brief excerpt limits confidence in full recommendation strength. | GPT-4o: The review describes the show as 'thoughtful, funny and surprisingly moving,' indicating a positive recommendation. However, the brevity of the review limits the confidence level. | Gemini: The review uses positive language such as \"thoughtful, funny and surprisingly moving\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise, describing the show as thoughtful, funny and moving, indicating genuine enthusiasm for the production despite the brief length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:13:18.514Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

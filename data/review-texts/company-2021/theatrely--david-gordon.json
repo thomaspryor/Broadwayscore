@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gender-swapped revival of Company breathes new life into Sondheim's masterpiece, with Katrina Lenk delivering a powerhouse performance as Bobbie that feels both fresh and timeless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-swapped revival of Company breathes new life into Sondheim's masterpiece, with Katrina Lenk delivering a powerhouse performance as Bobbie that feels both fresh and timeless.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gender-swapped revival of Company breathes new life into Sondheim's masterpiece, with Katrina Lenk delivering a powerhouse performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling it a 'masterpiece' that 'breathes new life' with a 'powerhouse performance.' Clear enthusiasm with no reservations expressed. | GPT-4o: The review uses strong positive language like 'breathes new life' and 'masterpiece', indicating a highly enthusiastic recommendation. | Gemini: The review uses the term \"masterpiece\" and \"powerhouse performance\", indicating a very positive and enthusiastic recommendation. | Kimi: The critic employs superlatives including 'masterpiece' and 'powerhouse performance,' offering unqualified enthusiasm for the revival's fresh interpretation and lead actress.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:19:10.981Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  },
+  "textQuality": "truncated"
 }

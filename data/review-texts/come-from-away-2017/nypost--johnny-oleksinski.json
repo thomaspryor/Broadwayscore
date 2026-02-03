@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a moving tribute to human kindness in the face of tragedy, with a superb cast that plays multiple roles with ease and authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a moving tribute to human kindness in the face of tragedy, with a superb cast that plays multiple roles with ease and authenticity.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a moving tribute to human kindness in the face of tragedy, with a superb cast that plays multiple roles with ease and authenticity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('moving tribute', 'superb cast') with praise for both content and performances, though brief text limits confidence in full assessment. | GPT-4o: The review praises the show as a 'moving tribute' with a 'superb cast,' indicating a positive recommendation. However, the brevity of the review limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review uses strong positive language like \"moving tribute\" and \"superb cast,\" indicating a strong recommendation. | Kimi: The critic uses strong praise ('moving tribute', 'superb cast', 'authenticity') indicating a clear recommendation, though the brevity suggests this is an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:20:55.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/review/little-night-music-93578/",
   "publishDate": "December 13, 2009",
-  "fullText": "By Barry Garron, The Associated Press \n\n \n\n September 24, 2009 2:53pm\n\nWhat a difference seven years can make. In 2002, Fox canceled Seth MacFarlane’s “Family Guy,” citing bad ratings. Since then, the series has made a triumphant return, MacFarlane’s “American Dad” was added to the schedule and now a third series, “Family Guy” spinoff “The Cleveland Show,” essentially gives MacFarlane the keys to the Fox Sunday night schedule.\n\nThere’s a new cast of animated characters on “Cleveland” but if you’ve seen the other two series, the new show will feel remarkably familiar, if tamer, more circumscribed and, ultimately, less subversive. Cleveland is saner, mellower and more of a genuine romantic than his counterparts, but the tone of the show and its animation style are recognizable.\n\nRelated Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Music\n \n \n \n \n\n \n \n \n \n Netflix to Air Special BTS Comeback Performance and New Documentary \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n TV\n \n \n \n \n\n \n \n \n \n 'The Kelly Clarkson Show' to End After Seven Seasons in Syndication\n\nThere are the cutaways, flashbacks and pop culture references that are the hallmarks of MacFarlane and his co-conspirators and, in this case, keep the show from settling into a rut.\n\nThe premise: Cleveland Brown (Mike Henry), the most grounded member of Peter Griffin’s inner circle, gets divorced. His ex gets the house and he gets custody of his son, Cleveland Jr. (Kevin Michael Richardson), forever naive and exceedingly rotund.\n\nCleveland decides to go to California to pursue his dream of being a minor-league baseball scout, En route (well, nearly so), he visits his hometown of Stoolbend, Va. There, a chance meeting with Donna (Sanaa Lathan), his high school crush, reignites old feelings.\n\nIn no time, he marries Donna and becomes stepdad to Roberta, a rebellious teenager, and Rollo, a wisecracking 5-year-old. Ironically, Donna’s two children — the least original of all MacFarlane’s creations — are exactly the kind of stereotypical TV kids that the show’s writers, at an earlier time, might have delighted in lampooning.\n\n“Cleveland” has a few delightfully outrageous moments, along with several that are gratuitously gross (“hot fur,” anyone?), but its most disconcerting element is its significant resemblance to “Family Guy.” Although one of Cleveland’s new neighbors is a religious bear voiced by MacFarlane, most of the others feel like counterparts to characters on the flagship series.\n\nThen there’s that other little problem: the use of a white actor to supply Cleveland’s voice. Granted, the show is not guilty of using the degrading dialect once employed by Freeman Gosden and Charles Correll in their radio portrayal of Amos and Andy. And, granted, Henry played the character when it appeared sporadically on “Family Guy.” Still, this insensitivities of a previous generation argue for greater care in voice casting, particularly on a series in which the black character has been elevated to the title role.\n\nIdeally, Fox should have scheduled this show at the end of its Sunday animation block in hope of hanging on to most of “Family Guy’s” viewers. However, that would have meant running “American Dad” at 8:30 p.m, which is too early for its bawdy humor. Now the risk is that “Cleveland” will be a speed bump between “The Simpsons” and “Family Guy.”\n\nAirdate: 8:30-9 p.m. Sunday, Sept. 27 (Fox)Production: Persons Unknown Prods., Happy Jack Prods. and Fuzzy Door Prods. in association with Fox Television AnimationCast: Mike Henry, Sanaa Lathan, Kevin Michael Richardson, Nia Long, Seth MacFarlane, Alex Borstein, Stacy Ferguson, Fuschia!, Seth Green, Corey Holcomb, Arianna HuffingtonExecutive producers/writers/creators: Seth MacFarlane, Richard Appel, Mike HenryCo-executive producer: Kirker ButlerProducers: Jonathan Green, Gabe Miller, Kara VallowCo-producers: Aseem Batra, Clarence LivingstonConsulting producers: Teri Schaffer, Raynelle SwillingDirector: Anthony LioiEditor: Kirk BensonMusic: Walter MurphyCasting: Linda Lamontagne",
-  "isFullReview": true,
+  "fullText": null,
+  "isFullReview": false,
   "dtliExcerpt": "Catherine Zeta-Jones makes a commanding Broadway debut in this handsome revival of Stephen Sondheim's masterpiece, though her vocals are more stylish than stirring.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Catherine Zeta-Jones makes a commanding Broadway debut in this handsome revival of Stephen Sondheim's masterpiece, though her vocals are more stylish than stirring.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (23 words)",
   "textWordCount": 595,
   "archivePath": "data/archives/reviews/a-little-night-music-2009/hollywood-reporter--david-rooney_2026-02-03.html",
@@ -54,7 +54,7 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "truncated",
+  "textQuality": null,
   "truncationSignals": [
     "no_ending_punctuation"
   ],
@@ -64,7 +64,7 @@
   "extractedByline": "Barry Garron",
   "expectedCritic": "David Rooney",
   "wordCount": 595,
-  "tierReason": "Full review text",
+  "tierReason": "Wrong article scraped (critic name mismatch)",
   "llmScore": {
     "score": 76,
     "confidence": "medium",
@@ -119,5 +119,7 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "Wrong article was scraped - clearing fullText for re-scrape"
 }

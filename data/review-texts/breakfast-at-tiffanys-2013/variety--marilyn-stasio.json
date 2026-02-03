@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is pleasant enough, but it's also oddly bloodless, lacking the sharp wit and emotional complexity that made Capote's novella so memorable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is pleasant enough, but it's also oddly bloodless, lacking the sharp wit and emotional complexity that made Capote's novella so memorable.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is pleasant enough, but it's also oddly bloodless, lacking the sharp wit and emotional complexity that made Capote's novella so memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges the show is 'pleasant enough' but criticizes it as 'bloodless' and lacking the wit and complexity of the source material. This represents a lukewarm, neither-recommend-nor-discourage assessment. | GPT-4o: The review acknowledges the show as 'pleasant enough' but criticizes it for lacking key qualities such as sharp wit and emotional complexity, leading to a negative overall impression. | Gemini: The review states the show is \"pleasant enough\" but lacks the depth of the source material, indicating a mixed reaction. | Kimi: The critic offers faint praise ('pleasant enough') but emphasizes significant shortcomings, finding the production lacking the wit and emotional depth of its source material, resulting in a lukewarm, middling assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:04:27.566Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

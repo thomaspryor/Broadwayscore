@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gender-flipped revival of Stephen Sondheim's 1970 musical, starring Katrina Lenk as Bobbie, brings fresh perspective to the material while honoring its essential spirit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-flipped revival of Stephen Sondheim's 1970 musical, starring Katrina Lenk as Bobbie, brings fresh perspective to the material while honoring its essential spirit.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings fresh perspective to the material while honoring its essential spirit",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language about bringing 'fresh perspective' while 'honoring' the original suggests a solid recommendation, though the brief excerpt limits confidence in the full critical assessment. | GPT-4o: The review highlights a fresh perspective and respect for the original, suggesting a positive reception. However, the brevity of the text limits confidence in the full context of the review. | Gemini: The review states that the revival brings a fresh perspective while honoring the original, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The critic praises the production's gender-flipped casting choice and finds it successfully balances new interpretation with fidelity to Sondheim's original, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:20:13.721Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

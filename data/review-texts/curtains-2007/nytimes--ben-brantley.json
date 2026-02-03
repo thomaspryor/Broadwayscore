@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This show about a show is so determined to be likable that it becomes exhausting in its puppyish eagerness to please. 'Curtains' combines the formulas of a backstage musical and a murder mystery, and winds up being less than the sum of its parts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This show about a show is so determined to be likable that it becomes exhausting in its puppyish eagerness to please. 'Curtains' combines the formulas of a backstage musical and a murder mystery, and winds up being less than the sum of its parts.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (44 words)"
+  "contentTierReason": "Short text (44 words)",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show about a show is so determined to be likable that it becomes exhausting in its puppyish eagerness to please.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with criticism of the show's desperation to please and failure to execute its premise effectively. 'Less than the sum of its parts' indicates disappointment. | GPT-4o: The review criticizes the show for being overly eager to please and ultimately less effective than its components suggest. This indicates a negative assessment without any redeeming praise. | Gemini: The review clearly states that the show is \"exhausting\" and \"less than the sum of its parts,\" indicating a negative assessment. | Kimi: The critic describes the production as exhausting and less than the sum of its parts, indicating a clear negative verdict without citing redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:25:48.192Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "textQuality": "truncated"
 }

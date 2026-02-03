@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Liesl Tommy's vibrant direction, Eclipsed is a work of profound humanity that honors the resilience of women who refuse to be broken by unspeakable trauma.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Liesl Tommy's vibrant direction, Eclipsed is a work of profound humanity that honors the resilience of women who refuse to be broken by unspeakable trauma.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Liesl Tommy's vibrant direction, Eclipsed is a work of profound humanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong positive language such as 'vibrant direction' and 'profound humanity', indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"vibrant direction\" and \"profound humanity\" to describe the show, indicating a positive recommendation. | Kimi: The critic employs celebratory superlatives ('profound humanity,' 'vibrant direction,' 'honors') to endorse the production enthusiastically, though the extreme brevity suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:45:51.442Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  },
+  "textQuality": "truncated"
 }

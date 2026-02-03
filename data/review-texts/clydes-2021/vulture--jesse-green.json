@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Wilson's play is a small miracle of empathy, finding in the stories of formerly incarcerated people working at a truck-stop sandwich shop a profound meditation on redemption and the possibility of change.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Wilson's play is a small miracle of empathy, finding in the stories of formerly incarcerated people working at a truck-stop sandwich shop a profound meditation on redemption and the possibility of change.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wilson's play is a small miracle of empathy, finding in the stories of formerly incarcerated people working at a truck-stop sandwich shop a profound meditation on redemption and the possibility of change.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Critic calls the play 'a small miracle of empathy' and 'a profound meditation' - strong positive language. However, confidence is medium due to very brief excerpt that may not capture full verdict. | Gemini: The review uses strong positive language such as \"small miracle of empathy\" and \"profound meditation\", indicating a strong recommendation. | Kimi: Though brief, the excerpt uses unequivocal superlatives ('small miracle', 'profound meditation') to praise the play's empathetic storytelling and thematic resonance, indicating an enthusiastic, unqualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:12:56.019Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

@@ -16,6 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Driver and Ms. Russell are both compelling performers, and they make the most of their opportunities to display their considerable skills.",
-  "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTier": "invalid",
+  "contentTierReason": "Short text (22 words)",
+  "rejectedAt": "2026-02-03T15:12:32.819Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or fragment that only contains a single descriptive sentence about performers, with no critical evaluation or recommendation about the show.; openai: The text is a brief comment on the performers without an overall evaluation of the show.",
+  "promptVersion": "5.2.0",
+  "textQuality": "partial"
 }

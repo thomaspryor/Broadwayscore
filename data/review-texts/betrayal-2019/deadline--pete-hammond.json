@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a superb production of Pinter's masterwork, with three stellar performances that make it feel as fresh and devastating as it must have when it premiered.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a superb production of Pinter's masterwork, with three stellar performances that make it feel as fresh and devastating as it must have when it premiered.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a superb production of Pinter's masterwork, with three stellar performances that make it feel as fresh and devastating as it must have when it premiered.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses clear superlative praise ('superb', 'masterwork', 'stellar performances') and emphasizes the production's powerful impact, indicating strong enthusiasm without reservation. | GPT-4o: The review uses strong positive language ('superb', 'stellar performances') and implies a must-see status by comparing it favorably to the original premiere. No reservations are mentioned. | Gemini: The review uses strong positive language such as \"superb production\" and \"stellar performances,\" indicating a rave review. | Kimi: Unreserved praise with superlatives ('superb,' 'masterwork,' 'stellar,' 'devastating'), no caveats or reservations. The critic explicitly compares it favorably to the original premiere, calling it 'fresh' — the highest endorsement for a revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:45:14.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "truncated"
 }

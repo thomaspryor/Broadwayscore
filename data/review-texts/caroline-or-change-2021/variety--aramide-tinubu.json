@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sharon D Clarke's towering performance as Caroline anchors this revival, bringing both volcanic power and devastating vulnerability to Kushner's complex character study.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sharon D Clarke's towering performance as Caroline anchors this revival, bringing both volcanic power and devastating vulnerability to Kushner's complex character study.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (22 words)"
+  "contentTierReason": "Short text (22 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sharon D Clarke's towering performance as Caroline anchors this revival, bringing both volcanic power and devastating vulnerability to Kushner's complex character study.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with vivid descriptors ('towering', 'volcanic power', 'devastating vulnerability') suggests recommendation, but this appears to be a fragment or excerpt with very limited content to assess the overall production verdict. | Gemini: The review highlights a 'towering performance' which anchors the revival, indicating a positive assessment, even though it's brief. | Kimi: The critic deploys superlatives ('towering,' 'volcanic power') for the central performance, implying the show is worth seeing for Clarke's work alone. Limited to low confidence due to brevity and focus on single element rather than full production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:02:32.283Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

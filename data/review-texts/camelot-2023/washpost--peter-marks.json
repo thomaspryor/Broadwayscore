@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new 'Camelot' doesn't quite achieve the impossible dream of its legendary predecessor, but it succeeds in making Lerner and Loewe's score feel vital again.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new 'Camelot' doesn't quite achieve the impossible dream of its legendary predecessor, but it succeeds in making Lerner and Loewe's score feel vital again.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it succeeds in making Lerner and Loewe's score feel vital again",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review acknowledges the production doesn't reach the heights of the original but clearly states it succeeds in revitalizing the material, indicating a positive but qualified recommendation. | GPT-4o: The review acknowledges that the new 'Camelot' doesn't fully match the legendary status of its predecessor but praises its ability to revitalize the score, indicating a positive recommendation with some reservations. | Gemini: The review states that the production \"succeeds\" in making the score feel vital, indicating a positive assessment, although it acknowledges that it does not reach the level of its predecessor. | Kimi: While acknowledging the production doesn't match its legendary predecessor, the critic emphasizes its success in revitalizing the classic score, resulting in a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:15:45.611Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

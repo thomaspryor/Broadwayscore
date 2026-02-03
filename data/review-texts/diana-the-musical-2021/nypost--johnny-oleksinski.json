@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,63 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The word 'saved' implies the show needed saving, suggesting problems with the overall production, but the lead performance is praised as redeeming. This indicates a mixed verdict leaning slightly positive due to one strong element. | GPT-4o: The review suggests the show is largely lacking, with only the lead performance being praised. This implies a negative overall impression, with the show needing 'saving'. | Gemini: The review states that the musical is \"saved\" by the leading lady, implying that without her, the show would not be good. This indicates a positive but qualified recommendation. | Kimi: The excerpt indicates the production is redeemed solely by its lead actress's performance, suggesting a qualified recommendation without broader enthusiasm for the show itself. | Buckets: claude=Mixed, openai=Negative, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:34:44.285Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 72,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 32,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  },
+  "textQuality": "truncated"
 }

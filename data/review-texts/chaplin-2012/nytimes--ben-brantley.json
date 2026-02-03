@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with 'Chaplin' is that it never finds a theatrical language that matches the cinematic poetry of its subject. Instead, it offers a dutiful biographical march through the main events of Chaplin's life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with 'Chaplin' is that it never finds a theatrical language that matches the cinematic poetry of its subject. Instead, it offers a dutiful biographical march through the main events of Chaplin's life.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with 'Chaplin' is that it never finds a theatrical language that matches the cinematic poetry of its subject.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment identifying fundamental structural problems with the show's approach, describing it as a 'dutiful biographical march' rather than compelling theater. | GPT-4o: The review criticizes the show for failing to capture the essence of Chaplin's cinematic poetry, suggesting a lack of creativity and engagement. The tone is clearly negative, indicating disappointment. | Gemini: The review clearly states the show fails to capture the essence of its subject and offers a negative assessment of the production's theatrical language. | Kimi: The critic faults the production for failing to find an appropriate theatrical style, dismissing it as a 'dutiful biographical march' that lacks imagination, indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:09:02.716Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "textQuality": "truncated"
 }

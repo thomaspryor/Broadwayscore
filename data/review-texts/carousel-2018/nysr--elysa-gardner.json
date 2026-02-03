@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Carousel may not have the raw, startling immediacy that distinguished the last Broadway production, by Lincoln Center Theater in 1994. But under Jack O'Brien's expert direction, with new choreography by ballet wunderkind Justin Peck, it fully serves the overwhelming beauty and boldness of material that, 73 years after the show's premiere, remains as subversive as ever in its compassion and its keen awareness of the contradictions that make us human.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with lavish praise throughout. Opens by calling the source material 'sublime' and 'glorious,' then declares this production 'succeeds on these terms, and pretty much any other that a fan would consider.' Consistent superlatives for performances, direction, and choreography, concluding it's a 'timeless treasure' that is 'faithful and forward-thinking.' | GPT-4o: The review is filled with superlatives and praises the production's success in delivering the emotional impact of the material. The critic's 5/5 star rating and consistent acclaim for the direction, performances, and choreography strongly support a Rave classification. | Gemini: 5/5 stars from a notable outlet. The review is overwhelmingly positive, praising the direction, choreography, performances, and the enduring relevance of the material. It calls the production a success on \"pretty much any other\" terms. | Kimi: The critic awards 5/5 stars and delivers unqualified praise for the direction, choreography, and performances, calling the production a 'timeless treasure' that fully serves the material's beauty and boldness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:59:15.441Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "partial"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "in that it succeeds brilliantly",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the play's success at its intended effect with 'succeeds brilliantly', but limited content makes assessment challenging. | GPT-4o: The review praises the play for its success in making audiences uncomfortable and confronting prejudices, indicating a strong recommendation. | Gemini: The review states the play \"succeeds brilliantly\" in making audiences uncomfortable and confronting prejudices, indicating a positive recommendation despite the potentially challenging subject matter. | Kimi: The critic uses the word 'brilliantly' to praise the play's effectiveness in achieving its artistic goals, indicating a strong appreciation for the writing, though the brief excerpt prevents a full assessment of whether this constitutes an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:02:18.549Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

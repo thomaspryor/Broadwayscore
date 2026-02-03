@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2011/03/18/theater/reviews/arcadia-at-ethel-barrymore-theater-review.html",
+  "url": "https://www.nytimes.com/2011/03/18/theater/reviews/arcadia-by-tom-stoppard-on-broadway-review.html",
   "publishDate": "March 17, 2011",
-  "fullText": "This production of Tom Stoppard's 1993 play about the nature of knowledge and the elusiveness of truth is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
+  "fullText": "A suspicion lingers in the heart of the constant theatergoer that if you are too clever, then you must be made of ice. This prejudice has misguidedly dogged, among others, that greatest of songwriters, Stephen Sondheim, like a peevish, affection-starved beagle. But it has never clung to anyone more tenaciously and erroneously than it does to the playwright Tom Stoppard.\n\nSo I encourage you to feel the heat rising from the stage of the Ethel Barrymore Theater, where a half-terrific revival of Mr. Stoppard’s entirely terrific “Arcadia” opened on Thursday night. Though this play finds Mr. Stoppard at his most luxuriantly wordy, it is not hot air of which I speak. Watching David Leveaux’s production I realized more than ever that “Arcadia,” a tale of two centuries in pseudopastoral England, is propelled by genuine, panting passion.\n\nAnd not just physical passion. This may be a work that begins with the question, posed by a 13-year-old girl in 1809, of just what “a carnal embrace” is. But good old lust is only one complicating element within the deeper impulse that animates both the characters in “Arcadia” and the play itself.",
   "isFullReview": false,
   "dtliExcerpt": "This production of Tom Stoppard's 1993 play about the nature of knowledge and the elusiveness of truth is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
   "originalScore": null,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2011/03/18/theater/reviews/arcadia-at-ethel-barrymore-theater-review.html",
+  "urlDiscoveredAt": "2026-02-03T15:36:53.623Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 189,
+  "archivePath": "data/archives/reviews/arcadia-2011/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T15:36:53.627Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "connect ECONNREFUSED 207.241.237.3:80"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 252 (min: 300)"
+  ],
+  "wordCount": 189,
+  "tierReason": "Short text (189 words)"
 }

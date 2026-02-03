@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David Henry Hwang's new play 'Chinglish' is a smart, funny and surprisingly moving comedy about the cultural and linguistic barriers that complicate business dealings between Americans and Chinese.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David Henry Hwang's new play 'Chinglish' is a smart, funny and surprisingly moving comedy about the cultural and linguistic barriers that complicate business dealings between Americans and Chinese.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Henry Hwang's new play 'Chinglish' is a smart, funny and surprisingly moving comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with multiple praise words ('smart, funny and surprisingly moving') but brief excerpt suggests moderate rather than enthusiastic recommendation. | GPT-4o: The review uses positive adjectives like 'smart,' 'funny,' and 'surprisingly moving,' indicating a strong recommendation without reservations. | Gemini: The review uses positive adjectives such as \"smart, funny, and surprisingly moving\" to describe the play, indicating a positive recommendation. | Kimi: The critic offers unqualified praise describing the play as 'smart, funny and surprisingly moving,' indicating a genuine recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:08:49.836Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

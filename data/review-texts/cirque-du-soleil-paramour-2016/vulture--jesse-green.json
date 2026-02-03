@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paramour is neither fish nor fowl nor good red herring — it's a show that doesn't know what it wants to be, and the confusion is catching.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paramour is neither fish nor fowl nor good red herring — it's a show that doesn't know what it wants to be, and the confusion is catching.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (27 words)"
+  "contentTierReason": "Short text (27 words)",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paramour is neither fish nor fowl nor good red herring — it's a show that doesn't know what it wants to be, and the confusion is catching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment criticizing the show's fundamental identity crisis and calling the confusion 'catching' - implies audiences will be similarly confused and unsatisfied. | GPT-4o: The review describes the show as confused and lacking clear direction, suggesting a strong negative verdict with no redeeming qualities mentioned. | Gemini: The review explicitly states the show \"doesn't know what it wants to be\" and that the confusion is \"catching,\" indicating a negative assessment. | Kimi: The excerpt contains solely negative evaluation, criticizing the show's lack of coherent identity and stating that its confusion negatively affects the audience, with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:44.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  },
+  "textQuality": "truncated"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Marc Camoletti's 1960 French farce about a swinging bachelor who juggles three flight-attendant fiancees is a monument to the artistry of comic timing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Marc Camoletti's 1960 French farce about a swinging bachelor who juggles three flight-attendant fiancees is a monument to the artistry of comic timing.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 79,
+      "high": 89
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a monument to the artistry of comic timing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise calling the revival 'a monument to the artistry of comic timing' indicates strong appreciation for the production's execution, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review uses strong, positive language, describing the production as a 'monument to the artistry of comic timing,' indicating a highly favorable opinion with no reservations. | Gemini: The review calls the show a \"monument to the artistry of comic timing,\" which is a positive assessment, but not overwhelmingly so. Therefore, it's a positive review with reservations. | Kimi: The critic uses superlative language ('monument to the artistry') to praise the production's comic timing, indicating an enthusiastic, unqualified recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:50:53.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  },
+  "textQuality": "truncated"
 }

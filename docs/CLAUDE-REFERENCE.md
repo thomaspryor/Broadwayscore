@@ -281,7 +281,7 @@ Fields written: `humanReviewScore`, `humanReviewNote`, `humanReviewPreviousScore
 
 **Outlet-specific junk in fullText:** `text-cleaning.js` has outlet-specific trailing junk patterns for EW, BWW, Variety, BroadwayNews, and The Times UK.
 
-**Byline extraction false positives:** `extractByline()` accepts `options.excludeNames` to skip cast/creative team names. Pattern 3 ("Written by X") removed. Non-name word blocklist added.
+**Byline extraction false positives:** `extractByline()` accepts `options.excludeNames` to skip creative team names. Pattern 3 ("Written by X") removed. Non-name word blocklist added.
 
 **Quality classification in `gather-reviews.js`:** Now runs `classifyContentTier()` on every review before writing.
 

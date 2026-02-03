@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jake Gyllenhaal and Ruth Wilson are perfectly matched in this intimate, mind-bending play about infinite possibilities in love and life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jake Gyllenhaal and Ruth Wilson are perfectly matched in this intimate, mind-bending play about infinite possibilities in love and life.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (20 words)"
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jake Gyllenhaal and Ruth Wilson are perfectly matched in this intimate, mind-bending play about infinite possibilities in love and life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the leads being 'perfectly matched' and positive descriptors like 'intimate' and 'mind-bending' indicate a recommendation, though the brief excerpt limits confidence in the full verdict. | GPT-4o: The review praises the performances and describes the play as 'intimate' and 'mind-bending', suggesting a positive experience. However, the text is very brief, limiting confidence in the full context. | Gemini: The critic states that the leads are perfectly matched in an intimate and mind-bending play, which is a positive recommendation. | Kimi: The critic employs superlative praise ('perfectly matched', 'mind-bending') without any caveats, though the single-sentence length indicates this is likely an excerpt requiring cautious interpretation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:24:47.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

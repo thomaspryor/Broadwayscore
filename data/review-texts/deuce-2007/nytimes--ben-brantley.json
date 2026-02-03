@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two-character play 'Deuce,' starring Angela Lansbury and Marian Seldes as aging tennis legends, is a gentle, often moving meditation on friendship, rivalry and the passage of time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The two-character play 'Deuce,' starring Angela Lansbury and Marian Seldes as aging tennis legends, is a gentle, often moving meditation on friendship, rivalry and the passage of time.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two-character play 'Deuce' is a gentle, often moving meditation on friendship, rivalry and the passage of time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive descriptors like 'gentle' and 'often moving' indicate appreciation, though the language is measured rather than enthusiastic. The brief excerpt limits confidence in the full verdict. | Gemini: The review describes the play as \"gentle\" and \"often moving,\" indicating a positive, albeit reserved, recommendation. | Kimi: The critic offers warm appreciation, describing the play as 'gentle' and 'often moving,' indicating a solid recommendation without extreme enthusiasm. The brief length suggests this is an excerpt, warranting lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:34:07.573Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

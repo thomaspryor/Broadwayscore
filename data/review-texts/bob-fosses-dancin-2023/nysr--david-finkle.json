@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is less tribute than travesty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the dancers' commitment and energy, the critic calls the production a 'travesty' rather than tribute, criticizes it as overly loud and lacking Fosse's sophistication, and questions its value for both Fosse fans and newcomers. The 3/5 rating and consistent criticism of the creative choices place this in negative territory, though the truncated text prevents full confidence. | GPT-4o: The review expresses disappointment with the production's departure from Fosse's original style, yet praises the dancers' performances. The 3/5 star rating and mixed tone suggest a balanced view, but the text is truncated, so the final verdict may be missing. | Gemini: Despite praising the dancers, the critic clearly states that the production is a \"travesty\" and not a tribute to Fosse. The truncated text and 3/5 star rating suggest a negative overall assessment, but the lack of a firm conclusion lowers confidence. | Kimi: Despite 3/5 stars and praise for the dancers' skill, the critic's verdict is overwhelmingly negative: calls the production 'less tribute than travesty,' criticizes the amplified, bloated reimagining of Fosse's work, and explicitly warns two target audiences that this isn't authentic Fosse. The truncated ending likely continues this negative assessment. The 3/5 rating appears generous given the scathing tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:50:04.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  },
+  "textQuality": "partial"
 }

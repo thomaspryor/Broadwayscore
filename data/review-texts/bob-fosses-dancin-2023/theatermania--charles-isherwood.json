@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a celebration of movement that feels both nostalgic and immediate, showcasing the distinctive style that made Fosse a Broadway legend.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a celebration of movement that feels both nostalgic and immediate, showcasing the distinctive style that made Fosse a Broadway legend.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a celebration of movement that feels both nostalgic and immediate, showcasing the distinctive style that made Fosse a Broadway legend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('celebration', 'legend') but this appears to be a very brief excerpt with limited evaluative content to assess the full critical verdict. | GPT-4o: The review praises the show as a 'celebration of movement' and highlights its nostalgic and immediate appeal, indicating a positive impression. However, the text is brief and lacks detailed evaluation, leading to a low confidence score. | Gemini: The review praises the show as a celebration of movement and highlights Fosse's distinctive style, indicating a positive recommendation. | Kimi: Brief excerpt offers unqualified praise for the choreography and production quality, positioning it as a worthy celebration of Fosse's legacy without the extreme superlatives of a rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:01:13.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

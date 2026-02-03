@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is stuffed with great songs, attractive period costumes and sets, and energetic dancing, but it never quite gels into something that feels essential.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is stuffed with great songs, attractive period costumes and sets, and energetic dancing, but it never quite gels into something that feels essential.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is stuffed with great songs, attractive period costumes and sets, and energetic dancing, but it never quite gels into something that feels essential.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review acknowledges multiple positive elements (songs, costumes, sets, dancing) but the crucial 'but' indicates these don't add up to a cohesive, essential experience. The word 'essential' suggests the critic finds it skippable. | GPT-4o: The review acknowledges positive elements like songs, costumes, and dancing but ultimately suggests the show lacks a sense of necessity or cohesion, leading to a mixed verdict. | Gemini: The review acknowledges positive elements but ultimately finds the show lacking in overall impact, indicating a mixed recommendation. | Kimi: While the critic praises specific production elements like songs, costumes, and choreography, the concluding clause indicates the show fails to cohere into a meaningful or essential whole, resulting in a lukewarm assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:08:03.812Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 67,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Douglas Hodge brings considerable vocal power and physical agility to the title role, but his interpretation of the legendary lover lacks the romantic ardor that makes this impossible character so irresistible.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Douglas Hodge brings considerable vocal power and physical agility to the title role, but his interpretation of the legendary lover lacks the romantic ardor that makes this impossible character so irresistible.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his interpretation of the legendary lover lacks the romantic ardor that makes this impossible character so irresistible",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the performer's technical abilities but finds the core interpretation lacking the essential quality that defines the character. This appears to be a truncated excerpt with unclear overall recommendation. | GPT-4o: The review acknowledges the actor's skills but criticizes the lack of romantic ardor, suggesting a mixed impression without a clear recommendation. | Gemini: The review acknowledges vocal power and physical agility but criticizes the lack of romantic ardor, resulting in a mixed assessment. | Kimi: The critic praises Hodge's technical abilities but finds his interpretation critically lacking the romantic ardor essential to the character, resulting in a balanced assessment that acknowledges skill while noting a fundamental emotional disconnect.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:26:25.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

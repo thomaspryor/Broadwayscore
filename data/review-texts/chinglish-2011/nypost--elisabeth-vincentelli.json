@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David Henry Hwang's new play about cultural and linguistic barriers between Americans and Chinese is well-intentioned but dramatically inert.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David Henry Hwang's new play about cultural and linguistic barriers between Americans and Chinese is well-intentioned but dramatically inert.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (19 words)"
+  "contentTierReason": "Short text (19 words)",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Henry Hwang's new play about cultural and linguistic barriers between Americans and Chinese is well-intentioned but dramatically inert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges good intentions but uses 'dramatically inert' as a clear negative verdict, indicating the play fails theatrically despite its worthy themes. | GPT-4o: The review describes the play as 'dramatically inert,' indicating a lack of engagement or effectiveness, despite acknowledging good intentions. This suggests a negative assessment overall. | Gemini: The review states that the play is \"dramatically inert,\" which is a negative assessment, placing it in the negative bucket. | Kimi: While the reviewer acknowledges the play's good intentions regarding its subject matter, the verdict 'dramatically inert' is a clear condemnation of its theatrical effectiveness, indicating a lifeless production that fails to engage.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:08:29.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "textQuality": "truncated"
 }

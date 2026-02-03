@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Martyna Majok's Pulitzer Prize-winning 'Cost of Living' is a deeply moving exploration of intimacy, disability and human connection that feels both universal and achingly specific.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Martyna Majok's Pulitzer Prize-winning 'Cost of Living' is a deeply moving exploration of intimacy, disability and human connection that feels both universal and achingly specific.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (25 words)"
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Martyna Majok's Pulitzer Prize-winning 'Cost of Living' is a deeply moving exploration of intimacy, disability and human connection that feels both universal and achingly specific.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling the play 'deeply moving' with positive descriptors like 'universal and achingly specific,' but this appears to be an excerpt with limited evaluative content to fully assess the critic's overall recommendation. | GPT-4o: The review uses strong positive language ('deeply moving', 'universal and achingly specific') indicating a highly favorable impression of the show. | Gemini: The review uses positive language such as \"deeply moving\" and \"universal and achingly specific\", indicating a strong recommendation. | Kimi: The critic offers unqualified praise using superlatives like 'deeply moving' and 'achingly specific' with no reservations, indicating enthusiastic endorsement despite the brevity of the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:23:51.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  },
+  "textQuality": "truncated"
 }

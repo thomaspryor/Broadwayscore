@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's unlikely that anyone with a beating heart will leave after Act Two without moist eyes, or at least a lump in the throat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout. Despite acknowledging 'a few slow-moving moments,' the critic emphasizes the show's emotional power, outstanding performances, and ability to balance 'despair and exuberance without resorting to sentimentality.' The final assessment is strongly positive. | GPT-4o: The review praises performances and the emotional impact of the production, despite noting some slow moments. The original 4/5 star rating supports a positive classification, and the text suggests a strong recommendation overall. | Gemini: Despite some reservations about pacing, the review is overwhelmingly positive, praising the performances, music, and overall emotional impact. The critic explicitly states that the show manages to juggle despair and exuberance without sentimentality and that it's unlikely anyone will leave without moist eyes. | Kimi: The 4/5 star rating and consistently enthusiastic praise for performances (particularly Sharon D Clarke), direction, and score support a strong positive score. Despite noting minor pacing issues, the critic promises a powerful emotional payoff and moist eyes, indicating a wholehearted recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:01:45.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "partial"
 }

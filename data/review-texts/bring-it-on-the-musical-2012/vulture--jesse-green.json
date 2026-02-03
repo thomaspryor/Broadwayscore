@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bring It On is a cheerful, energetic, and surprisingly smart musical that manages to be both a crowd-pleaser and a show with something to say about class, race, and teenage social dynamics.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bring It On is a cheerful, energetic, and surprisingly smart musical that manages to be both a crowd-pleaser and a show with something to say about class, race, and teenage social dynamics.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bring It On is a cheerful, energetic, and surprisingly smart musical that manages to be both a crowd-pleaser and a show with something to say",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('cheerful, energetic, surprisingly smart') with praise for both entertainment value and substance. No reservations expressed. | GPT-4o: The review praises the show as a 'cheerful, energetic, and surprisingly smart musical' that is both a 'crowd-pleaser' and has depth, indicating a strong positive recommendation. | Gemini: The review uses positive language such as \"cheerful\", \"energetic\", and \"smart\", indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the production's energy, intelligence, and successful balance of entertainment value with substantive social commentary, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:56:00.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

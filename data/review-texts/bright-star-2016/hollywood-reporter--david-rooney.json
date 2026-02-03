@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the show has its charms and boasts lovely performances from Carmen Cusack and Paul Alexander Nolan, it feels more like a work in progress than a fully realized Broadway musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the show has its charms and boasts lovely performances from Carmen Cusack and Paul Alexander Nolan, it feels more like a work in progress than a fully realized Broadway musical.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it feels more like a work in progress than a fully realized Broadway musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges positive elements (charms, lovely performances) but the key verdict is that it's not fully realized for Broadway, suggesting neither recommendation nor strong discouragement. | GPT-4o: The review acknowledges some positive aspects like 'charms' and 'lovely performances' but ultimately suggests the show is incomplete, indicating a mixed review. | Gemini: The review acknowledges positive aspects like the performances but ultimately concludes that the show feels unfinished, indicating a mixed assessment. | Kimi: The critic acknowledges lovely performances and charms but ultimately judges the show as a work in progress rather than a fully realized Broadway production, indicating significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:53:06.318Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

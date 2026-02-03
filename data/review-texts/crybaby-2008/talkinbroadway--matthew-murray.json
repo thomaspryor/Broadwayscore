@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cry-Baby is a show that wants so badly to be loved that it practically throws itself at your feet and begs for affection. Unfortunately, desperation is never attractive, whether in people or in musicals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 37,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cry-Baby is a show that wants so badly to be loved that it practically throws itself at your feet and begs for affection. Unfortunately, desperation is never attractive, whether in people or in musicals.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (34 words)"
+  "contentTierReason": "Short text (34 words)",
+  "llmScore": {
+    "score": 37,
+    "confidence": "medium",
+    "range": {
+      "low": 32,
+      "high": 42
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "desperation is never attractive, whether in people or in musicals",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative assessment comparing the show to desperate, unattractive behavior. The critic finds the show's attempts at audience appeal off-putting rather than endearing. | GPT-4o: The review describes the show as desperate and unattractive, indicating a strong negative opinion with no redeeming qualities. | Gemini: The review clearly states that the show's desperation is unattractive, leading to a negative recommendation. | Kimi: The critic characterizes the musical as desperate and unappealing with harsh, dismissive language and no redeeming qualities mentioned, though the extreme brevity warrants caution. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:24:24.592Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  },
+  "textQuality": "truncated"
 }

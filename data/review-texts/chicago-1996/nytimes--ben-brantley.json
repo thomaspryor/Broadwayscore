@@ -47,5 +47,59 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251027175632",
   "archiveOrgUrl": "http://web.archive.org/web/20251027175632/https://www.nytimes.com/1996/11/15/theater/a-lively-legacy-a-come-hither-air.html",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production isn't smoke and mirrors. It's flesh and blood shaped by discipline and artistry into a parade of vital, pulsing talent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Brantley delivers unqualified praise throughout, calling it 'musical heaven,' praising every aspect from performances to direction. The closing declares it a triumph of 'discipline and artistry' with hope for a long run. | Gemini: The review is overwhelmingly positive, praising the direction, choreography, performances, and overall impact of the revival. Phrases like \"exhilarating case\" and \"essential legacy\" indicate a strong recommendation. | Kimi: Brantley offers unqualified praise for this revival, calling it an 'exhilarating' production that makes a case for the show 'as a musical for the ages' while praising the performances as 'vital, pulsing talent' and the dancing as the 'sexiest, most sophisticated' seen on Broadway in years.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:05:44.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

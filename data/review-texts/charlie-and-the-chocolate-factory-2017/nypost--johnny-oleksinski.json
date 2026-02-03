@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a real treat — a Broadway musical that's actually fun for the whole family. The show is visually stunning, with sets that would make Willy Wonka himself jealous.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a real treat — a Broadway musical that's actually fun for the whole family. The show is visually stunning, with sets that would make Willy Wonka himself jealous.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a real treat — a Broadway musical that's actually fun for the whole family.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'real treat' with praise for visual spectacle, though brief text limits confidence in full assessment. | GPT-4o: The review uses enthusiastic language ('real treat', 'visually stunning') and makes a strong recommendation for family enjoyment, indicating a solid positive verdict. | Gemini: The review uses the phrase \"real treat\" and describes the show as \"fun for the whole family\" and \"visually stunning,\" indicating a strong positive recommendation. | Kimi: The critic expresses unqualified enthusiasm, calling the show a 'real treat' and praising it as 'visually stunning' with vivid comparisons, offering no reservations or criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:25:26.171Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

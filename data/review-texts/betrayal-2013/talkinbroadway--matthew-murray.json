@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under the direction of Mike Nichols, this revival of Harold Pinter's 1978 drama about adultery and friendship proves that some plays are so perfectly constructed that they can survive almost any interpretation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under the direction of Mike Nichols, this revival of Harold Pinter's 1978 drama about adultery and friendship proves that some plays are so perfectly constructed that they can survive almost any interpretation.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival proves that some plays are so perfectly constructed that they can survive almost any interpretation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the play's construction and implies the revival succeeds despite potential interpretive issues, suggesting a solid positive recommendation with some reservations about the specific production choices. | GPT-4o: The review suggests that the play's inherent quality makes it worth seeing, though it implies that the direction may not add much. This indicates a positive but not enthusiastic recommendation. | Gemini: The review states the play is so well-constructed it can survive almost any interpretation, implying a positive view of the play itself, but not necessarily the production. | Kimi: The review praises the play's construction as 'perfectly constructed' and uses 'proves' to validate the revival's success. However, the phrasing 'survive almost any interpretation' is somewhat backhanded—suggesting the production is adequate rather than exceptional. The confidence is medium due to the brief, truncated nature of the excerpt and the qualified tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:47:16.742Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

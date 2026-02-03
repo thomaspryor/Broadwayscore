@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While Woody Allen's musical adaptation of his 1994 film lacks the movie's hard comic edge, this lavish Broadway production compensates with gorgeous period design and energetic performances that capture the giddy spirit of the Jazz Age.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While Woody Allen's musical adaptation of his 1994 film lacks the movie's hard comic edge, this lavish Broadway production compensates with gorgeous period design and energetic performances that capture the giddy spirit of the Jazz Age.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (36 words)"
+  "contentTierReason": "Short text (36 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this lavish Broadway production compensates with gorgeous period design and energetic performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges the adaptation lacks the film's edge but finds the production compensates with strong design and performances, indicating a positive recommendation with reservations. | GPT-4o: The review acknowledges a shortcoming in comparison to the film but praises the production's design and performances, leading to a positive recommendation. | Gemini: The review acknowledges a weakness compared to the film but praises the production design and performances, indicating a positive but not rave recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:58:13.356Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

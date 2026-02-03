@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a piece of indisputable stage artwork.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Critic gives 5/5 stars and calls it 'the most outstanding American play of the year' with 'award-winning spheres' and 'indisputable stage artwork.' Despite truncation warning, the overwhelmingly positive language throughout indicates a clear rave verdict. | GPT-4o: The review is overwhelmingly positive, with high praise for the play's impact, performances, and production elements. The original 5/5 stars rating supports a Rave classification, despite the text being truncated. | Gemini: Despite the truncated text, the review is overwhelmingly positive, using phrases like \"ineluctable strengths\", \"brilliant twist\", and praising many aspects of the production. The 5/5 star rating also indicates a rave review. | Kimi: 5/5 stars with superlatives throughout ('most outstanding American play', 'brilliant twist', 'award-winning spheres', 'indisputable stage artwork', 'top-drawer work'). The critic praises every element—writing, direction, performances, design—and calls the finale 'a lift-off of such immense implications.' Despite truncation warning, the verdict is unambiguously ecstatic.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:42:27.965Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "partial"
 }

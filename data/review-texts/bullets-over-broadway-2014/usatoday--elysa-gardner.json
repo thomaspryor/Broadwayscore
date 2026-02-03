@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical adaptation of Woody Allen's 1994 film is a lavish, old-fashioned entertainment that delivers plenty of laughs and some surprisingly moving moments.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical adaptation of Woody Allen's 1994 film is a lavish, old-fashioned entertainment that delivers plenty of laughs and some surprisingly moving moments.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a lavish, old-fashioned entertainment that delivers plenty of laughs and some surprisingly moving moments",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors ('lavish', 'delivers plenty of laughs', 'surprisingly moving') indicate a clear recommendation, though the brief excerpt limits confidence in gauging full enthusiasm level. | GPT-4o: The review describes the show as 'lavish' and 'entertainment' with 'plenty of laughs' and 'moving moments', indicating a solid recommendation. | Gemini: The review describes the show as \"lavish\" and \"old-fashioned entertainment\" that delivers laughs and moving moments, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers consistent praise for the production's lavishness, entertainment value, and emotional impact, clearly recommending the show without significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:09:53.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

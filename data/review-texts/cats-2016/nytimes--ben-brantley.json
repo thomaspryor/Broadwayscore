@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival proves that the original production's success was no fluke, even if it doesn't entirely explain why 'Cats' became such a phenomenon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival proves that the original production's success was no fluke, even if it doesn't entirely explain why 'Cats' became such a phenomenon.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival proves that the original production's success was no fluke, even if it doesn't entirely explain why 'Cats' became such a phenomenon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges the production's competence and validates the original's success, but the qualifier 'even if it doesn't entirely explain why' suggests puzzlement rather than recommendation. This reads as respectful but uncommitted. | GPT-4o: The review acknowledges the revival's success but questions its status as a phenomenon, indicating a mixed assessment without a strong recommendation. | Gemini: The review states the revival proves the original's success wasn't a fluke, indicating a positive assessment, but the second half of the sentence shows some reservation. | Kimi: The critic validates that the show's success is deserved ('no fluke'), indicating a solid recommendation, while expressing mild reservation about its phenomenon status rather than its quality. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:02:02.651Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  },
+  "textQuality": "truncated"
 }

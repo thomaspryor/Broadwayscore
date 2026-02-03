@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This assemblage of ballroom and Latin dance numbers, performed by a cast of champion dancers from around the world, is certainly a feast for the eyes, if not always for the mind.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This assemblage of ballroom and Latin dance numbers, performed by a cast of champion dancers from around the world, is certainly a feast for the eyes, if not always for the mind.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This assemblage of ballroom and Latin dance numbers, performed by a cast of champion dancers from around the world, is certainly a feast for the eyes, if not always for the mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges visual appeal ('feast for the eyes') but qualifies this with intellectual reservations ('if not always for the mind'), suggesting mixed feelings without a clear recommendation either way. | GPT-4o: The review praises the visual spectacle but implies a lack of intellectual engagement, suggesting a mixed reception. | Gemini: The review acknowledges the visual appeal but implies a lack of intellectual depth, resulting in a mixed assessment. | Kimi: The review offers qualified praise ('feast for the eyes') with a clear caveat ('not always for the mind'), suggesting appreciation for the spectacle without full endorsement of the show's substance. The 'if not always' construction indicates reservations that prevent a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:56:37.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

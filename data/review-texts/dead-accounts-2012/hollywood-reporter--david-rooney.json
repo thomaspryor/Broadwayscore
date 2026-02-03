@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While the writing has moments of authentic emotional clarity and the performances are uniformly strong, the play feels somewhat inert, lacking the dramatic momentum to sustain interest over its two-hour running time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the writing has moments of authentic emotional clarity and the performances are uniformly strong, the play feels somewhat inert, lacking the dramatic momentum to sustain interest over its two-hour running time.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play feels somewhat inert, lacking the dramatic momentum to sustain interest",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges strong performances and moments of quality writing, but criticizes the play as 'inert' and lacking momentum - a qualified negative assessment that neither recommends nor strongly discourages. | GPT-4o: The review acknowledges strong performances and some emotional clarity but criticizes the play for lacking momentum, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects like writing and performances, but ultimately finds the play lacking in dramatic momentum, resulting in a mixed assessment. | Kimi: The critic praises the acting and moments of writing but finds the overall production inert and unable to sustain interest, creating a balanced assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:28:55.996Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

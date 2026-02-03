@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical version of Bullets Over Broadway is a celebration of the kind of theatrical magic that can happen when all the elements come together perfectly, and it's a reminder of why we go to the theatre in the first place.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical version of Bullets Over Broadway is a celebration of the kind of theatrical magic that can happen when all the elements come together perfectly, and it's a reminder of why we go to the theatre in the first place.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (41 words)"
+  "contentTierReason": "Short text (41 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a celebration of the kind of theatrical magic that can happen when all the elements come together perfectly",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise describing the show as theatrical magic with perfect elements coming together, plus explicit statement about why we go to theater - clear rave territory. | GPT-4o: The review uses superlative language to describe the show as a perfect example of theatrical magic, indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language like \"celebration of theatrical magic\" and \"reminder of why we go to the theatre in the first place,\" indicating a strong recommendation. | Kimi: The review offers unqualified enthusiastic praise, describing the show as 'theatrical magic' where 'all the elements come together perfectly' and calling it essential theatergoing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:57:51.047Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  },
+  "textQuality": "truncated"
 }

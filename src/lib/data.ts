@@ -510,7 +510,7 @@ export interface ShowAwards {
 export type AwardsDesignation =
   | 'sweeper'           // Won Best Musical/Play + 6+ Tony wins (swept the season)
   | 'lavished'          // 3-5 Tony wins (Award Darling)
-  | 'recognized'        // 1-2 Tony wins OR 4+ nominations (Award Winner)
+  | 'recognized'        // 1-2 Tony wins (Award Winner)
   | 'nominated'         // Has nominations but no wins
   | 'shut-out'          // Eligible but no nominations
   | 'pre-season';       // Not yet eligible for awards
@@ -576,8 +576,8 @@ export function getAwardsDesignation(showId: string): AwardsDesignation {
   // Lavished (Award Darling): 3-5 Tony wins
   if (tonyWinCount >= 3) return 'lavished';
 
-  // Recognized (Award Winner): 1-2 Tony wins OR 4+ nominations
-  if (tonyWinCount >= 1 || totalNominations >= 4) return 'recognized';
+  // Recognized (Award Winner): 1-2 Tony wins
+  if (tonyWinCount >= 1) return 'recognized';
 
   // Nominated: Has nominations but no wins
   if (totalNominations > 0) return 'nominated';

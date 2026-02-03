@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Bob Fosse's 'Dancin'' is a slick, stylish celebration of the choreographer's distinctive vocabulary, even if it doesn't quite capture the electric atmosphere of the original.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Bob Fosse's 'Dancin'' is a slick, stylish celebration of the choreographer's distinctive vocabulary, even if it doesn't quite capture the electric atmosphere of the original.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Bob Fosse's 'Dancin'' is a slick, stylish celebration of the choreographer's distinctive vocabulary, even if it doesn't quite capture the electric atmosphere of the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the production as 'slick' and 'stylish' but the key qualifier 'even if it doesn't quite capture the electric atmosphere of the original' indicates significant disappointment that prevents a positive recommendation. | GPT-4o: The review praises the revival as 'slick' and 'stylish,' indicating a positive impression, but notes it doesn't fully capture the original's atmosphere, suggesting some reservations. | Gemini: The review is generally positive, calling the revival a \"slick, stylish celebration.\" However, it notes that it \"doesn't quite capture the electric atmosphere of the original,\" indicating a reservation. Thus, it's a positive review with reservations. | Kimi: Marks clearly praises the production as 'slick' and 'stylish' while offering a single caveat about not matching the original's electricity. The overall tone recommends the show despite this reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:50:25.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a shape and balance to this remarkable work which set it above most conventional musical entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances and the work's uniqueness, but acknowledges accessibility issues with loud volume, hard-to-follow lyrics, and raw content that may not appeal to all audiences. Confidence is medium due to truncated text warning. | GPT-4o: The review provides a largely positive assessment of the show, highlighting the engaging nature of the protagonist and the strong ensemble cast. While there are some reservations about the music and clarity, the overall tone suggests a recommendation to see the show. The 4/5 star rating supports a positive classification, but the text is truncated, so confidence is low. | Gemini: The review is mostly positive, highlighting the performances and unique nature of the show, but notes some potential issues with the music and clarity. The 4/5 star rating also indicates a positive recommendation. | Kimi: The 4/5 star rating places this firmly in the Positive bucket. While the critic praises Jaquel Spivey's performance as 'intensely likeable' and calls the work 'remarkable,' he also notes the music is 'often repetitious' and the lyrics hard to make out. The truncated text warning necessitates low confidence, though the existing conclusion suggests a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:42:53.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "partial"
 }

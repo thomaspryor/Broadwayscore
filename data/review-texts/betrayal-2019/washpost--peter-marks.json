@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The three performers — Tom Hiddleston, Zawe Ashton and Charlie Cox — bring such emotional precision to Harold Pinter's reverse-chronology tale of adultery that you feel you're witnessing something profound about the nature of intimacy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The three performers — Tom Hiddleston, Zawe Ashton and Charlie Cox — bring such emotional precision to Harold Pinter's reverse-chronology tale of adultery that you feel you're witnessing something profound about the nature of intimacy.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (35 words)"
+  "contentTierReason": "Short text (35 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The three performers bring such emotional precision that you feel you're witnessing something profound about the nature of intimacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praises the performances as emotionally precise and profound, suggesting a worthwhile theatrical experience. However, this appears to be an excerpt with limited text, so confidence is low. | Gemini: The review praises the performers' emotional precision and suggests the play offers a profound experience, indicating a positive recommendation. | Kimi: The critic offers high praise for the cast's emotional precision and describes the theatrical experience as profound, indicating a strong positive recommendation, though the brevity suggests this may be an excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:54:13.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's easy to get caught up in the spell of this Cabaret, which is all about mood from the moment you enter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Frecknall's direction ('impressive'), design ('beautiful'), and standout performances. Despite some casting criticism, the overall assessment is strongly positive with clear recommendation. | GPT-4o: The review praises the immersive atmosphere and performances, particularly highlighting the mood and design. However, there are minor reservations, such as the miscasting of a pivotal role. The original 4/5 star rating supports a positive classification. | Gemini: The review is mostly positive, highlighting the immersive experience and strong performances, but the truncated text and a mention of a miscast actor suggest some reservations. The 4/5 star rating supports a positive score. | Kimi: The critic awards 4/5 stars and delivers enthusiastic praise for the immersive staging, direction, and performances, calling the revival 'impressive' and emotionally powerful despite noting one 'woefully miscast' role. The truncation warning warrants medium confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:13:19.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "partial"
 }

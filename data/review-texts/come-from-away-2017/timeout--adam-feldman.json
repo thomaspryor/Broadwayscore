@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Come From Away is a musical that restores your faith in humanity. It's a show that celebrates the very best of human nature—kindness, generosity, and the instinct to help strangers in need.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Come From Away is a musical that restores your faith in humanity. It's a show that celebrates the very best of human nature—kindness, generosity, and the instinct to help strangers in need.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Come From Away is a musical that restores your faith in humanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic's own 80/100 rating combined with highly emotional praise language ('restores your faith in humanity', 'celebrates the very best') indicates strong enthusiastic recommendation in Rave territory. | GPT-4o: The review uses strong positive language, highlighting the show's celebration of human virtues. The original rating of 80 supports a solid positive classification. | Gemini: The review explicitly states that the musical restores faith in humanity and celebrates the best of human nature, indicating a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic provides an explicit rating of 80 and describes the show with unqualified enthusiasm as restoring faith in humanity, indicating a strong recommendation within the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:21:25.912Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

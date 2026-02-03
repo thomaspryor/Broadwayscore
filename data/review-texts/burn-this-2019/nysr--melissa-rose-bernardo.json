@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "3/5 stars"
+  "originalScore": "3/5 stars",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Russell and Driver possess precious little chemistry in Michael Mayer's tepid revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Driver as 'a veritable force' and notes improvements in Russell's performance, but criticizes the central relationship as lacking chemistry and calls the revival 'tepid.' The truncated text and missing final verdict warrant reduced confidence. | GPT-4o: The review highlights a lack of chemistry between the leads and describes the revival as 'tepid,' but also notes strong performances, particularly by Driver. The original 3/5 stars and the truncated nature of the text suggest a mixed verdict. | Gemini: The review praises Driver's performance but finds the overall production \"tepid\" and notes a lack of chemistry between the leads. The truncated text makes the final recommendation unclear, but the overall tone suggests a mixed assessment. | Kimi: The 3/5 star rating and key criticism of 'precious little chemistry' and 'tepid revival' place this in Mixed territory. While Driver's performance is praised as 'a veritable force,' the central relationship fails to ignite. The truncated ending raises uncertainty about final verdict, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:58:23.602Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "partial"
 }

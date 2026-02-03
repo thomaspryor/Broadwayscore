@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a lumbering, lifeless disaster that wastes the considerable talents of a superb cast and reduces one of the most beloved characters in American fiction to a shrill, charmless cipher.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 17,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The result is a lumbering, lifeless disaster that wastes the considerable talents of a superb cast and reduces one of the most beloved characters in American fiction to a shrill, charmless cipher.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (32 words)"
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 17,
+    "confidence": "medium",
+    "range": {
+      "low": 12,
+      "high": 22
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a lumbering, lifeless disaster that wastes the considerable talents of a superb cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating language calling it a 'lumbering, lifeless disaster' that 'wastes' talent and reduces a beloved character to a 'shrill, charmless cipher.' Clear pan despite acknowledging cast talent. | GPT-4o: The review strongly criticizes the production as a 'lumbering, lifeless disaster' and 'shrill, charmless cipher,' indicating a deep pan with no redeeming qualities. | Gemini: The review uses strong negative language like \"lifeless disaster\" and criticizes the show's handling of the source material and cast. This clearly indicates a pan. | Kimi: Rex Reed delivers a devastating pan using words like 'disaster,' 'lifeless,' and 'charmless,' explicitly stating the production wastes its cast's talents. Even acknowledging the 'superb cast' cannot redeem the overwhelmingly negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:52:32.952Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 12,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  },
+  "textQuality": "truncated"
 }

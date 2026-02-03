@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs are tuneful and the dancing is energetic, but Mr. Allen's book is surprisingly slack, and the show as a whole feels more like a pale carbon copy of the film than a full-fledged stage musical in its own right.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The songs are tuneful and the dancing is energetic, but Mr. Allen's book is surprisingly slack, and the show as a whole feels more like a pale carbon copy of the film than a full-fledged stage musical in its own right.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (41 words)"
+  "contentTierReason": "Short text (41 words)",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show as a whole feels more like a pale carbon copy of the film than a full-fledged stage musical in its own right",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges positive elements (tuneful songs, energetic dancing) but delivers a fundamentally lukewarm assessment, calling it a 'pale carbon copy' with a 'slack' book, suggesting it doesn't justify itself as a stage adaptation. | GPT-4o: The review criticizes the show for being a 'pale carbon copy' and having a 'slack' book, indicating a lack of recommendation despite some praise for songs and dancing. | Gemini: The review acknowledges positive aspects (tuneful songs, energetic dancing) but ultimately finds the show lacking due to a weak book, resulting in a mixed assessment. | Kimi: While acknowledging tuneful songs and energetic dancing, the critic's final assessment condemns the book as 'slack' and dismisses the production as an inferior copy rather than legitimate theater, indicating a recommendation against seeing the show. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:10:39.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  },
+  "textQuality": "truncated"
 }

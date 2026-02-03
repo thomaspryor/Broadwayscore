@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracie Bennett gives a bravura performance as Judy Garland in this biographical drama that captures the legend's final London concerts with raw emotional power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tracie Bennett gives a bravura performance as Judy Garland in this biographical drama that captures the legend's final London concerts with raw emotional power.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracie Bennett gives a bravura performance as Judy Garland in this biographical drama that captures the legend's final London concerts with raw emotional power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review highlights a 'bravura performance' and 'raw emotional power,' suggesting a strong recommendation. The lack of additional context or critique makes confidence medium. | Gemini: The review highlights a \"bravura performance\" and \"raw emotional power\", indicating a positive experience driven by the lead actress. While brief, the language suggests a worthwhile performance. | Kimi: The excerpt offers unqualified praise for the lead performance ('bravura') and the production's emotional impact ('raw emotional power'), indicating strong enthusiasm despite the truncated length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:45:08.519Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

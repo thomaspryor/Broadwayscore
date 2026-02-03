@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is theater at its most unsettling and most essential, a work that uses the medium's unique capacity for intimacy to confront us with truths we might otherwise turn away from.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is theater at its most unsettling and most essential, a work that uses the medium's unique capacity for intimacy to confront us with truths we might otherwise turn away from.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (31 words)"
+  "contentTierReason": "Short text (31 words)",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is theater at its most unsettling and most essential.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses strong superlatives ('most essential') and emphasizes the unique power of the medium, indicating a highly enthusiastic recommendation. | Gemini: The review uses superlatives like \"most unsettling\" and \"most essential,\" indicating a very strong positive recommendation. | Kimi: The critic employs superlatives ('most essential') and frames the production as vital, challenging art that masterfully uses theater's intimate power to confront audiences with difficult truths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:51:47.794Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 94,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  },
+  "textQuality": "truncated"
 }

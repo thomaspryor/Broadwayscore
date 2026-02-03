@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ayad Akhtar's Pulitzer Prize-winning drama about a Muslim-American lawyer's identity crisis is a searing examination of post-9/11 prejudices that builds to a shocking climax.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ayad Akhtar's Pulitzer Prize-winning drama about a Muslim-American lawyer's identity crisis is a searing examination of post-9/11 prejudices that builds to a shocking climax.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ayad Akhtar's Pulitzer Prize-winning drama about a Muslim-American lawyer's identity crisis is a searing examination of post-9/11 prejudices that builds to a shocking climax.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review describes the play as a \"searing examination,\" which suggests a positive assessment, but it's brief and lacks specific details, so I've scored it as a positive recommendation with reservations. | Kimi: The critic employs strongly positive evaluative language ('searing examination', 'shocking climax') indicating appreciation for the play's intensity and dramatic construction, though the excerpt is too brief to determine a definitive recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:41:05.429Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "two-model-fallback",
+    "modelAgreement": "Both models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

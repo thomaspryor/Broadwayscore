@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Wilson has written a play that's as nourishing as the sandwiches her characters make, finding in their small acts of creation a metaphor for the larger work of rebuilding lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Wilson has written a play that's as nourishing as the sandwiches her characters make, finding in their small acts of creation a metaphor for the larger work of rebuilding lives.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (30 words)"
+  "contentTierReason": "Short text (30 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wilson has written a play that's as nourishing as the sandwiches her characters make, finding in their small acts of creation a metaphor for the larger work of rebuilding lives.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence excerpt uses appreciative language ('nourishing', positive metaphor about rebuilding lives) suggesting recommendation, but extremely limited text prevents higher confidence or score. | Gemini: The review uses positive language like \"nourishing\" and praises the play's ability to find a metaphor for rebuilding lives, indicating a recommendation. | Kimi: The critic uses warm, appreciative language describing the play as 'nourishing' with meaningful metaphorical depth, indicating a solid positive recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:12:31.140Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

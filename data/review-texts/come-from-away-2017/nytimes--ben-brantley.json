@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical about stranded airline passengers after 9/11 achieves something close to a miracle: It conjures the possibility of genuine human kindness without insulting your intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This musical about stranded airline passengers after 9/11 achieves something close to a miracle: It conjures the possibility of genuine human kindness without insulting your intelligence.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (26 words)"
+  "contentTierReason": "Short text (26 words)",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical achieves something close to a miracle: It conjures the possibility of genuine human kindness without insulting your intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling the show 'something close to a miracle' with no reservations or caveats expressed. The critic appreciates both the emotional impact and intellectual integrity. | GPT-4o: The review uses strong positive language, describing the musical as achieving 'something close to a miracle' and highlighting its ability to inspire without being condescending. This indicates a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"achieves something close to a miracle\" and praises the show for its ability to evoke human kindness without being condescending. | Kimi: The critic employs the superlative 'miracle' to describe the production's emotional impact and intelligence, offering unqualified praise with no reservations or caveats present in the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:15:47.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  },
+  "textQuality": "truncated"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Debra Messing brings warmth and wit to Noah Haidle's meditation on mortality, but the play's structure feels more like a gimmick than genuine insight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,61 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Debra Messing brings warmth and wit to Noah Haidle's meditation on mortality, but the play's structure feels more like a gimmick than genuine insight.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (24 words)"
+  "contentTierReason": "Short text (24 words)",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Debra Messing brings warmth and wit to Noah Haidle's meditation on mortality, but the play's structure feels more like a gimmick than genuine insight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the lead performance but criticizes the play's fundamental structure as gimmicky rather than insightful. Classic mixed review pattern with no clear recommendation either way. | GPT-4o: The review praises Debra Messing's performance but criticizes the play's structure as gimmicky, indicating a balanced view without a clear recommendation. | Gemini: The review praises Debra Messing's performance but criticizes the play's structure, suggesting a mixed overall experience. | Kimi: The review offers genuine praise for Debra Messing's performance but delivers substantive criticism of the play's construction as gimmicky rather than insightful, resulting in a balanced assessment without a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:48:11.832Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  },
+  "textQuality": "truncated"
 }

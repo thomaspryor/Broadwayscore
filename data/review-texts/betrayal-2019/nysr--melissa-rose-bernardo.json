@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "5/5 stars"
+  "originalScore": "5/5 stars",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd's entire production is as refreshingly spare and unadorned as Pinter's pause-packed prose.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with consistent superlative language throughout ('spectacular choices', 'remarkable Broadway debut', 'craftiest choices'). Despite truncation warning, the review is overwhelmingly positive with detailed praise for direction, performances, and creative decisions. | GPT-4o: The review is highly positive, praising the direction, performances, and creative choices. The original 5/5 star rating supports a Rave classification. Despite the truncation warning, the tone and content suggest a strong recommendation. | Gemini: The review is positive, praising the direction and performances. The 5/5 star rating supports a positive classification, although the truncated text lowers confidence slightly. | Kimi: The critic awards 5/5 stars and consistently praises the production as 'spectacular,' 'refreshingly spare,' and 'craftiest,' with particular commendation for the direction and performances by all three leads.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:52:42.543Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 81,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  },
+  "textQuality": "partial"
 }

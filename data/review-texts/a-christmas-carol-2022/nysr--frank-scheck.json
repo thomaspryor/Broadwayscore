@@ -11,5 +11,61 @@
   "sources": [
     "nysr-api"
   ],
-  "originalScore": "4/5 stars"
+  "originalScore": "4/5 stars",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Christmas Carol may not be the most exuberant or sentimental one you've ever encountered, but it will certainly prove one of the most memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for Mays' 'virtuosic' performance and 'dazzling stage wizardry.' Despite noting some technical issues and warning about darkness/accents, the critic clearly recommends this 'transfixing production' as memorable. | GPT-4o: The review praises the production's theatricality and Jefferson Mays' performance, despite noting some technical issues and a darker tone. The 4/5 star rating aligns with a positive score, but the text is truncated, so confidence is medium. | Gemini: Despite some reservations (darkness, potential confusion for children, Sufjan Stevens song), the review is overall positive, highlighting Mays' performance and the theatricality of the production. The 4/5 star rating supports this. | Kimi: 4/5 stars with consistent praise for Jefferson Mays's virtuosic solo performance and the production's theatrical wizardry. Despite minor quibbles (darkness, accents, one Sufjan Stevens song), the verdict is clearly positive with 'transfixing production' and 'dazzling stage wizardry.' The final sentence confirms strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:42:23.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "textQuality": "partial"
 }

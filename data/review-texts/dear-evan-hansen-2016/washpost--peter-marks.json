@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What distinguishes 'Dear Evan Hansen' is its mature, nuanced approach to the thorniest of subjects: teenage suicide and the way social media can amplify both connection and alienation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What distinguishes 'Dear Evan Hansen' is its mature, nuanced approach to the thorniest of subjects: teenage suicide and the way social media can amplify both connection and alienation.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (28 words)"
+  "contentTierReason": "Short text (28 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What distinguishes 'Dear Evan Hansen' is its mature, nuanced approach to the thorniest of subjects",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence praising the show's 'mature, nuanced approach' suggests positive assessment, but extremely limited text makes full evaluation impossible. | Gemini: The review highlights the show's mature and nuanced approach, indicating a positive assessment, but it doesn't express overwhelming enthusiasm, suggesting a recommendation with reservations. | Kimi: The critic employs positive evaluative language ('mature', 'nuanced') to praise the production's sophisticated handling of difficult themes, indicating a favorable recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:30:57.871Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

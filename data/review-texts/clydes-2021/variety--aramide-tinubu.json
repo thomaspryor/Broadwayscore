@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Lynn Nottage's new play is a sprawling, ambitious work that finds both humor and heartbreak in the lives of formerly incarcerated individuals working at a truck stop sandwich shop.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lynn Nottage's new play is a sprawling, ambitious work that finds both humor and heartbreak in the lives of formerly incarcerated individuals working at a truck stop sandwich shop.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (29 words)"
+  "contentTierReason": "Short text (29 words)",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lynn Nottage's new play is a sprawling, ambitious work that finds both humor and heartbreak in the lives of formerly incarcerated individuals working at a truck stop sandwich shop.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Describes the play as 'ambitious' and highlights it 'finds both humor and heartbreak,' suggesting positive qualities, though 'sprawling' could imply some structural concerns. The overall tone is appreciative of the work's scope and emotional range. | Gemini: The review describes the play as \"sprawling\" and \"ambitious\" while also highlighting its ability to find both humor and heartbreak. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review offers clear praise for the play's ambition and its successful balancing of humor and heartbreak, indicating a solid achievement. However, the extreme brevity of the text suggests this may be an excerpt or truncated review, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:18:17.912Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

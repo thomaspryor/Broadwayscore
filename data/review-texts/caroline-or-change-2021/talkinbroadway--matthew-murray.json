@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sharon D Clarke's Caroline is a towering achievement, a performance that captures every facet of this complex woman with stunning authenticity and power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sharon D Clarke's Caroline is a towering achievement, a performance that captures every facet of this complex woman with stunning authenticity and power.",
   "contentTier": "truncated",
-  "contentTierReason": "Short text (23 words)"
+  "contentTierReason": "Short text (23 words)",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sharon D Clarke's Caroline is a towering achievement, a performance that captures every facet of this complex woman with stunning authenticity and power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single sentence praising lead performance as 'towering achievement' with 'stunning authenticity and power' suggests strong recommendation, but extremely limited text reduces confidence significantly. | Gemini: The review uses strong positive language such as \"towering achievement\" and \"stunning authenticity and power,\" indicating a highly favorable assessment. | Kimi: Superlative language ('towering achievement', 'stunning authenticity and power') with no reservations or caveats. The critic is praising a central performance with the highest possible enthusiasm, indicating strong recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:58:47.293Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  },
+  "textQuality": "truncated"
 }

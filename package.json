@@ -38,7 +38,8 @@
     "reviews:collect": "node scripts/collect-review-texts.js",
     "reviews:coverage": "node scripts/analyze-review-coverage.js",
     "consensus": "node scripts/generate-critic-consensus.js",
-    "consensus:force": "node scripts/generate-critic-consensus.js --force"
+    "consensus:force": "node scripts/generate-critic-consensus.js --force",
+    "grosses:alltime": "npx tsx scripts/scrape-alltime.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
