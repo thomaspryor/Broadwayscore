@@ -69,6 +69,26 @@ jobs:
 
           node scripts/scrape-mezzanine-audience.js $ARGS
 
+      - name: Send Discord alert on failure
+        if: failure()
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await sendAlert({
+              title: 'Mezzanine Scraper Failed',
+              description: 'The Mezzanine audience data update failed. **The session token may have expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.',
+              severity: 'error',
+              fields: [
+                { name: 'Action Required', value: 'Re-intercept Mezzanine iOS app via mitmproxy' },
+                { name: 'Run', value: `[View logs](${runUrl})` }
+              ],
+              url: runUrl
+            }).catch(e => console.error('Discord notification failed:', e.message));
+
       - name: Commit and push changes
         if: always() && inputs.dry_run != true
         run: |
