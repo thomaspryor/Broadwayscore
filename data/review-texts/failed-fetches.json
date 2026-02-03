@@ -8476,42 +8476,6 @@
     "timestamp": "2026-02-03T07:53:21.890Z"
   },
   {
-    "reviewId": "a-strange-loop-2022/vulture--jesse-green.json",
-    "showId": "a-strange-loop-2022",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): the lion king, smash, company, the prom, carousel...",
-    "textLength": 8200,
-    "timestamp": "2026-02-03T08:00:58.624Z"
-  },
-  {
-    "reviewId": "a-tale-of-two-cities-2008/nytimes--ben-brantley.json",
-    "showId": "a-tale-of-two-cities-2008",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2008/09/19/theater/reviews/19tale.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): english, purpose, les misérables, the performers, jekyll & hyde...",
-    "textLength": 8004,
-    "timestamp": "2026-02-03T08:03:52.314Z"
-  },
-  {
-    "reviewId": "a-tale-of-two-cities-2008/variety--david-rooney.json",
-    "showId": "a-tale-of-two-cities-2008",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2008/legit/reviews/a-tale-of-two-cities-1200472041/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): company, carousel, the visit, the visit, once...",
-    "textLength": 3531,
-    "timestamp": "2026-02-03T08:04:09.625Z"
-  },
-  {
     "reviewId": "all-my-sons-2008/nytimes--ben-brantley.json",
     "showId": "all-my-sons-2008",
     "outlet": "The New York Times",
@@ -8810,5 +8774,41 @@
     "garbageReason": "Multiple shows mentioned (11): chicago, appropriate, american buffalo, macbeth, noises off...",
     "textLength": 6782,
     "timestamp": "2026-02-03T10:35:27.315Z"
+  },
+  {
+    "reviewId": "a-strange-loop-2022/vulture--jesse-green.json",
+    "showId": "a-strange-loop-2022",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): the lion king, smash, company, the prom, carousel...",
+    "textLength": 8200,
+    "timestamp": "2026-02-03T10:47:35.404Z"
+  },
+  {
+    "reviewId": "a-tale-of-two-cities-2008/nytimes--ben-brantley.json",
+    "showId": "a-tale-of-two-cities-2008",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2008/09/19/theater/reviews/19tale.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): english, purpose, les misérables, the performers, jekyll & hyde...",
+    "textLength": 8094,
+    "timestamp": "2026-02-03T10:51:54.175Z"
+  },
+  {
+    "reviewId": "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "showId": "a-tale-of-two-cities-2008",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2008/legit/reviews/a-tale-of-two-cities-1200472041/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): company, carousel, the visit, the visit, once...",
+    "textLength": 2873,
+    "timestamp": "2026-02-03T10:52:21.171Z"
   }
 ]
