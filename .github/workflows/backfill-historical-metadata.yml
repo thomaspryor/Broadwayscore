@@ -1,0 +1,96 @@
+name: Backfill Historical Show Metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Dry run (no commits)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Backfill synopsis + creative team
+        id: backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--backfill-historical"
+          LIMIT="${{ inputs.limit || '100' }}"
+          if [ "$LIMIT" != "0" ]; then
+            ARGS="$ARGS --limit=$LIMIT"
+          fi
+          node scripts/auto-fix-show-data.js $ARGS
+
+      - name: Validate data
+        run: node scripts/validate-data.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/shows.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            FIXED="${{ steps.backfill.outputs.fixed_count || 'unknown' }}"
+            echo "fixed=$FIXED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true' && inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json data/auto-fix-results.json
+          git commit -m "chore: Backfill historical show metadata (synopsis + creative team)
+
+          Fixed ${{ steps.changes.outputs.fixed }} issues via TodayTix + Claude API.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git checkout -- . && git clean -fd
+            git pull --rebase -X theirs origin main || git rebase --abort
+            git add data/shows.json data/auto-fix-results.json
+            git commit -m "chore: Backfill historical show metadata" --allow-empty
+            sleep $((RANDOM % 20 + 10))
+          done
+
+      - name: Summary
+        run: |
+          echo "## Historical Metadata Backfill Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Fixed:** ${{ steps.backfill.outputs.fixed_count || 'see logs' }} issues" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            echo "**Mode:** Dry run (no changes committed)" >> $GITHUB_STEP_SUMMARY
+          fi

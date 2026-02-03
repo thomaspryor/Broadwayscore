@@ -75,6 +75,7 @@ const KNOWN_DUPLICATES = {
   'eureka day': ['eureka day', 'eureka'],
   'all out': ['all out', 'all out comedy about ambition'],
   'stranger things': ['stranger things', 'stranger things the first shadow'],
+  'harry potter': ['harry potter', 'harry potter and the cursed child', 'harry potter and the cursed child parts one and two'],
 };
 
 /**
