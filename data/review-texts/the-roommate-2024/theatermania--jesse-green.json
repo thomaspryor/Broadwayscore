@@ -20,7 +20,7 @@
   "contentTierReason": "Wrong content detected - cleared for re-scrape and re-score",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/the-roommate-2024/theatermania--jesse-green_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T02:01:22.347Z",
+  "textFetchedAt": "2026-02-03T02:40:36.723Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -34,6 +34,12 @@
       "method": "playwright",
       "success": false,
       "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 75 chars"
     },
     {
       "tier": 2,
