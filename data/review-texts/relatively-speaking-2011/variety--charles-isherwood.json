@@ -1,0 +1,76 @@
+{
+  "showId": "relatively-speaking-2011",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Charles Isherwood",
+  "url": "https://variety.com/2011/legit/reviews/talking-cure-1118045506/",
+  "publishDate": "October 11, 2011",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
+  "originalScore": null,
+  "assignedScore": 53,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges positive elements (clever premise, witty dialogue) but delivers a significant criticism that it 'feels more like a lecture than a living piece of theater,' suggesting it fails as theatrical entertainment. With only one excerpt available, confidence is low as this could be setup for a more positive or negative overall verdict. | GPT-4o: The review acknowledges a clever premise and witty dialogue but ultimately criticizes the show for lacking vitality, comparing it to a lecture. This suggests a negative overall impression. | Gemini: The review acknowledges positive aspects like a clever premise and witty dialogue, but ultimately finds the play lacking as a piece of theater, leaning towards a more academic experience. Given the single excerpt, confidence is low. | Kimi: While the critic acknowledges a clever premise and witty dialogue, the decisive verdict compares the show unfavorably to a lecture, criticizing its lack of theatrical vitality and life. This represents a clear recommendation against seeing the production. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:21:47.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
+}
