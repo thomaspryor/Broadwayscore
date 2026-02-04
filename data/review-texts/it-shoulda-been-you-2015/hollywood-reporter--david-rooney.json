@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/general-news/shoulda-been-you-theater-review-792109/",
   "publishDate": "April 14, 2015",
-  "fullText": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser that compensates for its formulaic nature with warmth, humor and a cast that sells every moment.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser that compensates for its formulaic nature with warmth, humor and a cast that sells every moment.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This effervescent musical comedy about a Jewish-Catholic wedding where everything goes wrong is a crowd-pleaser that compensates for its formulaic nature with warmth, humor and a cast that sells every moment.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 76,
@@ -77,5 +77,53 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 523,
+  "archivePath": "data/archives/reviews/it-shoulda-been-you-2015/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:06:35.512Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Logo text\n \n\nParanormal Activity writer-director Oren Peli has beaten Millennium Films in an arbitration over failed negotiations for him to direct the horror thriller Stonehearst Asylum.\n\nIn the decision filed for confirmation Tuesday, a JAMS arbitrator has found Peli is owed the $500,000 \"kill fee\" included in his contract with Stonehearst production company Sobini. The director was to receive the fee if within two years of signing with Sobini he left the film, which Brad Anderson (The Machinist) eventually helmed with Michael Caine and Kate Beckinsale in starring roles.\n\nPeli, whose other credits include include Area 51 and producing the Insidious franchise, signed with Sobini (Good Kill, the upcoming Russ & Roger Go Beyond) in January 2011 to direct the project, which the company had tried to finance “for nearly 10 years.” The filing says his involvement attracted the interest of Millennium Films, the production company run by mogul Avi Lerner known for B-movies before producing the hit Expendables franchise, and producer Scott Steindorff.\n\nRelated Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Movies\n \n \n \n \n\n \n \n \n \n Next 'Paranormal Activity' Movie Lands Summer 2027 Date From Paramount \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Movies\n \n \n \n \n\n \n \n \n \n 'Good Boy' Review: Oh, the Horror, Through Canine Eyes\n\nIn May 2012 Millennium signed a three-month option to produce Stonehearst Asylum with several conditions, one of which was sealing a directing deal with Peli.\n\nThe filing indicates negotiations ended over one point: the line producer.\n\nSpecifically, Peli wished to choose his line producer (the executive who coordinates day-to-day budgets and operations on the film). He wanted his pick in part due to “concerns about Millennium's business practices and structure” and a conversation with Lee Daniels, who directed The Paperboy for Millennium and was once attached to a Martin Luther King Jr. drama for the company. Steindorff would permit Peli to choose the line producer, but Millennium allegedly wouldn’t cooperate.\n\nIn July 2012 following months of negotiations, Peli requested Richard Sharkey for line producer. Millennium agreed. But according to the filing, they arranged for their preferred line producer Les Weldon effectively to oversee Sharkey without telling the director until they sent him a new draft of the deal in August. “Peli felt he had lost all trust the he could work with Millennium due to Millennium’s position on the line producer issue,” reads the filing.\n\nHe exited the film, but claimed Millennium continued using his name to promote the film for the next year, including using it to sell the film for German distribution at the American Film Market in November 2012, though he and his attorneys sent several requests for them to stop. Then when his “kill fee” became due with the beginning of Stonehearst‘s principal photography in June 2013, the companies allegedly refused to pay the $500,000. They claimed they in fact terminated Peli’s deal in February 2014, after the window for the “kill fee” ended — an argument the arbitrator rejected.\n\nThe arbitrator ruled in Peli’s favor on his breach of contract claim and denied Millennium and Sobini’s claims of breach of contract, fraud and breach of the covenant of good faith and fair dealing. Jeremiah Reynolds of Kinsella Weitzman argued for Peli.\n\nTHR has reached out to representatives for Millennium and Sobini."
 }

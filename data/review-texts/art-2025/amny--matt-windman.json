@@ -1,0 +1,78 @@
+{
+  "showId": "art-2025",
+  "outletId": "amny",
+  "outlet": "amNewYork",
+  "criticName": "Matt Windman",
+  "url": "https://www.amny.com/entertainment/broadway/review-art-starry-cast-blank-canvas/",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "The humor also feels dated, out of step with contemporary Broadway audiences who expect more depth and urgency. “Art” toys with questions of loyalty, taste, and compromise, but never pushes further. Despite three engaging performances, the show drags until its final minutes. In the end, this revival is less a masterpiece than a blank canvas.",
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 65,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The humor also feels dated, out of step with contemporary Broadway audiences who expect more depth and urgency.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Despite three engaging performances, the show drags until its final minutes.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "In the end, this revival is less a masterpiece than a blank canvas.",
+        "sentiment": "negative",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The review acknowledges engaging performances but finds the material dated and dramatically insufficient, with the show dragging and ultimately dismissing it as 'less a masterpiece than a blank canvas.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:13.392Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2718,
+    "outputTokens": 345,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt with verdict"
+    }
+  },
+  "sources": [
+    "dtli"
+  ]
+}

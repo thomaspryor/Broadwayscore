@@ -1,0 +1,74 @@
+{
+  "showId": "art-2025",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Sara Holdren",
+  "url": "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "As a director, Ellis is happy to put his trio of stars in the terrarium of a bland upscale apartment and let them go for the punch lines. All three are nimble with comedy, and it’s not that there’s nothing funny in Art; it’s that the material makes the atmosphere in the room too thin to work up the breath for a good laugh.",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "dtli",
+  "dtliThumb": "DOWN",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"For all the play’s bickering and bashing, the eventual trajectory of Art feels almost saccharine.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 70,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "All three are nimble with comedy, and it's not that there's nothing funny in Art.",
+        "sentiment": "positive",
+        "strength": 2
+      },
+      {
+        "quote": "The material makes the atmosphere in the room too thin to work up the breath for a good laugh.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges the performers' comedy skills but finds the material fundamentally flawed, creating an atmosphere too thin for effective comedy - a significant structural criticism that outweighs performer praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:32.551Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2723,
+    "outputTokens": 309,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
+}

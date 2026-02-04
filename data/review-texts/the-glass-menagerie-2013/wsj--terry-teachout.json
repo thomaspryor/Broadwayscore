@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cherry Jones gives a performance of wrenching power as Amanda Wingfield, the faded Southern belle whose desperate attempts to marry off her painfully shy daughter Laura drive the action of Tennessee Williams's memory play.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:07:11.150Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a single sentence describing a performance, not a complete review with critical evaluation or recommendation; openai: The text is a brief description of Cherry Jones's performance and does not provide an evaluative review of the overall production.",
+  "promptVersion": "5.2.0"
 }

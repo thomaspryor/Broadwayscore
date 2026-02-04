@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Suchet brings a magisterial authority to his portrait of Sir Robert Morton, the celebrated barrister who takes on the Winslows' case, transforming what could have been a stock figure of theatrical nobility into a man of recognizable flesh and blood.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (41 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived-at-american-airlines-theater.html?ref=theater&pagewanted=all&_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:22:25.904Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt describing one performance, not a complete review with an overall verdict about the show; openai: The text is a single sentence focusing on a specific performance, lacking a broader evaluation of the show.",
+  "promptVersion": "5.2.0"
 }

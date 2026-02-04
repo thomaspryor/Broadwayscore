@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite Bobby Cannavale's powerhouse performance as the tormented movie star Charlie Castle, this revival of Clifford Odets' 1949 melodrama about Hollywood corruption feels surprisingly airless and dated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival of Clifford Odets' 1949 melodrama about Hollywood corruption feels surprisingly airless and dated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Cannavale's 'powerhouse performance,' the critic finds the revival 'airless and dated,' indicating the strong individual performance doesn't redeem the overall production disappointment. | GPT-4o: The review acknowledges a strong performance by Bobby Cannavale but criticizes the production as 'airless and dated,' indicating a negative overall assessment. | Gemini: The review acknowledges a strong performance but ultimately finds the production \"airless and dated,\" indicating a negative overall assessment. | Kimi: While the critic praises Bobby Cannavale's 'powerhouse performance,' the overall verdict condemns the revival as 'airless and dated,' indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:39.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Larry David's Broadway debut is a comedy that's dead in the water. The 'Seinfeld' and 'Curb Your Enthusiasm' creator has written a play that feels like a very long, very unfunny episode of his HBO show.",
   "originalScore": null,
-  "assignedScore": 21,
+  "assignedScore": 22,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 22,
+    "confidence": "medium",
+    "range": {
+      "low": 17,
+      "high": 27
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a comedy that's dead in the water",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Clear negative assessment calling the play 'dead in the water' and 'very unfunny,' with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, describing the play as 'dead in the water' and 'very unfunny', akin to a failed episode of his show. This indicates a deep pan with no redeeming qualities. | Gemini: The review is strongly negative, comparing the play unfavorably to a long, unfunny episode of his HBO show. This indicates a pan. | Kimi: The critic offers an unambiguously negative verdict with no redeeming qualities mentioned, using devastating phrases like 'dead in the water' and 'very unfunny' to warn audiences away.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:23.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 21
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 25,
+    "kimiScore": 20,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

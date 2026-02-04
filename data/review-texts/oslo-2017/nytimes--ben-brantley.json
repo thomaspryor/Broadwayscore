@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Oslo accord may not have lasted, but J.T. Rogers's Oslo, which opened on Thursday night at the Lincoln Center Theater, achieves something more durable: a sustained work of political drama that manages to be both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "achieves something more durable: a sustained work of political drama that manages to be both intimate and epic",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it a 'sustained achievement' that succeeds on multiple levels ('intimate and epic'). Clear positive recommendation with sophisticated appreciation. | GPT-4o: The review uses strong positive language, describing the show as 'sustained' and achieving a balance of 'intimate and epic,' indicating a highly favorable view. | Gemini: The review praises the play as a \"sustained work of political drama\" that is both \"intimate and epic,\" indicating a positive recommendation. | Kimi: The critic offers strong unqualified praise, calling the work 'durable' and 'sustained' while commending its successful balance of intimacy and epic scale. Confidence is low due to the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:23.458Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

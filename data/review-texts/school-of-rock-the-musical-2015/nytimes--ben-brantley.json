@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs by Mr. Lloyd Webber are serviceable and sometimes better than that, though they don't achieve the memorable melodic heights of his biggest hits. But the young performers who play his students are so winning that you're likely to forgive the show its calculated aspects.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the young performers who play his students are so winning that you're likely to forgive the show its calculated aspects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley acknowledges flaws (songs don't reach melodic heights, calculated aspects) but concludes audiences will forgive these due to the winning performances, indicating a qualified positive recommendation. | GPT-4o: The review acknowledges the music as 'serviceable' but praises the young performers as 'winning,' suggesting a positive recommendation despite some reservations about the show's calculated nature. | Gemini: The review acknowledges the songs are not his best, but the performers are winning, leading to a positive but reserved recommendation. | Kimi: While the critic finds Lloyd Webber's songs only serviceable and notes the show's calculated nature, the enthusiastic praise for the young performers ('so winning') serves as a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:50:04.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

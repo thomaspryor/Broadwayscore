@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Blanchett brings her fierce intelligence and commanding stage presence to bear on the role of Anna Petrovna, a wealthy widow whose romantic entanglements drive the plot of this leisurely paced but ultimately rewarding drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "leisurely paced but ultimately rewarding drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting slow pacing, the critic finds it 'ultimately rewarding' and praises Blanchett's performance with strong positive language ('fierce intelligence', 'commanding'). Clear positive verdict with minor reservations. | GPT-4o: The review praises Blanchett's performance and describes the drama as 'ultimately rewarding,' suggesting a positive recommendation despite noting the leisurely pace. | Gemini: The review highlights Blanchett's performance and calls the drama \"ultimately rewarding,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. | Kimi: While praising Blanchett's 'fierce intelligence' and 'commanding stage presence,' the critic delivers a qualified but clear positive verdict calling the show 'ultimately rewarding.' The brief excerpt nature warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:16:52.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Something Rotten! is a musical that knows exactly what it wants to be: a big, brash, unabashedly silly celebration of musical theater that doesn't take itself too seriously. For the most part, it succeeds admirably at those goals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Something Rotten! is a musical that knows exactly what it wants to be: a big, brash, unabashedly silly celebration of musical theater that doesn't take itself too seriously. For the most part, it succeeds admirably at those goals.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part, it succeeds admirably at those goals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment stating the show 'succeeds admirably' at its goals, though 'for the most part' suggests minor reservations that keep it from being a stronger positive. | GPT-4o: The review describes the show as a successful, enjoyable celebration of musical theater, indicating a positive recommendation with some reservations. | Gemini: The review states the show succeeds admirably at its goals, which is a positive recommendation, but the phrase 'for the most part' indicates some reservations. | Kimi: The critic praises the show for achieving its goals of being a silly, unabashed celebration of musical theater, stating it 'succeeds admirably' despite slight qualifications.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:53:09.850Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

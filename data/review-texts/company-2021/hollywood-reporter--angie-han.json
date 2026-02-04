@@ -5,8 +5,8 @@
   "criticName": "Angie Han",
   "url": "https://www.hollywoodreporter.com/movies/movie-reviews/company-review-1235056094/",
   "publishDate": "December 9, 2021",
-  "fullText": "This gender-flipped revival of Stephen Sondheim's Company feels both timely and timeless, with Katrina Lenk delivering a powerhouse performance as Bobbie.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This gender-flipped revival of Stephen Sondheim's Company feels both timely and timeless, with Katrina Lenk delivering a powerhouse performance as Bobbie.",
   "originalScore": null,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-flipped revival of Stephen Sondheim's Company feels both timely and timeless, with Katrina Lenk delivering a powerhouse performance as Bobbie.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
     "score": 79,
@@ -73,5 +73,53 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 286,
+  "archivePath": "data/archives/reviews/company-2021/hollywood-reporter--angie-han_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:47:47.825Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 286 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Ron Howard will receive the Motion Picture Sound Editors’ annual Filmmaker Award during the 69th MPSE Golden Reel Awards, a virtual event slated for March 13.\n\nHoward’s credits range from Oscar-winning dramas A Beautiful Mind, for which he earned Oscars for best director and best picture, and Apollo 13 to comedies such as Parenthood and Splash.\n\nHoward and his Imagine Entertainment partner Brian Grazer, recently produced Lin-Manuel Miranda’s Tick, Tick ... Boom! He’s currently in postproduction on Thirteen Lives, a story surrounding the 2018 rescue of 12 boys and their soccer coach from a flooded cave in Thailand; and on a documentary about chef José Andrés and his nonprofit World Central Kitchen.\n\n\"Ron Howard has inspired and delighted movie lovers worldwide with a body of work incredible in its scope, broad appeal and consistent excellence,\" said MPSE president Mark Lanza. \"His tireless imagination and generous spirit serve as an example to all of us involved in the art of filmmaking.\"\n\nSaid Howard in a released statement: \"Of all the vital fragments of the mosaic that each project must locate or create and then place in the exact position to transport an audience, the sound editor and designer's task is the most varied, meticulous and, I'd argue, underestimated. In the hands of a great editor, sounds from the literal to the abstract can be aligned or juxtaposed with images on the screen to inform and impact audiences in ways both overt and subliminal. Sometimes the same sound achieves both. To be recognized by such artists and craftspeople is beyond flattering.\"\n\nHoward's past films also include The Beatles: Eight Days a Week – The Touring Years, Solo: A Star Wars Story, Rush, The Da Vinci Code and Cocoon."
 }

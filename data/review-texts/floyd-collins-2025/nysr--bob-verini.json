@@ -17,5 +17,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2025/04/21/floyd-collins-jeremy-jordan-goes-deep-as-a-forgotten-headliner-from-1925/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The current mounting at Lincoln Center, with a starry cast and original director Tina Landau, left me restless and cold.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic gives 2/5 stars and explicitly states the production left him 'restless and cold' despite praising individual performances. The venue choice fundamentally undermines the show's impact according to the review. | GPT-4o: The critic expresses disappointment with the current production, noting it left them 'restless and cold.' Despite some praise for individual performances, the overall tone is negative, aligning with the 2/5 star rating. The review is truncated, so confidence is medium. | Gemini: Despite praising the cast and some aspects of the production, the critic ultimately finds the production disappointing due to the venue, which detracts from the claustrophobic and intimate nature of the story. The 2/5 star rating confirms a negative assessment. | Kimi: The critic gives 2/5 stars and finds the large Beaumont venue fatally undermines the intimate, claustrophobic story, creating emotional distance despite excellent performances from Jeremy Jordan and the cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:59.303Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

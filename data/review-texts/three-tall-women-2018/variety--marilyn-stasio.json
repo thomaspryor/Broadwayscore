@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Glenda Jackson makes a triumphant return to Broadway after a 25-year absence in Edward Albee's Pulitzer Prize-winning drama, delivering a performance of such ferocious intelligence and emotional complexity that it redefines the very notion of a tour de force.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Glenda Jackson makes a triumphant return to Broadway after a 25-year absence in Edward Albee's Pulitzer Prize-winning drama, delivering a performance of such ferocious intelligence and emotional complexity that it redefines the very notion of a tour de force.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language like 'triumphant return' and 'redefines the very notion of a tour de force' with unqualified praise for the lead performance, indicating an enthusiastic rave recommendation. | GPT-4o: The review uses superlatives like 'triumphant' and 'redefines the very notion of a tour de force,' indicating unqualified praise and a strong recommendation. | Gemini: The review uses strong positive language such as \"triumphant\" and \"tour de force\", indicating a rave review. | Kimi: Unreserved superlatives including 'triumphant,' 'ferocious intelligence,' and 'redefines' with no caveats indicate the highest possible recommendation for both the production and performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:26:08.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

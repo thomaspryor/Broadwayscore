@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The performance is forceful enough for this Bug to operate chiefly as a character study. Despite the cesspits of ­conspiracy-think that pollute contemporary politics, the specific paranoia of Letts’s ­characters — bugs under the skin, brainwashing, ­nefarious doctors in government labs — feels less ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The performance is forceful enough for this Bug to operate chiefly as a character study.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise for the performance but suggests the material feels dated or less relevant. The truncated nature and lack of clear recommendation makes this mixed with low confidence. | GPT-4o: The excerpt suggests a focus on performance strength, but also implies that the paranoia central to the play feels less impactful. The single excerpt and lack of full context lead to a mixed verdict with low confidence. | Gemini: The excerpt suggests a focus on character study, but also notes that the paranoia feels less relevant. This indicates a mixed reaction, with some positive aspects but overall a tempered enthusiasm. Given the single excerpt, confidence is low. | Kimi: The single available excerpt offers qualified praise ('forceful enough') suggesting the production works primarily as a character study, though the truncated text hints at reservations about the play's contemporary relevance. With only one excerpt available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:46:19.079Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

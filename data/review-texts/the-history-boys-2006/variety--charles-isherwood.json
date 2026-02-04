@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Alan Bennett's witty, wise and deeply affecting play about eight bright schoolboys in 1980s England preparing for their Oxford and Cambridge entrance exams arrives on Broadway with its superb original cast intact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Alan Bennett's witty, wise and deeply affecting play about eight bright schoolboys in 1980s England preparing for their Oxford and Cambridge entrance exams arrives on Broadway with its superb original cast intact.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Alan Bennett's witty, wise and deeply affecting play arrives on Broadway with its superb original cast intact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong positive language ('witty, wise and deeply affecting', 'superb original cast') indicates clear recommendation, though brief excerpt limits full assessment of enthusiasm level. | Gemini: The review uses strong positive language such as \"witty, wise, and deeply affecting\" and highlights the superb original cast, indicating a strong recommendation. | Kimi: The excerpt offers strong evaluative praise ('witty, wise and deeply affecting', 'superb original cast') indicating a clear recommendation of the Broadway production, though the brevity and possible truncation warrant lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:08:53.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

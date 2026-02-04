@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/farinelli-and-the-king-review-1202636164/",
   "publishDate": "December 18, 2017",
-  "fullText": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
-  "isFullReview": false,
+  "fullText": "The Oscar winner delivers a tour de force performance as King Philippe V of Spain, whose sanity hangs on the voice of the castrato Farinelli.\n\nThere’s not much to Claire van Kampen's simplistic script for “Farinelli and the King,” the play now running on Broadway after premiering at Shakespeare’s Globe in London. But with a lead performance by Oscar and Tony winner Mark Rylance in full sail, it’s enough.\n\nWith his courtiers plotting to depose the mad king of Spain (Rylance), his cool and canny wife, Queen Isabella (the enchanting Melody Grove), comes to his rescue. The Queen has engaged the services of the famed Italian castrato, Farinelli (Sam Crane, the soul of refinement), to soothe the monarch's fevered brain.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Industry' Season 4 Premiere Viewership Jumps 20% From Season 3 \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Damon Lindelof Sets Limited Series 'The Chain' at HBO Under New Overall Deal\n\nLeft to his own inclinations, King Philippe would be happy chatting with his pet goldfish. (\"Not all of us are equal,\" he solemnly informs the fish. \"We were not born equal; we shall never be equal.\") But Isabella is determined to cure the king of his aberrant moods, and to this end she engages the great singer to move into the palace and minister to the monarch's fevered fantasies.\n\nAs Farinelli, Crane possesses the mental serenity that the king so desperately needs. Costumed (by Jonathan Fensom) in elegant court dress, he has the bearing of royalty without the streak of insanity that comes with the title. As the voice of Farinelli, the identically costumed Iestyn Davies steps in to sing whenever a Handel aria is called for. The nine selections, all chosen from arias first sung by the real-life Farinelli in the 1730s, range from \"Ho perso il caro ben\" from “Il Parnasso” to the melting \"Bel contento\" from “Flavio,” and Davies delivers them with Baroque precision. But as a countertenor, he never reaches the stratospheric scale of a true castrato, and the limitation hurts. Rylance melts, as King Philippe must, but we don't.\n\nIn the context of the period setting, the anachronistic language is barbarically contemporary. A theater impresario, for instance, complains that \"so many people want a piece\" of his star performer; even his wife, who \"has been on my case since we opened.\"\n\nThat's a pity, since director John Dove has taken such pains to re-create the heavily gilded style of the formal Baroque setting of this production, which originated at Shakespeare's Globe Theater in 2015. The richly textured costumes look especially sumptuous in the blaze of candlelight (supplied by designer Paul Russell), and the period musical instruments — harpsichord, violins, viola, theorbo, Baroque guitar — all sing true, especially as stripped of all mechanical amplification.\n\nRylance is a favorite on these shores. He was a divine Countess Olivia in \"Twelfth Night\" and a tormented Richard in \"Richard III\" in 2013, and people are still talking about his dazzling portrayal of Rooster Byron on Broadway in \"Jerusalem.\" His cockeyed fisherman in van Kampen's \"Nice Fish\" was a weird and wonderful treat when it played St. Ann's Warehouse, and to bring his bio up to date, he's currently on screen in \"Dunkirk.\" But mad kings could easily become a specialty with this actor, who sees the pathos and the ridiculousness of the royal personage, and warmly embraces them both.",
+  "isFullReview": true,
   "dtliExcerpt": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
   "originalScore": null,
   "assignedScore": 74,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
     "score": 74,
@@ -75,5 +75,50 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "textWordCount": 556,
+  "archivePath": "data/archives/reviews/farinelli-and-the-king-2017/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:36:00.797Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 556,
+  "tierReason": "Full review text"
 }

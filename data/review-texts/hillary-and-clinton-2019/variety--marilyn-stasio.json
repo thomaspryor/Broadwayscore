@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2019/legit/reviews/hillary-and-clinton-review-broadway-1203188751/",
   "publishDate": "April 18, 2019",
-  "fullText": "Laurie Metcalf and John Lithgow are superb as the political power couple in Lucas Hnath's smart, speculative drama about what might have happened behind closed doors during the 2008 Democratic primary campaign.",
-  "isFullReview": false,
+  "fullText": "The perfectly cast Laurie Metcalf and John Lithgow struggle to reveal any fresh ideas in this new play.\n\nIf anyone could play Hillary Clinton, it's Laurie Metcalf – and here she is, in Lucas Hnath's \"Hillary and Clinton,\" giving a performance that feels painfully honest and true. And if anyone could capture Bill Clinton's feckless but irresistible charm, that would be John Lithgow – and here he is, too. Who better to work with these actors, sounding the depths of these iconic figures, than director Joe Mantello, who is also on deck.\n\nThe only thing wrong in this fictionalized visit to the 2008 primary — the one that saw Barack Obama claim the Democratic nomination for president over Hillary — is that playwright Hnath, Tony nominated for \"A Doll's House, Part 2,\" has brought nothing of substance to the table. The characters stand up. The language is strong. But like Claudius's earnest prayer to his resolutely unimpressed God in “Hamlet,” nothing said by either party reaches the heavens.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘Everybody to Kenmure Street’ Review: A Timely Document of Scottish Neighbors Standing Up to Immigration Raids \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'The Brittney Griner Story' Review: The Basketball Great Still Rises\n\nGlenda Jackson has observed that characters in a play don't know they are characters in a play: \"They're just living their lives.\" Hnath would like us to honor that fiction here. Don't imitate the \"real\" Hillary and Bill, he says in a program note. Pretend you've never heard of the Clintons. Create entirely new characters. (Lots of luck with that.)\n\nThe play opens in 2008 in a hotel room in New Hampshire, where not-Clinton and not-Obama are slugging it out for the nomination. And while not-Obama (a shaky Peter Francis James) makes a surprise appearance to make a surprise move, the focus is on not-Hillary and not-Bill, who are at odds on the best political tactics for prevailing in the primaries and snagging the nomination.\n\nIn a speech directed at the audience, Hillary keeps flipping a coin while ruminating on the existential possibility that the reality she's living is not necessarily the only reality floating around up there in the universe. She's lagging behind Obama in the polls and playing with the notion that maybe, in some alternate reality in this infinite universe of possibilities, she will beat this upstart who has jumped the line of accession, prevailing against him in New Hampshire. (Now that's a play I really want to see.)\n\n\"I've been campaigning for close to a year now. I haven't slept. I'm tired. I'm very tired.\" Metcalf, who is dressed in baggy comfort-clothes by Rita Ryack, looks as exhausted as she sounds. Running for president is no country for old men or middle-aged women who need their sleep, so Hillary has a heart-to-heart with her campaign manager, Josh, played like a proper cheerleader by Zak Orth. She needs money, she needs poll numbers, she needs encouragement, she needs sleep.\n\nJosh explains that being the underdog is actually working for her. \"So me losing is a strategy?\" she snaps back at him. Snap, snap, snap. For a while, Hnath gets away with the sympathetic characters and their snappy dialogue. But it's inevitable that Hillary would give in to her baser political instincts and call Bill for help.\n\n\"He's good where he is, which is far from here,\" says Josh, who managed to kick the bad-boy ex-president off the campaign and into the wilderness. But it's obvious where this is going, and we're all thrilled when Bill (Lithgow, looking ready for bear) saunters through the door. Surely that's the signal that something will actually happen in this static play. But, no, this Bill person turns out to be just another mouthpiece for clever chit-chat.\n\n\"When you start to lose, you pull out,\" Bill advises his wife. \"Pull out fast. Don't linger. People linger. People get up there, they linger and they die. Then they rot. They rot in public. Don't let them see you rot.\"\n\nBesides pulling off terrific political pep talks like that, Hnath also gets the intimate cadences of a close couple's domestic rhythms, and lets Metcalf and Lithgow have their fun. But what about us? Where's our fun? In an alternate reality, surely Hillary would be Queen of the Universe and Bill would be picking her up in a golden chariot. Let's see that play.",
+  "isFullReview": true,
   "dtliExcerpt": "Laurie Metcalf and John Lithgow are superb as the political power couple in Lucas Hnath's smart, speculative drama about what might have happened behind closed doors during the 2008 Democratic primary campaign.",
   "originalScore": null,
   "assignedScore": 81,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Laurie Metcalf and John Lithgow are superb as the political power couple in Lucas Hnath's smart, speculative drama about what might have happened behind closed doors during the 2008 Democratic primary campaign.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
     "score": 81,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "textWordCount": 725,
+  "archivePath": "data/archives/reviews/hillary-and-clinton-2019/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:15:28.049Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 725,
+  "tierReason": "Full review text"
 }

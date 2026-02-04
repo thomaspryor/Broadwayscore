@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What's missing is the claustrophobic intensity that made the original production so memorable. Instead of feeling trapped in a seedy motel room with these desperate characters, you're watching them from a comfortable distance.",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What's missing is the claustrophobic intensity that made the original production so memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges what made the original work but finds this production lacking in that essential quality, creating distance rather than immersion. | GPT-4o: The review criticizes the current production for lacking the intensity that made the original memorable, suggesting a significant shortcoming in the experience. | Gemini: The review explicitly states that the current production lacks the intensity of the original, creating a sense of distance rather than immersion, which is a negative assessment. | Kimi: The critic laments the loss of claustrophobic intensity from the original production, noting the Broadway version creates a 'comfortable distance' rather than immersive tension. No redeeming qualities are mentioned in this brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:34.116Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 46
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

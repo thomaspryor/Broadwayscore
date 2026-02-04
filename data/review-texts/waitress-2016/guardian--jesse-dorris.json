@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Waitress is a sweet confection that goes down easy, but it's also substantive enough to leave you satisfied. Mueller's performance is the cherry on top of a show that manages to be both comforting and surprising.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -58,5 +58,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 698,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The resulting musical is both sweet and bitter and only sporadically satisfying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Despite truncation warning, the review shows clear mixed signals - praises individual performances (Mueller, Fitzgerald) and some songs, but criticizes choreography, sexual politics, and overall satisfaction. The critic finds it 'sporadically satisfying' with troubling elements. | GPT-4o: The review provides a mix of positive and negative elements, praising performances and some songs, but critiquing the show's sexual politics and choreography. The truncated nature of the text and mixed signals lead to a low confidence score. | Gemini: The review is mixed, praising some aspects like the performances and wit, but criticizing the sexual politics and some of the songs. The truncated nature makes the final verdict uncertain, but the overall tone leans towards a qualified recommendation. | Kimi: While the visible text criticizes the show's sexual politics and inconsistent staging, it offers strong praise for Jessie Mueller's luminous performance and the supporting cast. Given the truncation warning and aggregator excerpts suggesting the show is 'substantive enough to leave you satisfied,' the likely final verdict is a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:32:19.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

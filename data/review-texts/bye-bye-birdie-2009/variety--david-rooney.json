@@ -6,10 +6,10 @@
   "url": "https://variety.com/2009/legit/reviews/bye-bye-birdie-1200476293/",
   "publishDate": "October 15, 2009",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,108 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the 1960 musical about rock 'n' roll mania feels tired and tepid, despite energetic performances from John Stamos and Gina Gershon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic clearly finds the revival 'tired and tepid' - decisively negative language. The praise for individual performances ('energetic') doesn't redeem the overall negative assessment, following the pattern where performer praise doesn't override a pan verdict. | GPT-4o: The review describes the revival as 'tired and tepid', indicating a lack of enthusiasm or recommendation, despite some praise for the performances. The single excerpt suggests a negative overall impression. | Gemini: The review states the show feels \"tired and tepid\" despite the performances, indicating a negative overall assessment. The presence of performer praise does not redeem the negative verdict. | Kimi: The critic describes the revival as 'tired and tepid,' using 'despite' to indicate that energetic performances cannot overcome the show's lack of vitality, indicating a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:49:03.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 361,
+  "archivePath": "data/archives/reviews/bye-bye-birdie-2009/variety--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:28:17.143Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Represents a messy, tawdry blend of documaking and fiction, all set in and around the city of Naples.\n\nLike maverick filmmaker Abel Ferrara‘s previous work, “Chelsea on the Rocks,” “Napoli Napoli Napoli” reps a messy, tawdry blend of documaking and fiction, this time all set in and around thecity of Naples. As with “Chelsea,” the pic’s strongest elements are its docu components, especially the disarmingly frank interviews with femme inmates at Naples Pozzuoli State Prison. Three banal, barely comprehensible, HD-shot fictional vignettes, however, are a waste of space. At its best, “Napoli” has little new to say, so it’s hard to see the pic traveling anywhere, apart from fests and Italian TV.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Damon Lindelof Sets Limited Series 'The Chain' at HBO Under New Overall Deal \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Knight of the Seven Kingdoms' Premiere Draws 6.7 Million Viewers in Three Days\n\nThe helmer himself is seen throughout shuffling around Naples, but it’s an unnamed, gravel-voiced Italian interviewer who does the pic’s heavy lifting and best work interviewing inmates at Pozzuoli, getting them to open up about their lives. Other interviewees include local politicians and community workers trying to improve life in some of Naples’ worst slums, intercut with archival footage. All this makes for a reasonably interesting if far from revelatory portrait of a city riddled by poverty and crime.\n\nIt would be fine if the pic contented itself with these issues, but instead, it presents three made-up stories about a young prostitute (Yank thesp Shanyn Leigh, who doesn’t even speakhere), a prison fight and a Mafia hit, which are all poorly written, helmed and thesped. Eagle-eyed auds will spot ’60s icon Anita Pallenberg (“Performance”) playing the prostitute’s mother, while there’s also a small role for “Gomorrah’s” Salvatore Ruocco in the Cosa Nostra story.\n\nMostly handheld lensing by Alessandro Abate looks grubby, while the intrusive score by Francis Kuipers adds faux gravitas. Over credits, footage is shown of Ferrara himself and Kuipers playing in concert, with less than impressive results, a song called “King of New York,” a tune whose lyrics have nothing to do with the rest of the pic and rep simply a moment of self-indulgent egotism for the helmer."
 }

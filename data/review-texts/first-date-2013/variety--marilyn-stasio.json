@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2013/legit/reviews/first-date-1200564645/",
   "publishDate": "August 9, 2013",
-  "fullText": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
   "originalScore": null,
   "assignedScore": 74,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This likable little musical about the perils of modern romance has a sweetly old-fashioned sensibility that should appeal to audiences looking for something light and cheery.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 74,
@@ -77,5 +77,50 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 74,
+  "textWordCount": 958,
+  "archivePath": "data/archives/reviews/first-date-2013/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:40:09.853Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Jul 18, 2013 9:17am PT \n\n \n\n \n \n \n\n \n\n \n It’s Party Time at Comic-Con as Hollywood Shows Off its Nerdy Side\n \n \n\n \n\n Hollywood rolls out red carpet with star-studded events to celebrate annual fanfest\n\nThe organizers of San Diego’s Comic-Con never intended for Hollywood to steal the spotlight of its annual fanfest for all-things genre related, but it’s clear the studios and TV networks with their deep-pocketed marketing budgets are here to stay.\n\nAlong with them come the celebrities and rest of the entertainment biz — with everyone looking for a way to stay occupied outside of the crowded halls of the city’s convention center.\n\nAnd that’s turned into a big opportunity for party planners. This year’s Comic-Con boasts over 35 parties being held July 17-20 (most locked down by the Hard Rock Hotel), with some so hard to get into it can be as stressful as securing a ticket to the Con or hotel room anywhere close to downtown San Diego, itself.\n\nOne of this year’s more unique events is set to be Ubisoft’s “Assassin’s Creed IV Black Flag Comic-Con Party & Showcase,” that will take place on a pirate ship, docked behind the convention center, to replicate the one seen in the game. Event will also promote Ubisoft’s “Watch_Dogs,” “Tom Clancy’s Splinter Cell Blacklist” and “Just Dance 2014.”\n\n1/1\n\nSkip Ad\n \nContinue watchingafter the adVisit Advertiser websiteGO TO PAGE\n\nWhile some companies host an impressive bash around the launch of a new film or TV show, Comic-Con does have its list of must-attend events each year that have consistently proved popular, boasting a strong guest list of bold face names from the big and small screens. They include:\n\nHitFix’s Comic-Con Kick Off Party\n\nThe annual event, produced by Gregory Ellwood, co-founder and editor-in-chief of HitFix is the calm before the storm, attracting a notable gathering of bloggers, media and filmmakers on the eve of Comic-Con’s four days of panels and presentations.\n\nUmberto Gonzalez and Daniel Alter‘s third annual event, held this year inside the Pussycat Doll’s Dollhouse at the Keating Hotel, stands out for its decision to go more Gotham in theme and attitude than L.A., and for random acts of cool like when Jon Favreau decided to take over as DJ.\n\nEntertainment Weekly‘s Comic-Con Celebration\n\nJust as Hitfix starts the week, Entertainment Weekly ends Comic-Con on a high note. The magazine’s consistently proved the week’s most sought after ticket given its strong guest list of talent in town to promote their movies and TV series during the week. It’s essentially become a requirement for publicists to send their clients to, given the photo ops and chance to be included in the pub’s Comic-Con coverage. This year’s guest list includes castmembers of “Game of Thrones,” “Teen Wolf,” “True Blood,” “Agents of S.H.I.E.L.D,” “Arrow,” “The Walking Dead,” “Grimm,” “Black Sails,” “The Vampire Diaries,” “Once Upon a Time” and “The World’s End.”\n\n“For a lot of actors and people in the industry, the EW party has become a kind of reward for making it through Comic-Con,” says Entertainment Weekly editor Jess Cagle. “It captures the spirit of Comic-Con: fun, relaxed and a little crazy. It’s a good way for us to thank the entertainers we work with all the time.”\n\nThis Year’s Party List (at least most of them):\n\nThe “Course of the Force” 2013 Closing Ceremony & Concert, 6-9 p.m.; Hard Rock Hotel\n\nHitFix’s Comic-Con Kick-Off Party with CBS Films’ “The To Do List,” 8 p.m-midnight; Hotel Solamar\n\nUniversal Cable Prods Cocktail Party, 5 p.m.-9 p.m.; Stingaree\n\n“Game of Thrones” Beer Tasting, 6 p.m.-7 p.m.; Wired Lounge at Omni Hotel\n\nDreamWorks Animation Cocktail Reception, 6-8 p.m.; Southpaw Social Club\n\nMTV2’s Party in the Park, 7-11 p.m.; Petco Park\n\nIGN and Focus Features’ “The World’s End” Party, 7-11 p.m.; Hard Rock Hotel’s Float Bar\n\neOne’s “Haven” Party, 8-10 p.m.; Sidebar\n\nThe Principato Young Cocktail Reception, 8 p.m.-10 p.m.; Rama Restaurant\n\nThe Mashable and Digitaria Party, 8 p.m.-midnight; Ultimate Skybox\n\nFandango, Lionsgate, Summit Party, 8:30 p.m.-12:30 a.m.; Hard Rock Hotel’s 207 Lounge\n\nThe Kings of Con Party, 9 p.m.-2 a.m.; The Keating Hotel\n\nBoom! Studios 8th Anniversay Drink-Up, 9 p.m.; Hilton San Diego Bayfront Hotel\n\nMachinima “Mayhem,” 9 p.m.-2 a.m.; Fluxx\n\n“Insidious: Chapter 2” “To Go Further” Installation, 9 p.m.-2 a.m.\n\nGotham Group’s Annual Comic-Con Lunch (co-sponsored with Variety), 1 p.m.-4 p.m.; Rama\n\nWBTV Cocktail Party, 6:30 p.m.-8:30 p.m.; Hard Rock Hotel’s Float Bar\n\nRadical Studios‘s Ploom Party, 7 p.m.-10 p.m.; The Keating Hotel\n\nBreak Media Comedy Show, 8 p.m.; Dick’s Last Resort\n\nThe Con Of Darkness Party (hosted by MPI/Dark Sky Films, eOne, IFC Midnight, Dreadcentral.com, The Haunted Hotel, Femme Fatales and ShockTillYouDrop.com), 8 p.m.-11 p.m.; Voyeur Club\n\nDC Entertainment and Warner Bros.’ 75 Years Of Superman Party, 8:30 p.m.-midnight; Hard Rock Hotel’s Float Bar\n\n“The Walking Dead” Event, 9 p.m.-1 a.m.; Island Ave. & 2nd Ave.\n\nAspen Comics’ 10th Anniversay Party, 8:30-11:30 p.m.; Mission Brewery\n\nShifty Look Party, 8 p.m.; Hilton San Diego Gaslamp Hotel\n\nFX and Maxim magazine Party, 9 p.m.-2 a.m.; the Andaz Hotel\n\nUniversal Pictures’s “Kick-Ass 2” Party with Playboy, 9 p.m.-1 a.m., Island and 8th Ave\n\nUbisoft’s “Assassin’s Creed IV Black Flag” Comic-Con Party and Showcase, 10 p.m.-2 a.m.; on board a pirate ship\n\nCocktails with the Weinstein Co and Annapurna Pictures for Wong Kar Wai’s “The Grandmaster,” 6-8 p.m.; Katsuya\n\nNBC Digital Network Party, 7-9 p.m.; Hard Rock Hotel\n\n20th Century Fox TV Cocktail Party, 7-9 p.m.; Bankers Hill\n\nArcana Comics/Ploom Arcade, 7-10 p.m.; the Keating Hotel\n\nHBO & IMDB’s “True Blood” Party, 8 p.m.-midnight; Side Bar\n\nThe “Evil Dead” Blu-ray Party, 8 p.m.-midnight; The Commons\n\nGeek & Sundry’s Cosplay Prom, 9 p.m.; Jolt ‘N Joes\n\nA&E’s “Bates Motel” Party, 9 p.m-1 a.m.; 345 6th Ave\n\nEntertainment Weekly’s Comic-Con Celebration, 9 p.m; Hard Rock Hotel’s Float Bar"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play succeeds in dramatizing the ethical complexities of fact-checking and the tension between truth and narrative, anchored by three strong performances from Daniel Radcliffe, Cherry Jones and Bobby Cannavale.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The play succeeds in dramatizing the ethical complexities of fact-checking and the tension between truth and narrative, anchored by three strong performances from Daniel Radcliffe, Cherry Jones and Bobby Cannavale.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play succeeds in dramatizing the ethical complexities of fact-checking and the tension between truth and narrative.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment that the play 'succeeds' with praise for three strong lead performances, though lacks enthusiasm for top of bucket. | GPT-4o: The review highlights the play's success in addressing complex themes and praises the strong performances of the cast, suggesting a positive recommendation with some reservations. | Gemini: The review states that the play 'succeeds' and highlights strong performances, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the play's success in handling its themes and highlights strong lead performances, indicating a solid recommendation, though the brevity of the excerpt warrants lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:13:13.855Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

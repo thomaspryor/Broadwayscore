@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Miller's drama about two brothers confronting their past and their father's legacy remains as powerful and relevant as ever, and this revival does it justice with fine performances from Danny DeVito, Mark Ruffalo, Tony Shalhoub, and Jessica Hecht.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Miller's drama about two brothers confronting their past and their father's legacy remains as powerful and relevant as ever, and this revival does it justice with fine performances from Danny DeVito, Mark Ruffalo, Tony Shalhoub, and Jessica Hecht.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival does it justice with fine performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment saying the revival 'does justice' to Miller's powerful drama with praised performances, though the brief excerpt limits deeper evaluation. | GPT-4o: The review praises the revival for doing justice to the original drama, highlighting strong performances from the cast. The positive tone and recommendation are clear, though not overly enthusiastic. | Gemini: The review states that the revival \"does it justice\" and highlights \"fine performances,\" indicating a positive recommendation. | Kimi: The critic delivers a clear positive verdict, stating the revival does justice to the classic drama and praising the cast, though the brief excerpt and measured language ('fine', 'does it justice') suggest solid endorsement rather than ecstatic praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:18:21.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Stephen Sondheim's Assassins at Studio 54 is a crisp, well-acted production that brings new clarity to this challenging musical about American presidential assassins.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Stephen Sondheim's Assassins at Studio 54 is a crisp, well-acted production that brings new clarity to this challenging musical about American presidential assassins.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Stephen Sondheim's Assassins at Studio 54 is a crisp, well-acted production that brings new clarity to this challenging musical about American presidential assassins.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the production as 'crisp' and 'well-acted' with 'new clarity' - positive descriptors but measured tone. Low confidence due to single excerpt warning and potential for cherry-picking. | GPT-4o: The excerpt praises the production as 'crisp' and 'well-acted', with 'new clarity', indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the production as \"crisp, well-acted\" and bringing \"new clarity,\" which indicates a positive assessment, but the lack of a full review and the mention of it being a \"challenging musical\" suggests some reservations. | Kimi: The excerpt offers unambiguous praise for the production's performances and interpretive clarity, warranting a score in the upper Positive range. Confidence is low due to the limitation of a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:42:00.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

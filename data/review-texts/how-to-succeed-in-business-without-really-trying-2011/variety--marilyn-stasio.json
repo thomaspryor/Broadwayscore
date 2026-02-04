@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/how-to-succeed-in-business-without-really-trying-1117944570/",
   "publishDate": "March 27, 2011",
-  "fullText": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival of the 1961 musical, bringing youthful energy and comic timing to the role of J. Pierrepont Finch.",
-  "isFullReview": false,
+  "fullText": "An enervating, over-aestheticized mood piece about a child forced to live a complicated lie.\n\nAn enervating, over-aestheticized mood piece about the frustration of a child forced to live a complicated lie, “The Prize” values mood and image over narrative tension — or much narrative information at all. Written and directed by Argentina-born, Mexico-based filmmaker Paula Markovitch, this alum of the Berlinale’s World Cinema Fund should see further fest invites, but seems unlikely to light many buyers’ fires.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Knight of the Seven Kingdoms' Premiere Draws 6.7 Million Viewers in Three Days \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'White Lotus' Season 4 Casts Steve Coogan, Caleb Jonte Edwards\n\nCuriously, only the press materials reveal that the action is set in the provincial seaside town of San Clemente del Tuyu, Argentina, during the “Dirty War” of the 1970s, information crucial to understanding the story. There, among the sand dunes, high winds, thrashing waves and lowering gray skies, hyperactive 7-year-old Cecilia (photogenic non-pro Paula Galinelli Hertzog) is in hiding from government forces with her depressive, dead-eyed mother (Laura Agorreca). Her father is missing, his fate unknown. Despite the need to keep a low profile, Ceci’s mother decides to send her to school, coaching her on the fiction that her father sells curtains and her mother is a housekeeper.\n\nIn the classroom, teacher Rosita (Viviana Suraniti, turning in the pic’s best performance) is like a benevolent dictator, brooking no challenges and encouraging the children to inform on one another. After Ceci’s innocently honest essay for the school’s “Our Army” competition causes her mother to panic, a rewritten version wins first prize, stirring further problems for daughter and mother.\n\nMarkovitch successfully uses the school scenes, particularly the enforced patriotism of the competition (Rosita “suggests” that the students employ adjectives such as “brave” and “heroic” to describe the Argentine soldiers), to express the repressive, authoritarian nature of the times. These scenes play convincingly and almost attain a cumulative power. Unfortunately, they are undermined by the extended amount of time the film spends showing Ceci wandering alone in nature, giggling wildly while at play with classmate Silvia (Sharon Herrera), or having shrill tantrums while cooped up in the ramshackle beachfront hut she shares with her mother.\n\nPerhaps Markovitch (co-writer of Mexican helmer Fernando Eimbcke’s “Duck Season” and “Lake Tahoe”) is too close to the material, which she admits is autobiographical. Pic has the insular air of a private nightmare rather than the propulsive drive of a gripping narrative.\n\nDominated by extreme closeups, the lensing and color-desaturated production design emphasize an oppressive feeling of entrapment. Expressive sound design also underlines the sense of being at the mercy of forces outside oneself.",
+  "isFullReview": true,
   "dtliExcerpt": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival of the 1961 musical, bringing youthful energy and comic timing to the role of J. Pierrepont Finch.",
   "originalScore": null,
   "assignedScore": 78,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniel Radcliffe makes a charming Broadway debut in this buoyant revival of the 1961 musical, bringing youthful energy and comic timing to the role of J. Pierrepont Finch.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 78,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 438,
+  "archivePath": "data/archives/reviews/how-to-succeed-in-business-without-really-trying-2011/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:50:34.737Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 438,
+  "tierReason": "Full review text"
 }

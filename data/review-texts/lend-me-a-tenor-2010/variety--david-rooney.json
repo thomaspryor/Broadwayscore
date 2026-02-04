@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/lend-me-a-tenor-1117942406/",
   "publishDate": "April 4, 2010",
-  "fullText": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
   "originalScore": null,
   "assignedScore": 45,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Ken Ludwig's 1989 Broadway farce proves that even the most expertly crafted comedic machinery can feel creaky when it's not firing on all cylinders.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 45,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 525,
+  "archivePath": "data/archives/reviews/lend-me-a-tenor-2010/variety--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:31:15.875Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "A Keith Jarrett solo concert is a combination of the strange and the sublime.\n\nA Keith Jarrett solo concert is a combination of the strange and the sublime – acoustic grand piano music beyond category made on the wing interspersed with personal quirks that are the musician’s trademark. So it was in one of Jarrett’s now-infrequent solo gigs before a sold-out crowd at Walt Disney Concert Hall Monday night. The structure may have changed since these ventures began in the early-1970s, but the values that Jarrett crusaded for in these concerts have remained the same – and ECM’s microphones were there to take it all down, hopefully for future release.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Paralyzed by Hope: The Maria Bamford Story' Shares the Tears, Fears, Insights of a Unique Clown \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Ruben Östlund Admits He Bought a Plane to Make 'The Entertainment System Is Down,' Cast Keanu Reeves as an Electrician and Says It's About Today's Society: 'We're Harming Ourselves and We Know It'\n\nThe solo concerts once consisted mainly of two, mesmerizing, longform rambles, but when Jarrett revived them in the early 2000s, they became strings of short thoughts, often based on one idea each.\n\nHis current ECM album “Testament” – a sprawling three-CD set recorded in Paris and London in the wake of some turmoil in his personal life – adheres to that format, as did his Disney Hall concert.\n\nWhere once all of Jarrett’s influences flowed together in a stream-of-consciouness sequence, they now usually sort themselves out, as if he was composing a suite instead of a tone poem. The first segment was easily the longest – nearly 15 minutes – beginning with atonal abstractions (think Pierre Boulez or Milton Babbitt) and eventually working its way back in time to Prokofiev. The tiny, rolling 2-minute third section sounded like an homage to the howling-wind finale of Chopin’s “Funeral March” Sonata, followed abruptly by a segment of foot-stomping slow funk.\n\nPart of the weird charm of a Jarrett solo concert are his pointed spoken comments – and he compulsively went back to the open mic again and again. Now and then, there may have been a method in the madness. He would lament the passing of old values in the Apple Computer age – “What happened to mastery?” – and then come up with a nostalgic, lyrical piece of fragile beauty. He would cut off a stillborn boogie after a few seconds – “That’s not what I meant to play” – ask for requests (!), complain about the Internet again, and then launch a better boogie that rocked the hall.\n\nAs always, this was high-wire playing, with all of Jarrett’s keyboard skills – the variety of touches, the sparkling technique, the great instinct for the groove, the roving independent mind – still intact. Sometimes, you get the feeling that Jarrett’s explorations have reached their limits and tend to re-plow old ground. But Jarrett is aware enough to kid himself about it – and in the end, his encores, like a rollercoaster “Carolina Shout” and a simple, tender “Over The Rainbow,” settled contentedly into an earlier, Google-free time. Or perhaps he would call it a timeless time."
 }

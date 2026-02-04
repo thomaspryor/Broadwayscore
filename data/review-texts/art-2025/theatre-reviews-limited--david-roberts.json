@@ -1,0 +1,68 @@
+{
+  "showId": "art-2025",
+  "outletId": "theatre-reviews-limited",
+  "outlet": "Theatre Reviews Limited",
+  "criticName": "David Roberts",
+  "url": "https://www.theatrereviews.com/broadway-review-art-at-the-music-box-theatre-through-sunday-december-21-2025/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“Yasmina Reza has successfully transformed the white Antrios painting into a trope, an extended metaphor for anything that stirs up uncomfortable and often destructive feelings between friends.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yasmina Reza has successfully transformed the white Antrios painting into a trope, an extended metaphor for anything that stirs up uncomfortable and often destructive feelings between friends.",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "This excerpt provides only analytical commentary about the playwright's technique without any clear evaluative judgment about the production's quality or recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:39.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2691,
+    "outputTokens": 268,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
+}

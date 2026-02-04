@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mary Bridget Davies delivers a performance of searing intensity and vocal power that makes you believe, at least while she's onstage, that the ghost of Janis has indeed materialized in the Lyceum Theater.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
     "score": 81,
@@ -72,10 +72,29 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://www.nytimes.com/glogin?URI=http://theater.nytimes.com/2013/10/11/theater/reviews/a-night-with-janis-joplin-opens-on-broadway.html&OQ=_rQ3D0&OP=478bfaa0Q2FE_JNEyeNEjjjE4N0Q5CEA_Q3Fwo__NzEzxQ2BiEQ2BxEQ2BQ2BEN4Q26DNQ26oEoQ26s6Q26jwEDQ2Ay6P4NQ2Aj6N4Q2A@Dy6wQ2A@_JQ5C6yQ2A_JQ26ywQ2A_yQ2AYo_DAjDep4N0Q5C",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 372,
+  "archivePath": "data/archives/reviews/a-night-with-janis-joplin-2013/nytimes--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T22:58:02.402Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20251217173200",
+  "archiveOrgUrl": "http://web.archive.org/web/20251217173200/https://www.nytimes.com/2013/10/11/theater/reviews/a-night-with-janis-joplin-opens-on-broadway.html",
+  "wordCount": 372,
+  "tierReason": "Full review text"
 }

@@ -1,0 +1,68 @@
+{
+  "showId": "art-2025",
+  "outletId": "theatrely",
+  "outlet": "Theatrely",
+  "criticName": "Juan A. Ramirez",
+  "url": "https://www.theatrely.com/post/art-a-debate-over-devaluation-review",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "This first Broadway revival promises luxury and stars; its black-and-white poster has Bobby Cannavale, James Corden and Neil Patrick Harris suited-up and laughing expensively, politely. That frictionless sheen also glazes over their onstage chemistry, however game each of them seem to be.",
+  "originalScore": null,
+  "assignedScore": 45,
+  "source": "dtli",
+  "dtliThumb": "MEH",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": null,
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "low",
+    "range": {
+      "low": 35,
+      "high": 55
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 50,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "That frictionless sheen also glazes over their onstage chemistry, however game each of them seem to be.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The review criticizes the production's 'frictionless sheen' that undermines the stars' chemistry, suggesting a superficial, disappointing show despite the talent involved.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:09:14.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2716,
+    "outputTokens": 263,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  },
+  "sources": [
+    "dtli"
+  ]
+}

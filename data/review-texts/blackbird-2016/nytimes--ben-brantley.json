@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Williams and Mr. Daniels achieve something like a perfect balance of awkwardness and intensity, of mutual attraction and revulsion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -28,14 +28,14 @@
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 1163,
   "archivePath": "data/archives/reviews/blackbird-2016/nytimes--ben-brantley_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T16:47:04.237Z",
+  "textFetchedAt": "2026-02-03T23:26:38.905Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
       "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "error": "No archive snapshot available"
     },
     {
       "tier": 0.5,
@@ -53,7 +53,7 @@
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
+      "error": "Parse Error: Header overflow"
     },
     {
       "tier": 3,
@@ -76,5 +76,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "an immensely powerful work that only occasionally maximizes its potential in the fitful production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley praises the play itself as having 'fabulous bones' and calls it 'immensely powerful,' but consistently criticizes this production as 'fitful' and flawed. He acknowledges strong individual moments but finds the overall execution problematic, with performances that are 'anticlimactic' and direction that misses the play's quieter power. | Gemini: The review acknowledges the play's power and the actors' commitment, but criticizes the production's execution, finding it fitful and not fully maximizing the play's potential. It praises the play's structure but finds the production flawed. | Kimi: While praising the 'immensely powerful' play and 'first-rate' performances by Jeff Daniels and Michelle Williams, the critic finds this Broadway production 'fitful' and 'anticlimactic,' noting that it fails to capture the quiet menace of the original Off-Broadway run and often leaves the viewer annoyed rather than fascinated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:37:06.705Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

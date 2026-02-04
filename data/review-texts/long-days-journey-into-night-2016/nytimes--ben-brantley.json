@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production, directed by Jonathan Kent, finds the perfect pitch for O'Neill's most personal play, allowing its characters to exist in all their contradictory, self-deluding humanity without asking us to forgive or condemn them.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production finds the perfect pitch for O'Neill's most personal play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the direction achieving 'perfect pitch' and handling complex characters skillfully, though the excerpt is brief and may be missing additional context. | GPT-4o: The review praises the production for perfectly capturing the essence of the play, indicating a strong recommendation without reservations. | Gemini: The review praises the direction and finds the \"perfect pitch\" for the play, suggesting a positive experience overall. However, it doesn't express overwhelming enthusiasm, so it's a solid positive rather than a rave. | Kimi: The excerpt uses superlative language ('perfect pitch') to praise the direction and characterization, indicating enthusiastic approval of this production despite the brevity of the text provided. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:38:30.633Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 84
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

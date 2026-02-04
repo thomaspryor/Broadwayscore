@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The four characters in Dominique Morisseau's 'Skeleton Crew' are facing an uncertain future as their Detroit auto plant prepares to close, but they maintain their dignity and humanity in this beautifully observed workplace drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The four characters in Dominique Morisseau's 'Skeleton Crew' are facing an uncertain future as their Detroit auto plant prepares to close, but they maintain their dignity and humanity in this beautifully observed workplace drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "beautifully observed workplace drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses positive descriptive language ('beautifully observed') and emphasizes the characters' dignity and humanity, indicating appreciation for the production, though the brief excerpt limits confidence in the full verdict. | GPT-4o: The review uses strong positive language ('beautifully observed') and highlights the dignity and humanity of the characters, indicating a highly favorable view of the production. | Gemini: The review uses positive language such as \"beautifully observed\" and focuses on the dignity and humanity of the characters, suggesting a positive experience, though the brevity suggests some reservations. | Kimi: The critic offers clear praise calling it a 'beautifully observed workplace drama' and commends the characterization, indicating a solid recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:53:59.172Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

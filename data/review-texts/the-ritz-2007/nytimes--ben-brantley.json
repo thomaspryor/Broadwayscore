@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Terrence McNally's 1975 farce about a straight man hiding out in a gay bathhouse has been mounted with cheerful vulgarity and a candy-colored exuberance that suits its cartoon sensibility.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of Terrence McNally's 1975 farce about a straight man hiding out in a gay bathhouse has been mounted with cheerful vulgarity and a candy-colored exuberance that suits its cartoon sensibility.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival has been mounted with cheerful vulgarity and a candy-colored exuberance that suits its cartoon sensibility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'cheerful' and 'candy-colored exuberance' suggest the production succeeds on its own terms, though 'cartoon sensibility' indicates it's not high art. The tone is appreciative but measured. | GPT-4o: The review describes the production as having a 'cheerful vulgarity' and 'candy-colored exuberance,' suggesting a positive tone despite the lack of detailed evaluation. | Gemini: The review describes the production with positive terms like \"cheerful vulgarity\" and \"candy-colored exuberance,\" suggesting an enjoyable experience, although the term \"cartoon sensibility\" implies it may not be for everyone. | Kimi: The critic praises the production's aesthetic choices ('cheerful vulgarity,' 'candy-colored exuberance') and approves of how the mounting suits the material's farcical nature, indicating a solid recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:18:06.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

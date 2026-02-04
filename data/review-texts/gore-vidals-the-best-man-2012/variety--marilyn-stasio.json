@@ -17,5 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 212,
+  "archivePath": "data/archives/reviews/gore-vidals-the-best-man-2012/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:55:49.768Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 212 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "A prime contender for most peculiar wide release of the year, this unknown commodity faces an uphill challenge luring moppets and parents into theaters.\n\nA prime contender for most peculiar wide release of the year, “The Oogieloves in the Big Balloon Adventure” reps a passion project in children’s entertainment for producer Kenn Viselman (“Teletubbies“). Designed to get young viewers out of their seats singing, dancing, jumping and shouting at the screen, this exhausting “interactive” pic charts the quest of three candy-colored creatures to retrieve five magic balloons as a birthday surprise for their slumberous pillow pal, Schluffy. Filmed over four days in 2009 and only now hitting theaters through Viselman’s self-distribution chutzpah, this unknown commodity faces an uphill challenge luring moppets and parents into theaters.\n\nThe simple plot serves as an excuse to string together kid-friendly production numbers for 10 original songs; conceivably, that should play to the strengths of director Matthew Diamond, whose credits include numerous televised musical-theater specials and Disney’s “Camp Rock.” Instead, the low-budget production feels chintzy and impossibly square, even by tyke standards. Six “name” celebrities pop up for single-sequence cameos, each gamely involved in a song-and-dance number. Supposedly, Viselman has two additional “Oogieloves” adventures in the works, but it’s unlikely anyone leaves this one clamoring for more."
 }

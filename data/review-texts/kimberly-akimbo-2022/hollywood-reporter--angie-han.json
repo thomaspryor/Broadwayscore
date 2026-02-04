@@ -5,8 +5,8 @@
   "criticName": "Angie Han",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/kimberly-akimbo-broadway-review-1235253043/",
   "publishDate": "November 11, 2022",
-  "fullText": "The musical adaptation of David Lindsay-Abaire's 2001 play manages to find the sweet spot between melancholy and hope, crafting a coming-of-age story that acknowledges life's cruelties without being crushed by them.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of David Lindsay-Abaire's 2001 play manages to find the sweet spot between melancholy and hope, crafting a coming-of-age story that acknowledges life's cruelties without being crushed by them.",
   "originalScore": null,
   "assignedScore": 78,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of David Lindsay-Abaire's 2001 play manages to find the sweet spot between melancholy and hope, crafting a coming-of-age story that acknowledges life's cruelties without being crushed by them.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 78,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 302,
+  "archivePath": "data/archives/reviews/kimberly-akimbo-2022/hollywood-reporter--angie-han_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:29:39.383Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The upcoming film from Please Don’t Destroy — the comedy trio that broke out online before being picked up by Saturday Night Live to produce the show’s digital shorts — will debut on Universal’s sister streamer Peacock on Nov. 17.\n\nThe untitled film was initially planned for a theatrical release on Aug. 18, but that date will now be taken over by R-rated dog comedy Strays. (Strays was previously set to open opposite Transformers: Rise of the Beasts on June 9. It will now open the same weekend as DC superhero movie Blue Beetle.) It is unclear why the Please Don’t Destroy project was moved to Peacock.\n\n \n \n \n\n \n \n \n\n \n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n TV\n \n \n \n \n\n \n \n \n \n 'Heated Rivalry' Star Connor Storrie Sets 'Saturday Night Live' Debut \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n TV\n \n \n \n \n\n \n \n \n \n Pete Davidson Joins 'Saturday Night Live' Cold Open to \"Tighten Up\" ICE Agents in Minneapolis\n\nBen Marshall, John Higgins and Martin Herlihy, who make up Please Don’t Destroy, wrote and star in the film, which, according to the synopsis, “centers on three childhood friends who live and work together, and question where their lives are headed — if anywhere at all. Completely ill-equipped and out of their element, they set off to find a lost treasure rumored to be buried in their local mountains.”\n\nPaul Briganti, who works as a director on SNL, helmed the movie. Conan O'Brien, Bowen Yang and Hacks breakout Meg Stalter also appear in the movie, along with X Mayo, Nichole Sakura, Cedric Yarbrough and Sunita Mani.\n\nJudd Apatow produced the movie via his Apatow Productions along with Jimmy Miller for Mosaic. Josh Church, M. Riley, Sam Hansen and Michael Sledd executive produced with Marshall, Higgins and Herlihy.\n\nThe film marks the feature debut for Marshall, Higgins and Herlihy, who have worked with talent like Taylor Swift, Lizzo, Rami Malek and Ana de Armas while at SNL."
 }

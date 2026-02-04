@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Lansbury brings her customary warmth and comic timing to the role of Madame Arcati, the eccentric medium, but even her considerable skills cannot disguise the fact that this revival feels tired and overly familiar.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Lansbury brings her customary warmth and comic timing to the role of Madame Arcati, the eccentric medium, but even her considerable skills cannot disguise the fact that this revival feels tired and overly familiar.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Lansbury brings her customary warmth and comic timing to the role of Madame Arcati, the eccentric medium, but even her considerable skills cannot disguise the fact that this revival feels tired and overly familiar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises Lansbury's performance but criticizes the revival as 'tired and overly familiar.' Single excerpt warning applies - this mixed sentiment could represent either a disappointed positive or qualified negative review. | GPT-4o: The review acknowledges Lansbury's performance but criticizes the revival as 'tired and overly familiar,' indicating a negative overall impression. | Gemini: The review praises Lansbury's performance but ultimately finds the revival \"tired and overly familiar,\" suggesting a mixed assessment. The single excerpt and truncated nature lower the confidence. | Kimi: While praising Angela Lansbury's performance skills, the critic delivers a clear negative verdict on the production itself, stating her talents 'cannot disguise' that the revival 'feels tired and overly familiar.' | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:44:52.283Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

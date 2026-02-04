@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "This Manhattan Theatre Club production also has a huge asset in leading man Boyd Gaines, whose Thomas is a distinctly earthbound but still mesmerizing force of nature -- by turns formidable, frail, frazzled, funny and tragic. Gaines captures all the arrogance and compassion of a man devoted to a nob...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Manhattan Theatre Club production also has a huge asset in leading man Boyd Gaines, whose Thomas is a distinctly earthbound but still mesmerizing force of nature.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with vivid descriptive language ('mesmerizing force of nature', 'huge asset'). However, confidence is low due to single excerpt limitation and text cutoff. | GPT-4o: The excerpt praises Boyd Gaines' performance as a significant asset to the production, suggesting a positive view of the show. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt focuses on the positive aspects of the production, particularly Boyd Gaines' performance. Given it's a single excerpt, I'm placing it in the positive bucket with a higher score due to the strong praise, but with low confidence due to the limited text. | Kimi: The excerpt provides enthusiastic praise for the lead performance ('mesmerizing force of nature', 'huge asset'), indicating a positive recommendation. However, as a single curated excerpt without the critic's full verdict on the production as a whole, confidence remains low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:42:21.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

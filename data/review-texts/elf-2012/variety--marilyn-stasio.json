@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/elf-1117948809/",
   "publishDate": "November 14, 2012",
-  "fullText": "This cheerful musical adaptation of the 2003 Will Ferrell movie is a genuinely funny family show that should please holiday audiences without insulting anyone's intelligence.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This cheerful musical adaptation of the 2003 Will Ferrell movie is a genuinely funny family show that should please holiday audiences without insulting anyone's intelligence.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheerful musical adaptation of the 2003 Will Ferrell movie is a genuinely funny family show that should please holiday audiences without insulting anyone's intelligence.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 79,
@@ -72,5 +72,53 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 209,
+  "archivePath": "data/archives/reviews/elf-2012/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:29:59.156Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 209 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "There's good gritty, and then there's the kind of rub-your-face-in-it, scene-chewing gritty of Alessandro Gassman's helming debut, \"The Mongrel.\"\n\nThere’s good gritty, and then there’s the kind of rub-your-face-in-it, scene-chewing gritty of Alessandro Gassman’s helming debut, “The Mongrel.” Adapted from the play “Cuba and His Teddy Bear,” which starred Robert De Niro on Broadway, the pic effortlessly transplants the action to the outskirts of Rome, with Gassman a half-Romanian, half-gypsy drug addict hoping to give his son a better life. But there’s an emotional explosion in every scene, and the largely black-and-white, heightened-contrast lensing further overdramatizes the cliche-ridden story. A special jury nod in Rome for first or second work could draw fest programmers’ attention.\n\nA screaming woman at the start hurling threats at chainsaw-wielding Roman (Gassman) is a sign of things to come: Modulation is not the pic’s strong suit. Roman is overprotective of son Nicu (Giovanni Anzaldo), though he hasn’t saved the boy from living in a dump or shielded him from drug deals. Sleazy lawyer Silvestri (Michele Placido) offers to help Nicu, but the kid falls under the influence of charismatic shyster Talebano (Sergio Meogrossi) and winds up endangering his father’s life. Gassman’s overblown perf is all mile-a-minute artifice, and the monochrome cinematography feels self-importantly lurid."
 }

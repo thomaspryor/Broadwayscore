@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Driver brings a ferocious intensity to the role of Pale, the volatile drug dealer who crashes into Anna's life, while Russell is luminous as the grieving dancer trying to process her loss.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 741,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Driver is riveting here, and audiences will identify with Anna's dilemma of both wanting him to leave and needing him to stay.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('incendiary', 'riveting', 'brilliance'), production ('finely-tuned'), and direction ('deftly staged'). Despite noting the play is 'flawed' and 'overlong', the overall verdict celebrates the production's success. | GPT-4o: The review praises the performances of Adam Driver and Keri Russell as 'incendiary' and highlights the production's brilliance despite acknowledging the play's flaws. The overall tone is enthusiastic and recommends the show strongly. | Gemini: The review is generally positive, highlighting the performances of the leads and the director's staging, while acknowledging the play's flaws and length. | Kimi: The critic praises the 'finely-tuned' revival and 'incendiary' performances by Driver and Russell, calling them 'riveting' and 'spellbinding,' while acknowledging the play itself is 'flawed' and 'overlong.' The clear recommendation focuses on the production quality and acting elevating imperfect material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:36:58.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

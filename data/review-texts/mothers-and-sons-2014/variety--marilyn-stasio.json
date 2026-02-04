@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2014/legit/reviews/broadway-review-mothers-and-sons-1201146070/",
   "publishDate": "March 25, 2014",
-  "fullText": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
-  "isFullReview": false,
+  "fullText": "Frederick Weller and the ever-astonishing Tyne Daly bring considerable humanity to Terrence McNally's diffuse and disjointed new play.\n\nTerrence McNally tries to cover a lot of territory in “Mothers and Sons“: the relationships between mothers and their gay sons; the satisfactions of gay marriage; the dark, enduring legacy of AIDS; and the generation gap within the gay community. Lucky for this high-profile scribe, he has sensitive interpreters of these themes in thesps Frederick Weller and the ever-astonishing Tyne Daly. But the ideas are so diffuse and the dramatic structure so disjointed, there’s no cohesion to the material and no point to the plot.\n\nThe absurdly idealized marriage between Cal Porter (Frederick Weller) and Will Ogden (Bobby Steggert) hardly establishes a credible baseline for the play. Life is positively blissful in the casually classy Upper West Side apartment (on Central Park West! On a high floor! With a view!) designed in envy-making detail by John Lee Beatty. Cal makes big bucks doing vague things with other people’s money. The considerably younger (and insufferable) Will is a fanatical homebody who devotes himself to being the perfect helpmeet to Cal and the perfect daddy to impossibly cute little Bud Ogden-Porter (Grayson Taylor). Don’t you just hate them already?\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘The Last Resort’ by Maria Sødahl Named Best Nordic Film at Göteborg: 'Pitch-Perfect Performances and a Razor-Sharp Script' \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Sundance: Sony Pictures Classics Buys Crowd-Pleasing Drama 'Ha-Chan, Shake Your Booty!' (EXCLUSIVE)\n\nSEE ALSO: Tyne Daly, Terrence McNally Celebrate Broadway’s ‘Mothers and Sons’\n\nCal is actually much too nice a guy — and Weller much too personable an actor — to make us begrudge him his hard-won bliss. He and Will have been together for 11 idyllic years, but before that, Cal spent eight years in mourning for his previous love, Andre Gerard, who died of AIDS at the age of 29. His consideration for his conceited husband and their annoyingly adorable child wins Cal more gold stars for comportment.\n\nBut it’s the kindness and respect that he extends to Andre’s monstrous mother — an imposing but not very savvy Dallas matron who is at this very moment standing in his living room in full battle gear (a smart wool dress and scrumptious mink coat supplied by costumer Jess Goldstein) and hurling daggers of contempt at him — that earns Cal his heavenly crown. The action of the play, such as it is, consists of the bluntly outspoken Katharine Gerard (Tyne Daly) lobbing nasty comments and rude questions at her late son’s lover, and Cal deflecting her hostility by gently explaining the truths about his life with Andre. But there’s no compelling reason for Katharine to suddenly turn up unannounced in Cal’s parlor after 20 years, and no dramatic consequences hanging on their meeting. So the play really hangs on our engagement with these two characters and our interest in their concerns. (Not to mention our curiosity about why on earth she doesn’t just leave once she’s thrown all her knives.)\n\nIf you take Katharine and her homophobic comments at face value, she’s a gay man’s grotesque caricature of the cruel mother who doesn’t love or understand him. Having cut Andre completely out of her life since he came out, Katharine has finally come around to asking all the questions — and verbalizing all the heaving emotions — she couldn’t bring herself to put to her son when he was alive. In venting her anger at Cal, she’s clearly determined to blame someone for “making” Andre gay, “giving” him AIDS, and effectually murdering this “perfectly beautiful young man.”\n\nBut here’s Daly, shrugging off that distorted image and restoring the woman’s humanity with a nuanced perf. The thesp doesn’t shrink from Katharine’s cruelty; indeed, she speaks the unkind words exactly as written. But with her uncanny ability to convey a whole range of emotions in a single line, she lets us see the pain and sorrow concealed by malice. Weller is no less skilled at navigating his character’s inner landscape. Speaking always from his quiet place, Cal counters Katharine by listening to her vitriol, but responding to the grief behind it.\n\nHelmer Sheryl Kaller wisely lets these compatible thesps work their way around the holes in the text and the gaps in the action. But in the end, no one can come to the aid of a play that doesn’t … quite … exist.",
+  "isFullReview": true,
   "dtliExcerpt": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 77,
@@ -77,5 +77,50 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 728,
+  "archivePath": "data/archives/reviews/mothers-and-sons-2014/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:32:01.284Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 728,
+  "tierReason": "Full review text"
 }

@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All in all, it's a magical evening from Rapp, Cromer, and the altogether mesmerizing Parker and Hochman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with effusive praise throughout - 'magical evening', 'marvel of a play', 'mesmerizing' performances, 'auspicious Broadway debut'. Clear enthusiastic recommendation despite being about a quiet, cerebral play. | GPT-4o: The review is filled with superlatives and strong praise for the performances, writing, and direction, describing the experience as 'magical' and 'mesmerizing'. The original 5/5 stars rating supports a Rave classification. Despite the truncation warning, the tone and content suggest a highly positive verdict. | Gemini: Despite being truncated, the review is overwhelmingly positive, praising the writing, direction, and performances. The critic explicitly recommends the show to theatergoers who enjoy thoughtful and engaging plays, and the 5/5 star rating supports this. | Kimi: The critic awards 5/5 stars and offers unqualified praise for the performances, writing, and direction, explicitly urging theatergoers to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:21:44.051Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

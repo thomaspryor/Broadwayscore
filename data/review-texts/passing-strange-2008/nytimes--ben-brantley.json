@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical memoir about a young black artist's search for the 'real' — meaning not bourgeois, not conventional — is itself the real thing: a sustained work of such insight, compassion and lyrical flow that it achieves that hallowed realm of art in which autobiography becomes universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This musical memoir about a young black artist's search for the 'real' — meaning not bourgeois, not conventional — is itself the real thing: a sustained work of such insight, compassion and lyrical flow that it achieves that hallowed realm of art in which autobiography becomes universal.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (47 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical memoir is itself the real thing: a sustained work of such insight, compassion and lyrical flow that it achieves that hallowed realm of art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Brantley uses the highest possible praise - calling it 'the real thing' and saying it 'achieves that hallowed realm of art.' The language about universality and sustained excellence indicates this is an unqualified rave. | GPT-4o: The review uses superlative language ('the real thing', 'hallowed realm of art') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"the real thing\", \"insight, compassion and lyrical flow\", and \"autobiography becomes universal\", indicating a rave review. | Kimi: Unqualified superlatives ('hallowed realm of art', 'insight', 'compassion', 'lyrical flow') indicate the highest possible recommendation with no caveats mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:44:57.062Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

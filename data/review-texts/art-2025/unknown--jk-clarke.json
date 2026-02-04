@@ -1,0 +1,68 @@
+{
+  "showId": "art-2025",
+  "outletId": "unknown",
+  "outlet": "unknown",
+  "criticName": "JK Clarke",
+  "url": "https://lavocedinewyork.com/en/new-york/2025/11/19/two-plays-on-the-boards-inadvertently-reveal-the-quaintness-of-the-1990s/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "[Art] dead on arrival because the subject matter is no longer relevant.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 25,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "[Art] dead on arrival because the subject matter is no longer relevant.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic dismisses the show as 'dead on arrival' due to irrelevant subject matter, but this appears to be only an excerpt of a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:43.524Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2666,
+    "outputTokens": 246,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
+}

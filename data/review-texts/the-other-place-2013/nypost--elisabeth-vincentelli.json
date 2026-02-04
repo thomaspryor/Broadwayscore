@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Laurie Metcalf delivers a tour de force in this harrowing drama about a neurologist who may be losing her mind. The play's structure is deliberately confusing, mirroring the protagonist's mental state.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Laurie Metcalf delivers a tour de force in this harrowing drama about a neurologist who may be losing her mind. The play's structure is deliberately confusing, mirroring the protagonist's mental state.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Laurie Metcalf delivers a tour de force in this harrowing drama about a neurologist who may be losing her mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performance as 'tour de force' but very brief excerpt lacks clear overall recommendation or assessment beyond the central performance. | GPT-4o: The review praises Laurie Metcalf's performance as a 'tour de force' and describes the play as 'harrowing,' suggesting a strong, positive impact. However, the mention of the play's 'deliberately confusing' structure introduces some reservation, indicating a solid recommendation with some caveats. | Gemini: The review praises Laurie Metcalf's performance as a \"tour de force\" and describes the play as a \"harrowing drama.\" While it notes the confusing structure, the overall tone is positive, suggesting it's worth seeing for Metcalf's performance. | Kimi: Despite apparent truncation, the available text offers high praise for Metcalf's performance ('tour de force') and describes the drama as 'harrowing,' indicating a strong positive assessment, though the full scope of the recommendation is unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:16:22.051Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

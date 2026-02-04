@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new staging of 'The Color Purple' is far more successful than the original 2005 Broadway production, thanks in large part to John Doyle's stripped-down direction and a cast that brings fresh vitality to Alice Walker's story.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new staging of 'The Color Purple' is far more successful than the original 2005 Broadway production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment comparing favorably to previous production, praising direction and cast performances, but brief text limits deeper evaluation. | GPT-4o: The review praises the new production as more successful than the original, highlighting the direction and cast as strengths. The positive comparison and emphasis on 'fresh vitality' suggest a strong recommendation. | Gemini: The review explicitly states that the current production is \"far more successful\" than the original, indicating a positive recommendation. The praise for the direction and cast further supports this classification. | Kimi: The critic praises the new staging as superior to the original, highlighting John Doyle's direction and the cast's vitality, indicating a clear recommendation to see this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:04:51.312Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

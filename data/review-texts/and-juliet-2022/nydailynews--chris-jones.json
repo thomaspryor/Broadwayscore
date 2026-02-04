@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Enter \"& Juliet,\" a savvy if stunningly unsubtle mashup of a musical from London that aims to redress that balance for Broadway fun and profit. This nonstop party-empowerment show gets its theme of feminist revisionist British history from \"Six,\" its Shakespearean humor from \"Something Rotten,\" its ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Enter '& Juliet,' a savvy if stunningly unsubtle mashup of a musical from London that aims to redress that balance for Broadway fun and profit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the show 'savvy' and acknowledges its 'fun' factor, but the qualifier 'stunningly unsubtle' suggests significant reservations. Single excerpt from curated quotes limits confidence in overall verdict. | GPT-4o: The excerpt describes the show as a 'nonstop party-empowerment show' with positive comparisons to other successful musicals, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review describes the show as \"savvy\" and aiming for \"fun and profit,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. The \"stunningly unsubtle\" comment indicates a reservation. | Kimi: The excerpt offers qualified praise, acknowledging the show as 'savvy' and a 'nonstop party' while criticizing it as 'stunningly unsubtle' and derivative of other musicals, suggesting a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:41:36.195Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -1,0 +1,77 @@
+{
+  "showId": "angels-in-america-2018",
+  "outletId": "variety",
+  "outlet": "Variety",
+  "criticName": "Marilyn Stasio",
+  "url": "https://variety.com/2018/legit/reviews/angels-in-america-perestroika-review-broadway-1202737916/",
+  "publishDate": "March 25, 2018",
+  "fullText": "This production of 'Perestroika' is every bit as magnificent as 'Millennium Approaches,' completing Tony Kushner's epic masterwork with the same theatrical power and emotional depth that made the first part so extraordinary.",
+  "isFullReview": false,
+  "dtliExcerpt": "This production of 'Perestroika' is every bit as magnificent as 'Millennium Approaches,' completing Tony Kushner's epic masterwork with the same theatrical power and emotional depth that made the first part so extraordinary.",
+  "originalScore": null,
+  "assignedScore": 93,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This production of 'Perestroika' is every bit as magnificent as 'Millennium Approaches,' completing Tony Kushner's epic masterwork with the same theatrical power and emotional depth that made the first part so extraordinary.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (32 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of 'Perestroika' is every bit as magnificent as 'Millennium Approaches,' completing Tony Kushner's epic masterwork",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language ('magnificent', 'masterwork', 'extraordinary') with no caveats or reservations, indicating an enthusiastic recommendation. | GPT-4o: The review uses superlatives like 'magnificent' and praises the production's 'theatrical power and emotional depth,' indicating a strong recommendation. | Gemini: The review uses strong positive language like \"magnificent\" and \"masterwork,\" indicating a rave review. It directly compares it to the first part, which was also extraordinary. | Kimi: The critic employs unqualified superlatives including 'magnificent,' 'masterwork,' and 'extraordinary' with no reservations, indicating the highest level of enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:02:05.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "truncated"
+}

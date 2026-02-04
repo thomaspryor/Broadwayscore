@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This witty and wonderful show works its theatrical magic by inviting audiences to use their imagination, and the response is so wholehearted you can practically feel the air in the theater crackle with creative energy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This witty and wonderful show works its theatrical magic by inviting audiences to use their imagination, and the response is so wholehearted you can practically feel the air in the theater crackle with creative energy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This witty and wonderful show works its theatrical magic by inviting audiences to use their imagination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise with strong superlatives ('witty and wonderful', 'theatrical magic') and vivid positive imagery about audience energy crackling in the theater. | GPT-4o: The review uses strong positive language ('witty and wonderful', 'theatrical magic') and describes a highly engaging audience experience, indicating a must-see recommendation. | Gemini: The review uses strong positive language like \"witty and wonderful\" and describes the show as working \"theatrical magic.\" The critic also notes the audience's \"wholehearted\" response, indicating a highly positive experience. | Kimi: The review offers unqualified enthusiastic praise, describing the show as 'witty and wonderful' with 'theatrical magic' and noting the audience response creates a 'crackle with creative energy,' indicating a rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:44:51.922Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

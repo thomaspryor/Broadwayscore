@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Suzan-Lori Parks' Pulitzer Prize-winning play crackles with electricity, thanks to the dynamic performances of Yahya Abdul-Mateen II and Corey Hawkins as two brothers locked in a deadly game of one-upmanship.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The revival of Suzan-Lori Parks' Pulitzer Prize-winning play crackles with electricity, thanks to the dynamic performances of Yahya Abdul-Mateen II and Corey Hawkins as two brothers locked in a deadly game of one-upmanship.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Suzan-Lori Parks' Pulitzer Prize-winning play crackles with electricity, thanks to the dynamic performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the revival ('crackles with electricity') and lead performances ('dynamic'), indicating a clear positive recommendation despite the brief excerpt. | GPT-4o: The review uses strong positive language ('crackles with electricity') and highlights dynamic performances, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"crackles with electricity\" and \"dynamic performances,\" indicating a positive recommendation. | Kimi: The critic employs vivid, enthusiastic language ('crackles with electricity', 'dynamic performances') to praise the production's energy and acting, indicating a strong recommendation despite the excerpted nature of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:25:38.204Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

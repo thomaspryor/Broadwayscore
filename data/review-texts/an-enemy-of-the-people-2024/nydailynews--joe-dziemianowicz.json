@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "One word comes up more than a dozen times in the new Broadway revival of “An Enemy of the People”: “restraint.” Ironically, it’s exactly what’s lacking in this amped-up production of the Henrik Ibsen classic, which is broader than the Otra River.",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ironically, it's exactly what's lacking in this amped-up production of the Henrik Ibsen classic, which is broader than the Otra River.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic uses irony to criticize the production for lacking restraint and being overly broad. However, with only one excerpt available, the full verdict is unclear, warranting low confidence. | GPT-4o: The excerpt criticizes the production for lacking restraint, implying that it is overly exaggerated or excessive. This suggests a negative view of the production's execution, although the single excerpt limits the full context of the review. | Gemini: The review excerpt indicates a lack of restraint and an \"amped-up\" production, suggesting a negative assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt criticizes the production for being 'amped-up' and lacking the restraint mentioned in the text, describing it as 'broader than the Otra River.' This indicates clear disappointment with the directorial approach, though the single-excerpt limitation prevents certainty about whether this represents a total pan or qualified criticism.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:41:52.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

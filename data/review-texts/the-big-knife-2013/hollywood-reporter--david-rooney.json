@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bobby Cannavale brings a compelling vulnerability to his portrayal of Charlie Castle, the Hollywood star trapped in a corrupt system, while the supporting cast delivers uniformly strong performances in this revival of Clifford Odets' caustic 1949 drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bobby Cannavale brings a compelling vulnerability to his portrayal of Charlie Castle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performance as 'compelling' and supporting cast as 'uniformly strong,' but this appears to be a brief excerpt with no clear overall recommendation or assessment of the production beyond the acting. | GPT-4o: The review praises the lead performance and the supporting cast, indicating a positive reception. However, the lack of superlative language and specific praise for the overall production suggests a solid recommendation with some reservations. | Gemini: The review highlights a compelling performance by the lead actor and uniformly strong performances from the supporting cast, indicating a positive experience. While it doesn't express overwhelming enthusiasm, it clearly recommends seeing the show. | Kimi: The review offers unqualified praise for both the lead and supporting performances, describing them as 'compelling' and 'uniformly strong.' While clearly positive, the extreme brevity suggests this is an excerpt or truncated text, preventing a higher confidence assessment of the overall recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:01:39.437Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2022/legit/reviews/hangmen-review-broadway-martin-mcdonagh-1235238447/",
   "publishDate": "April 22, 2022",
-  "fullText": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
-  "isFullReview": false,
+  "fullText": "Apr 22, 2022 6:54am PT \n\n \n\n \n \n \n\n \n\n \n ‘Hangmen’ Review: A Killer Broadway Production of Martin McDonagh’s Lethal Black Comedy\n\nIn the theatrical annals of wild and wicked stage plays, there are black comedies, blacker comedies, and blacker-than-the-dead-of-night comedies like “Hangmen.“ Prolific playwright Martin McDonagh hasn’t written all of them, to be sure; but he’s created some of the best of this deadly lot, including “The Beauty Queen of Leenane,” “The Cripple of Inishmaan” and “The Pillowman,” not to mention such beautifully bleak films as “Seven Psychopaths,” “In Bruges” and “Three Billboards Outside of Ebbing, Missouri.”\n\nStill, there is something special about “Hangmen,” which, were it a song, would be the perfect little ditty to play as you were cutting your wrists. Happily (if such a word would apply to any of his work), this Broadway production is a deadly beauty, flawlessly cast and directed in the mordant style of an executioner’s song by Matthew Dunster.\n\nThe introductory scene alone is enough to give anyone the fantods. Set in a prison cell, it depicts the emotionally excruciating horror of a condemned man being dragged off, kicking and screaming of his innocence, to his execution. Flash forward a couple of weeks and we’re in a shabby British bar (the perfectly depressing vision of set designer Anna Fleischle, who also did the costumes) where a bunch of barflies are tossing down pints and cheerfully discussing the topic of criminal punishment.\n\nTo be specific, these morbid chaps are arguing the relative merits of two rival hangmen, one of whom, Harry (the formidable David Threlfall), happens to own the pub. As if that weren’t depressing enough, Harry and his wife and daughter (played by Tracie Bennett and Gaby French with the admirable insouciance expected of loyal wives and daughters) also live above the bar, in residential quarters reached by a set of noisy steps that lead upwards but suggest a descent into an even deeper darkness.\n\nDespite the ordinariness of the 1960s setting, it’s an auspicious day in British history, the last day that a man could be legally hanged in the U.K. Now, what’s to become of Harry and his heritage? Or was it all just a bloody sham all along?\n\nFor all his hearty manner, Harry is a troubled man suffering an existential crisis on this day of all days. To tighten the noose, he’s bedeviled by one of the pub patrons, a newcomer named Mooney who turns out to be Harry’s bona fide nemesis. This dangerous stranger is played with devilish affect by Alfie Allen, who is more than up to the job of giving the spooks to poor old Harry, a superstitious chap to begin with, and one who until this day has taken pride in his 25 honorable years as “a server to the crown.”\n\nMcDonagh likes to think of his dark drama as a comedy, which, if you count the laughs, is technically true. But the laughs are all dark ones, including the huge chuckles about whether the past tense of “to hang” is “hanged” or “hung.” Not to mention the hilarity of an actual accidental hanging. God help me, I laughed out loud — but didn’t we all? And isn’t that what McDonagh wants us to do?\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice.",
+  "isFullReview": true,
   "dtliExcerpt": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
   "originalScore": null,
   "assignedScore": 78,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 78,
@@ -72,5 +72,44 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 647,
+  "archivePath": "data/archives/reviews/hangmen-2022/variety--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:10:45.154Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 647,
+  "tierReason": "Full review text"
 }

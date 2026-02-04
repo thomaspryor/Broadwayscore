@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This new production of The Color Purple is a triumph, transforming Alice Walker's novel into a soaring celebration of sisterhood and resilience that feels both intimate and epic.",
   "originalScore": 90,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production of The Color Purple is a triumph, transforming Alice Walker's novel into a soaring celebration of sisterhood and resilience that feels both intimate and epic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses unqualified praise with 'triumph' and 'soaring celebration.' Strong positive language with no caveats visible. Single excerpt warning requires caution, but language suggests upper Positive range. | GPT-4o: The excerpt uses strong positive language ('triumph', 'soaring celebration') and aligns with the critic's original rating of 90, indicating a rave review. | Gemini: The review uses the word \"triumph\" and describes the show as a \"soaring celebration,\" indicating a rave review. The critic's rating of 90 supports this classification. | Kimi: The critic uses unequivocal superlatives ('triumph,' 'soaring celebration') consistent with the 90/100 original rating, placing this in the Rave category. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:03:23.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

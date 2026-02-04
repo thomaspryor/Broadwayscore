@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "turns what might have been a standard evening of spoof into something more substantial",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises the adaptation for exceeding expectations and being 'more substantial' than typical spoof theater, indicating a solid positive recommendation despite the brief excerpt. | GPT-4o: The review describes the adaptation as more than a standard spoof, suggesting a positive evaluation with some depth. However, the lack of strong superlatives or explicit recommendation keeps the score in the mid-positive range. | Gemini: The review describes the show as \"cheeky\" and turning a spoof into something more substantial, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the adaptation for transcending mere spoof to become a substantial meditation on illusion, indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:00:28.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

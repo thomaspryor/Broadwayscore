@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite sterling credentials all around, this Broadway revival of the 1968 Burt Bacharach-Hal David musical feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite sterling credentials all around, this Broadway revival of the 1968 Burt Bacharach-Hal David musical feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels disappointingly flat and formulaic, lacking the spark to make a decades-old show feel fresh",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite acknowledging 'sterling credentials' - the critic finds the revival 'disappointingly flat and formulaic' with no spark, indicating they don't recommend it. | GPT-4o: The review describes the revival as 'disappointingly flat and formulaic,' indicating a negative assessment despite the credentials. The lack of freshness is a significant criticism. | Gemini: The review explicitly states the revival feels \"disappointingly flat and formulaic\", indicating a negative assessment despite acknowledging the talent involved. | Kimi: The critic delivers a clear negative verdict, describing the revival as 'disappointingly flat and formulaic' with no spark, offering no recommendation to see it despite acknowledging the talent involved.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:50:01.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

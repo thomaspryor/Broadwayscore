@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Director Neil Pepe and his cast deliver a solid, unadorned production that serves Mamet's text well, finding the humor in the crude streetwise banter without undermining the pathos.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Neil Pepe and his cast deliver a solid, unadorned production that serves Mamet's text well.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with measured praise ('solid', 'serves well') suggests positive but restrained recommendation. Low confidence due to limited text from curated excerpt. | GPT-4o: The excerpt praises the production for effectively serving the text and balancing humor with pathos. The tone is positive, suggesting a solid recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt indicates a positive assessment of the direction and cast's performance, suggesting a recommendation with some reservations due to the 'unadorned' nature of the production. | Kimi: The excerpt offers measured praise ('solid,' 'unadorned') for the direction and performances, indicating the production successfully serves the material without achieving transcendence, placing it in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:41:50.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

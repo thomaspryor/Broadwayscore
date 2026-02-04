@@ -1,0 +1,215 @@
+name: Bulk Reddit Sentiment
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel shards (1-6)'
+        required: false
+        type: number
+        default: 4
+      limit_per_shard:
+        description: 'Max shows per shard (0 = all)'
+        required: false
+        type: number
+        default: 0
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.shards }}
+      total_shards: ${{ steps.matrix.outputs.total_shards }}
+      missing_count: ${{ steps.count.outputs.missing }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Count missing shows
+        id: count
+        run: |
+          MISSING=$(node -e "
+            const s = require('./data/shows.json');
+            const b = require('./data/audience-buzz.json');
+            const list = s.shows || s;
+            const active = list.filter(x => x.status === 'open' || x.status === 'closed');
+            const missing = active.filter(x => { const e = (b.shows || {})[x.id]; return !(e && e.sources && e.sources.reddit); });
+            process.stdout.write(String(missing.length));
+          ")
+          echo "missing=$MISSING" >> $GITHUB_OUTPUT
+          echo "Shows missing Reddit data: $MISSING"
+
+      - name: Build shard matrix
+        id: matrix
+        run: |
+          JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
+          # Cap at 6 shards
+          if [ "$JOBS" -gt 6 ]; then JOBS=6; fi
+          if [ "$JOBS" -lt 1 ]; then JOBS=1; fi
+
+          # Build JSON array [0, 1, 2, ...]
+          SHARDS="["
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ $i -gt 0 ]; then SHARDS="$SHARDS,"; fi
+            SHARDS="$SHARDS$i"
+          done
+          SHARDS="$SHARDS]"
+
+          echo "shards=$SHARDS" >> $GITHUB_OUTPUT
+          echo "total_shards=$JOBS" >> $GITHUB_OUTPUT
+          echo "Matrix: $SHARDS (total: $JOBS)"
+
+  scrape:
+    needs: prepare
+    if: needs.prepare.outputs.missing_count > 0
+    runs-on: ubuntu-latest
+    timeout-minutes: 180  # 3 hours per shard
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Stagger shard starts to avoid simultaneous Reddit/API hammering
+      - name: Stagger start
+        run: sleep $(( ${{ matrix.shard }} * 30 ))
+
+      - name: Run Reddit sentiment scraper (shard ${{ matrix.shard }})
+        id: scrape
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--shows=missing --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
+          LIMIT=${{ github.event.inputs.limit_per_shard || 0 }}
+          if [ "$LIMIT" -gt 0 ]; then
+            ARGS="$ARGS --limit=$LIMIT"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/scrape-reddit-sentiment.js $ARGS"
+          node scripts/scrape-reddit-sentiment.js $ARGS
+
+      # Always commit shard results, even on timeout
+      - name: Commit shard results
+        if: always()
+        run: |
+          SHARD_FILE="data/reddit-shards/shard-${{ matrix.shard }}.json"
+          if [ -f "$SHARD_FILE" ]; then
+            git add "$SHARD_FILE"
+            if git diff --staged --quiet; then
+              echo "No shard changes to commit"
+            else
+              git commit -m "chore: Reddit sentiment shard ${{ matrix.shard }}/${{ needs.prepare.outputs.total_shards }}
+
+              Automated Reddit sentiment data collection (parallel shard).
+
+              Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+              # Retry push — shard files don't conflict (each shard writes a different file)
+              for i in 1 2 3 4 5; do
+                if git push origin main; then
+                  echo "Push succeeded on attempt $i"
+                  break
+                fi
+                echo "Push failed (attempt $i), pulling and rebasing..."
+                git pull --rebase origin main
+                sleep $((RANDOM % 10 + 5))
+              done
+            fi
+          else
+            echo "No shard file produced"
+          fi
+
+  merge:
+    needs: [prepare, scrape]
+    if: always() && needs.prepare.outputs.missing_count > 0
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull latest (includes shard commits)
+        run: git pull origin main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge shard results into audience-buzz.json
+        run: |
+          if [ -d "data/reddit-shards" ]; then
+            SHARD_COUNT=$(ls data/reddit-shards/shard-*.json 2>/dev/null | wc -l)
+            echo "Found $SHARD_COUNT shard files"
+            if [ "$SHARD_COUNT" -gt 0 ]; then
+              node scripts/merge-reddit-shards.js --cleanup
+            else
+              echo "No shard files to merge"
+            fi
+          else
+            echo "No shard directory found"
+          fi
+
+      - name: Commit merged results
+        run: |
+          git add data/audience-buzz.json
+          # Also remove shard directory if cleanup worked
+          git add -A data/reddit-shards/ 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Merge Reddit sentiment shards into audience-buzz.json
+
+            Merged parallel shard results and recalculated combined scores.
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+            echo "✓ Merge complete"
+          fi

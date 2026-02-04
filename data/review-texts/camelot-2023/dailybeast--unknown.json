@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"The pleasure of watching Shucked is not only that it's very funny, it is also a musical comedy comfortable in its merry skin, thanks to Jack O'Brien's equally mischievous direction, full of stop-starts, playing to the audience, and letting the jokes and reaction to the jokes breezily pace the show.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pleasure of watching Shucked is not only that it's very funny, it is also a musical comedy comfortable in its merry skin",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language praising the show as 'very funny' and 'comfortable in its merry skin' with appreciation for the direction, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt praises the show for being very funny and well-directed, suggesting a strong positive impression. However, the single excerpt warning means the confidence is low. | Gemini: The review excerpt praises the show as \"very funny\" and a \"musical comedy comfortable in its merry skin,\" indicating a positive recommendation. The description of the direction as \"mischievous\" further supports this assessment. | Kimi: The excerpt offers enthusiastic praise for the show's comedy, tone, and direction with phrases like 'very funny' and 'merry skin,' indicating a solid recommendation despite being a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:50:02.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

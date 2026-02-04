@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'South Pacific' is as close to perfect as any Broadway revival is ever likely to get. Bartlett Sher's production succeeds completely in bringing fresh life to a show that many people wrongly suppose to be dated.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This 'South Pacific' is as close to perfect as any Broadway revival is ever likely to get. Bartlett Sher's production succeeds completely in bringing fresh life to a show that many people wrongly suppose to be dated.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 95,
+    "confidence": "medium",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'South Pacific' is as close to perfect as any Broadway revival is ever likely to get.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic declares this revival 'as close to perfect as any Broadway revival is ever likely to get' and says it 'succeeds completely' - this is unqualified superlative praise indicating a must-see recommendation. | GPT-4o: The review uses superlative language ('as close to perfect') and states the production 'succeeds completely', indicating a strong, enthusiastic recommendation. | Gemini: The review uses superlative language, calling the production \"as close to perfect as any Broadway revival is ever likely to get.\" This indicates a rave review. | Kimi: The critic uses maximal superlatives ('close to perfect', 'succeeds completely') to deliver an unqualified rave for Bartlett Sher's production, offering no caveats or reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:54:03.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

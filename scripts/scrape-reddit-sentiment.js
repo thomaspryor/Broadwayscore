@@ -31,6 +31,11 @@ const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const shardArg = args.find(a => a.startsWith('--shard='));
+const totalShardsArg = args.find(a => a.startsWith('--total-shards='));
+const shard = shardArg ? parseInt(shardArg.split('=')[1]) : null;
+const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : null;
+const shardMode = shard !== null && totalShards !== null;
 
 // Config
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -676,7 +681,7 @@ async function main() {
       // Filter to shows without Reddit sentiment data
       shows = shows.filter(s => {
         const b = (audienceBuzz.shows || {})[s.id];
-        return !b || !b.sources || !b.sources.reddit;
+        return !(b && b.sources && b.sources.reddit);
       });
       console.log(`Found ${shows.length} shows missing Reddit sentiment data`);
     } else {
@@ -694,7 +699,23 @@ async function main() {
     shows = shows.slice(0, showLimit);
   }
 
+  // Shard partitioning: sort deterministically by ID, then take every Nth show
+  if (shardMode) {
+    shows.sort((a, b) => a.id.localeCompare(b.id));
+    const totalBefore = shows.length;
+    shows = shows.filter((_, i) => i % totalShards === shard);
+    console.log(`Shard ${shard}/${totalShards}: ${shows.length} shows (of ${totalBefore} total)`);
+  }
+
   console.log(`Processing ${shows.length} shows...\n`);
+
+  // In shard mode, write results to a separate shard file instead of audience-buzz.json
+  const shardResults = {};  // showId -> redditData (only used in shard mode)
+  const shardDir = path.join(__dirname, '../data/reddit-shards');
+  const shardOutputPath = shardMode ? path.join(shardDir, `shard-${shard}.json`) : null;
+  if (shardMode) {
+    fs.mkdirSync(shardDir, { recursive: true });
+  }
 
   let processed = 0;
   let successful = 0;
@@ -705,15 +726,22 @@ async function main() {
       processed++;
 
       if (redditData && !dryRun) {
-        updateAudienceBuzz(show.id, redditData);
         successful++;
 
-        // Save incrementally after each successful show to prevent data loss on timeout
-        audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
-        audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
-        audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
-        fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
-        console.log(`  ✓ Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
+        if (shardMode) {
+          // In shard mode, write to separate shard file (parallel-safe)
+          shardResults[show.id] = redditData;
+          fs.writeFileSync(shardOutputPath, JSON.stringify(shardResults, null, 2));
+          console.log(`  ✓ Saved to shard-${shard}.json (${successful}/${shows.length} complete)`);
+        } else {
+          // Direct mode: update audience-buzz.json inline
+          updateAudienceBuzz(show.id, redditData);
+          audienceBuzz._meta.lastUpdated = new Date().toISOString().split('T')[0];
+          audienceBuzz._meta.sources = ['Show Score', 'Mezzanine', 'Reddit'];
+          audienceBuzz._meta.notes = 'Dynamic weighting: Reddit fixed 20%, Show Score & Mezzanine split remaining 80% by sample size';
+          fs.writeFileSync(audienceBuzzPath, JSON.stringify(audienceBuzz, null, 2));
+          console.log(`  ✓ Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
+        }
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);

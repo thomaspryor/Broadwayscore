@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Chita Rivera, now 82, remains a force of nature who can command a stage with a look, a gesture or a note. In 'The Visit,' she gets to do all three as Claire Zachanassian, a vengeful billionaire who returns to her economically depressed hometown with a shocking proposition.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (48 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/visit-review-chita-rivera-kander-ebb-musical-article-1.2194813",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:21:30.122Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only an opening paragraph or excerpt that provides plot setup and describes the star, but contains no critical evaluation or verdict about the production.; openai: The text provided is a brief description of Chita Rivera's role in 'The Visit' without any evaluative content or critique of the production.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Jason Miller's 1972 Pulitzer Prize-winning drama arrives on Broadway with a first-rate cast that includes Kiefer Sutherland, Chris Noth, Brian Cox, Jim Gaffigan and Jason Patric. But even these accomplished actors can't entirely mask the play's dated feel and heavy-handed symbolism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of Jason Miller's 1972 Pulitzer Prize-winning drama arrives on Broadway with a first-rate cast that includes Kiefer Sutherland, Chris Noth, Brian Cox, Jim Gaffigan and Jason Patric. But even these accomplished actors can't entirely mask the play's dated feel and heavy-handed symbolism.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (44 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But even these accomplished actors can't entirely mask the play's dated feel and heavy-handed symbolism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the 'first-rate cast' but criticizes the play itself as 'dated' and 'heavy-handed.' The 'but even' construction signals the positive elements aren't enough to redeem the production's flaws. | GPT-4o: The review acknowledges the quality of the cast but criticizes the play's dated feel and heavy-handed symbolism, indicating a mixed reception. | Gemini: The review acknowledges a first-rate cast but notes the play's dated feel and heavy-handed symbolism, indicating a mixed assessment. | Kimi: The review praises the 'first-rate' cast but emphasizes that they cannot overcome the play's 'dated feel and heavy-handed symbolism,' suggesting a balance between quality performances and flawed material without a clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:00:31.473Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

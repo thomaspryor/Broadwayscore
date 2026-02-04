@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The solid Gaines--who also played the voice of reason in recent revivals of Gypsy and 12 ANGRY MEN--knows how to do decency. And Thomas is good as the priggish, misguided mayor who considers himself the town's moral center (though he seems to recede as his character does).",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The solid Gaines--who also played the voice of reason in recent revivals of Gypsy and 12 ANGRY MEN--knows how to do decency.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praises lead performance as 'solid' and another as 'good', but lacks broader context about overall recommendation. With only one curated quote available, this appears mildly positive but incomplete. | GPT-4o: The excerpt praises individual performances but lacks a clear overall recommendation for the show. The focus on actors' roles suggests a mixed assessment. | Gemini: The excerpt praises the performances of two actors, but the overall recommendation is tentative due to the limited text available. The phrase \"is good as\" suggests a positive but not overwhelmingly enthusiastic assessment. | Kimi: The excerpt offers mild praise for the lead performances ('solid', 'good') without enthusiasm or criticism, suggesting a qualified positive assessment, though the single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:44:11.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
