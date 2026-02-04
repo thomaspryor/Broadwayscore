@@ -171,7 +171,17 @@
     "1984-2017/vulture--jesse-green.json",
     "33-variations-2009/nytimes--ben-brantley.json",
     "700-sundays-2013/hollywood-reporter--unknown.json",
-    "700-sundays-2013/variety--marilyn-stasio.json"
+    "700-sundays-2013/variety--marilyn-stasio.json",
+    "700-sundays-2013/vulture--unknown.json",
+    "9-to-5-2009/hollywood-reporter--unknown.json",
+    "9-to-5-2009/nytimes--ben-brantley.json",
+    "9-to-5-2009/vulture--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nyt-theater--jonathan-mandell.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--joe-dziemianowicz.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytimes--elisabeth-vincentelli.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -190,7 +200,9 @@
       "data/review-texts/1776-2022/variety--frank-rizzo.json",
       "data/review-texts/1776-2022/variety--peter-marks.json",
       "data/review-texts/1984-2017/hollywood-reporter--david-rooney.json",
-      "data/review-texts/700-sundays-2013/hollywood-reporter--unknown.json"
+      "data/review-texts/700-sundays-2013/hollywood-reporter--unknown.json",
+      "data/review-texts/9-to-5-2009/hollywood-reporter--unknown.json",
+      "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-2022/variety--ad-amorosi.json"
     ],
     "scrapingbee": [
       "all-in-comedy-about-love-2024/variety--frank-rizzo.json",
@@ -217,7 +229,7 @@
     ]
   },
   "startTime": "2026-02-04T13:56:50.270Z",
-  "lastProcessed": "700-sundays-2013/variety--marilyn-stasio.json",
+  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/variety--aramide-tinubu.json",
   "log": [
     {
       "t": "2026-02-04T13:56:51.473Z",
@@ -376,6 +388,47 @@
       "event": "bb-session",
       "session": "f451d3a0",
       "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-04T16:41:45.794Z",
+      "event": "bb-session",
+      "session": "d400e00c",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+    },
+    {
+      "t": "2026-02-04T16:42:02.484Z",
+      "event": "bb-session",
+      "session": "b96f6d5f",
+      "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html"
+    },
+    {
+      "t": "2026-02-04T16:42:04.908Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-04T16:44:56.925Z",
+      "event": "bb-session",
+      "session": "a6ba16c7",
+      "url": "https://www.nytimes.com/2022/12/04/theater/a-beautiful-noise-review.html"
+    },
+    {
+      "t": "2026-02-04T16:45:45.531Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770223512024\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC1G_AiV8CgcALPe1oA==&cid=tZSdK4G1tOTAqH0UBtQYTQe2mRIYsTtu_p9yBA68B1BYhEQ9~tnebhBtP5T9rlPS~cQBNnx6u~LSLIVPoRkHKe0fWDEcsQKpe4V9Xu~mmUQuaNqOkJaNiseaO80izxOF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770223512024\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770223512024\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC1G_AiV8CgcALPe1oA==&cid=tZSdK4G1tOTAqH0UBtQYTQe2mRIYsTtu_p9yBA68B1BYhEQ9~tnebhBtP5T9rlPS~cQBNnx6u~LSLIVPoRkHKe0fWDEcsQKpe4V9Xu~mmUQuaNqOkJaNiseaO80izxOF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770223512024\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770223512024\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAC1G_AiV8CgcALPe1oA==&cid=tZSdK4G1tOTAqH0UBtQYTQe2mRIYsTtu_p9yBA68B1BYhEQ9~tnebhBtP5T9rlPS~cQBNnx6u~LSLIVPoRkHKe0fWDEcsQKpe4V9Xu~mmUQuaNqOkJaNiseaO80izxOF&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770223512024\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-04T16:46:44.886Z",
+      "event": "bb-session",
+      "session": "150cd2bc",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+    },
+    {
+      "t": "2026-02-04T16:47:18.003Z",
+      "event": "bb-session",
+      "session": "59f6a055",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
     }
   ]
 }
