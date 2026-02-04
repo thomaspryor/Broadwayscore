@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The best new play on Broadway at the moment is Lisa Kron’s book for the musical “Fun Home,” which opened Sunday at Circle in the Square in New York.\n\nKron’s achievement here recalls Marsha Norman’s breakthrough play in the late 1970s, “Getting Out,” which looks at a woman’s life before and after her parole, the character played by two different actresses.",
+  "isFullReview": false,
+  "textWordCount": 61,
+  "archivePath": "data/archives/reviews/fun-home-2015/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:06:05.073Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 67 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 61,
+  "tierReason": "Short text (61 words)"
 }
