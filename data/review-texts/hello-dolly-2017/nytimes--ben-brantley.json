@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Midler doesn't just stop the show; she picks it up, shakes it and makes it sparkle like fresh snow in sunlight.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 94,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Vivid, poetic praise using magical imagery ('sparkle like fresh snow in sunlight') that goes beyond typical compliments to suggest transformative performance quality. | GPT-4o: The review uses highly enthusiastic language, indicating a strong recommendation. The metaphor of making the show 'sparkle like fresh snow in sunlight' suggests an exceptional performance. | Gemini: The review is highly positive, using vivid imagery to describe Midler's performance and its impact on the show. The language suggests a strong recommendation. | Kimi: The critic uses superlative language ('stop the show,' 'sparkle like fresh snow') to describe a transcendent, transformative performance that elevates the entire production. The vivid, ecstatic imagery indicates an unqualified rave.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticizing the production's broad tactics, Brantley delivers unqualified praise for Midler's performance with superlatives like 'seismic responses,' 'triumphant,' and comparisons to earthquakes and nightingales. The review concludes with emotional impact and complete surrender to her charms. | Gemini: The review is overwhelmingly positive about Bette Midler's performance and its impact on the show. Despite some reservations about other aspects of the production, the overall recommendation is strong. The truncated text lowers confidence. | Kimi: The review lavishes extensive praise on Bette Midler's star turn, calling her the 'culinary event of the year' and praising her 'seismic' comic genius, while noting that the surrounding production can be exhausting and overly broad; the clear verdict is that Midler transcends the show's excesses to make it essential viewing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:44:00.853Z",
+    "scoredAt": "2026-02-04T21:01:37.531Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": null,
     "geminiScore": 82,
-    "kimiScore": 94,
+    "kimiScore": 83,
     "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 13,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
   "textWordCount": 1322,
@@ -104,5 +103,6 @@
   "archiveOrgTimestamp": "20170421063027",
   "archiveOrgUrl": "http://web.archive.org/web/20170421063027/https://www.nytimes.com/2017/04/20/theater/hello-dolly-review-bette-midler.html",
   "wordCount": 1322,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:01:37.532Z"
 }

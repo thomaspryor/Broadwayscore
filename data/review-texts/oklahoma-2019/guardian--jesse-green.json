@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,13 +20,13 @@
   "contentTierReason": "Short text (25 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 90,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining",
+        "quote": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses 'brilliant' to describe the production with clear appreciation for the directorial vision and reimagining approach. | GPT-4o: The review uses strong, positive language ('brilliant reimagining') indicating a highly enthusiastic recommendation. The phrase 'not your grandmother's Oklahoma!' suggests a fresh and innovative approach, contributing to a rave classification. | Gemini: The critic uses strong positive language such as \"brilliant reimagining\" which indicates a positive recommendation. | Kimi: The excerpt offers unqualified praise calling the production 'brilliant,' indicating strong enthusiasm for this reimagining, though the brevity of the text requires low confidence in the overall verdict.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt uses strong praise 'brilliant reimagining' suggesting enthusiastic endorsement. However, confidence is low due to limited text - only one curated quote available which may not represent full verdict. | GPT-4o: The excerpt uses strong positive language ('brilliant reimagining') suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"stark, brilliant reimagining,\" suggesting a positive assessment. Given the single excerpt, confidence is low, but the positive language warrants a score in the upper end of the positive bucket. | Kimi: The excerpt contains strong praise ('brilliant') and validates the production's conceptual approach ('exactly the point'), indicating clear enthusiasm. However, as a single curated excerpt, confidence is reduced.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:49:53.993Z",
+    "scoredAt": "2026-02-04T22:01:00.061Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 90,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 83,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 88,
-    "claudeBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 10,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://www.theguardian.com/stage/2019/apr/08/oklahoma-review-broadway-revival-daniel-fish",
   "urlDiscoveredAt": "2026-02-04T03:44:06.996Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 90,
   "textWordCount": 442,
@@ -115,5 +115,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 442,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "rescoreCompletedAt": "2026-02-04T22:01:00.061Z"
 }

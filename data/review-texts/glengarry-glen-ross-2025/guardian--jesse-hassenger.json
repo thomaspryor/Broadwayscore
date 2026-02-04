@@ -13,13 +13,13 @@
   "nycTheatreExcerpt": "\"Glengarry Glen Ross may have lost some of its capacity to surprise over the past four decades, but the new revival offers a tribute to its durability. The setting, the lines and the tragedy of normal men attempting to hard-charge their way through decaying capitalism can remain the same, while the actors find new ways to sell it.\"",
   "contentTier": "complete",
   "tierReason": "Full review text",
-  "assignedScore": 77,
+  "assignedScore": 79,
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt acknowledges the play has 'lost some of its capacity to surprise' but frames the revival positively as a 'tribute to its durability' with actors finding 'new ways to sell it.' However, with only one curated excerpt available, confidence is low and the qualified praise suggests lower end of Positive range. | GPT-4o: The excerpt suggests a positive view of the revival's ability to maintain relevance and impact, despite acknowledging diminished surprise. The praise for the actors finding new ways to sell the material supports a positive classification. | Gemini: The review excerpt suggests the revival is a worthwhile tribute, though it acknowledges the play's age. Given the single excerpt, confidence is low, but the overall tone leans positive. | Kimi: While acknowledging the play's familiar material, the critic praises the revival's durability and the actors' fresh interpretations, indicating a solid recommendation despite minor reservations about the work's age.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being truncated, the review consistently praises the cast performances (Culkin 'tailored to strengths', Odenkirk's 'comic anti-timing', Webber as 'unquestionable highlight') and concludes that the revival 'offers a tribute to its durability.' The tone is appreciative throughout with no significant criticisms expressed. | GPT-4o: Despite the text being truncated, the review contains strong praise for the production, highlighting the impressive cast and the enduring quality of the play. The language used suggests a highly positive view, classifying it as a 'Rave'. | Gemini: The review acknowledges the play's age but praises the new revival's ability to find new ways to sell the material. The truncated text and lack of a strong concluding statement lower the confidence. | Kimi: The critic praises the impressive comic cast and direction, calling Mamet's play a 'masterpiece' that 'still dazzles' in the headline, while the review body highlights strong performances from Culkin, Odenkirk and Webber. Despite acknowledging the play's familiarity and truncated text, the tone remains warmly appreciative of the production's quality.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,29 +46,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:28:24.383Z",
+    "scoredAt": "2026-02-04T20:50:04.187Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 81,
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 77,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "fullText": "Bill Burr and Michael McKean in Glengarry Glen Ross. Photograph: Emilio MadridView image in fullscreenBill Burr and Michael McKean in Glengarry Glen Ross. Photograph: Emilio Madrid This article is more than 9 months oldReviewGlengarry Glen Ross review – David Mamet’s masterpiece still dazzles on BroadwayThis article is more than 9 months oldPalace Theatre, New YorkKieran Culkin, Bob Odenkirk and Bill Burr lead an impressive new staging of the bleak yet darkly funny drama\n\nThe new revival of David Mamet’s seminal play Glengarry Glen Ross opens on Broadway 41 years and one week after the work’s original Broadway debut, in March 1984. It’s not exactly an auspicious anniversary, yet it’s a close enough parallel to wonder whether this new production is simply the latest modern contextualization of Mamet’s masterpiece, or a belated anniversary gift.\n\nRead moreNothing about the play, save perhaps the scale of its two lavish sets at the recently reopened Palace Theatre in Manhattan, has been especially contemporized. It’s still clearly set in the early 80s, unfolding in four scenes: three conversations in a Chinese restaurant in the first act, and one long sequence in a real estate office in the second. The four major characters are salesmen defined principally by their levels of desperation. Shelley “The Machine” Levene (Bob Odenkirk) hits the highest, as an ageing would-be closer on a cold-sweat streak, with a nagging, insistent tendency to remind everyone the precise dates of his long-past wins. Ricky Roma (Kieran Culkin) keeps it coolest, his patter with a potential customer so smooth that he barely mentions a sale until the end of the scene. In the middle (at least of a scale that includes Levene) are the aggrieved Dave Moss (Bill Burr) and the worn-out George Aaronow (Michael McKean), who seems to lack the energy for more active desperation. Everyone is after better “leads” – information on prospective clients who might actually want to buy land, as opposed to the extra-sweaty nudging required to sell it to those who don’t want or can’t afford it. Naturally, they’re only provided to the salesmen who are already proving themselves with sales.\n\nThe 1992 film adaptation opened up a little more, dramatizing some additional scenes only described or alluded to on stage. Most famously, though, it added an introductory scene featuring Alec Baldwin as a higher-up salesman sent down to the office to berate the other men spectacularly in the guise of rallying the troops. This is how it came to be that the most famous lines “from” the play (“Put that coffee down,” “third prize is, you’re fired” and so on) aren’t actually in the play, at least not in the biggest productions. (Some local stage versions have apparently incorporated the movie’s iconic opening, presumably knowing that some portion of the audience will be waiting for it. That, and it’s a terrific piece of writing, and probably a hell of a lot of fun to perform.)\n\nIf it seems a little churlish to bring up a famous film adaptation, that is what a new Broadway Glengarry, directed by Patrick Marber, is competing with, especially in its limited-engagement starriness: a particularly great version of the text, with Jack Lemmon, Al Pacino, Ed Harris and Alan Arkin as the leads, that’s been widely available for over 30 years. But that’s also some of the pleasure of a new Glengarry, observing the vast differences between, say, the Pacino Ricky Roma and the Culkin version, tailored to the recent Oscar winner’s strengths. Though well into middle age, Culkin seems young compared to his co-stars, a quality he uses to turn Roma into a blithe faux-oversharer – someone who uses the would-be honesty of the Culkin persona to seem more freewheeling and approachable to clients. (It’s sort of a millennial-hipster read on the character, even if he’s still technically from the silent generation.)\n\nRead moreOdenkirk, meanwhile, teases out Levene’s comic anti-timing, his staccato interruptions insisting that office manager John Williamson (Donald Webber Jr) “wait” and hear out his further entreaties, no matter how little they amount to anything. This is a cast heavy with comic experience – Burr seems to juice some extra laughs just by obviously being Bill Burr, still working in his standup-rant rhythms – and the script, bleak as it is, remains very funny. Comic undertones also emerge from the speed of the first act, which at this particular preview was done in about 39 minutes flat; whether the actors just happened to rocket through or intentionally tightened the pace, the effect on the slightly longer, single-location second act was palpable.\n\nThose effects are amplified by Webber as Williamson. Though he’s less famous than some of its co-stars, he’s an unquestionable highlight of the show, especially in his controlled use of silences that throw the other characters off-balance. Williamson becomes a target for much salesman invective, from both Levene and Roma, and casting a Black actor in the role loads those confrontations up even more; he doesn’t always lash back at his furious coworkers, which makes his ultimate decisions cut even sharper. Glengarry Glen Ross may have lost some of its capacity to surprise over the past four decades, but the new revival offers a tribute to its durability. The setting, the lines and the tragedy of normal men attempting to hard-charge their way through decaying capitalism can remain the same, while the actors find new ways to sell it.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
@@ -97,5 +98,6 @@
   ],
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
-  "wordCount": 916
+  "wordCount": 916,
+  "rescoreCompletedAt": "2026-02-04T20:50:04.187Z"
 }

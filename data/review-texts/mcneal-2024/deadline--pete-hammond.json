@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Downey Jr. makes a commanding Broadway debut in this thought-provoking play about artificial intelligence and the creative process, though the material doesn't always match the star's magnetic presence.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 75,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Robert Downey Jr. makes a commanding Broadway debut in this thought-provoking play about artificial intelligence and the creative process, though the material doesn't always match the star's magnetic presence.",
+        "quote": "McNeal, astutely directed by the great Bartlett Sher, is an often confusing though wheedlingly emotional mindgame.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear mixed verdict - praises Downey Jr.'s 'commanding' performance and calls the play 'thought-provoking,' but the 'though' signals significant reservation about the material not matching the star's presence. | GPT-4o: The review praises Robert Downey Jr.'s performance and describes the play as thought-provoking, indicating a positive recommendation. However, it notes that the material doesn't always match the star's presence, suggesting some reservations. | Gemini: The review praises Downey Jr.'s performance but notes that the material isn't always up to par, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic delivers a qualified recommendation, praising Downey Jr.'s 'commanding' and 'magnetic' performance while noting the material falls short of the star's caliber. The 'thought-provoking' descriptor and emphasis on the lead's debut suggest it's worth seeing despite the script's limitations.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises Downey's casting as 'perfectly cast', calls Sher 'the great' director, and describes it as 'wheedlingly emotional' despite acknowledging its complexity. The tone is appreciative of the ambitious material and performances, recommending it as intellectually engaging theater. | Gemini: The review is generally positive, highlighting Downey's performance and Sher's direction, but notes the play is \"often confusing\". The critic seems intrigued by the play's themes and execution, but stops short of a rave. | Kimi: The review praises Downey's 'formidable Broadway debut' and 'perfectly cast' performance, commends the 'magnificent' video projections and 'astute' direction, and appreciates the emotional impact, while acknowledging the play is 'slow to grab hold' and 'knotty.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:51:16.712Z",
+    "scoredAt": "2026-02-04T21:49:16.584Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 74,
+    "claudeScore": 76,
+    "openaiScore": null,
     "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://deadline.com/2024/09/mcneal-review-robert-downey-jr-broadway-debut-artificial-intelligence-1236079234/",
   "urlDiscoveredAt": "2026-02-04T03:13:37.583Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 1221,
@@ -116,5 +115,6 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 1221,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:49:16.584Z"
 }

@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 91,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 86,
       "high": 96
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
+        "quote": "Jitney review – August Wilson's playful and poignant drama is a triumph",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear praise using superlative language ('masterclass') and strong positive descriptors ('vivid, heartbreaking reality'). No reservations expressed in the excerpt provided. | GPT-4o: The review uses strong, positive language ('masterclass', 'vivid, heartbreaking reality') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"masterclass\" and \"vivid, heartbreaking reality,\" indicating a rave review. | Kimi: The review offers unqualified praise with superlatives ('masterclass') and emphasizes strong emotional impact ('heartbreaking reality') with no reservations mentioned.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation, the review is overwhelmingly positive with 'triumph' in the headline, praise for 'extraordinary' performances, calling it a 'masterful' work, and wishing it were longer. The aggregator excerpt confirms this as a 'masterclass' production. | GPT-4o: The review praises the production as a 'triumph', highlights 'extraordinary performances', and describes the play as 'masterful'. Despite the text being truncated, the language used strongly suggests a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the performances, direction, and Wilson's writing. The critic wishes the play was longer, indicating a strong recommendation. | Kimi: The review is unambiguously enthusiastic, using words like 'triumph,' 'masterful,' and 'extraordinary' to describe the acting and direction, with only a minor caveat about one moment of slack abstraction. However, confidence is lowered due to the truncated text warning.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:46:15.499Z",
+    "scoredAt": "2026-02-04T21:20:36.490Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 91,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 88,
     "openaiScore": 92,
-    "geminiScore": 90,
-    "kimiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 93,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
+    "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "previousUrl": "https://www.theguardian.com/stage/2017/jan/20/jitney-review-august-wilson-broadway",
   "urlDiscoveredAt": "2026-02-04T03:30:40.349Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
   "textWordCount": 607,
@@ -116,5 +116,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 607,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:20:36.490Z"
 }

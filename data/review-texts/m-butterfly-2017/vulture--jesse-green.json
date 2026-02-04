@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production, directed by Julie Taymor, is visually stunning but emotionally distant, never quite finding the heart beneath its gorgeous surface.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production is visually stunning but emotionally distant, never quite finding the heart beneath its gorgeous surface.",
+        "quote": "So why do the results feel strangely uneven?",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges strong visual elements but identifies a fundamental flaw in emotional connection, resulting in a balanced but ultimately lukewarm assessment with no clear recommendation. | GPT-4o: The review praises the visual aspects but criticizes the emotional impact, suggesting a mixed experience overall. | Gemini: The review acknowledges the visual appeal but criticizes the lack of emotional depth, resulting in a mixed assessment. | Kimi: The critic offers strong praise for the visual elements but significant criticism regarding emotional depth, creating a balanced mixed assessment without clear recommendation or rejection.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges compelling performances and relevant themes but finds the production 'clunky,' 'confused,' and 'emotionally distancing.' The review praises elements but ultimately finds the show doesn't achieve its potential. | Gemini: The review acknowledges strong performances but finds the overall production uneven and confusing, leading to a mixed assessment. | Kimi: The critic praises the lead performances (particularly Jin Ha) and the relevance of the themes, but finds Julie Taymor's production uneven, confusing, and awkwardly executed, leaving the show feeling unanchored.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:54:31.038Z",
+    "scoredAt": "2026-02-04T21:39:38.205Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "previousUrl": "https://www.vulture.com/2017/10/theater-review-m-butterfly-on-broadway.html",
   "urlDiscoveredAt": "2026-02-04T00:40:24.364Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1269,
@@ -121,5 +120,6 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "vulture--sarah-holdren.json",
   "wordCount": 1269,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:39:38.205Z"
 }

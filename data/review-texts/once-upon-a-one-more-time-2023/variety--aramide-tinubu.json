@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is undeniably entertaining, but it's also a bit of a mess — a glittery, bedazzled mess that's hard to look away from.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show is undeniably entertaining, but it's also a bit of a mess — a glittery, bedazzled mess that's hard to look away from.",
+        "quote": "The message and the music mostly avoid heavy-handedness, telling this updated fairy tale with equity, energy and originality.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt describes show as both 'undeniably entertaining' and 'a bit of a mess.' The 'but' structure and 'mess' characterization suggests significant reservations despite entertainment value, placing it in mixed territory. | GPT-4o: The excerpt describes the show as entertaining but also messy, indicating a mixed review. The single excerpt and text quality warning suggest caution, leading to a low confidence score. | Gemini: The review states the show is \"undeniably entertaining\" but also \"a bit of a mess.\" This suggests a positive but qualified recommendation. Given that it is only one excerpt, I am scoring it at the lower end of the positive range. | Kimi: Single excerpt describes the show as undeniably entertaining and compelling despite significant structural flaws, indicating a mildly positive, qualified recommendation in the lower range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances, choreography, and concept while noting some structural issues with pacing and underused elements. The positive final assessment and consistent praise throughout outweigh the reservations. | GPT-4o: The review praises the show's energy, originality, and successful integration of Britney Spears' music, despite noting some pacing issues and underused elements. The overall tone is positive with some reservations. | Gemini: The review is mostly positive, highlighting the show's energy, originality, and message, while also noting some pacing issues and underutilization of a cast member. | Kimi: While noting minor flaws in first-act pacing and underuse of Adam Godley, the critic enthusiastically praises the performances, choreography, and feminist messaging, delivering a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:51:23.878Z",
+    "scoredAt": "2026-02-04T22:07:11.078Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 69,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 74,
-    "kimiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-broadway-britney-spears-1235654043/",
   "urlDiscoveredAt": "2026-02-04T16:53:59.819Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "textWordCount": 887,
@@ -104,5 +104,6 @@
   "archiveOrgTimestamp": "20230623032014",
   "archiveOrgUrl": "http://web.archive.org/web/20230623032014/https://variety.com/2023/legit/reviews/once-upon-a-one-more-time-review-britney-spears-musical-1235649922/",
   "wordCount": 887,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:07:11.078Z"
 }

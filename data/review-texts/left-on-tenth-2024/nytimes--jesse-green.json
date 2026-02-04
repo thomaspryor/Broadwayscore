@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the show is beautifully acted and staged, it feels more like a gentle memorial service than a fully realized theatrical experience.",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 62,
@@ -108,5 +108,10 @@
     "Word count too low: 299 (min: 300)"
   ],
   "wordCount": 299,
-  "tierReason": "Short text (299 words)"
+  "tierReason": "Short text (299 words)",
+  "rejectedAt": "2026-02-04T21:29:19.636Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-article with a technical error message about retrieving content and enabling JavaScript, making it impossible to assess the critic's full evaluation of the show.; openai: The text includes a message about trouble retrieving the article content and instructions to enable JavaScript, indicating it is not a complete review.; gemini: The review is truncated, cutting off the critic's evaluation and recommendation. Unable to determine a score without the conclusion.",
+  "promptVersion": "5.2.0"
 }

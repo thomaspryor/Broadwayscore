@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Martin McDonagh's dark comedy 'Hangmen' finally makes it to Broadway in a production that captures both the playwright's mordant wit and his gift for finding humanity in the most unlikely characters.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 78,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 82,
+      "high": 92
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "a production that captures both the playwright's mordant wit and his gift for finding humanity",
+        "quote": "this Broadway production is a deadly beauty, flawlessly cast and directed",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive assessment praising both the playwright's qualities and the production's success in capturing them, though brief and lacking strong superlatives or explicit recommendation language. | GPT-4o: The review highlights the production's success in capturing the playwright's wit and depth, suggesting a strong recommendation without reservations. | Gemini: The review highlights the production's success in capturing the playwright's wit and humanity, indicating a positive assessment. The absence of strong superlatives suggests a score in the middle of the 'Positive' range. | Kimi: The critic praises the production for effectively capturing McDonagh's signature mordant wit and humanity, indicating a clear recommendation. Confidence is low due to the excerpt length.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the production with superlatives like 'deadly beauty,' 'flawlessly cast and directed,' and 'formidable' performances. The critic clearly recommends the show despite its dark subject matter. | GPT-4o: The review is filled with superlatives and strong praise for the production, describing it as 'a deadly beauty' and 'flawlessly cast and directed.' The critic's enthusiastic tone and lack of reservations indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"deadly beauty\" and \"flawlessly cast and directed.\" While acknowledging the dark nature of the comedy, the critic clearly recommends the production. | Kimi: Isherwood offers unqualified praise with superlatives like 'flawlessly cast' and 'deadly beauty,' hailing it as a 'killer Broadway production' with no significant caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:06:19.064Z",
+    "scoredAt": "2026-02-04T20:56:52.828Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "kimiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 647,
@@ -111,5 +111,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 647,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:56:52.828Z"
 }

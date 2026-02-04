@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Laura Linney gives a performance of extraordinary intimacy and intelligence in this one-woman show adapted from Elizabeth Strout's novel.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (19 words)",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Laura Linney gives a performance of extraordinary intimacy and intelligence in this one-woman show",
+        "quote": "The feeling is obviously mutual, because the character of Lucy Barton returns the actor's commitment with a quiet but searing fidelity to her visionary performance.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Linney's performance with 'extraordinary' but this appears to be a truncated excerpt with no fuller critical assessment of the production as a whole. | GPT-4o: The review praises Laura Linney's performance with strong positive language ('extraordinary intimacy and intelligence'), suggesting a highly favorable view of the show. However, the text is very brief, so the confidence is low. | Gemini: The review praises Laura Linney's performance with strong positive adjectives like \"extraordinary intimacy and intelligence,\" indicating a positive recommendation. | Kimi: The excerpt uses strong superlatives ('extraordinary') to praise the lead performance, indicating an enthusiastic recommendation. Confidence is low due to the text being a brief excerpt under 150 words.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Linney's performance ('radiant,' 'visionary,' 'beautifully done') and director Eyre's approach ('viscerally penetrating'). While noting some staging elements aren't necessary, the overall tone is appreciative and recommending, particularly for the lead performance and emotional authenticity. | GPT-4o: The review is filled with praise for Laura Linney's performance and the production's sophisticated staging. The critic highlights the emotional depth and nuanced direction, suggesting a must-see experience. | Gemini: The review is overwhelmingly positive, praising Linney's performance and the production's sensitive handling of the source material. The critic highlights the emotional depth and realism of the play, indicating a strong recommendation. | Kimi: The critic offers unqualified praise for Linney's 'visionary performance' and the 'viscerally penetrating' direction, dismissing minor staging quibbles to deliver a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:41:58.341Z",
+    "scoredAt": "2026-02-04T21:56:09.174Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 82,
     "openaiScore": 90,
-    "geminiScore": 80,
+    "geminiScore": 81,
     "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://variety.com/2020/legit/reviews/my-name-is-lucy-barton-review-laura-linney-1203479438/",
   "urlDiscoveredAt": "2026-02-04T00:06:10.870Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 615,
@@ -98,5 +98,6 @@
   "archiveOrgTimestamp": "20250426203934",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203934/https://variety.com/2020/legit/reviews/my-name-is-lucy-barton-review-broadway-1203468029/",
   "wordCount": 615,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:56:09.174Z"
 }

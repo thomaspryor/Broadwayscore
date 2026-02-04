@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new musical 'Paradise Square' has ambitions as grand as its sprawling cast and period setting, but despite moments of genuine power, it never quite coheres into the unified artistic statement it strives to be.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (35 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "despite moments of genuine power, it never quite coheres into the unified artistic statement it strives to be",
+        "quote": "The result is a tiresome mess.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's grand ambitions and finds 'moments of genuine power' but ultimately finds it fails to achieve its artistic goals. Classic mixed review language - neither recommendation nor discouragement. | GPT-4o: The review acknowledges some powerful moments but ultimately suggests the musical fails to achieve its artistic goals, indicating a mixed reception. | Gemini: The review acknowledges \"moments of genuine power\" but ultimately states that the show \"never quite coheres,\" indicating a mixed assessment. | Kimi: The review acknowledges the show's ambitious scope and 'moments of genuine power' but ultimately finds it fails to cohere into a unified artistic statement, suggesting a mixed reception.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic delivers a clear negative verdict calling it 'a tiresome mess' and 'wrong-footed from the jump.' While praising Kalukango's performance and the choreography, the overall assessment finds the show contrived, poorly characterized, and dramatically unsatisfying. | GPT-4o: The review criticizes the show as incoherent and contrived, with a lack of emotional investment and characterization. Despite some praise for the choreography and a standout performance by Joaquina Kalukango, the overall verdict is negative, describing the production as a 'tiresome mess.' | Gemini: The review is largely negative, citing a \"tiresome mess\" due to a contrived plot, lack of characterization, and convoluted logic. While praising Kalukango's performance and the dance sequences, the overall assessment is unfavorable. | Kimi: The critic explicitly calls the show a 'tiresome mess' with a 'bloated' second act that 'runs out of steam,' criticizing the contrived plot and lack of characterization, though he praises the choreography and Joaquina Kalukango's performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,30 +51,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:43:22.083Z",
+    "scoredAt": "2026-02-04T22:12:24.982Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 793,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 793,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:12:24.982Z"
 }

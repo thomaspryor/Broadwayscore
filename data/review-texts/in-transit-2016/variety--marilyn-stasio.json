@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show's salvation is its sensational a cappella score, which transforms the subway car into a concert hall and gives this motley crew of New Yorkers voices that soar.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 80,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show's salvation is its sensational a cappella score, which transforms the subway car into a concert hall and gives this motley crew of New Yorkers voices that soar.",
+        "quote": "It's a surprisingly moving experience that make you feel that though you're watching separate lives of these strangers on a train, you're hearing the heart of one connected urban village.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt praises the score as 'sensational' and 'salvation,' indicating a positive recommendation despite apparent flaws elsewhere. Low confidence due to truncated text. | GPT-4o: The review highlights the score as a standout element, suggesting a strong positive impact on the overall experience. The use of 'sensational' and 'soar' indicates enthusiastic praise. | Gemini: The review highlights the a cappella score as the show's saving grace, indicating a positive aspect that elevates the overall experience. | Kimi: The excerpt offers qualified praise, identifying the a cappella score as the production's 'salvation' and describing it as 'sensational,' implying the show is worth seeing primarily for its musical elements despite implied weaknesses elsewhere.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Stasio consistently praises the performances, vocal arrangements, and staging while acknowledging the book is predictable and by-the-numbers. The positive final verdict and warm tone throughout indicate a solid recommendation despite structural flaws. | GPT-4o: The review is filled with praise for the performances, the innovative a cappella concept, and the emotional impact of the show. Despite noting some predictable elements, the overall tone is highly positive and recommends the show as a moving and harmonious experience. | Gemini: The review is generally positive, highlighting the harmonious a cappella singing and likable performances, but notes the predictable storylines. The overall experience is described as surprisingly moving, suggesting a positive recommendation with some reservations. | Kimi: The critic praises the 'rapturously harmonious' a cappella performances, design, and direction as 'surprisingly moving,' but deducts points for a 'by-the-numbers' book with predictable storylines that break no new ground.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:00:18.230Z",
+    "scoredAt": "2026-02-04T21:11:09.391Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 76,
+    "geminiScore": 78,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://variety.com/2016/legit/reviews/in-transit-review-broadway-1201935066/",
   "urlDiscoveredAt": "2026-02-04T00:17:21.849Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 659,
@@ -98,5 +98,6 @@
   "archiveOrgTimestamp": "20251027112837",
   "archiveOrgUrl": "http://web.archive.org/web/20251027112837/https://variety.com/2016/legit/reviews/in-transit-review-musical-1201939482/",
   "wordCount": 659,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:11:09.391Z"
 }

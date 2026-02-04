@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 69,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 69,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 64,
+      "high": 74
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,7 +35,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic clearly calls it 'great children's theater' and praises the smart low-tech approach, strong performances, and theater renovation. While noting it's only for Potter fans and has some pacing issues, the overall assessment is positive with a clear recommendation for its target audience. | GPT-4o: The review expresses mixed feelings, noting the play's appeal to children and some creative staging, but criticizes the plot's reliance on prior knowledge and some design elements. The performances are praised but not seen as standout in the current Broadway context. | Gemini: The review acknowledges the show's appeal as children's theater and praises the low-tech approach, but also points out its inaccessibility to those unfamiliar with the Harry Potter universe and criticizes some aspects of the plot and set design. The overall tone is mixed. | Kimi: The critic praises Tiffany's theatrical imagination and low-tech staging, calling it 'great children's theater' for the target audience, but explicitly warns adults without Potter knowledge to skip it and criticizes the bloated book, excessive length, and confusing plot structure.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Critic clearly recommends the show as 'great children's theater' despite noting it's inaccessible to Potter newcomers. Praises the low-tech approach, performances, and theater redesign, with reservations about length and some design choices. | GPT-4o: The review acknowledges the play's appeal to children and its imaginative staging, but criticizes its complexity for non-fans and some design elements. It offers mixed feedback on performances and suggests the show may not stand out in a competitive Broadway season. | Gemini: The review is generally positive, calling it \"great children's theater\" and praising the low-tech look. However, it notes that prior knowledge of Harry Potter is necessary and that some of the writing is bogged down with psychobabble, so it is not a rave. | Kimi: The critic explicitly praises the production as 'great children's theater' and commends the direction and theater redesign, but significantly qualifies the recommendation by warning that adults without prior Potter knowledge will be lost and don't need to see it, while also noting pacing issues and confusing plot elements. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,29 +45,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T09:17:06.355Z",
+    "scoredAt": "2026-02-04T20:59:45.937Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 74,
-    "previousVersion": "5.1.0"
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 58,
-    "geminiScore": 65,
+    "openaiScore": 60,
+    "geminiScore": 75,
     "kimiScore": 63,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "geminiBucket": "Positive",
     "kimiBucket": "Mixed",
-    "scoreDelta": 18,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
   },
   "sources": [
     "bww-roundup",
@@ -89,10 +89,9 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251119071557",
   "archiveOrgUrl": "http://web.archive.org/web/20251119071557/https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
-  "rescoreCompletedAt": "2026-02-01T15:09:31.997Z",
+  "rescoreCompletedAt": "2026-02-04T20:59:45.937Z",
   "contentTier": "complete",
   "wordCount": 846,
-  "needsRescore": true,
   "textQuality": "full",
   "showScoreExcerpt": "\"Without prior knowledge of the 'Potter' story, you won’t be able to understand what’s happening on stage...Rowling, Thorne, and Tiffany have taken the very sophisticated approach of plunging you right into the maelstrom of the wizard phenomenon...Great children’s theater that in no way attempts to replicate the movies...Human emotions, not the special effects, propel the story forward...Thorne sometimes goes overboard with the angst-ridden father-son psychobabble.\"\n\nRead more"
 }

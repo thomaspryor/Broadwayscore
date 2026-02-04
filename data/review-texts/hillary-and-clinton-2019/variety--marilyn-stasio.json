@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Laurie Metcalf and John Lithgow are superb as the political power couple in Lucas Hnath's smart, speculative drama about what might have happened behind closed doors during the 2008 Democratic primary campaign.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 53,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 48,
+      "high": 58
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Laurie Metcalf and John Lithgow are superb as the political power couple in Lucas Hnath's smart, speculative drama",
+        "quote": "The only thing wrong in this fictionalized visit to the 2008 primary is that playwright Hnath has brought nothing of substance to the table.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for lead performances ('superb') and writing ('smart'), but this appears to be a brief excerpt which limits confidence in capturing the full critical assessment. | GPT-4o: The review praises the lead performances as 'superb' and describes the drama as 'smart' and 'speculative,' indicating a strong recommendation. | Gemini: The review praises the performances of Metcalf and Lithgow and describes the play as \"smart.\" While not a rave, it is a positive assessment, suggesting it's worth seeing. | Kimi: The excerpt offers unqualified praise for both the lead performances ('superb') and the play itself ('smart'), indicating a clear recommendation despite the brevity of the text.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite praising the 'perfectly cast' leads and their performances, the critic finds fundamental flaws with the playwright's contribution, calling it lacking in substance and asking 'Where's our fun?' The overall assessment is disappointment with the material despite strong acting. | GPT-4o: The review praises the performances of Metcalf and Lithgow but criticizes the play for lacking substance and failing to deliver engaging content. The critic expresses disappointment with the play's execution, resulting in a mixed review. | Gemini: The review praises the actors and dialogue but criticizes the play for lacking substance and not offering fresh ideas. It acknowledges some positive aspects but ultimately expresses disappointment. | Kimi: While the review praises Metcalf and Lithgow as perfectly cast and delivers strong performances, it ultimately finds the play static and devoid of substance, concluding with the disappointed rhetorical question 'Where's our fun?' rather than any recommendation to see the show. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:53:14.587Z",
+    "scoredAt": "2026-02-04T21:04:14.976Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 80,
-    "geminiScore": 78,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 725,
@@ -122,5 +122,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T21:04:14.976Z"
 }

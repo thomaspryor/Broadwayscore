@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 83,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
+        "quote": "It offers the opportunity to think in depth about the dilemmas that artists face",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt uses superlative praise ('ravishing') and suggests this is the ideal production ('perfect moment'). However, confidence is low due to limited text - this could be cherry-picked from a more qualified review. | GPT-4o: The excerpt uses strong positive language ('ravishing revival') and suggests the show has reached its 'perfect moment,' indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses the word \"ravishing\" to describe the revival, indicating a strong positive sentiment. Given the limited text, I'm placing it in the upper end of the positive bucket. | Kimi: The excerpt offers enthusiastic, unqualified praise ('ravishing,' 'perfect moment'), but as a single curated quote that may be cherry-picked, the score is capped at the upper end of the Positive range per guidelines.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show as 'good, or even great, art' with 'immense pleasure' in retrospect, but admits finding the actual theater experience alienating and difficult for first-time audiences. This creates a classic mixed review - artistic merit without entertainment recommendation. | GPT-4o: The review acknowledges the artistic value and depth of the production but highlights significant issues with audience engagement and certain performances. The critic finds value in the show but also notes feelings of alienation and missed opportunities. | Gemini: The review acknowledges the show's artistic merit and thought-provoking nature, but also points out its alienating effect and some performance issues. It doesn't strongly recommend or discourage seeing it. | Kimi: While the critic praises the production values, performances by Groff and Mendez, and Sondheim's score, the central verdict emphasizes that the pleasure comes 'after the fact' rather than during the actual theatrical experience, which the reviewer found alienating and cold. The review acknowledges the show's artistic merit but describes the act of watching it as exclusionary and emotionally distant.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T12:15:49.505Z",
+    "scoredAt": "2026-02-04T21:51:17.160Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 83,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 84,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 83,
   "textWordCount": 1064,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1064,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:51:17.160Z"
 }

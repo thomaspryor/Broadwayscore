@@ -7,7 +7,7 @@
   "publishDate": "November 2, 2023",
   "fullText": "Several minutes into Theresa Rebeck’s new play “I Need That,” the character played by Danny DeVito discovers that there are TV shows about hoarders. Since he doesn’t own a working television, this news comes as a surprise. Sam’s delighted to learn there are actually TV shows about people like him!\n\nSam’s realization isn’t the only moment that recalls TV fare. Rebeck’s play, which opened Thursday at Roundabout’s American Airlines Theater, would be better titled “Sanford and Daughter,” even though Rebeck’s attempts at writing one-liners rarely rises to the level of the 1970s sitcom starring Redd Foxx. The big difference, beyond race, is that DeVito’s Sam is a lovable hoarder and fights not with a son but his daughter, Amelia, played by Lucy DeVito.\n\nTypical of network sitcoms of yore, Rebeck’s play never asks us to take Sam’s hoarder status seriously. We are told the neighbor across the street has filed complaints and Sam is on the verge of eviction. Also, Alexander Dodge’s messy set design certainly suggests extreme hoarder-dom. All those elements belong to a different play, however. Sam, as written by Rebeck and played by DeVito, is far too adorable to be a chronic problem to anyone, including himself.\n\nWhen hoarder TV shows were first mentioned in “I Need That,” my mind flipped to an episode I once saw of a woman who filled her living room with so much junk that the host had to walk stooped over, despite the room’s 10-foot ceiling. Even more startling, the woman wore diapers, and when she needed to defecate, she could just throw the used adult Pampers to another corner of the living room. Now that is a hoarder.\n\nSam, on the other hand, is just cute. His collection of stuff, especially board games like Monopoly and Sorry, is merely an excuse to travel down Memory Lane. After wrangling with his daughter about cleaning up his house for most of this 100-minute one-act play, Sam undergoes a conversion that is as phony as every word and action that came before it. Not to be outdone by her father, Amelia delivers a Big Reveal about herself that is just as bogus.\n\nSince Rebeck has set her characters in New Jersey, she can’t resort to the oldest trope of Broadway comedies and make fun of New Jersey. Here, the city of Cleveland gets racked over those cold comic coals. The desperation shows when DeVito tries to milk a laugh out of strangling the word “Ohio.”\n\nMuch earlier in the play, Sam describes Amelia as “high-strung.” Lucy DeVito takes that description as the key to her interpretation, but sadly offers nothing else to pad out the stick figure she has been assigned to play.\n\nRay Anthony Thomas gets stuck playing the Black Caregiver, a character that should have gone into retirement long ago — perhaps somewhere in Ohio.\n\nMoritz von Stuelpnagel directs.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 41,
   "dtliThumb": "Down",
   "source": "dtli",
   "dtliExcerpt": "Sam’s realization isn’t the only moment that recalls TV fare. Rebeck’s play, which opened Thursday at Roundabout’s American Airlines Theater, would be better titled “Sanford and Daughter,” even though Rebeck’s attempts at writing one-liners rarely rises to the level of the 1970s sitcom starring Redd Foxx.",
@@ -15,11 +15,11 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic consistently criticizes the play's writing, characterization, and authenticity, calling elements 'phony' and 'bogus' while comparing it unfavorably to sitcoms. Despite some mild praise for DeVito being 'adorable,' the overall assessment is clearly negative. | GPT-4o: The review criticizes the play for its lack of authenticity and depth, describing it as phony and comparing it unfavorably to a sitcom. The negative tone and lack of recommendation are clear. | Gemini: The review is largely negative, criticizing the writing, performances, and overall plot. The critic finds the characters and their resolutions unconvincing, and the humor forced, leading to a negative recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Sam undergoes a conversion that is as phony as every word and action that came before it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Consistently negative throughout with harsh criticism of the writing ('phony', 'bogus'), performances ('stick figure'), and overall execution. The critic finds nothing genuinely praiseworthy and suggests the desperation shows in the comedy attempts. | GPT-4o: The review criticizes the play for its lack of depth and authenticity, describing it as phony and likening it to a sitcom rather than a serious play. The tone is consistently negative, with no redeeming qualities highlighted. | Gemini: The review is largely negative, criticizing the play's writing, characters, and plot. The critic finds the characters unbelievable and the resolution unconvincing, leading to a negative recommendation. | Kimi: The reviewer delivers a devastating critique of the writing as bogus and phony, the characters as stick figures, and the humor as desperate, with no redeeming praise for the production's direction or performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:22:15.620Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:08:31.391Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
+    "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 20,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "archivePath": "data/archives/reviews/i-need-that-2023/thewrap--robert-hofler_2026-01-29.html",
   "textFetchedAt": "2026-01-29T02:31:08.104Z",
@@ -79,11 +87,11 @@
   "contentTier": "complete",
   "wordCount": 481,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/i-need-that-danny-devito-broadway-review/",
   "sources": [
     "dtli",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T21:08:31.391Z"
 }

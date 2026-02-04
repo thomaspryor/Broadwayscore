@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Taylor brings a luminous integrity to Bessie that makes you believe in the existence of people who are motivated by love instead of self-interest.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ms. Taylor brings a luminous integrity to Bessie that makes you believe in the existence of people who are motivated by love instead of self-interest.",
+        "quote": "Thoughtfully directed by Anne Kauffman; keenly performed by Lili Taylor, Janeane Garofalo and especially Celia Weston; a pleasure to watch throughout — it is all of these. But it is somehow, also, fatally mild.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for lead performance with emotional impact ('luminous integrity', 'makes you believe'). However, confidence is low due to limited text - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt praises Ms. Taylor's performance with strong positive language ('luminous integrity'). Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt praises the performance of Ms. Taylor, suggesting a positive aspect of the show. However, with only one excerpt available, the overall recommendation is uncertain, leading to a lower confidence and a score on the lower end of the positive range. | Kimi: Single excerpt offers strong praise for the lead performance using superlatives ('luminous integrity'), indicating a clearly positive recommendation for this aspect of the production. Following the single-excerpt guidance for strongly positive quotes, this falls in the upper Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Brantley praises the direction, performances, and production values consistently, calling it 'smart and refined' with 'everything, really, perfect.' However, he finds the revival 'fatally mild' and lacking the emotional impact of the original, languishing between comedy and drama without achieving either effectively. | GPT-4o: The review acknowledges thoughtful direction and strong performances but ultimately finds the production 'fatally mild' and lacking the impact of previous versions. The critic's tone is mixed, with both praise and significant reservations. | Gemini: The review acknowledges strong performances and direction but ultimately finds the production \"fatally mild\" and lacking the emotional impact it once had. It's neither a strong recommendation nor a clear discouragement. | Kimi: While Brantley praises the direction as 'thoughtfully directed' and performances as 'keenly performed' calling the production 'perfect' in execution, he ultimately finds the revival 'fatally mild' and lacking the emotional urgency of the original 1991 context, concluding it 'languishes' between the original production and the film adaptation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:39:12.087Z",
+    "scoredAt": "2026-02-04T21:43:44.973Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "previousUrl": "https://www.nytimes.com/2017/06/15/theater/marvins-room-review-lili-taylor.html",
   "urlDiscoveredAt": "2026-02-04T16:29:43.374Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 1113,
@@ -114,5 +114,6 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 1113,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:43:44.973Z"
 }

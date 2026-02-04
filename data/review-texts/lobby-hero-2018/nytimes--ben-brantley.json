@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Kenneth Lonergan's 2001 play about moral choices in a Manhattan apartment building lobby crackles with the electricity of four superb performances.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 85,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival crackles with the electricity of four superb performances.",
+        "quote": "The performances here are all so grounded that you never doubt their characters' authenticity or sincerity.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for performances with vivid language ('crackles with electricity', 'superb'), but this appears to be a truncated excerpt focusing only on acting without broader production assessment. | GPT-4o: The review uses strong positive language ('crackles with electricity', 'superb performances') indicating a highly enthusiastic recommendation. | Gemini: The review explicitly praises the performances, stating they \"crackle with electricity.\" This indicates a positive experience, making it a recommended show. | Kimi: The review uses superlatives like 'superb' and 'crackles with electricity' to describe the production, indicating an enthusiastic, must-see recommendation despite the brevity of the excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises the 'meticulously acted revival' with consistent appreciation for all four lead performances, calling Evans 'a marvel' and the overall production grounded and authentic. Despite noting some structural issues ('a bit too openly schematic'), the review emphasizes the compelling characters and relevant themes, concluding with praise for Lonergan's artistry. | Gemini: The review is overwhelmingly positive, praising the performances and direction. While noting some minor issues, the overall recommendation is strong. | Kimi: Brantley offers extensive praise for the 'meticulously acted' revival and 'completely embodied' performances, calling the work 'achingly funny' and 'fascinating,' with only a minor reservation about occasional schematic plotting.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:46:09.923Z",
+    "scoredAt": "2026-02-04T21:34:19.849Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 85,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "kimiScore": 88,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2018/03/26/theater/lobby-hero-review.html",
   "urlDiscoveredAt": "2026-02-04T16:20:17.565Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "textWordCount": 1026,
@@ -98,5 +97,6 @@
   "archiveOrgTimestamp": "20230309154153",
   "archiveOrgUrl": "http://web.archive.org/web/20230309154153/https://www.nytimes.com/2018/03/26/theater/lobby-hero-review-chris-evans.html",
   "wordCount": 1026,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:34:19.849Z"
 }

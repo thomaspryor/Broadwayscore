@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "spectacular in places but feels more like a theme park ride than a cohesive piece of theater",
+        "quote": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges spectacle but criticizes it as theme park entertainment rather than proper theater. Neither recommends nor discourages. | GPT-4o: The review highlights spectacle but criticizes the show for lacking cohesion, likening it to a theme park ride, which indicates a negative assessment. | Gemini: The review acknowledges spectacular elements but ultimately compares the show to a theme park ride, suggesting a lack of theatrical cohesion. This indicates a mixed assessment. | Kimi: The critic acknowledges the spectacular production values but fundamentally criticizes the show for lacking theatrical cohesion, comparing it unfavorably to a theme park ride. The text is very brief, suggesting this may be an excerpt or capsule review.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning requires caution. The review acknowledges spectacle but criticizes lack of theatrical cohesion, comparing it to a theme park ride rather than theater - a clear negative assessment of the artistic merit despite production values. | GPT-4o: The review acknowledges spectacular elements but criticizes the overall cohesion, suggesting a mixed experience. The single excerpt limits confidence in the full verdict. | Gemini: The review excerpt indicates that the show has spectacular moments but lacks cohesion, comparing it to a theme park ride. This suggests a mixed experience. | Kimi: The critic acknowledges the production's spectacle but delivers a significant criticism comparing it to a theme park ride rather than cohesive theater, suggesting a middle-ground assessment with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:14:30.294Z",
+    "scoredAt": "2026-02-04T21:25:27.071Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 45,
+    "openaiScore": 65,
     "geminiScore": 62,
     "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 17,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "previousUrl": "https://www.theguardian.com/stage/2018/nov/09/king-kong-review-broadway-musical",
   "urlDiscoveredAt": "2026-02-04T03:47:21.548Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 733,
@@ -115,5 +115,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 733,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:25:27.071Z"
 }

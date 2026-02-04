@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Kenny Leon's production takes care to frame Wright's monologue as a lecture, complete with projections and podium, but the staging never quite decides whether we're watching a memory play or a realistic drama.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the staging never quite decides whether we're watching a memory play or a realistic drama.",
+        "quote": "the staging never quite decides whether we're watching a memory play or a realistic drama",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review highlights an indecisive staging approach, suggesting a lack of clarity in the production's execution. This indicates a mixed assessment without strong recommendation or discouragement. | Gemini: The review identifies a lack of clarity in the staging, suggesting a mixed or uncertain approach to the production's concept. The critic doesn't explicitly recommend or discourage seeing the play. | Kimi: The critic acknowledges the production's careful framing but criticizes the staging for conceptual indecision. Text appears truncated, preventing determination of overall recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows criticism of unclear staging choices without clear overall recommendation. Low confidence due to limited text that may not represent full verdict. | GPT-4o: The excerpt suggests indecision in the staging, indicating a lack of clear recommendation. The single excerpt and text quality warning reduce confidence. | Gemini: The excerpt describes the staging as indecisive, suggesting a lack of clarity in the production. Without more context, it's difficult to determine a clear recommendation, so I've classified it as mixed with low confidence. | Kimi: The single excerpt acknowledges the director's careful framing but criticizes the staging for tonal indecision, suggesting a mixed assessment with significant reservations about the production's coherence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:53:36.444Z",
+    "scoredAt": "2026-02-04T22:00:35.399Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 60,
+    "claudeScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
     "kimiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "previousUrl": "https://www.vulture.com/2022/12/theater-review-ohio-state-murders-on-broadway.html",
   "urlDiscoveredAt": "2026-02-04T01:09:21.482Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1180,
@@ -110,5 +111,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T22:00:35.399Z"
 }

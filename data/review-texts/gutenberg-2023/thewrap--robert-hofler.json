@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GUTENBERG-THE-MUSICAL-Opens-on-Broadway-20231011",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 40,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "There is a legendary anecdote, perhaps apocryphal but probably not, that after a performance of “The Addams Family” on Broadway, Elaine Stritch visited Nathan Lane backstage and told the star, “They’re not paying you enough.” That goes double for the musical “Gutenberg!,” which opened Thursday at the James Earl Jones Theatre. It manages to waste the talent of not one but two very talented performers.",
@@ -21,11 +21,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 40,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -42,7 +42,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the musical 'absolutely dreadful' with 'witless and relentlessly repetitive' songs, despite praising the leads' performances and chemistry. Clear negative recommendation. | GPT-4o: The review is overwhelmingly negative, criticizing the show's book, songs, and concept as 'witless' and 'repetitive'. Despite acknowledging the talent of the performers, it ultimately advises against seeing the show. | Gemini: The review is largely negative, describing the musical as dreadful, witless, and relentlessly repetitive. While praising the performers' efforts, the critic ultimately does not recommend the show. | Kimi: While praising the lead performers' chemistry and commitment, the critic condemns the material as 'witless' and 'relentlessly repetitive,' explicitly stating the show is not worth sitting through and compares it to one of the worst Broadway musicals of the century.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the lead performers' chemistry and charm, the critic calls the musical 'absolutely dreadful,' 'witless and relentlessly repetitive,' and concludes it's 'not' worth sitting through. The overall assessment is clearly negative with no genuine recommendation to see it. | GPT-4o: The review is overwhelmingly negative, criticizing the witless and repetitive songs, incomprehensible story, and the overall concept of the musical. Despite some praise for the performers, the critic strongly advises against seeing the show. | Gemini: Despite praising the performers' efforts, the reviewer finds the musical itself dreadful and witless, ultimately not recommending it. | Kimi: While praising Gad and Rannells as talented performers with great chemistry, the critic calls the musical 'absolutely dreadful,' 'witless and relentlessly repetitive,' and explicitly states it is not worth sitting through, comparing it to one of the worst musicals of the century.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,23 +52,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T05:59:10.234Z",
+    "scoredAt": "2026-02-04T20:52:16.473Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
-    "previousVersion": "5.1.0"
+    "previousScore": 40,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 38,
     "openaiScore": 20,
-    "geminiScore": 40,
+    "geminiScore": 44,
     "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 22,
+    "scoreDelta": 24,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -104,7 +104,7 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20250918033019",
   "archiveOrgUrl": "http://web.archive.org/web/20250918033019/https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.720Z",
+  "rescoreCompletedAt": "2026-02-04T20:52:16.473Z",
   "contentTier": "complete",
   "wordCount": 642,
   "isFullReview": true,
@@ -113,6 +113,5 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "showScoreExcerpt": "\"Josh Gad and Andrew Rannells bring a great Oscar-and-Felix chemistry to the stage. They also work tirelessly and exert their considerable charm, but in the end, they’re asking us to be entertained by a two-hander staging of an absolutely dreadful musical.\"\n\nRead more",
-  "needsRescore": true,
   "playbillVerdictUrl": "https://www.thewrap.com/gutenberg-the-musical-broadway-review-josh-gad-andrew-rannells/"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play works best when it focuses on the messy, complicated relationship between Katharine and Andre, two people who loved the same man but couldn't be more different.",
   "originalScore": 60,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 60,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The play works best when it focuses on the messy, complicated relationship between Katharine and Andre.",
+        "quote": "There's grist for a provocative and touching drama as a mom takes stock of the life her son might have had. But the script doesn't go there.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The critic's original rating of 60 places it firmly in the Mixed bucket. The review highlights a specific aspect that works well, suggesting there are both strengths and weaknesses. | Gemini: The text is very short and doesn't offer a clear recommendation. The critic's rating of 60 suggests a mixed review. | Kimi: The single-sentence excerpt offers qualified praise for specific character dynamics while implying the show works less well elsewhere, consistent with the provided 60/100 rating. The review appears truncated.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic's own 60 rating aligns with mixed reception. Acknowledges the play's sincere intentions and talented cast, but finds the script frustrating, incoherent, and fatally flawed by implausible character moments. | GPT-4o: The review highlights both the potential and the shortcomings of the play. While it acknowledges the talented cast and the interesting themes, it criticizes the script for failing to deliver a cohesive and provocative drama. The critic's original rating of 60 aligns with a mixed review. | Gemini: The review is mostly negative, pointing out issues with the script and direction. The critic states that the play 'dies' at a certain point, and the final scene cannot resurrect it. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:02:50.022Z",
+    "scoredAt": "2026-02-04T21:53:27.125Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 62,
+    "geminiScore": 45,
     "kimiScore": 60,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
+    "geminiBucket": "Negative",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/music-arts/mothers-sons-theater-review-article-1.1732125",
   "sources": [
@@ -80,7 +82,6 @@
   "previousUrl": "https://www.nydailynews.com/2014/03/26/mothers-and-sons-review-tyne-daly-fredrick-weller-star-in-terrence-mcnallys-broadway-drama/",
   "urlDiscoveredAt": "2026-02-04T03:30:43.201Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 413,
@@ -118,5 +119,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 413,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:53:27.125Z"
 }

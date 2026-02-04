@@ -11,18 +11,18 @@
   "_removedScore": "A",
   "_removedScoreReason": "Grade doesn't match text - excerpt is negative ('uninspired book', 'poorly mimics') but score was A. Likely extracted from wrong critic in BWW roundup.",
   "_removedAt": "2026-01-31T23:45:00.000Z",
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
   "sourceMethod": "archive",
   "scoreSource": "extracted-grade",
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the visual spectacle, choreography, and two showstoppers, but heavily criticizes the book and finds the show fundamentally flawed when not singing/dancing. | GPT-4o: The review highlights impressive visual elements and choreography but criticizes the uninspired book and lack of narrative coherence. The overall tone suggests a mixed experience with standout moments. | Gemini: The review praises the visuals and choreography but heavily criticizes the book, leading to a mixed assessment. The reviewer highlights both strengths and weaknesses, not strongly recommending or discouraging seeing the show.",
+    "keyPhrases": [
+      {
+        "quote": "What drives the two showstoppers and curtain call are Sonya Tayeh's sex-charged choreography.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the spectacular visuals, design, and choreography while criticizing the book as 'uninspired' and saying the show 'collapses under the weight of Logan's book.' Mixed recommendation with clear positives and negatives. | GPT-4o: The review highlights impressive visual elements and choreography but criticizes the book and overall storytelling, resulting in a mixed verdict. | Gemini: The review praises the visuals and choreography but criticizes the book and some of the performances, resulting in a mixed assessment. | Kimi: While praising the lavish production design, 'sex-charged' choreography, and occasional showstoppers, the critic finds the book 'uninspired' and the direction stumbling, with lead performances lacking depth, resulting in a spectacle that dazzles visually but collapses dramatically.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:42:53.808Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:55:24.939Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 58,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "mergedFrom": [
     {
@@ -96,8 +104,7 @@
   "textStatus": "complete",
   "archiveOrgTimestamp": "20250426203916",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203916/https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
-  "rescoreCompletedAt": "2026-02-02T18:42:53.808Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-04T21:55:24.939Z",
   "playbillVerdictUrl": "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
   "sources": [
     "bww-roundup",

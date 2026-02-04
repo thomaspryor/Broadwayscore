@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MERRILY-WE-ROLL-ALONG-Revival-Officially-Opens-What-Did-the-Critics-Think-20231009",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "I’ve seen a few of those revivals, and while each has been an improvement on the original, this Broadway revival directed by Maria Friedman and based on her Mernier Chocolate Factory production in London, is the first that not only works completely but is downright wonderful — with just a very few caveats.",
@@ -20,11 +20,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 83,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with extensive context about the show's troubled history, the critic delivers a strong positive verdict, calling it 'downright wonderful' and 'absolutely riveting' while recommending seeing it twice. | GPT-4o: The review strongly praises the current production as 'absolutely riveting' and 'wonderful,' suggesting it is a must-see, especially for those familiar with the show. The critic's enthusiasm and recommendation to see it multiple times indicate a rave review. | Gemini: The review is overwhelmingly positive, calling the revival \"downright wonderful\" and recommending seeing it multiple times. While it mentions some caveats and criticisms, the overall tone is enthusiastic and strongly recommends the production.",
+    "keyPhrases": [
+      {
+        "quote": "this Broadway revival directed by Maria Friedman...is the first that not only works completely but is downright wonderful",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite opening with context about the show's challenges, the critic delivers strong praise calling it 'downright wonderful,' 'absolutely riveting,' and explicitly recommends buying tickets to see it twice. | GPT-4o: The critic provides high praise for the current Broadway revival, describing it as 'wonderful' and 'absolutely riveting'. Despite minor caveats, the overall tone is enthusiastic and strongly recommends seeing the show. | Gemini: Despite some reservations, the critic ultimately calls the revival \"downright wonderful\" and recommends seeing it, even suggesting seeing it twice.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,22 +50,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:37:43.168Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:49:42.762Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 80,
+    "previousScore": 83,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": 92,
     "geminiScore": 82,
+    "kimiScore": null,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -83,11 +90,10 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251016175324",
   "archiveOrgUrl": "http://web.archive.org/web/20251016175324/https://www.thewrap.com/merrily-we-roll-along-broadway-review-daniel-radcliffe-jonathan-groff-lindsay-mendez/",
-  "rescoreCompletedAt": "2026-02-01T15:36:35.564Z",
+  "rescoreCompletedAt": "2026-02-04T21:49:42.762Z",
   "contentTier": "complete",
   "wordCount": 1353,
   "isFullReview": false,
   "showScoreExcerpt": "“...this Broadway revival directed by Maria Friedman...is the first that not only works completely but is downright wonderful — with just a very few caveats.”\n\nRead more",
-  "needsRescore": true,
   "textQuality": "full"
 }

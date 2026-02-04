@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Here Lies Love is an ambitious, immersive musical that transforms the Broadway Theatre into a dancefloor-cum-dictator origin story, though its political complexities sometimes get lost in the spectacle.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges ambition and innovation but identifies a significant flaw where important political elements are diminished by the production's spectacle, indicating neither strong recommendation nor discouragement. | GPT-4o: The review describes the show as ambitious and immersive, suggesting a positive experience, though it notes some political complexities are lost, indicating reservations. | Gemini: The review acknowledges the show's ambition and immersive nature, but also points out a significant flaw. This suggests a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "This is not a Broadway extravaganza drunk on its stagecraft.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the immersive disco concept, performances (especially Jacobs), and production design while noting the show glosses over historical atrocities and lacks memorable songs. The positive elements and enthusiastic tone about the experience outweigh the reservations. | GPT-4o: The review praises the immersive and interactive nature of the production, highlighting its thrilling and engaging qualities. Despite some criticisms about historical omissions, the overall tone is enthusiastic and recommends the show as an exciting experience. | Gemini: The review is generally positive, highlighting the show's immersive and engaging nature, though it acknowledges some shortcomings in historical depth and song memorability. The overall recommendation is clear, but not a rave. | Kimi: The critic offers unqualified praise for the production's immersive staging, energetic performances, and 'roof-raising' atmosphere, using words like 'thrilling,' 'wondrous,' and 'jaw-dropping' throughout, with only minor reservations about the songs' memorability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,36 +48,37 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:18:56.123Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:02:29.780Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "fullText was copy of excerpt from web-search import",
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 16,
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "textWordCount": 1266,
   "previousUrl": "https://www.theguardian.com/stage/2023/jul/21/here-lies-love-review-broadway-imelda-marcos",
   "urlDiscoveredAt": "2026-02-02T23:28:08.450Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "archivePath": "data/archives/reviews/here-lies-love-2023/guardian--adrian-horton_2026-02-02.html",
@@ -99,5 +106,6 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T21:02:29.780Z"
 }

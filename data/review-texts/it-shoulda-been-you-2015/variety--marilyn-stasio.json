@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This fizzy musical comedy about a Jewish-Italian wedding gone awry is a charmer that deserves better than its limited Broadway run.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This fizzy musical comedy about a Jewish-Italian wedding gone awry is a charmer that deserves better than its limited Broadway run.",
+        "quote": "Hyde Pierce and his terrific ensemble players make this hokum seem terribly amusing.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('fizzy', 'charmer') with explicit statement that it 'deserves better', indicating strong recommendation despite circumstances. | GPT-4o: The critic describes the show as a 'charmer' and implies a strong recommendation by stating it 'deserves better than its limited Broadway run', indicating a positive assessment. | Gemini: The review calls the show a \"charmer\" and implies it is good, but notes the limited run, suggesting a reservation. Therefore, it's a positive but not rave review. | Kimi: The critic describes the show as a 'charmer' that 'deserves better' than a limited run, offering a clear recommendation despite the brief length.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite acknowledging significant flaws in the material ('nothing especially clever', 'hackneyed characters', 'inane musical numbers'), the critic finds the show 'awfully funny' and 'terribly amusing' due to strong performances and direction. The recommendation is qualified but positive. | GPT-4o: The review acknowledges the show's comedic success due to the cast and director, but criticizes the material as unoriginal and the musical numbers as inane. The overall tone is mixed, highlighting both strengths and weaknesses. | Gemini: The review acknowledges the show's flaws (hackneyed characters, uninspired music) but praises the direction and performances, ultimately finding it \"awfully funny.\" The final line, \"Seriously, it’s OK to laugh — although you may hate yourself in the morning,\" suggests a qualified recommendation. | Kimi: While criticizing the material as hackneyed and the music as dull, Stasio praises the direction and performances as terrific and funny, recommending the show as amusing entertainment despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:15:00.825Z",
+    "scoredAt": "2026-02-04T21:15:31.798Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/it-shoulda-been-you-review-broadway-1201472411/",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 840,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 840,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:15:31.798Z"
 }

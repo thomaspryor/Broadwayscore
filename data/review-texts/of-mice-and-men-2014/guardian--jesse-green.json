@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a production that honors Steinbeck's vision while making it feel urgently contemporary, with James Franco and Chris O'Dowd delivering performances that are both tender and devastating.",
   "originalScore": 80,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This is a production that honors Steinbeck's vision while making it feel urgently contemporary.",
+        "quote": "This is a production that honors Steinbeck's vision while making it feel urgently contemporary, with James Franco and Chris O'Dowd delivering performances that are both tender and devastating.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production and lead performances with strong positive language ('honors', 'urgently contemporary', 'tender and devastating'). The critic's own 80 rating confirms this as solidly positive. | GPT-4o: The review praises the production for both honoring the original work and making it relevant today, with strong performances. The original rating of 80 aligns with a solid positive recommendation. | Gemini: The review explicitly states that the production honors Steinbeck's vision and feels contemporary, with praise for the performances. The original rating of 80 aligns with a positive classification. | Kimi: The review praises the production for honoring the source material while feeling urgently contemporary, and commends the lead performances as both tender and devastating, indicating a strong recommendation consistent with the 80/100 rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for production values and lead performances with positive language ('honors', 'urgently contemporary', 'tender and devastating'). Single excerpt warning requires caution, but clearly positive tone warrants upper positive range. | GPT-4o: The excerpt praises the production for honoring Steinbeck's vision and delivering tender and devastating performances, indicating a strong recommendation. The original rating of 80 supports placing it in the Positive bucket, and the excerpt suggests a score towards the upper end of that range. | Gemini: The excerpt praises the production for honoring the source material and feeling contemporary, highlighting the actors' performances as both tender and devastating, which indicates a positive recommendation. | Kimi: The excerpt offers strong praise for the production's contemporary relevance and the lead performances ('tender and devastating'), aligning with the critic's 80/100 rating; single excerpt limits confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:50:48.159Z",
+    "scoredAt": "2026-02-04T21:58:34.074Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 80,
-    "geminiScore": 80,
-    "kimiScore": 80,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2014/apr/17/of-mice-and-men-review-broadway",
   "urlDiscoveredAt": "2026-02-04T03:35:02.651Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 853,
@@ -115,5 +115,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 853,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:58:34.074Z"
 }

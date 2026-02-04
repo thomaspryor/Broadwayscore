@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-2024",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "At the Armory, I found “Illinoise” not only sentimental but downright whimsical. It was intriguing to see three singers walk out on stage wearing enormous fairy wings (costumes by Reid Bartelme and Harriet Jung). Only later did I realize that they were moth wings, because “Illinoise,” with its book by Justin Peck and Jackie Sibblies Drury, is a coming-of-age story.",
@@ -20,11 +20,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 44,
-    "confidence": "medium",
+    "score": 43,
+    "confidence": "high",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic consistently uses negative descriptors throughout ('sentimental', 'precious', 'simple-minded', 'mawkishness', 'amateur mime') and criticizes the choreography, narrative clarity, and performances, indicating clear disapproval without recommending the show. | GPT-4o: The review is overwhelmingly negative, describing the production as 'sentimental,' 'precious,' 'mawkish,' and 'simple-minded.' The critic also criticizes the choreography as having a 'limited dance vocabulary' and describes the mime as 'strictly amateur.' | Gemini: The review uses highly critical language like \"sentimental,\" \"precious,\" and \"simple-minded.\" The critic clearly dislikes the show's narrative and choreography, making it a negative review overall.",
+    "keyPhrases": [
+      {
+        "quote": "Another word to describe 'Illinoise' is 'simple-minded.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic consistently uses negative descriptors like 'sentimental,' 'precious,' 'simple-minded,' and 'mawkish,' criticizing the choreography as limited and the storytelling as confused. While acknowledging some technical improvements from the off-Broadway run, the overall assessment is clearly negative. | GPT-4o: The review criticizes the production as 'sentimental,' 'precious,' and 'simple-minded,' with limited dance vocabulary and amateur mime. Despite some intrigue, the overall tone is negative, suggesting the show is not worth seeing. | Gemini: The review uses negative descriptors like \"simple-minded\", \"precious\", and \"mawkishness\". The critic clearly does not recommend the show. | Kimi: The critic delivers a sustained critique of the production's choreography ('limited dance vocabulary'), narrative ('simple-minded,' confusing), and performances ('amateur' mime, actors looking too old for roles), finding the overall effect 'mawkish' and 'precious' despite improved acoustics on Broadway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,32 +50,34 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:23:59.514Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:10:12.958Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 20,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
-    "openaiBucket": "Pan",
+    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 68,
-  "rescoreCompletedAt": "2026-01-29T14:31:51.822Z",
+  "rescoreCompletedAt": "2026-02-04T21:10:12.958Z",
   "contentTier": "complete",
   "wordCount": 952,
   "isFullReview": true,
@@ -102,6 +110,5 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "playbillVerdictUrl": "https://www.thewrap.com/sufjan-stevens-illinoise-broadway-review/"
 }

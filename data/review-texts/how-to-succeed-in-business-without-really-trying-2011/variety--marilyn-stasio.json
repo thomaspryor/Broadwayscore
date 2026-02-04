@@ -120,5 +120,11 @@
     "Show title not found in text"
   ],
   "wordCount": 438,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T21:06:58.179Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'The Prize', an Argentine movie, not a Broadway theater review; openai: The text is a review of a film called 'The Prize', not a Broadway show.; gemini: This is a review of a film called \"The Prize\", not a Broadway show.; kimi: This text is a film review of 'The Prize' (a movie by Paula Markovitch), not a Broadway theater review. It references cinematic elements including extreme closeups, lensing, the Berlin Film Festival, and film buyers/distributors.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The two stars bring such distinctive personalities to these roles that they create a fresh dynamic between the characters, making this revival feel like a new play.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The two stars bring such distinctive personalities to these roles that they create a fresh dynamic between the characters.",
+        "quote": "After all these years, Gurney's bittersweet love letter can still tug at the old heartstrings.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review highlights the fresh dynamic and distinctive performances, indicating a positive reception of the revival. However, without more context, the confidence is medium. | Gemini: The review praises the performances and their impact on the production, suggesting a positive experience and recommending it. | Kimi: The critic praises the distinctive performances of the two stars for creating a fresh dynamic that makes the revival feel like a new play, indicating a solid recommendation to see the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges the play may seem dated but finds the current production moving and well-performed. Praises both stars and direction while noting the material's nostalgic appeal for older audiences. | GPT-4o: The review praises the performances of Mia Farrow and Brian Dennehy, as well as the direction and emotional impact of the play. It acknowledges the play's relevance for older audiences and highlights the delicate handling of the material, suggesting a solid recommendation. | Gemini: The review is generally positive, highlighting the performances of Farrow and Dennehy and the sensitive direction. While acknowledging the play's potential irrelevance to modern audiences, it still recommends it for older theatergoers. | Kimi: The reviewer offers strong praise for the lead performances and direction, recommending the show specifically for older audiences who will appreciate its nostalgic appeal, while acknowledging its dated elements.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:50:43.399Z",
+    "scoredAt": "2026-02-04T21:38:34.012Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
-    "kimiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2014/legit/reviews/broadway-review-love-letters-1201320594/",
   "urlDiscoveredAt": "2026-02-04T00:01:13.333Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 683,
@@ -97,5 +98,6 @@
   "archiveOrgTimestamp": "20250126211449",
   "archiveOrgUrl": "http://web.archive.org/web/20250126211449/https://variety.com/2014/legit/reviews/broadway-review-love-letters-mia-farrow-brian-dennehy-1201308737/",
   "wordCount": 683,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:38:34.012Z"
 }

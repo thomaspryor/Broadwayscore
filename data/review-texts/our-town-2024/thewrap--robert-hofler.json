@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,11 +18,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The review praises the inclusive casting but raises serious concerns about the director's choice to eliminate intermission, questioning whether this respects the play's structure. The rhetorical question suggests skepticism about fundamental directorial decisions. | GPT-4o: The review provides a mix of positive elements, such as the inclusive casting, but also questions the directorial choice of removing the intermission, suggesting reservations about the production's pacing. The tone suggests a balanced view with both positive and critical observations. | Gemini: The review highlights a positive aspect of the production (inclusive casting) but also questions the director's choices regarding the play's structure, suggesting a mixed assessment overall.",
+    "keyPhrases": [
+      {
+        "quote": "This latest Broadway revival of 'Our Town' doesn't sink Wilder's reputation the way Lincoln Center Theater's 2022 revival of 'The Skin of Our Teeth' did.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic has strong personal issues with the source material but praises several performances (Parsons as 'pitch-perfect,' authentic work by Jones, Thomas, and Sykes) and Leon's direction. The comparison suggesting this revival doesn't damage Wilder's reputation implies basic competence, placing it in mixed territory rather than negative. | GPT-4o: The review offers a personal critique of 'Our Town' and its themes, with mixed feelings about the production. While it praises certain performances, it also highlights issues with the direction and costumes, resulting in a mixed verdict. | Gemini: The review is mixed. While the critic appreciates some aspects of the production, particularly Jim Parsons' performance and Kenny Leon's direction, they also express reservations about the play itself and some of the performances and costume choices. The overall tone is neither strongly positive nor negative. | Kimi: The review offers praise for Jim Parsons' performance and Kenny Leon's direction while criticizing the source material's idealization, costume design, and specific acting choices, creating a balanced but unenthusiastic assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:50:59.367Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:09:31.930Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
@@ -99,7 +107,7 @@
   "sourceMethod": "brightdata",
   "archiveOrgTimestamp": "20251116085638",
   "archiveOrgUrl": "http://web.archive.org/web/20251116085638/https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/",
-  "rescoreCompletedAt": "2026-02-02T00:38:04.149Z",
+  "rescoreCompletedAt": "2026-02-04T22:09:31.930Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "showScoreExcerpt": "\"Leon’s inclusive approach to casting means the play better reflects life as we know it.\"",
@@ -111,7 +119,6 @@
   "textWordCount": 1126,
   "truncationSignals": [],
   "textStatus": "complete",
-  "needsRescore": true,
   "tierReason": "Full review text",
   "playbillVerdictUrl": "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/"
 }

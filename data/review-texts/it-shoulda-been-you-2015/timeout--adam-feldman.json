@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show is formulaic but warm-hearted, with a few genuine laughs and some pleasant if unmemorable songs.",
+        "quote": "It shoulda been better but it coulda been worse.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60/100 rating directly aligns with Mixed bucket (55-69). Language is balanced with both positive ('warm-hearted', 'genuine laughs') and negative ('formulaic', 'unmemorable') elements, indicating neither recommendation nor discouragement. | GPT-4o: The critic's original rating of 60 aligns with the mixed bucket. The review describes the show as formulaic but warm-hearted, indicating a balanced view with both positive and negative elements. | Gemini: The review uses mixed language, describing the show as 'formulaic' but also 'warm-hearted' with 'a few genuine laughs' and 'pleasant if unmemorable songs.' This indicates a middle-ground opinion. | Kimi: The review balances mild praise (warm-hearted, genuine laughs) against clear criticisms (formulaic, unmemorable songs), resulting in a middle-of-the-road assessment that matches the provided 60/100 rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating confirms mixed territory. While acknowledging significant flaws (dated stereotypes, creaky plot), the review finds the show 'not unenjoyable' thanks to veteran performances, landing squarely in mixed bucket. | GPT-4o: The review acknowledges both the show's shortcomings and its redeeming qualities, such as the performances of the veteran cast. The critic's original rating of 60 aligns with a mixed assessment, indicating a balance of positive and negative elements without a strong recommendation. | Gemini: The review acknowledges shortcomings like dated stereotypes and creaky contrivances, but also praises the performances of the ensemble cast. The critic's rating of 60 aligns with a mixed assessment. | Kimi: The critic assigns a 60/100 rating, describing the material as dated and predictable ('mossy,' 'creaky') while acknowledging the veteran cast makes the antics 'not unenjoyable' and keeps the show 'afloat,' resulting in a middle-ground assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,11 +50,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:00:11.379Z",
+    "scoredAt": "2026-02-04T21:14:30.480Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -78,7 +79,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 247,
@@ -108,5 +108,6 @@
     "Word count too low: 253 (min: 300)"
   ],
   "wordCount": 247,
-  "tierReason": "Short but structurally complete review"
+  "tierReason": "Short but structurally complete review",
+  "rescoreCompletedAt": "2026-02-04T21:14:30.480Z"
 }

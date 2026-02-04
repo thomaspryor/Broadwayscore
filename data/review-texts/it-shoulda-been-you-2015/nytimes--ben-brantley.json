@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This determinedly cheerful musical about a wedding gone awry has more plot twists than a telenovela and about as much subtlety.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
     "score": 43,
@@ -103,5 +103,10 @@
   "archiveOrgTimestamp": "20241227151013",
   "archiveOrgUrl": "http://web.archive.org/web/20241227151013/https://www.nytimes.com/2015/04/15/theater/review-it-shoulda-been-you-a-wedding-on-broadway.html",
   "wordCount": 342,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T21:13:53.905Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and verifying access, making it impossible to determine the critic's final verdict.; openai: The review text is truncated and ends with a message about retrieving content, indicating it is incomplete and not scoreable.; gemini: The text is truncated and ends with an error message, making it impossible to determine the critic's overall assessment of the show.",
+  "promptVersion": "5.2.0"
 }

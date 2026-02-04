@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction and performances with enthusiastic language ('one hell of a show', 'frighteningly convincing'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt provides strong praise for the direction and performances, indicating a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The quote uses strong positive language such as \"frighteningly convincing\" and \"one hell of a show\", suggesting a positive recommendation. Given it's a single excerpt, I've scored it towards the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction and performances with enthusiastic language ('one hell of a show', 'frighteningly convincing'), but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt provides strong praise for the direction and performances, describing the show as 'one hell of a show.' Despite the single excerpt warning, the language suggests a highly positive verdict. | Gemini: The excerpt is highly positive, praising the performers, effects, and direction. Given the single excerpt and positive tone, I've scored it at the higher end of the 'Positive' bucket. | Kimi: The excerpt contains enthusiastic praise ('one hell of a show,' 'frighteningly convincing') indicating a clear recommendation, though the single-quote limitation necessitates a high-positive score rather than a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,23 +44,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T05:27:04.471Z",
+    "scoredAt": "2026-02-04T20:50:37.520Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 88,
+    "claudeScore": 81,
+    "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -109,7 +109,7 @@
   "textIssues": [
     "Word count too low: 153 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-01T17:35:47.094Z",
+  "rescoreCompletedAt": "2026-02-04T20:50:37.520Z",
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.184Z",
@@ -120,7 +120,6 @@
   },
   "tierReason": "Short text (150 words)",
   "truncationSignals": [],
-  "needsRescore": true,
   "sources": [
     "show-score",
     "show-score-playwright"

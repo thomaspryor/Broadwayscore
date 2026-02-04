@@ -117,5 +117,11 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 552,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2014–2019 for show opening 2017"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2023 outside valid range 2014–2019 for show opening 2017",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T20:51:35.007Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Old Vic in London, not the current Broadway run.; kimi: This review explicitly covers the London production at the Old Vic ('Old Vic, London' appears in the dateline and photo captions), not a Broadway run. It discusses the West End revival cast and staging at that specific venue.",
+  "promptVersion": "5.2.0"
 }

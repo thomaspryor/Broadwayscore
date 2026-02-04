@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-PLAY-Opens-on-Broadway-20240424",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "Tina Landau directs. Her sure hand navigates the play’s many moods — hilarious one moment, tragic the next.",
@@ -20,11 +20,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances, especially calling Keenan-Bolger 'simply brilliant' and Lange's work 'excellent,' while noting the play is 'very funny' and well-directed, though it suggests Parsons may be 'a little too flamboyant.' | GPT-4o: The review praises the performances, particularly highlighting Keenan-Bolger's brilliance and Lange's excellence. The play is described as very funny and well-directed, indicating a strong positive recommendation. | Gemini: The review highlights strong performances, especially Keenan-Bolger's, and praises the play's humor and direction, but notes Parsons might be too flamboyant, suggesting a qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Before this review makes 'Mother Play' sound like a dirge, it is really a very funny play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for all three lead performances, especially calling Keenan-Bolger 'simply brilliant' and Lange's work 'excellent.' Describes it as 'really a very funny play' and praises the direction. No significant reservations expressed. | GPT-4o: The review praises the performances, particularly Jessica Lange and Celia Keenan-Bolger, and highlights the play's humor and direction. While there are some reservations about Jim Parsons' performance, the overall tone is positive and recommends the play. | Gemini: The review is generally positive, highlighting Lange's performance and the play's humor, while also noting some potential over-the-top elements. It's a recommendation with some reservations. | Kimi: The review offers consistent praise for the lead performances (calling Lange's work 'excellent' and Keenan-Bolger 'simply brilliant'), the direction ('sure hand'), and the play itself ('really a very funny play'), with only a minor reservation about Parsons being slightly too flamboyant.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,37 +50,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:41:10.834Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:51:53.478Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 82,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 73,
-  "rescoreCompletedAt": "2026-02-01T15:40:25.379Z",
+  "rescoreCompletedAt": "2026-02-04T21:51:53.478Z",
   "showScoreExcerpt": "\"...Vogel’s latest hits the emotional beats...reminder to call your mom now and then.\"",
   "contentTier": "complete",
   "wordCount": 596,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/mother-play-broadway-review-jessica-lange-jim-parsons/"
 }

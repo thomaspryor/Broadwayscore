@@ -36,8 +36,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the play's treatment of hoarding as 'false' and criticizes it as 'sitcom-adjacent throwback' that fails to properly acknowledge mental health issues, indicating disappointment with the production's approach. | GPT-4o: The excerpt criticizes the show for its unrealistic portrayal of hoarding, suggesting that the show's attempt to romanticize a serious mental health issue is unconvincing. This indicates a negative view of the production's handling of its subject matter. | Gemini: The review excerpt points out a significant flaw in the play's portrayal of hoarding, suggesting a lack of depth and a romanticized view of a serious mental health issue. This indicates a mixed assessment, as it acknowledges the playwright's intentions but criticizes the execution.",
+    "keyPhrases": [
+      {
+        "quote": "Rebeck's sugary misfire, 'I Need That,' a Broadway comedy that posits a stubborn shut-in as the most well-adjusted person in town.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the show a 'sugary misfire' and criticizes it as false and emotionally bland, leaving audiences in 'a pretty bland emotional state.' Despite praising DeVito's likability and some supporting performances, the overall assessment is clearly negative. | GPT-4o: The review criticizes the play for its unrealistic portrayal of hoarding and lack of emotional depth, despite praising DeVito's performance. The overall tone is negative, suggesting the play fails to deliver a satisfying experience. | Gemini: The review acknowledges DeVito's likability and commendable performances, but ultimately finds the play itself to be a \"sugary misfire\" and the emotional impact \"bland.\" This leans towards a mixed assessment rather than a strong recommendation or discouragement. | Kimi: While praising Danny DeVito's likable performance and the supporting cast, the critic fundamentally rejects the play as a 'sugary misfire' with a 'false' premise that treats serious mental health issues unrealistically and leaves the audience in a 'bland emotional state.' The negative verdict on the production outweighs the performer praise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,9 +52,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:22:30.535Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:09:36.499Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
@@ -57,21 +63,22 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 45,
     "openaiScore": 45,
-    "geminiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 18,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 44,
   "textWordCount": 961,
@@ -98,5 +105,6 @@
   "sourceMethod": "playwright",
   "wordCount": 961,
   "tierReason": "Full review text",
-  "playbillVerdictUrl": "https://www.washingtonpost.com/entertainment/theater/2023/11/02/devito-turturro-fontana-rebeck-wholesale/"
+  "playbillVerdictUrl": "https://www.washingtonpost.com/entertainment/theater/2023/11/02/devito-turturro-fontana-rebeck-wholesale/",
+  "rescoreCompletedAt": "2026-02-04T21:09:36.499Z"
 }

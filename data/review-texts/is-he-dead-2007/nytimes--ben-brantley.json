@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Burnett has created a show that feels both antique and contemporary, a comedy that winks at its own creakiness while celebrating the pleasure of old-fashioned theatrical artifice.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. Burnett has created a show that feels both antique and contemporary, a comedy that winks at its own creakiness while celebrating the pleasure of old-fashioned theatrical artifice.",
+        "quote": "From that moment the whole production feels as if it's been pumped through with nitrous oxide.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review describes the show as successfully blending antique and contemporary elements, with a positive tone towards its comedic and theatrical qualities. However, the lack of superlatives or strong recommendations keeps it in the mid-positive range. | Gemini: The review suggests the show is enjoyable, but also acknowledges its \"creakiness,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the production's clever blend of old and new theatrical styles and celebrates its artifice, indicating a favorable verdict despite the excerpt's brevity.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley admits initial skepticism but becomes enthusiastic once the production finds its stride. He praises the direction, performances (especially Butz), and production values, calling it a 'master class' despite the weak source material. | Gemini: The review is generally positive, highlighting the performances and direction while acknowledging the weakness of the source material. The critic finds the production enjoyable despite initial reservations. | Kimi: Despite dismissing the source material as a 'silly, formulaic farce,' the critic enthusiastically praises the production's 'remarkably sprightly step,' the director's comic assurance, and Norbert Leo Butz's 'true comic genius,' describing the show as infectiously entertaining.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,21 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:13:12.261Z",
+    "scoredAt": "2026-02-04T21:13:14.381Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 76,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "openaiBucket": "Positive",
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -72,7 +73,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 750,
@@ -100,5 +100,6 @@
   "archiveOrgTimestamp": "20150605044504",
   "archiveOrgUrl": "http://web.archive.org/web/20150605044504/http://www.nytimes.com/2007/12/10/theater/reviews/10dead.html",
   "wordCount": 750,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:13:14.381Z"
 }

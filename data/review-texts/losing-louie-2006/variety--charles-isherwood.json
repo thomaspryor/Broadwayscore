@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 61,
@@ -116,5 +116,10 @@
     "Show title not found in text"
   ],
   "wordCount": 941,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T21:36:35.964Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation page or content feed with multiple unrelated articles about Super Bowl ads, Disney executives, and various entertainment projects - not a theater review.; openai: The text consists of unrelated content about various entertainment topics and does not contain any review of a Broadway show.; gemini: This appears to be a listing of various articles and news items, not a review of a specific show.; kimi: The text provided is a jumbled collection of entertainment news headlines, navigation elements, and snippets about various topics (Super Bowl, films, albums, TV shows) rather than a coherent review article of a specific Broadway production. It appears to be scraped webpage content containing multiple unrelated articles and menu items.",
+  "promptVersion": "5.2.0"
 }

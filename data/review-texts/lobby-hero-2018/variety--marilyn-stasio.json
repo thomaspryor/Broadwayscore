@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Under Trip Cullman's patient direction, all four actors turn in superb performances that honor both the complexity of their characters and the nuanced writing that defines them.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 82,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "all four actors turn in superb performances that honor both the complexity of their characters and the nuanced writing",
+        "quote": "Helmer Trip Cullman does his best work with small, tight ensembles like this one, so there's no slack in the emotional tension.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the direction and performances, highlighting the complexity and nuance of the writing. The tone suggests a strong recommendation, though the excerpt is limited. | Gemini: The review explicitly praises the direction and performances as \"superb,\" indicating a strong positive recommendation. | Kimi: Brief excerpt offers unqualified praise for direction ('patient'), acting ('superb performances'), and writing ('nuanced'), indicating a strong recommendation, though the limited length necessitates low confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances (Cera 'perfect,' Henry 'made for this role'), Lonergan's writing, and Cullman's direction. While it focuses more on plot and character analysis than explicit recommendation, the consistent appreciation and lack of significant criticism suggests a positive verdict. | GPT-4o: The review praises the production's emotional tension and the performances, particularly highlighting the director's effective work with the ensemble. The overall tone is positive, with appreciation for the play's handling of moral complexities. | Gemini: The review is generally positive, highlighting the play's compassion and the performances of the actors. While not a rave, it's a solid recommendation. | Kimi: The review consistently praises the performances (calling Cera 'perfect' and Henry 'made for this role'), direction (Cullman's 'best work'), and writing, describing the production as an 'affectionate revival' with 'no slack in the emotional tension' and no significant criticisms.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:12:33.738Z",
+    "scoredAt": "2026-02-04T21:35:29.936Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 82,
-    "geminiScore": 82,
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 77,
     "kimiScore": 82,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://variety.com/2018/legit/reviews/lobby-hero-review-chris-evans-michael-cera-1202736620/",
   "sources": [
@@ -80,7 +82,6 @@
   "previousUrl": "https://variety.com/2018/legit/reviews/lobby-hero-review-brian-cranston-1202734063/",
   "urlDiscoveredAt": "2026-02-04T16:22:27.389Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 566,
@@ -124,5 +125,6 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 566,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:35:29.936Z"
 }

@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
+        "quote": "On the Twentieth Century may be a cartoon, but it's a Hirschfeld cartoon, and worth a trip.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating places this firmly in Positive territory. The phrase 'glorious train wreck' followed by 'I mean that in the best possible way' indicates enthusiastic recommendation despite acknowledging the show's chaotic nature. | GPT-4o: The critic's original rating of 80 aligns with a positive recommendation. The phrase 'glorious train wreck' suggests a chaotic but enjoyable experience, indicating a positive verdict with some reservations. | Gemini: The critic calls the show a \"glorious train wreck\" and clarifies that they mean it in a positive way. The original rating of 80 supports a positive classification. | Kimi: The critic explicitly assigns an 80/100 rating and describes the revival as a 'glorious train wreck' in the 'best possible way,' indicating a strong positive recommendation with enthusiastic tone.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives consistent praise throughout - calling Chenoweth's performance 'dazzling,' describing the revival as 'swell,' and concluding it's 'worth a trip.' The 80/100 rating aligns perfectly with strong positive territory. | GPT-4o: The review praises Kristin Chenoweth's performance and the overall production, describing it as 'dazzling' and 'worth a trip.' The original rating of 80 aligns with a positive recommendation. | Gemini: The review is positive, highlighting Chenoweth's performance and the show's overall charm. The critic explicitly states it's \"worth a trip.\" | Kimi: The review offers enthusiastic praise for Kristin Chenoweth's star performance and the production design, calling it a 'swell revival' and explicitly recommending it as 'worth a trip' despite minor notes about the orchestra size.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,11 +51,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:38:33.866Z",
+    "scoredAt": "2026-02-04T22:03:57.174Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 80,
@@ -74,7 +75,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 381,
@@ -100,5 +100,6 @@
   "archiveOrgTimestamp": "20150318072622",
   "archiveOrgUrl": "http://web.archive.org/web/20150318072622/http://www.timeout.com:80/newyork/theater/on-the-twentieth-century",
   "wordCount": 381,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:03:57.174Z"
 }

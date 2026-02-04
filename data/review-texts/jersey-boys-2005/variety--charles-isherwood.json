@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This musical biography of Frankie Valli and the Four Seasons is a crowd-pleasing entertainment that manages to be both slick and heartfelt.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 78,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This musical biography of Frankie Valli and the Four Seasons is a crowd-pleasing entertainment that manages to be both slick and heartfelt.",
+        "quote": "If only this show made us give a damn.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language calling it 'crowd-pleasing entertainment' with praise for being both 'slick and heartfelt', though brief excerpt limits deeper assessment. | GPT-4o: The review describes the show as 'crowd-pleasing entertainment' and 'both slick and heartfelt,' indicating a strong positive recommendation without reservations. | Gemini: The review calls the show a \"crowd-pleasing entertainment\", which indicates a positive recommendation. The use of \"slick\" suggests a reservation, but overall it's a positive assessment. | Kimi: The critic describes the show as 'crowd-pleasing entertainment' that is both 'slick and heartfelt,' indicating a clear recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Isherwood delivers a comprehensively negative review calling the show 'lumbering, stolid' with 'no real hits.' Despite acknowledging some talented performers, he finds fundamental problems with the material, pacing, and creative choices, concluding it's essentially a failed adaptation. | GPT-4o: The review is overwhelmingly negative, criticizing the show's lack of emotional engagement, uninspired music, and failure to justify its adaptation. It describes the production as 'lumbering' and 'stolid,' with a tone of 'relentlessness and monotony.' | Gemini: The review is largely negative, criticizing the musicalization, lyrics, and overall impact. While acknowledging some talent, the reviewer ultimately finds the production unpersuasive and monotonous. | Kimi: The critic describes the production as a 'lumbering, stolid affair' with monotonous pacing and cringingly simplistic lyrics, ultimately concluding that neither the material nor the staging justifies the musicalization despite some capable performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:08:53.998Z",
+    "scoredAt": "2026-02-04T21:19:45.885Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 900,
@@ -120,5 +120,6 @@
     "Show title not found in text"
   ],
   "wordCount": 900,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:19:45.885Z"
 }

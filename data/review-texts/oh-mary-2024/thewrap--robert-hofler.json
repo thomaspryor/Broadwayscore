@@ -9,15 +9,15 @@
   "bwwExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive. Plot-wise, it continues to be best to write as little as possible. There are outrageous twists and turns in the story that genuinely shock an audience into delayed convulsions of laughter. Let’s just say that Escola has somehow managed to",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240619",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 87,
   "source": "dtli",
   "dtliThumb": "Up",
   "llmScore": {
-    "score": 92,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it a 'historic night on Broadway,' praises the performances as 'brilliant,' describes the audience reaction as 'atomic' laughter, and celebrates every aspect from cast to direction with enthusiastic language throughout. | GPT-4o: The review is overwhelmingly positive, praising the production's transition to Broadway, the performances, and the comedic impact. The language used is enthusiastic and suggests a must-see experience. | Gemini: The review is overwhelmingly positive, praising the show's humor, performances, and overall impact. The critic explicitly states that the show plays even better on Broadway, indicating a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "plays even better on Broadway than it did downtown",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives like 'absolutely radioactive,' 'brilliant,' and 'terrific cast.' The critic finds it funnier on Broadway and praises performances, direction, and design without significant reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise, highlighting the show's success in transitioning to Broadway and the exceptional performances, particularly by Cole Escola. The critic describes the experience as 'absolutely radioactive,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's success on Broadway, the outrageous humor, and the strong performances. The critic clearly recommends seeing it. | Kimi: The critic offers unqualified praise for the Broadway transfer, declaring it superior to the Off-Broadway run with 'absolutely radioactive' comic energy, while commending the performances, direction, and design as terrific and inspired. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:46:14.541Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:59:15.072Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 92,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 95,
+    "claudeScore": 82,
+    "openaiScore": 92,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
+    "kimiScore": 95,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "bwwThumb": "Up",
   "dtliExcerpt": "“Oh, Mary!” plays even better on Broadway than it did downtown at the Lucille Lortel Theater earlier this year. Experiencing this comedy with a few hundred more theatergoers takes the laughter from boisterous to atomic and the effect is absolutely radioactive.",
@@ -70,11 +78,10 @@
   "showScoreExcerpt": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 86,
-  "rescoreCompletedAt": "2026-02-01T15:45:08.290Z",
+  "rescoreCompletedAt": "2026-02-04T21:59:15.072Z",
   "contentTier": "complete",
   "wordCount": 475,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/"
 }

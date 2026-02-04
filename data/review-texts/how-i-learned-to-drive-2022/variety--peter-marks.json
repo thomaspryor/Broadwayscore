@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's Pulitzer Prize-winning memory play receives a faithful, expertly acted revival that honors both its delicate handling of trauma and its unsettling insights into the grooming process.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 81,
@@ -116,5 +116,10 @@
     "Show title not found in text"
   ],
   "wordCount": 941,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T21:06:41.252Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This is website navigation content and article listings from Variety's homepage, not a theater review. Contains repeated placeholder text about Aretha Franklin documentary.; openai: The text provided is a mix of unrelated content, including navigation menus and promotional material, not a review.; gemini: This is a list of various movies, shows, and albums. There is no review of a specific play.; kimi: The provided text is a jumbled collection of unrelated entertainment news headlines, movie trailers, TV listings, and random article snippets from Variety, not a coherent review of a specific Broadway show. It contains navigation elements ('Popular on Variety'), partial sentences about various films and albums, and no continuous evaluative text about a single theatrical production.",
+  "promptVersion": "5.2.0"
 }

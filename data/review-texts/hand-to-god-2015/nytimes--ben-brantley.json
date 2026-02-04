@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This raunchy comedy about a sock puppet with a dirty mouth and a nasty attitude is the most fun you can have in a theater without feeling guilty about it afterward.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 86,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This raunchy comedy is the most fun you can have in a theater without feeling guilty about it afterward.",
+        "quote": "This raunchy comedy about a sock puppet with a dirty mouth and a nasty attitude is the most fun you can have in a theater without feeling guilty about it afterward.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language calling it 'the most fun you can have in a theater' with no reservations or caveats expressed. Clear enthusiastic recommendation. | GPT-4o: The review uses superlative language ('the most fun you can have') indicating an enthusiastic recommendation with no reservations. | Gemini: The review is highly positive, stating it's the most fun you can have in a theater without guilt, indicating a strong recommendation. | Kimi: Unqualified rave employing superlatives ('most fun you can have') with an enthusiastic, guilt-free endorsement and no reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers consistent praise throughout: calls it 'darkly delightful,' describes Boyer's performance as 'a true tour de force,' and recommends it as exceptional entertainment that 'stands out as a misfit both merry and scary, and very welcome' in the Broadway season. | GPT-4o: The review is filled with praise for the performances, particularly Steven Boyer's, and the play's ability to entertain while also offering psychological depth. The comparison to 'The Book of Mormon' suggests a high level of enjoyment and recommendation. Despite the truncation warning, the tone and content strongly indicate a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, describing the play as \"darkly delightful\", \"flat-out hilarious\", and \"very welcome\". The critic praises the performances and direction, suggesting a strong recommendation. | Kimi: The review describes the play as 'darkly delightful' and a 'true tour de force,' praising the performances as sensational and the production as very welcome. Despite truncation, the tone is unambiguously enthusiastic with comparisons to major hits.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,18 +50,19 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:31:47.679Z",
+    "scoredAt": "2026-02-04T20:56:03.374Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 86,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 93,
-    "claudeBucket": "Positive",
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
@@ -70,13 +71,12 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "previousUrl": "https://www.nytimes.com/2015/04/08/theater/review-hand-to-god-a-comedy-about-a-very-naughty-puppet.html",
   "urlDiscoveredAt": "2026-02-04T00:18:53.873Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 86,
   "textWordCount": 1113,
@@ -121,5 +121,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:56:03.374Z"
 }

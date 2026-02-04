@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Midler's return to Broadway after more than 30 years is a triumph of star power and old-fashioned musical theater craft",
+        "quote": "Midler's return to Broadway after more than 30 years is a triumph of star power and old-fashioned musical theater craft, even if the show itself feels like a relic.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Midler's performance and the production craft as a 'triumph,' but the caveat that 'the show itself feels like a relic' prevents this from being a stronger positive score. | GPT-4o: The review praises Midler's performance as a 'triumph' and highlights the show's craft, indicating a strong recommendation despite noting the show feels like a 'relic'. | Gemini: The review praises Midler's performance and the musical theater craft but notes the show feels dated, indicating a positive but not rave review. | Kimi: The critic uses strong praise ('triumph') for Midler's performance and the production craft, recommending the show on that basis, while qualifying that the material itself feels dated.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this quote praises Midler's performance as a 'triumph' but qualifies that 'the show itself feels like a relic.' The positive elements (triumph, craft) are balanced by the reservation about the show feeling dated, placing this in the lower end of Positive range. | GPT-4o: The excerpt praises Midler's performance and the musical theater craft, calling it a 'triumph,' which indicates a strong positive sentiment despite noting the show feels like a relic. However, the single excerpt warning suggests caution, so the score is on the higher end of Positive. | Gemini: The review excerpt calls Midler's return a \"triumph,\" which is strongly positive. However, it also notes that the show \"feels like a relic,\" indicating a reservation. Given the limited text, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers strong praise ('triumph') for Midler's star power and the production craft, though with a significant caveat that the show itself feels dated; single-excerpt limitation reduces confidence but the tone clearly recommends seeing it for the performance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:11:18.979Z",
+    "scoredAt": "2026-02-04T21:00:27.919Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 72,
     "openaiScore": 82,
-    "geminiScore": 77,
-    "kimiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2017/apr/21/hello-dolly-review-bette-midler-broadway",
   "urlDiscoveredAt": "2026-02-04T03:23:17.655Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 571,
@@ -116,5 +116,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 571,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:00:27.919Z"
 }

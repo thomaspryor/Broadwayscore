@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "some shows just get better with age, like a fine wine or a well-seasoned drag queen",
+        "quote": "This deliberately disheveled show delivers the unexpected lesson that in theater, shabby can be not just chic but redemptive.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment comparing the revival favorably to aging wine, suggesting improvement over time. The playful, appreciative tone indicates strong recommendation despite brief excerpt. | GPT-4o: The review uses a strong positive analogy comparing the show to a 'fine wine,' indicating it has improved over time, suggesting a must-see recommendation. | Gemini: The review states that the show gets better with age, which is a positive recommendation. | Kimi: The critic employs favorable metaphors (fine wine, well-seasoned drag queen) to praise the revival, indicating a clear recommendation to see the show, though the brevity of the excerpt limits confidence in the final assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite acknowledging the show's familiar plot and saccharine elements, Brantley calls it 'warm, winning,' 'inspired,' and 'greatly affecting entertainment.' He praises the lead performances and predicts audiences won't become restless. | Gemini: The review acknowledges flaws in the musical itself, but praises this production's ability to transform it into \"greatly affecting entertainment.\" It's a positive recommendation with reservations. | Kimi: While acknowledging the saccharine book and sitcom setup, Brantley praises this as an 'inspired revival' with a 'bravura Broadway debut' by Douglas Hodge, calling the overall effect 'redemptive' and 'greatly affecting' despite the material's flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:01:30.861Z",
+    "scoredAt": "2026-02-04T21:26:49.814Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
+    "claudeScore": 76,
+    "openaiScore": null,
     "geminiScore": 78,
-    "kimiScore": 76,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 693,
@@ -101,5 +100,6 @@
   "archiveOrgTimestamp": "20141115003541",
   "archiveOrgUrl": "http://web.archive.org/web/20141115003541/http://www.nytimes.com/2010/04/19/theater/reviews/19cage.html",
   "wordCount": 693,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:26:49.814Z"
 }

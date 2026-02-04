@@ -10,15 +10,15 @@
   "bwwRoundupUrl": null,
   "bwwThumb": null,
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 90,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 91,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -30,12 +30,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the pounding political realities are leavened by lots of sweet songs and scenes concerning themselves with the mysteries of mortal love and trust",
+        "quote": "It feels like the most relevant and resistant musical in town, but it never comes off as shrill.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'thrillingly alarmist,' 'masterfully staged,' 'true stunner,' and 'political ferocity that has not been matched on Broadway in a good long while.' Clear rave recommendation. | GPT-4o: The review is filled with superlatives and strong praise for the production, staging, and performances. The critic describes it as 'thrillingly alarmist' and 'a true stunner', indicating a highly enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"thrillingly alarmist\", \"masterfully staged\", and praising the political ferocity and relevance of the musical. The critic clearly recommends seeing the show. | Kimi: The critic offers unqualified praise for Rachel Chavkin's 'masterful' staging, Rachel Hauck's 'true stunner' design, and the show's unmatched political ferocity, describing it as 'thrilling' and 'eye-popping' throughout.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise throughout with superlatives like 'thrillingly alarmist,' 'masterfully staged,' 'true stunner,' and 'political ferocity that has not been matched on Broadway in a good long while.' Clear enthusiasm without significant reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise, describing the show as 'thrillingly alarmist' and 'masterfully staged.' It highlights the production's relevance, emotional impact, and impressive design, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, highlighting the show's relevance, resistance, and unique aesthetic. The critic praises the music, staging, choreography, and performances, making it a strong recommendation. | Kimi: The critic offers unqualified praise for the production's staging, performances, and political relevance, calling it the 'most relevant and resistant musical in town' with no significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,15 +45,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T06:46:50.573Z",
+    "scoredAt": "2026-02-04T20:52:59.615Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 92,
-    "previousVersion": "5.1.0"
+    "previousScore": 91,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 88,
     "openaiScore": 92,
     "geminiScore": 82,
     "kimiScore": 90,
@@ -109,7 +109,7 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20220304041140",
   "archiveOrgUrl": "http://web.archive.org/web/20220304041140/https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html",
-  "rescoreCompletedAt": "2026-01-29T14:31:51.730Z",
+  "rescoreCompletedAt": "2026-02-04T20:52:59.615Z",
   "dateUnknown": true,
   "dateSource": "historical-review",
   "showScoreExcerpt": "“The thrillingly alarmist new Broadway musical with the score that feels like it comes from somewhere deep in the American gut...An eye-popping, mythological blend of steampunk...’Hadestown’ feels like the most relevant and resistant musical in town, but it never comes off as shrill or moving in some kind of dull lockstep with all the other self-aware plays and musicals lamenting Trump’s America by playing tritely to the choir, critics and all.”",
@@ -123,7 +123,6 @@
     "dtliThumb": "none",
     "bwwThumb": "none"
   },
-  "needsRescore": true,
   "textQuality": "full",
   "sources": [
     "bww-roundup",

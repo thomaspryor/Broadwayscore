@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Vogel has created a work of uncommon beauty and power, one that finds in a single play's journey through history a metaphor for the persistence of art in the face of persecution.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
-    "score": 90,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ms. Vogel has created a work of uncommon beauty and power",
+        "quote": "\"Indecent\" is, above all, decent, in the most complete sense of the word. It is virtuous, sturdily assembled, informative and brimming with good faith.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong praise with 'uncommon beauty and power' indicates high recommendation, though brief excerpt limits full context assessment. | GPT-4o: The review uses strong positive language ('uncommon beauty and power') indicating a highly favorable view of the production. | Gemini: The review uses strong, positive language such as \"uncommon beauty and power\" and suggests the play is a metaphor for the persistence of art, indicating a very high level of praise and a must-see recommendation. | Kimi: Though brief, the excerpt offers unambiguous high praise using superlatives like 'uncommon beauty' and 'power,' clearly placing it in rave territory.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises the production's craft, performances, and intentions while noting it can be \"deflatingly earnest.\" He calls it \"one of the season's most respectable\" plays and offers \"heartening evidence\" of Vogel's continued passion, but tempers enthusiasm with concerns about over-earnestness. | GPT-4o: The review praises the production's thoughtful evocation and resourceful stagecraft, but notes it can be 'deflatingly earnest' at times. Overall, it recommends the show for its historical and thematic depth. | Gemini: The review is generally positive, highlighting the play's thoughtfulness and the playwright's sincerity, but notes it doesn't quite reach the heights of its source material. This indicates a recommendation with reservations. | Kimi: The review offers substantial praise for the production's craft, performances, and emotional resonance while criticizing its earnest tone and lack of subversive edge. The overall verdict clearly recommends the show as respectable and moving, despite noting it doesn't reach the heights of the original play it depicts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:54:51.968Z",
+    "scoredAt": "2026-02-04T21:11:55.443Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 90,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 92,
-    "geminiScore": 92,
-    "kimiScore": 88,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://www.nytimes.com/2016/05/18/theater/review-indecent-revisits-a-play-colliding-with-broadway-mores-and-more.html?_r=1",
   "sources": [
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.nytimes.com/2017/04/19/theater/indecent-review-broadway.html",
   "urlDiscoveredAt": "2026-02-04T00:24:52.615Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 90,
   "textWordCount": 1157,
@@ -105,5 +105,6 @@
   "wordCount": 1157,
   "tierReason": "Full review text",
   "archiveOrgTimestamp": "20251003165823",
-  "archiveOrgUrl": "http://web.archive.org/web/20251003165823/https://www.nytimes.com/2017/04/18/theater/indecent-review-paula-vogel-broadway.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20251003165823/https://www.nytimes.com/2017/04/18/theater/indecent-review-paula-vogel-broadway.html",
+  "rescoreCompletedAt": "2026-02-04T21:11:55.443Z"
 }

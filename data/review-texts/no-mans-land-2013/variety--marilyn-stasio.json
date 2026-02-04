@@ -116,5 +116,11 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 1031,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T21:57:27.880Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of the Chinese movie 'No Man's Land', not a Broadway theater review.; openai: The text is a review of the film 'No Man’s Land' by Ning Hao, not a Broadway show.; kimi: This is a film review of the Chinese movie 'No Man's Land' directed by Ning Hao, not a review of a Broadway theatrical production. The text discusses cinematic elements like widescreen format, film editing, and box office performance rather than theater.",
+  "promptVersion": "5.2.0"
 }

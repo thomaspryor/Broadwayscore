@@ -15,7 +15,7 @@
   "dtliThumb": "Meh",
   "llmScore": {
     "score": 63,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 58,
       "high": 68
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises Groff's performance as 'absolutely dazzling' but heavily criticizes the book as weak and problematic. The review is clearly split between admiration for the star and disappointment with the overall production. | GPT-4o: The review praises Jonathan Groff's performance and the choreography, but criticizes the book and overall structure of the show, leading to a mixed recommendation. | Gemini: The review praises Groff's performance and the musical numbers but criticizes the book and direction, resulting in a mixed assessment. The show has dazzling moments but is ultimately uneven.",
+    "keyPhrases": [
+      {
+        "quote": "When Groff is singing and dancing, 'Just in Time' absolutely dazzles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Groff's performance extensively ('absolutely dazzles', 'great Groff') but finds the book problematic and the show conceptually flawed. The review is clearly divided between admiration for the star and disappointment with the material, landing in mixed territory without a clear recommendation either way. | GPT-4o: The review praises Jonathan Groff's performance and the choreography but criticizes the book and overall concept, leading to a mixed recommendation. | Gemini: The review praises Groff's performance and the choreography but criticizes the book and direction, resulting in a mixed overall assessment. | Kimi: While the review praises Jonathan Groff's performance and the musical numbers as 'absolutely dazzling,' it heavily criticizes the book as 'substandard,' filled with 'Wikipedia details,' and declares that the show 'simply deadens' during dialogue scenes, ultimately judging it a failed bio-musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:27:47.900Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:24:39.477Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "dtliExcerpt": "When Groff is singing and dancing (stunning choreography by Shannon Lewis), “Just in Time” absolutely dazzles. It doesn’t matter if what’s happening on stage ever makes you think of Bobby Darin. But Groff doesn’t always sing and dance, and when he or anybody else stops to recite dialogue from Leight and Oliver’s book, “Just in Time” simply deadens. Since Timbers also receives a “developed by” credit here, he should have developed a completely different book.",
   "sources": [
@@ -86,9 +94,8 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250916143110/https://www.thewrap.com/just-in-time-broadway-review-jonathan-groff/",
   "contentTier": "complete",
   "wordCount": 985,
-  "rescoreCompletedAt": "2026-02-01T15:24:24.727Z",
+  "rescoreCompletedAt": "2026-02-04T21:24:39.477Z",
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/just-in-time-broadway-review-jonathan-groff/"
 }

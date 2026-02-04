@@ -13,16 +13,16 @@
   "nycTheatreExcerpt": "\"Left on Tenth is a slight endeavor  slighter, probably, than a cancer odyssey has any right to be  and certainly falls short of better Ephron Sister efforts. Even so, there can be only one response to it, and that's well wishes for all.\"",
   "contentTier": "complete",
   "tierReason": "Full review text",
-  "assignedScore": 64,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 64,
+    "score": 74,
     "confidence": "medium",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 69,
+      "high": 79
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -31,12 +31,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Left on Tenth is a slight endeavor and certainly falls short of better Ephron Sister efforts.",
+        "quote": "infuses the entire affair with a warm affability that's as inviting as the affectionate performances",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'slight' and says it 'falls short' of better works, but ends with 'well wishes' suggesting some sympathy. Mixed verdict with lean toward disappointment. | GPT-4o: The review describes the show as 'slight' and 'falls short', indicating a lack of strong recommendation. The 'well wishes' sentiment suggests a neutral stance rather than a clear positive or negative verdict. | Gemini: The review calls the show \"slight\" and says it \"falls short\" but ultimately offers \"well wishes\", suggesting a mixed but not negative reaction. | Kimi: The critic describes the show as insubstantial and disappointing compared to the creators' previous work, explicitly stating it falls short. The closing well-wishes are directed at the creators rather than the production itself, indicating no recommendation to see the show.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic acknowledges the show is 'slight' and 'falls short of better Ephron Sister efforts' but praises the performances, direction, and overall warmth, concluding 'there can be only one response to it, and that's well wishes for all' - a gentle but clear recommendation. | Gemini: The review acknowledges the play's slightness and shortcomings compared to other Ephron works, but ultimately expresses \"well wishes for all,\" indicating a mild recommendation. | Kimi: While praising the 'affectionate performances' of Margulies and Gallagher and Stroman's 'warm affability,' the critic finds the plot 'well-worn' and the overall work 'slight' and inferior to previous Ephron efforts, offering only lukewarm 'well wishes' rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,29 +46,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:21:32.185Z",
+    "scoredAt": "2026-02-04T21:27:53.450Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 64,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 65,
-    "kimiScore": 48,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 17,
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 64,
   "fullText": "Disney Names Parks Chief Josh D'Amaro As CEO To Succeed Bob Iger, Ups Dana Walden To New President Role; Pay Packages Set \n \n \n\n \n \n \n \n\n \n \n \n\n Read the full story\n\n \n\n \n\n \n\n \n\n \n \n \n \n\n \n\n \n \n\n \n\n \n\n \n \n\n \n\n \n\n \n\n \n\n \n\n \n \n \n \n By Greg Evans\n\nIf nothing else, Delia Ephron’s autobiographical romantic comedy Left on Tenth, opening tonight on Broadway, proves that Ephron, like her late sister Nora, can find the feel-good in even the most unlikely places. In Left on Tenth, that would be the oncology ward of a Manhattan hospital.\n\nBased on Delia’s bestselling 2022 memoir of the same name, the title Left on Tenth refers to the Greenwich Village location of the writer’s beloved apartment where she spent many happy years with the husband who dies not long before Ephron is diagnosed with leukemia. And not long, as it happens, before Ephron begins a mid-life romance that she never saw coming.\n\nPlayed by Julianna Margulies (ER, The Good Wife) with endless appeal that doesn’t shortchange the harsher aspects of a chemo-drenched recovery, the play’s Delia Ephron is still getting used to being alone following the recent death of her husband when a long-ago acquaintance emails from out of the blue after reading Ephron’s New York Times article referencing her widowhood. Peter Rutter (a real-life character played by Grace and Frankie‘s Peter Gallagher) had actually gone on a few dates with Delia way back in college, though Delia has no recollection of their meeting.\n\nNo matter. After a brief long-distance courtship – she’s a widow in Manhattan, he’s a widower in San Francisco – the two fall faster and sweeter than any fictional couple in one of those much-loved films she wrote or produced with director-sister Nora Ephron like You’ve Got Mail or Sleepless in Seattle.\n\nIn fact, Left on Tenth has all the earmarks of those tales, with perhaps just a very, very light touch of Joan Didion’s The Year of Magical Thinking. Certainly, Ephron’s memoir lacks the visceral sadness, gut-punching grief that Didion chronicled so intrepidly and with such gravitas, but the authors do share a pile-up of mid-life bad news: Delia’s beloved sister Nora dies in 2012 and her doting husband in 2015. While her life is immediately filled with caring, sympathetic friends (all played, quite charmingly, by Peter Francis James and Kate MacCluggage), someone new enters with that email from the other coast.\n\nA lovely whirlwind romance ensues, but in keeping with the haste that seems to mark so much of Delia’s life of late, a routine medical exam – she’s been having her bone marrow checked regularly since the death of her sister to a leukemia-related illness – brings bad news.\n\nDespite the brevity of their relationship, Peter does not disappear. He’s by Delia’s side even when the chemo-sickened patient cruelly lashes out and begs to let go.\n\nFrankly, there’s not much by way of plot that doesn’t feel well-worn, but director Susan Stroman, ably assisted by Beowulf Boritt’s lovely, very efficient set design, Jeff Mahshie’s appealing and city-accurate costumes and projection designs by Jeanette Oi-Suk Yew of leafy Greenwich Village and romantic Manhattan skyline, infuses the entire affair with a warm affability that’s as inviting as the affectionate performances of Margulies and Gallagher.\n\nLeft on Tenth is a slight endeavor – slighter, probably, than a cancer odyssey has any right to be – and certainly falls short of better Ephron Sister efforts. Even so, there can be only one response to it, and that’s well wishes for all.\n\nTitle: Left on TenthVenue: Broadway’s James Earl Jones TheatreWritten By: Delia EphronDirected By: Susan StromanCast: Julianna Margulies, Peter Gallagher, Peter Francis James, Kate MacCluggageRunning time: 1 hr 40 min (no intermission)\n\nGet our Breaking News Alerts and Keep your inbox happy.\n\nDeadline is a part of Penske Media Corporation. © 2026 Deadline Hollywood, LLC.",
@@ -97,5 +97,6 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
-  "wordCount": 624
+  "wordCount": 624,
+  "rescoreCompletedAt": "2026-02-04T21:27:53.450Z"
 }

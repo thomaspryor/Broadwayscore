@@ -9,16 +9,16 @@
   "bwwExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "bwwRoundupUrl": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 61,
   "source": "dtli",
   "dtliThumb": "Meh",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 62,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic finds significant flaws in performances and human storylines but praises the robot scenes and acknowledges some compelling elements, landing in genuinely mixed territory rather than negative. | GPT-4o: The review criticizes the performances and the play's handling of its themes, suggesting that the robotic characters are more engaging than the human ones. The overall tone is negative, indicating disappointment with the production. | Gemini: The review expresses mixed feelings. While praising certain aspects like the robot interactions and Cynthia Nixon's performance, it criticizes the human characters and contrived plot elements, ultimately landing in the mixed category.",
+    "keyPhrases": [
+      {
+        "quote": "The fewer the humans, the better the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic finds the robot scenes effective but criticizes the human performances and story structure. Praises individual elements like Nixon's performance and the three-robot scene, but finds the overall execution contrived and disappointing compared to previous productions. | GPT-4o: The review highlights both positive aspects, like the robot scenes, and criticisms, such as the contrived human narrative and lack of dramatic weight. The critic finds the robot interactions more compelling than the human ones, leading to a mixed assessment. | Gemini: The review praises the robot interactions but criticizes the human drama as contrived. It doesn't explicitly recommend or discourage seeing the show, resulting in a mixed score. | Kimi: While praising Cynthia Nixon's performance and finding the robot scenes pleasant, the critic overwhelmingly criticizes the dated premise, contrived plot devices (calling the suicides 'faux dramatics'), and deficient lead performance, ultimately preferring the machine characters to the human ones.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,28 +44,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:33:33.112Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:42:30.594Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
+    "previousScore": 62,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 50,
+    "openaiScore": 60,
     "geminiScore": 62,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 12,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "dtliExcerpt": "At its core, “Marjorie Prime” tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there’s none of the angst.",
   "sources": [
@@ -71,11 +79,10 @@
   "showScoreExcerpt": null,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 47,
-  "rescoreCompletedAt": "2026-02-01T15:31:59.990Z",
+  "rescoreCompletedAt": "2026-02-04T21:42:30.594Z",
   "contentTier": "complete",
   "wordCount": 753,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/marjorie-prime-broadway-review-cynthia-nixon-and-june-squibb-make-the-case-for-everybody-becoming-a-robot/",
   "nycTheatreExcerpt": "\"At its core, \"Marjorie Prime\" tells a simple kitchen-sink story of two adults trying to care for an aging relative. Harrison tries to up the ante by dipping into his gothic drawer of horrors to deliver not one but two suicides that push the human narrative into the contrived. In the end, the machines are more honest than the humans and, better yet, there's none of the angst.\""

@@ -105,5 +105,11 @@
   "sources": [
     "web-search"
   ],
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2013 differs from show opening 2024 by 11 years"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2013 differs from show opening 2024 by 11 years",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T22:10:34.209Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of Ford's Theatre's revival of 'Our Town', which is not a Broadway production but rather a regional theater production in Washington DC.; openai: The review is about a production at Ford's Theatre, not the current Broadway run.; kimi: This review is of a production at Ford's Theatre in Washington, D.C., not the current Broadway run. Ford's Theatre is a regional venue, making this a regional theater review rather than a Broadway review.",
+  "promptVersion": "5.2.0"
 }

@@ -7,7 +7,7 @@
   "publishDate": "April 23, 2024",
   "fullText": "Amy Herzog is best known on Broadway for paring-down plays written by Henrik Ibsen. Her version of “An Enemy of the People,” starring Jeremy Strong, now runs on Broadway, and last season her version of “A Doll’s House” starred Jessica Chastain.\n\nHerzog also writes totally original plays not based on Scandinavian classics, and one of those, “Mary Jane,” won the New York Drama Critics’ Circle Award for Best Play in 2018. On Tuesday, that play had its Broadway premiere at MTC’s Samuel J. Friedman Theatre, and stars Rachel McAdams in her Broadway debut.\n\nThere are plays that move you because they strike so close to your own life experience. There are also those plays that move you because they let you into a world completely removed from your own life experience. What is it like to care for a child with severe physical challenges?\n\nIn the case of “Mary Jane,” the 3-year-old Alex, whom we never see, has cerebral palsy and other complications, and is cared for by his divorced mother, Mary Jane, played by McAdams. Alex’s father, also not seen, left the marriage sometime after the child’s birth, and Mary Jane is now surrounded by a diverse community of people, none of whom happen to be male. Herzog never directly addresses the lack of men in Mary Jane’s current life, and her silence on the subject tells us much about how different mothers and fathers can be.\n\nTo indulge in some gender stereotyping for a moment, what it means to be a hero is often very different for men and women. Men tend to become heroes by making one spectacular feat that gets great public attention. Women become heroes out of the spotlight, making the daily sacrifice of setting aside their own lives to care for someone else. For women, heroism is often a process that doesn’t take place in an hour or even a day. It can evolve over years, if not decades. And there are never awards given for that kind of sacrifice.\n\nMary Jane is not only a hero. She is a saint.\n\nAnne Kauffman’s direction takes a while to coalesce the various facets of Herzog’s play. As presented by McAdams, Mary Jane is more than a little wan in her encounters with the various women who visit her apartment over the course of this two-hour one-act play. They include a super (Brenda Wehle), a nurse (April Matthis), a niece (Lily Santiago) and a Facebook friend (Susan Pourfar), who also has a child with special needs. Each of these four actors is double-cast, and when the second half of “Mary Jane” moves into a hospital (a scene change that is spectacularly facilitated by Lael Jellinek’s set), they portray, respectively, a counselor, a doctor, a therapist and a woman with seven children, one of whom is a patient at the hospital.\n\nIn the scenes set in the apartment, the four visitors tend to take focus away from Mary Jane. Each of the four actors is exemplary, but there’s too much still air on stage before each of them can establish her presence, especially in the play’s first half. Stoic is not an easy look to convey to an audience, and McAdams’ performance doesn’t really take shape until Mary Jane sets up residence in the hospital. Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.\n\n“Mary Jane” is semi-autobiographical. Herzog’s daughter, Frances, passed away at age 11 in 2023.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "dtliThumb": "Up",
   "source": "dtli",
   "dtliExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play’s power comes from Herzog’s scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It’s worth the wait.",
@@ -15,11 +15,11 @@
   "bwwExcerpt": null,
   "bwwThumb": null,
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite criticizing pacing issues and McAdams' early performance, the critic ultimately finds the play powerful and affirms the payoff is 'worth the wait,' indicating a solid recommendation. | GPT-4o: The review acknowledges some pacing issues and a slow start, but ultimately praises the play's emotional payoff and the performances, particularly highlighting the impactful moments that make it worth seeing. | Gemini: The review is generally positive, highlighting the play's emotional impact and McAdams' performance, but notes some issues with the pacing and initial focus. The final statement indicates that the payoff is worth the wait, suggesting a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "Ultimately, McAdams gets her big theatrical moment, but much of the play's power comes from Herzog's scheme to withhold that moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Herzog's writing, McAdams' performance (especially in the second act), and the play's emotional power. While noting pacing issues in the first half and some structural concerns, the overall assessment is positive with the critic finding the theatrical payoff 'worth the wait.' | GPT-4o: The review acknowledges some pacing issues and a slow start, but overall praises the performances and the emotional impact of the play, particularly highlighting McAdams' performance and Herzog's writing. The tone suggests a positive recommendation despite some reservations. | Gemini: The review is generally positive, highlighting McAdams' performance and Herzog's writing, but notes some issues with pacing and focus in the first half. The conclusion is that it's \"worth the wait.\" | Kimi: The critic praises Herzog's writing and the supporting cast while criticizing the direction's slow coalescence and McAdams' wan early performance, ultimately finding the production 'worth the wait.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:34:55.611Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:47:54.021Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 77,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 77,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
@@ -80,10 +88,9 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251011140433/https://www.thewrap.com/mary-jane-broadway-review-rachel-mcadams/",
   "contentTier": "complete",
   "wordCount": 611,
-  "rescoreCompletedAt": "2026-02-01T15:33:06.434Z",
+  "rescoreCompletedAt": "2026-02-04T21:47:54.022Z",
   "duplicateTextOf": "ap--tapintonet.json",
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "nycTheatreExcerpt": "Ultimately, McAdams gets her big theatrical moment, but much of the play's power comes from Herzog's scheme to withhold that moment. We expect Mary Jane to break down, explode, get pissed off long before she does. What sets her off is unexpected. It's worth the wait.",
   "sources": [

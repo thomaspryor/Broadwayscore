@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-REAL-WOMEN-HAVE-CURVES-Opens-on-Broadway-20250426",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 93,
   "source": "bww-roundup",
   "dtliThumb": null,
   "showScoreExcerpt": "\"The show pulses with a distinctly chingona spirit–it is bold and defiantly optimistic despite relentlessly biased\"",
@@ -20,13 +20,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses strongly positive descriptors ('pulses', 'chingona spirit', 'bold', 'defiantly optimistic') that suggest genuine admiration for the production's energy and attitude, despite acknowledging bias challenges. | GPT-4o: The review highlights the show's bold and optimistic spirit, suggesting a positive experience despite acknowledging some bias. The tone implies a recommendation, though not without reservations. | Gemini: The review excerpt suggests a positive, albeit qualified, recommendation. The phrase \"bold and defiantly optimistic\" indicates a positive experience, while \"relentlessly biased\" suggests a reservation.",
+    "keyPhrases": [
+      {
+        "quote": "It is a joyful, triumphant, authentic celebration of Latinidad, resilience and representation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Extremely enthusiastic praise throughout with superlatives like 'triumphant,' 'authentic celebration,' and 'absolute revelation.' Positions it as 'the next definitive Latinx musical' and 'an In The Heights for a new generation.' Consistent unqualified praise for performances, direction, design, and cultural significance. | Gemini: The review is overwhelmingly positive, using words like \"joyful, triumphant, authentic celebration.\" The critic also states that it seems poised to become the next definitive Latinx musical. | Kimi: The review is unambiguously enthusiastic, calling the show a 'definitive Latinx musical' comparable to 'In The Heights,' praising its dynamic performances, stunning visuals, and profound cultural resonance without significant reservation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,29 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:00:41.354Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:19:01.141Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 83,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
@@ -81,12 +88,11 @@
   ],
   "fetchTier": 4,
   "sourceMethod": "archive",
-  "rescoreCompletedAt": "2026-01-29T14:31:52.007Z",
+  "rescoreCompletedAt": "2026-02-04T22:19:01.141Z",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
   "previousUrl": "https://www.talkinbroadway.com/page/world/index.html",
-  "needsRescore": true,
   "isFullReview": true,
   "textWordCount": 1634,
   "textQuality": "full",

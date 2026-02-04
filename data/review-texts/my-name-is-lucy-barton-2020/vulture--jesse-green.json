@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play, adapted from Elizabeth Strout's novel, is essentially a 90-minute monologue delivered by Laura Linney with extraordinary skill and subtlety.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "delivered by Laura Linney with extraordinary skill and subtlety",
+        "quote": "If you can't make it to Broadway for this show that I'm not recommending, you can rest assured that in February, the production will be released as a recording.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praises Linney's performance as 'extraordinary' but this appears to be a brief excerpt with limited evaluative content about the overall production. | Gemini: The review highlights Laura Linney's 'extraordinary skill and subtlety,' indicating a positive experience, although it's primarily focused on her performance. | Kimi: This excerpt offers high praise for the lead performance using the superlative 'extraordinary,' indicating a clear recommendation, though the truncated nature prevents full assessment of the overall production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states 'I'm not recommending' and calls the show a 'flop' that 'collapses' with 'dull' execution. Despite praising the source material and acknowledging Linney's talents, the overall verdict clearly advises against seeing it. | GPT-4o: The review clearly states a lack of recommendation for the show, citing issues with adaptation and staging. Despite some praise for Laura Linney, the overall tone is negative, focusing on the production's shortcomings. | Gemini: The critic explicitly states \"this show that I’m not recommending.\" While acknowledging Linney's talent, the overall assessment is negative due to the static and unengaging nature of the adaptation. | Kimi: The critic explicitly states he is not recommending the show, describing it as a 'flop' that 'collapses' and delivers a 'dull lesson,' with static staging that misses the point of the source material despite Laura Linney's talents.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:16:02.458Z",
+    "scoredAt": "2026-02-04T21:57:07.478Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 78,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "previousUrl": "https://www.vulture.com/2020/01/theater-review-my-name-is-lucy-barton-on-broadway.html",
   "urlDiscoveredAt": "2026-02-04T00:08:33.597Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1137,
@@ -103,5 +104,6 @@
   "archiveOrgTimestamp": "20200116210247",
   "archiveOrgUrl": "http://web.archive.org/web/20200116210247/https://www.vulture.com/2020/01/theater-review-my-name-is-lucy-barton.html",
   "wordCount": 1137,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:57:07.478Z"
 }

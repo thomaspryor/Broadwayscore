@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of the 1965 musical feels less like a resurrection than like a séance in which the medium has only intermittent contact with the spirit world.",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 46,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 41,
-      "high": 51
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival feels less like a resurrection than like a séance in which the medium has only intermittent contact with the spirit world.",
+        "quote": "This 'Clear Day' still has the approximate fun quotient of a day in an M.R.I. machine.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The metaphor of failed spiritual contact clearly indicates disappointment with the revival's inability to capture the original's essence, suggesting the production falls short of expectations. | GPT-4o: The review suggests the revival lacks vitality and fails to fully capture the essence of the original, indicating a negative impression overall. | Gemini: The review uses the metaphor of a failed séance to describe the revival, indicating a negative assessment. The phrase \"only intermittent contact with the spirit world\" suggests the production is not fully realized or successful. | Kimi: The metaphor suggests the revival fails to bring the show fully back to life, offering only sporadic moments rather than a complete resurrection.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Brantley delivers sustained negative criticism throughout, comparing the show to clinical depression, an MRI machine, and dental surgery. While he acknowledges some individual bright spots (Mueller's performance, Connick's past work), the overall verdict is clearly negative with vivid metaphors emphasizing the show's joylessness and fundamental problems. | Gemini: The review is largely negative, describing the show as a \"moaning case of the deep-dyed blues\" and comparing its fun quotient to a day in an MRI machine. While acknowledging some talent, the overall assessment is unfavorable. | Kimi: While acknowledging the cast's talent and the lovely score, the critic finds the reconceived production depressing and muddled, with a clinical atmosphere that wastes its performers on joyless material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:57:34.507Z",
+    "scoredAt": "2026-02-04T22:02:05.070Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 46,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": null,
     "geminiScore": 45,
-    "kimiScore": 48,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "previousUrl": "https://www.nytimes.com/2011/12/12/theater/reviews/on-a-clear-day-you-can-see-forever-review.html",
   "urlDiscoveredAt": "2026-02-04T00:57:10.854Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 46,
   "textWordCount": 1328,
@@ -114,5 +113,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1328,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:02:05.070Z"
 }

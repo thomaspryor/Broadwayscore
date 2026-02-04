@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show's fatal flaw is that it never figures out how to dramatize Shakur's activist message in a way that doesn't sound preachy or forced.",
   "originalScore": null,
-  "assignedScore": 41,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 41,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 36,
-      "high": 46
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show's fatal flaw is that it never figures out how to dramatize Shakur's activist message.",
+        "quote": "Despite a clunky book, this show is on fire.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review highlights a critical flaw in the show's execution, suggesting it fails to effectively convey its message. This indicates a negative recommendation. | Gemini: The review identifies a 'fatal flaw' which clearly indicates a negative assessment and lack of recommendation. | Kimi: The excerpt identifies a 'fatal flaw' in the show's core dramaturgy, criticizing its preachy and forced delivery, indicating a strong negative assessment despite the brevity of the text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises performances, music, and staging ('on fire', 'soaring performances', 'terrific') but consistently criticizes the book as 'clunky', 'generic', and 'predictable'. The overall assessment is balanced between strong production elements and fundamental story problems. | GPT-4o: The review praises the performances and music but criticizes the book and characterizations. It expresses doubt about the show's appeal to broader audiences, indicating a mixed reception. | Gemini: The review praises the performances and musical numbers but criticizes the book and generic storyline. It's a mixed bag with potential but significant drawbacks. | Kimi: While criticizing the predictable book and clumsy characterizations, Stasio praises the 'soaring performances,' 'terrific' music, and declares the show 'on fire,' offering a qualified but clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:43:22.211Z",
+    "scoredAt": "2026-02-04T21:05:09.184Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 41,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 38,
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "playbillVerdictUrl": "http://variety.com/2014/legit/reviews/review-holler-if-ya-hear-me-tupac-shakur-broadway-1201224122/",
   "sources": [
@@ -80,7 +82,6 @@
   "previousUrl": "https://variety.com/2014/legit/reviews/broadway-review-holler-if-ya-hear-me-1201223847/",
   "urlDiscoveredAt": "2026-02-04T00:08:59.484Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,
   "textWordCount": 872,
@@ -124,5 +125,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 872,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:05:09.184Z"
 }

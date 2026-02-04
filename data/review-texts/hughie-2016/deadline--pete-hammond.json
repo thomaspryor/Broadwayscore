@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Forest Whitaker gives a powerhouse performance in this intimate two-character drama that showcases his considerable acting chops in a way we rarely get to see on stage.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 80,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Forest Whitaker gives a powerhouse performance in this intimate two-character drama that showcases his considerable acting chops",
+        "quote": "The result is a failure to lift this small work into the tragic realm to which it aspires.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for lead performance with 'powerhouse' language, but very brief excerpt limits confidence in overall show assessment. | Gemini: The review uses the phrase \"powerhouse performance\" and highlights Whitaker's acting chops. This indicates a strong positive recommendation. | Kimi: The critic offers unqualified praise for Whitaker's 'powerhouse' acting and describes the drama as an effective showcase for his talents, indicating strong enthusiasm despite the brief excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising the set design and costumes, the critic identifies a fundamental failure in the central performance and direction, calling it 'stubbornly small' and a 'failure to lift this small work.' The review concludes that the production doesn't achieve its aspirations. | GPT-4o: The review criticizes the production for failing to achieve its intended emotional impact, attributing this to both the play's limitations and Whitaker's performance. The overall tone suggests disappointment, with no strong recommendation to see the show. | Gemini: The review is critical of Whitaker's performance and the production's overall impact, stating it fails to reach the tragic potential of the play. While praising the set design, the core assessment is negative. | Kimi: While praising the set design and Frank Wood's performance, the critic finds Forest Whitaker's central performance miscast and lacking desperation, ultimately judging the production a failure that remains 'stubbornly small' and unable to achieve its tragic ambitions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:00:06.527Z",
+    "scoredAt": "2026-02-04T21:07:33.531Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "playbillVerdictUrl": "http://deadline.com/2016/02/forest-whitaker-hughie-broadway-review-1201709239/",
   "sources": [
@@ -80,7 +82,6 @@
   "previousUrl": "https://deadline.com/2016/10/hughie-review-forest-whitaker-broadway-gerald-schoenfeld-theatre-1201838184/",
   "urlDiscoveredAt": "2026-02-04T03:25:39.640Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 586,
@@ -104,5 +105,6 @@
   "archiveOrgTimestamp": "20220910194509",
   "archiveOrgUrl": "http://web.archive.org/web/20220910194509/https://deadline.com/2016/02/forest-whitaker-hughie-broadway-review-1201709239/",
   "wordCount": 586,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:07:33.531Z"
 }

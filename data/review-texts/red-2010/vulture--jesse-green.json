@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Red is a play about the relationship between art and commerce, between the sacred and the profane, and it's magnificent. Alfred Molina and Eddie Redmayne are both superb in John Logan's drama about Mark Rothko.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 23,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,22 +25,28 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 91,
-    "confidence": "high",
+    "score": 23,
+    "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 18,
+      "high": 28
     },
-    "bucket": "Rave",
-    "thumb": "Up",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified superlative ('magnificent') paired with praise for both lead performances as 'superb'. Clear rave with no reservations expressed. | Gemini: The review uses the word \"magnificent\" and \"superb\" to describe the play and the performances, indicating a rave review. | Kimi: The critic employs unqualified superlatives ('magnificent', 'superb') to describe both the play and the performances, indicating a strong rave recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "a tiny entertainment that should probably have been left in a basement rec room",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: Green delivers a devastating pan of Disaster!, calling it 'foolhardy,' saying it has an 'ugly set' that 'frames a tiny entertainment that should probably have been left in a basement rec room,' and concluding 'when it comes to musicals, love is not enough.' The review systematically dismantles every aspect of the production with no redeeming qualities offered. | Gemini: The review is largely negative, criticizing the humor, staging, and overall execution of the show. While acknowledging some talent in the cast, the critic ultimately finds the production lacking and not worth recommending. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +56,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:51:20.106Z",
+    "scoredAt": "2026-02-04T22:20:55.347Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 91,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 18,
     "openaiScore": null,
-    "geminiScore": 92,
-    "kimiScore": 90,
-    "claudeBucket": "Rave",
-    "geminiBucket": "Rave",
-    "kimiBucket": "Rave",
-    "scoreDelta": 2,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "previousUrl": "https://www.vulture.com/2010/03/theater_review_red.html",
   "urlDiscoveredAt": "2026-02-04T01:04:37.649Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 91,
   "textWordCount": 1391,
@@ -100,5 +106,6 @@
   ],
   "wordCount": 1391,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2016 outside valid range 2007–2012 for show opening 2010"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2016 outside valid range 2007–2012 for show opening 2010",
+  "rescoreCompletedAt": "2026-02-04T22:20:55.347Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of Scott McPherson's 1991 play about family, illness, and the complicated mathematics of love feels both timeless and perfectly timed.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The revival of Scott McPherson's 1991 play about family, illness, and the complicated mathematics of love feels both timeless and perfectly timed.",
+        "quote": "Something a little hard to quantify has, in the intervening 25 years, flattened and attenuated this play's power.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The description of the revival as 'timeless and perfectly timed' is clearly positive evaluation language. However, confidence is low due to this being only a single curated excerpt that may not represent the full review verdict. | GPT-4o: The excerpt provides a positive assessment, describing the revival as 'timeless and perfectly timed.' Given the single excerpt warning, the score is placed on the higher end of the Positive bucket. | Gemini: The excerpt suggests a positive view of the revival, describing it as \"timeless and perfectly timed.\" Given it's a single excerpt, confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The excerpt offers unambiguous praise ('timeless,' 'perfectly timed') indicating a successful production, though the single curated quote warrants reduced confidence in the overall verdict.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green acknowledges strong performances from the cast but finds the play itself dated and emotionally uneconomical. He notes structural problems with the Broadway staging and suggests the material has lost its power over time, resulting in a neither-recommend-nor-discourage assessment. | Gemini: The review acknowledges the play's datedness and the challenges of staging it in a large Broadway house, while also praising the actors' performances. It doesn't strongly recommend or discourage seeing the show. | Kimi: Green praises the lead performances of Garofalo and Taylor but finds the 1991 play dated and emotionally attenuated, criticizing the pacing as uneconomical and the physical production for draining the story's power.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:25:16.344Z",
+    "scoredAt": "2026-02-04T21:46:02.856Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "previousUrl": "https://www.vulture.com/2017/12/theater-review-marvins-room-revival.html",
   "urlDiscoveredAt": "2026-02-04T16:32:28.369Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 1101,
@@ -98,5 +97,6 @@
   "archiveOrgTimestamp": "20240304080206",
   "archiveOrgUrl": "http://web.archive.org/web/20240304080206/https://www.vulture.com/2017/06/theater-review-going-back-in-time-in-marvins-room.html",
   "wordCount": 1101,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:46:02.856Z"
 }

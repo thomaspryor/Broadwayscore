@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 40,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,22 +18,28 @@
   "showScoreExcerpt": "Rachel McAdams gives a performance of such raw emotional power and authenticity that she transforms what could have been a depressing evening into something transcendent.",
   "needsScoring": true,
   "llmScore": {
-    "score": 82,
+    "score": 40,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 35,
+      "high": 45
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic uses powerful positive language like 'transcendent' and 'raw emotional power' to describe McAdams' transformative performance, indicating strong recommendation despite acknowledging the material's challenging nature. | GPT-4o: The review highlights a transformative and powerful performance by Rachel McAdams, suggesting the production is elevated to a must-see status due to her contribution. | Gemini: The review praises Rachel McAdams' performance as transformative, turning a potentially depressing experience into something transcendent, indicating a strong positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The only reason I got through this astoundingly over-praised travesty is Rachel McAdams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the play a 'travesty' and 'depressing, downbeat study' with 'paralyzed direction.' Despite praising McAdams' beauty and acting ability, the critic finds her voice inadequate for theater and the play incomprehensible. | GPT-4o: The review is overwhelmingly negative, criticizing the play's writing, direction, and sound issues. Despite praising McAdams' acting ability, the overall verdict is that the play is a 'travesty' and not worth seeing. | Gemini: The critic calls the play a \"travesty\" and says it is \"over-praised.\" While praising McAdams's acting, he notes she is difficult to hear, leading to an overall negative experience. | Kimi: While Reed acknowledges McAdams' acting talent, he calls the play a 'travesty' with 'paralyzed direction,' criticizes the 'elliptical writing,' and emphasizes that McAdams' weak projection and poor acoustics made the show difficult to endure, undercutting any recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,35 +48,36 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:34:32.449Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:46:55.396Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 81,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "previousUrl": "https://observer.com/2024/05/mary-jane-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T18:54:42.243Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 504,
@@ -99,5 +106,6 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T21:46:55.396Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness between two people who have every reason to mistrust each other.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Terrence McNally's new play 'Mothers and Sons' is a tender, thoughtful meditation on grief, acceptance and the possibility of forgiveness",
+        "quote": "But in the end, no one can come to the aid of a play that doesn't … quite … exist.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive descriptors like 'tender' and 'thoughtful' indicate appreciation, but the brief excerpt lacks explicit recommendation language or stronger evaluative content to determine intensity of praise. | GPT-4o: The review uses positive language such as 'tender' and 'thoughtful', indicating a recommendation to see the play. | Gemini: The review uses positive language such as \"tender\" and \"thoughtful\", indicating a recommendation, although without strong enthusiasm. | Kimi: The critic employs warmly appreciative adjectives ('tender', 'thoughtful') to characterize the play as a meaningful meditation on serious themes, indicating a clear recommendation despite the brief excerpt provided.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the lead performances by Weller and Daly as skilled and nuanced, the critic finds fundamental structural problems with the play itself, calling it 'diffuse and disjointed' with 'no cohesion to the material and no point to the plot.' The devastating final line makes clear this is not recommended. | GPT-4o: The review criticizes the play for being diffuse and disjointed with no cohesion or point to the plot, despite praising the performances of the actors. The overall verdict is negative, focusing on the play's structural issues. | Gemini: The review praises the performances of Weller and Daly, but ultimately finds the play itself to be disjointed and lacking cohesion, resulting in a mixed assessment. | Kimi: While praising Tyne Daly and Frederick Weller's performances as 'ever-astonishing,' the critic finds the play itself fundamentally flawed with 'no cohesion' and 'no point to the plot,' concluding that no acting can save a play that 'doesn't ... quite ... exist.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:10:32.367Z",
+    "scoredAt": "2026-02-04T21:54:28.685Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "playbillVerdictUrl": "http://variety.com/2014/legit/reviews/broadway-review-mothers-and-sons-1201145159/",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 728,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 728,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:54:28.685Z"
 }

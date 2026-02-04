@@ -9,26 +9,32 @@
   "bwwExcerpt": "As Tamara, Eden Espinosa gets to once again use the siren-like belt and the mix of might and vulnerability she deployed during several stints as Elphaba in “Wicked” — this time while sporting a platinum-blonde bob that makes her look like 1990s-era Madonna (a noted Lempicka fan, naturally). Granted, the vocal showcases she is provided by composer Matt Gould and lyricist Carson Kreitzer — who collaborated on the book, brd on Ms. Kreitzer’s concept — are seldom as tuneful as they are flamboyant.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-LEMPICKA-Opens-on-Broadway-Updating-LIVE-20240413",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "llmScore": {
-    "score": 59,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The excerpt praises Espinosa's performance but criticizes the songs as lacking tuneful quality despite being flamboyant. Single excerpt warning requires caution, and the mixed tone suggests neither strong recommendation nor discouragement. | GPT-4o: The review highlights Eden Espinosa's performance positively but criticizes the music as lacking tunefulness. The mixed signals suggest a neither strongly positive nor negative verdict. | Gemini: The review excerpt focuses on a positive aspect of the performance, but the caveat about the music being \"seldom as tuneful as they are flamboyant\" suggests some reservations. Given the single excerpt and aggregator context, a lower positive score seems appropriate.",
+    "keyPhrases": [
+      {
+        "quote": "if 'Lempicka' doesn't match its subject's glowing virtuosity — or that of better musicals, for that matter — it should at least inspire more interest in her work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the visual design, performances, and final 20 minutes, but finds the songs 'seldom as tuneful as they are flamboyant' and explicitly states the show doesn't match the virtuosity of better musicals. Mixed verdict with conditional interest. | Gemini: The review is generally positive, highlighting the performances, design, and choreography. However, it notes that the music is not always tuneful and the show doesn't quite reach the level of its subject, leading to a recommendation with reservations. | Kimi: The critic offers extensive praise for the performances, visual design, and choreography while criticizing the score as untuneful and noting the show only reaches its peak in the final 20 minutes, resulting in a qualified but clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,35 +43,35 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:28:32.975Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:30:52.764Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 59,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 55,
-    "geminiScore": 74,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
-    "scoreDelta": 19,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "bwwThumb": "Down",
   "dateUnknown": true,
   "dateSource": "could-not-extract",
   "contentTier": "complete",
   "wordCount": 1033,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "isFullReview": true,
@@ -104,5 +110,6 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251010123357",
   "archiveOrgUrl": "http://web.archive.org/web/20251010123357/https://www.nysun.com/article/a-new-broadway-musical-lempicka-offers-opportunity-to-get-to-know-an-art-deco-icon",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:30:52.764Z"
 }

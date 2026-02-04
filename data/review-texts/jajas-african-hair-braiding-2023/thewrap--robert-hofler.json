@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-on-Broadway-20231002",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Even though “Jaja’s African Hair Braiding” takes place entirely in the hair salon, as does “Steel Magnolias,” the play is a series of short skits, as is “The Women”; and like that Boothe Luce play, many of those scenes lack a good button. They tend to dribble away dramatically rather than end with a comic bang.",
@@ -21,11 +21,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review praises specific elements like the immigration storyline and certain performances, but criticizes the structure, caricatured characters, and borrowed plot elements. The critic finds merit but significant flaws. | GPT-4o: The review acknowledges successful character development and humor but criticizes the play for its lack of dramatic cohesion and overdrawn caricatures. The overall tone suggests a mixed reception with some positive elements. | Gemini: The review highlights both strengths (character development, topicality) and weaknesses (caricatured bit roles, predictable plot points), leading to a positive but qualified recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Bioh is most successful with the characters that she takes the time to develop.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges strong performances and clever design elements while criticizing weak character development, borrowed plot elements, and lack of dramatic structure. The critic finds merit in the immigration themes and standout performances but points to significant structural flaws. | GPT-4o: The review highlights both strengths and weaknesses of the play, praising character development and humor but criticizing the handling of bit roles and some predictable plot elements. The overall tone is balanced, with neither a strong recommendation nor a strong discouragement. | Gemini: The review praises some aspects, like the developed characters and the weaving of the immigration crisis into the narrative, but criticizes other elements, such as the overdrawn caricatures and predictable plot points, resulting in a mixed assessment. | Kimi: While praising the developed main characters, immigration theme integration, and strong cameo performance, the critic finds significant fault with cartoonish secondary characters, sitcom-style direction, borrowed plot elements, and scenes that 'dribble away dramatically' without proper endings. The measured praise for specific elements is balanced by structural criticisms and no explicit recommendation to attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,37 +51,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:25:11.370Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T21:18:39.301Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 75,
+    "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 13,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 44,
-  "rescoreCompletedAt": "2026-02-01T15:21:35.953Z",
+  "rescoreCompletedAt": "2026-02-04T21:18:39.301Z",
   "showScoreExcerpt": "“There are no easy answers to the complex problems that ‘Jaja's African Hair Braiding’ presents, and certainly none that can be solved within the span of a single day. Instead, the play encourages viewers to inspect the way the current world works and, hopefully, leave its salon with a greater sense of compassion and understanding for those around them tirelessly working to make ends meet.”",
   "contentTier": "complete",
   "wordCount": 720,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/"
 }

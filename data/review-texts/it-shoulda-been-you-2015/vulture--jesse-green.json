@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It Shoulda Been You is a big, brassy, old-fashioned musical comedy that knows exactly what it is and delivers it with gusto. The show is unabashedly commercial, unapologetically crowd-pleasing, and completely comfortable in its own sequined skin.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (37 words)",
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "delivers it with gusto",
+        "quote": "But let's just say it's on life support.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout with 'delivers it with gusto' and 'unabashedly commercial' used as praise rather than criticism. The critic appreciates the show's confidence and crowd-pleasing nature. | GPT-4o: The review uses positive language such as 'delivers with gusto' and 'unabashedly commercial, unapologetically crowd-pleasing,' indicating a strong recommendation. | Gemini: The review uses positive language such as \"delivers it with gusto\", \"unabashedly commercial\", and \"unapologetically crowd-pleasing\", indicating a positive recommendation. | Kimi: The critic praises the show's confident execution and commercial appeal, using approving language like 'delivers it with gusto' and 'completely comfortable in its own sequined skin' to recommend this crowd-pleasing production.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green acknowledges the show 'doesn't die' due to a good cast and some zingers, but finds it fundamentally problematic with too many songs that don't serve the story, comparing it to being 'on life support.' Mixed signals throughout but leans slightly negative. | GPT-4o: The review acknowledges some strengths, like the cast and direction, but overall it criticizes the show for being outdated and musically weak. The final verdict is negative, suggesting the show is barely kept alive by its performers. | Gemini: The review acknowledges flaws (plot, music) but praises the cast and direction, leading to a mixed assessment. The show is described as being on \"life support\", indicating it's not a strong recommendation. | Kimi: While praising Lisa Howard's star turn and the luxury ensemble cast, the critic finds the music sitcom-quality, the plot twists incredible, and ultimately deems the show 'on life support'—suggesting it survives on performance value alone rather than intrinsic merit.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:06:06.420Z",
+    "scoredAt": "2026-02-04T21:16:27.343Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 79,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "playbillVerdictUrl": "http://www.vulture.com/2015/04/theater-review-it-shoulda-been-you.html",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 937,
@@ -100,5 +100,6 @@
   "archiveOrgTimestamp": "20241226060359",
   "archiveOrgUrl": "http://web.archive.org/web/20241226060359/https://www.vulture.com/2015/04/theater-review-it-shoulda-been-you.html",
   "wordCount": 937,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:16:27.343Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('hoot and a holler') with praise for the show's ability to balance comedy and emotional depth. Clear enthusiastic recommendation. | GPT-4o: The review describes the show as both entertaining ('a hoot and a holler') and emotionally impactful ('surprisingly moving'), indicating a strong recommendation. | Gemini: The review uses positive language such as \"hoot and a holler\" and \"surprisingly moving\", indicating a positive recommendation. | Kimi: The critic employs enthusiastic colloquial praise ('hoot and a holler') and commends the production's successful tonal balance between comedy and genuine emotion, indicating a strong positive recommendation despite the brief excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('hoot and a holler', 'surprisingly moving') with no caveats. Single excerpt warning requires caution, but the tone is clearly enthusiastic, warranting upper Positive range. | GPT-4o: The excerpt describes the show as both entertaining ('a hoot and a holler') and emotionally impactful ('surprisingly moving'), indicating a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"hoot and a holler\" and \"surprisingly moving,\" suggesting a positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the Positive bucket. | Kimi: Despite the limitation of a single excerpt, the language is unambiguously enthusiastic ('hoot and a holler', 'surprisingly moving'), indicating strong enjoyment and recommendation without visible reservations, warranting the upper range of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:41:09.914Z",
+    "scoredAt": "2026-02-04T20:55:10.864Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 80,
-    "geminiScore": 78,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2015/apr/08/hand-to-god-review-broadway-booth-theatre",
   "urlDiscoveredAt": "2026-02-04T03:41:00.527Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 539,
@@ -121,5 +121,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:55:10.864Z"
 }

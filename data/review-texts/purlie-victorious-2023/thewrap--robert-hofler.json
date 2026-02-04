@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Leslie-Odom-Jr-Stars-In-PURLIE-VICTORIOUS-On-Broadway-20230927",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 83,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "“Purlie Victorious” is the funniest show now performing on Broadway, and that includes “The Book of Mormon.”",
@@ -21,13 +21,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 93,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic delivers an unqualified rave, calling it the funniest show on Broadway and praising the 'joyous,' 'wild' production with superlatives throughout. Despite being truncated, the overwhelmingly positive language and direct comparison to other hit shows clearly indicates a must-see recommendation. | GPT-4o: The review is overwhelmingly positive, praising the production's humor, performances, and direction. The critic compares it favorably to other renowned works and highlights its unique qualities, indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the direction, performances, and humor. The comparison to \"The Book of Mormon\" as the funniest show on Broadway indicates a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "'Purlie Victorious' is the funniest show now performing on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Declares it 'the funniest show now performing on Broadway' and praises the lead performance and writing quality. Strong positive despite being an excerpt. | GPT-4o: The review excerpt praises the show as the funniest currently on Broadway, indicating a strong recommendation. The lack of full text and reliance on curated excerpts lowers confidence. | Gemini: The review excerpt states that the show is the funniest on Broadway, which indicates a strong positive recommendation. However, due to the limited text, the confidence is low. | Kimi: The excerpt delivers an unqualified superlative verdict declaring the production the funniest currently on Broadway, with strong praise for the writing and performances, though the limited excerpt format necessitates lower confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,32 +51,34 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:55:45.005Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:13:23.661Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
+    "previousScore": 93,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 90,
-    "openaiScore": 95,
-    "geminiScore": 81,
-    "claudeBucket": "Rave",
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "scoreDelta": 14,
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 75,
-  "rescoreCompletedAt": "2026-02-01T15:56:05.576Z",
+  "rescoreCompletedAt": "2026-02-04T22:13:23.661Z",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
@@ -78,7 +86,6 @@
   "wordCount": 704,
   "isFullReview": false,
   "showScoreExcerpt": "“Despite all his sermonizing, Purlie never turns into a pedagogue, thanks to Davis, who has loaded the preacher’s speeches with great one-liners and epigrams — none of which will be repeated here. They need to be experience first-hand in the theater...‘Purlie Victorious’ is the funniest show now performing on Broadway”\n\nRead more",
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/purlie-victorious-broadway-review-leslie-odom-jr-kenny-leon/"
 }

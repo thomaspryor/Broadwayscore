@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of Paula Vogel's Pulitzer Prize-winning play about sexual abuse is as devastating and complex as ever, with Mary-Louise Parker giving a performance of extraordinary nuance.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 86,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The revival of Paula Vogel's Pulitzer Prize-winning play about sexual abuse is as devastating and complex as ever, with Mary-Louise Parker giving a performance of extraordinary nuance.",
+        "quote": "If I could direct a scene representing why I love theater, it would look something like this.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for both the revival ('as devastating and complex as ever') and lead performance ('extraordinary nuance'), but brief excerpt limits full assessment of critic's recommendation strength. | GPT-4o: The review uses strong positive language ('devastating and complex as ever') and highlights an 'extraordinary' performance, indicating a highly enthusiastic recommendation. | Gemini: The review states the play is \"as devastating and complex as ever\" and praises Mary-Louise Parker's performance, indicating a positive assessment. | Kimi: The critic offers unqualified praise for both the revival's emotional impact and the lead performance, employing superlatives ('extraordinary', 'devastating') without any reservations or caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the performances ('crushing performances'), production design, and overall theatrical experience. Minor criticisms of pacing and supporting cast don't diminish the enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, praising the performances of Parker and Morse as \"crushing\" and the overall experience as unforgettable. The critic clearly recommends seeing the show. | Kimi: While the critic notes minor flaws in the direction and supporting cast, the review is overwhelmingly positive, calling the revival 'unforgettable' and describing the lead performances with superlatives like 'crushing' and 'utterly complex.' The opening anecdote about breathless silence and the closing reflection on the power of theater cement a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:49:35.299Z",
+    "scoredAt": "2026-02-04T21:06:15.071Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 86,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
-    "geminiScore": 80,
-    "kimiScore": 91,
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 11,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2022/04/20/theater/how-i-learned-to-drive-review.html",
   "urlDiscoveredAt": "2026-02-04T00:18:29.864Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 86,
   "textWordCount": 1149,
@@ -114,5 +113,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1149,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:06:15.071Z"
 }

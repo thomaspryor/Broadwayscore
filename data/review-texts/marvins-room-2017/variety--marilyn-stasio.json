@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production benefits enormously from Janeane Garofalo's beautifully restrained performance as Bessie, the dutiful daughter who has devoted her life to caring for her bedridden father and dotty aunt.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 75,
+    "score": 44,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production benefits enormously from Janeane Garofalo's beautifully restrained performance as Bessie.",
+        "quote": "This lugubrious Broadway revival directed by Anne Kauffman for the Roundabout does his dark comedy no favors.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance suggests positive assessment, but limited text prevents confident scoring. Using lower end of Positive range due to single excerpt warning and uncertainty about overall verdict. | GPT-4o: The excerpt highlights a strong performance by Janeane Garofalo, suggesting a positive view of the production. However, with only one curated excerpt available, the overall sentiment of the review is unclear, warranting a low confidence score at the lower end of the Positive range. | Gemini: The excerpt praises Garofalo's performance, suggesting a positive aspect of the production. However, with only one excerpt available, the overall verdict is uncertain, leading to a 'low' confidence score and a score on the lower end of the positive bucket. | Kimi: Single excerpt provides strong praise for the lead performance ('benefits enormously,' 'beautifully restrained'), indicating a clear positive recommendation, though limited context prevents Rave classification or higher confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While Stasio praises the original play and individual performances, she clearly does not recommend this Broadway revival, citing poor direction that undermines the material and creates deadly pacing issues. | GPT-4o: The review acknowledges some positive elements, such as decent performances and offbeat humor, but overall criticizes the production for its lack of energy and poor direction, leading to a negative recommendation. | Gemini: The review states that despite decent performances, the revival does the play no favors, and that the direction undermines the dynamics of the reunion. The reviewer also criticizes the lack of energy and directorial sensitivity. | Kimi: While acknowledging the quality of McPherson's play and praising individual cast members as 'wonderful' and 'delightful,' the critic delivers a scathing verdict on Anne Kauffman's direction, describing the revival as 'lugubrious,' lacking energy, and 'disastrous' for the performers, ultimately finding the staging inappropriate for the intimate material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:27:34.840Z",
+    "scoredAt": "2026-02-04T21:44:43.930Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
     "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "previousUrl": "https://variety.com/2017/legit/reviews/marvins-room-review-lilli-cooper-janeane-garofalo-1202626068/",
   "urlDiscoveredAt": "2026-02-04T16:30:45.541Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 580,
@@ -98,5 +98,6 @@
   "archiveOrgTimestamp": "20250722090858",
   "archiveOrgUrl": "http://web.archive.org/web/20250722090858/https://variety.com/2017/legit/reviews/marvins-room-review-broadway-janeane-garofalo-1202482740/",
   "wordCount": 580,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:44:43.930Z"
 }

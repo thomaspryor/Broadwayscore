@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Broadway revival of A.R. Gurney's 'Love Letters' offers a parade of celebrity couples reading from scripts, but the concept works better as a star vehicle than as theater.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 62,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The concept works better as a star vehicle than as theater.",
+        "quote": "That is part of why this play holds such an unexpected fascination, helped along by a reliable performance by the formidable Dennehy and an extraordinary one by Mia Farrow.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear criticism that the theatrical concept doesn't fully succeed despite acknowledging the celebrity appeal, indicating neither recommendation nor discouragement. | GPT-4o: The review suggests that while the show may appeal due to its celebrity cast, it falls short as a theatrical experience. This indicates a mixed assessment, with no strong recommendation or discouragement. | Gemini: The review suggests the production is more about the celebrity aspect than the theatrical experience, indicating a mixed assessment. | Kimi: The critic acknowledges the production's effectiveness as a celebrity showcase but explicitly states it fails as meaningful theater, creating a balanced but unenthusiastic assessment that neither fully recommends nor dismisses the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses 'unexpected fascination' with the play and praises both lead performances, particularly calling Farrow's work 'extraordinary.' However, the opening suggests the concept works better as star vehicle than theater, and the text is truncated so the final verdict may be missing. | GPT-4o: The review praises the performances, especially Mia Farrow's, and finds the play fascinating. However, the text is truncated, and the final verdict may be missing, leading to a cautious score. | Gemini: The review praises the performances, especially Mia Farrow, and finds the play unexpectedly fascinating. However, the truncated nature of the text and the 'star vehicle' comment from the aggregator excerpt suggest some reservations, leading to a score in the lower-middle of the 'Positive' range. | Kimi: The review delivers strong praise for the lead performances, particularly Farrow's extraordinary turn, and finds the play fascinating and full of pleasure, though the truncated text and aggregator excerpts hint at reservations about whether the concept transcends its star vehicle nature.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T18:16:19.527Z",
+    "scoredAt": "2026-02-04T21:37:43.685Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://newyorktheater.me/2014/09/19/love-letters-review/",
   "urlDiscoveredAt": "2026-02-03T23:57:47.376Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 772,
@@ -98,5 +98,6 @@
   "archiveOrgTimestamp": "20230606204855",
   "archiveOrgUrl": "http://web.archive.org/web/20230606204855/https://newyorktheater.me/2014/09/25/love-letters-broadway-review-mia-farrow-and-brian-dennehy-over-50-years/",
   "wordCount": 772,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:37:43.685Z"
 }

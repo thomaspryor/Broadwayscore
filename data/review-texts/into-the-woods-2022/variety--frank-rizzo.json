@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Stephen Sondheim's beloved musical fairy tale feels both fresh and faithful, with Sara Bareilles and Christian Borle leading a strong ensemble cast.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 78,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival of Stephen Sondheim's beloved musical fairy tale feels both fresh and faithful.",
+        "quote": "It's a crystalline showcase for sensational performances from an all-star cast of marquee veterans, and a testament to the enduring genius of the beloved musical.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('fresh and faithful', 'strong ensemble cast') with praise for leads, but brief excerpt lacks detail for higher confidence or score. | GPT-4o: The review praises the revival for being both 'fresh and faithful' with a strong ensemble, indicating a strong recommendation. | Gemini: The review uses positive language such as \"fresh and faithful\" and \"strong ensemble cast,\" indicating a positive recommendation. | Kimi: Brief but unambiguously positive assessment praising the revival as 'fresh and faithful' with a 'strong ensemble,' though the brevity of the excerpt limits confidence in the full strength of the recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'glorious,' 'crystalline showcase,' 'sensational performances,' and 'radiant.' The critic finds no meaningful flaws and concludes with rapturous endorsement of the production's entertainment value. | GPT-4o: The review is filled with superlatives and unqualified praise for the performances, direction, and overall production. The critic describes it as a 'glorious lifeline' and 'radiant,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the enduring genius of Sondheim's score. The critic clearly recommends seeing the show, highlighting its radiant quality and ability to entertain. | Kimi: The review offers unqualified praise for the production, describing it as a 'glorious lifeline' with 'sensational performances' from an all-star cast, and a 'testament to the enduring genius' of Sondheim, using superlatives throughout with no significant caveats.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:36:43.840Z",
+    "scoredAt": "2026-02-04T21:12:33.557Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 78,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 91,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "previousUrl": "https://variety.com/2022/legit/reviews/into-the-woods-review-broadway-revival-1235317576/",
   "urlDiscoveredAt": "2026-02-03T23:59:37.203Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 775,
@@ -120,5 +120,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 775,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T21:12:33.557Z"
 }
