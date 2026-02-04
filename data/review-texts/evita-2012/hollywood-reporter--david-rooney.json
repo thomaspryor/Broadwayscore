@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/evita-theater-review-304775/",
   "publishDate": "April 5, 2012",
-  "fullText": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus, while Elena Roger reprises her Olivier Award-winning performance as Eva Perón with fiery intensity.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus, while Elena Roger reprises her Olivier Award-winning performance as Eva Perón with fiery intensity.",
   "originalScore": null,
   "assignedScore": 67,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ricky Martin brings his considerable charisma to the role of Che, the narrator who serves as both conscience and Greek chorus, while Elena Roger reprises her Olivier Award-winning performance as Eva Perón with fiery intensity.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (35 words)",
   "llmScore": {
     "score": 67,
@@ -70,5 +70,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Bucket disagreement: gemini=Mixed, kimi=Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 67,
+  "textWordCount": 470,
+  "archivePath": "data/archives/reviews/evita-2012/hollywood-reporter--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:52:53.376Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Spike Lee Trayvon Martin - Split 2012\n\nSpike Lee has been earning mostly positive accolades in Hollywood and the mainstream media for taking up the cause of Trayvon Martin, the Florida teenager killed by neighborhood watch captain George Zimmerman. A hasty retweet, though, has landed the activist-director in hot water, at least in some circles.\n\nPHOTOS: Hollywood’s Memorable Mea Culpas\n\nDuring the weekend, Lee retweeted Zimmerman's address to his 248,000 followers, a move some denounced for its potential to incite violence against the Hispanic man who shot the black teenager in Sanford, Fla. On Tuesday, reporter Kerry Picket of The Washington Times wrote that the address Lee retweeted and is now floating all over the Internet was incorrect.\n\n\"I took a drive to that Edgewater Circle address that so many on Twitter retweeted and cursed, and I discovered through a neighbor named Tim, who lives across the street from the address, that not only does George Zimmerman not live at the lakeside house but a woman by the name of Elaine does,\" Picket wrote Tuesday.\n\nPHOTOS: 18 Outrageous Entertainment Lawsuits\n\n\"While it was not wise to incite the masses to go to an address he thought was Mr. Zimmerman's to begin with, Mr. Lee should still 'do the right thing' and give the actual resident at the address some peace and apologize for disrupting her life,\" Picket wrote.\n\nConservative bloggers and columnists in general have seized on what they perceive as Lee's attempt to stoke rage by supplying the address — correct or not — of a man some are characterizing as a reckless killer inspired by racial animus.\n\nTwitchy, a site founded by conservative commentator Michelle Malkin, has been leading the charge against Lee's actions by posting photos of his retweet alongside several tweets from others who advise that a visit to Zimmerman's alleged address is in order.\n\n\"Get this mutha fucka!!\" says one tweet with the address. \"Dies,\" says another that also includes the address. \"Ima get a group of niggas to KILL George Zimmerman (the fat ass racist ass white man who killed Trayvon Martin)! He deserves to DIE!!!!\" says another.\n\nPHOTOS: 10 TV Trials That Shook the World\n\nMalkin's site also comes with commentary, of course, much of it focused on Lee's response to a kind of see-how-you-like-it tweet from a man who threatened to tweet out Lee's address. \"Tweet it Big Guy,\" Lee tweeted back.\n\n\"Yes, Lee has a son,\" Twitchy reports. \"And if he really dares someone to post his home address in the public sphere, he is either bluffing and therefore a liar, or he is being sincere and doesn't give a crap about his son's safety. So which is it, Spike? And when can Elaine expect your apology.\"\n\nA representative at Lee’s offices in New York said he was unavailable for comment."
 }
