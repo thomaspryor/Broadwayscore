@@ -4,933 +4,335 @@
 
 ### 1. NEVER Ask User to Run Local Commands
 The user is **non-technical and often on their phone**. They cannot run terminal commands.
-
 - Make code changes and push to Git
 - Create/update GitHub Actions for automation
 - If something truly requires local execution, create a GitHub Action to do it
 
 ### 2. ALWAYS ASK: Quick Fix or Preview? (MANDATORY)
-
 **Before making ANY code/design changes, Claude MUST ask:**
-
 > "Is this a **quick fix** (ship directly to production) or do you want to **preview it first** (staging branch)?"
 
-**User responses:**
-- "Quick fix" / "Ship it" / "Just do it" → Work on `main`, push directly to production
-- "Preview" / "Staging" / "Let me see it first" → Work on `staging` branch, provide preview URL
-
-**Exceptions (don't need to ask):** Pure data updates, documentation changes, clearly broken bug fixes.
-
----
+- "Quick fix" / "Ship it" → Work on `main`, push directly
+- "Preview" / "Staging" → Work on `staging` branch, provide preview URL
+- **Exceptions:** Pure data updates, documentation, clearly broken bug fixes
 
 ### 3. Git Workflow - Two Paths
-
-#### Path A: Quick Fix (Direct to Production)
-```
-git checkout main && git pull origin main
-# Make changes
-git add -A && git commit -m "description" && git push origin main
-# Vercel auto-deploys → Live in ~1 minute
-```
-
-#### Path B: Preview First (Staging Branch)
-```
-git checkout main && git pull origin main
-git checkout -b staging
-# Make changes
-git add -A && git commit -m "description" && git push origin staging
-# Vercel creates preview URL automatically
-```
-
-**After user approves:** `git checkout main && git merge staging && git push origin main` then delete staging branch (local + remote).
-
+**Path A: Quick Fix** → Work on `main`, push. Vercel auto-deploys in ~1 min.
+**Path B: Preview** → Branch `staging` from `main`, push. Merge to `main` after approval, delete staging.
 **Preview URLs:** `https://broadwayscore-git-staging-[username].vercel.app`
+**Production:** https://broadwayscorecard.com | **Branch:** `main`
+**NEVER:** Create PRs or random feature branches (only `main` or `staging`).
 
-### 4. Vercel Deployment
-**Production site:** https://broadwayscorecard.com (auto-deploys when `main` is pushed)
+### 4. Automate Everything
+Write scripts via GitHub Actions. Never ask user to manually fetch data.
 
-| Platform | Status | URL |
-|----------|--------|-----|
-| **Vercel** | PRIMARY | https://broadwayscorecard.com |
-| GitHub Pages | Secondary/Legacy | https://thomaspryor.github.io/Broadwayscore/ |
+### 5. NEVER Guess or Fake Data
+Never give approximate ranges. If you can't access a source, say so.
 
-**Production branch:** `main`
-
-**NEVER:** Ask user to "create a PR" or create random feature branches (only `main` or `staging`).
-
-### 5. Automate Everything
-- Write scripts that run via GitHub Actions
-- Create automation for any recurring task
-- Never ask user to manually fetch data
-
-### 6. NEVER Guess or Fake Data
-- Never give approximate ranges - there's always a specific number
-- Never claim to have verified something you couldn't access
-- If you can't access a source, say so. If you don't know, say "I don't know."
-- Always fetch and verify actual data before reporting numbers
-
-### 7. NEVER Extract Metadata from URLs
-**URL structure is wildly inconsistent across outlets.** NEVER extract years, production info, show identifiers, or any other metadata from URL patterns. URLs contain republished content paths, migrated slugs, article IDs that resemble years, and other misleading patterns.
-
-- **NEVER** extract a year from a URL to determine which production a review belongs to
-- **NEVER** compare a URL year to a show's opening year to flag wrong-production content
-- **NEVER** filter or skip reviews based on URL path patterns
-- **DO** use publish date (editorially set, reliable) for date-based checks
-- **DO** use review text content (cast names, theater names) for production verification
-- **DO** use exact URL matching (same URL = same article) for deduplication
-
-Multiple past sessions have introduced bugs by assuming URL years indicate production years. This is wrong — a 2021 URL can contain a 2024 Broadway review (republished), and a URL with `/6910/` is an article ID, not a year.
+### 6. NEVER Extract Metadata from URLs
+**URL structure is wildly inconsistent.** NEVER extract years, production info, or identifiers from URL patterns. A 2021 URL can contain a 2024 review; `/6910/` is an article ID, not a year. **DO** use publish date, review text content, and exact URL matching instead. Multiple past sessions have introduced bugs by assuming URL years indicate production years.
 
 ---
 
 ## Project Overview
 
-A website aggregating Broadway show reviews into composite scores (independent Broadway-focused review aggregator).
+Broadway review aggregator. **Tech:** Next.js 14, TypeScript, Tailwind CSS, static export.
+**Production:** https://broadwayscorecard.com (Vercel, auto-deploys from `main`)
 
-**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, static export
+**Current state:** 738 shows (IBDB 2005-2024 + 8 pre-2005 classics), 8,900+ source files, 3,439 scored reviews. ~29 open, ~16 previews, 690+ closed. Critics-only scoring (V1).
 
-## Current State (February 2026)
+## Scoring Methodology
 
-### What's Working
-- **738 Broadway shows** with full metadata (seasons 2005-2024 via IBDB, plus 8 pre-2005 classics)
-- **8,900+ review source files**, **3,439 scored reviews** in `reviews.json`
-- **Critics-only scoring** (V1 approach)
-- **TodayTix-inspired UI** with card layout, hero images, show detail pages
-- **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`. Open shows use native square thumbnails (1080x1080) from TodayTix API; closed shows use cropped-from-portrait squares via Contentful transforms. **Feb 2026 cleanup**: 280 wrong/cross-contaminated images deleted via LLM vision audit (see [Image Audit & Cleanup](#image-audit--cleanup-feb-2026)). ~250 closed shows now show placeholders pending Phase 2 re-fetch.
-- **URL-based filtering** with shareable filter state
-
-### Shows Database
-- ~29 currently open, ~16 in previews, 690+ closed/historical shows tracked
-- Historical coverage: IBDB seasons 2005-2024 fully imported, plus 8 curated pre-2005 classics (Phantom, Rent, Cats, Les Mis, Hairspray, Avenue Q, The Producers, Spelling Bee)
-- Full metadata: synopsis, creative team, tags, age recommendations, theater addresses
-- Ticket links for all open shows
-
-## Scoring Methodology (V1 - Critics Only)
-
-- **Composite Score = Critic Score** (tier-weighted average)
-- **Tier 1** (NYT, Vulture, Variety): weight 1.0
-- **Tier 2** (TheaterMania, NY Post): weight 0.70
-- **Tier 3** (blogs, smaller sites): weight 0.40
-- Each review: `assignedScore` (0-100), `originalRating` (e.g., "B+", "4 stars")
+- **Composite = Critic Score** (tier-weighted average)
+- **Tier 1** (NYT, Vulture, Variety): 1.0 | **Tier 2** (TheaterMania, NY Post): 0.70 | **Tier 3** (blogs): 0.40
 - Designation bumps: Critics_Pick +3, Critics_Choice +2, Recommended +2
-- **Unified letter grade → score mapping** (used across all three code locations):
+- **Letter grade map** (source of truth: `src/config/scoring.ts`):
   A+=97, A=93, A-=90, B+=87, B=83, B-=78, C+=72, C=65, C-=58, D+=40, D=35, D-=30, F=20
-  Source of truth: `src/config/scoring.ts` LETTER_GRADE_MAP (also duplicated in `scripts/rebuild-all-reviews.js`)
+
+**Scoring hierarchy in `rebuild-all-reviews.js`:**
+- **P0:** Explicit ratings from text (stars, letter grades, X/5) — ~199 reviews
+- **P0.5:** `humanReviewScore` manual override (paired with `humanReviewNote`) — ~60 active
+- **P0b:** `originalScore` parsed (letter grades, star ratings) — ~67 reviews
+- **P1:** LLM ensemble (high/medium confidence) — ~1,142 reviews
+- **P2:** Aggregator thumb direction override for low-confidence LLM (compares directions, not buckets) — 0 reviews
+- **P3:** LLM fallback (low confidence, single/no thumbs) — ~272 reviews
+
+**Key rules:** Excerpt-only reviews (<100 chars fullText) get confidence downgraded to "low". `garbageFullText` >200 chars recovered via `cleanText()` during rebuild (in-memory only). `scoreSource` tracks method in reviews.json.
 
 **V2 planned:** Audience Score 35%, Buzz Score 15%, confidence badges.
 
 ## Data Structure
 
-> **For querying data**, use the SQLite query layer instead of writing one-off scripts. See [SQLite Query Layer](#sqlite-query-layer) below.
+> **For querying data**, use SQLite: `npm run db:build` then `node scripts/query.js "SQL"`. Tables: shows, reviews, review_texts, commercial, grosses, audience_buzz, critic_registry. Views: duplicate_urls, content_quality_summary, scoring_stats. Rebuild DB after data changes and before queries. Use `db:build:full` for fullText (~23MB).
 
 ```
 data/
-  shows.json                      # Show metadata
-  reviews.json                    # Critic reviews with scores
-  grosses.json                    # Box office data (weekly + all-time)
-  grosses-history.json            # 55+ weeks historical grosses for WoW/YoY
+  shows.json                      # Show metadata (source of truth)
+  reviews.json                    # Derived from review-texts/ via rebuild
+  grosses.json / grosses-history.json  # Box office (weekly + historical)
   commercial.json                 # Financial/recoupment data
-  audience-buzz.json              # Audience Buzz (Show Score, Mezzanine, Reddit)
-  critic-consensus.json           # LLM-generated editorial summaries
-  new-shows-pending.json          # New shows awaiting review data
-  historical-shows-pending.json   # Historical shows awaiting metadata
-  image-sources.json              # Backup of original CDN URLs
-  critic-registry.json              # Auto-generated critic-outlet affinity data
-  review-texts/{show-id}/         # Individual review JSON files (versioned IDs, e.g., bug-2026/)
-    {outlet}--{critic}.json       # e.g., nytimes--ben-brantley.json
-  audit/                           # Audit reports (auto-generated)
-    critic-outlet-affinity.json    # Flagged reviews + freelancer list
-    validation-baseline.json       # Previous validation counts (auto-written by validate-data.js)
-    aggregator-coverage.json       # Per-show coverage gaps vs all 5 aggregators (weekly auto-generated)
-  aggregator-archive/             # Archived HTML from aggregator sites
-    show-score/ | dtli/ | bww-roundups/ | playbill-verdict/ | nyc-theatre/
+  audience-buzz.json              # Audience scores (Show Score, Mezzanine, Reddit)
+  critic-consensus.json           # LLM editorial summaries
+  critic-registry.json            # Auto-generated critic-outlet affinity
+  review-texts/{show-id}/         # Individual review files (versioned IDs, e.g., bug-2026/)
+    {outlet}--{critic}.json
+  audit/                          # Auto-generated reports
+  aggregator-archive/             # Cached HTML from 5 aggregator sources
 ```
 
-### Show Schema (shows.json)
+### Show Schema
 ```typescript
 {
   id, title, slug, venue, openingDate, closingDate, status, type, runtime, intermissions,
-  images: { hero, thumbnail, poster },
-  synopsis, ageRecommendation, tags,
-  previewsStartDate,  // For upcoming shows (status: "previews")
-  ticketLinks: [{ platform, url, priceFrom }],
-  creativeTeam: [{ name, role }],
-  officialUrl, trailerUrl, theaterAddress
+  images: { hero, thumbnail, poster }, synopsis, ageRecommendation, tags,
+  previewsStartDate, ticketLinks: [{ platform, url, priceFrom }],
+  creativeTeam: [{ name, role }], officialUrl, trailerUrl, theaterAddress
 }
 ```
+**Status:** `"open"` | `"previews"` | `"closed"`
 
-**Status values:** `"open"` (running), `"previews"` (opening date in future), `"closed"` (closed)
-
-### Grosses Schema (grosses.json)
+### Grosses Schema
 ```typescript
 {
-  lastUpdated: string, weekEnding: string,
-  shows: {
-    [slug: string]: {
-      thisWeek?: {  // Only for currently running shows
-        gross, grossPrevWeek, grossYoY,
-        capacity, capacityPrevWeek, capacityYoY,  // YoY enriched from history
-        atp, atpPrevWeek, atpYoY,                 // WoW/YoY enriched from history
-        attendance, performances
-      },
-      allTime: { gross, performances, attendance }  // All shows including closed
-    }
-  }
+  lastUpdated, weekEnding,
+  shows: { [slug]: {
+    thisWeek?: { gross, grossPrevWeek, grossYoY, capacity, capacityPrevWeek, capacityYoY,
+                 atp, atpPrevWeek, atpYoY, attendance, performances },
+    allTime: { gross, performances, attendance }
+  }}
 }
 ```
+WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 
-**From BroadwayWorld:** Gross (current/prev/YoY), Capacity (current/prev), ATP (current only), all-time stats.
-**Self-computed from grosses-history.json:** Capacity YoY, ATP WoW, ATP YoY. The `scrape-grosses.ts` script runs weekly, enriches grosses.json from history, and saves current week's snapshot.
-
-### Audience Buzz Schema (audience-buzz.json)
+### Audience Buzz Schema
 ```typescript
 {
-  shows: {
-    [showId]: {
-      designation: "Loving" | "Liking" | "Shrugging" | "Loathing",  // Legacy field, still in data file
-      // UI displays letter grades (A+ through F) computed from combinedScore via getAudienceGrade()
-      // Labels: A+/A = "Loving It", A-/B+ = "Liking It", B/B- = "Shrugging", C+ and below = "Loathing It"
-      combinedScore: number,
-      sources: {
-        showScore?: { score, reviewCount },
-        mezzanine?: { score, reviewCount, starRating },
-        reddit?: { score, reviewCount, sentiment: { enthusiastic, positive, mixed, negative }, positiveRate }
-      }
+  shows: { [showId]: {
+    designation, combinedScore,
+    sources: {
+      showScore?: { score, reviewCount },
+      mezzanine?: { score, reviewCount, starRating },
+      reddit?: { score, reviewCount, sentiment: {...}, positiveRate }
     }
-  }
+  }}
 }
 ```
+**Weighting:** Reddit fixed 20%. Show Score & Mezzanine split remaining proportionally by sample size.
 
-**Weighting:** Reddit fixed 20% when available. Show Score & Mezzanine split remaining 80% (or 100%) proportionally by sample size.
-
-**Sources:** Show Score (weekly automated, 0-100), Mezzanine (weekly automated via Parse API, star ratings), Reddit r/Broadway (monthly automated, sentiment analysis).
-
-### Commercial Data Schema (commercial.json)
+### Commercial Data Schema
 ```typescript
 {
-  shows: {
-    [showId]: {
-      title, weeklyRunningCost, weeklyRunningCostRange?: { min, max },
-      capitalization, recouped, recoupedDate,
-      estimatedRecoupmentPct, profitMargin,
-      costMethodology: string,  // See methodology table below
-      sources: [{ type: "reddit"|"trade"|"sec"|"manual", url, date, excerpt? }],
-      deepResearch?: { verifiedFields: string[], verifiedDate, verifiedBy, notes? },
-      lastUpdated
-    }
-  }
+  shows: { [showId]: {
+    title, weeklyRunningCost, weeklyRunningCostRange?, capitalization,
+    recouped, recoupedDate, estimatedRecoupmentPct, profitMargin,
+    costMethodology, sources: [{ type, url, date, excerpt? }],
+    deepResearch?: { verifiedFields, verifiedDate, verifiedBy }, lastUpdated
+  }}
 }
 ```
 
-**Cost Methodology values:**
+**Methodology reliability:** `sec-filing`/`producer-confirmed`/`deep-research` (Very High) > `trade-reported` (High) > `reddit-standard` (Medium) > `industry-estimate` (Low)
 
-| Methodology | Reliability | Notes |
-|-------------|-------------|-------|
-| `reddit-standard` | Medium | May exclude theater's ~9% cut, producer fee, royalty pools |
-| `trade-reported` | High | From Deadline, Variety, Broadway News |
-| `sec-filing` | Very High | Official SEC Form D filings |
-| `producer-confirmed` | Very High | Direct confirmation |
-| `deep-research` | Very High | Multi-source verified |
-| `industry-estimate` | Low | Based on comparable shows |
+**Deep Research Protection:** Shows with `deepResearch.verifiedFields` are protected from automated overwrites. Protected shows: death-becomes-her, the-great-gatsby, stranger-things, operation-mincemeat, just-in-time, all-out.
 
-**Deep Research Protection:** Shows with `deepResearch.verifiedFields` are protected from automated overwrites. Automated changes to verified fields are blocked and a GitHub issue is created for manual review. Protected shows: death-becomes-her, the-great-gatsby, stranger-things, operation-mincemeat, just-in-time, all-out.
+**Recoupment rules:** Never mark `recouped: true` without trade press citation (Deadline, Variety, Playbill, Broadway Journal, Broadway News). Never infer from grosses math or show designation — The Roommate (2024) was incorrectly listed as recouped due to this. Use `recouped: false` with `estimatedRecoupmentPct`.
 
-**Recoupment Verification Rules:** Never mark `recouped: true` without a specific trade press citation (Deadline, Variety, Playbill, Broadway Journal, Broadway News) or producer confirmation. Inferring recoupment from grosses math alone is insufficient — use `recouped: false` with `estimatedRecoupmentPct` instead. **Never infer recoupment from the show's designation** (e.g., "Easy Winner implies recoupment") — this is circular reasoning. The Roommate (2024) was incorrectly listed as recouped for months due to exactly this pattern. When in doubt, check: would a trade outlet have announced this? If yes and none did, recoupment likely didn't happen.
-
-**Public Data Exports:** After editing `data/commercial.json`, run `node scripts/generate-commercial-export.js` to regenerate `public/data/commercial.json` and `public/data/commercial.csv`. These are the files served to the website. The prebuild script handles this automatically on Vercel deploys, but manual edits require manual regeneration — otherwise the website will show stale data.
-
-**Key automation files:** `scripts/update-commercial-data.js` (main), `scripts/lib/deep-research-guardian.js`, `scripts/lib/source-validator.js`, `scripts/lib/parse-grosses.js`, `scripts/lib/trade-press-scraper.js`, `scripts/lib/sec-edgar-scraper.js`.
+**Public exports:** After editing `commercial.json`, run `node scripts/generate-commercial-export.js`. Prebuild handles this on Vercel deploys.
 
 ## Key Files
 
-**App:**
-- `src/lib/engine.ts` - Scoring engine + TypeScript interfaces
-- `src/lib/data.ts` - Data loading layer (includes grosses data functions)
-- `src/app/page.tsx` - Homepage with show grid
-- `src/app/show/[slug]/page.tsx` - Individual show pages
-- `src/config/scoring.ts` - Scoring rules, tier weights, outlet mappings
-- `src/config/commercial.ts` - **Single source of truth** for commercial designations (colors, sort orders, icons, badge styles). All biz components import from here.
-- `src/components/BoxOfficeStats.tsx` - Box office stats display
-- `src/components/ShowImage.tsx` - Image component with cascading source fallback
+**App:** `src/lib/engine.ts` (scoring), `src/lib/data.ts` (data loading), `src/app/page.tsx` (homepage), `src/app/show/[slug]/page.tsx` (show pages), `src/config/scoring.ts` (scoring rules/tiers/outlets), `src/config/commercial.ts` (commercial designations — single source of truth), `src/components/BoxOfficeStats.tsx`, `src/components/ShowImage.tsx` (fallback: thumbnail → poster → hero → placeholder)
 
-**Scripts:**
-- `scripts/discover-new-shows.js` - Broadway.org show discovery (daily), enriches dates from IBDB
-- `scripts/lib/deduplication.js` - Centralized show deduplication (9 checks)
-- `scripts/lib/review-normalization.js` - Outlet/critic name normalization
-- `scripts/lib/text-cleaning.js` - Centralized text cleaning (HTML entity decoding, cross-reference stripping, junk stripping)
-- `scripts/lib/content-quality.js` - Text quality classification + garbage detection
-- `scripts/lib/ibdb-dates.js` - IBDB date lookup module (preview, opening, closing dates)
-- `scripts/enrich-ibdb-dates.js` - Standalone IBDB date enrichment (`--dry-run`, `--verify`, `--force`, `--show=SLUG`)
-- `scripts/scrape-grosses.ts` - BroadwayWorld weekly grosses + history enrichment
-- `scripts/validate-data.js` - **Run before pushing** - validates shows.json + reviews.json. Uses dynamic thresholds from `data/audit/validation-baseline.json` (auto-written on success)
-- `scripts/audit-critic-outlets.js` - Generates critic-outlet affinity registry from corpus (`npm run audit:critics`)
-- `scripts/gather-reviews.js` - Main review gathering from all aggregator sources
-- `scripts/collect-review-texts.js` - Full review text scraper with declarative tier chain (see architecture below)
-- `scripts/rebuild-all-reviews.js` - Rebuilds reviews.json from review-texts data (source of truth for scoring pipeline)
-- `scripts/update-commercial-data.js` - Weekly commercial data automation
-- `scripts/generate-critic-consensus.js` - LLM editorial summaries
-- `scripts/fetch-show-images-auto.js` - Image fetcher: TodayTix API (open shows) → page scrape → Playbill fallback
-- `scripts/audit-images-llm.js` - LLM vision audit of all thumbnails using Gemini 2.0 Flash
-- `scripts/apply-image-cleanup.js` - Curated image cleanup with false positive overrides
-- `scripts/archive-show-images.js` - Downloads CDN images to local WebP files
-- `scripts/scrape-nysr-reviews.js` - NYSR full text + star ratings via WordPress API
-- `scripts/scrape-playbill-verdict.js` - Playbill Verdict review URL discovery
-- `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
-- `scripts/lib/show-matching.js` - Shared title→show matching utility
-- `scripts/audit-content-quality.js` - Deep content audit: fabricated URLs, wrong-production content, critic mismatches, domain mismatches, cross-show duplicate URLs, excerpt-as-fullText, generic URLs. Run manually after bulk data changes.
-- `scripts/audit-aggregator-coverage.js` - Aggregator coverage audit: compares archive-extracted counts vs local reviews across all 5 sources. Outputs `data/audit/aggregator-coverage.json` with per-show gaps and `trulyMissing` metric. CLI: `--output-gaps`, `--status=open`, `--show=SLUG`
-- `scripts/build-aggregator-truth.js` - Extracts expected review counts from archived HTML (Show Score, DTLI, BWW). Exports extraction functions for reuse.
-- `scripts/scrape-mezzanine-audience.js` - Mezzanine audience data via Parse Server API (automated weekly)
-- `scripts/build-sqlite.js` - Builds SQLite query database from JSON files (`npm run db:build`). Handles `contentTier` as either string or nested object.
-- `scripts/query.js` - Ad-hoc SQL queries against SQLite database (`npm run db:query`)
-- `scripts/schema.sql` - SQLite schema definition (tables, indexes, views)
+**Core Scripts:**
+- `scripts/gather-reviews.js` — Main review gathering from all aggregators
+- `scripts/collect-review-texts.js` — Full text scraper (declarative tier chain)
+- `scripts/rebuild-all-reviews.js` — Rebuilds reviews.json from review-texts/
+- `scripts/validate-data.js` — **Run before pushing** — validates shows.json + reviews.json
+- `scripts/discover-new-shows.js` — Broadway.org discovery + IBDB enrichment (daily)
+- `scripts/enrich-ibdb-dates.js` — Standalone IBDB enrichment (`--dry-run`, `--show=SLUG`, `--verify`, `--force`, `--status=`)
+- `scripts/scrape-grosses.ts` — BroadwayWorld weekly grosses + history enrichment
+- `scripts/update-commercial-data.js` — Weekly commercial automation
+- `scripts/generate-critic-consensus.js` — LLM editorial summaries
+- `scripts/fetch-show-images-auto.js` — Image fetcher: TodayTix → page scrape → Playbill fallback
 
-**Tests:**
-- `tests/unit/` - Unit tests (parse-grosses, commercial filtering, source-validator, etc.)
-- `tests/e2e/` - Playwright E2E tests (homepage, show pages, biz-buzz)
+**Libraries:** `scripts/lib/` — `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`
 
-### SQLite Query Layer
+**Audit/Scrapers:** `scripts/audit-content-quality.js` (run after bulk changes), `scripts/audit-aggregator-coverage.js` (`--output-gaps`, `--status=`, `--show=`), `scripts/audit-critic-outlets.js`, `scripts/scrape-playbill-verdict.js`, `scripts/scrape-nyc-theatre-roundups.js`, `scripts/scrape-nysr-reviews.js`, `scripts/adjudicate-review-queue.js` (daily auto-adjudication), `scripts/build-sqlite.js` / `scripts/query.js` / `scripts/schema.sql`
 
-A read-only SQLite database (`data/broadway.db`) built from the JSON source files. Use it for data analysis, auditing, and ad-hoc queries instead of writing one-off scripts or scanning thousands of files.
+**Tests:** `tests/unit/` (unit), `tests/e2e/` (Playwright E2E)
 
-**The database is ephemeral** — gitignored, never committed, rebuilt from JSON on demand. JSON files remain the source of truth. The website does not use SQLite.
+## Content Quality System
 
-```
-JSON source files ──build-sqlite.js──► broadway.db (ephemeral, read-only)
-                                            │
-     ┌──────────────────────────────────────┤
-     ▼                    ▼                 ▼
- audit scripts      validate-data.js   ad-hoc queries (Claude Code)
-```
+### Content Tier (canonical, 5-tier) — `classifyContentTier()` in `content-quality.js`
 
-**Setup:** `npm run db:build` (rebuilds in ~0.1s, creates ~2.3MB file)
+- `complete` — Full review (300+ words + proper ending, OR 500+ words, OR 150+ with opinion language and >1.1x excerpt)
+- `truncated` — Paywall/read-more/mid-sentence cutoff signals
+- `excerpt` — Only aggregator excerpt, no fullText
+- `stub` — <150 words, not structurally complete
+- `invalid` — Garbage (navigation, ads, error pages)
 
-**Querying:**
-```bash
-node scripts/query.js "SELECT COUNT(*) FROM reviews"
-node scripts/query.js "SELECT critic_name, COUNT(*) c FROM reviews GROUP BY critic_name ORDER BY c DESC LIMIT 10"
-node scripts/query.js "SELECT * FROM content_quality_summary ORDER BY total DESC LIMIT 10"
-node scripts/query.js "SELECT * FROM duplicate_urls"
-node scripts/query.js "SELECT content_tier, COUNT(*) FROM review_texts GROUP BY content_tier"
-```
+Applied by: `collect-review-texts.js`, `gather-reviews.js`, `rebuild-all-reviews.js`.
 
-**Tables:** `shows`, `reviews`, `review_texts`, `commercial`, `grosses`, `audience_buzz`, `critic_registry`
+**Junk handling:** Leading nav stripping (`stripLeadingNavigation()`), show-not-mentioned detection (nulls fullText, preserves in `wrongFullText`), outlet-specific trailing junk removal, garbage detection with guards (>500 char legal footers ok, >300 char error patterns scoped, contextual adblock detection).
 
-**Built-in views:** `duplicate_urls`, `content_quality_summary`, `critic_outlet_activity`, `scoring_stats`, `duplicate_outlet_critic`
+## Deduplication & Normalization
 
-**When to rebuild:** Run `npm run db:build` after any JSON data changes (new reviews, show updates, bulk imports) and before running any queries. Claude Code sessions should do this automatically — rebuild the DB after data modifications and before any analytical queries. Use `npm run db:build:full` to include fullText fields (~23MB).
+**Show dedup** (`deduplication.js`): 9 checks. Add patterns to `KNOWN_DUPLICATES` map.
 
-**Key files:**
-- `scripts/schema.sql` - Schema definition (tracked in git)
-- `scripts/build-sqlite.js` - Build script (atomic writes, integrity check)
-- `scripts/query.js` - CLI query wrapper (read-only, integrity check on open)
+**Review normalization** (`review-normalization.js`): `normalizeOutlet()` strips critic names from concatenated IDs. `normalizeCritic()` with 30+ aliases. First-name prefix dedup in `gather-reviews.js` and `rebuild-all-reviews.js`. Add aliases to `OUTLET_ALIASES` or `CRITIC_ALIASES`.
 
-### IBDB Date Enrichment
-
-`scripts/lib/ibdb-dates.js` looks up preview, opening, and closing dates from IBDB (Internet Broadway Database). IBDB has separate "1st Preview" and "Opening Date" fields, unlike Broadway.org which only has an ambiguous "Begins:" date.
-
-**How it works:** Google SERP search (`site:ibdb.com/broadway-production`) → ScrapingBee premium proxy to fetch production page HTML → JSDOM text extraction → regex date parsing.
-
-**Fallback chain for search:** ScrapingBee Google SERP → Bright Data SERP → direct URL construction from title slug.
-
-**Creative team extraction:** `extractCreativeTeamFromText()` parses 15 role patterns from IBDB page text (e.g., "Directed by X", "Choreographed by Y", "Scenic Design by Z"). Handles multi-word names, "and" separators, excess whitespace from HTML tables, and deduplicates "Music & Lyrics" vs standalone "Music"/"Lyrics" entries. Returns `[{ name, role }]` array matching the `creativeTeam` schema.
-
-**Integration with discovery:** Both `discover-new-shows.js` and `discover-historical-shows.js` enrich dates and creative team from IBDB after discovering shows. If IBDB lookup succeeds, its opening date overwrites Broadway.org's "Begins:" date and creative team is populated (if non-empty). If IBDB fails, Broadway.org's "Begins:" is treated as `previewsStartDate` (not `openingDate`).
-
-**Standalone enrichment:** `node scripts/enrich-ibdb-dates.js` with flags: `--dry-run`, `--show=SLUG`, `--missing-only` (default), `--verify` (compare only), `--force` (overwrite), `--status=open|previews|closed`. Also backfills shows with empty `creativeTeam` arrays.
-
-### Review-Text Directory Convention
-
-Review-text directories use **versioned show IDs** matching `shows.json` (e.g., `data/review-texts/bug-2026/`, not `data/review-texts/bug/`). All scripts that write review files (`gather-reviews.js`, `collect-review-texts.js`) use the show's `id` field from `shows.json` as the directory name.
-
-### Show Deduplication System
-
-`scripts/lib/deduplication.js` prevents duplicate shows via 9 checks: exact title/slug match, ID base match, known duplicate patterns (50+ shows), normalized title, slug prefix, same venue + similar title, title containment, fuzzy matching (Levenshtein). Add new patterns to `KNOWN_DUPLICATES` map in the file.
-
-### Review Normalization System
-
-`scripts/lib/review-normalization.js` prevents duplicate review files by normalizing outlet/critic names. Key functions: `normalizeOutlet()`, `normalizeCritic()`, `generateReviewFilename()`, `areCriticsSimilar()`, `validateCriticOutlet()`. Add new aliases to `OUTLET_ALIASES` (40+ variations) or `CRITIC_ALIASES` (30+ variations) in the file.
-
-**Outlet-critic concatenation handling:** `normalizeOutlet()` automatically strips critic names from concatenated outlet IDs (e.g., `variety-frank-rizzo` → `variety`, `new-york-magazinevulture-sara-holdren` → `vulture`). This catches upstream data sources that merge outlet and critic names.
-
-**First-name prefix dedup:** `gather-reviews.js` checks if an incoming critic's name is a first-name prefix of an existing critic at the same outlet (e.g., incoming "Jesse" at nytimes matches existing "Jesse Green"). Merges into the existing file instead of creating a duplicate. `rebuild-all-reviews.js` also has prefix dedup as a safety net when building reviews.json, skipping entries where one critic key is a prefix of another at the same outlet.
-
-### Review Data Quality
-
-In Jan 2026, we discovered 147 misattributed reviews (7%) where critics were incorrectly attributed to wrong outlets. `validate-data.js` now catches these. **Always run validation after bulk data changes.**
-
-### Critic-Outlet Misattribution Detection
-
-Auto-generated system to catch when reviews are attributed to the wrong outlet. No manual database maintenance — everything is derived from the corpus.
-
-**How it works:**
-1. `scripts/audit-critic-outlets.js` scans all `review-texts/` files, builds per-critic outlet frequency stats, writes `data/critic-registry.json` (106 critics with 3+ reviews, 31 freelancers identified)
-2. `validateCriticOutlet(critic, outlet)` in `review-normalization.js` checks the registry and returns `{ isSuspicious, confidence, reason, knownOutlets }`
-3. `validate-data.js` runs two checks: cross-outlet same-critic detection (same critic at 2+ outlets for same show) and registry-based misattribution flagging
-4. `gather-reviews.js` warns (never blocks) when saving a review with a suspicious critic-outlet pairing
-
-**Confidence levels:** High (10+ reviews, 0 at target outlet, not freelancer), Medium (5+ reviews, <10% share), Low (insufficient data)
-
-**Freelancer detection:** `isFreelancer = true` when 3+ outlets or no single outlet >70% share. Freelancers are never flagged. Known freelancers list in audit script (Chris Jones, Charles Isherwood, etc.)
-
-**Auto-updated:** Registry regenerates during daily `rebuild-reviews.yml` workflow and is committed if changed.
-
-**Files:**
-- `data/critic-registry.json` — Auto-generated, consumed by `validateCriticOutlet()`
-- `data/audit/critic-outlet-affinity.json` — Detailed report with flagged reviews and freelancer list
-
-### Text Quality Classification
-
-Two classification systems exist — the canonical `contentTier` (5-tier, in `content-quality.js`) and the legacy `textQuality` (4-tier, inline in `collect-review-texts.js`). Both are written to review files; `contentTier` is what gets published to `reviews.json`.
-
-#### Content Tier (canonical, 5-tier)
-
-Classified by `classifyContentTier()` in `scripts/lib/content-quality.js`. Called by:
-- `collect-review-texts.js` — after saving new fullText
-- `gather-reviews.js` — when creating new review files
-- `rebuild-all-reviews.js` — safety net during daily rebuild
-- `backfill-review-flags.js` — one-time recalculation
-
-**Tiers:**
-- `complete` — Full review text with sufficient content for scoring
-- `truncated` — Severe truncation signals (paywall, "read more", mid-sentence cutoff)
-- `excerpt` — Only aggregator excerpt available, no fullText
-- `stub` — Very short text (<150 words) that isn't structurally complete
-- `invalid` — Garbage content (navigation, ads, "thanks for subscribing")
-
-**Three paths to "complete":**
-1. **Path 1** (standard): 300+ words, proper ending punctuation, no truncation signals
-2. **Path 2** (long text): 500+ words regardless of ending (long enough to be usable)
-3. **Path 3** (short but complete): 150+ words, zero truncation signals, proper ending, opinion language detected, text longer than 1.1x longest excerpt
-
-Path 3 uses `hasOpinionLanguage()` which requires 2+ matches from evaluative/critical patterns (brilliant, disappointing, succeeds, struggles, recommended, etc.) to distinguish real capsule reviews from plot summaries.
-
-#### Text Quality (legacy, 4-tier)
-
-Set by `classifyTextQuality()` inline in `collect-review-texts.js`. Stored as `textQuality` field:
-- `full` — >1500 chars, mentions show title, >300 words, no truncation signals
-- `partial` — 500-1500 chars or larger but missing criteria
-- `truncated` — Has paywall/login text, "read more" prompts, or severe signals
-- `excerpt` — <500 chars
-
-#### Junk Handling
-
-**Leading navigation stripping:** `stripLeadingNavigation()` in `text-cleaning.js` detects "Skip to content/main" in the first 150 chars and strips all preceding nav menus. Always returns stripped text (no minimum length guard) — downstream classifiers handle short content. Prevents BroadwayNews-style pages (7KB of nav + 100-char blurb) from being classified as "complete".
-
-**showNotMentioned prevention:** When `collect-review-texts.js` detects scraped fullText doesn't mention the show (high confidence), it nulls fullText immediately (preserves in `wrongFullText`), sets contentTier to excerpt/needs-rescrape. The collector still tries URL discovery on the next run. `rebuild-all-reviews.js` allows showNotMentioned reviews through if they have aggregator excerpts.
-
-**Automatic trailing junk stripping:** Removes newsletter promos (TheaterMania), login prompts (BroadwayNews), "Read more" links (amNY), signup forms (Vulture/NY Mag) from end of scraped text.
-
-**Legitimate endings recognized:** Theater addresses, URLs, production credits, ticket info — these don't trigger false truncation.
-
-**Truncation signals detected:**
-- `has_paywall_text` — "subscribe", "sign in", "members only"
-- `has_read_more_prompt` — "continue reading", "read more"
-- `has_footer_text` — "privacy policy", "terms of use"
-- `shorter_than_excerpt` — fullText shorter than aggregator excerpt
-- `no_ending_punctuation` — Doesn't end with .!?"')
-- `possible_mid_word_cutoff` — Ends with lowercase letter
-
-**Garbage detection guards (Feb 2026):** To prevent false positives on legitimate reviews:
-- Legal page patterns (e.g., "All Rights Reserved") are skipped for texts >500 chars — copyright footers are not garbage
-- Error page patterns (e.g., "has been removed") only check first 300 chars for long texts — prevents theatrical context matches
-- Ad blocker detection requires full message context, not just the word "adblock"
-
-**Automated quality checks:**
-- `scripts/audit-text-quality.js` — Runs in CI, enforces thresholds (35% full, <40% truncated, <5% unknown)
-- Quality classification happens automatically during `collect-review-texts.js` and `gather-reviews.js`
-- `review-refresh.yml` now rebuilds `reviews.json` after collecting new reviews
+**Critic-outlet misattribution** (`critic-registry.json`): Auto-generated from corpus. `validateCriticOutlet()` flags suspicious pairings. Freelancers (3+ outlets or <70% at any one) never flagged. Auto-regenerates daily.
 
 ## Automated Testing
 
-**Always run `node scripts/validate-data.js` before pushing changes to shows.json.** If validation fails, do not push.
-
-**Build-time gate:** `scripts/validate-shows-prebuild.js` runs before every Vercel build and blocks deployment if duplicate shows exist in `shows.json`. This is the last line of defense — no duplicate can go live regardless of how it was introduced.
+**Always run `node scripts/validate-data.js` before pushing.** Build-time gate: `validate-shows-prebuild.js` blocks deployment on duplicates.
 
 ```bash
-npm run test:data    # Data validation only (fast)
+npm run test:data    # Data validation (fast)
 npm run test:e2e     # E2E browser tests
 npm run test         # All tests
 ```
 
-Tests run automatically on push to `main` and daily. On failure, a GitHub issue is created.
-
 ## Automation (GitHub Actions)
 
-All automation runs via GitHub Actions - no local commands needed. See `.github/workflows/CLAUDE.md` for individual workflow descriptions.
+See `.github/workflows/CLAUDE.md` for individual workflow descriptions.
 
-### Data Sync Architecture
+**Source of truth:** `data/review-texts/` → **Derived:** `data/reviews.json`
 
-**Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files)
-**Derived file:** `data/reviews.json` (aggregated for website consumption)
+| Workflow | Modifies texts | Rebuilds reviews | Schedule |
+|----------|---------------|-----------------|----------|
+| `rebuild-reviews.yml` | No | Yes | Daily 4 AM UTC |
+| `collect-review-texts.yml` | Yes | Yes | Nightly 2 AM UTC |
+| `gather-reviews.yml` | Yes | Yes | Manual/triggered |
+| `review-refresh.yml` | Yes | Yes | Weekly |
+| `adjudicate-review-queue.yml` | Yes | Triggers | Daily 5 AM UTC |
+| `update-mezzanine.yml` | No | No | Weekly Sun 1 PM UTC |
+| `scrape-new-aggregators.yml` | Yes | Yes | Weekly Sun 11 AM UTC |
+| `fetch-guardian-reviews.yml` | Yes | Yes | Manual |
+| `process-review-submission.yml` | Yes | Yes | Manual |
 
-| Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
-|----------|----------------------|----------------------|-------|
-| `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily 4 AM UTC + manual trigger |
-| `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
-| `gather-reviews.yml` | ✅ | ✅ | Rebuilds inline after commit |
-| `collect-review-texts.yml` | ✅ | ✅ | Nightly 2 AM UTC + manual. Single-job rebuilds inline; parallel triggers `rebuild-reviews.yml` after all jobs complete |
-| `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
-| `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
-| `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline. Also runs per-show from `gather-reviews.yml` |
-| `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
-| `update-mezzanine.yml` | ❌ | ❌ | Weekly Sun 1 PM UTC, updates `audience-buzz.json` Mezzanine data via Parse API. Discord alert on failure (token may expire). |
-
-**For bulk imports (100s of shows):** Run parallel gather-reviews workflows, then trigger manual rebuild:
-```bash
-gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
-```
-
-**Why this architecture?** Parallel workflows (gather-reviews, collect-review-texts) can't rebuild `reviews.json` without merge conflicts. They write only to their show-specific `review-texts/` directory. The daily rebuild consolidates all changes, and manual trigger allows immediate sync after bulk work.
+**For bulk imports:** Run parallel gather-reviews, then `gh workflow run "Rebuild Reviews Data"`.
 
 ### Workflow Robustness Checklist
 
-**When creating or modifying any GitHub Actions workflow, follow ALL of these rules:**
+1. **Parallel-safe** — Matrix strategy, never 700+ items in one job (use gather-reviews.yml pattern)
+2. **Incremental progress** — Each batch commits independently, 5-retry push with `--rebase -X theirs`
+3. **Idempotent** — Safe to re-run, skip-if-exists caching
+4. **Test first** — Small batch before bulk
+5. **Budget-aware** — Log API calls, `continue-on-error` for non-critical steps, `timeout-minutes` on every job (batch: 60, rebuild: 15, scraping: 30, single-show: 10)
+6. **No conflicts** — Parallel jobs only commit own file paths, derived files rebuilt in final job
+7. **Secrets in env blocks** — MUST explicitly pass via `env:` blocks (NOT auto-available)
 
-1. **Parallel-safe by default.** Any workflow that processes multiple shows MUST use matrix strategy to split work across parallel runners. Never put 700+ items in a single job — if it fails at item 600, you lose everything. Use the `gather-reviews.yml` prepare/matrix pattern (round-robin split, 30s stagger delays).
+### GitHub Secrets
 
-2. **Incremental progress.** Each parallel batch MUST commit and push its own results independently. Use the standard 5-retry push loop with `git pull --rebase -X theirs`, `rebase --abort` fallback, and random 10-30s backoff. Only commit the files your job wrote (e.g., `review-texts/`, `aggregator-archive/`), NOT shared derived files like `reviews.json`.
-
-3. **Idempotent / re-runnable.** Workflows MUST be safe to re-run. Use caching (archive files, skip-if-exists checks) so repeat runs cost ~0 API calls. If a run partially fails, re-running should pick up where it left off, not redo completed work.
-
-4. **Test before bulk runs.** Before triggering a workflow on hundreds of shows, test with a small batch first (e.g., `parallel_jobs=1` with 1-2 shows). Verify the job completes, commits correctly, and the rebuild succeeds.
-
-5. **Budget-aware.** Track API credit costs. Log how many API calls were made vs. cache hits. Use `continue-on-error: true` for enrichment steps that aren't critical to the pipeline. Set `timeout-minutes` on every job to prevent runaway costs.
-
-6. **Non-blocking enrichment.** Supplementary data gathering (aggregator scraping, image fetching) should use `continue-on-error: true` so downstream jobs (rebuild, scoring) always run regardless of enrichment failures.
-
-7. **No conflicts with concurrent workflows.** Parallel-safe workflows only commit to their own file paths (e.g., `review-texts/{specific-show}/`). Derived files (`reviews.json`, `critic-registry.json`) are rebuilt in a final single job after all parallel work completes.
-
-8. **Secrets in env blocks.** Always pass secrets via explicit `env:` blocks — they are NOT automatically available to scripts. (See section below.)
-
-9. **Reasonable timeouts.** Set `timeout-minutes` on every job. Batch processing jobs: 60 min. Rebuild jobs: 15 min. Enrichment/scraping: 30 min. Single-show operations: 10 min.
-
-10. **Observable.** Log progress clearly — show counts, cache hit rates, API calls made, errors encountered. Use `echo` statements at key milestones so logs are useful for debugging mid-run.
-
-### CRITICAL: GitHub Secrets in Workflows
-
-**Secrets are NOT automatically available to scripts.** You MUST explicitly pass them via `env:` blocks.
+| Secret | Purpose |
+|--------|---------|
+| `ANTHROPIC_API_KEY` | Claude API |
+| `OPENAI_API_KEY` | GPT-4o ensemble |
+| `GEMINI_API_KEY` | Gemini Flash (optional) |
+| `BRIGHTDATA_TOKEN` | Scraping (primary) |
+| `SCRAPINGBEE_API_KEY` | Scraping (fallback) |
+| `BROWSERBASE_API_KEY` / `_PROJECT_ID` | Browser cloud + CAPTCHA ($0.10/session) |
+| `MEZZANINE_APP_ID` / `_SESSION_TOKEN` | Mezzanine Parse API (token may expire) |
+| `FORMSPREE_TOKEN` | Feedback form |
 
 ```yaml
-# WRONG - Secret exists but script can't see it
-- name: Run script
-  run: node scripts/my-script.js
-
-# CORRECT - Secret is passed as environment variable
+# CORRECT - explicitly pass secrets:
 - name: Run script
   env:
     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   run: node scripts/my-script.js
 ```
 
-**Available secrets:**
+**Local API keys:** All in `.env` at project root. Source: `source /Users/tompryor/Broadwayscore/.env`. Do not claim keys are unavailable locally.
 
-| Secret | Purpose |
-|--------|---------|
-| `ANTHROPIC_API_KEY` | Claude API for AI features |
-| `OPENAI_API_KEY` | GPT-4o for ensemble scoring |
-| `GEMINI_API_KEY` | Gemini 2.0 Flash for 3-model ensemble (optional) |
-| `BRIGHTDATA_TOKEN` | Web scraping (primary) |
-| `SCRAPINGBEE_API_KEY` | Web scraping (fallback) |
-| `BROWSERBASE_API_KEY` | Managed browser cloud with CAPTCHA solving ($0.10/session) |
-| `BROWSERBASE_PROJECT_ID` | Browserbase project identifier |
-| `MEZZANINE_APP_ID` | Mezzanine Parse Server app ID |
-| `MEZZANINE_SESSION_TOKEN` | Mezzanine Parse session token (may expire; re-intercept via mitmproxy) |
-| `FORMSPREE_TOKEN` | Feedback form |
+## Web Scraping & Review Sources
 
-**When creating/editing workflows:** Always check if the script needs API keys and add the appropriate `env:` block.
-
-### Local API Keys
-
-**All API keys are also available locally** in the `.env` file at the project root. When running scripts locally or calling external APIs (OpenAI, Gemini, ScrapingBee, etc.), source this file first:
-
-```bash
-source /Users/tompryor/Broadwayscore/.env
-```
-
-This file contains the same keys listed in the GitHub Secrets table above. **Do not claim keys are unavailable locally** — they are in `.env`.
-
-## Broadway Investment Tracker (`/biz`)
-
-Dedicated section for recoupment tracking and investment analysis.
-
-**Routes:**
-- `/biz` - Dashboard with season stats, recent developments, approaching recoupment, at-risk shows
-- `/biz/season/[season]` - Season detail pages (auto-generated via `getSeasonsWithCommercialData()`)
-
-**Key patterns:**
-- **Seasons are dynamic** - discovered from `commercial.json` data, not hardcoded
-- **`calculateWeeksToRecoup(openingDate, recoupedDate)`** in `data.ts` is the source of truth for recoupment weeks
-- **`recouped: true` requires `recoupedDate`** - validation enforces this
-- **"Current season" filter** computes dynamically (Sept = new season start)
-- **Centralized config** - All designation colors/icons/badges in `src/config/commercial.ts`
-
-**Components:** `src/components/biz/` (AllShowsTable, SeasonStatsCard, ApproachingRecoupmentCard, AtRiskCard, RecoupmentTable, RecentDevelopmentsList, DesignationLegend)
-
-## Box Office Stats
-
-Show pages display box office data: THIS WEEK row (Gross with WoW/YoY arrows, Capacity %, ATP) and ALL TIME row (Total Gross, Performances, Attendance). Component: `src/components/BoxOfficeStats.tsx`, data functions in `src/lib/data.ts`.
-
-## Web Scraping
-
-Scripts use `scripts/lib/scraper.js` with automatic fallback: Bright Data (primary) → ScrapingBee → Playwright. Credentials stored as GitHub Secrets (never in code). MCP servers (Bright Data, ScrapingBee, Playwright) configured in `.mcp.json` for local Claude Code use.
+Scraper fallback: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
 
 ### Five Aggregator Sources
+1. **Show Score** — Recent (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first)
+2. **DTLI** — Historical (2000s+). URL: `didtheylikeit.com/shows/{show-name}/`
+3. **BWW Roundups** — Smaller outlets. Search BroadwayWorld.
+4. **Playbill Verdict** — Review URL discovery. `--shows=X,Y,Z`, `--no-date-filter`
+5. **NYC Theatre Roundups** — Paywalled excerpts (2023+). `--shows=X,Y,Z`
 
-Use ALL FIVE for comprehensive review coverage - each has different historical coverage:
+Sources 1-3 inline in `gather-reviews.js`. Sources 4-5 run non-blocking after gathering + weekly via `scrape-new-aggregators.yml`. Archives in `data/aggregator-archive/`.
 
-1. **Show Score** (show-score.com) - Best for recent shows (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first to avoid off-broadway redirects)
-2. **DTLI** (didtheylikeit.com) - Excellent historical coverage back to ~2000s. URL: `didtheylikeit.com/shows/{show-name}/`
-3. **BWW Review Roundups** - Reviews from smaller outlets not on other aggregators. URL: search BroadwayWorld.
-4. **Playbill Verdict** (playbill.com/category/the-verdict) - Discovers review URLs from many outlets. Script: `scripts/scrape-playbill-verdict.js`. Google fallback for shows not on category page. Supports `--shows=X,Y,Z` for targeted runs and `--no-date-filter` for historical imports.
-5. **NYC Theatre Roundups** (newyorkcitytheatre.com) - Excerpts for paywalled reviews from 2023+ shows. Script: `scripts/scrape-nyc-theatre-roundups.js`. Google discovery for roundup page URLs. Supports `--shows=X,Y,Z` for targeted runs.
+### NYSR Scraper
+WordPress API. Star ratings in `excerpt.rendered`. Cross-reference lines stripped at 3 levels.
 
-**Integration:** Sources 1-3 run inline during `gather-reviews.js` (immediate). Sources 4-5 run as a non-blocking `scrape-aggregators` job in `gather-reviews.yml` after gathering completes, and also weekly via `scrape-new-aggregators.yml` (Sundays 11 AM UTC) for catch-up.
-
-Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extract-show-score-reviews.js`, `scripts/extract-bww-reviews.js`.
-
-### Aggregator Coverage Audit System
-
-**Goal:** For every show, verify that every review listed on every aggregator is in our corpus. "Every show, every review, one score."
-
-**Key scripts:**
-- `scripts/audit-aggregator-coverage.js` — Main audit. Compares archive-extracted counts vs local review files across all 5 sources. Writes `data/audit/aggregator-coverage.json`.
-- `scripts/build-aggregator-truth.js` — Extracts review counts from archived HTML (Show Score, DTLI, BWW). Exports `extractShowScoreCount()`, `extractDTLICount()`, `extractBWWCount()` for reuse by the audit script.
-
-**Audit output (`data/audit/aggregator-coverage.json`):**
-```json
-{
-  "_meta": {
-    "totalShows": 734,
-    "showsWithGaps": 218,
-    "totalPerAggregatorMissing": 1009,
-    "totalTrulyMissing": 148,
-    "neverSearched": { "dtli": 658, "showScore": 657, "bww": 656, "playbillVerdict": 419, "nycTheatre": 693 }
-  },
-  "shows": {
-    "show-id": {
-      "totalLocal": 25,
-      "maxAggregatorCount": 30,
-      "trulyMissing": 5,
-      "aggregators": {
-        "showScore": { "archiveCount": 28, "extractedCount": 22, "gap": 6 },
-        "dtli": { "archiveCount": 26, "extractedCount": 24, "gap": 2 }
-      }
-    }
-  }
-}
-```
-
-**Key insight — per-aggregator gaps vs truly missing:** ~97% of per-aggregator "gaps" are source-attribution differences, not genuinely missing reviews. Example: Cabaret PV lists 20 reviews we don't attribute to PV, but 18 of those are already in our corpus from DTLI/SS/BWW. The `trulyMissing` metric (`max(0, maxAggregatorCount - totalLocal)`) shows the real gap.
-
-**Coverage gap closure workflow:** `.github/workflows/close-coverage-gaps.yml` orchestrates full closure for a given era:
-1. **Prepare** — Filters shows by opening year
-2. **Fetch archives** — Downloads HTML from DTLI/SS/BWW for never-searched shows (~$0.005/page)
-3. **Scrape PV/NYC** — Discovers review URLs from Playbill Verdict + NYC Theatre
-4. **Re-audit** — Identifies shows with `trulyMissing > 0` after new archives
-5. **Gather reviews** — Runs `gather-reviews.js` for gapped shows only
-6. **Rebuild** — Regenerates `reviews.json`
-
-**Era prioritization:** 2021-2026 first (most visible), then 2016-2020, 2011-2015, pre-2011. Total cost ~$26 for all 734 shows.
-
-**Source normalization:** The audit maps variant `source` field values to aggregator keys:
-- `show-score`, `show-score-playwright` → `showScore`
-- `dtli` → `dtli`
-- `bww-roundup` → `bww`
-- `playbill-verdict` → `playbillVerdict`
-- `nyc-theatre` → `nycTheatre`
-
-### Outlet-Specific Scrapers
-
-Unlike aggregators (which collect reviews from many outlets), outlet-specific scrapers target a single publication to fill coverage gaps:
-
-- **NYSR** (nystagereview.com) - WordPress REST API (`/wp-json/wp/v2/posts?categories=1`). Script: `scripts/scrape-nysr-reviews.js`. Fetches full text + star ratings for all Broadway reviews. Star ratings are in `excerpt.rendered`, not content body. Cross-reference lines (`[Read X's ★★★★☆ review here.]`) are stripped at three levels: (1) `scrape-nysr-reviews.js` at scrape time, (2) `text-cleaning.js:stripCrossReferences()` in `cleanText()`, (3) `rebuild-all-reviews.js:extractExplicitRating()` before star extraction.
-
-### Shared Title Matching
-
-`scripts/lib/show-matching.js` provides `matchTitleToShow(externalTitle, showsData)` for matching external show titles (from aggregators, APIs) to shows.json entries. Used by NYSR, Playbill Verdict, and NYC Theatre scrapers. Handles aliases, slug matching, normalized titles, title variants (stripping subtitles after colons/dashes), and partial containment. Returns match with confidence level (high/medium/low).
+### Aggregator Coverage Audit
+`scripts/audit-aggregator-coverage.js` compares archive vs local counts. `trulyMissing = max(0, maxAggregatorCount - totalLocal)`. ~97% of per-aggregator gaps are attribution differences. Coverage gap closure: `.github/workflows/close-coverage-gaps.yml`.
 
 ## Review Data Schema
 
-Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
-
+Each file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 ```json
 {
   "showId", "outletId", "outlet", "criticName", "url", "publishDate",
   "fullText": "..." or null,
-  "isFullReview": true/false,
   "dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt",
-  "assignedScore": 78,
-  "humanReviewScore": 48,
-  "humanReviewNote": "Explanation of why manual override was needed",
+  "assignedScore": 78, "humanReviewScore": 48, "humanReviewNote": "...",
   "source": "dtli|bww-roundup|playbill-verdict|nyc-theatre|nysr|playwright-scraped|webfetch-scraped|manual",
-  "dtliThumb": "Up/Down/Meh",
-  "bwwThumb": "Up/Down/Meh"
+  "dtliThumb": "Up/Down/Meh", "bwwThumb": "Up/Down/Meh"
 }
 ```
 
-**Data quality flags:** `wrongProduction: true` (e.g., off-Broadway run), `wrongShow: true` (different show entirely), `isRoundupArticle: true` (multi-show article). Wrong production/show reviews are excluded from reviews.json.
+**Quality flags:** `wrongProduction`, `wrongShow`, `isRoundupArticle` — excluded from reviews.json.
 
-**Off-Broadway transfer reviews (reusable):** 18 reviews are flagged `wrongProduction: true` with `wrongProductionNote` indicating the off-Broadway venue. When adding off-Broadway show entries, these reviews can be moved/copied to the new show:
-- **Hamilton** (4 reviews) → Public Theater, Feb 2015
-- **Stereophonic** (6 reviews) → Playwrights Horizons, Oct 2023
-- **The Great Gatsby** (3 reviews) → Park Central Hotel immersive, Jun 2023
-- **Illinoise** (3 reviews) → Park Avenue Armory, Mar 2024
-- **Oh, Mary!** (2 reviews) → Lucille Lortel Theatre, Feb-May 2024
+**Wrong-production prevention (3 layers):** (1) `production-verifier.js` checks date/text in gather-reviews, (2) `isNotBroadway()` streaming/TV filter in playbill-verdict, (3) cross-production URL dedup via global URL index.
 
-**Known date corrections:** Harry Potter opens 2018-04-22 (not 2021 post-COVID reopen).
+**Review-text dirs use versioned show IDs** from shows.json (e.g., `bug-2026/`, not `bug/`).
 
-**Wrong-production prevention guards (Feb 2026):** Three layers prevent wrong-production/wrong-show content from entering the corpus:
+**Off-Broadway transfers (18 reviews, `wrongProduction: true`):** Hamilton (4→Public Theater), Stereophonic (6→Playwrights Horizons), The Great Gatsby (3→Park Central Hotel), Illinoise (3→Park Ave Armory), Oh Mary! (2→Lucille Lortel). Reusable when adding off-Broadway entries.
 
-1. **`gather-reviews.js`** — `production-verifier.js` checks review publish date and text against show metadata at intake time. Cross-production URL dedup prevents the same URL from being saved in multiple production directories (e.g., `les-miserables-1987/` and `les-miserables-2014/`).
+**Known date correction:** Harry Potter opens 2018-04-22 (not 2021 post-COVID reopen).
 
-2. **`scrape-playbill-verdict.js`** — Title filter (`isNotBroadway()`) rejects streaming/TV keywords: "apple tv", "netflix", "hulu", "disney+", "streaming", "amazon prime", "tv series", "tv show".
+### Subscription Access
 
-3. **Cross-production URL dedup** — `gather-reviews.js` builds a global URL index on startup and blocks saving any review whose URL already exists in a different production directory.
-
-## Subscription Access for Paywalled Sites
-
-| Site | GitHub Secret Names |
-|------|---------------------|
-| New York Times | NYT_EMAIL, NYTIMES_PASSWORD |
-| Vulture/NY Mag/New Yorker | VULTURE_EMAIL, VULTURE_PASSWORD |
-| Wall Street Journal | WSJ_EMAIL, WSJ_PASSWORD |
-| Washington Post | WAPO_EMAIL, WASHPOST_PASSWORD |
-
-`collect-review-texts.js` automatically logs in using these credentials.
-
-**Credential Status (Feb 2026):**
-| Site | Status | Notes |
-|------|--------|-------|
-| WSJ | **Untestable in CI** | Dow Jones SSO blocks headless Chrome on GitHub Actions IPs — form fields don't render. Previous "invalid credentials" report was misdiagnosis (test script also had wrong selectors, now fixed). Use Browserbase tier for actual collection. |
-| NYT | **Untestable in CI** | Same anti-bot blocking — `myaccount.nytimes.com` won't render login form in headless CI Chrome. Browserbase tier needed. |
-| Vulture/NY Mag | Untested | Needs verification |
-| Washington Post | Untested | Needs verification |
-
-**Anti-bot note:** `test-paywalled-access.yml` uses plain Playwright headless Chrome which WSJ and NYT block. The actual collection script (`collect-review-texts.js`) uses Browserbase (Tier 1.5) with CAPTCHA solving for these sites. To test credentials, run collection with `browserbase_enabled=true` targeting a specific paywalled review.
-
-### Full Text Collection Status (Feb 2026)
-
-**~2,700+ reviews need re-scraping** (truncated/stub/needs-rescrape) — bulk increased after importing 700+ historical shows from IBDB seasons. Nightly collector processes up to 100 per run.
-
-**Content tier distribution (~8,900 source files):** ~1,450 complete, ~1,150 excerpt, ~2,650 truncated, ~310 stub, ~25 needs-rescrape, ~2,875 unclassified (empty placeholders from historical import), ~16 invalid. Numbers are approximate — collection runs continuously update these.
-
-**Multi-tier fallback success rates (Jan 2026 data):**
-| Tier | Method | Success Rate | Notes |
-|------|--------|-------------|-------|
-| 0 | Archive.org (first for paywalled) | 11.1% | Best performer |
-| 1 | Playwright + stealth | 6.7% | Local browser |
-| 1.5 | Browserbase | Enabled by default | $0.10/session, CAPTCHA solving |
-| 2 | ScrapingBee | 3.6% | API-based |
-| 3 | Bright Data Web Unlocker | 3.7% | API-based |
-| 4 | Archive.org (final fallback) | — | Last resort |
-
-**Browserbase routing fix (Feb 2026):** Paywalled sites returning 404 used to trigger a fast-path that skipped Browserbase entirely. Fixed to allow paywalled 404s to fall through to Browserbase when login credentials exist, since 404 may be due to anti-bot blocking rather than a dead URL. Also: `archiveFirstSites` config routes paywalled domains to Archive.org first (Tier 0), which is correct for historical reviews but means Browserbase only fires for non-archived paywalled content.
-
-**Declarative tier chain architecture (Feb 2026):** `fetchReviewText()` uses a declarative tier chain loop instead of sequential try/catch blocks. Key components:
-- `buildTierContext()` — computes URL properties (isKnownBlocked, isArchiveFirst, hasPaywallCreds) and mutable state signals
-- `buildTierChain()` — returns 7 tier descriptors, each with `shouldRun()` predicates and `onFailure()` hooks
-- `checkContentQuality()` — quality gate using `isGarbageContent()` that rejects paywall pages, newsletter overlays, ad-blocker walls. When a tier returns HTTP 200 with garbage content, the loop falls through to the next tier instead of accepting it.
-- `withTimeout()` — wraps tier execution with configurable timeout (Browserbase gets 120s)
-- Best-of-garbage fallback — tracks the longest garbage response in case all tiers fail, uses it as last resort
-
-**Low success rates are normal** — many URLs are dead (404), behind aggressive anti-bot, or on defunct sites. The nightly cron (`collect-review-texts.yml`, 2 AM UTC) processes up to 100 reviews per run with Browserbase enabled by default and retry_failed=true.
-
-**Collect per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
-
-## Known Extraction & Data Quality Issues (Feb 2026)
-
-Documented from the Jan-Feb 2026 review corpus audit (1,825→3,644 reviews). **All issues below are FIXED** as of Feb 2026.
-
-### Text Quality Issues
-
-**HTML entity pollution (FIXED Feb 2026):** Entities decoded at three points: `cleanText()` in text-quality.js (LLM scorer path), `mergeReviews()` in review-normalization.js (incoming text), and `rebuild-all-reviews.js` (rebuild path). All use shared `decodeHtmlEntities()` from text-cleaning.js.
-
-**Outlet-specific junk in fullText (FIXED Feb 2026):** `scripts/lib/text-cleaning.js` now has outlet-specific trailing junk patterns for EW (`<img>` tags, srcset, "Related Articles"), BWW ("Get Access To Every Broadway Story"), Variety ("Related Stories", "Popular on Variety"), BroadwayNews (site navigation), and The Times UK (paywall prefix). Applied at write time in all three consumer scripts via `cleanText()`.
-
-**Byline extraction false positives (FIXED Feb 2026):** `extractByline()` in `content-quality.js` now accepts `options.excludeNames` to skip creative team names that appear in review text (e.g., "Written by David Yazbek" is the songwriter, not the reviewer). Pattern 3 ("Written by X") removed since it always means playwright in theater reviews. Non-name word blocklist (Prize, Weekly, Crown, Theatre, etc.) rejects extracted "names" that are actually proper nouns. Callers (`backfill-review-flags.js`, `collect-review-texts.js`) pass show creative names from shows.json.
-
-**Quality classification in `gather-reviews.js` (FIXED Feb 2026):** `gather-reviews.js` now runs `classifyContentTier()` on every review before writing (line 1194). All review files have contentTier assigned.
-
-**Web-search bulk import garbage patterns (FIXED Feb 2026):** An earlier bulk import using `source: "web-search"` introduced three types of garbage fullText:
-- **Excerpt copies (63 fixed):** Aggregator excerpt (avg 27 words) copied verbatim into fullText. Top outlets: talkinbroadway (15), wsj (11), hollywood-reporter (5), observer (5).
-- **404 error pages (9 fixed):** TheaterMania returned "It seems we can't find what you're looking for" which was saved as fullText.
-- **Paywall stubs (5 fixed):** WSJ URLs produced only the article URL + photo caption (6-49 words).
-- **Excerpt copies from other sources (2 fixed):** Non-web-search reviews (dtli, etc.) where fullText was identical to an excerpt.
-All 79 files fixed by nulling fullText, preserving excerpts in proper fields, and setting appropriate contentTier for nightly collector pickup. Detection: `scripts/audit-content-quality.js` "fullText Matches Excerpt" check.
-
-**BroadwayNews cross-contamination (FIXED Feb 2026):** Three reviews at EW and Deadline had BroadwayNews content ("Broadway News' Broadway Review by Brittani Samuel") scraped into their fullText. Root cause: scraping Deadline/EW URLs returned embedded or redirected BroadwayNews content. Fixed by nulling fullText and adding `garbageReason`. Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
-
-**Critic name misattributions (FIXED Feb 2026):** 8 reviews where the file's criticName didn't match the byline in fullText. Four patterns found:
-- Same person, different name (Danny/Daniel Graugnard) — updated criticName
-- Wrong critic's text at same outlet (Matthew Murray file had Howard Miller text) — nulled fullText
-- Wrong outlet content scraped (BroadwayNews at EW/Deadline URLs) — nulled fullText
-- Aggregator misattributed critic (Fierberg→Samuel, Feldman→Gleason, Marks→Kumar) — renamed files via `git mv`, added `criticNameNote`
-Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
-
-### Scoring Issues
-
-**Explicit ratings auto-converted (FIXED Feb 2026):** `rebuild-all-reviews.js` extracts explicit ratings (stars, letter grades, X/5, "X out of Y") from review text and `originalScore` field, overriding LLM scores. Priority 0 in the scoring hierarchy. As of Feb 2026: 217 text-extracted + 110 originalScore-parsed = 327 reviews (16.3%) using explicit ratings. The `scoreSource` field in reviews.json tracks which method produced each score.
-
-**Scoring hierarchy in `rebuild-all-reviews.js`:** Priority 0 (explicit ratings from text/originalScore) → Priority 0.5 (`humanReviewScore` manual override) → Priority 0b (originalScore parsed) → Priority 1 (LLM high/medium confidence) → Priority 2 (aggregator thumb direction override for low-confidence LLM) → Priority 3 (LLM fallback). The `humanReviewScore` field (1-100) is set during manual audit of flagged reviews where LLM and aggregator thumbs disagree. It persists across rebuilds and takes precedence over all automated scoring except explicit ratings. Always paired with `humanReviewNote` explaining the rationale. As of Feb 2026: 120 source files have humanReviewScore (60 active in reviews.json; rest overridden by higher-priority explicit ratings).
-
-**Excerpt-only confidence downgrade (FIXED Feb 2026):** Audit showed ~50% error rate when LLM scored excerpt-only reviews with high/medium confidence. `rebuild-all-reviews.js` now computes `effectiveConfidence` that downgrades to "low" when `fullText` is missing or <100 chars. This routes excerpt-only reviews through Priority 2 (thumb override) instead of trusting the LLM score directly.
-
-**garbageFullText recovery (FIXED Feb 2026):** Some reviews have valid text in `garbageFullText` (flagged as garbage only due to trailing junk like newsletters/copyright). `rebuild-all-reviews.js` now recovers this text by running `cleanText()` on `garbageFullText` when `fullText` is null, promoting it to `fullText` if the cleaned result is >200 chars.
-
-**LLM low-confidence as garbage detector (FIXED Feb 2026):** `detectGarbageFromReasoning()` in `content-quality.js` checks 17 patterns in LLM reasoning text (e.g., "plot summary without evaluation", "headline only", "not a review"). When confidence is "low" and a pattern matches, the review is auto-flagged `contentTier: "needs-rescrape"` with `garbageReasoningDetected` label. Integrated into the scoring pipeline (`llm-scoring/index.ts` post-scoring check) and backfilled on existing reviews (34 flagged).
-
-### Deduplication Issues
-
-**URL uniqueness (FIXED Feb 2026):** `gather-reviews.js` checks URL uniqueness across all files in a show directory (not just same outlet+critic). First-name prefix matching and outlet-critic concatenation normalization prevent the most common duplicate patterns. In Feb 2026 cleanup: 158 duplicate files deleted, validation went from 18 to 0 duplicate outlet+critic combos.
-
-### Workflow Issues
-
-**Parallel push conflicts (FIXED Feb 2026):** All 8 parallel-safe workflows now use robust push retry: `git checkout -- . && git clean -fd` before rebase, `-X theirs` for auto-conflict resolution, `rebase --abort` on failure, random 10-30s backoff, 5 retries. Fixed in: `gather-reviews.yml`, `rebuild-reviews.yml`, `scrape-nysr.yml`, `scrape-new-aggregators.yml`, `fetch-guardian-reviews.yml`, `process-review-submission.yml`, `review-refresh.yml`, `update-commercial.yml`.
-
-### LLM Ensemble Scoring — Operational Constraints
-
-**BEFORE triggering `llm-ensemble-score.yml`, ALWAYS calculate estimated runtime:**
-- 4-model ensemble (Claude + GPT-4o + Gemini + Kimi): ~0.66 min/review (~90 reviews/hour)
-- 3-model ensemble: ~0.5 min/review (~120 reviews/hour)
-- GitHub Actions job timeout: **6 hours (360 minutes)**
-- **Max safe batch: ~400 reviews** (400 × 0.66 = 264 min, well under 360)
-
-**The scoring pipeline has NO intermediate checkpointing.** Files are written to the CI runner's ephemeral disk during scoring, but the git commit only happens AFTER the pipeline exits successfully. If the job times out, ALL progress from that run is lost.
-
-**Full rescore procedure (~1,700+ reviews):**
-1. Batch 1: `--rescore --limit=400` (scores first 400 with new prompt version)
-2. Batch 2+: `--outdated --limit=400` (catches reviews still on old prompt version)
-3. Repeat `--outdated` batches until all are done (4-5 runs total)
-4. Final verification: `--outdated` with no limit (should find 0 to process)
-
-**Why `--outdated` works after batch 1:** The first `--rescore` batch updates `promptVersion` on scored files. Subsequent `--outdated` runs find files with older versions — exactly the remaining unscored ones.
-
-**Cost:** ~$0.045/review ($18/batch of 400, ~$80 for full corpus)
-
-### Scoring Pipeline Details (Feb 2026)
-
-**Scoring hierarchy in `rebuild-all-reviews.js`:**
-- **Priority 0:** Explicit ratings extracted from review text (stars, letter grades, X/5, "X out of Y") — 199 reviews
-- **Priority 0.5:** `humanReviewScore` (1-100) — manual override from audit queue, always paired with `humanReviewNote` — 60 reviews (120 source files have humanReviewScore, but 60 are overridden by higher-priority explicit ratings)
-- **Priority 0b:** `originalScore` parsed from field (letter grades, star ratings) — 67 reviews
-- **Priority 1:** LLM ensemble score (high/medium confidence, not needs-review) — 1,142 reviews
-- **Priority 2:** Aggregator thumb override of low-confidence/needs-review LLM — 0 reviews (see P2 direction fix below)
-- **Priority 3:** LLM fallback (low confidence, single/no thumbs) — 272 reviews
-
-**P2 direction comparison fix (Feb 2026):** The P2 thumb override previously compared exact buckets (Rave/Positive/Mixed/Negative/Pan), but aggregator thumbs only have 3 levels (Up/Meh/Down). This caused false overrides: an LLM score of 87 (Rave bucket) with both thumbs "Up" (Positive bucket) was treated as a disagreement, pulling Rave scores down to 80. Fixed by comparing *directions* (positive/negative/neutral) instead of exact buckets. `thumbDirection('Up')` → "positive" matches `bucketDirection('Rave')` → "positive", so no override fires. The `thumb-override-llm` source now correctly shows 0 reviews — all former cases were false positives caught by `humanReviewScore` overrides.
-
-**Excerpt-only confidence downgrade:** When `fullText` is missing or <100 chars, LLM confidence is downgraded to "low" regardless of what the model reported. Audit showed ~50% error rate on excerpt-only high/medium confidence scores. These route through Priority 2 (thumb override) or Priority 3 (fallback) instead.
-
-**garbageFullText recovery:** During rebuild, reviews with `fullText: null` but `garbageFullText` >200 chars are cleaned via `cleanText()`. If the cleaned result is >200 chars, it's promoted to `fullText` for scoring. 114 reviews recovered this way. The source files are NOT modified — recovery is in-memory during rebuild only.
-
-**contentTier flow-through:** `rebuild-all-reviews.js` carries `contentTier` from source files into `reviews.json`. See "Full Text Collection Status" section for current distribution.
-
-**Human review queue:** `data/audit/needs-human-review.json` lists reviews where LLM score and aggregator thumbs disagree. Categories: `both-thumbs-override-llm` (auto-handled), `single-thumb-override-low-conf`, `both-thumbs-disagree-with-llm` (needs manual review). Set `humanReviewScore` + `humanReviewNote` on the source file to override. As of Feb 2026: 2 reviews in queue (down from 23 after audit).
-
-**Automated adjudication:** `scripts/adjudicate-review-queue.js` runs daily at 5 AM UTC (via `adjudicate-review-queue.yml`), 1 hour after the rebuild generates the queue. For each flagged review, calls Claude Sonnet to re-evaluate with full text + context. High/medium confidence → writes `humanReviewScore` to source file. Low confidence → increments `adjudicationAttempts`. After 3 uncertain attempts → auto-accepts LLM original score (permanently clears from queue). API errors don't consume attempts. Triggers rebuild after committing changes. Fields written: `humanReviewScore`, `humanReviewNote`, `humanReviewPreviousScore`, `humanReviewAt`, `adjudicationAttempts`, `adjudicationHistory`.
-
-### Remaining Data Quality Work (Feb 2026)
-
-**Re-scraping queue:** ~2,700+ reviews need fullText (mostly from historical show import). The nightly `collect-review-texts.yml` cron (2 AM UTC) processes up to 100 reviews per run with Browserbase enabled. Paywalled sites use subscription credentials from GitHub Secrets (NYT, Vulture, WSJ, WaPo).
-
-**Known audit flags (17 issues, all verified):** These are flagged by the audit but are legitimate:
-- **9 long-running show re-reviews:** URL year mismatches for Book of Mormon (2011), Chicago (1996), Lion King (1997), Wicked (2003) — critics reviewing years after opening. Legitimate.
-- **4 Chris Jones cross-outlet URLs:** 3 nydailynews reviews have chicagotribune.com URLs, 1 washpost has journaltimes.com. Chris Jones is a freelancer; syndication is expected.
-- **1 Deadline roundup:** 8 shows share one roundup URL. Legitimate multi-show article, flagged `isRoundupArticle: true`.
-- **2 fullText matches excerpt:** purlie-victorious-2023 and the-roommate-2024 — partial scrapes marked truncated for rescrape.
-- **1 web-search null URL:** lion-king washpost legacy entry.
-
-**Schmigadoon TV series pattern (FIXED Feb 2026):** 14 reviews in `schmigadoon-2026/` were for the 2021 Apple TV+ series, not the 2026 Broadway musical. All entered via `scrape-playbill-verdict.js` which lacked streaming/TV title filters. Fixed: all 14 flagged `wrongShow: true`, fullText nulled. Prevention: playbill-verdict now has title keyword filter (`isNotBroadway()`) that rejects streaming/TV keywords.
-
-**L&SA and TalkingBroadway URLs are NOT generic:** Earlier audit flagged these as cross-show duplicate URLs, but they use query parameters for routing (`?ID=`, `?page=&id=`). The audit's `normalizeUrl()` was stripping query params, causing false positives. Fixed by preserving query params (only strips tracking params like `utm_*`).
-
-**27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets.
-
-**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 17 issues (4 domain mismatches from freelancer syndication, 1 cross-show roundup, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
-
-**Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
-
-## Image Audit & Cleanup (Feb 2026)
-
-### Background
-
-The `fetch-square-images.js` pipeline (Google Images) had **zero content validation** — it saved whatever Google returned as a thumbnail. This resulted in X/Twitter logos, Instagram logos, WordPress logos, seating charts, and wrong-show art being used as thumbnails for ~230 shows. That pipeline commit was reverted, but the bad images persisted in `public/images/shows/`.
-
-### What Was Done (Phase 1 — COMPLETE)
-
-1. **LLM Vision Audit** (`scripts/audit-images-llm.js`): Used Gemini 2.0 Flash to classify all 700+ show thumbnails as correct/wrong. Cost: ~$0.12.
-2. **Manual false positive review**: Gemini had ~30% false positive rate on images where show title was cropped off in the square crop. Manually verified all 17 recent (2019+) DELETE flags → 10 were false positives, 5 true positives, 2 borderline.
-3. **Curated cleanup** (`scripts/apply-image-cleanup.js`): Deleted 280 images (229 bad + 51 orphaned .jpg where .webp exists), archived all originals to `data/audit/deleted-images/`, nulled 229 thumbnails in shows.json.
-4. **Verified**: All 45 open/previews shows retain correct thumbnails. Zero null thumbnails for currently running shows. Build passes. Live site verified.
-
-### Key Learnings
-
-**Image format reliability hierarchy:**
-- `.webp` from TodayTix API (open shows) → **highly reliable**, native square 1080x1080
-- `.webp` from Contentful transforms (closed shows) → **reliable**, cropped-from-portrait
-- `.jpg` from Google Images pipeline → **unreliable**, caused all contamination
-- CDN URLs in shows.json → **mostly reliable** (21 shows, all verified correct)
-
-**LLM vision prompt issues:**
-- Asking "is this the correct thumbnail for [SHOW]?" causes ~30% false positives when show title is cropped off
-- Legitimate generic art (Playbill-standard template logos, cast photos without title text) gets flagged
-- Pre-2019 shows from Google Images pipeline are almost all genuinely wrong (confirmed by spot-checks)
-- Post-2019 shows (TodayTix era) are almost all correctly flagged as false positives
-
-**Cross-contaminated hash groups found (4 groups, all cleaned):**
-- **X/Twitter logo**: bob-fosses-dancin-2023, jerusalem-2011, ohio-state-murders-2022
-- **Instagram logo**: arcadia-2011, catch-me-if-you-can-2011
-- **"The Monsters" art**: the-country-house-2014, the-royal-family-2009
-- **WordPress logo**: gigi-2015, that-championship-season-2011, the-lieutenant-of-inishmore-2006
-
-**False positives (10 shows — correct images, title cropped in square):**
-giant-2026, appropriate-2023, sunset-boulevard-2024, cult-of-love-2024, all-in-comedy-about-love-2024, purpose-2025, good-night-and-good-luck-2025, leopoldstadt-2022, sweeney-todd-2023, sea-wall-2019. These are listed in `FALSE_POSITIVES` set in `apply-image-cleanup.js`.
-
-### How to Re-Run
-
-```bash
-# Re-run full audit (dry-run, takes ~70 min due to rate limiting)
-node scripts/audit-images-llm.js
-
-# Validate prompt with known samples first
-node scripts/audit-images-llm.js --validate-only
-
-# Apply curated cleanup (archives originals first)
-node scripts/apply-image-cleanup.js --dry-run   # Preview
-node scripts/apply-image-cleanup.js --apply      # Execute
-```
-
-### Recovery
-
-All deleted originals are archived in `data/audit/deleted-images/{show-id}/`. To restore an image:
-```bash
-cp data/audit/deleted-images/{show-id}/thumbnail.webp public/images/shows/{show-id}/thumbnail.webp
-```
-Then update `shows.json` to set the thumbnail path back to `/images/shows/{show-id}/thumbnail.webp`.
-
-### Current Image State
-
-- **~460 shows** with local thumbnails (`.webp` or `.jpg` in `public/images/shows/`)
-- **~21 shows** with CDN URL thumbnails (verified correct)
-- **~250 shows** with null thumbnails (display placeholder via `ShowImage.tsx` fallback)
-- **0 open/previews shows** with null or wrong thumbnails
-
-### Key Files
-
-| File | Purpose |
+| Site | Secrets |
 |------|---------|
-| `scripts/audit-images-llm.js` | LLM vision audit (Gemini 2.0 Flash), ~$0.12/run |
-| `scripts/apply-image-cleanup.js` | Curated cleanup with false positive overrides |
-| `data/audit/image-verification.json` | Full audit results (per-show classification) |
-| `data/audit/deleted-images/` | Archive of all deleted originals |
-| `data/image-sources.json` | Backup of original CDN URLs |
-| `src/components/ShowImage.tsx` | Image component with fallback chain: thumbnail → poster → hero → placeholder |
+| NYT | `NYT_EMAIL`, `NYTIMES_PASSWORD` |
+| Vulture/NY Mag | `VULTURE_EMAIL`, `VULTURE_PASSWORD` |
+| WSJ | `WSJ_EMAIL`, `WSJ_PASSWORD` |
+| WaPo | `WAPO_EMAIL`, `WASHPOST_PASSWORD` |
 
-### Phase 2 (NOT YET DONE): LLM-Verified Image Pipeline
+WSJ/NYT untestable in CI (anti-bot blocks headless Chrome). Use Browserbase tier for actual collection.
 
-Plan at `/Users/tompryor/.claude/plans/temporal-hugging-bachman.md`. Steps remaining:
-1. Fix `fetch-show-images-auto.js` matching (exact-match-first, block bad sources)
-2. Create shared `scripts/lib/verify-image.js` module (LLM gate for all image fetching)
-3. Re-fetch images for ~250 shows with null thumbnails (open shows first via TodayTix)
-4. Add weekly CI audit cron
+### Full Text Collection
+
+~2,700+ reviews need fullText. Nightly cron processes ~100/run. Multi-tier fallback: Archive.org → Playwright → Browserbase ($0.10) → ScrapingBee → Bright Data → Archive.org (final). Low success rates normal (many dead URLs/defunct sites).
+
+**Per-show:** `gh workflow run "Collect Review Texts" -f show_filter=SHOW_ID -f max_reviews=0`
+
+### LLM Ensemble Scoring Constraints
+
+- ~0.66 min/review (4-model), **max safe batch: ~400** (6hr GitHub Actions timeout, NO checkpointing)
+- Full rescore: `--rescore --limit=400` then repeated `--outdated --limit=400` batches
+- Cost: ~$0.045/review (~$80 full corpus)
+- **Human review queue:** `data/audit/needs-human-review.json`. Set `humanReviewScore` + `humanReviewNote` on source file. Auto-adjudication daily at 5 AM UTC via Claude Sonnet (3 uncertain attempts → auto-accepts).
+
+## Broadway Investment Tracker (`/biz`)
+
+Routes: `/biz` (dashboard), `/biz/season/[season]` (auto-generated). Seasons discovered from `commercial.json`. `calculateWeeksToRecoup()` in `data.ts`. `recouped: true` requires `recoupedDate`. Config: `src/config/commercial.ts`. Components: `src/components/biz/`.
+
+## Images
+
+**Current:** ~460 local thumbnails, ~21 CDN URLs, ~250 null (placeholder). All open/previews shows have correct images.
+
+**Reliability:** TodayTix `.webp` (reliable) > Contentful `.webp` (reliable) > Google `.jpg` (unreliable — caused contamination, pipeline reverted).
+
+**Recovery:** Deleted originals in `data/audit/deleted-images/`. Restore: copy back + update shows.json thumbnail path.
+
+**Key files:** `scripts/audit-images-llm.js` (Gemini audit), `scripts/apply-image-cleanup.js` (curated cleanup with false positive overrides), `data/audit/image-verification.json`, `src/components/ShowImage.tsx`
+
+**Phase 2 (NOT DONE):** LLM-verified image pipeline. Plan at `/Users/tompryor/.claude/plans/temporal-hugging-bachman.md`. Re-fetch ~250 null thumbnails with LLM gate.
+
+## Data Quality Notes
+
+**All major issues fixed as of Feb 2026.** Prevention mechanisms now in code: content quality classifiers, outlet-specific junk stripping, byline extraction excludes creative team, critic-outlet registry, URL dedup across directories, streaming/TV filter, confidence downgrade for excerpt-only scoring. See `memory/historical-fixes-reference.md` for detailed fix history.
+
+**Audit baseline (17 known flags, all verified legitimate):** 9 long-running show re-reviews, 4 Chris Jones syndication URLs, 1 Deadline roundup, 2 partial scrapes, 1 legacy null URL.
+
+**Run after bulk changes:** `node scripts/audit-content-quality.js`
