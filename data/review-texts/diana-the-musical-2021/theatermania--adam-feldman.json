@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.theatermania.com/broadway/reviews/diana-broadway_89439.html",
   "publishDate": "November 18, 2021",
-  "fullText": "Diana feels like a musical that was written by people who have heard of musicals but have never actually seen one. The show's approach to its subject matter is both exploitative and dull.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Diana feels like a musical that was written by people who have heard of musicals but have never actually seen one. The show's approach to its subject matter is both exploitative and dull.",
   "originalScore": null,
   "assignedScore": 21,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana feels like a musical that was written by people who have heard of musicals but have never actually seen one. The show's approach to its subject matter is both exploitative and dull.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
     "score": 21,
@@ -72,5 +72,48 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Pan"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 21,
+  "textWordCount": 396,
+  "archivePath": "data/archives/reviews/diana-the-musical-2021/theatermania--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:28:08.317Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "We also recommend the latest solo show from ”Nanette” star-creator Hannah Gadsby.\n\nWith so much great theater in New York City, you might need a little help deciding what to see this week. We've got you covered!\n\nHere you'll find a list of standout shows that our TheaterMania critics consider especially worth your time. They're all top productions that you definitely won't want to miss.\n\nClick on the title of a show to learn more and purchase tickets.\n\n\"Douglas may be coming to Netflix next year, but to see it live is an experience you shouldn't pass up.\" Read David Gordon's full review here.\n\n\"Bittersweet nostalgia for those aching moments you end up defining by a Fiona Apple song you used to cry to in the shower is exactly what Al Blackstone conjures up with comedy and tenderness in his new theatrical dance piece, Freddie Falls in Love…\" Read Hayley Levitt's full review here.\n\n\"Now is as good a time as any to introduce or reacquaint oneself with Little Gem, currently making its second appearance in New York City (after a run at the Flea in 2010) in a solid new production at Irish Repertory Theatre.\" Read Kenji Fujishima's full review here.\n\n\"There's just so much to hear and see. With Moulin Rouge!, [director Alex] Timbers firmly establishes himself as the heir to Franco Zeffirelli, making extravagant dreams a reality onstage.\" Read Zachary Stewart's full review here.\n\nNative Son / Measure for Measure\n\n\"…[T]he Acting Company's pairing of Measure for Measure and Native Son does call attention to cavalier attitudes toward black and female bodies and to the white patriarchy that seeks to control them.\" Read Pete Hempstead's full review here.\n\nFor more suggestions, visit our Broadway listings page here and our off-Broadway listings page here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
