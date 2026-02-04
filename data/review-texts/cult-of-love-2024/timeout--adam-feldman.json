@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"...these ten actors don’t hit a false note, and they blend together seamlessly.\"\n\nRead more"
+  "showScoreExcerpt": "\"...these ten actors don’t hit a false note, and they blend together seamlessly.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "these ten actors don't hit a false note, and they blend together seamlessly",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with unqualified praise for ensemble performances suggests positive review, but extremely limited text makes comprehensive assessment impossible. | GPT-4o: The excerpt praises the ensemble's performance, indicating a positive view. However, with only one excerpt, the overall sentiment is unclear, leading to a low confidence score at the lower end of the Positive range. | Gemini: The excerpt praises the actors and their seamless blending, suggesting a positive experience. Given the single excerpt and lack of overall context, the confidence is low, but the positive sentiment warrants a score on the higher end of the positive bucket. | Kimi: Single excerpt provides unambiguous praise for the cast's performances and chemistry. Following guidance for clearly positive excerpts, scoring at upper end of Positive bucket, though confidence is low due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:57:33.244Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

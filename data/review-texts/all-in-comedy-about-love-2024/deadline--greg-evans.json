@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"...the 90-minute All In is a perfect holiday snickerdoodle\"\n\nRead more"
+  "showScoreExcerpt": "\"...the 90-minute All In is a perfect holiday snickerdoodle\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the 90-minute All In is a perfect holiday snickerdoodle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the show as 'perfect' which is strong positive language, though the dessert metaphor suggests light entertainment rather than profound theater. Single excerpt limits confidence. | GPT-4o: The excerpt describes the show as 'a perfect holiday snickerdoodle,' which suggests a positive, light-hearted, and enjoyable experience. Given the lack of full context, the single positive excerpt leads to a higher score within the Positive bucket. | Gemini: The single excerpt uses the phrase \"perfect holiday snickerdoodle,\" which indicates a strong positive sentiment. Given the limited text, confidence is low. | Kimi: The excerpt describes the show as 'perfect' holiday entertainment using an affectionate metaphor, indicating a clear recommendation to see it, though the single curated quote provides limited context for the full review's assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:22:02.758Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

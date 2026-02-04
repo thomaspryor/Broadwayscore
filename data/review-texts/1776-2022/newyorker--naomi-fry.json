@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new production, directed by Diane Paulus and Jeffrey L. Page, reimagines the musical with a cast of women, nonbinary, and trans performers, breathing fresh life into what could have been a musty historical pageant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new production, directed by Diane Paulus and Jeffrey L. Page, reimagines the musical with a cast of women, nonbinary, and trans performers, breathing fresh life into what could have been a musty historical pageant.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "breathing fresh life into what could have been a musty historical pageant",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the production positively as 'breathing fresh life' and avoiding being 'musty,' but with only one curated quote available, the full review sentiment is unclear. | GPT-4o: The excerpt suggests a positive reception, highlighting the innovative casting and revitalization of the material. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt indicates a positive reimagining of the musical, breathing fresh life into it. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the production's innovative casting and direction, which successfully revitalizes the material. While clearly positive, the language lacks the superlatives ('masterpiece,' 'triumph') typical of a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:01:52.443Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

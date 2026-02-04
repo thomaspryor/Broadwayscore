@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper’s scathing new racial comedy, \"Ain’t No Mo’\" has made the successful transition to Broadway with five of the six original actors from the previous Public Theater staging in 2019 and a more elaborate physical production from an almost entirely different design team. Delving into Black life and attitudes now, the play is hilarious, but not laugh-out-loud funny, rather impressive because of its cleverness, but its satire does not trigger laughter. However, its outrageous form of satire may not appeal to all theatergoers. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is hilarious, but not laugh-out-loud funny, rather impressive because of its cleverness, but its satire does not trigger laughter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows conflicted assessment - calls it 'hilarious' and 'impressive' but immediately contradicts with 'not laugh-out-loud funny' and 'does not trigger laughter.' Warns it 'may not appeal to all theatergoers.' Mixed signals require low confidence. | GPT-4o: The review acknowledges the play's cleverness and successful transition to Broadway but notes that the satire may not appeal to all and does not trigger laughter. The excerpt suggests a mixed reception with both positive and negative elements. | Gemini: The review describes the play as \"hilarious, but not laugh-out-loud funny\" and suggests that its satire may not appeal to all theatergoers, indicating a mixed reception. The truncated text and single excerpt reduce confidence. | Kimi: The excerpt praises the show's successful Broadway transfer and clever satire ('hilarious,' 'impressive'), but includes significant caveats about its lack of broad appeal and specific style of humor, suggesting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:19:20.625Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

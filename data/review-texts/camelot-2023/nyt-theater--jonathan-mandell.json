@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "There are bright shining moments aplenty in the latest Broadway revival of “Camelot… mostly found in the tuneful score…But, as entertaining as the musical numbers are, it’s hard not to be disappointed by this production. That’s largely because it’s too easy to expect too much from it…. on balance, it’s hard for me to see what Sorkin has done as an improvement. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But, as entertaining as the musical numbers are, it's hard not to be disappointed by this production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic finds 'bright shining moments' and calls musical numbers 'entertaining' but ultimately states disappointment with the production and questions whether changes are improvements. Single excerpt warning applies - this appears genuinely mixed rather than positive. | GPT-4o: The review acknowledges positive aspects like the score but ultimately expresses disappointment, suggesting a mixed verdict. The single excerpt may not fully capture the review's sentiment, so confidence is low. | Gemini: The review acknowledges bright spots but expresses disappointment, suggesting a mixed overall experience. The critic finds it hard to see Sorkin's changes as an improvement. | Kimi: While the excerpt acknowledges the score's quality ('bright shining moments,' 'tuneful'), the critic's clear verdict is disappointment with the production itself, specifically criticizing Sorkin's adaptation as not an improvement. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:50:16.284Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

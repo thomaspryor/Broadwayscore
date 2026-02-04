@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "It’s too tempting to mock this austere version of Ibsen’s play as Broadway’s answer to the movie that just swept the Oscars. Call it: Nothing Nowhere With No Intermission!... Yet…there are two main reasons I was happy to have attended director Jamie Lloyd’s often off-putting production — playwright Amy Herzog’s refreshingly idiomatic rewrite of the usual stodgy translations from Ibsen’s Norwegian, and Jessica Chastain’s performance in the last fifteen minutes\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there are two main reasons I was happy to have attended director Jamie Lloyd's often off-putting production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls the production 'often off-putting' and opens with mockery, but finds two specific reasons to be 'happy to have attended' (Herzog's adaptation and Chastain's performance). This suggests a qualified, mixed response rather than a clear recommendation. | GPT-4o: The review excerpt acknowledges positive elements like Herzog's rewrite and Chastain's performance but describes the production as 'often off-putting'. The tone suggests a mixed reception with specific highlights. | Gemini: The review seems mixed, noting that the production is \"often off-putting\" but praising the rewrite and Chastain's performance. Due to the truncated text, confidence is low. | Kimi: Single excerpt shows qualified recommendation: critic finds production 'often off-putting' and 'austere' but was 'happy to have attended' due to Herzog's rewrite and Chastain's performance, warranting mild Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:13:04.743Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

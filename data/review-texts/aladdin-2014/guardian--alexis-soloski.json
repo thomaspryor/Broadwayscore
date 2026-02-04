@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a handsome show, gorgeously costumed and designed, with a few songs that soar. But it's also bloated, overstuffed and not nearly magical enough.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a handsome show, gorgeously costumed and designed, with a few songs that soar. But it's also bloated, overstuffed and not nearly magical enough.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a handsome show, gorgeously costumed and designed, with a few songs that soar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning applies - this balances genuine praise (handsome, gorgeous design, soaring songs) against significant criticisms (bloated, overstuffed, not magical enough). The 'but' structure suggests overall disappointment despite acknowledging merits. | GPT-4o: The review excerpt praises the show's design and some songs but criticizes it as bloated and lacking magic. The single excerpt suggests a mixed verdict with both positive and negative elements. | Gemini: The review excerpt presents both positive aspects (handsome show, gorgeous design, soaring songs) and negative aspects (bloated, overstuffed, not magical enough), indicating a mixed assessment. | Kimi: The excerpt acknowledges strong production values and some soaring songs, but the decisive 'But' emphasizes significant flaws—bloat and a lack of magic—that undercut the experience, suggesting a show with redeeming qualities that ultimately disappoints.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:21:24.815Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

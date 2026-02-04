@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "English begins with a teacher writing the words \"English Only\" on the whiteboard. These two words set into motion a moving show that wrestles with identity and showcases the chaos and power of communication. In any language, English is a triumph: Sanaz Toossi's Pulitzer Prize-winning play is a compelling exploration of how language shapes who we are and how we navigate the world.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"In any language, English is a triumph: Sanaz Toossi's Pulitzer Prize-winning play is a compelling exploration of how language shapes who we are and how we navigate the world.\"\n\nRead more"
+  "showScoreExcerpt": "\"In any language, English is a triumph: Sanaz Toossi's Pulitzer Prize-winning play is a compelling exploration of how language shapes who we are and how we navigate the world.\"\n\nRead more",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In any language, English is a triumph: Sanaz Toossi's Pulitzer Prize-winning play is a compelling exploration of how language shapes who we are and how we navigate the world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses the word 'triumph' and calls it 'compelling,' indicating strong praise. However, confidence is low due to extremely limited text - this appears to be just the opening line with a 'Read more' truncation. | GPT-4o: The excerpt uses strong positive language ('triumph', 'compelling exploration') suggesting a highly favorable view. However, due to the limited text, confidence is low. | Gemini: The review excerpt uses the word \"triumph\" and calls the play a \"compelling exploration,\" indicating a strong positive recommendation. However, the confidence is low due to the limited text available. | Kimi: The excerpt employs unambiguous superlatives ('triumph,' 'compelling') indicating enthusiastic endorsement of the Pulitzer-winning production, though the brevity of the available text limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:11:14.301Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

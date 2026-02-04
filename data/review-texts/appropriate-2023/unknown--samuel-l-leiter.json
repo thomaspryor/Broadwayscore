@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Under Lila Neugebauer’s brisk direction, the acting, even when loud, is consistently believable, although the characters are mostly unlikable. Much of the dialogue has been directed so that the sentences overlap, as in realistic arguments. The characters...walk a fine line between being recognizable human beings and Southern Gothic grotesques; especially in Act One, their constant acrimony makes them boorish to the point of boredom. Still, there’s a certain fascination in watching such people interact, especially when each of them is able to find some justification in their behavior, no matter how distasteful or ludicrous...\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, there's a certain fascination in watching such people interact, especially when each of them is able to find some justification in their behavior.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt balances praise for direction and acting with significant criticisms (unlikable characters, boredom, acrimony). The 'still, there's a certain fascination' suggests qualified interest but not a recommendation. Single excerpt warning applies - setting confidence to low. | GPT-4o: The review excerpt describes believable acting but unlikable characters and boorish acrimony, balanced by a 'certain fascination' in their interactions. This suggests a mixed verdict with both positive and negative elements. | Gemini: The review describes the characters as unlikable and boorish, but also notes a certain fascination in watching them interact. The excerpt suggests a mixed experience, neither strongly recommending nor discouraging. | Kimi: The excerpt praises the direction and acting technique but criticizes the unlikable characters as 'boorish to the point of boredom,' while acknowledging a 'certain fascination' in watching them interact. With only one curated excerpt available and the text truncated, the overall verdict remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:35:24.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

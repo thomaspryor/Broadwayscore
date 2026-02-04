@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsomely mounted revival of Lerner and Loewe's 1960 musical is both faithful to the original and subtly updated for contemporary audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This handsomely mounted revival of Lerner and Loewe's 1960 musical is both faithful to the original and subtly updated for contemporary audiences.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This handsomely mounted revival of Lerner and Loewe's 1960 musical is both faithful to the original and subtly updated for contemporary audiences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with measured praise ('handsomely mounted') suggests positive assessment, but lack of enthusiastic language and single-quote limitation warrants lower end of Positive range. | GPT-4o: The excerpt praises the revival as 'handsomely mounted' and 'faithful,' with 'subtle updates,' indicating a positive reception. The single excerpt warning suggests using the upper end of the Positive range. | Gemini: Extracted from malformed response | Kimi: The excerpt offers unambiguous praise for the production values ('handsomely mounted') and creative choices (successful balance of fidelity and modernization), indicating a clear recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:51:47.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

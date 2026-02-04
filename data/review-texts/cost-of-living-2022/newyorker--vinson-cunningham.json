@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's greatest strength is its refusal to sentimentalize disability or to treat it as a source of automatic inspiration or pity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's greatest strength is its refusal to sentimentalize disability or to treat it as a source of automatic inspiration or pity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's greatest strength is its refusal to sentimentalize disability or to treat it as a source of automatic inspiration or pity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the play's 'greatest strength' indicates positive assessment, but with only one curated quote available, the full verdict remains unclear. | GPT-4o: The excerpt praises the play for its handling of disability, indicating a positive aspect. However, without more context, it's unclear if there are other significant positive or negative elements. The single excerpt and lack of full context suggest a cautious, low-confidence score at the lower end of the Positive range. | Gemini: The single excerpt praises the play's handling of disability, suggesting a positive aspect. Given the limited text, I'm placing it in the lower end of the positive bucket with low confidence. | Kimi: Single excerpt identifies a 'greatest strength' indicating clear merit regarding the show's handling of disability, but limited context requires conservative scoring in lower Positive range per excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:53:54.300Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

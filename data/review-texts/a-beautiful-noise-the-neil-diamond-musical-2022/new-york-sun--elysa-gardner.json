@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"While 'A Beautiful Noise: The Neil Diamond Musical' has its cringeworthy moments, as can be expected with this sub-genre, the music and the performance win the day.\"\n\nRead more"
+  "showScoreExcerpt": "\"While 'A Beautiful Noise: The Neil Diamond Musical' has its cringeworthy moments, as can be expected with this sub-genre, the music and the performance win the day.\"\n\nRead more",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While 'A Beautiful Noise: The Neil Diamond Musical' has its cringeworthy moments, as can be expected with this sub-genre, the music and the performance win the day.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt acknowledges significant flaws ('cringeworthy moments') but concludes positively that 'the music and the performance win the day.' This suggests a qualified recommendation, placing it in the lower Positive range. | GPT-4o: The excerpt acknowledges some cringeworthy moments but ultimately praises the music and performance, suggesting a mildly positive recommendation. Due to the single excerpt, confidence is low. | Gemini: The review acknowledges cringeworthy moments but states the music and performance win the day, indicating a positive but not rave review. Confidence is low due to the single excerpt. | Kimi: Despite acknowledging 'cringeworthy moments' typical of the jukebox musical sub-genre, the critic concludes that the music and performance ultimately succeed, representing a qualified but clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:05:48.922Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

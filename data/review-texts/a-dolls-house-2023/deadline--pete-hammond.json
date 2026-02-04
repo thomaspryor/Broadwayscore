@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Chastain commands the stage with a performance that is both fierce and nuanced, bringing fresh energy to Ibsen's classic while honoring its timeless themes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Chastain commands the stage with a performance that is both fierce and nuanced, bringing fresh energy to Ibsen's classic while honoring its timeless themes.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chastain commands the stage with a performance that is both fierce and nuanced, bringing fresh energy to Ibsen's classic while honoring its timeless themes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with language like 'commands the stage' and 'fierce and nuanced.' However, confidence is low due to single excerpt limitation - the full review verdict is unknown. | GPT-4o: The excerpt praises Chastain's performance as 'fierce and nuanced' and highlights the fresh energy brought to the classic, indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Chastain's performance as both fierce and nuanced, suggesting a strong positive assessment. Given it's a single excerpt, confidence is low, but the content is strongly positive. | Kimi: The excerpt offers strong praise for the lead performance and the production's handling of the material, indicating a clear recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:10:58.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

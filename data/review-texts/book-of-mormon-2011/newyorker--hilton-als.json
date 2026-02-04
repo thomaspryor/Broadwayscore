@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is offensive, scurrilous, and more fun than going to the beach. It's also the best musical to hit Broadway in more than a decade.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is offensive, scurrilous, and more fun than going to the beach. It's also the best musical to hit Broadway in more than a decade.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's also the best musical to hit Broadway in more than a decade.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite acknowledging the show is 'offensive' and 'scurrilous,' the critic calls it 'more fun than going to the beach' and declares it 'the best musical to hit Broadway in more than a decade' - an unqualified superlative that places this firmly in Rave territory at the high end. | GPT-4o: The excerpt provides a highly enthusiastic recommendation, calling it the best musical in over a decade, which indicates a rave review despite the limited context. | Gemini: The review uses extremely positive language, calling it the best musical in over a decade. Despite the limited text, the sentiment is overwhelmingly positive. | Kimi: The excerpt contains superlative praise declaring this the best Broadway musical in over a decade, which clearly places it in the Rave category despite limitations of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:44:25.301Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }
