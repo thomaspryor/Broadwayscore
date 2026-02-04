@@ -71,7 +71,8 @@
     "modelAgreement": "All 4 models agree: Positive"
   },
   "sources": [
-    "bww-roundup"
+    "bww-roundup",
+    "bww-reviews"
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 85,
@@ -94,5 +95,6 @@
   "_scoreFixedAt": "2026-01-31T23:10:41.710Z",
   "contentTier": "complete",
   "wordCount": 1041,
-  "textQuality": "full"
+  "textQuality": "full",
+  "bwwScore": 10
 }

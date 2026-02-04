@@ -65,7 +65,8 @@
   "sources": [
     "reviews-json-stub",
     "web-search",
-    "bww-roundup"
+    "bww-roundup",
+    "bww-reviews"
   ],
   "rescoreReason": "text-cleaning bug destroyed fullText during scoring",
   "previousLlmScore": 65,
@@ -75,5 +76,6 @@
   "truncationSignals": [
     "ends_with_ellipsis"
   ],
-  "textQuality": "full"
+  "textQuality": "full",
+  "bwwScore": 8
 }

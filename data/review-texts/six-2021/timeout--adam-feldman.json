@@ -20,7 +20,8 @@
   "sources": [
     "bww-roundup",
     "web-search",
-    "dtli"
+    "dtli",
+    "bww-reviews"
   ],
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
@@ -139,5 +140,6 @@
     "bwwThumb": "none"
   },
   "fullText": null,
-  "isFullReview": false
+  "isFullReview": false,
+  "bwwScore": 8
 }

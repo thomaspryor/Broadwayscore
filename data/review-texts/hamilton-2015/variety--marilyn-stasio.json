@@ -79,7 +79,8 @@
   "sourceMethod": "stub",
   "sources": [
     "reviews-json-stub",
-    "web-search"
+    "web-search",
+    "bww-reviews"
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 89,
@@ -89,5 +90,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textQuality": "full"
+  "textQuality": "full",
+  "bwwScore": 9
 }

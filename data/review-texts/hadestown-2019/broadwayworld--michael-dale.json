@@ -74,5 +74,10 @@
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about a production of Hadestown at the National Theatre, not the current Broadway run.; kimi: This review covers the pre-Broadway London production at the National Theatre (Olivier), not the current Broadway run. The text explicitly states the show is 'playing to UK audiences before heading to Broadway' and identifies the venue as the National Theatre with a closing date of January 26, 2019.",
   "promptVersion": "5.2.0",
-  "textQuality": "full"
+  "textQuality": "full",
+  "bwwScore": 8,
+  "sources": [
+    "reviews-json-stub",
+    "bww-reviews"
+  ]
 }
