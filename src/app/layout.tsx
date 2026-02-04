@@ -6,7 +6,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
-import { getAllShows } from '@/lib/data';
+import { getAllShows } from '@/lib/data-core';
 import { Analytics } from '@vercel/analytics/react';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 

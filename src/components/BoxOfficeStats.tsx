@@ -1,14 +1,14 @@
 'use client';
 
-import { ShowGrosses } from '@/lib/data';
+import type { ShowGrosses } from '@/lib/data-types';
 
 interface BoxOfficeStatsProps {
   grosses: ShowGrosses;
   weekEnding: string;
 }
 
-function formatCurrency(value: number | null): string {
-  if (value === null) return '—';
+function formatCurrency(value: number | null | undefined): string {
+  if (value == null) return '—';
   if (value >= 1_000_000_000) {
     return `$${(value / 1_000_000_000).toFixed(1)}B`;
   }
@@ -21,8 +21,8 @@ function formatCurrency(value: number | null): string {
   return `$${value.toLocaleString()}`;
 }
 
-function formatNumber(value: number | null): string {
-  if (value === null) return '—';
+function formatNumber(value: number | null | undefined): string {
+  if (value == null) return '—';
   if (value >= 1_000_000) {
     return `${(value / 1_000_000).toFixed(1)}M`;
   }
@@ -32,8 +32,8 @@ function formatNumber(value: number | null): string {
   return value.toLocaleString();
 }
 
-function formatPercentage(value: number | null): string {
-  if (value === null) return '—';
+function formatPercentage(value: number | null | undefined): string {
+  if (value == null) return '—';
   return `${value.toFixed(0)}%`;
 }
 

@@ -3,7 +3,8 @@
 import { useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, getAudienceBuzz, getAudienceGrade } from '@/lib/data';
+import { getAllShows } from '@/lib/data-core';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreTier, ScoreBadge, StatusBadge, FormatPill, ProductionPill } from '@/components/show-cards';
