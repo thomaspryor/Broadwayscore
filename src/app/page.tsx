@@ -552,6 +552,9 @@ function HomePageInner() {
         <p className="text-gray-400 text-base sm:text-lg">
           Every show. Every review. One score.
         </p>
+        <p className="text-gray-500 text-sm mt-1">
+          Aggregating <span className="text-gray-400 font-medium">{getDataStats().totalReviews.toLocaleString()}</span> critic reviews and counting...
+        </p>
       </div>
 
       {/* Search */}
@@ -765,12 +768,6 @@ function HomePageInner() {
         />
       </div>
 
-      {/* Total Review Count */}
-      <div className="mt-2 text-center">
-        <p className="text-gray-500 text-xs">
-          Aggregating <span className="text-gray-400 font-medium">{getDataStats().totalReviews.toLocaleString()}</span> reviews
-        </p>
-      </div>
     </div>
   );
 }
