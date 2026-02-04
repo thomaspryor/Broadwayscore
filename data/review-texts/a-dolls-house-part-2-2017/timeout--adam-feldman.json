@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/a-dolls-house-part-2",
   "publishDate": "April 27, 2017",
-  "fullText": "Hnath's play is a worthy successor to Ibsen's masterpiece, and Metcalf gives a performance that is nothing short of magnificent.",
+  "fullText": "Theater review by Adam FeldmanWith Lucas Hnath's lucid and absorbing A Doll's House, Part 2, the Broadway season goes out with a bang. It is not the same kind of bang, mind you, that ended Henrik Ibsen's 1879 social drama, A Doll's House, in which bourgeois Norwegian wife Nora Helmer walked out on her doting husband and young children with a decisive (and divisive) slam of the door. In Hnath's taut sequel, set 15 years later, the runaway bride—played by the great Laurie Metcalf, with magnificent grit and frustration—returns to confront the people she left behind: her husband, Torvald (a sympathetic Chris Cooper); her now-grown daughter, Emmy (Condola Rashad, poised and glinting); and the family servant, Anne Marie (the uncommonly sensible Jayne Houdyshell).If Ibsen's play is about suffocation, Hnath's is about airing things out. Modern in its language, mordant in its humor and suspenseful in its plotting—Nora, now a scandalous writer, needs Torvald's help to avoid being blackmailed by a judge—the play judiciously balances conflicting ideas about freedom, love and responsibility. And Sam Gold's exemplary direction keeps you hanging on each turn of argument and twist of knife. Everything about the production works. It's a slam dunk. John Golden Theatre (Broadway). By Lucas Hnath. Directed by Sam Gold. With Laurie Metcalf, Chris Cooper, Jayne Houdyshell, Condola Rashad. Running time: 1hr 25mins. No intermission. Through July 23.",
   "isFullReview": false,
   "dtliExcerpt": "Hnath's play is a worthy successor to Ibsen's masterpiece, and Metcalf gives a performance that is nothing short of magnificent.",
   "originalScore": 80,
@@ -73,5 +73,35 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "textWordCount": 226,
+  "archivePath": "data/archives/reviews/a-dolls-house-part-2-2017/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:30:31.571Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20170506053832",
+  "archiveOrgUrl": "http://web.archive.org/web/20170506053832/https://www.timeout.com/newyork/theater/a-dolls-house-part-2",
+  "textIssues": [
+    "Word count too low: 247 (min: 300)"
+  ],
+  "wordCount": 226,
+  "tierReason": "Short text (226 words)"
 }

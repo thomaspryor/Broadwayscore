@@ -5,8 +5,8 @@
   "criticName": "David Gordon",
   "url": "https://www.theatermania.com/broadway/reviews/almost-famous-the-musical_93952.html",
   "publishDate": "November 4, 2022",
-  "fullText": "Almost Famous feels like a show that's still finding its footing, but when it works, it really works, particularly in its quieter, more character-driven moments.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Almost Famous feels like a show that's still finding its footing, but when it works, it really works, particularly in its quieter, more character-driven moments.",
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous feels like a show that's still finding its footing, but when it works, it really works, particularly in its quieter, more character-driven moments.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 63,
@@ -73,5 +73,48 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 354,
+  "archivePath": "data/archives/reviews/almost-famous-2022/theatermania--david-gordon_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:39:30.681Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The hit West End musical plans a leap across the pond.\n\nSynchronize Your Watches — The Future's coming to Broadway in 2023!!!\n\nSign up to be the first to buy tickets! https://t.co/ZvFEjJ72wR pic.twitter.com/ZGr90KC6sN\n\n— Back to the Future™ (@BacktotheFuture) June 22, 2022\n\nBased on the hit 1985 film created by Robert Zemeckis and Bob Gale, the musical has a book by Gale and new music and lyrics by Grammy winners Alan Silvestri and Glen Ballard, with additional songs from the film such as \"The Power of Love\", \"Johnny B Goode\" and \"Back in Time\". It made its world premiere in Manchester, followed by a currently ongoing West End transfer.\n\nDirected by John Rando, the West End production stars Tony Award winner Roger Bart (as Doctor Emmett Brown), Olly Dobson (as Marty McFly), WhatsOnStage Award winner Hugh Coles (as George McFly), Rosanna Hyland (as Lorraine Baines) and Cedric Neal (as Goldie Wilson), alongside Aidan Cutler (as Biff Tannen), Courtney-Mae Briggs (as Jennifer Parker), Will Haswell (as Dave McFly), Emma Lloyd (as Linda McFly) and Mark Oxtoby (as Strickland).\n\nSet and costumes are by Tim Hatley, lighting design is by Tim Lutkin, lighting consultation is by Hugh Vanstone, sound design is by Gareth Owen, and video design is by Finn Ross. The show features choreography by Chris Bailey, musical supervision and arrangements by Nick Finlow, and Illusions by Chris Fisher. Orchestrations are by Ethan Popp and Bryan Crook, with dance arrangements by David Chase.\n\nYou can see a longer trailer for the West End musical here:\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
