@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/company_89123.html",
   "publishDate": "December 9, 2021",
-  "fullText": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a revelation, with Katrina Lenk delivering a powerhouse performance that makes Bobby's journey feel fresh and urgent.",
-  "isFullReview": false,
+  "fullText": "Jack was the resident director at the Pittsburgh Civic Light Opera Company where he\nstaged over 30 productions.\n\nJohn M. \"Jack\" Allison, a theater teacher and director in the United States, Canada, and Europe, died June 16 at the age of 78 in East Northport, New York.\n\nBorn in Bayonne, New Jersey, Allison graduated from New Jersey City University with a BA in American Literature and History before earning an MA in Speech and Drama from the Catholic University of America, and a PhD (ABD) in Theatre and Directing from the University of Denver.\n\nAllison served as the resident director at the Pittsburgh Civic Light Opera Company where he staged over 30 productions. He also directed at most of the major regional theaters in the United States, Canada, and Europe including the Walnut Street Theater, Coconut Grove Playhouse, Cincinnati Opera and the North Shore Music Theatre. In New York he staged acclaimed productions at the Manhattan Theatre Club and the Circle Repertory Company, and he premiered Cabaret at the National Theatre of Belgium. Allison was the recipient of three Florida Carbonell Awards and three Boston Globe Best of Season Awards.\n\nFrom 1993 until 2003 Allison was a Professor at New York University's Steinhardt School of Performing Arts where he developed the Musical Theatre program's acting sequence and directed Assassins, From May to December: Kurt Weill and Lotte Lenya (developed under the supervision of the Kurt Weill Foundation), and Life Is Like a Musical Comedy: George M. Cohan. In 2002 and 2003 he added and devised a new concentration in Musical Theatre and Voice at Five Towns College and later that year joined Point Park University – Conservatory of the Performing Arts.\n\nAllisons brother Robert \"Buddy\" Allison Sr. predeceased him. He is survived by his child Kristen Allison and sibling Patricia Ann Allison.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a revelation, with Katrina Lenk delivering a powerhouse performance that makes Bobby's journey feel fresh and urgent.",
   "originalScore": null,
   "assignedScore": 89,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a revelation, with Katrina Lenk delivering a powerhouse performance that makes Bobby's journey feel fresh and urgent.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 89,
@@ -73,5 +73,43 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Rave"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 89,
+  "textWordCount": 402,
+  "archivePath": "data/archives/reviews/company-2021/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:00:33.166Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 402,
+  "tierReason": "Full review text"
 }

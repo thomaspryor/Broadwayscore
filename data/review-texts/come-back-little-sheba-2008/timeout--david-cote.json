@@ -5,7 +5,7 @@
   "criticName": "David Cote",
   "url": "https://www.timeout.com/newyork/theater/come-back-little-sheba",
   "publishDate": "January 24, 2008",
-  "fullText": null,
+  "fullText": "By Time Out editors \n Wed Jan 30 2008\n\nWHAT A CARD Anderson plays tricks for Merkerson.\n Photograph: Joan Marcus\n\n\"Being busy is being happy,\" says the efficient Mrs. Coffman (Brenda Wehle) to her next-door neighbor Lola (Merkerson) in the Broadway revival of William Inge's 1950 hit, Come Back, Little Sheba\nThe veins of Inge's domestic melodrama bulge with the blood of pop psychology—sang-Freud, if you will—from the relationship between Lola and Doc (she has a childlike affect and calls him \"Daddy\") to the naked erotic symbolism of Marie's boyfriend Turk (Brian J. Smith), a javelin thrower (\"It's a big, long lance. You hold it like this, erect\"). In 1950 this was heady stuff, and Inge's depiction of violent alcoholism must have been genuinely shocking as well. But in the Manhattan Theatre Club's technically accomplished production, directed by Michael Pressman, the machinery of the writing is always visible, and Lola—despite Merkerson's skill—comes off as something of a simp. Come Back, Little Sheba doesn't leap into the present tense: Yesterday's play of the year has become a movie of the week.",
   "isFullReview": false,
   "dtliExcerpt": "Merkerson brings dignity and depth to Lola, avoiding the trap of playing her as a pathetic figure, while Anderson delivers a powerfully tortured performance as Doc.",
   "originalScore": 60,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Merkerson brings dignity and depth to Lola, avoiding the trap of playing her as a pathetic figure, while Anderson delivers a powerfully tortured performance as Doc.",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 61,
@@ -72,5 +72,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 179,
+  "archivePath": "data/archives/reviews/come-back-little-sheba-2008/timeout--david-cote_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:58:25.364Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20130622070235",
+  "archiveOrgUrl": "http://web.archive.org/web/20130622070235/http://www.timeout.com/newyork/theater/come-back-little-sheba",
+  "textIssues": [
+    "Word count too low: 179 (min: 300)"
+  ],
+  "misattributedFullText": true,
+  "extractedByline": "Time Out",
+  "expectedCritic": "David Cote",
+  "wordCount": 179,
+  "tierReason": "Short text (179 words)"
 }

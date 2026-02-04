@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "It was no mild threat when the original poster for Andrew Lloyd Webber’s “Cats” warned that the musical is “now and forever.”\n\nIt’s baaaack, and the new incarnation proves only one thing: gay and trans people of color have just as bad taste in show tunes as all the white people who turned the original “Cats” into one of the longest running shows in Broadway history.",
+  "isFullReview": false,
+  "textWordCount": 66,
+  "archivePath": "data/archives/reviews/cats-the-jellicle-ball/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:55:57.277Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 72 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 66,
+  "tierReason": "Short text (66 words)"
 }
