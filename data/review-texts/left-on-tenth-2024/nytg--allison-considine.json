@@ -12,8 +12,8 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"But the play, based on Ephron's bestselling memoir, may have a greater impact on the page than the stage. And while it would make a charming rom-com film, it doesn't fully translate to theatre.\"",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available",
+  "contentTier": "complete",
+  "tierReason": "Full review text",
   "assignedScore": 54,
   "llmScore": {
     "score": 54,
@@ -69,5 +69,29 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
-  "showScoreExcerpt": "\"Julianna Margulies and Peter Gallagher spark chemistry\"\n\nRead more"
+  "showScoreExcerpt": "\"Julianna Margulies and Peter Gallagher spark chemistry\"\n\nRead more",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 54,
+  "fullText": "Read our review of Left on Tenth on Broadway, a new play adapted from the 2022 memoir by Delia Ephron and starring Julianna Margulies and Peter Gallagher. Delia Ephron’s Left on Tenth has all the hallmarks of a romantic comedy: an urban setting, romantic tension, and perhaps most importantly, adorable dogs. But the play, based on Ephron’s bestselling memoir, may have a greater impact on the page than the stage. And while it would make a charming rom-com film, it doesn’t fully translate to theatre. Borrowing from its origins as a memoir, the play utilizes direct-to-audience dialogue, allowing Delia (Julianna Margulies) and Peter (Peter Gallagher) to break the fourth wall and share personal thoughts. Some of these moments feel cheesy or fall flat, while the shared scenes soar. Margulies and Gallagher spark magic as a widow and widower who learn to open their hearts again after loss. Margulies is especially impressive in the scenes where her character battles leukemia, and Gallagher is incredibly charming and supportive as her partner through it all. Tonally, the play volleys from comedy to melodrama. It is, after all, a true romance story with the patina of grief. The funnier moments come from Peter Francis James and Kate MacCluggage, who portray various characters throughout the play with the help of wigs and accents. Director Susan Stroman adds a sense of lightness to the scene transitions, featuring characters inspired by Seven Brides for Seven Brothers, an early influence on Ephron, and nurses dancing with rolling hospital screens. All in all, the soundtrack of romantic songs and the play’s various settings would likely shine best in the format of a movie, complete with a rom-com montage. Left on Tenth is based on Delia Ephron’s 2022 memoir Left on Tenth: A Second Chance at Life. The stage adaptation chronicles her journey of falling in love again after the loss of her husband, exploring themes of grief, resilience, and the joy of a second chance. Ephron, an award-winning novelist and screenwriter, is best known for collaborating with her sister Nora Ephron on rom-com films like You’ve Got Mail and Sleepless in Seattle. Left on Tenth features the quintessential charming New York City apartment that many Ephron movies showcase. Here, it's a Greenwich Village jewel with floor-to-ceiling bookshelves that feature an Easter egg for You’ve Got Mail fans: the “Shop Around the Corner” plaque. Beowulf Boritt’s impressive moving set takes audiences from Delia’s apartment to Central Park, from the Bay Area to the 9/11 Memorial Pools, and even from a hospital ward to the Wye Valley in Wales. A backdrop with projections of watercolor renderings, designed by Jeanette Oi-Suk Yew, helps transport. Left on Tenth runs 1 hour and 40 minutes, with no intermission. As of publication, Left on Tenth has three audience reviews on the review aggregator Show-Score, mostly praising the performances. Read more audience reviews of Left on Tenth on Show-Score. Delia Ephron’s Left on Tenth is a delightful and moving journey of grief and love that shines in moments but struggles to find its footing on stage. Learn more and get Left on Tenth tickets on New York Theatre Guide. Left on Tenth is at the James Earl Jones Theatre through February 2. Photo credit: Left on Tenth on Broadway. (Photos by Joan Marcus) Left on Tenth is playing at James Earl Jones Theatre. The theatre is located at 138 West 48th Street, New York, 10036. The running time of Left on Tenth is 1hr 40min. No intermission. See Left on Tenth play at the James Earl Jones Theatre. Starring Julianna Margulies and Peter Gallagher and directed by Susan Stroman, Left on Tenth in New York marks the Broadway debut of Delia Ephron. Book tickets for Left on Tenth on New York Theatre Guide. The recommended age for Left on Tenth is Ages 13+. Children under 4 years old will not be admitted.. Filmmaker and writer Delia Ephron, known for You've Got Mail and The Sisterhood of the Traveling Pants, makes her Broadway debut with this play, based on her memoir. Susan Stroman, a five-time Tony Award winner known for her physical comedy and impeccable staging, directs this romantic comedy. An age recommendation has yet to be finalized, but all Broadway audiences regardless of show must be four and over. Reviews are not out yet, but with two starry performers (three-time Emmy winner Julianna Margulies and SAG and Golden Globe winner Peter Gallagher) coupled with a celebrated writer and director, the play is set to please. Originally published on Oct 23, 202420:30",
+  "isFullReview": true,
+  "textWordCount": 755,
+  "archivePath": "data/archives/reviews/left-on-tenth-2024/nytg--allison-considine_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T16:08:43.435Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
+  "wordCount": 755
 }

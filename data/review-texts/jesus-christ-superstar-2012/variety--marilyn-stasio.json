@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/jesus-christ-superstar-1117947948/",
   "publishDate": "March 22, 2012",
-  "fullText": "This revival of Andrew Lloyd Webber and Tim Rice's rock opera is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's rock opera is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Andrew Lloyd Webber and Tim Rice's rock opera is a blessing for anyone who loves the show's driving score and can tolerate its bombastic staging.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 70,
@@ -72,5 +72,56 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 70,
+  "textWordCount": 221,
+  "archivePath": "data/archives/reviews/jesus-christ-superstar-2012/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T15:59:24.153Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 221 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "For those who can abandon logic and go with the flow, 2010 South Korean production \"Secret Love\" may possess a certain cockeyed grace and sensual charm, thanks in large part to its actors.\n\nFor those who can abandon logic and go with the flow, 2010 South Korean production “Secret Love” may possess a certain cockeyed grace and sensual charm, thanks in large part to its actors. But others might feel cheated by the lack of consistent sense in this tale of a woman, Yeon-i (Yoon Jin-seo), whose husband, Jin-woo (Yoo Ji-tae), has fallen into a coma, leaving her in a state of half-mourning. Enter hubby’s unsuspecting identical twin, Jin-ho (Yoo again), who himself recently emerged from a coma; from there, Ryu Hoon-i’s melodrama shifts from portrait of grief to labyrinthine erotic thriller.\n\nIn the film’s initial stages, Yeon-i’s languid existence seems leached of animation or color, shot in beige half-tones. But when Jin-ho appears, lethargy and ennui give way to chaos and ambiguity. Once Jin-woo awakens from his coma (right after his brother has screwed his wife, natch), it’s virtually impossible to tell at any given moment which twin is courting, stalking or making love to Yeon-i, particularly when it’s revealed that the twins switched identities earlier, in scenes glimpsed in flashback. Yoon and Yoo previously appeared in Park Chan-wook’s “Oldboy.”"
 }
