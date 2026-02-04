@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getLotteryRush, getLotteryRushLastUpdated, ShowLotteryRush } from '@/lib/data';
+import { getAllShows } from '@/lib/data-core';
+import { getLotteryRush, getLotteryRushLastUpdated } from '@/lib/data-lottery';
+import type { ShowLotteryRush } from '@/lib/data-types';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';

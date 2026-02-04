@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllDirectors } from '@/lib/data';
+import { getAllDirectors } from '@/lib/data-core';
 import { generateBreadcrumbSchema } from '@/lib/seo';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
