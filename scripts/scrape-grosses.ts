@@ -325,12 +325,36 @@ async function scrapeGrosses(): Promise<void> {
 
     console.log(`Found ${tableData.length} shows in table`);
 
-    // Build the grosses data structure
+    // Load existing grosses data to preserve allTime and handle dark weeks
+    let existingGrosses: GrossesData | null = null;
+    if (fs.existsSync(GROSSES_PATH)) {
+      try {
+        existingGrosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf-8'));
+        console.log(`Loaded existing grosses data (${Object.keys(existingGrosses!.shows).length} shows)`);
+      } catch (e) {
+        console.log('Could not load existing grosses.json, starting fresh');
+      }
+    }
+
+    // Build the grosses data structure, preserving existing data
     const grossesData: GrossesData = {
       lastUpdated: new Date().toISOString(),
       weekEnding,
       shows: {}
     };
+
+    // Step 1: Carry forward allTime data for ALL existing shows
+    // This ensures closed shows and dark-week shows keep their allTime stats
+    if (existingGrosses) {
+      for (const [slug, existing] of Object.entries(existingGrosses.shows)) {
+        if (existing.allTime && (existing.allTime.gross || existing.allTime.performances || existing.allTime.attendance)) {
+          grossesData.shows[slug] = {
+            allTime: { ...existing.allTime },
+            lastUpdated: existing.lastUpdated || new Date().toISOString()
+          } as ShowGrosses;
+        }
+      }
+    }
 
     let matchedCount = 0;
     const unmatchedShows: string[] = [];
@@ -342,6 +366,9 @@ async function scrapeGrosses(): Promise<void> {
 
       if (slug) {
         matchedCount++;
+
+        // Preserve existing allTime data if we have it
+        const existingAllTime = grossesData.shows[slug]?.allTime || existingGrosses?.shows[slug]?.allTime;
 
         grossesData.shows[slug] = {
           thisWeek: {
@@ -357,8 +384,8 @@ async function scrapeGrosses(): Promise<void> {
             attendance: parseNumber(row.attendance),
             performances: parseNumber(row.performances)
           },
-          allTime: {
-            gross: null, // Will be filled by IBDB scraper
+          allTime: existingAllTime || {
+            gross: null,
             performances: null,
             attendance: null
           },
@@ -372,6 +399,7 @@ async function scrapeGrosses(): Promise<void> {
     }
 
     console.log(`\nMatched ${matchedCount} shows to our database`);
+    console.log(`Preserved ${Object.keys(grossesData.shows).length - matchedCount} existing shows (allTime data)`);
     if (unmatchedShows.length > 0) {
       console.log(`Unmatched shows (${unmatchedShows.length}):`);
       unmatchedShows.forEach(s => console.log(`  - ${s}`));
