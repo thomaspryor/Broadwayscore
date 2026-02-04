@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.theatermania.com/broadway/reviews/disgraced_70717.html",
   "publishDate": "October 24, 2014",
-  "fullText": "Ayad Akhtar's Pulitzer Prize-winning play about identity, assimilation, and prejudice in post-9/11 America is a searing and provocative drama that doesn't shy away from uncomfortable truths.",
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "Ayad Akhtar's Pulitzer Prize-winning play about identity, assimilation, and prejudice in post-9/11 America is a searing and provocative drama that doesn't shy away from uncomfortable truths.",
   "originalScore": null,
@@ -71,5 +71,50 @@
     "ensembleSource": "two-model-fallback",
     "modelAgreement": "Both models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "excerpt",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/disgraced-2014/theatermania--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:35:03.769Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Insufficient text: 141 chars"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 42,
+  "tierReason": "Short text (42 words)"
 }
