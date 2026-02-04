@@ -73,7 +73,7 @@ jobs:
     needs: prepare
     if: needs.prepare.outputs.missing_count > 0
     runs-on: ubuntu-latest
-    timeout-minutes: 180  # 3 hours per shard
+    timeout-minutes: 350  # ~6 hours per shard — each show takes ~10min (ScrapingBee + Claude)
     strategy:
       fail-fast: false
       matrix:
