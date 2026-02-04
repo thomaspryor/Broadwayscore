@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "A boat capsizes on Broadway and Irwin Allen turns over in his Hollywood grave. “Disaster” is too dynamic a word to describe the new jukebox musical “Disaster!,” which opened Tuesday at the Nederlander Theatre. Better words would be “lukewarm mess.”\n\nSeth Rudetsky and Jack Plotnick wrote the show, which has had previous incarnations in small theaters around Manhattan.",
+  "isFullReview": false,
+  "textWordCount": 58,
+  "archivePath": "data/archives/reviews/disaster-2016/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:30:44.347Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 64 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 58,
+  "tierReason": "Short text (58 words)"
 }
