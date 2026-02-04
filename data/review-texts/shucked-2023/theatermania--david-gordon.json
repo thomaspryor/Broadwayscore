@@ -19,59 +19,7 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
   "textQuality": "truncated",
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Shucked is a sweet, corny musical that knows exactly what it is and delivers on its promise of good-natured fun.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment with complimentary language ('sweet', 'delivers on its promise') and endorses the show's execution, though without strong superlatives or must-see language. | GPT-4o: The review offers clear praise for the show, describing it as 'sweet' and 'fun' with no reservations, indicating a strong positive recommendation. | Gemini: The review describes the show as \"sweet, corny\" and delivering on its promise of \"good-natured fun,\" indicating a positive recommendation with some reservations. | Kimi: The critic offers unqualified praise for the show's self-aware tone and entertaining delivery, recommending it as satisfying 'good-natured fun' without significant reservations.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:29:51.013Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 76,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "web-search"
+  ]
 }
