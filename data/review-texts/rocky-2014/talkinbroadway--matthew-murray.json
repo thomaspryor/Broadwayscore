@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rocky is a show that punches above its weight class, delivering an emotionally satisfying evening that honors both the beloved film and the unique demands of the Broadway stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Rocky is a show that punches above its weight class, delivering an emotionally satisfying evening that honors both the beloved film and the unique demands of the Broadway stage.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rocky is a show that punches above its weight class, delivering an emotionally satisfying evening",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('emotionally satisfying evening') with praise for how it honors source material and Broadway demands, but brief excerpt limits fuller assessment. | GPT-4o: The review uses positive language ('punches above its weight class', 'emotionally satisfying') and indicates a strong recommendation, suggesting a high score within the Positive bucket. | Gemini: The review states that the show delivers an emotionally satisfying evening, indicating a positive recommendation. The phrase \"punches above its weight class\" suggests that the show exceeds expectations. | Kimi: The review offers solid praise for the show's emotional impact and successful adaptation from film to stage, using phrases like 'punches above its weight class' and 'emotionally satisfying' to indicate a clear recommendation without reaching ecstatic rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:18:50.056Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

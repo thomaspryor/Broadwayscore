@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kathie Lee Gifford's new musical about evangelist Aimee Semple McPherson is a hot holy mess that makes you want to speak in tongues — and not in a good way.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 19,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Kathie Lee Gifford's new musical about evangelist Aimee Semple McPherson is a hot holy mess that makes you want to speak in tongues — and not in a good way.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 19,
+    "confidence": "high",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kathie Lee Gifford's new musical about evangelist Aimee Semple McPherson is a hot holy mess that makes you want to speak in tongues — and not in a good way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Opening line delivers devastating verdict calling it 'a hot holy mess' with sarcastic religious reference suggesting it's painful to watch. Clear pan despite brevity. | GPT-4o: The review uses strong negative language ('hot holy mess') and implies a very poor experience ('not in a good way'), indicating a strongly negative verdict. | Gemini: The review describes the show as a \"hot holy mess\" and says it makes you want to \"speak in tongues — and not in a good way.\" This is a strongly negative assessment, placing it in the Pan bucket. | Kimi: The critic delivers a devastatingly negative verdict using the phrase 'hot holy mess' and explicitly states the experience is 'not in a good way,' offering no redeeming qualities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:25:33.819Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“It’s Lane, though, who is forced to do some heavy lifting to bulk up a thin show into something watchable. It’s in his performance that ‘Pictures From Home’ shows flashes of promise.”\n\nRead more"
+  "showScoreExcerpt": "“It’s Lane, though, who is forced to do some heavy lifting to bulk up a thin show into something watchable. It’s in his performance that ‘Pictures From Home’ shows flashes of promise.”\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's Lane, though, who is forced to do some heavy lifting to bulk up a thin show into something watchable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes show as 'thin' requiring heavy lifting to be 'watchable', with only 'flashes of promise' - suggests mixed reception with significant reservations. | GPT-4o: The excerpt highlights Nathan Lane's performance as a bright spot in an otherwise thin show, indicating a mixed review. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review excerpt suggests the show is thin but Lane's performance makes it watchable, implying mixed feelings overall. The single excerpt and truncated nature lower confidence. | Kimi: While the critic praises Nathan Lane's performance as the saving grace, the show itself is described as 'thin' requiring significant effort to become merely 'watchable,' indicating an overall negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:52:33.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

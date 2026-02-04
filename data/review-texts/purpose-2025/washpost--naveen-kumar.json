@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"\"It’s one of several that the playwright Branden Jacobs-Jenkins deploys to gasps and guffaws...a densely packed and blistering powder keg of a play about (among other things) legacy, faith, corruption and the limits of desire.\"\"\n\nRead more"
+  "showScoreExcerpt": "\"\"It’s one of several that the playwright Branden Jacobs-Jenkins deploys to gasps and guffaws...a densely packed and blistering powder keg of a play about (among other things) legacy, faith, corruption and the limits of desire.\"\"\n\nRead more",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a densely packed and blistering powder keg of a play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong positive language ('blistering powder keg', 'gasps and guffaws') suggesting an engaging, impactful production. However, limited text and excerpt warning require low confidence. | GPT-4o: The excerpt uses strong positive language such as 'blistering powder keg' and mentions audience reactions like 'gasps and guffaws', indicating a highly impactful and engaging production. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the play as a \"blistering powder keg\" and mentions \"gasps and guffaws,\" suggesting a positive, albeit potentially intense, experience. However, due to the limited text, the confidence is low. | Kimi: The excerpt employs strongly positive descriptors ('blistering,' 'densely packed') and praises the playwright's effectiveness ('gasps and guffaws'), indicating a clear recommendation, though the single-excerpt format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:10:51.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 88,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Connor, Zegler and a cast that also includes Gabby Beans, Tommy Dorfman, Daniel Bravo Hernndez and others are engaging from beginning to end.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Connor, Zegler and a cast that also includes Gabby Beans, Tommy Dorfman, Daniel Bravo Hernndez and others are engaging from beginning to end.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising cast as 'engaging from beginning to end' suggests positive recommendation, but limited context requires cautious scoring in lower Positive range. | GPT-4o: The excerpt praises the cast as engaging throughout, suggesting a positive view of the performances. However, with only one curated excerpt available, the overall sentiment may not be fully captured, leading to a lower confidence level. | Gemini: The single excerpt praises the cast as \"engaging from beginning to end,\" which suggests a positive, but not overwhelmingly enthusiastic, recommendation. The confidence is low due to the limited text available. | Kimi: The excerpt offers unqualified praise for the cast as 'engaging from beginning to end,' indicating a clearly positive verdict, though the single curated quote warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:20:31.000Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

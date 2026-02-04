@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Theresa Rebeck's new play 'Seminar' is a smart, funny, and often brutal look at the creative writing process and the egos involved.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Theresa Rebeck's new play 'Seminar' is a smart, funny, and often brutal look at the creative writing process and the egos involved.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Theresa Rebeck's new play 'Seminar' is a smart, funny, and often brutal look at the creative writing process and the egos involved.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review uses positive descriptors ('smart, funny') but this appears to be a very brief excerpt or opening line. Low confidence due to lack of fuller evaluation or clear recommendation language. | GPT-4o: The review uses positive adjectives like 'smart' and 'funny', indicating a recommendation. The tone suggests a solid endorsement with some appreciation for the play's brutal honesty. | Gemini: The review describes the play as \"smart, funny, and often brutal,\" indicating a positive overall assessment and recommendation. | Kimi: Brief excerpt offers unqualified praise ('smart, funny, brutal') indicating a positive recommendation, though truncated context limits scoring confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:27:08.076Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

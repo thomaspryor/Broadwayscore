@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show delivers exactly what it promises: a gleefully bungled version of the J.M. Barrie classic that finds humor in theatrical catastrophe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show delivers exactly what it promises: a gleefully bungled version of the J.M. Barrie classic that finds humor in theatrical catastrophe.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show delivers exactly what it promises: a gleefully bungled version of the J.M. Barrie classic that finds humor in theatrical catastrophe.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show positively achieving its intentional comedic goals ('delivers exactly what it promises', 'gleefully'), but the qualified nature and limited text warrants lower end of Positive range. | GPT-4o: The excerpt suggests a positive reception, highlighting the humor and fulfilling its promise. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The review states that the show delivers on its promise, finding humor in theatrical catastrophe, which suggests a positive, albeit qualified, recommendation. Given it's a single excerpt, I'm placing it in the middle of the positive range. | Kimi: While limited to a single excerpt, the critic clearly endorses the show's successful execution of its farcical premise, praising it as 'gleefully bungled' and effective at finding humor, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:50:27.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

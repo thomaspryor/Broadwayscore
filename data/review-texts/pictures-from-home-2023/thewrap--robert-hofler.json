@@ -10,5 +10,59 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“What gives all this boisterous comedy a heavy patina of high-mindedness is its source material.”\n\nRead more"
+  "showScoreExcerpt": "“What gives all this boisterous comedy a heavy patina of high-mindedness is its source material.”\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What gives all this boisterous comedy a heavy patina of high-mindedness is its source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests the comedy is lively but implies a disconnect or pretentiousness due to the source material. The tone is not clearly positive or negative, leading to a mixed classification. | Gemini: The single excerpt suggests a mixed reaction, implying the comedy is present but weighed down by its source material. Without more context, it's difficult to determine the overall recommendation, but it leans towards a mixed assessment. | Kimi: The single curated excerpt describes 'boisterous comedy' (positive) with a 'heavy patina of high-mindedness' (suggesting superficial or artificial intellectual pretension). With only one sentence available and no clear recommendation language, the overall verdict is indeterminate but leans neither strongly positive nor negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:55:30.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

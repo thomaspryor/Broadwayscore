@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pretty Woman: The Musical is a show that feels like it was assembled by committee, with songs that rarely rise above the serviceable and a book that adds little depth to the familiar story.",
   "originalScore": 40,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pretty Woman: The Musical is a show that feels like it was assembled by committee, with songs that rarely rise above the serviceable and a book that adds little depth to the familiar story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment with critic's own 40 rating. Describes the show as committee-assembled with serviceable songs and shallow book - standard negative review language without being a complete pan. | GPT-4o: The review describes the show as lacking depth and having only serviceable songs, aligning with the critic's original rating of 40, indicating a negative assessment. | Gemini: The critic explicitly states the show feels 'assembled by committee' and that the songs are 'serviceable' and the book adds 'little depth'. The critic's rating of 40 confirms a negative assessment. | Kimi: The critic's explicit rating of 40/100 aligns with negative descriptors like 'assembled by committee' and 'serviceable' songs, indicating the production falls short of Broadway standards without being a complete disaster.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:03:07.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

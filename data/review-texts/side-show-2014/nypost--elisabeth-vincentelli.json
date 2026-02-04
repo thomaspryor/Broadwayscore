@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a beautiful freak — flawed but fascinating, with a handful of soaring songs that will stay with you long after you leave the theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a beautiful freak — flawed but fascinating, with a handful of soaring songs that will stay with you long after you leave the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict calling the show 'beautiful' and 'fascinating' with memorable songs, though acknowledging flaws. The lasting impact ('stay with you long after') indicates a solid recommendation. | GPT-4o: The review acknowledges flaws but overall finds the show fascinating and memorable, with songs that have a lasting impact. This suggests a positive recommendation with some reservations. | Gemini: The review uses positive language like \"beautiful\" and \"fascinating\" while acknowledging flaws, suggesting a recommendation with reservations. | Kimi: The critic praises the show as 'beautiful' and 'fascinating' with 'soaring songs' that have lasting impact, while acknowledging it is 'flawed,' indicating a positive but qualified recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:33:41.763Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

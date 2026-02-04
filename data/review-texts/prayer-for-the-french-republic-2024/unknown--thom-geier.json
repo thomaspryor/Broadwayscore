@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "It’s been two years since Joshua Harmon’s three-hour drama Prayer for the French Republic premiered Off Broadway, but the issues it raises about the plight of modern Jews in a world that seems stubbornly hostile to them is arguably even more timely. Director David Comer’s production, which opened Tuesday at Broadway’s Samuel J. Friedman Theatre with its four critical female roles all intact, delves into capital-letter issues about the legacy of antisemitism, the threat of violence and the responsibilities of individuals amid no-good-choice questions about measuring the severity of a situation.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the issues it raises about the plight of modern Jews in a world that seems stubbornly hostile to them is arguably even more timely",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Single excerpt with no clear verdict makes scoring difficult. The text describes the production and its themes positively ('even more timely', 'delves into capital-letter issues') but lacks explicit recommendation language. Given the positive framing and topic engagement, this appears barely positive. | GPT-4o: The excerpt highlights the timeliness and thematic depth of the production but does not provide a clear recommendation or evaluation of its execution. The lack of explicit praise or criticism suggests a mixed verdict. | Gemini: The review excerpt describes the play as raising timely issues and delving into important topics. While not overtly enthusiastic, the description suggests a worthwhile and thought-provoking experience, placing it in the positive range. Confidence is low due to the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:01:25.931Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

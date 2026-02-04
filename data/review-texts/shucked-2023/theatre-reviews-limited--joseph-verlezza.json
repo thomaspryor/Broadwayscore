@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Audiences can expect to be treated to good, senseless, lowbrow entertainment at its best, with the added bonus of a couple of good songs performed to perfection. If they happen to be looking for a for a tight, well written Broadway musical with substance and pay full price for a ticket, they may feel they’ve been “Shucked.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If they happen to be looking for a tight, well written Broadway musical with substance and pay full price for a ticket, they may feel they've been 'Shucked.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review gives qualified praise ('good, senseless, lowbrow entertainment at its best') but warns audiences seeking substantial theater may feel cheated at full price. This suggests conditional recommendation with major caveats. | GPT-4o: The review suggests the show is entertaining but lacks substance, implying a mixed reception. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review excerpt indicates that the show is \"good, senseless, lowbrow entertainment at its best\" with \"good songs performed to perfection.\" However, the caveat about expectations suggests some reservations. Due to the limited excerpt, confidence is low. | Kimi: The excerpt offers qualified praise—acknowledging the show succeeds as 'lowbrow entertainment' with strong performances, but warning that ticket buyers seeking substance or tight writing may feel cheated at full price. This represents a mildly positive, caveat-laden recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:31:45.747Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 69,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

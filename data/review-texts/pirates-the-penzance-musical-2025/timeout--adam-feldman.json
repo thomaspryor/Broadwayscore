@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Enjoy this Broadway hybrid that is tuneful and poetical: A most delightful model of a modern operettical.\"\n\nRead more"
+  "showScoreExcerpt": "\"Enjoy this Broadway hybrid that is tuneful and poetical: A most delightful model of a modern operettical.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A most delightful model of a modern operettical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses enthusiastic language ('most delightful', 'enjoy') with creative wordplay, suggesting strong recommendation. However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt is clearly positive, describing the show as 'tuneful and poetical' and 'a most delightful model.' Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The single excerpt is overwhelmingly positive, calling the show \"a most delightful model.\" Given the single excerpt warning, I am scoring on the higher end of the positive range. | Kimi: The excerpt offers clear recommendation with enthusiastic praise ('delightful', 'tuneful'), warranting the upper Positive range per single-excerpt guidance, though limited text reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:58:57.539Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

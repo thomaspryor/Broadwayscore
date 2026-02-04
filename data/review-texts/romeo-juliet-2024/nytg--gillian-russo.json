@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"By having a uniformly young cast, Romeo + Juliet successfully drives home the juvenile pettiness of the Montague/Capulet feud and sorrow...But this production of the love story hasn't quite found its heartbeat.\"\n\nRead more"
+  "showScoreExcerpt": "\"By having a uniformly young cast, Romeo + Juliet successfully drives home the juvenile pettiness of the Montague/Capulet feud and sorrow...But this production of the love story hasn't quite found its heartbeat.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this production of the love story hasn't quite found its heartbeat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the casting choice and its thematic effectiveness but delivers a significant negative verdict about the production's core emotional impact. The phrase 'hasn't quite found its heartbeat' suggests fundamental problems despite positive elements. | GPT-4o: The excerpt acknowledges a successful aspect of the production with the young cast but ultimately suggests it lacks a crucial element, indicating a mixed review. | Gemini: The review notes a successful aspect of the production but concludes it \"hasn't quite found its heartbeat,\" indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt offers qualified praise for the casting concept while delivering a significant criticism about the production's emotional heartbeat, suggesting an evenly mixed assessment. Confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:21:42.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

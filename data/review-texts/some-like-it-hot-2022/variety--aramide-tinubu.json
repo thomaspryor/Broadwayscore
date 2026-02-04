@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical succeeds thanks to its stellar performances, particularly from Christian Borle, J. Harrison Ghee and Adrian Bailey, who bring depth and nuance to their roles while honoring the beloved source material.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical succeeds thanks to its stellar performances, particularly from Christian Borle, J. Harrison Ghee and Adrian Bailey, who bring depth and nuance to their roles while honoring the beloved source material.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical succeeds thanks to its stellar performances, particularly from Christian Borle, J. Harrison Ghee and Adrian Bailey, who bring depth and nuance to their roles while honoring the beloved source material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('succeeds', 'stellar performances', 'depth and nuance') but single excerpt limits confidence in overall verdict. Upper positive range given unqualified praise. | GPT-4o: The excerpt praises the performances as 'stellar' and notes the success of the musical, suggesting a strong positive recommendation. However, with only a single excerpt available, confidence is low. | Gemini: The excerpt indicates the musical \"succeeds\" due to stellar performances, suggesting a positive recommendation. With only one excerpt available, I'm placing it on the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise with words like 'succeeds' and 'stellar,' clearly recommending the show based on its performances. However, confidence is reduced to 'low' due to the single-excerpt warning, which means the full review context may differ.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:49:05.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
