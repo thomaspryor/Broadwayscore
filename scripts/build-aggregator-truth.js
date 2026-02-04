@@ -479,4 +479,10 @@ function main() {
   }
 }
 
-main();
+// Export counting functions for reuse by audit-aggregator-coverage.js
+module.exports = { extractShowScoreCount, extractDTLICount, extractBWWCount };
+
+// Run main only when executed directly (not imported)
+if (require.main === module) {
+  main();
+}
