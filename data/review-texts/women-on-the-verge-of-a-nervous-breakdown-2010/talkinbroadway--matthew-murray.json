@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs themselves are pleasant enough, but they don't advance the plot or develop the characters in meaningful ways, and they frequently stop the show dead in its tracks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The songs themselves are pleasant enough, but they don't advance the plot or develop the characters in meaningful ways, and they frequently stop the show dead in its tracks.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs themselves are pleasant enough, but they don't advance the plot or develop the characters in meaningful ways, and they frequently stop the show dead in its tracks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic finds fundamental flaws in the musical's structure - songs that don't advance plot or character and 'stop the show dead.' This is a core negative assessment of a musical's basic functionality, despite calling songs 'pleasant enough.' | GPT-4o: The excerpt criticizes the songs for failing to contribute to the plot or character development, suggesting a negative impact on the show's pacing. The lack of full context and single excerpt warning leads to a low confidence in the verdict. | Gemini: The excerpt indicates that the songs, a key component of a musical, are ineffective and detrimental to the show's pacing and narrative. This suggests a negative overall assessment, despite the songs being \"pleasant enough.\" | Kimi: While the critic finds the songs 'pleasant enough,' the criticism that they fail to advance plot or character and 'frequently stop the show dead in its tracks' indicates significant structural problems. Given this is a single excerpt, the overall verdict likely falls in the mixed range with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:04:19.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

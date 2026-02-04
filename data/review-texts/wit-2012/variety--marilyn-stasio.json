@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cynthia Nixon gives a towering performance as Vivian Bearing, the English literature professor who faces ovarian cancer with the same analytical rigor she brings to John Donne's Holy Sonnets.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T05:03:10.029Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment, not a complete review with an evaluative verdict about the show's overall quality or recommendation.; openai: The text provided is a brief mention of a performance without any evaluative content or overall review of the show.",
+  "promptVersion": "5.2.0"
 }

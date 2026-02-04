@@ -1,4 +1,47 @@
 {
+  "runDate": "2026-02-04T04:50:40.178Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 183,
+    "failed": 392,
+    "skipped": 0,
+    "successRate": "31.8%"
+  },
+  "tierBreakdown": {
+    "playwright": 13,
+    "browserbase": 0,
+    "scrapingbee": 56,
+    "brightdata": 32,
+    "archive": 85
+  },
+  "statistics": {
+    "tier1Attempts": 23,
+    "tier1Success": 10,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 31,
+    "tier2Success": 4,
+    "tier3Attempts": 27,
+    "tier3Success": 13,
+    "tier4Attempts": 31,
+    "tier4Success": 11,
+    "totalFailed": 40,
+    "scrapingBeeCreditsUsed": 177,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 17,
+    "urlDiscoverySuccess": 7,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "a-christmas-carol-2022/nytimes--jesse-green.json",
     "act-one-2014/nytg--david-roberts.json",
@@ -578,8 +621,7 @@
     "a-dolls-house-2023/nytg--joe-dziemianowicz.json",
     "a-dolls-house-2023/nytimes--jesse-green.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "act-one-2014/nytg--david-roberts.json",
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
@@ -776,7 +818,85 @@
       "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json"
     ]
   },
-  "startTime": "2026-02-03T22:55:40.116Z",
-  "lastProcessed": "a-dolls-house-2023/variety--charles-isherwood.json",
-  "log": []
+  "failuresByOutlet": {
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "The New Yorker": {
+      "count": 1,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 2,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Variety": {
+      "count": 2,
+      "domain": "variety.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Vulture": {
+      "count": 2,
+      "domain": "vulture.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "New York Theater": {
+      "count": 1,
+      "domain": "newyorktheater.me",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "13-2008/variety--david-rooney.json",
+      "oldUrl": "https://variety.com/2008/legit/reviews/13-1200472109/",
+      "newUrl": "https://variety.com/2022/film/reviews/13-the-musical-review-1235341664/"
+    },
+    {
+      "reviewId": "1776-2022/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2022/09/17/theater/1776-review.html",
+      "newUrl": "https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html"
+    },
+    {
+      "reviewId": "1776-2022/variety--charles-isherwood.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "1776-2022/variety--peter-marks.json",
+      "oldUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/",
+      "newUrl": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
+    },
+    {
+      "reviewId": "1776-2022/vulture--helen-shaw.json",
+      "oldUrl": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html",
+      "newUrl": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html"
+    },
+    {
+      "reviewId": "1984-2017/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html",
+      "newUrl": "https://www.nytimes.com/2017/06/22/theater/1984-review-broadway.html"
+    },
+    {
+      "reviewId": "a-christmas-carol-2022/nytg--michael-dale.json",
+      "oldUrl": "https://newyorktheatreguide.com/reviews/a-christmas-carol-2022",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/a-christmas-carol-review-jefferson-mays"
+    }
+  ]
 }

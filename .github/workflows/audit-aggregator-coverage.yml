@@ -1,0 +1,135 @@
+# Audit aggregator coverage - compare archived review counts vs extracted reviews
+# READ-ONLY: Never triggers collection or re-scraping
+name: Audit Aggregator Coverage
+
+on:
+  schedule:
+    # Weekly on Mondays at 6 AM UTC (1 AM EST)
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      status:
+        description: 'Filter by show status (open/closed/previews or blank for all)'
+        required: false
+        default: ''
+        type: string
+      show:
+        description: 'Audit a single show (slug or ID)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    name: Run coverage audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run audit
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.status }}" ]; then
+            ARGS="$ARGS --status=${{ inputs.status }}"
+          fi
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          node scripts/audit-aggregator-coverage.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/audit/aggregator-coverage.json 2>/dev/null; then
+            if [ ! -f data/audit/aggregator-coverage.json ] || git ls-files --error-unmatch data/audit/aggregator-coverage.json 2>/dev/null; then
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+              echo "No changes to audit output"
+            else
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+              echo "New audit file"
+            fi
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in audit output"
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/aggregator-coverage.json
+
+          if [ -n "${{ inputs.show }}" ]; then
+            MSG="audit: Aggregator coverage for ${{ inputs.show }}"
+          elif [ -n "${{ inputs.status }}" ]; then
+            MSG="audit: Aggregator coverage (${{ inputs.status }} shows)"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            MSG="audit: Weekly aggregator coverage audit"
+          else
+            MSG="audit: Aggregator coverage audit"
+          fi
+
+          GAPS=$(node -e "const d=require('./data/audit/aggregator-coverage.json'); console.log(d._meta.showsWithGaps + ' gaps, ' + d._meta.totalMissingReviews + ' missing')")
+          MSG="$MSG ($GAPS)"
+
+          git commit -m "$MSG
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          # Retry push with rebase (5 attempts, random backoff)
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+      - name: Summary
+        run: |
+          echo "## Aggregator Coverage Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const d = require('./data/audit/aggregator-coverage.json');
+            console.log('**Shows audited:** ' + d._meta.totalShows);
+            console.log('**Shows with gaps:** ' + d._meta.showsWithGaps);
+            console.log('**Total missing reviews:** ' + d._meta.totalMissingReviews);
+            console.log('');
+            console.log('| Aggregator | Archives | Under-extracted | Over-extracted | Never Searched |');
+            console.log('|------------|----------|-----------------|----------------|----------------|');
+            for (const [agg, count] of Object.entries(d.summary.archiveCounts)) {
+              const gaps = d.summary.totalGaps[agg] || 0;
+              const missing = d.summary.totalMissing[agg] || 0;
+              const over = d.summary.totalOverExtracted[agg] || 0;
+              const never = d.summary.showsNeverSearched[agg] || 0;
+              console.log('| ' + agg + ' | ' + count + ' | ' + gaps + ' (' + missing + ' reviews) | ' + over + ' | ' + never + ' |');
+            }
+          " >> $GITHUB_STEP_SUMMARY
