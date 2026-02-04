@@ -9,6 +9,7 @@ on:
 jobs:
   update-lottery-rush:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -26,13 +27,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install chromium
-
       - name: Scrape lottery/rush data
-        run: node scripts/scrape-lottery-rush.js
+        run: node scripts/scrape-lottery-rush.js --verbose
         env:
-          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Check for changes
         id: check_changes
@@ -51,7 +51,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data/lottery-rush.json data/shows.json
-          git commit -m "chore: Update lottery/rush data from Playbill
+          git commit -m "chore: Update lottery/rush data from BwayRush + Playbill
 
           Automated weekly update of Broadway lottery and rush ticket policies.
 
@@ -72,9 +72,9 @@ jobs:
           echo "## Lottery/Rush Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
-            echo "✅ Updated lottery/rush data and synced tags" >> $GITHUB_STEP_SUMMARY
+            echo "Updated lottery/rush data and synced tags" >> $GITHUB_STEP_SUMMARY
           else
-            echo "ℹ️ No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
+            echo "No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Source: https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003" >> $GITHUB_STEP_SUMMARY
+          echo "Sources: BwayRush.com + Playbill" >> $GITHUB_STEP_SUMMARY
