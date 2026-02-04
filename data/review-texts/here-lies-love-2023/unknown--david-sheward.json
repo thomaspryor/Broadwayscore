@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Alex Timbers recreates his innovative staging with the action happening all around the audience...But the action moves so fast and so intensely, you’ll hardly notice the passing 90 minutes. Set designer David Korins has transformed the Broadway Theater into a vibrant, wild disco with moving platforms and runways which the theatergoers follow as jumpsuit-wearing techies direct them with landing lights as if they were airplanes taxiing for position.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the action moves so fast and so intensely, you'll hardly notice the passing 90 minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on positive staging elements - 'innovative staging', 'vibrant, wild disco', engaging pacing. However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The excerpt highlights the innovative staging and vibrant set design, suggesting an engaging and immersive experience. The positive tone and emphasis on the fast-paced, intense action imply a strong recommendation. | Gemini: The excerpt describes the staging as innovative and vibrant, and the fast pace as a positive attribute. Given the single excerpt, I'm scoring it as positive, but with low confidence. | Kimi: The excerpt praises the innovative staging, fast-paced direction, and immersive design, indicating an engaging theatrical experience. As a single curated excerpt, it suggests clear positivity but warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:47:37.950Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Grey House’ is trying to honor that unstinting parentage, despite the baked-in demands on a mostly young cast of kids, who give it all they’ve got. The show also has to whip up interest on a hot summer night. That’s not an easy combo, and you can see the strains it puts on the second half of the show, but much of worth gets unpacked here. Scarily so, to boot.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "much of worth gets unpacked here",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt acknowledges the show's challenges and strains but concludes that 'much of worth gets unpacked here' and notes it's 'scarily' effective. This suggests a qualified positive recommendation, though the single excerpt and visible strains mentioned keep it at the lower end of Positive. | GPT-4o: The review acknowledges challenges and strains in the production but also notes that there is 'much of worth' in the show. The single excerpt suggests a mix of positive and critical observations, leading to a mixed verdict. | Gemini: The review acknowledges strains but ultimately states that \"much of worth gets unpacked here,\" indicating a positive, though reserved, recommendation. The single excerpt and truncated nature lower the confidence. | Kimi: Single excerpt shows the critic acknowledging significant strain on the cast and second half, but the 'but' clause emphasizes substantial value ('much of worth') in the production, particularly its scary elements, indicating a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:26:14.488Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

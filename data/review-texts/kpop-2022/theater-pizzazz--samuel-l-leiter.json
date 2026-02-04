@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "The new premise pretends that an American filmmaker...is filming a documentary,..When the music—mostly power-blasting, heavily rhythmic explosions...—stops, so, basically, does the show so we can sit through flatlining soap-operatics. \n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.theaterpizzazz.com/kpop/",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When the music stops, so, basically, does the show so we can sit through flatlining soap-operatics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt describes the premise as 'pretending' and criticizes the non-musical sections as 'flatlining soap-operatics,' suggesting fundamental problems with the show's structure and dramatic content. However, with only one excerpt available and text cut off mid-sentence, confidence is low. | GPT-4o: The excerpt criticizes the show for having a weak narrative that falls flat when the music stops, suggesting a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes the show as having \"flatlining soap-operatics\" when the music stops, indicating a negative experience. Given the limited text, the confidence is low. | Kimi: The excerpt describes the non-musical scenes as 'flatlining soap-operatics' and suggests the show only works during musical numbers, indicating a clear negative assessment of the production's dramatic elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:24:45.221Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

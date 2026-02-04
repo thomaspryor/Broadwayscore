@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two-person musical comedy about Johannes Gutenberg and the invention of the printing press is a delightfully silly enterprise that makes the most of its deliberately low-fi aesthetic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The two-person musical comedy about Johannes Gutenberg and the invention of the printing press is a delightfully silly enterprise that makes the most of its deliberately low-fi aesthetic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The two-person musical comedy about Johannes Gutenberg and the invention of the printing press is a delightfully silly enterprise that makes the most of its deliberately low-fi aesthetic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'delightfully silly' and praises how it 'makes the most of' its aesthetic choices, indicating clear approval. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt describes the show as 'delightfully silly' and praises its aesthetic, suggesting a positive reception. Given the single excerpt warning, the score is placed in the upper range for Positive reviews. | Gemini: The review excerpt describes the show as a \"delightfully silly enterprise,\" which is a positive assessment. Given that this is the only excerpt available, I am scoring it at the higher end of the positive range. | Kimi: The excerpt uses enthusiastic language ('delightfully silly') and praises the production's execution, indicating a clear recommendation. Scored at the upper end of the Positive bucket per instructions for clearly positive single excerpts, though confidence is low given only one curated quote is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:28:39.577Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

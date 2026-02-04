@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "\" 'Kimberly Akimbo' was the right show at the right time: a life-affirming investigation of mortality and loss accentuated with the kind of laughs that make you stomp your feet with delight.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.theatermania.com/broadway/reviews/review-on-broadway-kimberly-akimbo_94539.html",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Kimberly Akimbo' was the right show at the right time: a life-affirming investigation of mortality and loss accentuated with the kind of laughs that make you stomp your feet with delight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('right show at the right time', 'life-affirming', 'stomp your feet with delight') suggests enthusiastic recommendation. Single excerpt warning applied - using upper end of Positive range since this sounds clearly positive rather than mildly so. | GPT-4o: The excerpt describes the show as 'life-affirming' and 'the right show at the right time,' with humor that elicits strong positive reactions. Despite the single excerpt warning, the language suggests a highly enthusiastic recommendation. | Gemini: The excerpt uses very positive language, calling the show \"life-affirming\" and saying it has \"laughs that make you stomp your feet with delight.\" This indicates a strong positive recommendation. | Kimi: The excerpt offers strong praise describing the show as 'life-affirming' with laughs that make you 'stomp your feet with delight,' indicating a clear recommendation, though the single-excerpt format warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:19:24.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

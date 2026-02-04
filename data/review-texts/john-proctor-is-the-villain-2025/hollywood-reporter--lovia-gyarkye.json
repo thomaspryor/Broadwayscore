@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "It's a testament to the subtle brilliance of Kimberly Belflower's writing and Danya Tamor's direction that you can hardly feel the 105-minute, no-intermission runtime of John Proctor Is the Villain.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"It’s a testament to the subtle brilliance of Kimberly Belflower’s writing and Danya Tamor’s direction that you can hardly feel the 105-minute, no-intermission runtime of John Proctor Is the Villain.\"\n\nRead more"
+  "showScoreExcerpt": "\"It’s a testament to the subtle brilliance of Kimberly Belflower’s writing and Danya Tamor’s direction that you can hardly feel the 105-minute, no-intermission runtime of John Proctor Is the Villain.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a testament to the subtle brilliance of Kimberly Belflower's writing and Danya Tamor's direction that you can hardly feel the 105-minute, no-intermission runtime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises writing as 'subtle brilliance' and notes effective pacing, but this is a very brief excerpt that may not represent the full verdict. Low confidence due to limited text. | GPT-4o: The excerpt praises the writing and direction as 'subtle brilliance' and notes the seamless experience of the runtime, suggesting a positive recommendation. However, the confidence is low due to the limited text available. | Gemini: The quote praises the writing and direction, suggesting a positive experience. However, due to the limited text, the confidence is low. | Kimi: The excerpt contains enthusiastic praise ('subtle brilliance') for the writing and direction, complimenting the show's engaging pacing, though the limited excerpt prevents confirmation of the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:14:57.820Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

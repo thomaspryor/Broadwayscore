@@ -3,22 +3,71 @@
   "outletId": "rollingstone",
   "outlet": "Rolling Stone",
   "criticName": "Will Hermes",
-  "url": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
+  "url": null,
   "publishDate": "2019-04-17T20:11:26-04:00",
   "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": null,
   "bwwExcerpt": "This chilling scene remains the centerpiece of Hadestown, a love story and class-struggle parable based on the Orpheus myth that arrives on the same Broadway stage Bruce Springsteen worked for 14 months prior. The cast has changed from Mitchell's original LP (where Bon Iver's Justin Vernon, The Low ...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
   "tierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
-  "sources": [
-    "bww-roundup",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This chilling scene remains the centerpiece of Hadestown, a love story and class-struggle parable based on the Orpheus myth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt highlights a 'chilling scene' as a centerpiece, suggesting a positive view of the production's impact. However, without more context or a full review, the confidence is low and the score is set at the lower end of the Positive range. | Gemini: The excerpt describes a \"chilling scene\" as the centerpiece and refers to the show as a \"love story and class-struggle parable.\" This suggests a positive, but not overwhelmingly enthusiastic, assessment. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt offers specific praise for a 'chilling' centerpiece scene, indicating effective theatrical craft, but the single curated quote and truncation prevent determining the critic's final recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:32:49.907Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

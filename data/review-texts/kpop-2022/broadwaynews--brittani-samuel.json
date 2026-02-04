@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "\"Too much love and hard work envelops Bergman’s stage to not bop your head to the music or mimic dance moves from your seat.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://broadwaynews.com/2022/11/27/broadways-underdeveloped-kpop-is-saved-by-the-music/",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too much love and hard work envelops Bergman's stage to not bop your head to the music or mimic dance moves from your seat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear enthusiasm - describing infectious energy that makes audiences want to dance along. However, confidence is low due to single excerpt warning and potential for cherry-picking. | GPT-4o: The excerpt suggests a positive experience, highlighting the love and hard work in the production that engages the audience. The tone is enthusiastic, indicating a strong recommendation. | Gemini: The excerpt suggests a positive experience, indicating the reviewer enjoyed the music and dance. Given it's a single excerpt, confidence is low, but the positive tone warrants a score in the positive range. | Kimi: The excerpt expresses enthusiastic praise for the show's infectious energy and craftsmanship, suggesting audiences will find it hard to resist enjoying the performance. As a single curated quote with clearly positive language, it warrants the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:21:21.187Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

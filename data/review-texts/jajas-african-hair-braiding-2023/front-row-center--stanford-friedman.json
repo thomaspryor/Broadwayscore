@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The art of hair braiding stretches back thousands of years across African culture...Playwright Jocelyn Bioh provides a colorful look at these traditions being carried forward at the small but bright Harlem salon known as ‘Jaja’s African Hair Braiding’...And though the play takes place in 2019, its underlying themes are as old as time: lost love, false hopes, dreams deferred.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Playwright Jocelyn Bioh provides a colorful look at these traditions being carried forward at the small but bright Harlem salon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: This excerpt is purely descriptive context about the play's cultural background and themes, with no clear evaluative language or recommendation. The phrase 'colorful look' could be mildly positive but is too vague to determine the critic's verdict. | GPT-4o: The excerpt praises the play's colorful portrayal of cultural traditions, suggesting a positive view. However, the lack of a full review and the single excerpt warning necessitate a cautious, low-confidence score at the lower end of the Positive range. | Gemini: The excerpt describes the play as \"colorful\" and highlighting traditions. The single excerpt and lack of a clear verdict lead to a lower confidence and score. | Kimi: Single curated excerpt offers mild praise ('colorful look', 'bright') but provides limited evaluative detail and no clear recommendation strength, requiring low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:08:33.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that makes the Founding Fathers feel like real people instead of marble statues, and does so with more energy, intelligence and sheer theatrical joy than I've seen in years.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a musical that makes the Founding Fathers feel like real people instead of marble statues, and does so with more energy, intelligence and sheer theatrical joy than I've seen in years.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a musical that makes the Founding Fathers feel like real people instead of marble statues, and does so with more energy, intelligence and sheer theatrical joy than I've seen in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise with superlatives ('more energy, intelligence and sheer theatrical joy than I've seen in years'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt is highly positive, praising the musical's ability to bring historical figures to life with exceptional energy and joy. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The quote is overwhelmingly positive, using superlatives like \"more energy, intelligence and sheer theatrical joy than I've seen in years.\" Given that this is the only excerpt available, I'm scoring it as a strong positive, but with low confidence due to the lack of full context. | Kimi: The excerpt contains unqualified superlatives ('sheer theatrical joy than I've seen in years') indicating rave-level enthusiasm, though the single-excerpt format limits confidence that the full review maintains this tone throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:34:33.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

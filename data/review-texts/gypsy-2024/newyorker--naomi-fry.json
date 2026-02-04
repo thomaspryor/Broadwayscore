@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Audra McDonald's Rose is a marvel of controlled intensity, bringing new psychological depth to the role while honoring its towering legacy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Audra McDonald's Rose is a marvel of controlled intensity, bringing new psychological depth to the role while honoring its towering legacy.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audra McDonald's Rose is a marvel of controlled intensity, bringing new psychological depth to the role while honoring its towering legacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with high praise for McDonald's performance using superlatives ('marvel'). However, low confidence due to limited text - unclear if this praise extends to overall production recommendation. | GPT-4o: The excerpt provides high praise for Audra McDonald's performance, describing it as a 'marvel' and highlighting both depth and respect for the role's legacy. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Audra McDonald's performance as a \"marvel,\" indicating a strong positive sentiment. Given the single excerpt and positive tone, I've placed it in the upper range of the 'Positive' bucket. | Kimi: The excerpt provides strong praise for McDonald's performance using superlatives like 'marvel,' warranting the upper end of the Positive bucket per instructions for clearly positive single excerpts. However, the single-quote limitation prevents higher confidence or a Rave classification, as the excerpt focuses narrowly on one performance without assessing the full production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:29:26.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -14,5 +14,59 @@
   "nycTheatreExcerpt": "Crucial to the play's appeal is the way the relationships between the characters, amiable but distant at first, evolve under the astutely detailed direction of Knud Adams. This is particularly impressive because all the actors played their roles in the play's off-Broadway debut, and yet the performances still have the bloom of freshness and discovery, in exploring both the characters' sympathies and antipathies.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"...the performances still have the bloom of freshness and discovery\"\n\nRead more"
+  "showScoreExcerpt": "\"...the performances still have the bloom of freshness and discovery\"\n\nRead more",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the performances still have the bloom of freshness and discovery",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive view of the performances, indicating a recommendation. However, due to the limited text, the confidence is low. | Gemini: The quote indicates a positive assessment of the performances, but the truncated nature of the text and lack of overall context makes it difficult to give a higher score. | Kimi: The excerpt provides clear, enthusiastic praise for the performances using evocative positive language ('bloom of freshness'). However, as this is only a curated excerpt without the full review context or final verdict, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:12:51.687Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

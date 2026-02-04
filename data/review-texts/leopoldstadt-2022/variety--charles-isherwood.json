@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stoppard's late-career masterpiece is a deeply personal meditation on Jewish identity and the inexorable march of history, rendered with his characteristic wit and intellectual rigor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stoppard's late-career masterpiece is a deeply personal meditation on Jewish identity and the inexorable march of history, rendered with his characteristic wit and intellectual rigor.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard's late-career masterpiece is a deeply personal meditation on Jewish identity and the inexorable march of history, rendered with his characteristic wit and intellectual rigor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'masterpiece' which is strong praise, but this is only a single excerpt so the full verdict may be more nuanced. The language is unambiguously positive. | GPT-4o: The excerpt describes the show as a 'masterpiece' with 'characteristic wit and intellectual rigor,' indicating a highly positive assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the word \"masterpiece\" and phrases like \"deeply personal meditation\" and \"characteristic wit and intellectual rigor,\" which indicate a strong positive assessment. Given that this is only one excerpt, the confidence is low, but the language is strong enough to warrant a score in the upper end of the positive range. | Kimi: The excerpt employs superlative praise ('masterpiece') and describes the work as deeply personal and intellectually rigorous. However, as a single curated excerpt that may be cherry-picked and not fully representative, it scores in the upper Positive range (80-84) per the specific guidance for single-excerpt reviews, with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:33:41.638Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

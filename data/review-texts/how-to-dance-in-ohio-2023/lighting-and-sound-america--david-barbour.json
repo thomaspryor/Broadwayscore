@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“How to Dance in Ohio puts its best foot forward, bringing its young lead performers onstage for a quick pre-show talk and, instantly, you grasp the show's rationale: They're the most winning bunch of talents you're likely to see all year, and at least one of them looks to be a breakout star…[the show] struggles with a multiplicity of characters and plot lines, often seeming unsure of where to place its focus...It is, in many ways, a touching, even groundbreaking, piece of work, but it would have benefited from another round of workshops or an additional out-of-town tryout.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is, in many ways, a touching, even groundbreaking, piece of work, but it would have benefited from another round of workshops.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the performers as 'winning' and calls the work 'touching' and 'groundbreaking,' but identifies significant structural problems with focus and development, suggesting it needed more work before Broadway. | GPT-4o: The review acknowledges the show's touching and groundbreaking aspects, especially highlighting the young performers. However, it notes issues with focus and suggests further development was needed, indicating a mildly positive but not unqualified recommendation. | Gemini: The review praises the performers and calls the show \"touching\" and \"groundbreaking,\" but also notes that it \"struggles\" and \"would have benefited\" from further development. This suggests a positive but qualified recommendation. | Kimi: The critic praises the young performers as 'the most winning bunch of talents' and calls the show 'groundbreaking,' but criticizes the unfocused structure and suggests it needed more development time.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:53:30.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

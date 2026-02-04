@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Grey House is a haunted-house thriller that works overtime to frighten its audience, and it succeeds more often than not.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House is a haunted-house thriller that works overtime to frighten its audience, and it succeeds more often than not.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive assessment - the show 'succeeds more often than not' at its goal. However, 'works overtime' suggests effort over natural effectiveness, and 'more often than not' implies some failures. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt suggests the show is effective in its genre, succeeding more often than not, indicating a mildly positive reception. However, due to the single excerpt warning, the confidence is low. | Gemini: The review states the show \"succeeds more often than not\" in frightening the audience, indicating a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, a score in the middle of the Positive range seems appropriate. | Kimi: The critic affirms the show achieves its primary goal of frightening the audience, constituting a recommendation despite the qualified phrasing. With only a single excerpt available, confidence is reduced per the text quality warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:27:13.386Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 73,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

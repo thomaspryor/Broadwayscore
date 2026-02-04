@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Here Lies Love’ is a history lesson wrapped in a tale of broken hearts and presented as engaging songs. It’s a fine alternative to traditional Broadway that’s likely to attract the younger audiences that the theater community desperately needs. If it succeeds, expect to see a lot more similarly crafted musicals in the coming years.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a fine alternative to traditional Broadway that's likely to attract the younger audiences that the theater community desperately needs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this qualified positive recommendation ('fine alternative') suggests modest endorsement but lacks enthusiasm for higher scoring within Positive range. | GPT-4o: The excerpt praises the show as an engaging and innovative alternative to traditional Broadway, suggesting a positive recommendation. The single excerpt warning and lack of full context reduce confidence. | Gemini: The review calls the show a \"fine alternative to traditional Broadway\" and suggests it will attract younger audiences, indicating a positive recommendation despite being a single excerpt. | Kimi: The excerpt offers mild praise ('engaging songs,' 'fine alternative') and suggests the show fills a valuable niche for younger audiences, but lacks the superlatives of a rave review. Given this is a single curated excerpt potentially cherry-picked from a larger review, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:47:08.956Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

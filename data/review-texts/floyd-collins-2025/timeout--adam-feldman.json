@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"The orchestra, directed and conducted by Ted Sperling, is superb; so is the full-bodied singing by Jordan as Floyd and McAlpine as Nellie. \"\n\nRead more"
+  "showScoreExcerpt": "\"The orchestra, directed and conducted by Ted Sperling, is superb; so is the full-bodied singing by Jordan as Floyd and McAlpine as Nellie. \"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The orchestra, directed and conducted by Ted Sperling, is superb; so is the full-bodied singing by Jordan as Floyd and McAlpine as Nellie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising orchestra and lead performances as 'superb' and 'full-bodied.' However, this is only one curated quote that may not represent the full review verdict, hence low confidence. | GPT-4o: The excerpt praises the orchestra and lead performances, indicating a positive view. However, with only one excerpt available, the overall sentiment is uncertain, warranting a lower score within the Positive range. | Gemini: The excerpt praises the orchestra and the singing of the leads, indicating a positive assessment. Given it's a single excerpt, confidence is low, but the content is clearly positive. | Kimi: The excerpt contains strong positive evaluative language ('superb', 'full-bodied') regarding the orchestra and principal performances, indicating a positive assessment of the production's musical elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:19:38.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

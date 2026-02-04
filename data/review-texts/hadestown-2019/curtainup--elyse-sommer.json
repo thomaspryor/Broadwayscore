@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“All the changes accomplished something of a miracle. The book and music are the same yet it's now very much a Broadway worthy musical...The Broadway staging is stunning...The real star of ‘Hadestown’ no matter where it's set is the music presented...The lyrics throughout are also very fine, and, thanks to the small on stage band and lack of Broadway's usual excessive amplification, can be clearly understood and appreciated.” \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All the changes accomplished something of a miracle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the transformation 'a miracle,' describing staging as 'stunning' and consistently positive language about music and lyrics. Single excerpt warning requires caution, but language is clearly enthusiastic. | GPT-4o: The excerpt praises the Broadway staging as 'stunning' and highlights the music as the 'real star,' suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt is overwhelmingly positive, calling the changes a 'miracle' and stating it is now 'very much a Broadway worthy musical'. Due to the limited text, confidence is low. | Kimi: The excerpt features enthusiastic praise calling the transformation a 'miracle' and the staging 'stunning,' with strong commendations for the music and lyrics, indicating a clear recommendation for the Broadway production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:32:07.012Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical achieves something remarkable: It makes you laugh and cry, sometimes simultaneously, without ever manipulating your emotions or condescending to its characters.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "The musical achieves something remarkable: It makes you laugh and cry, sometimes simultaneously, without ever manipulating your emotions or condescending to its characters.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.washingtonpost.com/theater-dance/2022/11/10/kimberly-akimbo-broadway-clark/",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical achieves something remarkable: It makes you laugh and cry, sometimes simultaneously, without ever manipulating your emotions or condescending to its characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt uses strong praise ('remarkable', 'makes you laugh and cry') and highlights sophisticated emotional impact without manipulation, suggesting high-quality theatrical craft. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt describes the musical as achieving something 'remarkable' and praises its emotional impact without manipulation, indicating a strong positive sentiment. However, with only a single excerpt available, confidence is low. | Gemini: The excerpt expresses strong praise for the musical's ability to evoke emotions authentically, suggesting a positive and impactful experience. Given the single excerpt, I'm placing it at the higher end of the 'Positive' bucket. | Kimi: The excerpt offers strong praise for the show's emotional impact and sophisticated craftsmanship, calling it 'remarkable,' though the single-quote format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:20:32.911Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
