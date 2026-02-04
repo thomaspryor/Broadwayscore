@@ -405,6 +405,37 @@ const KNOWN_ALIASES = {
   'purlie': 'purlie-victorious',
   'uncle vanya': 'uncle-vanya',
   'vanya': 'uncle-vanya',
+
+  // Historical mega-hits (batch-researched)
+  'the phantom of the opera': 'the-phantom-of-the-opera-1988',
+  'phantom of the opera': 'the-phantom-of-the-opera-1988',
+  'phantom': 'the-phantom-of-the-opera-1988',
+  'poto': 'the-phantom-of-the-opera-1988',
+
+  'jersey boys': 'jersey-boys-2005',
+
+  'kinky boots': 'kinky-boots-2013',
+  'kinky boots the musical': 'kinky-boots-2013',
+
+  'beautiful': 'beautiful-the-carole-king-musical-2014',
+  'beautiful the carole king musical': 'beautiful-the-carole-king-musical-2014',
+  'carole king musical': 'beautiful-the-carole-king-musical-2014',
+
+  'dear evan hansen': 'dear-evan-hansen-2016',
+  'evan hansen': 'dear-evan-hansen-2016',
+  'deh': 'dear-evan-hansen-2016',
+
+  'hairspray': 'hairspray-2002',
+  'hairspray the musical': 'hairspray-2002',
+
+  'come from away': 'come-from-away-2017',
+  'cfa': 'come-from-away-2017',
+
+  'matilda': 'matilda-the-musical-2013',
+  'matilda the musical': 'matilda-the-musical-2013',
+
+  'billy elliot': 'billy-elliot-the-musical-2008',
+  'billy elliot the musical': 'billy-elliot-the-musical-2008',
 };
 
 // ---------------------------------------------------------------------------
@@ -1701,6 +1732,17 @@ function applyChanges(applied, newEntries, commercial) {
     if (!commercial.shows[slug]) {
       console.log(`  [SKIP] Show "${slug}" not in commercial.json`);
       continue;
+    }
+
+    // 14-day cooling period: skip shows recently added by batch research
+    const showData = commercial.shows[slug];
+    if (showData.firstAdded) {
+      const addedDate = new Date(showData.firstAdded);
+      const daysSinceAdded = (Date.now() - addedDate.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSinceAdded < 14) {
+        console.log(`  [COOLING] ${slug}.${field}: Skipping — added ${Math.round(daysSinceAdded)}d ago (14d cooling period)`);
+        continue;
+      }
     }
 
     const current = commercial.shows[slug][field];
