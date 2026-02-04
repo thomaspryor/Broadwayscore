@@ -22,5 +22,45 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 203,
+  "archivePath": "data/archives/reviews/the-merchant-of-venice-2010/variety--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:52:09.797Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 203 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Sep 22, 2010 6:16pm PT \n\n \n\n \n \n \n\n \n\n \n Lapland Odyssey\n \n \n\n \n\n A lukewarm slacker comedy set in subzero temperatures.\n\nA lukewarm slacker comedy set in subzero temperatures, Dome Karukoski’s “Lapland Odyssey” is a likable enough road-trip frolic that’s not quite edgy, deadpan or laugh-out-loud funny enough to serve as more than a pleasant throwaway. Pic will score fest slots and has Scandinavian commercial prospects; Eurotube and some specialty DVD sales are signaled as well.\n\nJanne (Jussi Vatanen) is unemployed and unconcerned, though longtime g.f. Inari (Pamela Tola) is getting fed up with his shiftless ways. The last straw comes when he’s given money to buy a cable-TV box but fails to do so. When Inari informs she’ll leave him unless he somehow gets the gadget by morning, he drafts two pals, horny but girl-repellent Raiha (Timo Lavikainen) and cynical Kapo (Jasper Paakkonen), to accompany him on an all-night quest. Numerous distractions and hurdles include a comely Swedish “underwater rugby” team, blizzards, unplanned reindeer butchering and the duplicity of Inari’s rich ex-boyfriend (Kari Ketonen), who woos her while Janne is away. Amiable but a little too soft to maximize the laughs eked from Finnish miserabilism, pic is well turned in tech/design departments, especially Pini Hellstedt’s attractive widescreen lensing."
 }
