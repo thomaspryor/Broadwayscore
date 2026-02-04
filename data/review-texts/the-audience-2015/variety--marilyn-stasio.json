@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Helen Mirren's performance as Queen Elizabeth II is a master class in regal bearing, combining the monarch's public dignity with glimpses of her private humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -67,5 +67,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 904,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mirren's triumphant return to Buckingham Palace in 'The Audience,' Peter Morgan's royally entertaining glimpse into the private weekly meetings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses strong positive language ('triumphant return', 'royally entertaining', 'positively endearing') and praises Mirren's performance extensively. Despite some criticisms of specific scenes and performances, the overall tone is clearly recommending the show. | GPT-4o: The review is filled with superlatives and praise for Helen Mirren's performance and the production as a whole, describing it as 'triumphant' and 'royally entertaining.' The critic's tone is enthusiastic and suggests the show is a must-see. | Gemini: The review is overwhelmingly positive, using phrases like \"royally entertaining\" and highlighting Mirren's performance as a triumph. While there are some reservations about certain scenes, the overall recommendation is strong. | Kimi: While the review notes schematic writing and one over-the-top performance, it overwhelmingly praises Mirren's 'triumphant' turn and calls the play 'royally entertaining,' clearly recommending the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:39:01.066Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

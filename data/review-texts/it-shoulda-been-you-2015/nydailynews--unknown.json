@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220630065316/https://www.nydailynews.com/entertainment/theater-arts/tyne-daly-harriet-harris-spar-shoulda-article-1.2183795",
   "contentTier": "complete",
   "wordCount": 338,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the end, the show is a harmless diversion. But this is Broadway. 'It Shoulda Been You' shoulda been better.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges some positive elements (cast performances, direction) but concludes it's merely a 'harmless diversion' that 'shoulda been better' for Broadway standards. The final verdict is neither recommendation nor strong discouragement. | GPT-4o: The review describes the show as a 'harmless diversion' with some enjoyable performances but ultimately suggests it falls short of Broadway standards. The overall tone is mixed, acknowledging some positives but with notable reservations. | Gemini: The review acknowledges some positives (performances, brisk pacing) but ultimately finds the show slight and cliché-ridden. The final line, \"It Shoulda Been You shoulda been better,\" suggests a mixed to slightly negative overall impression. | Kimi: While the critic praises individual performances (particularly Tyne Daly and Harriet Harris) and finds the direction brisk, the review emphasizes that the material is slight, clichéd, and forced, ultimately concluding that the show disappoints despite its entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:11:40.662Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

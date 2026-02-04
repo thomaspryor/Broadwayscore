@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"The show practically wears itself out attempting to pull out all the stops with the sort of theatrical pizzazz designed to wow both musical theater fanatics and tourists alike. If at times the strenuous efforts feel too exhausting, bless their hearts for trying so hard.\"\n\nRead more"
+  "showScoreExcerpt": "\"The show practically wears itself out attempting to pull out all the stops with the sort of theatrical pizzazz designed to wow both musical theater fanatics and tourists alike. If at times the strenuous efforts feel too exhausting, bless their hearts for trying so hard.\"\n\nRead more",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part, Some Like It Hot succeeds in its aim of simply entertaining its audiences with those two most glorious words in the English language.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for performances, direction, and entertainment value, but notable reservations about thin material and formulaic elements. The critic acknowledges the show 'works' and 'succeeds in its aim' while wishing it 'could have reached a higher temperature.' | GPT-4o: The review acknowledges the show's entertaining qualities and praises performances, but notes that the material feels thin and formulaic. The original 4/5 star rating suggests a positive recommendation despite these reservations. | Gemini: The review is mostly positive, praising the performances and entertainment value, but notes that it feels formulaic and doesn't reach a higher temperature. The 4/5 star rating supports a positive score. | Kimi: The critic awards 4/5 stars and praises the performances and direction while noting the material feels thin and formulaic. Despite reservations, the review clearly recommends the show as an entertaining musical comedy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:33:17.951Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

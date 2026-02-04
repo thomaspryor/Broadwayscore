@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 648,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "Robert Downey Jr. brings real acting chops to an AI-centric play\n\nRead more"
+  "showScoreExcerpt": "Robert Downey Jr. brings real acting chops to an AI-centric play\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Although the play falls short of leaving a deep impact, Robert Downey Jr.'s star turn and strong physical staging keep you on board for McNeal's fleet 90 minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises Downey's performance and staging but finds the play 'dramatically muddy' and says its central themes 'ultimately elude.' The final verdict acknowledges both strengths and shortcomings without a clear recommendation either way. | GPT-4o: The review praises Robert Downey Jr.'s performance and the physical staging, but criticizes the play for being dramatically muddy and failing to leave a deep impact. This suggests a mixed review with notable strengths and weaknesses. | Gemini: The review praises Downey's performance and the staging, but finds the play itself dramatically muddy and falling short of a deep impact. This suggests a mixed experience, leaning slightly positive due to the star power. | Kimi: While the critic finds the play itself 'dramatically muddy' and criticizes its lack of lasting impact, the enthusiastic praise for Downey's 'sure-footed and magnetic' Broadway debut and the 'strong physical staging' constitute a qualified recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:21:51.498Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

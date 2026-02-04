@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250824074430/https://nypost.com/2019/04/16/burn-this-review-adam-driver-keri-russell-sizzle-in-love-dance/",
   "contentTier": "complete",
   "wordCount": 397,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That we want it for them is a sign that 'Burn This' isn't just blowing smoke.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws like contrivances and a slow start, the critic praises the performances extensively, particularly Russell and Driver, and concludes positively. The final line suggests the show succeeds emotionally. | GPT-4o: The review acknowledges a slow start but ultimately praises the performances, chemistry, and emotional impact, indicating a positive recommendation despite some reservations about the play's contrivances. | Gemini: The review acknowledges flaws (\"contrivances and speeches more colorful than convincing\") but ultimately concludes positively (\"That we want it for them is a sign that “Burn This” isn’t just blowing smoke.\") | Kimi: The reviewer notes script contrivances and a slow start, but delivers strong praise for Driver and Russell’s performances and chemistry, concluding with a clear recommendation that the show has substance and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:42:08.760Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

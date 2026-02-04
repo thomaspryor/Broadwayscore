@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220521224711/https://www.nydailynews.com/entertainment/theater-arts/town-theater-review-article-1.1975935",
   "contentTier": "complete",
   "wordCount": 430,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production feels like a big, juicy kiss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout ('great cast', 'excellent', 'helluva entertainment') with only minor set design criticism. The vivid metaphor of 'big, juicy kiss' and concluding 'helluva entertainment' show clear enthusiasm. | GPT-4o: The review is full of praise for the cast, direction, choreography, and music, describing the production as 'a big, juicy kiss' and 'helluva entertainment.' Minor criticisms of the set design do not detract from the overall positive tone. | Gemini: The review is overwhelmingly positive, describing the production as a \"big, juicy kiss\" and a \"helluva entertainment.\" Despite a minor criticism of the sets, the overall recommendation is strong. | Kimi: The review offers enthusiastic praise for the cast, direction, choreography, and Bernstein's score, with only minor reservations about the set design, concluding it's 'a helluva entertainment.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:27:19.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

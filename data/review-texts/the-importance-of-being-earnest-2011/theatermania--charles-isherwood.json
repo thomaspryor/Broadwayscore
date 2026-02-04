@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Brian Bedford's production of Oscar Wilde's masterpiece is a delightful revival that captures both the wit and the heart of this classic comedy of manners.",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 42,
   "archivePath": "data/archives/reviews/the-importance-of-being-earnest-2011/theatermania--charles-isherwood_2026-02-04.html",
@@ -63,5 +63,10 @@
     "Show title not found in text"
   ],
   "wordCount": 42,
-  "tierReason": "Short text (42 words)"
+  "tierReason": "Short text (42 words)",
+  "rejectedAt": "2026-02-04T06:44:06.148Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This is a website error page with search suggestions and unrelated content, not a review.; openai: This is a navigation prompt and promotional content, not a review.; gemini: This is an error message, not a review.; kimi: This text is a 404 error page/search prompt ('It seems we can't find what you're looking for'), not a theater review.",
+  "promptVersion": "5.2.0"
 }

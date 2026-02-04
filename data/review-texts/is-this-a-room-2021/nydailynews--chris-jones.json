@@ -53,5 +53,59 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 549,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a fascinating piece in every way, replete with fabulous central performances from both Emily Davis and Pete Simpson.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Jones calls the show 'fascinating in every way' with 'fabulous central performances' and engages deeply with its political themes, showing clear appreciation for the production despite wishing it were paired with the companion show. | Gemini: The review is mostly positive, calling the show \"fascinating\" and praising the performances. The critic suggests it would be better value if paired with another show, indicating a reservation but still a recommendation. | Kimi: The critic offers strong praise for the performances ('fabulous') and concept ('fascinating'), but lowers the recommendation due to the show's brief runtime and poor value as a standalone bill, suggesting it should have been paired with 'Dana H.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:11:07.811Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 74 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 68,
-  "tierReason": "Short text (68 words)"
+  "tierReason": "Short text (68 words)",
+  "rejectedAt": "2026-02-04T06:33:54.690Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be only the opening paragraph of a review, providing setup/context but no actual evaluation of the show; openai: The text is about the Broadway musical 'SpongeBob SquarePants', not the target show.",
+  "promptVersion": "5.2.0"
 }

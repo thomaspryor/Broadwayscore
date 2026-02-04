@@ -39,7 +39,12 @@
     "Word count too low: 63 (min: 300)",
     "Show title not found in text"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 57,
-  "tierReason": "Short text (57 words)"
+  "tierReason": "Short text (57 words)",
+  "rejectedAt": "2026-02-04T05:30:19.235Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text only provides context about adaptations of classics and mentions other shows - contains no evaluation or assessment of any specific Broadway production; openai: The text discusses various productions but does not review the current Broadway production of 'Fat Ham'.; gemini: This is just an introduction setting up context about other shows, not a review of a specific production.; kimi: The provided text contains only introductory context describing trends in theatrical adaptations and mentioning upcoming or recent Off-Broadway productions. It offers no critical evaluation, opinion, or verdict regarding any specific current Broadway production.",
+  "promptVersion": "5.2.0"
 }

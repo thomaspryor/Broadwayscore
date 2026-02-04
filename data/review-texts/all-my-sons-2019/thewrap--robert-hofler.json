@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 76 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 70,
-  "tierReason": "Short text (70 words)"
+  "tierReason": "Short text (70 words)",
+  "rejectedAt": "2026-02-04T05:34:02.310Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be only the opening paragraph of a review, providing context and setup but no actual evaluation of the production.; openai: The text is about a revival of Arthur Miller's 'All My Sons,' not a current Broadway production.; gemini: The review is about \"All My Sons\", not the target show.",
+  "promptVersion": "5.2.0"
 }

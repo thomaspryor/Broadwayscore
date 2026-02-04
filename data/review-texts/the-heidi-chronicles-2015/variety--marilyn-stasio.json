@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 660,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A shoddy production can't dim the lights of this long-overdue revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Elisabeth Moss's performance and the play itself but heavily criticizes the direction, design, and supporting performances, calling it a 'shoddy' and 'cheapo production' with no clear recommendation. | GPT-4o: The review praises Elisabeth Moss's performance and the play's content but criticizes the production's direction, costumes, and set design. The overall tone is mixed, acknowledging the play's strengths while highlighting significant production flaws. | Gemini: The review praises the play's writing and Elisabeth Moss's performance but strongly criticizes the direction and design choices, resulting in a mixed assessment. | Kimi: While the critic heavily criticizes the direction, design, and supporting performances as 'shoddy,' 'cheap,' and an 'embarrassment,' the verdict ultimately favors seeing the show for Elisabeth Moss's 'effortlessly endearing' star turn and the strength of Wasserstein's Pulitzer-winning play itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:43:58.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

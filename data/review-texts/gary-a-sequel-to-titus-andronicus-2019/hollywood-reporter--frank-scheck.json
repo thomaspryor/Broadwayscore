@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 816,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It would be a pleasure to report that the gamble has paid off, at least creatively. Unfortunately, despite the tremendous abundance of talent both onstage and off, the production is mainly notable for being the most batshit-crazy thing to be seen on Broadway in many a moon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges exceptional talent and performances but finds the show 'attenuated and increasingly tiresome,' 'flimsy farce with pretensions,' and lacking emotional connection. Despite praising the cast's 'virtuosic comic performances,' the overall verdict is clear disappointment with the material and execution. | GPT-4o: The review acknowledges the talent involved but criticizes the production as 'flimsy' and 'labored,' with farce not being the director's strong suit. The truncated nature of the text suggests caution, but the overall tone is negative. | Gemini: The review acknowledges the talent involved and some laughs, but ultimately finds the production \"attenuated and increasingly tiresome.\" The truncated text makes the final verdict less clear, but the overall tone suggests a mixed reaction. | Kimi: While praising the cast's virtuosic comic performances and lavish production design, the critic ultimately finds the show to be a tiresome, flimsy farce with pretensions that strains for existential vaudeville but delivers little substance, clearly indicating the production is not worth seeing despite its talented ensemble.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:58:22.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

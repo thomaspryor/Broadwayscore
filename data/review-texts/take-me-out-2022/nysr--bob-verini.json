@@ -19,5 +19,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"4/5 stars...What’s truly impressive is the number, variety and depth of variations on the theme of personal identity that the author manages to coherently weave into his tale, most of which are successfully realized in Scott Ellis’ revival...Director Ellis keeps all the thematic balls in the air at a peppy pace, but with some loss of edge. A strong emphasis on humor means that moments that could be fraught are tamped down...Ellis and Greenberg evidently share the belief that baseball is the most democratic of pastimes, perhaps even more so than theater, where a commonality of values often reigns...It almost makes a trip to the Helen Hayes a requirement in these polarized times.\"  \n\nRead more"
+  "showScoreExcerpt": "\"4/5 stars...What’s truly impressive is the number, variety and depth of variations on the theme of personal identity that the author manages to coherently weave into his tale, most of which are successfully realized in Scott Ellis’ revival...Director Ellis keeps all the thematic balls in the air at a peppy pace, but with some loss of edge. A strong emphasis on humor means that moments that could be fraught are tamped down...Ellis and Greenberg evidently share the belief that baseball is the most democratic of pastimes, perhaps even more so than theater, where a commonality of values often reigns...It almost makes a trip to the Helen Hayes a requirement in these polarized times.\"  \n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It almost makes a trip to the Helen Hayes a requirement in these polarized times.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for the show's thematic depth and successful realization. The 'requirement' language suggests strong recommendation despite noting some loss of edge. | GPT-4o: The 4/5 stars rating suggests a strong positive review. The excerpt praises the thematic depth and coherence, despite some loss of edge. The final quote implies a strong recommendation, aligning with the upper end of the Positive range. | Gemini: The review gives the show 4/5 stars and ends with a strong recommendation, despite some reservations about the humor tamping down potentially fraught moments. | Kimi: 4/5 star rating with strong praise for thematic depth and successful realization, though noting some loss of edge. The single excerpt displays clearly positive sentiment with a strong closing recommendation, warranting the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:38:20.566Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

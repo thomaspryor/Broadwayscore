@@ -36,7 +36,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20230327010111",
   "archiveOrgUrl": "http://web.archive.org/web/20230327010111/https://www.wsj.com/articles/sweeney-todd-review-josh-grobans-boyish-demon-barber-151e79dc",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 322,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "rejectedAt": "2026-02-04T06:37:41.996Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This text is mostly subscription prompts, navigation menus, and website interface elements with only a brief fragment of the actual review visible; openai: The text provided is mostly navigation menus and subscription prompts, not a coherent review.",
+  "promptVersion": "5.2.0"
 }

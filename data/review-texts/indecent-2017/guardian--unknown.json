@@ -37,5 +37,11 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 609,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T06:09:59.642Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Vineyard Theatre, not the current Broadway run.; kimi: This review covers the Off-Broadway production at the Vineyard Theatre, not the subsequent Broadway transfer. The text explicitly mentions the Vineyard Theatre and notes the article is more than 9 years old, dating it to the 2016 Off-Broadway run rather than the 2017 Broadway production at the Cort Theatre.",
+  "promptVersion": "5.2.0"
 }

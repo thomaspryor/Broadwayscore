@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230609174543/https://www.nydailynews.com/entertainment/music-arts/beautiful-carole-king-musical-theater-review-article-1.1575587",
   "contentTier": "complete",
   "wordCount": 459,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too bad a great musical isn't only about the music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review praises the songs and performances but criticizes the book as 'simplistic' and 'weakly drawn.' The critic acknowledges entertainment value while noting significant structural flaws. | GPT-4o: The review praises the musical performances and production elements but criticizes the simplistic storyline and character development. The overall tone is mixed, acknowledging strengths but highlighting significant weaknesses. | Gemini: The review praises the music and performances, particularly Jessie Mueller, but criticizes the simplistic book. It's a positive recommendation with reservations due to the weak storyline. | Kimi: While the critic strongly criticizes the book as simplistic and lacking dramatic depth, they praise the iconic songs, strong performances (particularly Jessie Mueller), and polished production values, ultimately delivering a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:37:51.013Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -51,5 +51,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20141024143225/http://www.newsday.com:80/entertainment/theater/disgraced-on-broadway-explosive-islamic-politics-1.9534608",
   "contentTier": "complete",
   "wordCount": 690,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play remains a smart and provocative work of unusual daring, one that should be seen by anyone who cares about serious theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review praises the play's intelligence and provocative nature but criticizes the current production for lacking the 'magic' of the original cast, particularly Aasif Mandvi's performance. This results in a mixed verdict with both positive and negative elements. | Gemini: The review recommends seeing the play, but notes that the current production is not as good as the original due to recasting. The final verdict is 'Shattering play, imperfect production.' | Kimi: While the critic praises Ayad Akhtar's play as 'smart and provocative' and insists it 'should be seen,' they criticize key casting changes and note the 'magic is missing' compared to the original production, resulting in a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:51:20.664Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

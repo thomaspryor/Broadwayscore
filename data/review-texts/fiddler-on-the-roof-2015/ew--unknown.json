@@ -36,5 +36,60 @@
   "expectedCritic": "Unknown",
   "contentTier": "complete",
   "wordCount": 560,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Burstein's Tevye is knowing and funny, often breaking the fourth wall to speak to the audience or confer with God.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review gives a B+ grade and consistently praises the production with terms like 'faithful and spirited,' highlights strong performances from Burstein and the ensemble, and appreciates the direction and design elements. Despite being truncated, the positive assessment is clear throughout. | GPT-4o: The review praises the production's simplicity, relevance, and performances, particularly Burstein's. The B+ rating suggests a positive recommendation, though the truncated text may miss final verdict nuances. | Gemini: The review is positive, highlighting Burstein's performance and the production's poignancy. The B+ grade suggests a solid recommendation, but the truncated text lowers confidence. | Kimi: The review awards the production a B+ and offers consistent praise for Bartlett Sher's direction, Danny Burstein's performance, and the emotional resonance of the revival, calling it 'faithful and spirited' with standout quiet moments.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:53:59.934Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 79,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -34,5 +34,60 @@
   "expectedCritic": "Unknown",
   "contentTier": "complete",
   "wordCount": 568,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, you'd have to be a total Grinch not to melt even a little during Berlin's comforting-as-cocoa Christmas ballad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B grade with praise for performances, choreography, and entertainment value. Despite noting the show's formulaic nature and stock characters, the critic finds it charming and gets 'into the Holiday spirit.' The positive elements outweigh the criticisms. | GPT-4o: The review acknowledges the show's lack of originality and some character and plot weaknesses, but ultimately highlights its charm and entertainment value. The critic's B rating suggests a positive recommendation with some reservations. However, the text is truncated, so the final verdict may be missing. | Gemini: The review acknowledges the show's reliance on familiar tropes and songs, but highlights charming performances and production numbers. The 'B' grade and positive tone suggest a recommendation with reservations, but the truncated text lowers confidence. | Kimi: The review acknowledges the show's unoriginal plot and stock characters but praises the choreography, Irving Berlin's songs, and specific performances (particularly Corbin Bleu and Megan Lawrence), ultimately awarding it a 'B' grade and noting that audiences will be won over by the holiday spirit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:04:22.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Lehman Trilogy is a monument to capitalism disguised as its critique — three hours of financial history that somehow makes the destruction of the American economy feel like a magic trick.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20240228101945",
   "archiveOrgUrl": "http://web.archive.org/web/20240228101945/https://www.vulture.com/2021/10/theater-review-the-lehman-trilogy-on-broadway.html",
   "wordCount": 1241,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a feeling at the end of this atmospheric show, gorgeous and intoxicating as it often is, of a mighty steel beam bending out of true.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Shaw praises the performances as extraordinary and the stagecraft as beautiful, but finds significant structural problems with the show's length and dramatic arc, ultimately describing it as unable to sustain its ambitions. | GPT-4o: The review praises the performances and stagecraft, calling the actors 'wonderful' and the set 'handsome'. However, it notes the play's thematic shortcomings and a loss of emotional connection as it progresses, indicating some reservations. | Gemini: The review is mostly positive, praising the performances, set design, and music. However, it notes that the play weakens as it progresses, particularly in its analysis of the financial system, leading to a recommendation with reservations. | Kimi: The critic offers high praise for the three lead performances and production design, calling the show 'gorgeous' and 'intoxicating,' but criticizes the play's structure for losing emotional connection in its later sections and failing to deliver sophisticated financial analysis.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:44:43.570Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

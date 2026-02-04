@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Allison Janney gives a performance of stunning complexity as Ouisa, the Upper East Side matron whose worldview is shaken by an encounter with a charismatic young con man.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 726,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the vitalizing presence of Allison Janney in director Trip Cullman's elegant revival, 'Six Degrees of Separation' lacks the comic bite of the original production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises individual performances (Janney, Hawkins) and production elements but finds the play itself has lost relevance and impact, with the central premise now feeling 'quaint' rather than sharp social satire. | GPT-4o: The review acknowledges strong performances, particularly by Janney and Hawkins, but criticizes the production for lacking the original's comic impact and relevance. This results in a mixed verdict, with appreciation for certain elements but overall reservations about the show's effectiveness. | Gemini: The review praises Janney's performance and Guare's dialogue, but finds the play itself somewhat dated and lacking the original's comic bite. It highlights the psychological aspects of the characters but doesn't strongly recommend or discourage seeing the production. | Kimi: While praising the 'elegant' direction and 'incomparable' lead performances from Janney and Hawkins, the critic finds Guare's play 'quaint' by contemporary standards, lacking the 'comic bite' and 'hint of danger' of the original 1990 production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:32:40.423Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

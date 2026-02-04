@@ -40,5 +40,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 516,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington, 59, is magnificent -- disaffected, exuberant, heart-shredding -- as the character Sidney Poitier created on Broadway when just 32.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation warning, the available text shows overwhelming praise with superlatives like 'magnificent', 'shattering revival', 'devastating portrayal', and 'stunning revival' in the bottom line. The critic explicitly tells readers to 'forget all reservations' and praises both Washington's performance and the entire production. | GPT-4o: The review offers high praise for Denzel Washington's performance and the overall production, describing it as 'shattering' and 'stunning'. Despite the truncation warning, the available text strongly suggests a rave review. | Gemini: Despite the truncated text, the review is overwhelmingly positive, especially towards Washington's performance. The phrase \"magnificent Washington, stunning revival\" suggests a strong recommendation. | Kimi: The review employs superlatives like 'magnificent,' 'shattering,' and 'stunning' throughout, explicitly urging readers to 'forget any and all reservations' and delivering an unequivocal endorsement in the bottom line.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:30:51.266Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

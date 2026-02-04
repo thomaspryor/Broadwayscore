@@ -57,5 +57,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200303044552/https://www.newsday.com/entertainment/theater/billy-crystal-s-700-sundays-review-broadway-comfort-food-1.6425180",
   "contentTier": "truncated",
   "wordCount": 485,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'700 Sundays' is Broadway comfort food, an irresistible combination of shtick and schmaltz.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite truncation warning, the bottom line clearly states 'pure pleasure' and calls the show 'irresistible.' Strong positive language throughout with no significant reservations mentioned. | GPT-4o: The review praises Billy Crystal's performance as a blend of humor and heartfelt storytelling, describing the show as 'pure pleasure' and 'irresistible.' The tone is strongly positive, though the text is truncated, which slightly lowers confidence. | Gemini: The review is overwhelmingly positive, calling the show an \"irresistible blend\" and \"pure pleasure.\" While truncated, the overall tone and specific phrases indicate a strong recommendation. | Kimi: Despite noting some dated humor, the critic delivers an enthusiastic recommendation, calling the show 'pure pleasure' and 'irresistible' with praise for Crystal's crowd-pleasing performance and moving tribute to his family.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:28:10.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

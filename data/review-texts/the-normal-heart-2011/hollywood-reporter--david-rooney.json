@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Larry Kramer's angry, anguished AIDS drama gets a powerful revival that honors both the playwright's fierce activism and his characters' humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -66,5 +66,60 @@
   "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "wordCount": 1073,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production makes a stunning case for the play's power and relevance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite the truncation warning, the review is clearly a rave with superlative praise throughout: 'shattering revival,' 'spectacularly well-cast,' 'stunning case for the play's power.' The critic praises every aspect from performances to direction to design, with no meaningful reservations expressed. | GPT-4o: The review is filled with superlative praise for the production, performances, and emotional impact, despite the text being truncated. The critic describes it as a 'shattering revival' with 'scorching eloquence' and 'invigorating emotional power,' indicating a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the staging, performances, and the play's continued relevance. The phrase \"stunning case for the play's power and relevance\" indicates a strong recommendation. | Kimi: The review offers unqualified praise for the production's emotional power, calling it 'shattering' and 'spectacularly well-cast' with 'scorching eloquence.' Despite minor notes about the play's occasional didacticism, the critic finds the revival utterly gripping and essential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:45:57.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

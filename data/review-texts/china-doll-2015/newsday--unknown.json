@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151224043704/http://www.newsday.com:80/entertainment/theater/china-doll-review-al-pacino-works-hard-1.11190768",
   "contentTier": "complete",
   "wordCount": 448,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The playwright has given Pacino almost no story to build around his character and given him lines that pick over the same obvious plot points.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fault with both Mamet's 'lazy' writing and the overall production, though acknowledges Pacino's effort. The review criticizes the script as repetitive with 'shockingly little help from Mamet's celebrated motormouth' and calls the writing 'lazy.' While praising Pacino's legendary work ethic, the verdict is that both star and playwright are 'stuck' in an unsatisfying work. | GPT-4o: The review criticizes the play for having almost no story and lazy writing, despite acknowledging Pacino's efforts. The overall tone is negative, focusing on the play's shortcomings. | Gemini: The review indicates that Pacino works hard, but the writing is lazy. The reviewer uses negative language such as \"thankless role\", \"shockingly little help\", and \"writing is as lazy\". Overall, the review does not recommend the play. | Kimi: While praising Pacino's committed performance and presence, the critic finds Mamet's script lazy and structurally unsound, describing it as a monologue with 'shockingly little help' for the star, ultimately recommending against the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:44:34.764Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

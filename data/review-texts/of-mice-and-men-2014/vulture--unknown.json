@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203944/https://www.vulture.com/2014/04/theater-review-james-franco-in-of-mice-and-men.html",
   "contentTier": "complete",
   "wordCount": 1059,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It stood then and it stands up now, as the new Broadway production starring James Franco and Chris O'Dowd as the odd-couple bindlestiffs proves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the production with specific acclaim for O'Dowd's 'masterful' performance, Franco's justified star casting, excellent direction by Shapiro, and 'masterful' set design. Despite minor reservations about the ending, the overall assessment is clearly positive with strong praise for multiple elements. | Gemini: The review is generally positive, highlighting O'Dowd's performance and the director's shaping of the tone. Franco's performance is initially shaky but improves. The reviewer finds it accessible on both personal and social levels. | Kimi: The review offers strong praise for the lead performances (calling O'Dowd 'masterful' and Franco ultimately justified in his casting), direction, and set design, while noting only minor reservations about the abrupt ending and Franco's initially shaky start.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:25:50.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

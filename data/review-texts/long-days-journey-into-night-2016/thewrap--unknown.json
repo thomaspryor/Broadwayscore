@@ -38,5 +38,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 92,
-  "tierReason": "Short text (92 words)"
+  "tierReason": "Short text (92 words)",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gabriel Byrne plays Tyrone with reserved, desiccated style.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: This excerpt provides detailed character analysis and performance description but lacks evaluative language or any recommendation about seeing the show. The tone is analytical rather than critical. | Gemini: The review describes Byrne's performance but doesn't offer a clear overall recommendation for the production. It's more descriptive than evaluative, suggesting a mixed or neutral assessment. | Kimi: The critic praises Byrne's physical performance as successfully embodying the character's miserliness, though the text appears truncated before delivering an overall verdict on the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:19:13.791Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

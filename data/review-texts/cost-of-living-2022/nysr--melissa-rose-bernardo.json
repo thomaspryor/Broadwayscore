@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "Majok’s 'Cost of Living'...is an unadorned, unsympathetic, bleakly and blackly comic portrait of four people struggling to form various kinds of human connection.\n\nRead more"
+  "showScoreExcerpt": "Majok’s 'Cost of Living'...is an unadorned, unsympathetic, bleakly and blackly comic portrait of four people struggling to form various kinds of human connection.\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Majok's 'Cost of Living'...is an unadorned, unsympathetic, bleakly and blackly comic portrait of four people struggling to form various kinds of human connection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates a positive recommendation. The excerpt describes the show as 'blackly comic' which suggests appreciation for its dark humor, though 'unadorned' and 'unsympathetic' could be neutral descriptors. Single excerpt limits full assessment. | GPT-4o: The excerpt describes the play as 'unadorned' and 'bleakly and blackly comic', suggesting a nuanced and potentially challenging experience. The 4/5 star rating indicates a positive review, but the tone of the excerpt suggests some reservations. Given the single excerpt warning, the score is set at the lower end of the Positive range. | Gemini: The single excerpt available describes the play as a 'portrait' of people struggling, using terms like 'bleakly and blackly comic'. Given the 4/5 star rating, I'm placing it in the positive bucket, but with low confidence due to the limited text. | Kimi: The 4/5 star rating confirms a positive recommendation, though the excerpt's sober descriptors ('bleak,' 'unsympathetic') suggest a measured, serious appreciation rather than enthusiastic praise. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:47:05.781Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250404051814/https://www.vulture.com/article/theater-review-george-clooney-good-night-and-good-luck-broadway.html",
   "contentTier": "complete",
   "wordCount": 1468,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is, however, an ebb and flow to witnessing Good Night, and Good Luck on stage, as the potency of its content only intermittently melds with the capacities of its form.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic appreciates the production's sincerity, visual design, and Clooney's performance, but identifies significant structural problems with the theatrical adaptation and inconsistent execution among the cast, resulting in a mixed assessment. | GPT-4o: The review acknowledges the production's strengths in set design and Clooney's performance but notes significant issues with the adaptation to stage, resulting in an inconsistent experience. | Gemini: The review acknowledges the importance of the content and Clooney's sincerity, but finds the theatrical adaptation somewhat lacking and inconsistent in its impact. It praises elements like the set design and Clooney's performance, but criticizes the direction and some of the acting, resulting in a mixed assessment. | Kimi: The critic praises the handsome production design, George Clooney's sincere performance, and the project's sense of duty, but notes significant issues with diffuse staging and uneven supporting performances that prevent the show from fully achieving its potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:00:43.327Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

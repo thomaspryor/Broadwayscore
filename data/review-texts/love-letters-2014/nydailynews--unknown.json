@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220630014727/https://www.nydailynews.com/entertainment/theater-arts/love-letters-theater-review-article-1.1943513",
   "contentTier": "complete",
   "wordCount": 471,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With this duo, though, the play emerges as sweet, elegant and touching, as two lives come into vibrant focus.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review consistently praises both lead performances with phrases like 'she's still got the magic' and 'first-class Broadway revival.' The critic finds the production 'sweet, elegant and touching' and makes us 'care about doomed Melissa,' indicating a solid recommendation despite the simple staging. | GPT-4o: The review praises the performances of Mia Farrow and Brian Dennehy, describing the play as 'sweet, elegant and touching.' The critic highlights the actors' ability to bring the characters to life, making it a compelling and engaging production. | Gemini: The review is positive, highlighting the performances of Farrow and Dennehy and describing the play as \"sweet, elegant and touching.\" The critic clearly recommends seeing the production. | Kimi: The critic offers extensive praise for both lead performances, calling the revival 'first-class' and describing the production as emotionally vibrant and elegant, with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:19:51.741Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 80,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203851/https://www.vulture.com/2014/04/theater-review-the-velocity-of-autumn.html",
   "contentTier": "complete",
   "wordCount": 616,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 17,
+  "llmScore": {
+    "score": 17,
+    "confidence": "high",
+    "range": {
+      "low": 12,
+      "high": 22
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new Broadway production is ridiculous not just on the copyright page of the script by Eric Coble but also on every page thereafter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: Devastating pan that calls the show 'ridiculous,' compares it unfavorably to bad TV, and systematically demolishes every element. The critic suggests it's so forgettable it 'slips out of your memory even as you watch it.' | Gemini: The review is overwhelmingly negative, calling the play ridiculous and full of cliches. Despite praising Parsons's acting, the overall assessment is a strong pan. | Kimi: Green condemns the script as ridiculous and clichéd on every page, criticizes the direction as a gross overreach, and dismisses the production as synthetic and forgettable, finding no redeeming value despite Parsons' committed performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:54:06.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": null,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
+  }
 }

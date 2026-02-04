@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Nathan Lane delivers a tour de force performance as a desperate president in David Mamet's caustic political satire, but the playwright's cynical worldview feels more exhausting than illuminating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
     "Show title not found in text"
   ],
   "wordCount": 555,
-  "tierReason": "Truncation detected: paywall_or_login_prompt"
+  "tierReason": "Truncation detected: paywall_or_login_prompt",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nathan Lane delivers a tour de force performance as a desperate president in David Mamet's caustic political satire, but the playwright's cynical worldview feels more exhausting than illuminating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Lane's performance as 'tour de force' but criticizes the material as 'exhausting' rather than 'illuminating.' Single excerpt warning applies - this balanced but ultimately lukewarm assessment suggests mixed reception. | GPT-4o: The review praises Nathan Lane's performance but criticizes the play's overall impact as 'exhausting'. The mixed sentiment suggests some positive elements but overall reservations. | Gemini: The review praises Nathan Lane's performance but notes that the playwright's worldview is exhausting. Given the single excerpt and the praise for the performance, I'm placing it in the positive bucket with reservations. | Kimi: The excerpt offers strong praise for the lead performance ('tour de force') but significantly qualifies it with criticism of the play's worldview as 'exhausting rather than illuminating.' Without additional context indicating a clear recommendation, this represents a balanced mixed assessment valuing the acting while questioning the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:25:10.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

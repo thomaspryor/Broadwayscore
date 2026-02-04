@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 582,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More overblown than overwhelming, this melodramatic musical has minimal impact despite some good songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show 'more overblown than overpowering' with 'oddly minimal impact' and 'unintentional comedy sprinkled throughout.' While praising some songs and individual performances, the overall assessment is clearly negative. | GPT-4o: The review describes the show as overblown with minimal impact, despite some good songs. The tone suggests disappointment and unintentional comedy, indicating a negative assessment. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review points out several flaws, including the book, wig, and icicles, and states that the show is more overblown than overpowering. However, it also acknowledges some good songs and performances, resulting in a mixed assessment. The truncated text lowers the confidence. | Kimi: While acknowledging skillful songs and committed performances, the critic consistently criticizes the production as unintentionally comic, emotionally hollow, and poorly executed, closing with a verdict that the show needs fixing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:52:20.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 42,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

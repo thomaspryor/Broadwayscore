@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251006004658/https://www.nydailynews.com/2025/03/31/broadway-review-glengarry-glen-ross-still-masterful-drama-despite-some-casting-choices/",
   "contentTier": "complete",
   "wordCount": 670,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Culkin, though, has a staccato delivery, a halting rhythm and an innate sense of vulnerability, all qualities that have made him a much-cherished star. But they don't easily make a Ricky Roma, and his work in the role, although far from sloppy or embarrassing, throws off the rhythms of the play. He's been miscast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the play itself as 'masterful' and several supporting performances as 'very powerful,' but states the lead actor 'has been miscast' and 'throws off the rhythms of the play.' This fundamental casting flaw in the starring role creates significant reservations despite other strengths. | GPT-4o: The review praises the play's writing and some performances but criticizes the casting of Kieran Culkin, suggesting it disrupts the play's rhythm. The absence of a key monologue from the movie is also lamented. These mixed elements lead to a score in the Mixed bucket. | Gemini: The review praises the writing and some performances (Burr, Odenkirk), but criticizes the miscasting of Culkin, which throws off the play's rhythm. Overall, a mixed assessment with reservations. | Kimi: While the critic praises Mamet's 'masterful' writing and 'very powerful performances' from supporting cast members like Bill Burr, the central criticism that star Kieran Culkin is 'miscast' as Roma fundamentally disrupts the production. The review balances appreciation for the ensemble against this significant flaw without issuing a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:59:57.354Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -36,5 +36,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 208,
-  "tierReason": "Short text (208 words)"
+  "tierReason": "Short text (208 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a rambunctiously funny if overstretched comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic describes the play as 'rambunctiously funny' which is positive, but qualifies it as 'overstretched,' suggesting some reservations. However, the text is clearly truncated and missing the final verdict, so confidence is low. | Gemini: The review calls the play \"rambunctiously funny\" but also \"overstretched.\" While truncated, the initial description leans positive, suggesting a recommendation with reservations. Confidence is low due to the truncated nature of the text. | Kimi: The review offers qualified praise, calling the show 'rambunctiously funny' and the production 'spiffy' with strong comic performances, but the significant criticism that it is 'overstretched' keeps it from a clear recommendation. Given the text is truncated and the final verdict may be missing, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:53:18.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 66,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -46,5 +46,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 575,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So it's a great surprise that the large-scale musical version of said property is a frothy delight, a pineapple-sweet warm-up in this most frigid season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening negativity about the source film, the critic calls the musical 'a frothy delight' and gives it a B+. Praises the cast generously, particularly McClure's 'jackpot' performance, while acknowledging some flaws ('missteps', 'clunker lines'). The B+ grade and overall positive tone place this in solid Positive territory. | GPT-4o: The review expresses surprise and delight at the musical adaptation, praising the cast and production despite acknowledging some missteps. The B+ rating suggests a strong positive recommendation. | Gemini: The review is generally positive, calling the show a \"frothy delight\". Despite some reservations, the overall tone is favorable, and the B+ grade suggests a solid recommendation. However, the truncated text lowers confidence. | Kimi: The reviewer assigns a B+ grade and calls the show a 'frothy delight' with a 'jaunty score', but explicitly notes 'missteps' including clunker lines and sexist undertones, suggesting a solid but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:06:57.377Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

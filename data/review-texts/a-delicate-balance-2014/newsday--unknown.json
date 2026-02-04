@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20141123223342/http://www.newsday.com:80/entertainment/theater/a-delicate-balance-review-glenn-close-john-lithgow-in-tepid-edward-albee-revival-1.9635004",
   "contentTier": "complete",
   "wordCount": 472,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brilliant Albee, but unhinged balance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Albee's writing and some performances while criticizing the direction's heavy-handed approach and Close's uncertain performance. The final line 'Brilliant Albee, but unhinged balance' captures the mixed assessment - appreciating the material but finding the production flawed. | GPT-4o: The review praises the writing and some performances but criticizes the production's emotional extravagance and certain directorial choices. The verdict acknowledges the brilliance of Albee's work but suggests the production itself is flawed. | Gemini: The review acknowledges the brilliance of Albee's writing but criticizes the production's emotional extravagance and lack of subtlety, resulting in a mixed assessment. | Kimi: While praising Albee's 'brilliant' text as 'dazzling' with 'gorgeous writing' and commending supporting performances, the critic finds this production 'emotionally extravagant' and 'unhinged,' criticizing Close's uncertain performance and the director's heavy-handed approach that sacrifices subtlety.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:29:23.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

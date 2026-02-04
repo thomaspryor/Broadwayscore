@@ -50,5 +50,60 @@
   ],
   "contentTier": "complete",
   "wordCount": 451,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some of it is divinely, if blasphemously, inspired. Some is sorta tired.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic clearly identifies this as a 'mixed-bag' with 'hit and miss' jokes, praising Parsons' performance while criticizing the uneven writing. The verdict is that it's 'fun and entertaining' but flawed. | GPT-4o: The review describes the show as a 'mixed-bag comedy' with both inspired and tired moments. While Jim Parsons' performance is praised, the unevenness of the material leads to a mixed verdict. | Gemini: The review is generally positive, highlighting Parsons' performance as a major draw. While acknowledging the play's unevenness, the critic ultimately finds it enjoyable due to Parsons' comedic talent. | Kimi: While the critic finds the script uneven and many jokes tired or hit-and-miss, the review ultimately recommends the show based on Jim Parsons' starring performance, explicitly calling it 'fun and entertaining' despite the material's flaws. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:36:14.166Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

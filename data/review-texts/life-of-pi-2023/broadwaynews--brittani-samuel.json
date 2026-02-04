@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230404045154/https://broadwaynews.com/2023/03/30/review-life-of-pi-earns-its-stripes-as-a-complex-dramedy-balancing-the-real-and-surreal/",
   "contentTier": "complete",
   "wordCount": 1038,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though 'Life of Pi' deals with the real and the fabled, it's much better at portraying the latter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the spectacular design, puppetry, and lead performance while acknowledging significant flaws in supporting characters and structure. The critic finds it worthwhile despite reservations, placing it in solid Positive territory. | GPT-4o: The review praises the staging, direction, and puppetry, highlighting the production's visual and emotional impact. However, it notes issues with monologues and underdeveloped human characters, suggesting some reservations. | Gemini: The review is mostly positive, praising the staging, puppetry, and lead performance, but notes weaknesses in the human characters and historical context. It ultimately recommends seeing the play, emphasizing its strengths. | Kimi: The review offers enthusiastic praise for the puppetry, design, and lead performance, calling it a 'brilliantly-staged dramedy' and one of 'the best plays,' though it notes significant flaws in the supporting characters and adaptation structure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:17:53.904Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

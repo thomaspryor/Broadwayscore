@@ -39,5 +39,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20170430202548/https://www.timeout.com/newyork/theater/groundhog-day",
   "contentTier": "complete",
   "wordCount": 586,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there are likeable, inspired elements in this musical adaptation of the great Bill Murray movie, time crawls as you wait for boorish weatherman Phil Connors to surrender to human kindness and true romance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 rating with balanced critique - praises Andy Karl's performance and some elements but criticizes tone, pacing, structure, and supporting characters. No clear recommendation either way. | GPT-4o: The review acknowledges strong elements, particularly Andy Karl's performance, but criticizes the overall execution and coherence of the musical. The 3/5 rating suggests a mixed review with both positive and negative aspects. | Gemini: The review praises Andy Karl's performance but criticizes the cartoonish tone, lack of emotional depth, and structural problems with the book and score. The 3/5 rating also indicates a mixed assessment. | Kimi: The 3/5 rating and balanced critique place this in Mixed territory. While the critic praises Andy Karl's heroic lead performance as 'undeniably strong,' the review extensively criticizes the cartoonish tone, weak book, overstuffed score, and lack of emotional stakes, concluding the star isn't enough to fix the 'skipping-record world around him.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:02:31.988Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

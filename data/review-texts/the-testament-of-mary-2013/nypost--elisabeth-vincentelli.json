@@ -34,5 +34,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20130527050315/http://www.nypost.com:80/p/entertainment/theater/testament_to_greatness_tODzfnXSht3HiB68uimC6H?",
   "contentTier": "complete",
   "wordCount": 706,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw's charismatic, almost possessed performance is remarkable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Despite calling the script unremarkable, the critic gives strong praise to Shaw's 'extraordinary' and 'charismatic, almost possessed performance' and describes it as 'her show, her moment.' The positive assessment of the lead performance drives the recommendation. | Gemini: The review praises Fiona Shaw's performance and her collaboration with Warner, but notes the script is not as remarkable. The truncated nature and smaller outlet size reduce confidence. | Kimi: The review offers extravagant praise for Fiona Shaw's performance ('extraordinary', 'ferocious', 'charismatic') while criticizing the script as 'not nearly as remarkable' as the creators' previous collaborations. The truncated text lacks an explicit final verdict, but the emphasis on Shaw's singular achievement suggests a qualified recommendation to see the show for her performance alone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:52:29.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

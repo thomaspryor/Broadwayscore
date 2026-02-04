@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 76 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 70,
-  "tierReason": "Short text (70 words)"
+  "tierReason": "Short text (70 words)",
+  "rejectedAt": "2026-02-04T05:40:53.514Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an incomplete excerpt that only contains personal anecdotes about seeing the original 1978 production, with no evaluation of the current Broadway revival.; openai: The text is primarily a personal anecdote about the critic's memory of the original production, not an evaluative review of the current Broadway show.; gemini: The text is mostly about the critic's memory of seeing the original production, not a review of the current revival. There's no evaluation of the current show's quality.; kimi: The text contains only biographical context about the critic's memory of the original 1978 production and mentions the current opening date, but provides no evaluation of the current Broadway production's quality, performances, or overall merit.",
+  "promptVersion": "5.2.0"
 }

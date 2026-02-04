@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play's power comes from its refusal to make Ephron's life into a neat parable about love conquering all, instead presenting the messy, uncertain reality of finding connection later in life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20250406011638",
   "archiveOrgUrl": "http://web.archive.org/web/20250406011638/https://www.vulture.com/article/theater-review-delia-ephron-left-on-tenth-margulies-gallagher.html",
   "wordCount": 1019,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You are in for an evening that is altogether too pleasant for its own good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Shaw acknowledges the production's accomplishments and charm while consistently critiquing its fundamental lack of dramatic tension and conflict. The review praises individual elements but finds the overall experience dramatically inert. | GPT-4o: The review highlights a lack of tension and conflict, describing the play as 'too pleasant for its own good.' While there are some positive elements, like the charm of the dogs and Margulies's dance bits, the overall tone suggests a lukewarm reception. | Gemini: The review points out flaws like lack of tension and conflict, but also acknowledges positive aspects. The overall tone suggests a mixed experience, not strongly negative or positive. | Kimi: The critic finds the production lacks essential dramatic friction and tension, calling it 'right down the middle' and 'too pleasant for its own good,' while acknowledging minor highlights like the onstage dogs and the cast's committed efforts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:17:13.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

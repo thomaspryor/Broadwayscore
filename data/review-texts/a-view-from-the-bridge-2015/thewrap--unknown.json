@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 586,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's great to have his adventurous work exposed to a much larger audience in the commercial theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises van Hove's distinctive direction, the excellent cast (particularly Strong and Walker), and expresses enthusiasm about having his work on Broadway. While noting the director isn't always subtle and some interpretive choices, the overall assessment is positive with clear recommendation. | GPT-4o: The review praises van Hove's distinctive interpretation and the performances, particularly highlighting the director's adventurous work and the cast's excellence. However, the text is truncated, and the final verdict may be missing, leading to a low confidence score. | Gemini: The review praises the cast and direction, but notes that the director mutes some aspects of the play. The truncated text makes it difficult to determine the overall recommendation strength, but the tone is generally positive. | Kimi: While the critic notes van Hove's lack of subtlety and that the interpretation mutes some thematic aspects, the review praises the 'excellent cast,' Mark Strong's performance, and Nicola Walker's 'devastating portrait,' ending with enthusiasm for the director's Broadway debut.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:33:04.829Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

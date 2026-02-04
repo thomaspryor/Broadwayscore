@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mary-Louise Parker gives a performance of such precision and intelligence that she makes even the play's most questionable moments feel inevitable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250721234202",
   "archiveOrgUrl": "http://web.archive.org/web/20250721234202/https://www.vulture.com/2019/10/theater-review-the-sound-inside-with-mary-louise-parker.html",
   "wordCount": 929,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There will certainly be an audience for The Sound Inside because it's clever, if airless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic acknowledges the show's cleverness and Parker's performance but finds it self-conscious, airless, and alienating. Neither recommends nor discourages - suggests 'there will be an audience' but expresses personal alienation. | GPT-4o: The review acknowledges the cleverness and appeal of the show to certain audiences but criticizes its self-consciousness and lack of energy. The praise for Mary-Louise Parker's performance is countered by the overall critique of the play's execution. | Gemini: The review praises Parker's performance but criticizes the play's self-consciousness and lack of energy. It acknowledges cleverness but ultimately finds it alienating. | Kimi: While praising Mary-Louise Parker's magnetic performance, the critic finds the play self-conscious, airless, and soporific, ultimately feeling alienated by its self-regard rather than recommending it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:51:35.394Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

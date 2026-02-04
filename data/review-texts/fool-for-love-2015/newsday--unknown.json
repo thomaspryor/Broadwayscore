@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151011230511/http://www.newsday.com:80/entertainment/theater/fool-for-love-review-the-right-ingredients-without-the-spark-1.10934119",
   "contentTier": "complete",
   "wordCount": 399,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there isn't the down-and-dirty chemistry that makes the fate of the lovers' long and conflicted relationship feel inevitable and dangerous",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises individual performances and production elements but identifies a fatal flaw in the central relationship's chemistry, calling the violence 'phony' and making it 'hard to get overheated about the fate of the characters.' | GPT-4o: The review highlights a lack of chemistry and excitement in the performances, describing the violence as 'phony' and the characters' fate as unengaging. Despite some praise for physical production elements, the overall tone is negative. | Gemini: The review praises the actors' individual performances but criticizes the lack of chemistry between them, ultimately leading to a mixed assessment of the production. | Kimi: While the critic admires the physical performances and 'terrific' rope tricks, the central complaint—that Arianda and Rockwell lack the 'down-and-dirty chemistry' to make the relationship feel dangerous—dominates the review. The violence feels 'phony' and the dramatic stakes fail to engage, resulting in a qualified assessment that neither fully recommends nor dismisses the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:56:35.163Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

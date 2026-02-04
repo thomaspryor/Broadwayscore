@@ -35,5 +35,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230331021928/https://www.wsj.com/articles/life-of-pi-review-bringing-the-sea-to-broadway-2f848dbe?mod=opinion_major_pos13",
   "contentTier": "truncated",
   "wordCount": 355,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences attending this accomplished production are in store for a vastly ... pleasurable journey",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt uses clearly positive language ('accomplished production', 'vastly pleasurable journey') suggesting recommendation, but limited text and ellipses create uncertainty about full verdict. | GPT-4o: The excerpt indicates a positive recommendation with phrases like 'accomplished production' and 'pleasurable journey'. Given the single excerpt warning, the confidence is low, but the language suggests a strong positive sentiment. | Gemini: The single excerpt uses the phrase \"vastly pleasurable journey,\" which indicates a positive recommendation. Given the limited text, confidence is low, but the positive language suggests a score towards the higher end of the positive range. | Kimi: The excerpt uses strongly positive evaluative language ('accomplished', 'vastly pleasurable') that clearly recommends the show, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:18:19.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
