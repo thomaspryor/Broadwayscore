@@ -4,20 +4,20 @@
     "lastUpdated": "2026-02-04",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 4204,
-      "skippedNoScore": 6411,
-      "skippedDuplicate": 16,
-      "skippedDuplicateUrl": 16,
+      "totalReviews": 4200,
+      "skippedNoScore": 6446,
+      "skippedDuplicate": 18,
+      "skippedDuplicateUrl": 25,
       "skippedWrongProduction": 301,
       "recoveredFromGarbage": 94,
       "scoreSources": {
         "explicit-stars": 4,
         "explicit-outOf": 2,
         "explicit-slash": 5,
-        "explicit-letterGrade": 1,
+        "explicit-letterGrade": 2,
         "human-review": 60,
-        "originalScore-priority0": 863,
-        "llmScore": 2626,
+        "originalScore-priority0": 864,
+        "llmScore": 2620,
         "thumb-override-llm": 1,
         "llmScore-lowconf": 638,
         "llmScore-review": 1,
@@ -11238,6 +11238,23 @@
     },
     {
       "showId": "blackbird-2016",
+      "outletId": "timeout",
+      "outlet": "Time Out New York",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Unknown",
+      "url": "http://www.timeout.com/newyork/theater/blackbird",
+      "publishDate": null,
+      "originalRating": "4/5",
+      "pullQuote": "But if The Shining still makes you jump, it's digging deeper than your ordinary slasher flick. Likewise, I'm quite familiar with David Harrower's hellishly compelling 2005 play Blackbird. I reviewed it Off Broadway at Manhattan Theatre Club and later logged hours with the script, writing an essay for the Best Plays Theater Yearbook series.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "blackbird-2016",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 82,
@@ -11371,23 +11388,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "bob-fosses-dancin-2023",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 76,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/bob-fosses-dancin-broadway_95847.html",
-      "publishDate": "March 27, 2023",
-      "originalRating": null,
-      "pullQuote": "The show is a celebration of movement that feels both nostalgic and immediate, showcasing the distinctive style that made Fosse a Broadway legend.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
     },
     {
       "showId": "bob-fosses-dancin-2023",
@@ -12375,23 +12375,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "born-yesterday-2011",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 81,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Andy Propst",
-      "url": "https://www.theatermania.com/new-york-city-theater/reviews/born-yesterday_31502.html",
-      "publishDate": "April 25, 2011",
-      "originalRating": null,
-      "pullQuote": "Nina Arianda gives a star-making performance as Billie Dawn in the Broadway revival of Garson Kanin's Born Yesterday, bringing both comedic timing and surprising depth to the role of the seemingly ditzy blonde.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "breakfast-at-tiffanys-2013",
@@ -17001,7 +16984,7 @@
       "pullQuote": "McCraney has written a beautiful play about masculinity, sexuality, and faith, and it deserves to be seen by as wide an audience as possible.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "choir-boy-2019",
@@ -17443,7 +17426,7 @@
       "pullQuote": "Merkerson brings dignity and depth to Lola, avoiding the trap of playing her as a pathetic figure, while Anderson delivers a powerfully tortured performance as Doc.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "come-back-little-sheba-2008",
@@ -17862,13 +17845,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Johnny Oleksinski",
-      "url": "https://nypost.com/2021/12/09/company-on-broadway-review-patti-lupone-steals-the-show/",
+      "url": "https://nypost.com/2021/12/09/company-review-this-is-the-broadway-show-to-see-right-now/",
       "publishDate": "December 9, 2021",
       "originalRating": null,
       "pullQuote": "LuPone steals the show as Joanne, the bitter, boozy wife who delivers the musical's most famous number, 'The Ladies Who Lunch,' with a glass of liquor perpetually in hand.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "company-2021",
@@ -17947,13 +17930,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Adrian Horton",
-      "url": "https://www.theguardian.com/stage/2021/dec/10/company-review-patti-lupone-katrina-lenk-broadway",
+      "url": "https://www.theguardian.com/stage/2018/oct/17/company-review-sex-switch-sondheim-gielgud-theatre-london",
       "publishDate": "December 10, 2021",
       "originalRating": null,
       "pullQuote": "This gender-flipped revival of Stephen Sondheim's Company is a revelatory reimagining that feels both fresh and faithful",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "company-2021",
@@ -18021,7 +18004,7 @@
       "pullQuote": "Marianne Elliott's gender-flipped revival of Stephen Sondheim's Company is a revelation, with Katrina Lenk delivering a powerhouse performance that makes Bobby's journey feel fresh and urgent.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "company-2021",
@@ -22141,6 +22124,23 @@
     },
     {
       "showId": "escape-to-margaritaville-2018",
+      "outletId": "usc-guardian-chloe-esser",
+      "outlet": "usc-guardian-chloe-esser",
+      "assignedScore": 90,
+      "scoreSource": "explicit-letterGrade",
+      "bucket": "Rave",
+      "thumb": "Up",
+      "criticName": "Chloe Esser",
+      "url": "http://ucsdguardian.org/2017/06/04/play-review-escape-to-margaritaville/",
+      "publishDate": null,
+      "originalRating": "A",
+      "pullQuote": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
@@ -23300,7 +23300,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 43,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Jesse Green",
@@ -23310,7 +23310,7 @@
       "pullQuote": "The show is so eager to please that it practically wags its tail, but the pleasure it offers is mostly empty calories.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "finding-neverland-2015",
@@ -26374,23 +26374,6 @@
     },
     {
       "showId": "grey-house-2023",
-      "outletId": "chicagotribune",
-      "outlet": "Chicago Tribune",
-      "assignedScore": 69,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Chris",
-      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-grey-house-red-orchid-20230602-y2d4cp7nkbhxjcfi7p75r3nqay-story.html",
-      "publishDate": "June 1, 2023",
-      "originalRating": null,
-      "pullQuote": "“ ‘Grey House’ is trying to honor that unstinting parentage, despite the baked-in demands on a mostly young cast of kids, who give it all they’ve got. The show also has to whip up interest on a hot summer night. That’s not an easy combo, and you can see the strains it puts on the second half of the show, but much of worth gets unpacked here.",
-      "dtliThumb": "UP",
-      "bwwThumb": "Meh",
-      "contentTier": "complete"
-    },
-    {
-      "showId": "grey-house-2023",
       "outletId": "cititour",
       "outlet": "Cititour",
       "assignedScore": 52,
@@ -26405,23 +26388,6 @@
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "truncated"
-    },
-    {
-      "showId": "grey-house-2023",
-      "outletId": "deadline",
-      "outlet": "Deadline",
-      "assignedScore": 81,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Pete Hammond",
-      "url": "https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
-      "publishDate": "May 31, 2023",
-      "originalRating": null,
-      "pullQuote": "Grey House shows him knocking on all the right doors.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "grey-house-2023",
@@ -50946,7 +50912,7 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Unknown",
-      "url": null,
+      "url": "https://www.theatermania.com/news/review-sutton-foster-and-michael-urie-in-an-exuberant-once-upon-a-mattress_1727109/",
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Foster reminds us of the thrilling spectacle of seeing performers work their magic live.",
@@ -51310,23 +51276,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
-    },
-    {
-      "showId": "once-upon-a-one-more-time-2023",
-      "outletId": "nytimes",
-      "outlet": "The New York Times",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Cohn",
-      "url": "https://www.nytimes.com/2023/06/22/theater/once-upon-a-one-more-time-review.html",
-      "publishDate": "June 14, 2023",
-      "originalRating": null,
-      "pullQuote": "The show's saving grace is its irrepressible spirit and the fact that it knows exactly what it is: a big, silly, glittery spectacle that never takes itself too seriously.",
-      "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "once-upon-a-one-more-time-2023",
@@ -69714,23 +69663,6 @@
       "originalRating": null,
       "pullQuote": "Steve Carell brings his comic chops to a dramatic classic",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
-      "showId": "uncle-vanya-2024",
-      "outletId": "observer",
-      "outlet": "Observer",
-      "assignedScore": 82,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rex Reed",
-      "url": "https://observer.com/2024/04/review-steve-carell-is-a-lovable-loser-in-a-fragmentary-uncle-vanya/",
-      "publishDate": "January 25, 2024",
-      "originalRating": null,
-      "pullQuote": "Steve Carell's transition from comedy to drama is nothing short of remarkable, bringing a quiet devastation to Chekhov's melancholy masterpiece that left me genuinely moved.",
-      "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
     },
