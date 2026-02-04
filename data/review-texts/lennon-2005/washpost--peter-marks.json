@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's creators have fashioned a chronological journey through Lennon's life that feels more like a museum exhibit than a theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's creators have fashioned a chronological journey through Lennon's life that feels more like a museum exhibit than a theatrical experience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's creators have fashioned a chronological journey through Lennon's life that feels more like a museum exhibit than a theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly criticizes the show for feeling like a 'museum exhibit' rather than a 'theatrical experience,' indicating fundamental failure to achieve its purpose. However, confidence is low due to single excerpt warning - this could be one negative observation in an otherwise mixed review. | GPT-4o: The excerpt suggests a lack of theatricality, comparing the show to a museum exhibit. This implies a negative view of the production's engagement level. However, with only one excerpt, the full sentiment is unclear, leading to a low confidence score. | Gemini: The review excerpt compares the show unfavorably to a museum exhibit, suggesting a lack of theatricality and engagement, leading to a negative assessment. | Kimi: With only a single excerpt available, the critic's comparison to a museum exhibit suggests the production is static and fails to achieve genuine theatrical impact, warranting a negative classification in the mid-range of that bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:40:33.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

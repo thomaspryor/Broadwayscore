@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Spacey's Richard is less a force of nature than a man of method, a calculating strategist who has figured out exactly how to get what he wants.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (28 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2013/11/11/theater/reviews/twelfth-night-and-richard-iii-with-mark-rylance.html",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T02:29:55.316Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review with evaluative content or recommendation; openai: The review text is about Kevin Spacey's portrayal of Richard, which does not pertain to a current Broadway production.; kimi: The provided text is a single descriptive sentence about an acting interpretation ('less a force of nature than a man of method') without any evaluative language, recommendation, or verdict on the production's quality. It describes how the role is played but does not indicate whether this approach is successful or if the show is worth seeing.",
+  "promptVersion": "5.2.0"
 }

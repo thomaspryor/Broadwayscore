@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Purpose has arrived as Americans contemplate the dissolution of all things that once seemed permanent. Timely though it may be, it also seems destined to take its place among the greatest American dramas of all time.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it also seems destined to take its place among the greatest American dramas of all time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic explicitly places this among 'the greatest American dramas of all time' - this is unqualified superlative praise that defines a Rave review, despite only having one excerpt available. | GPT-4o: The excerpt provides strong praise, suggesting the show is destined to be one of the greatest American dramas. This indicates a highly positive verdict, placing it in the Rave bucket. | Gemini: The review excerpt suggests high praise, calling the play potentially one of the greatest American dramas. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt contains superlative praise ranking the production among the greatest American dramas of all time, indicating an enthusiastic must-see recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:23:06.501Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

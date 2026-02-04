@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The three performances are superb, with Owen bringing a simmering masculinity to Deeley that suggests depths of insecurity beneath his casual bonhomie.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.theguardian.com/stage/2015/oct/06/old-times-review-clive-owen",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T01:51:04.574Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief excerpt or fragment praising performances, but lacks any overall evaluation or recommendation about the show; openai: The text is a brief excerpt focusing on performances without providing an overall evaluation of the show.",
+  "promptVersion": "5.2.0"
 }

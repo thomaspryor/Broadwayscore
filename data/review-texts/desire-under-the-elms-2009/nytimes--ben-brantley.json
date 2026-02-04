@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Mendes brings a bracing physicality to what can be a static, talky play, emphasizing the animal appetites that drive O'Neill's farming family toward destruction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Mendes brings a bracing physicality to what can be a static, talky play, emphasizing the animal appetites that drive O'Neill's farming family toward destruction.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Mendes brings a bracing physicality to what can be a static, talky play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises director's approach but acknowledges the play's inherent challenges. Given excerpt-only format and positive but measured language, scored at lower end of Positive range. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the physicality brought by Ms. Mendes, suggesting an improvement over the play's potential shortcomings. However, the warning about a single excerpt and lack of full context necessitates a cautious, low-confidence score. | Gemini: The excerpt praises the actress's performance in overcoming the play's static nature. Given that it is a single excerpt, I am scoring it as mildly positive and with low confidence. | Kimi: The excerpt praises the lead performance and suggests the production successfully animates the problematic source material, though it acknowledges the play's naturally static quality. As only one curated excerpt is available, confidence is low and the score reflects mildly positive sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:25:00.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

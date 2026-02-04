@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": ": \"Spector smartly avoids easy dunks as Eureka Day's fault lines become canyons, though nobody on the board wants to admit as much. No one is a villain here; if anything comes off poorly, it's reverence for conflict avoidance in the name of community. Every character gets to land a fair punch, or make a good point, as well as appear both risible and ridiculous. At Eureka Day, as in most places, most people are well-meaning, often deeply misguided, trying to make sense of what limited knowledge and life experience they have. Trauma scalds and morphs. And humor, at least in this remarkable new play, somehow transcends the third rail of parent debates.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "humor, at least in this remarkable new play, somehow transcends the third rail of parent debates",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'remarkable new play' and praises the smart writing that avoids easy targets while giving depth to all characters. Single excerpt warning noted - this sounds like strong praise warranting upper-positive range. | GPT-4o: The excerpt praises the play as 'remarkable' and highlights its smart handling of complex themes with humor. Despite the single excerpt limitation, the positive tone suggests a strong recommendation. | Gemini: The review uses positive language such as \"smartly avoids easy dunks\", \"every character gets to land a fair punch\", and \"remarkable new play\", suggesting a positive recommendation. | Kimi: The excerpt uses strongly positive language ('remarkable new play,' 'smartly avoids,' 'transcends'), indicating clear enthusiasm for the writing and execution. However, given this is a single curated excerpt that may not represent the full review's reservations, it falls in the upper range of Positive rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:26:15.022Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

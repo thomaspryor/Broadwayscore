@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is absorbing, intelligent drama that treats its characters with dignity while examining the fragility of democratic institutions and the weight of tradition in times of crisis.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is absorbing, intelligent drama that treats its characters with dignity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review uses clearly positive language ('absorbing, intelligent drama') and treats the work with respect, indicating a recommendation despite the brief excerpt. | GPT-4o: The review describes the drama as 'absorbing' and 'intelligent', indicating a positive reception. However, the lack of superlatives or strong enthusiasm suggests a solid recommendation with some reservations. | Gemini: The review uses positive language such as \"absorbing\" and \"intelligent\" and praises the drama for treating its characters with dignity. | Kimi: The critic offers unqualified praise for the show's quality, calling it absorbing and intelligent with dignified character treatment, indicating a clear recommendation to see the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:38:09.512Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 77
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

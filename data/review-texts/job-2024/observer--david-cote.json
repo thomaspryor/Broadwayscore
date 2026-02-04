@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "I cannot overpraise the talented cast and the snappy production, which moves like a bullet train and ends with a rebellious \"Presentation Day\" dance that sends shivers down your spine and tears down your cheeks.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I cannot overpraise the talented cast and the snappy production, which moves like a bullet train and ends with a rebellious \"Presentation Day\" dance that sends shivers down your spine and tears down your cheeks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with \"cannot overpraise\" and vivid emotional impact described. However, single excerpt warning requires caution - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language ('cannot overpraise', 'snappy production', 'shivers down your spine'), indicating a highly enthusiastic recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The critic uses strong positive language like \"cannot overpraise\" and describes the production as \"snappy\" and emotionally impactful, indicating a highly favorable review. | Kimi: The excerpt contains unambiguously enthusiastic praise ('cannot overpraise', 'sends shivers', 'tears down your cheeks'), indicating a strong recommendation, though single-excerpt limitations prevent higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:36:06.016Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

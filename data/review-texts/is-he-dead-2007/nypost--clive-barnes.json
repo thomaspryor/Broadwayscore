@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play itself is a disaster - a contrived, unfunny farce that even Twain's wit cannot save from its own theatrical clumsiness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 16,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play itself is a disaster - a contrived, unfunny farce that even Twain's wit cannot save from its own theatrical clumsiness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 16,
+    "confidence": "high",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play itself is a disaster - a contrived, unfunny farce that even Twain's wit cannot save from its own theatrical clumsiness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Critic calls the play 'a disaster' and 'contrived, unfunny farce' that cannot be saved. Clear pan despite single excerpt warning - language is unambiguously devastating. | GPT-4o: The excerpt is strongly negative, describing the play as a 'disaster' and 'unfunny', with no redeeming qualities mentioned. The language used indicates a deep pan. | Gemini: Extracted from malformed response | Kimi: The excerpt employs devastating language ('disaster,' 'unfunny,' 'clumsiness') to unequivocally condemn the production, placing it in the Pan range. Confidence is low given only a single curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:34:13.274Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 15,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 15,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

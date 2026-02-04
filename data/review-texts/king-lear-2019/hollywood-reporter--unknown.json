@@ -43,5 +43,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 719,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T01:12:58.566Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a Shakespeare in the Park production of King Lear, not a Broadway run.; kimi: This review covers a Shakespeare in the Park production at the Public Theater (Delacorte Theater), which is an Off-Broadway venue, not a Broadway production.",
+  "promptVersion": "5.2.0"
 }

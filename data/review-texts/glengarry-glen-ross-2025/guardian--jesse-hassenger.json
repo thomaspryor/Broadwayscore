@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Glengarry Glen Ross may have lost some of its capacity to surprise over the past four decades, but the new revival offers a tribute to its durability. The setting, the lines and the tragedy of normal men attempting to hard-charge their way through decaying capitalism can remain the same, while the actors find new ways to sell it.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new revival offers a tribute to its durability.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt acknowledges the play has 'lost some of its capacity to surprise' but frames the revival positively as a 'tribute to its durability' with actors finding 'new ways to sell it.' However, with only one curated excerpt available, confidence is low and the qualified praise suggests lower end of Positive range. | GPT-4o: The excerpt suggests a positive view of the revival's ability to maintain relevance and impact, despite acknowledging diminished surprise. The praise for the actors finding new ways to sell the material supports a positive classification. | Gemini: The review excerpt suggests the revival is a worthwhile tribute, though it acknowledges the play's age. Given the single excerpt, confidence is low, but the overall tone leans positive. | Kimi: While acknowledging the play's familiar material, the critic praises the revival's durability and the actors' fresh interpretations, indicating a solid recommendation despite minor reservations about the work's age.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:28:24.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

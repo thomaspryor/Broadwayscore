@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Law brings a refreshing sanity to a role that is often treated as a tour de force for neurotic exhibitionism. His Hamlet is tortured, yes, but he's not a show-off about it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 58,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20250326015118",
   "archiveOrgUrl": "http://web.archive.org/web/20250326015118/https://www.nytimes.com/2009/10/07/theater/reviews/07hamlet.html",
   "wordCount": 397,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "People who ask for a little introspection from the man whose name is a byword for that activity may find it perplexing that this Hamlet never seems to look inward.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Brantley acknowledges Law's athletic vigor and stage presence but finds the performance lacking in depth and introspection. The review is balanced but leans slightly negative due to fundamental criticisms about the character interpretation. | Gemini: The review describes Jude Law's performance as lacking introspection and depth, focusing on externalization rather than internal conflict. While acknowledging his energy, the overall assessment is negative, indicating a disappointing portrayal of Hamlet. | Kimi: While Brantley praises Jude Law's athletic vigor and commanding stage presence, he fundamentally criticizes the performance for lacking introspection, modulation, and emotional depth—qualities essential to Hamlet. The review is truncated, but the visible portion emphasizes that the production substitutes external intensity for internal growth, resulting in a mixed assessment that acknowledges the star's charisma while questioning the interpretation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:10:56.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

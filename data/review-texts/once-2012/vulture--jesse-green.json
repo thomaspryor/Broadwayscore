@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical Once, based on the 2007 Irish film, is a love story that's both heartbreaking and healing, told through songs that seem to emerge naturally from the characters' souls.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T01:56:20.846Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief plot description or promotional summary rather than a critical review with evaluation or recommendation.; openai: The text is a brief description of the musical and does not provide any evaluative content or a critical opinion.",
+  "promptVersion": "5.2.0"
 }

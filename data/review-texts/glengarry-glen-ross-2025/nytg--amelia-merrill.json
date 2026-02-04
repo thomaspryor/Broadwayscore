@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 780,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Glengarry Glen Ross has no sense of urgency, place, or purpose.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review consistently criticizes the production as directionless, lacking urgency, and relying on star power without substance. While acknowledging individual performances, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review criticizes the lack of urgency and purpose in the production and questions the need for this revival. While the text is truncated, the available content leans negative, focusing on the production's shortcomings and lack of direction. | Gemini: The review expresses disappointment with the production, stating it feels directionless and lacks urgency. While praising some performances, the overall assessment is negative, but the truncated text makes the confidence low. | Kimi: The review extensively criticizes the production as directionless, coasting on star power, and lacking the original's urgency, while questioning why it was revived. Though the critic praises supporting performances by McKean and Pirruccello, the overall assessment discourages attendance, but the truncated ending necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:10:00.856Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

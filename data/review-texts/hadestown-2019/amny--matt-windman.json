@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Directed by Rachel Chavkin (\"Natasha, Pierre & The Great Comet of 1812\"), \"Hadestown\" contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld, complemented by the motion of turntables, a rollicking band, bold performances and expressive dance...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with consistent praise for multiple elements (stunning design, bold performances, expressive dance). However, confidence is low due to limited text availability - this could be cherry-picked positive elements from a more mixed review. | GPT-4o: The excerpt uses strong positive language ('stunning visual design', 'bold performances') indicating a highly favorable view of the production. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt is very positive, praising the direction, visual design, band, performances, and dance. Given that it is only one excerpt, I am scoring it at the higher end of the positive range but with low confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:31:39.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

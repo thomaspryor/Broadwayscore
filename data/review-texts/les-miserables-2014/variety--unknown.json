@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 680,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This one is a solid piece of theatrical architecture, built to survive every critical arrow shot through its heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises the production as 'solid theatrical architecture' and acknowledges it delivers what audiences want - beautiful melodies and emotions. While noting some darkness overwhelming the production, the overall assessment is positive with strong praise for performances and design elements. | GPT-4o: The review acknowledges the solid performances and production elements but criticizes the revival for being overwhelmed by its thematic darkness, suggesting a mixed reception. | Gemini: The review is generally positive, calling the revival a \"solid piece of theatrical architecture.\" However, it also notes that the thematic darkness overwhelms the production, indicating a reservation. | Kimi: While the critic notes a directorial folly in allowing thematic darkness to overwhelm the production, the review consistently praises the performances (Karimloo, Swenson, Scatliffe), design elements, and emotional impact, calling it a 'solid piece of theatrical architecture' that delivers what audiences seek.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:13:40.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

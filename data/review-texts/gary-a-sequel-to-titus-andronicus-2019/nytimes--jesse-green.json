@@ -47,5 +47,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1032,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But, strange bird or not, I'm glad it's here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic expresses clear appreciation for the show's bold ambition and unique qualities, praising the design, performances, and concept while acknowledging its messiness and structural issues. The final sentiment 'I'm glad it's here' indicates a positive recommendation despite reservations. | GPT-4o: The review acknowledges the play's messiness and lack of humor but appreciates its ambition and certain powerful moments. The critic expresses mixed feelings, appreciating its presence despite its flaws. | Gemini: The review is mixed, praising aspects like design and individual moments, but also noting that the argument wanders and the humor doesn't always land. The final sentiment is positive ('I'm glad it's here') but not a strong recommendation. | Kimi: While criticizing the play's structural messiness and inconsistent tone, the reviewer praises the design, direction, and performances, ultimately expressing gratitude for its presence on Broadway and defending its aesthetic of beautiful chaos. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:09:00.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

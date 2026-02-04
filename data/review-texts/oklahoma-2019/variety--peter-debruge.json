@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This Oklahoma! doesn't just dust off a classic; it shakes it up, turning what was once a comfort-food musical into something closer to a psychological thriller.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250430111612",
   "archiveOrgUrl": "http://web.archive.org/web/20250430111612/https://variety.com/2019/legit/reviews/oklahoma-review-broadway-1203182746/",
   "wordCount": 762,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a corny touch, but a nice balance of lightness for the darkness that makes this ambitious revival a winner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Fish's 'directorial invention' and concludes this 'ambitious revival a winner' despite some reservations about the Dream Ballet. Strong positive recommendation with enthusiasm for the fresh interpretation. | GPT-4o: The review praises the innovative directorial choices and performances while acknowledging some deviations from tradition. The overall tone is positive, highlighting the production's success in balancing darkness and lightness. | Gemini: Despite the deconstruction and darker elements, the review concludes that the revival is a \"winner\", indicating a positive recommendation. The critic highlights the joy and optimism that still shines through. | Kimi: The critic praises the dark, revisionist directorial vision and strong performances throughout, explicitly calling the production a 'winner' despite finding the Dream Ballet overlong.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:18:12.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

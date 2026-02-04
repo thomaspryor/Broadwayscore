@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 660,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's the kind of rock-star performance he gives in this spectacular revival — helmed with fabulous flash by Michael Mayer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'spectacular revival,' 'fabulous flash,' 'bravura performance,' and 'astonishing.' No reservations expressed, only enthusiastic celebration of the production. | GPT-4o: The review is filled with superlatives and praises Neil Patrick Harris's performance as 'spectacular' and 'astonishing'. The critic describes the revival as a 'true rock concert' with 'bravura performance', indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Harris's performance as a \"rock-star performance\" and the revival as \"spectacular\" and \"fabulous.\" The critic highlights Harris's energy and skill, and the overall production quality. | Kimi: The review offers unqualified praise for Neil Patrick Harris's rock-star performance, Michael Mayer's direction, and the production design, using superlatives like 'spectacular,' 'astonishing,' and 'bravura' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:11:28.067Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The sketches in 'Latinologues' are uneven, but when they work, they capture the texture of contemporary Latino life with humor and insight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The sketches in 'Latinologues' are uneven, but when they work, they capture the texture of contemporary Latino life with humor and insight.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sketches in 'Latinologues' are uneven, but when they work, they capture the texture of contemporary Latino life with humor and insight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly calls the show 'uneven' but acknowledges it works sometimes with 'humor and insight.' This balanced assessment with no clear recommendation fits Mixed. Single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt describes the show as having uneven quality but acknowledges moments of success with humor and insight. The lack of a full review text and the single excerpt warning suggest a mixed verdict. | Gemini: The review excerpt states that the sketches are uneven, indicating a mixed experience. The positive aspects are balanced by the negative, leading to a mixed classification. | Kimi: The critic explicitly describes the show as 'uneven'—a term indicating inconsistent quality—while acknowledging that successful sketches offer humor and insight, resulting in a balanced assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:39:19.505Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

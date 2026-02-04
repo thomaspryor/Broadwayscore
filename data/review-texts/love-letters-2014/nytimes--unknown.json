@@ -47,5 +47,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1062,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "my qualms began to erode under the sweet, sad spell of Mr. Gurney's deceptively simple and quietly moving play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite opening with skepticism about the concept, the critic is won over by the performances and the play's emotional power. Consistently praises both leads as 'sterling' and 'extraordinary,' calls the play 'quietly moving' and 'haunting,' and finds deep meaning in the work. | GPT-4o: The review offers high praise for both the performances and the play itself, describing it as 'haunting' and 'quietly moving.' The critic's initial skepticism is overcome by the production's power, leading to an enthusiastic recommendation. | Gemini: The review expresses initial skepticism but ultimately finds the play moving and the performances strong, particularly Farrow's. The critic acknowledges cloying moments but still recommends it. | Kimi: Despite initial skepticism about the dated format and commercial cynicism, the critic is won over by 'sterling' and 'utterly extraordinary' performances that make the play 'quietly moving' and 'haunting,' though noting some cloying early passages.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:14:13.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

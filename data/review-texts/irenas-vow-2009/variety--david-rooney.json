@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tovah Feldshuh gives a commanding performance in this Holocaust drama, though the play itself feels more like an earnest history lesson than compelling theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
     "Show title not found in text"
   ],
   "wordCount": 955,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a testament to the integrity of Feldshuh's performance and of the woman she's playing that the audience responds even while being so transparently manipulated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic consistently praises Feldshuh's transformative performance and acknowledges the story's power, but heavily criticizes the 'by-the-numbers script,' 'clunky dramaturgy,' and 'bad playwriting.' The review concludes that audiences respond despite transparent manipulation, indicating a qualified, mixed recommendation. | GPT-4o: The review acknowledges the compelling story and strong lead performance but criticizes the script and production as over-explanatory and lacking in depth. The overall tone suggests appreciation for the story and performance but significant reservations about the execution. | Gemini: The review acknowledges flaws in the writing and production but ultimately finds the story engrossing and Feldshuh's performance compelling, making it a qualified recommendation. | Kimi: While the critic heavily criticizes the 'by-the-numbers' script, 'pedestrian' direction and 'thinly fleshed-out' supporting characters, they ultimately recommend the show based on Feldshuh's 'transformative' central performance and the 'engrossing' true story, noting that the emotional power of the material outweighs the flawed execution. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:12:32.324Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

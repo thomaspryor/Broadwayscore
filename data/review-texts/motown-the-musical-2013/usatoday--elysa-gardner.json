@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show, which opened Monday at the Lunt-Fontanne Theatre, is more celebration than revelation, but it's an undeniably rousing one.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is more celebration than revelation, but it's an undeniably rousing one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'undeniably rousing' but acknowledges limitations with 'more celebration than revelation.' Brief excerpt limits confidence. | GPT-4o: The review describes the show as a 'rousing' celebration, indicating a positive experience despite noting it lacks revelation. This suggests a solid recommendation with some reservations. | Gemini: The review states that the show is \"undeniably rousing,\" which indicates a positive recommendation, although it is qualified by the phrase \"more celebration than revelation.\" | Kimi: While acknowledging the show prioritizes entertainment over insight ('more celebration than revelation'), the critic delivers a clear recommendation with the emphatic praise 'undeniably rousing,' indicating an enjoyable, energetic production worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:46:30.125Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

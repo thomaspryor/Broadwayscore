@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"But despite its very best intentions, the play is frustratingly surface level, rarely delving beyond Hallmark card sentiments about taking the good with the bad. At 100 minutes, the show hastily whips through a life's worth of milestones and minutiae, told mostly through verbose exposition delivered directly to the audience.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But despite its very best intentions, the play is frustratingly surface level, rarely delving beyond Hallmark card sentiments",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt clearly criticizes the show as 'frustratingly surface level' with 'Hallmark card sentiments' and 'verbose exposition,' indicating disappointment despite acknowledging good intentions. | GPT-4o: The excerpt criticizes the play for being surface level and relying on exposition, indicating a negative view. The lack of depth and hasty storytelling suggest a recommendation against seeing it. | Gemini: The review excerpt expresses disappointment, calling the play \"frustratingly surface level\" and relying on \"Hallmark card sentiments.\" The brevity of the excerpt lowers confidence. | Kimi: The excerpt consistently criticizes the production for lacking depth, rushing through material, and relying on verbose exposition, indicating a recommendation against seeing the show despite acknowledging its good intentions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:39:49.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

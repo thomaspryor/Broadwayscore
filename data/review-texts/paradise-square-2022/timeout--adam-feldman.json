@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paradise Square is a show with noble intentions and a worthy subject, but it struggles under the weight of its own ambitions.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Paradise Square is a show with noble intentions and a worthy subject, but it struggles under the weight of its own ambitions.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paradise Square is a show with noble intentions and a worthy subject, but it struggles under the weight of its own ambitions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. Acknowledges positive elements ('noble intentions', 'worthy subject') but expresses clear problems with execution ('struggles under the weight of its own ambitions'). | GPT-4o: The critic's original rating of 60 suggests a mixed review. The key quote acknowledges the show's positive intentions but highlights its struggles, aligning with a mixed assessment. | Gemini: The review acknowledges positive aspects (noble intentions, worthy subject) but also points out significant flaws (struggles under its own ambitions). This indicates a mixed or neutral recommendation. | Kimi: The critic acknowledges the show's worthy subject and noble intentions but notes it fails to execute properly due to overambition. The explicit rating of 60 confirms a Mixed classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:09:16.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

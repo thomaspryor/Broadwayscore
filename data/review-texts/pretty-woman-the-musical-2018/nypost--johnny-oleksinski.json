@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pretty Woman: The Musical is a perfectly adequate show that hits all the expected beats but never soars above the sum of its parts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Pretty Woman: The Musical is a perfectly adequate show that hits all the expected beats but never soars above the sum of its parts.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pretty Woman: The Musical is a perfectly adequate show that hits all the expected beats but never soars above the sum of its parts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review damns with faint praise - 'perfectly adequate' and 'hits expected beats' suggests competent but uninspiring execution. 'Never soars' indicates disappointment with lack of transcendence. | GPT-4o: The review describes the show as 'perfectly adequate' and 'never soars', indicating a lack of strong recommendation or discouragement, fitting a Mixed classification. | Gemini: The review describes the show as \"perfectly adequate\" and states that it \"never soars,\" indicating a mixed or neutral opinion. | Kimi: The critic offers faint praise ('perfectly adequate') while noting the production fails to transcend its material ('never soars'), suggesting competent execution without a compelling reason to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:17:50.030Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

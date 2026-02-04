@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Antony Sher's solo show about the Italian chemist and Auschwitz survivor Primo Levi is a deeply moving theatrical experience that honors both the man and his extraordinary literary legacy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Antony Sher's solo show about the Italian chemist and Auschwitz survivor Primo Levi is a deeply moving theatrical experience that honors both the man and his extraordinary literary legacy.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Antony Sher's solo show about the Italian chemist and Auschwitz survivor Primo Levi is a deeply moving theatrical experience that honors both the man and his extraordinary literary legacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('deeply moving theatrical experience', 'honors') suggests enthusiastic recommendation. Single excerpt warning applied - using upper Positive range due to clearly laudatory tone, but medium confidence due to limited text. | GPT-4o: The excerpt describes the show as 'deeply moving' and honors the subject's legacy, indicating a strong positive impression. However, the single excerpt warning necessitates a cautious approach, leading to a low confidence level. | Gemini: The excerpt uses strong positive language such as \"deeply moving\" and \"honors.\" Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:20:48.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly criticizes the lead performance as irritating rather than charming, calling it 'a problem' for a show where the character dominates stage time. This suggests the production fails due to its central element. | GPT-4o: The review highlights a significant issue with the main character's portrayal, suggesting a negative impact on the show. The tone is critical, but the review is brief, leading to medium confidence. | Gemini: The review focuses on the negative portrayal of the main character, which significantly impacts the overall experience, leading to a negative assessment. | Kimi: The critic finds the central performance irritating rather than endearing, which they explicitly identify as a significant problem given the actor's constant presence onstage, indicating a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:16:34.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

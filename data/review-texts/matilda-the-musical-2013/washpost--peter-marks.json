@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a marvel of theatrical ingenuity, with Tim Minchin's lyrics crackling with wordplay and wit, and the young performers displaying remarkable skill and charisma.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a marvel of theatrical ingenuity, with Tim Minchin's lyrics crackling with wordplay and wit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it a 'marvel' with specific acclaim for lyrics and performances, but text appears truncated which limits confidence in the full verdict. | GPT-4o: The review uses strong positive language such as 'marvel of theatrical ingenuity' and praises both the lyrics and performances, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"marvel of theatrical ingenuity\" and \"remarkable skill and charisma\", indicating a strong recommendation. | Kimi: Unqualified praise using superlatives ('marvel', 'crackling', 'remarkable') with no reservations expressed, though the excerpt's brevity limits certainty. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:45:01.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

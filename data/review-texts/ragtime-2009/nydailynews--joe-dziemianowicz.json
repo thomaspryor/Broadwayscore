@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1998 Tony winner brings back the music and the magic in a production that's both intimate and epic.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1998 Tony winner brings back the music and the magic in a production that's both intimate and epic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of the 1998 Tony winner brings back the music and the magic in a production that's both intimate and epic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own rating of 80 directly indicates a Positive review. The excerpt uses clearly positive language ('brings back the magic') with no qualifications or reservations visible. | GPT-4o: The excerpt is clearly positive, describing the production as both 'intimate and epic' and successfully bringing back 'music and magic'. The original rating of 80 supports a strong positive classification. | Gemini: The excerpt uses strong positive language, calling the production \"intimate and epic\" and saying it \"brings back the music and the magic.\" Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers clear praise, describing the revival as capturing both 'music and magic' and balancing 'intimate and epic' qualities. With the critic's original rating of 80 and clearly positive language, this falls in the upper Positive range, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:26:21.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

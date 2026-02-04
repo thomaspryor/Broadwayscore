@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ferguson proves he has the chops to carry a show on his own, displaying impressive range as he morphs from character to character with just vocal and physical changes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ferguson proves he has the chops to carry a show on his own, displaying impressive range as he morphs from character to character with just vocal and physical changes.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ferguson proves he has the chops to carry a show on his own, displaying impressive range as he morphs from character to character with just vocal and physical changes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance with terms like 'impressive range' and 'has the chops,' but no context about overall show quality or recommendation. Low confidence due to limited text. | GPT-4o: The excerpt praises Ferguson's performance, suggesting a positive view of his role. However, due to the single excerpt warning, the overall sentiment of the review is unclear, leading to a low confidence score at the lower end of the Positive range. | Gemini: The excerpt praises the lead performer's range and ability to carry the show. Given the limited text, I'm placing it in the positive bucket with a lower score and confidence. | Kimi: The excerpt offers strong praise for Ferguson's ability to carry the production and his impressive range, indicating a clear recommendation based on the lead performance. However, confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:27:35.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

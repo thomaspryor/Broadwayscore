@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Parker and Broderick prove themselves a formidable comic team, with impeccable timing and a natural chemistry that makes each of the three playlets sparkle with renewed life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Parker and Broderick prove themselves a formidable comic team, with impeccable timing and a natural chemistry that makes each of the three playlets sparkle with renewed life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parker and Broderick prove themselves a formidable comic team, with impeccable timing and a natural chemistry that makes each of the three playlets sparkle with renewed life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise for the lead performances and their chemistry, describing the production as sparkling with 'renewed life.' However, this appears to be a brief excerpt with limited context about the overall production. | GPT-4o: The review offers unqualified praise for the performances, highlighting 'impeccable timing' and 'natural chemistry' that enhances the production, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"formidable comic team\", \"impeccable timing\", \"natural chemistry\", and \"sparkle with renewed life\", indicating a strong recommendation. | Kimi: The critic employs superlatives like 'impeccable' and 'formidable' to praise the leads' performances, noting their chemistry makes the playlets 'sparkle with renewed life'—indicating unqualified enthusiasm for this production. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:15:02.159Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Passing Strange is a show that works on multiple levels, succeeding as both an engaging piece of musical theatre and a deeply personal story of artistic and spiritual discovery.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Passing Strange is a show that works on multiple levels, succeeding as both an engaging piece of musical theatre and a deeply personal story of artistic and spiritual discovery.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Passing Strange is a show that works on multiple levels, succeeding as both an engaging piece of musical theatre and a deeply personal story of artistic and spiritual discovery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment stating the show 'works' and 'succeeds' with specific praise for both theatrical and personal elements, though brief text limits confidence in full verdict. | GPT-4o: The review offers unqualified praise, highlighting the show's success on multiple levels and its engaging and personal nature, indicating a strong recommendation. | Gemini: The review states the show \"works on multiple levels\" and is \"engaging\", indicating a positive recommendation. | Kimi: The critic describes the show as succeeding on multiple levels, praising it as engaging and deeply personal with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:10:48.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

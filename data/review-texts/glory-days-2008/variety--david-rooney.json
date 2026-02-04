@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical about four New Jersey high school friends reuniting after graduation is earnest but dramatically inert, with bland songs that fail to lift the pedestrian material.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is earnest but dramatically inert, with bland songs that fail to lift the pedestrian material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show 'dramatically inert' with 'bland songs' and 'pedestrian material.' No redeeming qualities mentioned beyond being 'earnest.' | GPT-4o: The review describes the musical as 'dramatically inert' and 'bland', indicating a lack of recommendation. The tone is clearly negative with no redeeming qualities mentioned. | Gemini: The review explicitly states the musical is \"dramatically inert\" with \"bland songs\" and \"pedestrian material,\" indicating a negative assessment. | Kimi: The critic offers faint praise ('earnest') but ultimately describes the show as dramatically inert with bland songs and pedestrian material, indicating a clear recommendation against seeing the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:29:28.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 44
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

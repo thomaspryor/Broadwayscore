@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rock of Ages succeeds in large part because it doesn't take itself too seriously, while still respecting the music that inspired it. The show has a genuine affection for the era it celebrates.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Rock of Ages succeeds in large part because it doesn't take itself too seriously, while still respecting the music that inspired it. The show has a genuine affection for the era it celebrates.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rock of Ages succeeds in large part because it doesn't take itself too seriously, while still respecting the music that inspired it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment highlighting the show's success and balanced approach, though brief text limits confidence in full critical stance. | GPT-4o: The review expresses a positive view of the show, highlighting its success and genuine affection for the era, indicating a solid recommendation. | Gemini: The review expresses a positive sentiment, highlighting the show's respect for its source material and its lighthearted approach, indicating a recommendation. | Kimi: The critic offers clear praise for the show's lighthearted tone and genuine affection for the era, explicitly stating it succeeds, though the brevity suggests this may be an excerpt rather than a complete review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:33:49.411Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
