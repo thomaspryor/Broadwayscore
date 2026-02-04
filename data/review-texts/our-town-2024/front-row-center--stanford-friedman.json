@@ -10,5 +10,59 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "a version of Grover’s Corners that is futuristic in its inclusiveness\n\nRead more"
+  "showScoreExcerpt": "a version of Grover’s Corners that is futuristic in its inclusiveness\n\nRead more",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a version of Grover’s Corners that is futuristic in its inclusiveness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests a positive view of the show's inclusiveness, but with only one quote, the overall sentiment is unclear. The lack of a strong positive statement or superlatives suggests a mildly positive review. | Gemini: The single excerpt is positive, but vague. Without more context, it's difficult to assess the strength of the recommendation, so I'm placing it at the lower end of the Positive bucket. | Kimi: Single curated excerpt offers mild praise for the production's inclusive approach but provides limited evaluative scope; truncated text and lack of comprehensive verdict warrant low confidence and lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:54:53.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

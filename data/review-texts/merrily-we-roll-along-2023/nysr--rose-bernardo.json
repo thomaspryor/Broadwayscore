@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Radcliffe’s “Franklin Shepard, Inc.” is an absolute marvel (don’t be surprised to see a standing ovation after that high-speed train of a song), and his unassuming delivery of “Good Thing Going” is a surprise emotional bombshell. Post–Harry Potter, Radcliffe has racked up an impressive list of stage...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Radcliffe's 'Franklin Shepard, Inc.' is an absolute marvel (don't be surprised to see a standing ovation after that high-speed train of a song)",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Radcliffe's performance with superlatives like 'absolute marvel' and 'emotional bombshell,' but single excerpt warning applies - confident positive language suggests upper end of Positive bucket despite limited text. | GPT-4o: The excerpt provides strong praise for Radcliffe's performance, describing it as 'an absolute marvel' and anticipating a standing ovation, which suggests a highly positive reception. However, the single excerpt warning indicates that this may not fully represent the review, leading to low confidence. | Gemini: The excerpt contains high praise for Radcliffe's performance, calling it an 'absolute marvel' and an 'emotional bombshell'. Given the single excerpt, I'm placing it in the upper range of positive. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:22:09.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

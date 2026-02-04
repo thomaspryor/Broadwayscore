@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kenny Leon's direction is sensitive and effective, and the talented supporting cast creates a world of academic colleagues, students and family members that feels authentic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Kenny Leon's direction is sensitive and effective, and the talented supporting cast creates a world of academic colleagues, students and family members that feels authentic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's direction is sensitive and effective, and the talented supporting cast creates a world of academic colleagues, students and family members that feels authentic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising direction and cast, but very limited text available. Sounds positive but cautious scoring due to potential cherry-picking from a longer review with unknown overall verdict. | GPT-4o: The excerpt praises the direction and supporting cast, indicating a positive view. However, with only one excerpt, the full sentiment of the review is unclear, leading to a low confidence score at the lower end of the Positive range. | Gemini: The excerpt praises the direction and supporting cast, suggesting a positive experience. However, due to the limited text, confidence is low, and the score is placed at the lower end of the 'Positive' bucket. | Kimi: The excerpt offers clear praise for the direction ('sensitive and effective') and supporting cast ('talented,' 'authentic'), indicating a positive recommendation. However, the language is professional rather than ecstatic, and the single-excerpt limitation warrants conservative scoring and low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:38:49.866Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Although Adrienne Kennedy’s \"Ohio State Murders\" is brief, Audra McDonald elevates this to an acting tour de force as she plays the same woman 40 years apart as well as shifting mood over and over again. Its understated depiction of institutional racism in a world where it is taken for granted is both chilling and revealing for those of us who have not endured it. While the play is challenging in its unusual form, it is also one you won’t soon forget. McDonald and Kenny Leon have helped to give Kennedy a fine debut production. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald elevates this to an acting tour de force as she plays the same woman 40 years apart as well as shifting mood over and over again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for McDonald's performance as 'tour de force' and calling it 'one you won't soon forget' with positive assessment of the production, though acknowledging the play's challenging form. Single excerpt warning applied - using upper Positive range. | GPT-4o: The excerpt praises McDonald's performance as a 'tour de force' and describes the play as 'chilling and revealing' and 'one you won’t soon forget,' indicating a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review praises Audra McDonald's performance as an 'acting tour de force' and states the play is 'chilling and revealing' and 'one you won't soon forget,' indicating a strong positive recommendation. | Kimi: The excerpt offers enthusiastic praise for Audra McDonald's 'tour de force' performance and calls the production 'fine' and memorable, though it acknowledges the play's challenging structure. Given this is a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:42:17.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

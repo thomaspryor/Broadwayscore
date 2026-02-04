@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "While 'MJ' succeeds as a celebration of Jackson's artistry and features phenomenal performances, it sidesteps the more troubling aspects of the pop icon's life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While 'MJ' succeeds as a celebration of Jackson's artistry and features phenomenal performances, it sidesteps the more troubling aspects of the pop icon's life.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While 'MJ' succeeds as a celebration of Jackson's artistry and features phenomenal performances, it sidesteps the more troubling aspects of the pop icon's life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows qualified praise - 'succeeds' and 'phenomenal performances' are positive, but 'sidesteps troubling aspects' indicates reservations. With only one excerpt available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt praises the show as a celebration of Jackson's artistry and highlights phenomenal performances, indicating a positive view. However, it notes the avoidance of troubling aspects, suggesting some reservations. Given the single excerpt warning, the score is on the lower end of Positive. | Gemini: The review acknowledges the show's strengths (celebration of artistry, phenomenal performances) but also points out a significant flaw (sidestepping troubling aspects). This indicates a mixed assessment. | Kimi: The excerpt offers strong praise ('phenomenal performances', 'succeeds') placing it in the Positive bucket, though the single-excerpt guidance suggests using the upper range (80-84) given the clearly positive language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:26:38.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 62,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

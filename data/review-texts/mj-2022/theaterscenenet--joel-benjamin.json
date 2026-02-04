@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Wheeldon and Pulitzer Award-winning playwright Lynn Nottage make every effort to hide the fact that MJ is a jukebox musical, despite the fact that the first notes of every song elicited loud shouts and applause (part of the reason the show runs two and a half hours). Nottage has invented a plodding framework for the show. It is 1992 in Los Angeles. TV reporter, Rachel (a down-to-earth Whitney Bashor who acts as the play’s Greek chorus) and her hyperactive assistant, Alejandro (a charming Gabriel Ruiz) corral a reluctant Jackson to have his rehearsals for his huge upcoming Dangerous tour documented.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nottage has invented a plodding framework for the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the show's structure as 'plodding' despite acknowledging the creators' efforts and audience enthusiasm. However, with only one excerpt available that may not represent the full verdict, confidence is low. | GPT-4o: The excerpt highlights efforts to disguise the jukebox nature of the musical but criticizes the framework as 'plodding'. The tone suggests a mixed reception, with some positive elements like audience reaction to songs, but overall criticism of the show's structure. | Gemini: The review excerpt describes the framework as \"plodding,\" which indicates a negative assessment. Given that this is the only excerpt available, and it is negative, I am scoring it as negative with low confidence. | Kimi: The single excerpt provides conflicting signals—criticizing the book as 'plodding' while praising supporting actors as 'charming' and 'down-to-earth'—and the truncated text lacks a definitive concluding verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:25:48.816Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

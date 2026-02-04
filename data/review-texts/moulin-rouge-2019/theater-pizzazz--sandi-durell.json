@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“A spectacle of glamour, glitz, lust, love and romance - the costumes, the sets and strong, stunningly talented cast (Danny Burstein, Karen Olivo, Aaron Tveit, Robyn Hurder) drive ‘Moulin Rouge!’ The 70 songs - or snippets of them - that make up the music can become weary but there's a a bit of nostalgia for everyone.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A spectacle of glamour, glitz, lust, love and romance - the costumes, the sets and strong, stunningly talented cast drive 'Moulin Rouge!'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the spectacle, costumes, sets, and 'stunningly talented cast' but notes the songs 'can become weary.' Single excerpt with mixed elements suggests qualified positive recommendation. | GPT-4o: The review excerpt praises the spectacle and the cast, indicating a positive impression. However, it notes that the music can become weary, suggesting some reservations. Given the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the spectacle, cast, costumes, and sets, but notes the music can become weary, suggesting a positive but not rave recommendation. Confidence is low due to the single excerpt. | Kimi: The excerpt offers strong praise for the production's spectacle, costumes, sets, and 'stunningly talented' cast as driving forces of the show, with only a minor reservation about the music becoming 'weary.' This represents a clear positive recommendation despite being a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:31:25.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

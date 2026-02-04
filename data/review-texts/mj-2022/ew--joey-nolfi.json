@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "MJ the Musical doesn't quite transcend its jukebox musical trappings, but Myles Frost's electrifying central performance as the King of Pop makes it worth the price of admission.",
   "originalScore": 83,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "MJ the Musical doesn't quite transcend its jukebox musical trappings, but Myles Frost's electrifying central performance as the King of Pop makes it worth the price of admission.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ the Musical doesn't quite transcend its jukebox musical trappings, but Myles Frost's electrifying central performance as the King of Pop makes it worth the price of admission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation ('worth the price of admission') despite acknowledging the show's limitations. The critic's 83 rating confirms positive territory, but the qualified praise suggests lower end of Positive bucket. | GPT-4o: The excerpt highlights a strong positive element (Myles Frost's performance) that makes the show worth seeing, despite not fully transcending its jukebox musical format. The original rating of 83 aligns with the positive bucket. | Gemini: The review states that the show is \"worth the price of admission\" due to Myles Frost's performance, despite acknowledging its limitations. Given the single excerpt and the critic's original rating of 83, a score in the higher end of the positive bucket is appropriate. | Kimi: Despite noting the show doesn't transcend its jukebox musical trappings, the critic delivers a clear recommendation ('worth the price of admission') and praises the lead performance as 'electrifying'. The original rating of 83 confirms this strong positive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:24:16.171Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 83,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

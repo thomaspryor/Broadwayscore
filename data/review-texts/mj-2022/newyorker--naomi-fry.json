@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show, which opened on Broadway this month, feels like a missed opportunity—a sanitized, surface-level treatment of a figure whose life and art were anything but simple.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show, which opened on Broadway this month, feels like a missed opportunity—a sanitized, surface-level treatment of a figure whose life and art were anything but simple.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels like a missed opportunity—a sanitized, surface-level treatment of a figure whose life and art were anything but simple.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt describes the show as a 'missed opportunity' with 'sanitized, surface-level treatment,' indicating clear disappointment. Low confidence due to limited text and single excerpt warning. | GPT-4o: The excerpt describes the show as a 'missed opportunity' with a 'sanitized, surface-level treatment,' indicating a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt explicitly states that the show \"feels like a missed opportunity,\" indicating a negative assessment. Given that this is the only excerpt available, confidence is medium. | Kimi: The excerpt clearly pans the production as a 'missed opportunity' with 'sanitized, surface-level' treatment, indicating the show fails to capture the complexity of its subject. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:24:46.425Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

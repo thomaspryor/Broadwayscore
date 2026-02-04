@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, about two obsolete companion robots who fall in love, is both deeply silly and surprisingly moving—a rare combination that makes for unexpectedly affecting theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, about two obsolete companion robots who fall in love, is both deeply silly and surprisingly moving—a rare combination that makes for unexpectedly affecting theatre.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is both deeply silly and surprisingly moving—a rare combination that makes for unexpectedly affecting theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show 'surprisingly moving' and 'unexpectedly affecting theatre,' indicating a positive recommendation. However, this is only a single excerpt, so confidence is low. | GPT-4o: The excerpt describes the show as 'deeply silly and surprisingly moving,' which suggests a positive experience. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt indicates a positive sentiment, describing the musical as \"surprisingly moving\" and \"unexpectedly affecting theatre.\" Given the single excerpt, I'm placing the score towards the higher end of the positive range. | Kimi: The excerpt offers clear praise for the show's emotional impact and tonal balance, describing it as 'surprisingly moving' and 'unexpectedly affecting theatre.' Confidence is low due to the single-excerpt limitation, which may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:16:28.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

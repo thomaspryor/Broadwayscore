@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "sophisticated musically, intensely acted and gorgeously sung, with a grand 17-piece orchestra and a large splendid cast. Certainly, a story involving antisemitism is timely. But “Parade,” despite the revisions, also feels undermined by some of the same problems identified in the initial production. Didactic, obvious and overly clever, it’s disturbing in ways it doesn’t intend.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "sophisticated musically, intensely acted and gorgeously sung",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning applies - this appears cherry-picked from a mixed review. Praises musical and performance elements but identifies significant structural problems ('didactic, obvious, overly clever') that undermine the production. | GPT-4o: The review praises the musical sophistication and performances but criticizes the production for being didactic and having unresolved issues from the initial production. The excerpt suggests a balance of positive and negative elements, leading to a mixed verdict. | Gemini: The review praises the music, acting, and cast but also criticizes the show for being didactic, obvious, and disturbing in unintended ways. This indicates a mixed reaction. | Kimi: The excerpt offers high praise for the musical sophistication, acting, and cast, but strongly criticizes the book as 'didactic, obvious and overly clever' with unintended disturbing elements. With only one curated excerpt available and the review truncated before the final verdict, this appears to be a genuinely mixed assessment weighing strong production values against significant script problems.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:58:59.131Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
