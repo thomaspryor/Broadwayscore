@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/in-transit_77511.html",
   "publishDate": "December 12, 2016",
-  "fullText": "The show's charm lies in its simplicity and the impressive vocal arrangements that turn everyday subway sounds into music. It's a sweet, small-scale musical that knows exactly what it is.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The show's charm lies in its simplicity and the impressive vocal arrangements that turn everyday subway sounds into music. It's a sweet, small-scale musical that knows exactly what it is.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's charm lies in its simplicity and the impressive vocal arrangements that turn everyday subway sounds into music. It's a sweet, small-scale musical that knows exactly what it is.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 76,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 209,
+  "archivePath": "data/archives/reviews/in-transit-2016/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:42:52.433Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 209 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The organization will present ”I Am My Own Wife” and two other productions.\n\nChicago's About Face Theatre has announced its 2016-17 season.\n\nThe season kicks off November 4-December 10 with Doug Wright's I Am My Own Wife, directed by Andrew Volkoff. The production will star transgender actress Delia Kropp and two other performers.\n\nNext up is Jon Maran's drama The Temperamentals, running January 13-Feburary 18. The season concludes with Tanya Barfield's Bright Half Life, May 26-July 1. Keira Fromm directs the production, which features Elizabeth Ledo.\n\nFurther casting and information about each production will be released in the coming months.\n\nFor tickets to About Face Theatre's season, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
