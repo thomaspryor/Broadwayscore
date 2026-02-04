@@ -1,9 +1,9 @@
 {
-  "auditedAt": "2026-02-04T15:39:37.395Z",
+  "auditedAt": "2026-02-04T15:44:07.883Z",
   "totalFilesScanned": 11901,
-  "totalWithFullText": 3023,
+  "totalWithFullText": 3014,
   "fixesApplied": 0,
-  "totalIssues": 769,
+  "totalIssues": 760,
   "results": {
     "investigation1": {
       "contentMismatches": [
@@ -176,42 +176,6 @@
           "url": "http://www.talkinbroadway.com/page/regional/boston/bo574.html"
         },
         {
-          "file": "a-soldiers-play-2020/nysr--david-finkle.json",
-          "showTitle": "A Soldier's Play",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 2,
-          "positiveSignals": [
-            "Director \"Kenny Leon\" found"
-          ],
-          "negativeSignals": [
-            "Show title \"A Soldier's Play\" not found in text",
-            "Different show \"memphis\" mentioned 3+ times"
-          ],
-          "hasExcerpts": false,
-          "wrongShowMentioned": "memphis",
-          "url": "https://nystagereview.com/2020/01/21/a-soldiers-play-charles-fullers-pulitzer-winner-in-stunning-rev",
-          "likelyActualShow": "memphis"
-        },
-        {
-          "file": "a-soldiers-play-2020/nysr--jesse-oxfeld.json",
-          "showTitle": "A Soldier's Play",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 2,
-          "positiveSignals": [
-            "Director \"Kenny Leon\" found"
-          ],
-          "negativeSignals": [
-            "Show title \"A Soldier's Play\" not found in text",
-            "Different show \"company\" mentioned 3+ times"
-          ],
-          "hasExcerpts": false,
-          "wrongShowMentioned": "company",
-          "url": "https://nystagereview.com/2020/01/21/a-soldiers-play-a-stodgy-whodunit-and-a-thoughtful-meditation-o",
-          "likelyActualShow": "company"
-        },
-        {
           "file": "a-soldiers-play-2020/talkinbroadway--matthew-murray.json",
           "showTitle": "A Soldier's Play",
           "verdict": "confident_mismatch",
@@ -336,22 +300,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/"
-        },
-        {
-          "file": "all-out-2025/variety--aramide-tinubu.json",
-          "showTitle": "All Out: Comedy About Ambition",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"All Out: Comedy About Ambition\" not found in text",
-            "Different show \"the audience\" mentioned 3+ times"
-          ],
-          "hasExcerpts": false,
-          "wrongShowMentioned": "the audience",
-          "url": "https://variety.com/2026/legit/reviews/bug-broadway-review-carrie-coon-1236625316/",
-          "likelyActualShow": "the audience"
         },
         {
           "file": "amelie-a-new-musical-2017/variety--marilyn-stasio.json",
@@ -592,22 +540,6 @@
           "url": "https://www.theatermania.com/new-york-city-theater/reviews/bob-fosses-dancin-broadway_95847.html"
         },
         {
-          "file": "book-of-mormon-2011/variety--marilyn-stasio.json",
-          "showTitle": "The Book of Mormon",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"The Book of Mormon\" not found in text",
-            "Different show \"buena vista social club\" mentioned 3+ times"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": "buena vista social club",
-          "url": "https://variety.com/2011/legit/reviews/the-book-of-mormon-1117944828/",
-          "likelyActualShow": "buena vista social club"
-        },
-        {
           "file": "born-yesterday-2011/theatermania--andy-propst.json",
           "showTitle": "Born Yesterday",
           "verdict": "confident_mismatch",
@@ -802,22 +734,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-review.html"
-        },
-        {
-          "file": "choir-boy-2019/theatermania--adam-feldman.json",
-          "showTitle": "Choir Boy",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Choir Boy\" not found in text",
-            "Different show \"cabaret\" mentioned 3+ times"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": "cabaret",
-          "url": "https://www.theatermania.com/broadway/reviews/choir-boy_85538.html",
-          "likelyActualShow": "cabaret"
         },
         {
           "file": "clybourne-park-2012/theatermania--charles-isherwood.json",
@@ -1450,22 +1366,6 @@
           "url": "https://www.wsj.com/articles/SB116227748528463883"
         },
         {
-          "file": "grey-house-2023/hollywood-reporter--david-rooney.json",
-          "showTitle": "Grey House",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Grey House\" not found in text",
-            "Different show \"the notebook\" mentioned 3+ times"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": "the notebook",
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/grey-house-broadway-review-1235521623/",
-          "likelyActualShow": "the notebook"
-        },
-        {
           "file": "groundhog-day-2017/nytimes--ben-brantley.json",
           "showTitle": "Groundhog Day",
           "verdict": "confident_mismatch",
@@ -1884,24 +1784,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.timeout.com/newyork/theater/king-charles-iii-theater-review"
-        },
-        {
-          "file": "king-kong-2018/theatermania--jesse-green.json",
-          "showTitle": "King Kong",
-          "verdict": "confident_mismatch",
-          "score": -4,
-          "negativeSignalCount": 2,
-          "positiveSignals": [
-            "Venue \"Broadway Theatre\" found"
-          ],
-          "negativeSignals": [
-            "Show title \"King Kong\" not found in text",
-            "Different show \"gettin' the band back together\" mentioned 3+ times"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": "gettin' the band back together",
-          "url": "https://www.theatermania.com/new-york-city-theater/reviews/king-kong_85858.html",
-          "likelyActualShow": "gettin' the band back together"
         },
         {
           "file": "king-kong-2018/washpost--peter-marks.json",
@@ -3486,22 +3368,6 @@
           "url": "https://variety.com/2018/legit/reviews/the-new-one-review-mike-birbiglia-1203017059/"
         },
         {
-          "file": "the-notebook-2024/theatermania--jesse-green.json",
-          "showTitle": "The Notebook",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"The Notebook\" not found in text",
-            "Different show \"west side story\" mentioned 3+ times"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": "west side story",
-          "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-notebook_93127.html",
-          "likelyActualShow": "west side story"
-        },
-        {
           "file": "the-other-place-2013/nypost--elisabeth-vincentelli.json",
           "showTitle": "The Other Place",
           "verdict": "confident_mismatch",
@@ -3654,22 +3520,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2014/11/17/theater/the-river-with-hugh-jackman-opens-on-broadway.html"
-        },
-        {
-          "file": "the-river-2014/vulture--jesse-green.json",
-          "showTitle": "The River",
-          "verdict": "confident_mismatch",
-          "score": -5,
-          "negativeSignalCount": 2,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"The River\" not found in text",
-            "Different show \"the seagull\" mentioned 3+ times"
-          ],
-          "hasExcerpts": false,
-          "wrongShowMentioned": "the seagull",
-          "url": "http://www.vulture.com/2014/11/theater-review-the-river.html",
-          "likelyActualShow": "the seagull"
         },
         {
           "file": "the-road-to-mecca-2012/nytimes--ben-brantley.json",
