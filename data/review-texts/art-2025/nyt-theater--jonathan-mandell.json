@@ -1,0 +1,74 @@
+{
+  "showId": "art-2025",
+  "outletId": "newyorktheater",
+  "outlet": "New York Theater",
+  "criticName": "Jonathan Mandell",
+  "url": "https://newyorktheater.me/2025/10/08/art-broadway-review/",
+  "publishDate": "October 8, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "manual",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Art\" is not about art, and it’s not really about friendship. If it’s about anything at all, the Broadway revival of Yasmina Reza’s 30-year-old play is about the celebrity of Bobby Cannavale, James Corden and Neil Patrick Harris\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only URL known, no text collected yet",
+  "sources": [
+    "manual",
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 25,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Art\" is not about art, and it's not really about friendship.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "If it's about anything at all, the Broadway revival of Yasmina Reza's 30-year-old play is about the celebrity of Bobby Cannavale, James Corden and Neil Patrick Harris",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic dismisses the production as shallow celebrity vehicle rather than meaningful theater, suggesting the show lacks substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:28.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2712,
+    "outputTokens": 309,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
+}

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nicky Silver's dysfunctional family comedy 'The Lyons' is a nasty piece of work that gets nastier as it goes along, which is not necessarily a bad thing when the material is this sharply written and the performances are this good.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "which is not necessarily a bad thing when the material is this sharply written and the performances are this good",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling it 'nasty' and acknowledging it gets 'nastier,' the critic explicitly frames this as 'not necessarily a bad thing' and praises both the sharp writing and good performances, indicating a positive recommendation. | GPT-4o: The review acknowledges the play's nastiness but frames it positively due to sharp writing and strong performances, indicating a recommendation with some reservations. | Gemini: The review states that the play is \"sharply written\" and the performances are \"this good\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises the sharp writing and strong performances, finding the show's nasty tone effective rather than off-putting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:13:48.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

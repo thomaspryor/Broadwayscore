@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical about everybody's favorite green ogre is so desperate to be liked that it makes you want to run in the other direction. 'Shrek the Musical' opened on Sunday night at the Broadway Theater with the manic, flopsweat-inducing eagerness of a clown at a 5-year-old's birthday party.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 20,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical about everybody's favorite green ogre is so desperate to be liked that it makes you want to run in the other direction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Brantley uses vivid negative metaphors comparing the show to desperate, sweaty entertainment that repels rather than attracts. The 'run in the other direction' language is a clear pan. | GPT-4o: The review uses strongly negative language, comparing the musical to a desperate clown and suggesting it is off-putting. This indicates a strong recommendation to avoid the show. | Gemini: The review clearly expresses a negative sentiment, describing the show as \"desperate to be liked\" and making the reviewer want to \"run in the other direction.\" | Kimi: The critic employs contemptuous language ('flopsweat-inducing', 'desperate') and explicitly states the production induces a desire to flee, indicating a strong recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:50:49.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 20,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

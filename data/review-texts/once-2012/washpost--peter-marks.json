@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'Once' is an enchanting celebration of music's power to heal and connect, transforming the Bernard B. Jacobs Theatre into an Irish pub where the audience feels welcomed into an intimate musical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The musical 'Once' is an enchanting celebration of music's power to heal and connect, transforming the Bernard B. Jacobs Theatre into an Irish pub where the audience feels welcomed into an intimate musical experience.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical 'Once' is an enchanting celebration of music's power to heal and connect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Uses strong positive language ('enchanting celebration') and describes a transformative theatrical experience with intimate audience connection, indicating clear enthusiasm. | GPT-4o: The review uses highly positive language ('enchanting celebration') and describes the show as a transformative and intimate experience, indicating a strong recommendation. | Gemini: The review uses positive language like \"enchanting celebration\" and describes the experience as welcoming and intimate, indicating a strong recommendation. | Kimi: The critic offers unqualified praise, describing the show as 'enchanting' and highlighting its intimate, transformative staging with no visible reservations, indicating strong approval despite the brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:29.533Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Despite some scattered strong elements, it's hard to totally make sense of \"Floyd Collins\" or feel that it really works as a whole... There may be treasure hidden deep in the cave that is \"Floyd Collins,\" but it may just be too dark and difficult to fully extract it.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite some scattered strong elements, it's hard to totally make sense of \"Floyd Collins\" or feel that it really works as a whole.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong elements but finds the show fundamentally flawed as a cohesive work. The metaphor about treasure being 'too dark and difficult to fully extract' suggests neither recommendation nor strong discouragement. Single excerpt limits confidence. | GPT-4o: The excerpt suggests a mixed review with some positive elements but overall difficulty in appreciating the production. The language indicates a lack of coherence and effectiveness, placing it in the Mixed bucket. | Gemini: The review acknowledges some positive aspects but ultimately finds the show difficult to grasp and not entirely successful, indicating a mixed assessment. | Kimi: The critic acknowledges scattered strong elements and hidden merit but finds the show incoherent and too difficult to access as a whole, resulting in a neither-here-nor-there verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:01:48.996Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

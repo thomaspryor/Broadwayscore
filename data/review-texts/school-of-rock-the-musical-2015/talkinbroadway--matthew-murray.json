@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "School of Rock proves that Broadway musicals can still surprise, delight, and rock out with the best of them, thanks to Lloyd Webber's most invigorating score in years and a production that never stops moving or entertaining.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "School of Rock proves that Broadway musicals can still surprise, delight, and rock out with the best of them, thanks to Lloyd Webber's most invigorating score in years and a production that never stops moving or entertaining.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway musicals can still surprise, delight, and rock out with the best of them",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise calling it Lloyd Webber's most invigorating score in years, with enthusiastic language about surprising and delighting audiences. | GPT-4o: The review is highly enthusiastic, praising the score and production as invigorating and entertaining, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"surprise, delight, and rock out\" and calling the score \"invigorating\" and the production \"entertaining.\" | Kimi: The critic offers unqualified, enthusiastic praise for both the score (calling it Lloyd Webber's most invigorating in years) and the production (describing it as never stopping moving or entertaining), with no reservations or caveats present in the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:51:26.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Floyd Collins is more meditative than propulsive, with an unhappy ending it doesn't shy from. You feel for its main character, but Collins is also a strangely meek and receding focus in his own story. Simultaneously, both his plight and the show disappear from view.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You feel for its main character, but Collins is also a strangely meek and receding focus in his own story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt acknowledges some emotional connection ('You feel for its main character') but criticizes fundamental structural problems (protagonist 'receding' from his own story, show 'disappears from view'). Single excerpt warning applies - this sounds like qualified criticism rather than recommendation. | GPT-4o: The review describes the show as meditative with a receding focus, suggesting a lack of engagement. The mixed tone and lack of strong recommendation place it in the Mixed bucket. | Gemini: The review notes empathy for the character but also criticizes the character's focus and the show's overall impact, suggesting a mixed assessment. | Kimi: The excerpt offers a balanced but lukewarm assessment, acknowledging the audience's emotional connection to the protagonist while criticizing the character's passivity and the show's failure to maintain dramatic presence or lasting impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:01:01.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

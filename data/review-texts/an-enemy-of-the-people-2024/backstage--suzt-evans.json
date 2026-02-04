@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Rebecca Lenkiewicz has transformed Henrik Ibsen’s 1882 play “An Enemy of the People,” an insightful work about the cost of free expression, into a coherent, topical, and thrilling piece that pokes and prods at our own moral fiber....",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a coherent, topical, and thrilling piece that pokes and prods at our own moral fiber",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('coherent, topical, and thrilling') suggests enthusiastic recommendation, but single excerpt warning requires low confidence. | GPT-4o: The excerpt praises the transformation of the play as 'coherent, topical, and thrilling', suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the transformation of the play into a coherent, topical, and thrilling piece. Given the limited text, I'm placing it in the positive bucket with a high score due to the strong positive language, but with low confidence. | Kimi: The excerpt employs strongly positive descriptors ('thrilling,' 'coherent,' 'topical') to praise the adaptation, indicating a clear recommendation. However, as a single curated quote, confidence is reduced since the full review context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:39:15.930Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

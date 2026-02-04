@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kristin Chenoweth is in glorious voice and radiant form as the tempestuous Lily Garland, bringing both vocal pyrotechnics and comic timing to this deliriously over-the-top musical comedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Kristin Chenoweth is in glorious voice and radiant form as the tempestuous Lily Garland, bringing both vocal pyrotechnics and comic timing to this deliriously over-the-top musical comedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kristin Chenoweth is in glorious voice and radiant form as the tempestuous Lily Garland, bringing both vocal pyrotechnics and comic timing to this deliriously over-the-top musical comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with superlative language ('glorious voice', 'radiant form', 'vocal pyrotechnics') and positive framing of the show as 'deliriously over-the-top', though this appears to be an excerpt focusing only on one performer. | GPT-4o: The review praises Kristin Chenoweth's performance with strong positive language, indicating a solid recommendation. However, the text is an excerpt, so confidence is set to low. | Gemini: The review praises Kristin Chenoweth's performance in glowing terms, highlighting her vocal abilities and comedic timing, suggesting a positive experience. | Kimi: The excerpt delivers enthusiastic praise for the lead performance ('glorious voice', 'radiant form', 'pyrotechnics') and describes the show as a successful musical comedy, indicating a clear positive recommendation despite the brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:35:47.673Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

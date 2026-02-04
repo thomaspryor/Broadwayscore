@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Audra McDonald's powerhouse performance as Lizzie Curry anchors this revival, bringing both vocal magnificence and emotional depth to the role of the plain-spoken spinster who learns to believe in herself.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Audra McDonald's powerhouse performance as Lizzie Curry anchors this revival, bringing both vocal magnificence and emotional depth to the role of the plain-spoken spinster who learns to believe in herself.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Audra McDonald's powerhouse performance as Lizzie Curry anchors this revival, bringing both vocal magnificence and emotional depth to the role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for McDonald's 'powerhouse performance' with 'vocal magnificence and emotional depth' suggests positive recommendation, but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises Audra McDonald's performance with strong language ('powerhouse', 'vocal magnificence', 'emotional depth'), suggesting a positive recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt focuses on Audra McDonald's 'powerhouse performance' and 'vocal magnificence,' indicating a strong positive element. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for Audra McDonald's performance ('powerhouse,' 'vocal magnificence'), suggesting the revival is worth seeing for her work. However, given this is a single curated excerpt that may not represent the full review's assessment of other production elements, confidence is low and the score reflects positive but not rave-level recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:35:14.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

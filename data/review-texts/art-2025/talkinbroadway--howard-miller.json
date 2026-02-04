@@ -1,0 +1,68 @@
+{
+  "showId": "art-2025",
+  "outletId": "talkinbroadway",
+  "outlet": "Talkin' Broadway",
+  "criticName": "Howard Miller",
+  "url": "https://www.talkinbroadway.com/page/world/Art.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 78,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“a thoroughly engaging production of a whip-smart play”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "low",
+    "range": {
+      "low": 70,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 80,
+      "music": null,
+      "performances": null,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "a thoroughly engaging production of a whip-smart play",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses strong positive language ('thoroughly engaging', 'whip-smart') suggesting clear recommendation, but the excerpt is too brief to determine full enthusiasm level.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:32.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2663,
+    "outputTokens": 245,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
+}

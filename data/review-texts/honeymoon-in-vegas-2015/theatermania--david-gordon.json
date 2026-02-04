@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jason Robert Brown and Andrew Bergman have turned the 1992 Nicolas Cage romantic comedy into a surprisingly engaging musical that captures the manic energy of Las Vegas while delivering genuine heart.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jason Robert Brown and Andrew Bergman have turned the 1992 Nicolas Cage romantic comedy into a surprisingly engaging musical that captures the manic energy of Las Vegas while delivering genuine heart.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jason Robert Brown and Andrew Bergman have turned the 1992 Nicolas Cage romantic comedy into a surprisingly engaging musical that captures the manic energy of Las Vegas while delivering genuine heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive sentiment with 'surprisingly engaging' and 'genuine heart', but low confidence due to limited text from curated quote that may not represent full review. | GPT-4o: The excerpt describes the musical as 'surprisingly engaging' and highlights its ability to capture 'manic energy' while delivering 'genuine heart'. This indicates a strong positive impression, though the single excerpt limits confidence. | Gemini: The review excerpt uses the phrase \"surprisingly engaging musical\" which indicates a positive sentiment. Given the single excerpt warning, I am placing the score on the higher end of the positive range. | Kimi: The excerpt offers unqualified praise for the adaptation's energy and emotional resonance, indicating a clearly positive recommendation. With only one curated excerpt available, confidence is reduced despite the enthusiastic tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:07:33.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

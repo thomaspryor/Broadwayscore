@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The problem with 'Curtains' is that it's trying to be too many things at once -- a backstage musical, a murder mystery and a star vehicle for David Hyde Pierce.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 56,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The problem with 'Curtains' is that it's trying to be too many things at once -- a backstage musical, a murder mystery and a star vehicle for David Hyde Pierce.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 56,
+    "confidence": "medium",
+    "range": {
+      "low": 51,
+      "high": 61
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The problem with 'Curtains' is that it's trying to be too many things at once",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt warning applies - this quote identifies fundamental structural issues but doesn't provide clear recommendation. The framing as 'the problem' suggests criticism, placing it in Mixed territory given the limited context. | GPT-4o: The excerpt highlights a fundamental issue with the show, suggesting a lack of focus. Without additional context, it's unclear if there are redeeming qualities, leading to a mixed assessment. | Gemini: The critic identifies a core problem with the show, suggesting it fails to effectively balance its multiple elements. Given the limited excerpt, a negative score seems appropriate. | Kimi: The excerpt identifies a significant structural problem with the show's conception, criticizing its lack of focus in attempting to combine multiple disparate genres and elements into one production. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:51:56.174Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

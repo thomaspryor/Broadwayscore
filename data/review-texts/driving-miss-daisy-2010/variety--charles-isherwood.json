@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944054/",
   "publishDate": "October 25, 2010",
-  "fullText": "The production, directed by David Esbjornson, brings a welcome intimacy to the material, allowing the chemistry between Redgrave and Jones to bloom naturally.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by David Esbjornson, brings a welcome intimacy to the material, allowing the chemistry between Redgrave and Jones to bloom naturally.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by David Esbjornson, brings a welcome intimacy to the material, allowing the chemistry between Redgrave and Jones to bloom naturally.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 77,
@@ -72,5 +72,55 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 203,
+  "archivePath": "data/archives/reviews/driving-miss-daisy-2010/variety--charles-isherwood_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:44:55.308Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 203 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "An Indian seaside resort reps the backdrop for manic mayhem in \"Golmaal 3.\"\n\nAn Indian seaside resort reps the backdrop for manic mayhem in “Golmaal 3.” This comical Bollywood crowd-pleaser requires no experience with previous installments in the franchise, but director Rohit Shetty packs the pic with Hindi film in-jokes. Pic was the runaway hit of India’s Diwali holiday frame, garnering $7 million domestically in its opening weekend, plus another $3.5 million offshore. Non-Bollywood enthusiasts will be fitfully amused.\n\nAt the coastal resort of Goa, two trios of sibling hucksters constantly clash as they try to make a buck out of everything from jet-skis to fireworks. When Daboo (Kareena Kapoor) realizes that the unmarried adoptive parents of each trio, Pritam (Mithun Chakraborty) and Guddi (Ratna Pathak), were once lovers, she plays matchmaker, transforming the pic into a Bollywood “Brady Bunch.” A subplot involving an amnesiac gangster allows character actor Johnny Lever to do his goofy shtick in overdrive. All the thesps have fun, and Kapoor can barely keep a straight face. Helming has the requisite hyper feel, and the ultravivid lensing occasionally shows signs of a tight schedule; stunts have a homegrown look but still provide thrills. Title means roughly “hodgepodge” or “confusion.”"
 }

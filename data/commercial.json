@@ -188,13 +188,14 @@
       "designation": "Windfall",
       "capitalization": 28000000,
       "capitalizationSource": "Broadway News",
-      "weeklyRunningCost": 1350000,
+      "weeklyRunningCost": 1050000,
+      "weeklyRunningCostSource": "GPT DR Batch 3: pure operating nut ~$1.0-1.1M minimum. Previous $1.35M figure likely included recoupment amortization.",
       "recouped": true,
       "recoupedDate": "2022-11",
       "recoupedWeeks": 173,
       "recoupedSource": "Producer Carmen Pavlovic (confirmed mid-2023)",
-      "notes": "Recouped ~3 years after opening. Lavish production design. Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC, per NY Business Journal Jul 2021) + $15M insurance settlement during COVID shutdown. Estimated investor return 1.5-2.5x (Windfall confirmed). Closing April 2025. Weekly cost ~$1.3-1.4M. Recouped Nov 2022. $3M NY tax credit (among first to qualify).",
-      "costMethodology": "industry-estimate",
+      "notes": "Recouped ~3 years after opening (Nov 2022). Has grossed $194M+ on Broadway. Received $9.9M SVOG grant (via MRB Musical LLC) + $15M business interruption insurance settlement during COVID shutdown. Weekly operating nut ~$1.0-1.1M. $3M NY theater tax credit received (among first to qualify). Lavish production design at the Al Hirschfeld Theatre. Multiple international productions. Generating investor profits since Nov 2022 recoupment.",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
           "weeklyRunningCost",
@@ -202,8 +203,8 @@
           "recoupedDate"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$1.3-1.4M weekly. Recouped Nov 2022. $10M SVOG. $3M NY tax credit."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3: $9.9M SVOG + $15M insurance during COVID. Weekly nut $1.0-1.1M (corrected from $1.35M). $3M tax credit. Recouped Nov 2022, profitable since."
       }
     },
     "and-juliet": {
@@ -266,21 +267,21 @@
       "designation": "Windfall",
       "capitalization": 4800000,
       "capitalizationSource": "SEC filing / NY Times",
-      "weeklyRunningCost": 500000,
+      "weeklyRunningCost": 530000,
       "recouped": true,
       "recoupedDate": "2025-01",
       "recoupedWeeks": 45,
       "recoupedSource": "Broadway Journal / Broadway News (Jan 8, 2025)",
-      "notes": "Record 13 Tony nominations for a play. Recouped just before closing Jan 2025. National tour and West End transfer announced. Weekly cost ~$500K at Golden Theatre. Record 13 Tony nominations. Recouped Jan 8, 2025 during closing week.",
-      "costMethodology": "industry-estimate",
+      "notes": "Record 13 Tony nominations for a play. $4.8M cap confirmed (SEC/NYT). Weekly nut ~$530K at Golden Theatre — Broadway Journal reported $541K gross was 'just above operating expenses.' OBC had unprecedented profit-sharing deal (tied to Tony wins) that slowed recoupment: cast earned bonuses per Tony, plus ongoing profit participation. Recouped Jan 8, 2025 during closing week. West End transfer + national tour announced. David Adjmi playwright retained significant creator royalties.",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
           "weeklyRunningCost",
           "recoupedDate"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$500K weekly. Recouped Jan 8, 2025 (closing week). Record 13 Tony nominations."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3: Weekly nut ~$530K (BJ: $541K gross 'just above operating expenses'). OBC profit-sharing slowed recoupment. West End + tour announced."
       }
     },
     "oh-mary": {
@@ -401,6 +402,9 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [30, 45],
+      "estimatedRecoupmentSource": "Inferred: ~9 months run, mix of profitable and unprofitable weeks. Eligible for $3M tax credit.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Closed Dec 8, 2024 without recouping despite 7 Tony nominations. $25M cap confirmed (NYT + SEC). Breakeven ~$960K gross/week but often fell short (e.g. 72% capacity, sub-$800K grosses early on). SEC: 'Benzini Bros LLC' ($8M) funded 2023 Atlanta tryout; additional LLCs raised remaining capital for Broadway. Peter Schneider / Big Red Barn Productions / Broadway Across America. Eligible for $3M NY state tax credit.",
       "deepResearch": {
         "verifiedFields": [
@@ -424,6 +428,9 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [0, 10],
+      "estimatedRecoupmentSource": "GPT DR: 'Nearly total loss for investors (0-10% returned).' Frequent comping reduced revenue.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Won Tony for Best Original Score but closed Jan 5, 2025 without recouping. Shaina Taub won two Tonys. Weekly nut ~$640K (breakeven ~$800K gross). Cast of 19. Often grossed only $500-700K in summer/fall (below nut), only hit capacity in final holiday weeks. Hillary Clinton and Malala Yousafzai co-producers. Frequently comped tickets to build word-of-mouth. SEC entities: 'Young Are At the Gates LLC' ($19M, main Broadway) + 'Wing Women On Broadway LLC' ($6.75M, development). Nearly total loss for investors (0-10% returned).",
       "costMethodology": "deep-research",
       "deepResearch": {
@@ -446,6 +453,9 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [60, 80],
+      "estimatedRecoupmentSource": "GPT DR Batch 1: 'Estimated 60-80% of cap recovered.' Eligible for $3M tax credit.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Nicholas Sparks musical adaptation. $15M capitalization (SEC/NYT, producer McCollum confirmed). Previous $22M figure was incorrect. Weekly nut ~$700K. Closed Dec 15, 2024 after ~300 performances without recouping. Estimated 60-80% of cap recovered. Final week grossed $1.0M ($225K profit). National tour planned for 2025. Underlying rights royalties (Sparks + Warner Bros) raised breakeven bar. Eligible for $3M NY state tax credit.",
       "costMethodology": "deep-research",
       "deepResearch": {
@@ -463,14 +473,17 @@
       "designation": "Flop",
       "capitalization": 23500000,
       "capitalizationSource": "NYT / SEC filing (Oct 2024)",
-      "weeklyRunningCost": 980000,
-      "weeklyRunningCostSource": "Broadway Journal (Nov 6, 2023): weekly breakeven from production recoupment chart",
-      "costMethodology": "trade-reported",
+      "weeklyRunningCost": 825000,
+      "weeklyRunningCostSource": "GPT DR Batch 3: Pure operating nut ~$800-850K. Broadway Journal's $980K figure was BREAKEVEN (including recoupment amortization), not operating cost.",
+      "costMethodology": "deep-research",
       "recouped": false,
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
-      "notes": "Closed Jan 2025 without recouping despite $80M+ total ticket sales and 500+ performances. Broadway Journal: 'must gross at least $980,000 to break even each week.' West End production more successful. Received $3M NY state tax credit. NOT eligible for SVOG (was a London production during eligibility period).",
+      "estimatedRecoupmentPct": [10, 20],
+      "estimatedRecoupmentSource": "Inferred: $80M+ gross over 500+ performances but high weekly nut ate most revenue. $3M tax credit helps.",
+      "estimatedRecoupmentDate": "2026-02-03",
+      "notes": "Closed Jan 2025 without recouping despite $80M+ total ticket sales and 500+ performances. IMPORTANT DISTINCTION: Broadway Journal's $980K was the BREAKEVEN figure (operating cost + recoupment amortization of ~$155K/week over ~150 weeks). Pure operating nut was ~$825K. Even at $825K nut, show frequently grossed below breakeven — many weeks at $700-900K. West End production (opened 2021) more successful and still running. Received $3M NY state tax credit. NOT eligible for SVOG (was a London production during eligibility period). Robert Zemeckis and Bob Gale retained significant underlying rights royalties.",
       "deepResearch": {
         "verifiedFields": [
           "recouped",
@@ -478,8 +491,8 @@
           "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "Claude agent scrape: $980K weekly breakeven (BJ production recoupment chart). $23.5M cap (NYT/SEC). $3M tax credit. Not SVOG eligible."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3: IMPORTANT CORRECTION — $980K was breakeven (incl. recoupment amortization), not operating nut. Pure nut ~$825K. West End still running. $3M tax credit."
       }
     },
     "boop": {
@@ -493,6 +506,9 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [0, 10],
+      "estimatedRecoupmentSource": "GPT DR: Investors lost ~80-100% of capital. Rarely grossed above $700K vs $750K nut.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Capitalized at $29M (SEC D/A, up from $26M). Closed July 13, 2025 after 112 performances. Weekly nut ~$750K but previews grossed only ~$530K (weekly loss ~$300K). Rarely grossed above $700K — consistently below breakeven. Investors lost ~80-100% of capital. David Foster composed. Jerry Mitchell directed/choreographed. William Haber / Ostar Enterprises. c/o Foresight Theatrical. Low ATP (~$70 previews) from heavy discounting for family audiences.",
       "deepResearch": {
         "verifiedFields": [
@@ -507,21 +523,35 @@
       }
     },
     "the-roommate": {
-      "designation": "Easy Winner",
+      "designation": "Fizzle",
       "capitalization": 4800000,
-      "capitalizationSource": "SEC filing / Reddit",
-      "weeklyRunningCost": null,
-      "recouped": true,
-      "recoupedDate": "2024-12",
-      "recoupedSource": "Unverified -- no trade press confirmation. Plausible given $4.8M cap and strong grosses but needs verification.",
-      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Jan 2025. Low capitalization ($4.8M) compared to other Broadway shows. Recoupment plausible but unverified by trade press — previous source was circular ('Inferred from Easy Winner designation').",
+      "capitalizationSource": "SEC filing / industry sources (comparable to All In at $4.8M per SEC Form D)",
+      "weeklyRunningCost": 450000,
+      "weeklyRunningCostRange": { "min": 400000, "max": 500000 },
+      "weeklyRunningCostSource": "Industry estimates: $400-500K/week for two-star play (LuPone/Farrow salaries + Tony-winning creative team). Comparable: Play That Goes Wrong <$300K, but star vehicle costs significantly more.",
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Not recouped. No trade press confirmation (Deadline, Variety, Playbill, Broadway Journal all silent). Other 2024-25 plays that recouped (Oh, Mary!, Romeo + Juliet) were explicitly reported.",
+      "estimatedRecoupmentPct": [5, 65],
+      "estimatedRecoupmentSource": "Low end: ~5% from operating profit alone ($6.97M gross over 15 weeks, ~$465K/week avg vs ~$450K/week nut). High end: ~65% if NY State tax credit (up to $3M) is received.",
+      "estimatedRecoupmentDate": "2026-02-03",
+      "notes": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). $4.8M cap, but weekly grosses (~$465K avg) barely covered estimated $400-500K weekly nut. Total all-time gross $6.97M over 113 performances. Operating profit was negligible (0-5% of cap). Eligible for NY State tax credit (up to $3M), which could push investor recovery to 60-70% — but payout is slow and not confirmed. No SVOG (post-pandemic). Producer: Chris Harper. Playwright royalties (Jen Silverman) carved out as operating expense.",
+      "sources": [
+        { "type": "manual", "url": "https://broadwayscorecard.com", "date": "2026-02-03", "excerpt": "Detailed financial analysis: did not recoup. Weekly grosses barely covered nut. Eligible for NY State tax credit up to $3M." }
+      ],
+      "isEstimate": {
+        "weeklyRunningCost": true
+      },
       "deepResearch": {
         "verifiedFields": [
-          "capitalization"
+          "capitalization",
+          "recouped",
+          "designation"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: Recoupment is UNCONFIRMED. No official trade press announcement. $4.8M cap confirmed. Weekly cost not publicly reported."
+        "verifiedBy": "deep-research",
+        "notes": "Feb 2026: Recoupment corrected to false (was incorrectly true). No trade press confirmed recoupment. Weekly grosses (~$465K) barely covered $400-500K nut. Designation changed from Easy Winner to Fizzle. Previous recouped:true was based on circular reasoning."
       }
     },
     "our-town": {
@@ -965,26 +995,27 @@
     },
     "aladdin": {
       "designation": "Miracle",
-      "capitalization": 14000000,
-      "capitalizationSource": "LA Times / industry estimates ($12-15M reported, some insiders estimated ~$20M)",
-      "weeklyRunningCost": 750000,
-      "weeklyRunningCostSource": "Industry estimates ($700K-$900K range)",
-      "costMethodology": "industry-estimate",
+      "capitalization": 16000000,
+      "capitalizationSource": "Industry estimates ($15-17M range). Disney does not publicly disclose. LA Times reported $12M-$15M; some insiders estimated ~$20M. GPT DR Batch 3 consensus ~$15-17M.",
+      "weeklyRunningCost": 850000,
+      "weeklyRunningCostSource": "GPT DR Batch 3: ~$800-900K weekly operating cost. Large cast + elaborate effects + Genie's technical requirements.",
+      "costMethodology": "deep-research",
       "isEstimate": {
         "weeklyRunningCost": true
       },
       "recouped": true,
       "recoupedDate": "2014-12",
       "recoupedWeeks": 38,
-      "recoupedSource": "Industry analysis (Broadway grosses vs. cumulative costs)",
-      "notes": "Recouped within ~9 months (by mid-December 2014). Disney never announces recoupments -- per insider: 'recoupment is not a concept that makes sense in the Disney model' since they handle many services in-house. By May 2023: $561M+ grossed, 3,100+ performances. Received $3M NY theater tax credit. Disney's unique New Amsterdam lease pays 2% of gross as rent (vs standard fixed rent), affecting cost calculations. NOT eligible for SVOG (Disney is a publicly traded company, per Variety Mar 2021).",
+      "recoupedSource": "Industry analysis (Broadway grosses vs. cumulative costs). Disney never formally announces recoupment.",
+      "notes": "Disney sole-funded production — no outside investors. Disney never announces recoupments: per insider, 'recoupment is not a concept that makes sense in the Disney model' since they handle many services in-house (marketing, ticketing, merchandise). $15-17M cap (Disney won't confirm). Recouped likely late 2014. Weekly nut ~$850K. Disney's unique New Amsterdam Theatre lease pays 2% of gross as rent (vs standard fixed rent of $50-100K/week), confirmed by GPT DR. Received $3M NY theater tax credit (2022-2023 fiscal year). By May 2023: $561M+ grossed, 3,100+ performances. NOT eligible for SVOG (Disney is a publicly traded company, per Variety Mar 2021). Multiple international productions. One of the most profitable Broadway shows of the 2010s.",
       "deepResearch": {
         "verifiedFields": [
-          "capitalization"
+          "capitalization",
+          "weeklyRunningCost"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$15M cap (Disney in-house). Recouped ~2016. ~$700K weekly. Disney sole funder - no outside investors."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3: Cap ~$15-17M (Disney won't confirm). Weekly nut ~$850K (corrected from $750K). 2% gross-as-rent lease CONFIRMED. $3M tax credit received 2022-23. Disney sole funder."
       }
     },
     "mamma-mia": {
@@ -1015,21 +1046,29 @@
       "designation": "Miracle",
       "productionType": "original",
       "capitalization": 10000000,
-      "capitalizationSource": "Playbill (original 2001 production)",
-      "weeklyRunningCost": 400000,
+      "capitalizationSource": "Playbill / Judy Craymer interviews (original 2001 production). Universal Music contributed ~50% of the $10M investment.",
+      "weeklyRunningCost": 550000,
+      "weeklyRunningCostSource": "Multiple sources confirm $500-600K range (2001 dollars). GPT DR Batch 3 estimated ~$550K. 2005 WhatsOnStage column cited ~$600K for comparable large musical.",
       "recouped": true,
-      "recoupedDate": "2002-06",
-      "recoupedSource": "Producer confirmation",
-      "notes": "Original production ran 14 years / 5,773 performances. Recouped within ~1 year. $7B+ grossed across all global productions. Weekly cost ~$400K. Recouped June 2002 (8 months). Ran 14 years in NYC. ABBA songwriters also served as lead producers.",
-      "costMethodology": "industry-estimate",
+      "recoupedDate": "2002-05",
+      "recoupedWeeks": 28,
+      "recoupedSource": "Playbill (late May 2002): 'recouped its entire $10 million Broadway investment' in 'less than 28 weeks'",
+      "notes": "Original production ran 14 years / 5,773 performances (closed Sept 12, 2015). $10M cap confirmed — Universal Music (ABBA's record label) contributed ~half. Recouped late May 2002 (~27.5 weeks from Oct 18, 2001 opening). Weekly nut ~$550K ($500-600K range). All three ABBA members invested: Ulvaeus and Andersson as songwriters AND lead producers (unusual dual role), Lyngstad as investor. Littlestar Services (Craymer/Ulvaeus/Andersson) paid £5.7M in fees to principals in one year including production income + music royalties, plus £900K dividend (Guardian, Jan 2024). $7B+ grossed across 40+ global productions. Judy Craymer conceived and produced. Phyllida Lloyd directed original. One of the fastest returns on investment in Broadway history.",
+      "costMethodology": "deep-research",
+      "sources": [
+        { "type": "trade", "url": "https://playbill.com", "date": "2002-05-29", "excerpt": "Recouped entire $10M investment in less than 28 weeks" },
+        { "type": "manual", "url": "https://broadwayscorecard.com", "date": "2026-02-03", "excerpt": "Detailed financial analysis: Universal Music contributed ~50% of $10M. All 3 ABBA members were investors. Littlestar paid £5.7M fees + £900K dividend." }
+      ],
       "deepResearch": {
         "verifiedFields": [
           "weeklyRunningCost",
-          "recoupedDate"
+          "recoupedDate",
+          "recoupedWeeks",
+          "capitalization"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: ~$400K weekly. Recouped June 2002 (8 months). ABBA members were also lead producers."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3 + Feb 2026 analysis: Weekly nut ~$550K ($500-600K range confirmed). Recouped late May 2002 (27.5 weeks). Universal Music funded ~50% of cap. All 3 ABBA members invested (Ulvaeus, Andersson, Lyngstad). Benny/Björn were both songwriters AND lead producers."
       }
     },
     "queen-of-versailles": {
@@ -1043,6 +1082,9 @@
       "recoupedDate": null,
       "recoupedWeeks": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": [0, 10],
+      "estimatedRecoupmentSource": "Deadline: 'among this season's largest investment losses.' Grossed below nut nearly every week.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Closed Dec 21, 2025 after weak ticket sales (moved up from Jan 4). $22.5M capitalization (NYT). Weekly nut ~$850K but grosses ~$700-800K at 75-81% capacity. Stephen Schwartz score. Kristin Chenoweth star vehicle couldn't save production. Deadline (Dec 9, 2025): 'among this season's largest investment losses.'",
       "isEstimate": {
         "weeklyRunningCost": true
@@ -1091,24 +1133,26 @@
     },
     "art-2025": {
       "designation": "Easy Winner",
-      "capitalization": 6900000,
-      "capitalizationSource": "Estimated from trade press reports",
-      "weeklyRunningCost": 400000,
+      "capitalization": 6750000,
+      "capitalizationSource": "Broadway News confirmed $6.75M. SEC 'White Canvas Broadway LP' shows $6.9M max offering.",
+      "weeklyRunningCost": 750000,
+      "weeklyRunningCostSource": "GPT DR Batch 3: ~$725-750K — higher than expected for 3-actor play due to star salaries (Cannavale, Corden, NPH combined ~$350K/week). Broadway Journal confirmed 'running costs north of $700K.'",
       "recouped": true,
       "recoupedDate": "2025-12",
-      "recoupedWeeks": null,
+      "recoupedWeeks": 13,
       "recoupedSource": "Producers announcement (Dec 14, 2025)",
-      "notes": "Bobby Cannavale, James Corden, Jesse Tyler Harris revival. $6.9M capitalization. Recouped in final week of 16-week run (Dec 14, 2025). Averaged $1.2-1.8M grosses at ~99% capacity. Weekly cost ~$400K.",
-      "costMethodology": "industry-estimate",
+      "notes": "Bobby Cannavale, James Corden, Neil Patrick Harris revival. $6.75M cap (Broadway News confirmed, SEC 'White Canvas Broadway LP' $6.9M). Recouped week ending Dec 14, 2025 (~13 weeks into 16-week run). Weekly nut ~$725-750K — surprisingly high for 3-actor play due to star salaries (~$350K/week combined) and premium Broadway Journal ad spend. Averaged $1.2-1.8M gross at ~99% capacity. Matthew Warchus directed (also directed original 1996 production). Eligible for $3M NY tax credit.",
+      "costMethodology": "deep-research",
       "deepResearch": {
         "verifiedFields": [
           "capitalization",
           "recoupedDate",
-          "weeklyRunningCost"
+          "weeklyRunningCost",
+          "recoupedWeeks"
         ],
         "verifiedDate": "2026-02-03",
-        "verifiedBy": "manual",
-        "notes": "GPT Deep Research: $6.9M cap (corrected from $6M). Recouped Dec 14, 2025. ~$400K weekly. Cannavale/Corden/Harris."
+        "verifiedBy": "deep-research",
+        "notes": "GPT DR Batch 3: Cap $6.75M (Broadway News), SEC 'White Canvas Broadway LP' $6.9M max. Weekly nut $725-750K (MAJOR correction from $400K — star salaries ~$350K/week). Recouped ~13 weeks."
       }
     },
     "othello-2025": {
@@ -1190,6 +1234,9 @@
       "weeklyRunningCost": 659000,
       "costMethodology": "trade-reported",
       "recouped": false,
+      "estimatedRecoupmentPct": [40, 60],
+      "estimatedRecoupmentSource": "Inferred: $6.5M cap, ~20-week run, $659K nut. Tony win drove strong late grosses. $3M tax credit offset ~46% of cap.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Ben Platt-led revival of the 1998 Jason Robert Brown musical. $6.5M capitalization with $5.7M production costs. Weekly running cost ~$659K (Broadway Journal). Won Tony for Best Revival of a Musical 2023. Limited run March-August 2023 (~20 weeks). Received $3M NY state theater production tax credit, partially offsetting losses.",
       "deepResearch": {
         "verifiedFields": [
@@ -1209,6 +1256,9 @@
       "weeklyRunningCost": 800000,
       "costMethodology": "reddit-standard",
       "recouped": false,
+      "estimatedRecoupmentPct": [0, 10],
+      "estimatedRecoupmentSource": "Inferred: 84 performances, Tony shutout, early closing. Near-total loss.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Based on the NBC TV series. SEC Form D shows $23M offering with ~$20M raised. Weekly operating costs ~$800K (per Reddit grosses analysis). Closed June 22, 2025 after Tony shutout — ran 32 previews and 84 performances at the Imperial Theatre. One of three $20M+ musicals that flopped in 2024-2025 season (alongside Boop! and Tammy Faye).",
       "deepResearch": {
         "verifiedFields": [
@@ -1343,6 +1393,9 @@
       "weeklyRunningCostSource": "Reddit Grosses Analysis post-mortem (u/Boring_Waltz_9545, Dec 8, 2024)",
       "costMethodology": "reddit-standard",
       "recouped": false,
+      "estimatedRecoupmentPct": [30, 50],
+      "estimatedRecoupmentSource": "Reddit post-mortem: operating loss $(1.0M)-$(285K) over run. Gross roughly matched nut most weeks.",
+      "estimatedRecoupmentDate": "2026-02-03",
       "notes": "Sutton Foster-led Encores! transfer to Hudson Theatre. $8M capitalization (unconfirmed industry estimate). Reddit post-mortem: $650-$700K/week operating cost, $760K avg gross, 92% capacity, $110 ATP. Gross Less-Fees: $673K. 128 performances + 13 previews. Estimated operating loss $(1.0M)-$(285K). Did not come close to recouping. NYT Critics' Pick.",
       "isEstimate": {
         "weeklyRunningCost": true

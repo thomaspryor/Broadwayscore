@@ -32,7 +32,8 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
   const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
 
   // Pattern to match "Critic Name, Outlet:" followed by review text
-  const pattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
+  // Name pattern supports apostrophes (D'Addario, O'Brien) and hyphens (Jean-Paul)
+  const pattern = /([A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
 
   let match;
   const seen = new Set();

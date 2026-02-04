@@ -5,8 +5,8 @@
   "criticName": "Ben Brantley",
   "url": "https://www.nytimes.com/2007/12/10/theater/reviews/10dead.html",
   "publishDate": "December 10, 2007",
-  "fullText": "Mr. Burnett has created a show that feels both antique and contemporary, a comedy that winks at its own creakiness while celebrating the pleasure of old-fashioned theatrical artifice.",
-  "isFullReview": false,
+  "fullText": "Norbert Leo Butz, far left, plays a painter in France in Mark Twains Is He Dead? Twains script has been adapted by David Ives.\n\nWhat might have been a wheeze turns out to be a giggle.\n\nNorbert Leo Butz, right, and Michael McGrath in the Mark Twain play \"Is He Dead?\"\n\n“Is He Dead?,” a previously unproduced play by the long-dead Mark Twain, has at last made its Broadway debut. And for something that’s basically been lying immobile for more than a century, gathering dust in archives, it has a remarkably sprightly step.\n\nMost of the credit, I hasten to add, does not belong to the immortal author of “The Adventures of Huckleberry Finn,” whose many literary crowns did not include that of laurel-wreathed dramatist. Twain’s trenchant satirist’s eye is just barely discernible in this silly, formulaic farce, written in 1898, about a starving French painter forced to don women’s clothes.\n\nBut with the right doctors, even a long-buried dinosaur can be made to dance. “Is He Dead?,” which opened last night at the Lyceum Theater, benefits mightily from a top-grade team of resurrection artists. They include the director Michael Blakemore, the playwright David Ives (who adapted Twain’s script) and an infectiously happy cast, led by the wondrous Norbert Leo Butz, that serves a master class in making a meal out of a profiterole.\n\nReclaimed from the mothballs by the scholar Shelley Fisher Fishkin, who came upon the manuscript five years ago in the Mark Twain Papers at the University of California, Berkeley, “Is He Dead?” would likely generate only a few chuckles (and many a cry of “Oh, brother”) in the reading. Its plot suggests an ungainly younger cousin to “Charley’s Aunt,” Brandon Thomas’s popular cross-dressing comedy from 1892.\n\nSet in and near Paris in 1846, “Is He Dead?” presents a lineup of cultural and farcical stereotypes, seen with the wide-eyed-with-a-wink gaze that Twain brought to “The Innocents Abroad,” the travel memoir that made him solvent. At the show’s center is Jean-François Millet (no, the name is not a coincidence), a brilliant but unrecognized painter played by Mr. Butz. Since Jean-François can’t sell a landscape to save his life (literally), his inner circle of bohemian friends  an ethnic stew made up of an American (Michael McGrath), a German (Tom Alan Robbins) and an Irishman (Jeremy Bobb)  convince him that faking his death is just the ticket for raising his stock. So Jean-François disappears from life and re-emerges as his imaginary twin sister, a widow both mad and madcap. The expected complications ensue.\n\nYou’re groaning, right? I’ll admit I wasn’t all that happy for the play’s first 10 minutes or so, despite the obvious polish of the cast and the physical production, which includes exaggerated postcard-pretty sets (Peter J. Davison) and costumes (Martin Pakledinaz), as well as a slew of reproductions of the real Millet’s paintings.\n\nBut once Mr. Butz puts on a pink dress, this Tony-winning comic actor (“Dirty Rotten Scoundrels”), who had been rather flavorless in his opening scene, shows the true comic genius of which he is made. From that moment the whole production feels as if it’s been pumped through with nitrous oxide. Jokes you would swear you would never laugh at suddenly seem funny.\n\nMr. Blakemore, the British director who has brought such theatrical élan to the complexity of Michael Frayn (“Copenhagen,” “Democracy”), here exhibits the same comic assurance he demonstrated in the 1983 Broadway premiere of Mr. Frayn’s master farce “Noises Off.” He keeps the familiar machinery running smoothly without ever letting it shift into automatic pilot. And he understands the difference between knowing exaggeration and crowd-pandering vulgarity.\n\nSo does his cast, which offers a spectrum of witty variations on theatrical fossils. These include (in addition to the national cartoons of Mr. McGrath, Mr. Robbins and Mr. Bobb), John McMartin’s frisky take on the elderly gentleman lecher, Jenn Gambatese’s and Bridget Regan’s versions of the palpitating ingénues, and Patricia Conolly’s and Marylouise Burke’s sweet, stylish turns as a pair of fluttering old maids.\n\nByron Jennings appears to be having the time of his life as a sleek, melodramatic villain. (His greyhound carriage and vulpine face have seldom been used to such piquant visual advantage.) And David Pittu plays too many people to count with a consummate blend of precision and enthusiasm that is this production’s hallmark.\n\nRoom for Debate asks whether shorefront homeowners should have to open their land to all comers.\n\nNew York City's top public schools must become more diverse.",
+  "isFullReview": true,
   "dtliExcerpt": "Mr. Burnett has created a show that feels both antique and contemporary, a comedy that winks at its own creakiness while celebrating the pleasure of old-fashioned theatrical artifice.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Burnett has created a show that feels both antique and contemporary, a comedy that winks at its own creakiness while celebrating the pleasure of old-fashioned theatrical artifice.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 76,
@@ -71,5 +71,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 750,
+  "archivePath": "data/archives/reviews/is-he-dead-2007/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:28:32.430Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150605044504",
+  "archiveOrgUrl": "http://web.archive.org/web/20150605044504/http://www.nytimes.com/2007/12/10/theater/reviews/10dead.html",
+  "wordCount": 750,
+  "tierReason": "Full review text"
 }

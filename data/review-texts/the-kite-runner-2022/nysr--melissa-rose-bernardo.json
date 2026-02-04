@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spangler's absorbing adaptation... moves things along rather well on a smartly sparse set.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for the adaptation, performances, and direction. While noting some structural issues with pacing and narration, the overall assessment is positive with terms like 'absorbing,' 'exceptional,' and 'moves things along rather well.' | GPT-4o: The review is generally positive, highlighting the faithful adaptation and effective direction. However, it notes some drawbacks, such as the overwhelming amount of storytelling and Amir's stiff narration. The original 4/5 stars rating aligns with a strong positive recommendation with some reservations. | Gemini: The review is mostly positive, noting the absorbing adaptation and good direction, but also mentions that the show gets dragged down by all the stories and Amir's constant narration. The 4/5 star rating also indicates a positive recommendation. | Kimi: The critic awards 4/5 stars and praises the 'absorbing adaptation,' exceptional performances (particularly Faran Tahir and Eric Sirakian), and effective direction, though notes the production is occasionally dragged down by dense narration and episodic storytelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:11:15.590Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

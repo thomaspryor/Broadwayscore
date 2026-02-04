@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a show that manages to be both intimate and theatrical, a rare combination that makes 'Once' one of the most satisfying musicals to reach Broadway in quite some time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The result is a show that manages to be both intimate and theatrical, a rare combination that makes 'Once' one of the most satisfying musicals to reach Broadway in quite some time.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a show that manages to be both intimate and theatrical, a rare combination that makes 'Once' one of the most satisfying musicals to reach Broadway in quite some time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'one of the most satisfying musicals' in recent memory, with appreciation for its rare theatrical qualities. Clear enthusiastic recommendation without reservations. | GPT-4o: The review uses strong positive language, describing the show as 'one of the most satisfying musicals' with a 'rare combination' of qualities, indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language, calling the show 'one of the most satisfying musicals to reach Broadway in quite some time,' indicating a strong recommendation. | Kimi: The critic offers unqualified praise, calling the show 'one of the most satisfying musicals to reach Broadway in quite some time,' indicating a strong recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:39:04.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

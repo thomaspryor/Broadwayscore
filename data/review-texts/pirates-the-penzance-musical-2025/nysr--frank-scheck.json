@@ -19,5 +19,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2025/04/24/pirates-the-penzance-musical-bright-and-breezy-in-the-big-easy/",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Providing just around two hours of silly joy, Pirates! The Penzance Musical would make Gilbert and Sullivan proud.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('silly joy', 'would make Gilbert and Sullivan proud', 'pleasure it's providing'). Single excerpt warning suggests this represents the positive verdict, scoring in upper Positive range. | GPT-4o: The 4/5 star rating indicates a strong positive review. The excerpt praises the show for providing 'silly joy' and suggests that it honors its source material while delighting audiences. The lack of full text and single excerpt warning suggest using the upper end of the Positive range. | Gemini: The review excerpt indicates a positive experience, describing the show as providing \"silly joy\" and suggesting Gilbert and Sullivan would approve. Given the single excerpt, I've placed it at the higher end of the positive range. | Kimi: The reviewer praises the show for delivering 'silly joy' and believes the original creators would approve of the pleasure it provides, indicating a solid recommendation despite acknowledging some changes might not appeal to purists.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:46:53.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes this production of 'Sylvia' such a treat is the inspired comic chemistry between Broderick and Ashford, who transforms what could have been a one-note gag into something genuinely endearing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What makes this production of 'Sylvia' such a treat is the inspired comic chemistry between Broderick and Ashford, who transforms what could have been a one-note gag into something genuinely endearing.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes this production of 'Sylvia' such a treat is the inspired comic chemistry between Broderick and Ashford",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('treat', 'inspired') praising the lead performances, but this appears to be a brief excerpt with limited context for a fuller assessment. | GPT-4o: The review highlights the 'inspired comic chemistry' and describes the production as 'a treat', indicating strong praise and a clear recommendation. | Gemini: The review highlights the 'inspired comic chemistry' as a treat, indicating a positive experience and recommendation. | Kimi: The critic describes the production as 'such a treat' with 'inspired comic chemistry' and calls it 'genuinely endearing,' indicating a solid positive recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:59:03.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

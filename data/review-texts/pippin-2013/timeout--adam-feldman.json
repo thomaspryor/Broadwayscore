@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This circus-inspired revival of the 1972 musical transforms Stephen Schwartz's earnest coming-of-age story into something far more thrilling and strange.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "transforms Stephen Schwartz's earnest coming-of-age story into something far more thrilling and strange.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating places this in positive territory. The word 'transforms' with 'thrilling' suggests clear improvement and recommendation, though the brief excerpt limits full context. | GPT-4o: The original rating of 80 places it firmly in the Positive bucket. The review text describes the revival as 'thrilling and strange,' suggesting a positive transformation of the original material. | Gemini: The review indicates a positive transformation of the original musical, making it more thrilling and strange. Given the original rating of 80, a score in the positive range is appropriate. | Kimi: The critic praises the revival as 'thrilling' and an improvement over the original material. The provided rating of 80 falls squarely in the Positive range, indicating a solid recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:57:19.688Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

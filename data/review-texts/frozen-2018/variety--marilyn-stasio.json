@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2018/legit/reviews/frozen-review-broadway-musical-1202728053/",
   "publishDate": "March 22, 2018",
-  "fullText": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
   "originalScore": null,
@@ -16,12 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway musical 'Frozen' is a spectacular production that captures the magic of the Disney animated film while adding theatrical depth and emotional resonance to the beloved story.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/up-here-review-musical-1201566973/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 168,
+  "archivePath": "data/archives/reviews/frozen-2018/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:45:31.187Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 168 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Mar 15, 2018 1:41pm PT \n\n \n\n \n \n \n\n \n\n \n Social-Media Stars the Dobre Brothers Sign With CAA\n\nSocial-media star siblings the Dobre Brothers have signed with CAA for representation in all areas.\n\nThe four brothers — Lucas, Marcus, Cyrus and Darius — have gained a global following with their backflips, dance moves, comedy, stunts and original music (including songs “You Know You Lit” and “Bumpin'”). The Dobre Brothers are sons of Romanian gymnast and Olympic medalist Aurelia Dobre.\n\nCAA will work to create opportunities for the Dobre Brothers in all areas, including TV, motion pictures, touring, digital distribution and partnerships, endorsements, personal appearances, and publishing.\n\nThe Dobre twins have appeared on Disney Channel’s “Bizaardvark” and last fall the four brothers appeared at the WE Day event at the Theater at Madison Square Garden in New York City to promote AT&T’s Later Haters anti-bullying initiative.\n\nThe Dobre Brothers continue to be managed by Brian Sokolik of Fullscreen (which signed the foursome last year) and attorneys Ryan Pastorek and Melissa Fox of Hansen Jacobson."
 }

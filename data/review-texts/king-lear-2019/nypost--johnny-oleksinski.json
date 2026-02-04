@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jackson's Lear is a towering achievement that confirms her status as one of the greatest living actresses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson's Lear is a towering achievement that confirms her status as one of the greatest living actresses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlative language ('towering achievement', 'greatest living actresses') indicates enthusiastic recommendation, but single excerpt warning requires caution about overall verdict representation. | GPT-4o: The excerpt provides strong praise for Jackson's performance, calling it a 'towering achievement.' However, due to the single excerpt warning, the confidence is low as the full review sentiment is unclear. | Gemini: The excerpt contains very high praise for the lead performance, suggesting a strong positive recommendation. Given it's a single excerpt, confidence is low, but the strength of the praise pushes the score to the higher end of the positive range. | Kimi: The single excerpt contains superlative praise for the lead performance using phrases like 'towering achievement' and 'greatest living actresses,' indicating a strong positive recommendation, though the limited context prevents a higher confidence rating. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:16:39.157Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous, life-affirming revival of the 2005 musical proves that some shows deserve a second chance to bloom. The current production is a triumph that honors Alice Walker's source novel and Steven Spielberg's Oscar-nominated film.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous, life-affirming revival of the 2005 musical proves that some shows deserve a second chance to bloom.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses strong positive language like 'gorgeous,' 'life-affirming,' and 'triumph.' The 80/100 rating confirms this is solidly in Rave territory, warranting a score in the upper 80s range. | GPT-4o: The review uses strong positive language like 'gorgeous', 'life-affirming', and 'triumph', indicating a highly enthusiastic recommendation. The critic's original rating of 80 supports a high score within the Rave bucket. | Gemini: The review uses strong positive language like \"gorgeous\" and \"life-affirming\" and calls the production a \"triumph.\" Given the critic's rating of 80, this is a strong positive review. | Kimi: The critic's own rating of 80 places the review squarely in the Positive bucket (70-84). While the excerpt contains enthusiastic language ('triumph', 'gorgeous'), the extreme brevity of the text warrants low confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:04:07.282Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

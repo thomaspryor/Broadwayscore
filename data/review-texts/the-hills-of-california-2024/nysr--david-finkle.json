@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The answer involves a must-see trip to The Hills of California, instantly an early entry into the best-play-of-the-season sweepstakes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with enthusiastic language throughout: 'exceptional works,' 'wise depiction,' 'must-see,' and calling it an 'early entry into the best-play-of-the-season sweepstakes.' Despite truncation warning, the review concludes with clear superlative praise. | GPT-4o: The review is overwhelmingly positive, highlighting exceptional performances, direction, and writing. The critic's 5/5 stars and the phrase 'must-see' strongly indicate a rave review, despite the text being truncated. | Gemini: The review is overwhelmingly positive, calling the play exceptional and a must-see, with strong praise for the performances and Butterworth's writing. The 5/5 star rating reinforces this assessment. | Kimi: Despite the truncated text warning, the available content carries a 5/5 star rating with unambiguous superlatives ('exceptional,' 'must-see') and declares the show an instant 'best-play-of-the-season' contender, offering enthusiastic praise for direction, writing, and performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:09:58.091Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

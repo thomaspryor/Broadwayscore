@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rapp is to be thanked for an indisputably probing play that pays homage to the still potent aspiration to greatness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout. Critic calls it a 'probing play' with 'subtly deep rewards,' praises Parker's performance as 'lovely' and the direction as having 'alluring ease.' The literary meta-quality is presented as a strength, not a flaw. | GPT-4o: The review praises the play's meta-literary quality and performances, particularly Mary-Louise Parker's. The 4/5 star rating indicates a positive recommendation, though the truncated text suggests caution in fully assessing the final verdict. | Gemini: The review is positive, highlighting the play's literary quality, Parker's performance, and Rapp's homage to literature. The 4/5 star rating supports a positive score, but the truncated text lowers confidence. | Kimi: The 4/5 star rating and consistent praise for the meta-literary structure, Parker's 'wonderful' performance, and the production's 'alluring ease' indicate a strong recommendation, though the truncated text warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:21:05.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

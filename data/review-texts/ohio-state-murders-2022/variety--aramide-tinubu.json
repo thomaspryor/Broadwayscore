@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald's performance is nothing short of extraordinary, as she seamlessly transitions between the elder and younger Suzanne, capturing both the wisdom of age and the vulnerability of youth.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T21:32:01.527Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt praising a performance, not a complete review with an evaluative verdict about the show; openai: This text is a single sentence praising a performance, not a complete review of the show.",
+  "promptVersion": "5.2.0"
 }

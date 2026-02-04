@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Pryce and Ms. Atkins give performances of such devastating honesty that you may well find yourself looking away from the stage, not because what you're seeing isn't believable but because it's almost too believable.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (35 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-03T20:09:22.909Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to determine an overall recommendation; openai: The review text mentions performances by Mr. Pryce and Ms. Atkins, which does not match the current Broadway production being evaluated.",
+  "promptVersion": "5.2.0"
 }

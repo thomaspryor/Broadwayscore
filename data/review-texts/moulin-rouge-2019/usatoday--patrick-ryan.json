@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Imagine Lady Gaga's \"Bad Romance,\" but as a steamy Spanish tango. Now imagine that's been mashed up with Britney Spears' \"Toxic\" and The White Stripes' \"Seven Nation Army,\" and vigorously performed by a group of hot-blooded bohemians in early 1900s Paris....",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "vigorously performed by a group of hot-blooded bohemians in early 1900s Paris",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses vivid, energetic language ('steamy', 'hot-blooded', 'vigorously performed') suggesting enthusiasm for the production. However, this is only a single curated excerpt from a larger review, so confidence is low. | GPT-4o: The excerpt describes an exciting and dynamic performance, suggesting a strong positive impression. However, with only one curated quote available, confidence is low. | Gemini: The excerpt describes the show in an intriguing and positive light, comparing it to popular songs. Due to the limited text, confidence is low, but the description suggests a positive experience. | Kimi: The excerpt uses enthusiastic, evocative descriptors ('steamy', 'vigorously performed', 'hot-blooded') to paint an appealing picture of the production's energy and style. Following single-excerpt protocols for clearly positive quotes, this warrants the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:29:18.191Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This handsome Broadway revival of Edna Ferber and George S. Kaufman's 1927 backstage comedy about a theatrical dynasty gets by on old-fashioned star power and polished craft, even if the material shows its age.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This handsome Broadway revival of Edna Ferber and George S. Kaufman's 1927 backstage comedy about a theatrical dynasty gets by on old-fashioned star power and polished craft, even if the material shows its age.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets by on old-fashioned star power and polished craft, even if the material shows its age",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive elements (star power, polished craft) but qualifies this with significant reservations about dated material. 'Gets by' suggests adequacy rather than enthusiasm. | GPT-4o: The review acknowledges the production's strengths in star power and craft but notes that the material feels dated. This suggests a mixed recommendation. | Gemini: The review acknowledges positive aspects like star power and craft but also notes that the material is dated, resulting in a mixed assessment. | Kimi: The critic genuinely praises the production's star power and polished craftsmanship, offering a recommendation despite acknowledging that the source material feels dated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:20:22.581Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

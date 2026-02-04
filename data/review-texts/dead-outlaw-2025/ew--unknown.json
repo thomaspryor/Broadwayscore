@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eccentric, silly, and moving, the tale of Elmer McCurdy is one that truly needs to be seen to be believed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language with 'thrilling' and 'truly needs to be seen to be believed' suggesting enthusiastic recommendation. Single excerpt warning means this could be cherry-picked, but the tone is consistently praise-heavy with superlatives. | GPT-4o: The excerpt praises the originality and uniqueness of the production, describing it as 'thrilling' and 'one-of-a-kind,' suggesting a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The review excerpt expresses strong positive sentiment, calling the production \"thrilling\" and stating it \"truly needs to be seen.\" Given it's a single excerpt, I'm placing it in the upper end of the Positive bucket. | Kimi: The excerpt offers strong endorsement calling the show 'thrilling,' 'one-of-a-kind,' and insisting it 'needs to be seen,' which indicates clear enthusiasm. However, due to the single-excerpt limitation, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:51:35.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

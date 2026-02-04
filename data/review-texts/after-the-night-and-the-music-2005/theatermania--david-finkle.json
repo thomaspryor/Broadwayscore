@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is nothing if not a labor of love, but love alone doesn't make for compelling theater when the material being loved isn't intrinsically theatrical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is nothing if not a labor of love, but love alone doesn't make for compelling theater when the material being loved isn't intrinsically theatrical.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "love alone doesn't make for compelling theater when the material being loved isn't intrinsically theatrical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges good intentions ('labor of love') but concludes the material fundamentally fails as theater. However, with only one excerpt available, the full verdict may be different. | GPT-4o: The excerpt suggests that despite the show's passionate creation, it lacks the intrinsic qualities needed for compelling theater. The tone is negative, indicating a lack of recommendation. | Gemini: The excerpt indicates that the show is not compelling despite being a labor of love, suggesting a negative assessment. Given that this is the only excerpt, confidence is low. | Kimi: While acknowledging the creators' evident passion and care, the critic delivers a definitive negative verdict that the material fundamentally fails to be compelling or theatrical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:39:50.313Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 47,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

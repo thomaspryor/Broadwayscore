@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2012/12/09/theater/reviews/glengarry-glen-ross-on-broadway-with-al-pacino.html",
+  "url": "https://www.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.html",
   "publishDate": "December 8, 2012",
-  "fullText": "Mr. Pacino gives a performance of such intensity that it seems to scorch the air around him, turning Shelly Levene into a desperate man whose very desperation becomes a kind of poetry.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.htmlShare full articleAdvertisement\n\nThe fight has gone out of the once-robust boys from “Glengarry Glen Ross,” David Mamet’s 1984 Pulitzer Prize-winning drama of sharks in a small pond. Sure, they still curse and rant and beat up on the furniture in the production that formally opened at the Gerald Schoenfeld Theater on Saturday night, after an indecently extended preview period.\n\nThese hack real estate salesmen also slam doors hard enough to make walls tremble. They mug their way through their foul-mouthed monologues in a style that begs for (and receives) applause. The eldest of their tribe, and this production’s pacesetter, is portrayed by a grizzled Al Pacino with the exaggerated pantomiming of a boozy player in a late-night charades game.\n\nYet somehow their hearts just don’t seem to be into the business of scamming clients and stabbing one another in the back. It’s as if all the competitive fierceness had been sucked from them by some cosmic super-vacuum cleaner — a product that these forlorn hustlers probably wouldn’t be able to persuade anyone to buy. As salesmen, they’re as worn down and wrung out as Willy Loman at twilight.\n\nThat sense of defeat has always lurked beneath the speeding dialogue of “Glengarry.” But in Daniel Sullivan’s deflated production, which also stars Bobby Cannavale as the hotshot Ricky Roma, subtext has been dragged to the surface and beached like a rusty submarine. This is a “Glengarry” for a recessionary age. When a character in the first act mutters, “It’s cold out there now, John. Money is tight,” the lines glare in a way they didn’t in the mid-1980s.\n\nWhether comic or bitter, dialogue is often allowed to resonate in empty air. Unlike any previous “Glengarry” I’ve seen — including the 1992 movie (which starred Mr. Pacino in the role played here by Mr. Cannavale) — this one moves slowly enough to keep you aware, at all times, of the hollowness of its characters’ talk. You may also find yourself newly conscious of plot contrivances and improbabilities.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "Mr. Pacino gives a performance of such intensity that it seems to scorch the air around him, turning Shelly Levene into a desperate man whose very desperation becomes a kind of poetry.",
   "originalScore": null,
   "assignedScore": 82,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Pacino gives a performance of such intensity that it seems to scorch the air around him, turning Shelly Levene into a desperate man whose very desperation becomes a kind of poetry.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
     "score": 82,
@@ -71,5 +71,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2012/12/09/theater/reviews/glengarry-glen-ross-on-broadway-with-al-pacino.html",
+  "urlDiscoveredAt": "2026-02-03T23:51:45.087Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 359,
+  "archivePath": "data/archives/reviews/glengarry-glen-ross-2012/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:51:45.091Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 359,
+  "tierReason": "Full review text"
 }

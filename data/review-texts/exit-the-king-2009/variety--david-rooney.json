@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2009/legit/reviews/exit-the-king-1200472357/",
   "publishDate": "March 26, 2009",
-  "fullText": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
   "originalScore": null,
   "assignedScore": 93,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Geoffrey Rush delivers a towering performance as the dying monarch in Ionesco's absurdist masterpiece, making this Broadway revival an essential theatrical experience.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 93,
@@ -71,5 +71,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 93,
+  "textWordCount": 455,
+  "archivePath": "data/archives/reviews/exit-the-king-2009/variety--david-rooney_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:34:30.496Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "In a short private conversation prior to the start of the acoustic song-swap led by Rachel Fuller, Pete Townshend said one reason the Who has only slightly changed its setlists in the last two years is to limit the number of mistakes.\n\nIn a short private conversation prior to the start of the acoustic song-swap led by Rachel Fuller, Pete Townshend said one reason the Who has only slightly changed its setlists in the last two years is to limit the number of mistakes. That’s hardly a concern at the charming In the Attic shows at which younger musicians play their own songs and partner with Townshend, prompting the Who leader to dust off pages of his catalog. Friday, the perfs were unfeigned and enticing, even when the material had no connection with the star.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'White Lotus' Season 4 Casts Steve Coogan, Caleb Jonte Edwards \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Damon Lindelof Sets Limited Series 'The Chain' at HBO Under New Overall Deal\n\nTownshend and his girlfriend Fuller staged the appearance on his day off from the current Who tour, which played Nokia Theater Saturday and Sunday, to promote a March 3 release of an “In the Attic” CD/DVD at Best Buy. Show also raised money for the Recording Academy charity MusiCares.\n\nAs much as the distinctive guitar playing of Townshend was on display, the group perfs had a considerable perkiness. M. Ward, Zoey Deschanel and Townshend were supple and giddy on “Blue Red and Grey”; Jakob Dylan and Townshend swapped verses on “The Kids Are Alright,” sounding like grandparents giving a thumbs up to the toddlers; and E of the Eels, Ben Gibbard of Death Cab for Cutie and the Postal Service, and Townshend blended divinely on a spirited take on “My Love Opened the Door.”\n\nGibbard wheeled out the evening’s most obscure choice, “Mary Anne With the Shaky Hand,” from “The Who Sell Out,” during which Townshend repeatedly needed to check the lyrics. They laughed their way through the girls’ names in the song before Townshend dove solo into his own hits: “Acid Queen”; “Drowned”; “Won’t Get Fooled Again,” which he figures is less applicable to the U.S. now that Barack Obama has been elected; and, with the entire cast, “I’m One.”\n\nThe guests are from a generation or two behind Townshend, and yet each brought a sense of world-weariness to the table. She & Him, Ward and Deschanel’s band, conjured an image of the Everlys were they brother and sister; E darkened Bob Dylan’s “Girl From North Country,” turning it remorseful; Dylan’s son Jakob demonstrated a kinship with father on “Evil Is Alive and Well,” a blues-oriented piece rooted in Son House. Gibbard was a bright light compared with the others, singing about love’s possibilities."
 }

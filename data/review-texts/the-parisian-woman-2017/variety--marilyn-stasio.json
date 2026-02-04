@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Uma Thurman brings her movie-star presence to Broadway in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant costume party than urgent theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production feels more like an elegant costume party than urgent theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Brief excerpt acknowledges Thurman's star power but criticizes the production as lacking theatrical urgency. Too short to confidently assess full critical verdict. | GPT-4o: The review acknowledges Uma Thurman's presence but criticizes the production for lacking urgency, suggesting it is more style than substance. This indicates a mixed reception. | Gemini: The review acknowledges Thurman's presence but ultimately finds the production lacking urgency, suggesting a mixed or lukewarm reception. | Kimi: The critic acknowledges Thurman's star power as a positive element, but the 'but' pivot emphasizes that the production itself lacks theatrical substance, comparing it unfavorably to an 'elegant costume party' rather than 'urgent theater.' Without a clear recommendation and with the brief length suggesting this may be an excerpt, the assessment falls in the mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:17:14.193Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

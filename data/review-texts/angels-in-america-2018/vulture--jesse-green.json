@@ -1,0 +1,77 @@
+{
+  "showId": "angels-in-america-2018",
+  "outletId": "vulture",
+  "outlet": "Vulture",
+  "criticName": "Jesse Green",
+  "url": "https://www.vulture.com/2018/03/theater-review-angels-in-america-on-broadway.html",
+  "publishDate": "March 26, 2018",
+  "fullText": "This Angels in America is a triumph not just of revival but of renewal, making Kushner's already great play feel both timeless and urgently contemporary.",
+  "isFullReview": false,
+  "dtliExcerpt": "This Angels in America is a triumph not just of revival but of renewal, making Kushner's already great play feel both timeless and urgently contemporary.",
+  "originalScore": null,
+  "assignedScore": 93,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This Angels in America is a triumph not just of revival but of renewal, making Kushner's already great play feel both timeless and urgently contemporary.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (25 words)",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Angels in America is a triumph not just of revival but of renewal, making Kushner's already great play feel both timeless and urgently contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses 'triumph' with unqualified praise, calling it both 'timeless and urgently contemporary' - clear rave language with no reservations. | GPT-4o: The review uses strong superlatives like 'triumph' and emphasizes the production's success in making the play feel 'timeless and urgently contemporary,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"triumph\" and \"great play\" to describe the production, indicating a rave review. | Kimi: The critic employs unqualified superlatives ('triumph', 'great') and praises the production as both timeless and urgently contemporary with no reservations mentioned, indicating the highest level of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:58:44.047Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "truncated"
+}

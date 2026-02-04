@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Prince of Broadway is a pleasant enough trip through the catalog of one of musical theater's most important figures, but it feels more like a tribute concert than a fully realized theatrical experience.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prince of Broadway is a pleasant enough trip through the catalog of one of musical theater's most important figures, but it feels more like a tribute concert than a fully realized theatrical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds it 'pleasant enough' but criticizes it as feeling incomplete as theater. The 60 rating confirms mixed territory - acknowledging positives while expressing significant reservations about the theatrical experience. | GPT-4o: The review describes the show as 'pleasant' but lacking in depth, aligning with a mixed verdict. The original rating of 60 supports this classification. | Gemini: The review is mixed, describing the show as \"pleasant enough\" but not a \"fully realized theatrical experience.\" The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own 60 rating and lukewarm assessment—calling the show 'pleasant enough' but criticizing it as more of a tribute concert than fully realized theater—places this squarely in the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:47:23.896Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

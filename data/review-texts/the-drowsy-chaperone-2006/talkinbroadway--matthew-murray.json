@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Drowsy Chaperone is a show that loves the theatre so much, it can't help but poke fun at it. And in doing so, it creates something that's both a loving tribute to and a gentle satire of the American musical theatre of the 1920s.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The Drowsy Chaperone is a show that loves the theatre so much, it can't help but poke fun at it. And in doing so, it creates something that's both a loving tribute to and a gentle satire of the American musical theatre of the 1920s.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (45 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it creates something that's both a loving tribute to and a gentle satire of the American musical theatre",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive language describing the show as a 'loving tribute' that successfully achieves its goals, though the excerpt is brief and may be truncated. | Gemini: The review describes the show as a \"loving tribute\" and \"gentle satire\", indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Brief excerpt offers warm praise for the show's successful blend of tribute and satire, clearly indicating a positive recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:06:49.151Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

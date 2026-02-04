@@ -3,20 +3,75 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Jesse Green",
-  "url": "https://www.nytimes.com/2022/04/04/theater/paradise-square-review.html",
+  "url": "https://www.nytimes.com/2022/04/03/theater/paradise-square-review.html",
   "publishDate": "April 4, 2022",
-  "fullText": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2022/04/03/theater/paradise-square-review.htmlShare full article51Advertisement\n\nEverything in “Paradise Square” is true. Nothing in “Paradise Square” is true.\n\nYes, history shows that in 1863, after Abraham Lincoln extended the Civil War draft to include all white men between the ages of 25 and 45 — Black men being excepted because they were not considered citizens — mobs of disgruntled Irish Americans rose up against Black people in New York, burning buildings and killing many in their path.\n\nAnd it’s true that in the impoverished, piano-shaped district of downtown Manhattan called Five Points, some Black and Irish neighbors who had been living together in relative harmony joined forces to resist the mobs.\n\nBut in hammering these large-scale events into individual stories, and in manipulating them so performers have reason to sing at top volume and dance nearly nonstop, the uplifting, star-making, overwrought new musical, which opened on Sunday at the Ethel Barrymore Theater, turns history on its head. Racism becomes an individual character flaw instead of a systemic evil; resistance, the solitary moral genius of a hero.\n\nIn this case, the hero is Nelly O’Brien, or really Joaquina Kalukango, who plays her with enough guts, stamina and vocal bravura to make you believe in a character glued together from the shavings of history. Nelly is the proprietor of a (fictional) Five Points bar and brothel called Paradise Square: “a little Eden” where, as one of the bald lyrics by Nathan Tysen and Masi Asare puts it in the title song, “We love who we want to love/with no apology.”\n\nIndeed, Nelly is married to the Irish American Willie O’Brien (Matt Bogart, suitably strapping). His sister (and Nelly’s best friend), Annie Lewis (Chilina Kennedy, absurdly fierce), is married to a Black minister, the Rev. Samuel Jacob Lewis (Nathaniel Stampley). When Annie’s nephew Owen (A.J. Shively) arrives from Ireland, around the same time that Samuel, a stationmaster on the Underground Railroad, brings Washington Henry (Sidney DuPont) to Paradise Square en route from Tennessee to Canada, the joint begins to seem like a rooming house for incendiary plot points.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be, juggling too many themes without fully developing any of them.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite a talented cast and admirable ambitions, 'Paradise Square' is a musical that doesn't quite know what it wants to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges positive elements (talented cast, good intentions) but identifies fundamental structural problems (unfocused themes, lack of development). Neither recommends nor discourages - classic mixed review. | GPT-4o: The review highlights a lack of coherent direction and underdeveloped themes, indicating a negative assessment despite acknowledging a talented cast. | Gemini: The review acknowledges talent and ambition but ultimately finds the musical unfocused and underdeveloped, suggesting a mixed or neutral stance. | Kimi: While acknowledging the cast and ambitions, the critic finds the show fundamentally incoherent and underdeveloped, delivering a clear negative verdict without any recommendation to see it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:51:37.665Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

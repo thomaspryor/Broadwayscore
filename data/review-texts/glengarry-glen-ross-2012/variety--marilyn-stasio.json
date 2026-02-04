@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/glengarry-glen-ross-1117948818/",
   "publishDate": "October 19, 2012",
-  "fullText": "Al Pacino gives a blistering performance as the desperate salesman Ricky Roma in this revival of David Mamet's Pulitzer Prize-winning play about real estate hustlers.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Al Pacino gives a blistering performance as the desperate salesman Ricky Roma in this revival of David Mamet's Pulitzer Prize-winning play about real estate hustlers.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Al Pacino gives a blistering performance as the desperate salesman Ricky Roma in this revival of David Mamet's Pulitzer Prize-winning play about real estate hustlers.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 76,
@@ -76,5 +76,54 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 291,
+  "archivePath": "data/archives/reviews/glengarry-glen-ross-2012/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:51:49.996Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 291 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Grimmer as it goes, \"Feng shui\" begins as a black comedy about a wife's hilariously extreme intolerance of her milquetoast hubby before segueing into a sacrificial-mom meller a la \"Stella Dallas.\" Set in the Chinese city of Wuhan in the '90s, Wang Jing's handsomely appointed pic won't convert nonbelievers in soap operatics, but the suitably immoderate dedication of Yan Bingyan in the lead is impressive indeed, and those with a taste for tales of mothers who give all to their brood while getting nada in return will be well rewarded. The film's snail-like pace could well prevent wide exposure, however.\n\nGrimmer as it goes, “Feng shui” begins as a black comedy about a wife’s hilariously extreme intolerance of her milquetoast hubby before segueing into a sacrificial-mom meller a la “Stella Dallas.” Set in the Chinese city of Wuhan in the ’90s, Wang Jing’s handsomely appointed pic won’t convert nonbelievers in soap operatics, but the suitably immoderate dedication of Yan Bingyan in the lead is impressive indeed, and those with a taste for tales of mothers who give all to their brood while getting nada in return will be well rewarded. The film’s snail-like pace could well prevent wide exposure, however.\n\nThough a friend of the movie’s crabby, yoke-bearing heroine, Li Baoli (Yan), suggests that bad feng shui might be to blame for her poor relations with husband Ma Xuewe (Jiao Gang), the director leaves little doubt as to why Xuewe runs into the arms of another woman. A startling midpoint twist reformulates the family’s dynamics to emphasize Baoli’s devotion to the scholastic success of her kid — who, in pure women’s picture fashion, loathes his working-stiff mom and the very yoke that feeds him. Tech credits are, ironically or not, upper-class."
 }

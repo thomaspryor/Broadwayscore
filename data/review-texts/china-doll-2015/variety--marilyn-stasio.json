@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2015/legit/reviews/china-doll-review-al-pacino-1201654631/",
   "publishDate": "November 19, 2015",
-  "fullText": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
-  "isFullReview": false,
+  "fullText": "Come back, come back, wherever you are, David Mamet. All is forgiven (even “Race”) if you will just quit jerking us around on non-plays like “China Doll” and get a grip. There’s material for maybe a one-act in this overblown character study of a power broker whose sins are about to catch up with him. But even with Al Pacino putting him through his emotional paces, this tarnished titan is going through hell in a vacuum, with no one to play off but unheard voices on the other end of the telephone.\n\nMickey Ross, the obscenely rich and powerful magnate played by Pacino, looks like a penned animal prowling the glass cage of his apartment office. (The sleek modern design is by Derek McLane, the tasteful lighting by Russell H. Champa, and the star’s killer suit by Jess Goldstein.)\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n ‘Industry’ Star Sagar Radia on Why 'F—ed Up' Rishi Needed to 'Suffer Further’ in Season 4 and That Shockingly Self-Destructive Twist \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'It's Florida, Man' Renewed for Season 3 at HBO\n\nThe man is clearly on the hunt for prey he’d like to rip to shreds with his bare teeth. Prime shredding candidates range from whichever hapless Swiss functionary changed the registration tag of his new plane to the head of the company who built this one-of-a-kind work of art. But if no one happens to be in range, he’s just as likely to tear into poor Carson (a nicely buttoned-up Christopher Denham), the earnest young factotum who’s learning how to be a ruthless businessman by studying a master at work.\n\nPacino has always gravitated toward bad guys — those Shylocks hated and shunned by the rest of society — finding the warm, beating heart that escapes everyone else’s notice. So Mickey Ross is definitely his kind of bad guy, the kind who needs someone like Pacino to lend him dignity, if not honor.\n\nRoss bares his feral nature when he’s describing his payback plans for the idiots who screwed up his careful plans to evade paying U.S. taxes on his new plane. Mamet loves writing this kind of savage dialogue and Pacino loves delivering it. But it takes the understanding of a sympathetic thesp to humanize the Shylocks of the world.\n\nIn Ross’s case, that humanizing factor is his love for the young fiancee who is stranded in Toronto while he uses every trick in the book to free his impounded plane so they can fly off to be married. Pacino may be snarling into the phone at his lawyer, but at the sound of his beloved’s voice on the other line a sweet and sappy look comes over his craggy face.\n\nDespite the interjections of Carson as he juggles phone calls and keeps track of the growing political conspiracy that seems to be swirling around his boss, this is basically a one-man show. On his own, Pacino can handle Mickey’s lightning mood changes and even charm (and con) us into admiring the kind of ruthless capitalist who makes his millions of dollars by victimizing millions of citizens.\n\nWhat he can’t do, though, is play all the characters who are integral to the plot to bring down Mickey, but aren’t actually on stage. Such a tour de force is not beyond his capabilities; but let’s face it, that’s the job of a playwright committed to writing a legitimate play, instead of phoning it in.",
+  "isFullReview": true,
   "dtliExcerpt": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
   "originalScore": null,
   "assignedScore": 54,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (38 words)",
   "llmScore": {
     "score": 54,
@@ -73,10 +73,54 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/china-doll-review-al-pacino-1201653205/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 54,
+  "textWordCount": 565,
+  "archivePath": "data/archives/reviews/china-doll-2015/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:41:58.027Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 565,
+  "tierReason": "Full review text"
 }

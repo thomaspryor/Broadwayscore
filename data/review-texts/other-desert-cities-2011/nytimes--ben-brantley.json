@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (47 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with vivid, enthusiastic language ('crackles with electricity', 'smart, savage and ultimately moving'). The critic uses compelling metaphors and finds the work both intellectually and emotionally engaging. | GPT-4o: The review uses strong positive language such as 'smart,' 'savage,' and 'ultimately moving,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"crackles with electricity,\" \"smart, savage and ultimately moving,\" indicating a strong recommendation. | Kimi: The critic employs vivid, unqualified superlatives ('crackles with electricity,' 'smart, savage and ultimately moving') to praise the work, indicating strong enthusiasm and a must-see recommendation without reservations. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:42:48.413Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

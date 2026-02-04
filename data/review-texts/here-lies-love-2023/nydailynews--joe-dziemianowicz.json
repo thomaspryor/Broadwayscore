@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Director Alex Timbers' ingenious staging puts the audience in the middle the action. Be ready to move and groove with the ace ensemble led by Jose Llana as Ferdinand Marcos, Conrad Ricamora as Ninoy and the incandescent Ruthie Ann Miles as the Philippine First Lady.",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Alex Timbers' ingenious staging puts the audience in the middle the action.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises 'ingenious staging' and 'incandescent' lead performance, indicating positive recommendation. However, confidence is low due to limited text from curated excerpt only. | GPT-4o: The excerpt praises the director's staging as 'ingenious' and highlights strong performances, suggesting a positive recommendation. However, with only one excerpt, confidence is low. | Gemini: The review excerpt uses positive language such as \"ingenious staging\" and \"ace ensemble\", indicating a positive recommendation. Given that it is a single excerpt, the confidence is low, but the positive tone suggests a score on the higher end of the positive bucket. | Kimi: The excerpt employs strongly positive evaluative language ('ingenious,' 'ace,' 'incandescent') to praise the direction and performances, indicating clear enthusiasm for the production. However, confidence is reduced to 'low' per the single-excerpt warning, as this curated quote may not fully represent the complete review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:07:15.954Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

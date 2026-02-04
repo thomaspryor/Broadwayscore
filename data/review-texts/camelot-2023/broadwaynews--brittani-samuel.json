@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"The riotous new work, with a book by Robert Horn, nabs acoustic inspiration from country music and tonal humor from shows like \"The Book of Mormon\" and \"Tootsie\" (the latter of which Horn adapted for stage) to form a delirious production that treats a seasonal crop  corn  more like the second coming.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The riotous new work nabs acoustic inspiration from country music and tonal humor to form a delirious production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt uses strong positive language ('riotous', 'delirious') and draws favorable comparisons to successful shows. However, confidence is low due to limited text from curated excerpt. | GPT-4o: The excerpt describes the production as 'riotous' and 'delirious', suggesting a highly entertaining and enthusiastic tone. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The review uses positive language such as \"riotous\" and compares the show favorably to successful productions. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers enthusiastic praise using words like 'riotous' and 'delirious' and favorably compares the show to hits like 'The Book of Mormon,' suggesting a strong recommendation. However, confidence is reduced to 'low' due to the single-excerpt warning that such quotes may be cherry-picked.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:47:46.314Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -3,19 +3,121 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2011/05/14/theater/reviews/camelot-at-vivian-beaumont-theater-review.html",
+  "url": "https://www.nytimes.com/2011/10/02/nyregion/camelot-at-the-john-w-engeman-theater-review.html",
   "publishDate": "May 13, 2011",
-  "fullText": null,
+  "fullText": "https://www.nytimes.com/2011/10/02/nyregion/camelot-at-the-john-w-engeman-theater-review.htmlShare full articleAdvertisement\n\nIn most productions of “Camelot,” the character of Mordred, the evil spawn of King Arthur and a sorceress who seduced him in his youth, is a footnote. Usually, he’s barely remembered by theatergoers and mentioned only briefly in reviews; in the movie version, he was stripped of his two big numbers. In the stage musical, he doesn’t even appear until the second act.\n\nRarely does he burst in to practically save the show — or at least inject much-needed vigor. Yet that is what Jeremy Morse does when, playing Mordred with all the venom of an angry, neglected young adult, he sows dissension among the Knights of the Round Table and drives a final wedge between Arthur and his wife, Guenevere.\n\nEnergy, let alone enchantment, is otherwise largely missing from the production of the 1960 Lerner and Loewe classic at the John W. Engeman Theater at Northport.\n\n“Camelot,” with book and lyrics by Alan Jay Lerner and music by Frederick Loewe, based on “The Once and Future King,” by T. H. White, is at the John W. Engeman Theater at Northport, 250 Main Street, through Nov. 6. Information: engemantheater.com or",
   "isFullReview": false,
   "dtliExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This 'Camelot' doesn't inspire the sort of passion that makes audiences fall in love with shows. It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "truncated",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a handsome, well-intentioned production that feels more dutiful than enchanting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive qualities ('handsome, well-intentioned') but ultimately finds it lacking in the passion and enchantment that would make it recommendable. 'Dutiful' suggests competent but uninspiring. | GPT-4o: The excerpt suggests a production that is visually appealing and well-meaning but lacks the magic to truly captivate audiences. The tone is balanced, neither strongly recommending nor discouraging attendance, which fits the Mixed bucket. | Gemini: The review describes the production as \"handsome\" and \"well-intentioned\" but lacking passion and enchantment, suggesting a mixed or lukewarm reception. | Kimi: The critic acknowledges the production is well-intentioned and handsome but finds it emotionally hollow, noting it fails to inspire passion and feels dutiful rather than magical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:47:19.253Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  },
+  "previousUrl": "https://www.nytimes.com/2011/05/14/theater/reviews/camelot-at-vivian-beaumont-theater-review.html",
+  "urlDiscoveredAt": "2026-02-03T23:16:35.127Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 193,
+  "archivePath": "data/archives/reviews/camelot-2011/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:16:35.132Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 216 (min: 300)"
+  ],
+  "wordCount": 193,
+  "tierReason": "Short text (193 words)"
 }

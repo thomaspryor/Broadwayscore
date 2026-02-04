@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The real surprise is that this 'Driving Miss Daisy' works as well as it does, and the reason why is that Ms. Tandy and Mr. Freeman have grown into their roles in ways that make their stage performances richer and more touching than what they did on screen.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The real surprise is that this 'Driving Miss Daisy' works as well as it does, and the reason why is that Ms. Tandy and Mr. Freeman have grown into their roles in ways that make their stage performances richer and more touching than what they did on screen.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The real surprise is that this 'Driving Miss Daisy' works as well as it does, and the reason why is that Ms. Tandy and Mr. Freeman have grown into their roles in ways that make their stage performances richer and more touching than what they did on screen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic expresses pleasant surprise that the production 'works as well as it does' and praises the leads' performances as 'richer and more touching' than their film versions. Since this is a single curated excerpt and sounds clearly positive, scored at upper end of Positive range, but confidence is low due to limited text. | GPT-4o: The excerpt highlights strong performances by the lead actors, suggesting a positive reception. The use of 'surprise' and 'richer and more touching' indicates a favorable view, despite the limited context. | Gemini: The excerpt expresses surprise that the production works well and praises the actors' performances, suggesting a positive recommendation. Given that it's a single excerpt, I'm placing the score on the higher end of the positive range. | Kimi: The critic expresses genuine surprise at the production's success, praising the lead performances as superior to the acclaimed film version. Despite the caveat that this is a single excerpt, the language ('richer and more touching') indicates clear enthusiasm and a recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:55:42.870Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

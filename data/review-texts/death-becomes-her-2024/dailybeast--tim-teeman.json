@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The relentless, deliciously played, perfectly directed hilarity of Death Becomes Her (Lunt-Fontanne Theatre, booking through August 31, 2025) distinguishes this skillfully executed riot of a Broadway musical. Based on the 1992 movie starring Meryl Streep, Goldie Hawn, and Bruce Willis, the musical s...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The relentless, deliciously played, perfectly directed hilarity of Death Becomes Her distinguishes this skillfully executed riot of a Broadway musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('deliciously played', 'perfectly directed', 'skillfully executed riot') but confidence is low due to single excerpt warning and truncated text that cuts off mid-sentence. | GPT-4o: The excerpt uses strong positive language such as 'relentless', 'deliciously played', 'perfectly directed', and 'skillfully executed', indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is highly positive, describing the show as a \"skillfully executed riot\" with \"relentless, deliciously played, perfectly directed hilarity.\" Given the single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited text. | Kimi: The excerpt offers enthusiastic, unqualified praise with superlatives like 'perfectly directed' and 'skillfully executed riot,' placing it at the high end of Positive. Confidence is low due to the single-excerpt format and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:51:55.581Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

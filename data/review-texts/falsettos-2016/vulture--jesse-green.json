@@ -3,10 +3,10 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2016/11/theater-review-falsettos-on-broadway.html",
+  "url": "https://www.vulture.com/2016/10/theater-review-falsettos.html",
   "publishDate": "November 4, 2016",
-  "fullText": "The revival of William Finn and James Lapine's 1992 musical about gay men, AIDS, and family in the 1980s is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
-  "isFullReview": false,
+  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nChristian Borle and Andrew Rannells in Falsettos. Photo: Joan Marcus The heartbreaking revival of the William Finn–James Lapine musical Falsettos that opens tonight on Broadway comes, by chance, just a day after scientists reported in Nature that the longstanding popular narrative of AIDS in America is mistaken. A new analysis of decades-old blood samples, including some from the airline steward known as “Patient Zero,” shows that the infection arrived in New York long before he did, probably from multiple sources, including clotting factor for hemophiliacs. In other words, though 658,000 people (and counting) have died in the United States alone, there was no “Man Who Gave Us AIDS,” as the tabloids called the steward, Gaëtan Dugas. It was mostly our need for a monster that made him one. Have we outgrown the need?\n\nI can’t help asking that question, through tears, after seeing this revival of Falsettos, which implicitly asks it too. A revival today could hardly avoid doing so because Falsettos is, among other things, about the moment when AIDS switched the focus of the gay movement, and theater that took up its themes, from a tradition of looking narrowly inward to a new way of looking angrily out. Act One (originally produced as March of the Falsettos, in 1981) is set in 1979, when the gay agenda, to the extent there was one, largely concerned itself with personal liberty. The musical explores this through the domestic ménage of a self-involved 30-something Jew named Marvin, who as the action begins has divorced his wife, Trina, left their 10-year-old son, Jason, and taken up with Whizzer, a non-monogamous pretty boy who refuses to be tamed.\n\nShow \n 1 Comment / 1 New\n \n Comment\n \n\n Theater Review: Falsettos\n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
+  "isFullReview": true,
   "dtliExcerpt": "The revival of William Finn and James Lapine's 1992 musical about gay men, AIDS, and family in the 1980s is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
   "originalScore": null,
   "assignedScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of William Finn and James Lapine's 1992 musical about gay men, AIDS, and family in the 1980s is both heartbreaking and life-affirming, with a cast that finds new depths in familiar material.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
     "score": 80,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.vulture.com/2016/11/theater-review-falsettos-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-03T23:45:07.682Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 325,
+  "archivePath": "data/archives/reviews/falsettos-2016/vulture--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:45:07.691Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 325,
+  "tierReason": "Full review text"
 }

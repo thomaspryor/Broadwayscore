@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Oslo is a gripping, intelligent drama that transforms a complex historical negotiation into compelling theater. The play succeeds in making the intricate diplomatic process both accessible and dramatically satisfying.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Oslo is a gripping, intelligent drama that transforms a complex historical negotiation into compelling theater. The play succeeds in making the intricate diplomatic process both accessible and dramatically satisfying.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Oslo is a gripping, intelligent drama that transforms a complex historical negotiation into compelling theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('gripping', 'intelligent', 'succeeds', 'compelling', 'dramatically satisfying') with the critic's own 80 rating confirming strong positive recommendation. | GPT-4o: The review describes the play as 'gripping' and 'intelligent', with a successful transformation of complex material into compelling theater. The original rating of 80 aligns with a strong positive recommendation. | Gemini: The review uses positive language like \"gripping,\" \"intelligent,\" and \"compelling,\" indicating a positive recommendation. The critic's rating of 80 aligns with the positive bucket. | Kimi: The review offers consistent praise for the play's ability to dramatize complex diplomatic history, calling it 'gripping,' 'intelligent,' and 'dramatically satisfying' without any reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:43:25.490Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scott Ellis's ripping, lavishly appointed revival...knows that when it comes to being hyperbolic, there's no people like show people.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with colorful superlatives ('over-the-moon acting', 'ripping', 'lavishly appointed', 'blissfully bumpy ride in luxury accommodations'). The critic is clearly delighted and recommends savoring the experience. Single excerpt warning applies, but the enthusiasm level suggests upper Positive range. | GPT-4o: The excerpt uses highly enthusiastic language, praising the revival as 'ripping' and 'lavishly appointed' with a sense of delight. The tone suggests a strong recommendation, despite the limited context. | Gemini: The review uses enthusiastic language like \"altitudinous-high style\" and \"blissfully bumpy ride,\" indicating a positive recommendation. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt features effusive praise including 'over-the-moon acting,' 'ripping,' and 'lavishly appointed,' indicating a highly positive response. However, as only a single curated excerpt is available, confidence is reduced per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:35:09.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

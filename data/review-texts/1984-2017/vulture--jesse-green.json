@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2017/06/theater-review-1984-on-broadway.html",
+  "url": "https://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html",
   "publishDate": "June 23, 2017",
-  "fullText": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production's immersive approach works better as a stunt than as theater, though it certainly succeeds in making you feel trapped and surveilled.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
   "llmScore": {
     "score": 60,
@@ -73,5 +73,44 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.vulture.com/2017/06/theater-review-1984-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-03T23:06:55.646Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/1984-2017/vulture--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:06:55.652Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

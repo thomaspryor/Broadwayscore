@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This ravishing revival of Stephen Schwartz and Roger O. Hirson's 1972 musical transforms Pippin into a sensual circus spectacular that's both nostalgic and utterly contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This ravishing revival transforms Pippin into a sensual circus spectacular that's both nostalgic and utterly contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive language with 'ravishing' and 'spectacular', though brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review uses strong positive language such as 'ravishing' and 'sensual circus spectacular', indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"ravishing\" and describes the production as a \"sensual circus spectacular,\" indicating a very positive and enthusiastic recommendation. | Kimi: The critic employs unambiguous superlatives ('ravishing,' 'spectacular') with no reservations or caveats, indicating an enthusiastic recommendation for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:56:59.798Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

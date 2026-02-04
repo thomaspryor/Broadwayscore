@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two-man show 'Oh, Hello on Broadway' is a loving send-up of crusty Upper West Side codgers that works best when John Mulaney and Nick Kroll stay in character as the lovably obnoxious Gil Faizon and George St. Geegland.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The two-man show 'Oh, Hello on Broadway' is a loving send-up of crusty Upper West Side codgers that works best when John Mulaney and Nick Kroll stay in character as the lovably obnoxious Gil Faizon and George St. Geegland.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a loving send-up of crusty Upper West Side codgers that works best when John Mulaney and Nick Kroll stay in character",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review describes it as a 'loving send-up' and calls the characters 'lovably obnoxious,' indicating enjoyment and recommendation, though the qualifier 'works best when' suggests some limitations. | GPT-4o: The review describes the show as a 'loving send-up' and highlights the effectiveness of the main performers, suggesting a positive but not unqualified recommendation. | Gemini: The review is positive, calling it a \"loving send-up\" that \"works best\" when the actors stay in character, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers genuine praise ('loving send-up') but qualifies the recommendation with 'works best when,' implying unevenness in the performance. The very brief excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:40:31.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

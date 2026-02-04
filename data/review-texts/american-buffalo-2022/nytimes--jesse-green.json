@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Jesse Green",
-  "url": "https://www.nytimes.com/2022/04/15/theater/american-buffalo-review.html",
+  "url": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
   "publishDate": "April 15, 2022",
-  "fullText": "The revival of David Mamet's 1975 play about small-time crooks planning a coin heist is a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The revival of David Mamet's 1975 play about small-time crooks planning a coin heist is a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of David Mamet's 1975 play about small-time crooks planning a coin heist is a master class in male frustration, with Sam Rockwell, Laurence Fishburne and Darren Criss delivering performances that are both brutal and tender.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (37 words)",
   "llmScore": {
     "score": 85,
@@ -78,5 +78,44 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2022/04/15/theater/american-buffalo-review.html",
+  "urlDiscoveredAt": "2026-02-03T23:15:43.075Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/american-buffalo-2022/nytimes--jesse-green_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:15:43.082Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

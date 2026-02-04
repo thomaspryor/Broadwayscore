@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The trouble is that Mr. Miller's play, which won both a Tony and a Pulitzer Prize in 1973, now looks less like a penetrating study of American disillusionment than a cartoon drawn with an extra-thick Magic Marker.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The trouble is that Mr. Miller's play, which won both a Tony and a Pulitzer Prize in 1973, now looks less like a penetrating study of American disillusionment than a cartoon drawn with an extra-thick Magic Marker.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Miller's play... looks less like a penetrating study... than a cartoon drawn with an extra-thick Magic Marker.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The review criticizes the play for lacking depth and being overly simplistic, suggesting a negative view of the current production. | Gemini: The review explicitly states that the play \"now looks less like a penetrating study...than a cartoon\", indicating a negative assessment of the current production. | Kimi: The text describes the play as lacking subtlety and depth ('cartoon drawn with an extra-thick Magic Marker'), offering a clear negative assessment of the work's quality. However, given this appears to be a truncated excerpt with only one sentence provided, confidence is reduced as the final recommendation could potentially shift with additional context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:00:46.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

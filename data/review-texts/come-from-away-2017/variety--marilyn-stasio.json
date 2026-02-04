@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/come-from-away-review-broadway-1202007237/",
   "publishDate": "March 12, 2017",
-  "fullText": "This Canadian musical about 9/11 aftermath is a sweet-natured show that warms the heart without manipulating the emotions.",
-  "isFullReview": false,
+  "fullText": "Here’s that feel-good show that audiences constantly pine for. “Come from Away” is a modest, earnest, life-affirming musical by Irene Sankoff and David Hein that makes people think the human race might not be doomed, after all. Based on true events, the show celebrates the generosity of a small Canadian town that welcomed some 7,000 stranded passengers from airplanes diverted in the air and grounded in the immediate aftermath of Sept. 11, 2001.\n\nIn a flash of fate, residents of the tiny town of Gander, Newfoundland, find themselves hosting passengers from 38 planes diverted from American airspace to their airport. This unexpected doubling of the population presents extraordinary challenges for the locals. Never mind finding food, warm clothing, and lodging for the shell-shocked travelers, who’s going to rustle up toilet paper and diapers?\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Industry' Season 4 Premiere Viewership Jumps 20% From Season 3 \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'It's Florida, Man' Renewed for Season 3 at HBO\n\n“Welcome to the Rock,” the most spirited of the sound-alike-and-run-together songs in the conversational musical score, comes perilously close to being a parody of the universal Canadian character, with its overdone accents (coached by Joel Goldes), plain-as-plain-can-be apparel (as envisioned by costumer Toni-Leslie James), and galumphing musical staging (by Kelly Devine). But the 16-member cast is a hearty group and so good-natured they really put the lyrics across.\n\n“Welcome to the Rock!” is the jolly refrain as the islanders introduce their visitors to the harsh land with “the wildest weather that you’ve ever heard of” …. “the land where the winters tried to kill us” …. “the land where the waters tried to drown us” … “the land where we lost our loved ones.” But through it all, the rock where people cling to their lives and refuse to die.\n\nSubsequent songs conversationally define exactly what’s going on in this godforsaken place. “38 Planes” passes on the bad news to disbelieving crews of Lufthansa, Air India, Sabena, Delta, Air Lingus, Air New Zealand and the rest of the lost fleet. In “28 Hours / Wherever We Are,” passengers of one emblematic American Airlines plane describe their ordeal and their sense of dislocation. “Blankets and Bedding” is a coming-and-going number in which folks hustle up supplies and extend their glad hands to guests.\n\nDirector Christopher Ashley (artistic director of La Jolla Playhouse) keeps the traffic moving smartly on Beowulf Boritt’s rustic set, using little more than a revolve and about a dozen kitchen chairs for props. But there’s no getting away from it — as broad representatives from both camps of hosts and guests, the characters have no character. That is, not until the songs are entrusted to specific individuals.\n\n“I Am Here” is the lament of Hannah (Q. Smith), an American mother who can’t reach her firefighter son on the phone. “Stop the World” is the love song of two lonely passengers who find each other. And “Me and the Sky” is the spirited anthem of Beverley, the gutsy female AA pilot played by the gutsy Jenn Colella.\n\nBy the end of the show, the characters are scarcely more defined than they were at the beginning, and the monotonous music (juiced up by a nifty eight-piece band playing interesting instruments) may be pounding on your head. But the intentions of the show are so heartfelt — and so warmly received by the audience at one late preview — that you can sense the connections with the show being felt in the house, row by row.",
+  "isFullReview": true,
   "dtliExcerpt": "This Canadian musical about 9/11 aftermath is a sweet-natured show that warms the heart without manipulating the emotions.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Canadian musical about 9/11 aftermath is a sweet-natured show that warms the heart without manipulating the emotions.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (18 words)",
   "llmScore": {
     "score": 76,
@@ -73,5 +73,49 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "full",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 579,
+  "archivePath": "data/archives/reviews/come-from-away-2017/variety--marilyn-stasio_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:20:13.691Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 579,
+  "tierReason": "Full review text"
 }

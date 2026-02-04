@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Liev Schreiber gives a powerhouse performance as Eddie Carbone, bringing both vulnerability and menace to Miller's tragic longshoreman.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Liev Schreiber gives a powerhouse performance as Eddie Carbone, bringing both vulnerability and menace to Miller's tragic longshoreman.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Liev Schreiber gives a powerhouse performance as Eddie Carbone, bringing both vulnerability and menace to Miller's tragic longshoreman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'powerhouse' suggests positive recommendation, but limited text prevents assessment of overall production verdict. | GPT-4o: The excerpt praises Schreiber's performance, suggesting a positive view of the production. However, with only one excerpt available, the overall sentiment of the review is unclear, leading to a low confidence score. | Gemini: The excerpt focuses solely on Liev Schreiber's performance, describing it as a 'powerhouse' and highlighting both vulnerability and menace. Given the limited text, it's difficult to gauge the overall recommendation, but the strong praise suggests a positive leaning. | Kimi: The single available excerpt offers strong praise for the lead actor ('powerhouse performance'), placing it in the upper Positive range per the single-excerpt guidance, though the limited scope prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:37:57.005Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

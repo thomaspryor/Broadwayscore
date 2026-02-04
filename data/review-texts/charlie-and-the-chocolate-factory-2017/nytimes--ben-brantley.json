@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2017/04/24/theater/charlie-and-the-chocolate-factory-review.html",
+  "url": "https://www.nytimes.com/2017/04/23/theater/charlie-and-the-chocolate-factory-review-broadway.html",
   "publishDate": "April 24, 2017",
-  "fullText": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
-  "isFullReview": false,
+  "fullText": "Don’t expect a sugar rush from “Charlie and the Chocolate Factory,” the new musical that opened at the Lunt-Fontanne Theater on Sunday. This latest adaptation of Roald Dahl’s winningly sinister children’s story from 1964 is — thank heaven — no sweeter than the two film adaptations it inspired, starring Gene Wilder (1971) and Johnny Depp (2005).\n\nThen again, this big but tentative show — which features a book by David Greig and songs by Marc Shaiman and Scott Wittman — doesn’t burst with flavor of any kind, at least not during its exposition-crammed first act. Only in its second half does the show acquire a distinct taste, and it definitely isn’t confectionary.\n\nThat no one goes to Dahl for the blandly picturesque was made clear a few years ago by the success of the darkness-shrouded musical adaptation of his “Matilda.” The appeal of this writer, for both children and grown-ups, has always been his nasty streak.\n\nAfter more than an hour of chipper throat clearing, that’s the streak that finally emerges, like a stinging ripple of rum in vanilla fudge, in this retooled adaptation out of London, directed by Jack O’Brien. It is also the moment when the show’s star, Christian Borle, at last comes into his own as the violently eccentric Willy Wonka, who owns and runs the enchanted factory of the musical’s title.\n\nThe Broadway “Charlie” is an improvement on its London incarnation, which I saw four years ago. That version was staged by Sam Mendes, then basking in commercial glory as a director of James Bond films. As frantic and gadget-driven as any 007 movie, it was a mega-musical that left you feeling glazed and overstuffed.",
+  "isFullReview": true,
   "dtliExcerpt": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
   "originalScore": null,
   "assignedScore": 61,
@@ -73,10 +73,54 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://theater.nytimes.com/2013/06/27/theater/reviews/charlie-and-the-chocolate-factory-opens-at-drury-lane.html?ref=theater",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2017/04/24/theater/charlie-and-the-chocolate-factory-review.html",
+  "urlDiscoveredAt": "2026-02-03T23:39:44.509Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 279,
+  "archivePath": "data/archives/reviews/charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley_2026-02-03.html",
+  "textFetchedAt": "2026-02-03T23:39:44.512Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 283 (min: 300)"
+  ],
+  "wordCount": 279,
+  "tierReason": "Short text (279 words)"
 }

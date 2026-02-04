@@ -1,0 +1,77 @@
+{
+  "showId": "angels-in-america-2018",
+  "outletId": "timeout",
+  "outlet": "Time Out New York",
+  "criticName": "Adam Feldman",
+  "url": "https://www.timeout.com/newyork/theater/angels-in-america-millennium-approaches-review",
+  "publishDate": "March 26, 2018",
+  "fullText": "This production is a triumphant return for Kushner's masterpiece, with Andrew Garfield delivering a performance of stunning vulnerability and power.",
+  "isFullReview": false,
+  "dtliExcerpt": "This production is a triumphant return for Kushner's masterpiece, with Andrew Garfield delivering a performance of stunning vulnerability and power.",
+  "originalScore": 100,
+  "assignedScore": 96,
+  "source": "web-search",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "This production is a triumphant return for Kushner's masterpiece, with Andrew Garfield delivering a performance of stunning vulnerability and power.",
+  "contentTier": "truncated",
+  "contentTierReason": "Short text (20 words)",
+  "llmScore": {
+    "score": 96,
+    "confidence": "medium",
+    "range": {
+      "low": 91,
+      "high": 101
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production is a triumphant return for Kushner's masterpiece, with Andrew Garfield delivering a performance of stunning vulnerability and power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic calls it a 'triumphant return' for a 'masterpiece' with Garfield's 'stunning' performance. The 100 rating confirms this is unqualified praise deserving the Rave bucket. | GPT-4o: The review uses superlative language ('triumphant', 'masterpiece') and the original rating is 100, indicating a strong, unqualified recommendation. | Gemini: The review uses the word \"triumphant\" and praises Andrew Garfield's performance as \"stunning,\" indicating a rave review. The critic's rating of 100 supports this classification. | Kimi: The critic's perfect 100 rating combined with superlatives like 'triumphant return,' 'masterpiece,' and 'stunning' indicate the highest possible recommendation for this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:57:17.723Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 100,
+    "geminiScore": 92,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  },
+  "textQuality": "truncated"
+}

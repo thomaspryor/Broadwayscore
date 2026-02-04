@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cynthia Nixon's performance as Vivian Bearing, the English professor dying of ovarian cancer, is a masterclass in controlled devastation, finding comedy in the most unlikely places while never shortchanging the play's emotional brutality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cynthia Nixon's performance as Vivian Bearing, the English professor dying of ovarian cancer, is a masterclass in controlled devastation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for Nixon's performance as 'masterclass' with appreciation for finding comedy amid brutality, but this appears to be a fragment focusing only on the lead performance without broader production assessment. | Gemini: The review praises Cynthia Nixon's performance as a \"masterclass\" and highlights the emotional impact of the play, indicating a positive recommendation. | Kimi: Though brief, the excerpt offers unqualified superlative praise ('masterclass') for the lead performance, indicating a strong recommendation, though the limited scope prevents assessment of other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:34:22.819Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

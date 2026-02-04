@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/theater-review-misery-1240367",
   "publishDate": "November 16, 2015",
-  "fullText": "Bruce Willis brings surprising vulnerability to his stage debut as the tormented writer Paul Sheldon, while Laurie Metcalf is chillingly effective as his deranged captor Annie Wilkes.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Bruce Willis brings surprising vulnerability to his stage debut as the tormented writer Paul Sheldon, while Laurie Metcalf is chillingly effective as his deranged captor Annie Wilkes.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bruce Willis brings surprising vulnerability to his stage debut as the tormented writer Paul Sheldon, while Laurie Metcalf is chillingly effective as his deranged captor Annie Wilkes.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "rejectedAt": "2026-02-03T18:34:23.069Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
@@ -28,5 +28,51 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 312,
+  "archivePath": "data/archives/reviews/misery-2015/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:47:57.363Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Logo text\n \n\nThe first poster for next year's Birds of Prey and the Fantabulous Emancipation of One Harley Quinn has been released, and those who enjoyed the Day-Glo aesthetics of the movie's first teaser can rest assured that things look as gloriously garish as before.\n\nWith the tagline \"Mind Over Mayhem,\" the poster features miniature versions of the main characters from the movie — including Margot Robbie's Harley Quinn, Ewan McGregor’s Roman Sionis and Jurnee Smollett-Bell's Dinah Lance — with bird wings, flying and fighting around the suitably captivated head of a larger Harley. It's camp, ridiculous and unlike the teaser poster for any other superhero movie in recent memory.\n\nRelated Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Movies\n \n \n \n \n\n \n \n \n \n Brian Cox Plays Mighty King in Anime Prequel 'Lord of the Rings: The War of the Rohirrim' Trailer \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Movies\n \n \n \n \n\n \n \n \n \n 'Birds of Prey,' 'Transformers,' 'I Am Stan' and More: Heat Vision's Best Comics of 2023\n\nIt's also a poster that underscores the unique aesthetic of the movie; look at Chris Messina's Victor Zsasz, perhaps the preppiest serial killer in movies and miles away visually from his none-more-goth comic book visualization. Similarly, McGregor’s villainous Sionis not only lacks the black mask that his supervillain alter ego is named for, he's also sporting a fetching combo of eyeliner, white suit and sport shoes (with no socks, of course). Perhaps most striking is Ella Jay Basco's Cassandra Cain, who looks...like a regular teenager, rather than the tortured former assassin of the comic books.\n\nAhead of its Feb. 7 2020 release, the movie is starting to cycle up promotional efforts; ahead of this poster, Warner Bros. released a theater-only teaser with It: Chapter Two. It's unknown when a full trailer for the movie will arrive, but when it does, expect something visually stunning and different from the comic book norm.\n\nMind over mayhem. #BirdsOfPrey 2.7.20 pic.twitter.com/c2D0fl1YZp\n\n— Birds of Prey (@birdsofpreywb) September 17, 2019"
 }

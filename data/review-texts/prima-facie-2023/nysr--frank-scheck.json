@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Prima Facie proves a shattering evening, masterfully staged by Justin Martin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with overwhelming praise for Comer's performance ('top-rank theater performer', 'dynamic star turn') and strong production values. While noting the play itself 'doesn't quite live up to Comer's mastery' and feels 'schematic at times', the overall verdict is enthusiastically positive, calling it 'a shattering evening.' | GPT-4o: The review praises Jodie Comer's performance as dynamic and commanding, despite some reservations about the play's predictability. The 4/5 star rating and strong positive language about the production and staging support a high Positive score. | Gemini: The review is overwhelmingly positive about Jodie Comer's performance, calling it a 'dynamic star turn' and praising her ability to command attention. While the reviewer finds the play itself somewhat predictable, the overall experience is described as 'shattering,' leading to a strong positive recommendation. | Kimi: The critic awards 4/5 stars and delivers extensive praise for Comer's 'dynamic star turn' and the 'masterful' staging, while noting the play itself feels 'schematic and predictable,' placing it in the strong Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T19:47:38.773Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

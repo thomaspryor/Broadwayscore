@@ -15,5 +15,60 @@
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
-  "wordCount": 0
+  "wordCount": 0,
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "medium",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "undeniably Butterworth's best play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with unqualified superlatives throughout: 'epic masterpiece,' 'undeniably Butterworth's best play,' 'glorious burst of action.' Despite length concerns mentioned as positives, every element is praised enthusiastically. | GPT-4o: The review is filled with superlatives and praises the play's epic nature, direction, and performances. The original 5/5 star rating strongly suggests a rave review, and the text supports this with enthusiastic descriptions, despite the truncation warning. | Gemini: Despite the truncated text, the review is overwhelmingly positive, calling it Butterworth's best play and praising the direction and performances. The 5/5 star rating further supports a positive classification. | Kimi: The critic awards 5/5 stars and delivers consistent superlatives throughout, calling it Butterworth's best work and praising the direction and performances as 'luminous' and 'immensely appealing'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:08:26.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

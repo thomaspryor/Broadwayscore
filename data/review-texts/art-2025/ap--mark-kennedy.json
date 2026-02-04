@@ -1,0 +1,69 @@
+{
+  "showId": "art-2025",
+  "outletId": "ap",
+  "outlet": "Associated Press",
+  "criticName": "Mark Kennedy",
+  "url": "https://apnews.com/article/art-broadway-review-2025-cad36d5e3c340bcb0101604163c7f999",
+  "publishDate": "September 16, 2025",
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": "Under Scott Ellis’ tight and enthralling direction and with three perfectly cast actors who seem to be having a ball at the Music Box Theatre, “Art” frequently erupts in laughter but still has plenty to say about friendship, power dynamics and how we get on each others’ nerves.",
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "dtli",
+  "dtliThumb": "UP",
+  "dtliUrl": "https://didtheylikeit.com/shows/art/",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Under Scott Ellis’ tight and enthralling direction and with three perfectly cast actors...'Art' frequently erupts in laughter but still has plenty to say about friendship, power dynamics and how we get on each others’ nerves.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 85,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Scott Ellis' tight and enthralling direction and with three perfectly cast actors who seem to be having a ball at the Music Box Theatre, \"Art\" frequently erupts in laughter but still has plenty to say about friendship, power dynamics and how we get on each others' nerves.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review praises direction as 'tight and enthralling,' calls actors 'perfectly cast,' and notes the show 'frequently erupts in laughter' while having substantial themes, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-03T22:08:18.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2707,
+    "outputTokens": 305,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "dtliExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated DTLI excerpt"
+    }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
+}

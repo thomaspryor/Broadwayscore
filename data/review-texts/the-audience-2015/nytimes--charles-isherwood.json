@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Mirren's performance remains a marvel of controlled complexity, a portrayal that finds both the public and private faces of a woman who has spent more than 60 years on the world's most visible throne.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (35 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/03/09/theater/review-the-audience-with-helen-mirren-opens-on-broadway.html?ref=topics&_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-03T20:00:52.265Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with enough evaluative content to determine a recommendation; openai: The text is about Helen Mirren's performance, likely in 'The Audience', not a current Broadway show.",
+  "promptVersion": "5.2.0"
 }

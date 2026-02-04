@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Birbiglia has crafted a deeply personal and surprisingly moving meditation on mortality, middle age, and the small moments that define our lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Birbiglia has crafted a deeply personal and surprisingly moving meditation on mortality, middle age, and the small moments that define our lives.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birbiglia has crafted a deeply personal and surprisingly moving meditation on mortality, middle age, and the small moments that define our lives.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise ('deeply personal and surprisingly moving') suggests clear recommendation, but low confidence due to limited text and potential cherry-picking. | GPT-4o: The excerpt praises the show as 'deeply personal' and 'surprisingly moving,' indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"deeply personal\" and \"surprisingly moving,\" suggesting a positive recommendation. Given it's a single excerpt, the confidence is low, but the language points to the upper end of the positive bucket. | Kimi: The excerpt offers unqualified praise with strong positive qualifiers ('deeply personal', 'surprisingly moving'), indicating a clear recommendation. However, confidence is low due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:27:13.126Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
