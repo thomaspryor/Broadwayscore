@@ -76,6 +76,9 @@ const KNOWN_DUPLICATES = {
   'all out': ['all out', 'all out comedy about ambition'],
   'stranger things': ['stranger things', 'stranger things the first shadow'],
   'harry potter': ['harry potter', 'harry potter and the cursed child', 'harry potter and the cursed child parts one and two'],
+  // IBDB imports individual one-acts/double bills as separate entries — these are single productions
+  'relatively speaking': ['relatively speaking', 'talking cure', 'george is dead', 'honeymoon motel'],
+  'sea wall a life': ['sea wall a life', 'sea wall', 'a life'],
 };
 
 /**
