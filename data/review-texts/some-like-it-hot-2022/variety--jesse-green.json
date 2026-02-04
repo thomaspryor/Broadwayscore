@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://variety.com/2022/legit/reviews/some-like-it-hot-review-broadway-musical-1235434556/",
   "publishDate": "December 12, 2022",
-  "fullText": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
-  "isFullReview": false,
+  "fullText": "Taking a classic film comedy — especially one that plays fast and loose with gender and sexuality — and turning it into a big Broadway musical is far from a sure thing in these contemporary times. But the creative team of the latest stage musical version of the 1959 movie “Some Like It Hot” brings fresh perspectives and a different kind of fun to the iconic film that memorably starred Jack Lemmon, Tony Curtis and Marilyn Monroe.\n\nThe musical’s narrative very loosely follows the original screenplay by Billy Wilder (who also directed the film) and his collaborator I.A.L. Diamond. (In the program credits, the show is “based on the Metro-Goldwyn-Mayer motion picture,” without giving any nod to the original writing duo.) The new script by Tony Award-winner Mathew López (“The Inheritance”) and Amber Ruffin — with Christian Borle and Joe Farrell giving “additional material” — re-adjusts the film’s time and setting from the last hurrah of the Roaring ’20s to the tougher job market — and stylish Art Deco period — of 1933, nicely realized through Scott Pask’s sets and Gregg Barnes’ costumes.\n\n \n Popular on Variety\n\nBand leader Sweet Sue (NaTasha Yvette Williams) and lead singer Sugar Kane (Adrianna Hicks) are both Black and their integrated all-girl band now heads West instead of South with new saxophonist Joe (Christian Borle) and bassist Jerry (J. Harrison Ghee) fleeing in disguise as Josephine and Daphne after witnessing a mob hit in Chicago.\n\nBut the major change is one of attitude. Instead of just running wild with the movie’s overriding straight-men-in-drag-fleeing-for-their-lives gag, this show tweaks the leading duo’s perspectives enough to give the story a surprising, contemporary feel and make it more about self-discovery than guys-in-heels. This rethink doesn’t just transfer a hit film and plop it on stage, but rather transforms it into a genuine study of gender and identity — but still one with lots laughs.\n\nThe script also gives more of a backstory, fuller relationships and cultural context to the musician pals, to Sugar and even to the show’s sugar daddy, Osgood (Kevin Del Aguila, in a performance that is both endearing and fabulous). The dynamic between Borle and Ghee’s characters — and their femme counterparts — are recalibrated, all to the better. Instead of vying for the affections of a love object, they are now discovering the complexity of their feminine roles.\n\nThat complexity also extends to the character’s appearances. Instead of the very prim and pretty Josephine of the film, Borle’s alter ego bears a striking resemblance to Jackie Hoffman — and a running gag about her lived-in looks is can’t-miss schtick. While Curtis adopted a Cary Grant persona for his other bon vivant disguise, this script has Joe playing a German screenwriter — one of several clever hat-tips to the film. Throughout, Borle’s comic timing and singing is impeccable; he makes his character’s latent empathy quite touching and well-earned.\n\nBut it’s Ghee’s Daphne who’s a stunner in every sense of the word. Their personal growth and appreciation of their feminine side gives this adaptation its heart without losing its humor. It is the duality of Ghee’s performance that is a revelation, a continual delight and whose self-actualizing number, “You Coulda Knocked Me Over With a Feather,” is the show’s highlight.\n\nWhile still vulnerable, this new Sugar is not quite as fragile, naive or needy as Monroe’s, and Hicks (“Six”) makes her more of a real person and less a sexual goddess, though still full of allure. With Hicks’ fine vocals, this Sugar is clearly headed for a bigger and better career than fronting for a resort band.\n\nThe role of Sweet Sue is also considerably beefed up and Williams delivers on every level, from her powerful vocals (including some terrific scat singing) to her hysterically funny delivery — especially with Minnie, Sue’s wingwoman, played to loopy perfection by Angie Schworer.\n\nAlso lending solid support are Adam Heller as lawman Mulligan and Mark Lotito as kingpin mobster Spats (who gets one of the best exit lines in ages).\n\nWhere the show disappoints is the score, even though the performances, arrangements and orchestrations are always top shelf. While the title song is smashing (and cleverly used in advanced promotion of the show), most of the rest of the tunes are merely OK, with lyrics that are often metaphorically tiresome and too on-the-nose. Sugar’s numbers, which should be captivating — and which Hicks delivers with all she’s got — are just generic.\n\nOne sometimes longs for the catchier Jule Styne/Bob Merrill score from “Sugar,” the first Broadway musical go-round for this story in 1972 — and even from the revised touring version from 2002 as “Some Like It Hot,” in which Tony Curtis took on the Osgood role.\n\nStill, this new adaptation’s many plusses add up considerably. What could have been a dated drag farce ends up as a show that many will like immensely — a musical filled with fun, energy and heart.",
+  "isFullReview": true,
   "dtliExcerpt": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
   "originalScore": null,
   "assignedScore": 75,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
-  "contentTier": "invalid",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 75,
     "confidence": "high",
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 75,
+  "textWordCount": 824,
+  "archivePath": "data/archives/reviews/some-like-it-hot-2022/variety--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T18:14:52.672Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "duplicateTextOf": "variety--frank-rizzo.json",
+  "wordCount": 824,
+  "tierReason": "Full review text"
 }
