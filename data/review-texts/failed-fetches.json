@@ -8212,42 +8212,6 @@
     "timestamp": "2026-02-03T16:08:11.796Z"
   },
   {
-    "reviewId": "boeingboeing-2008/nytimes--ben-brantley.json",
-    "showId": "boeingboeing-2008",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2008/05/05/theater/reviews/05boei.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, some like it hot, company, true west, chaplin...",
-    "textLength": 7716,
-    "timestamp": "2026-02-03T16:30:06.378Z"
-  },
-  {
-    "reviewId": "boeingboeing-2008/variety--charles-isherwood.json",
-    "showId": "boeingboeing-2008",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2008/legit/reviews/boeing-boeing-1200472053/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): appropriate, smash, parade, the audience, hair...",
-    "textLength": 8394,
-    "timestamp": "2026-02-03T16:30:44.380Z"
-  },
-  {
-    "reviewId": "bonnie-and-clyde-2011/variety--marilyn-stasio.json",
-    "showId": "bonnie-and-clyde-2011",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2011/legit/reviews/bonnie-clyde-1117947039/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): merrily we roll along, sweeney todd, company, bandstand, the audience...",
-    "textLength": 4266,
-    "timestamp": "2026-02-03T16:33:20.095Z"
-  },
-  {
     "reviewId": "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
     "showId": "breakfast-at-tiffanys-2013",
     "outlet": "The New York Times",
@@ -13298,5 +13262,77 @@
     "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
     "textLength": 8405,
     "timestamp": "2026-02-04T20:27:53.484Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytg--gillian-russo.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Gillian Russo",
+    "url": "https://www.newyorktheatreguide.com/reviews/bob-fosses-dancin-broadway-review",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): proof, home, company, the audience, cabaret...",
+    "textLength": 4388,
+    "timestamp": "2026-02-04T20:28:04.322Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nytimes--jesse-green.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/03/19/theater/bob-fosses-dancin-review-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, company, cabaret, hair, once...",
+    "textLength": 7159,
+    "timestamp": "2026-02-04T20:29:18.398Z"
+  },
+  {
+    "reviewId": "boeingboeing-2008/nytimes--ben-brantley.json",
+    "showId": "boeingboeing-2008",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2008/05/05/theater/reviews/05boei.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): appropriate, some like it hot, company, true west, chaplin...",
+    "textLength": 7536,
+    "timestamp": "2026-02-04T20:32:26.033Z"
+  },
+  {
+    "reviewId": "boeingboeing-2008/variety--charles-isherwood.json",
+    "showId": "boeingboeing-2008",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2008/legit/reviews/boeing-boeing-1200472053/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, smash, parade, the audience...",
+    "textLength": 8187,
+    "timestamp": "2026-02-04T20:33:02.559Z"
+  },
+  {
+    "reviewId": "bonnie-and-clyde-2011/variety--marilyn-stasio.json",
+    "showId": "bonnie-and-clyde-2011",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2011/legit/reviews/bonnie-clyde-1117947039/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): chicago, merrily we roll along, sweeney todd, company, bandstand...",
+    "textLength": 4059,
+    "timestamp": "2026-02-04T20:35:18.097Z"
+  },
+  {
+    "reviewId": "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
+    "showId": "book-of-mormon-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/book-mormon-theater-review-169163/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, the lion king, mamma mia!, golden boy, rain...",
+    "textLength": 6554,
+    "timestamp": "2026-02-04T20:35:50.346Z"
   }
 ]
