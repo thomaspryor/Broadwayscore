@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Does this history piece hold up? Yes, in the sense that the show is kind to its characters and true to its dated sensibilities. No, in the sense that the characters are unbelievably sweet and its sensibilities are dated. But the playwright is nothing if not generous to Arnold, who is a real mensch after all. If you want to take him to your heart, you really have to imagine someone like... well, Harvey Fierstein, in the lead role.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michael Urie gives a powerhouse performance as Arnold Beckoff, the drag queen with a heart as big as his hair, in this revival of Harvey Fierstein's groundbreaking play.",
   "contentTier": "complete",
@@ -67,5 +67,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is of the Off Broadway production from 2017, not the current Broadway run.; kimi: This text explicitly identifies itself as a review of the 2017 Off-Broadway production at Second Stage Theater ('The following is Marilyn Stasio's review, dated Oct. 20, 2017, of the Off Broadway production'), not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 7,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }
