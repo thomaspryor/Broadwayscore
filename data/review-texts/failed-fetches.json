@@ -3772,18 +3772,6 @@
     "timestamp": "2026-01-31T23:22:17.591Z"
   },
   {
-    "reviewId": "harmony-2023/observer--david-cote.json",
-    "showId": "harmony-2023",
-    "outlet": "Observer",
-    "critic": "David Cote",
-    "url": "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Ad blocker message: \"ad blocker\"",
-    "textLength": 6799,
-    "timestamp": "2026-02-01T03:17:14.960Z"
-  },
-  {
     "reviewId": "harmony-2023/observer--rex-reed.json",
     "showId": "harmony-2023",
     "outlet": "Observer",
@@ -4780,30 +4768,6 @@
     "timestamp": "2026-02-01T23:58:21.891Z"
   },
   {
-    "reviewId": "harmony-2023/deadline--greg-evans.json",
-    "showId": "harmony-2023",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
-    "textLength": 8002,
-    "timestamp": "2026-02-01T23:58:24.997Z"
-  },
-  {
-    "reviewId": "harmony-2023/timeout--adam-feldman.json",
-    "showId": "harmony-2023",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/harmony-review-broadway-musical-barry-manilow",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7826,
-    "timestamp": "2026-02-01T23:58:55.777Z"
-  },
-  {
     "reviewId": "harry-potter-2021/timeout--adam-feldman.json",
     "showId": "harry-potter-2021",
     "outlet": "Time Out New York",
@@ -4814,18 +4778,6 @@
     "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
     "textLength": 6700,
     "timestamp": "2026-02-02T00:00:36.099Z"
-  },
-  {
-    "reviewId": "heart-of-rock-and-roll-2024/timeout--regina-robbins.json",
-    "showId": "heart-of-rock-and-roll-2024",
-    "outlet": "Time Out New York",
-    "critic": "Regina Robbins",
-    "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6640,
-    "timestamp": "2026-02-02T00:02:36.503Z"
   },
   {
     "reviewId": "hells-kitchen-2024/timeout--adam-feldman.json",
@@ -5200,18 +5152,6 @@
     "timestamp": "2026-02-02T02:42:25.849Z"
   },
   {
-    "reviewId": "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
-    "showId": "heart-of-rock-and-roll-2024",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 657,
-    "timestamp": "2026-02-02T02:49:13.033Z"
-  },
-  {
     "reviewId": "lempicka-2024/new-york-sun--elysa-gardner.json",
     "showId": "lempicka-2024",
     "outlet": "The New York Sun",
@@ -5282,18 +5222,6 @@
     "garbageReason": "Ad blocker message: \"turn off your ad block\"",
     "textLength": 582,
     "timestamp": "2026-02-02T03:27:10.135Z"
-  },
-  {
-    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
-    "showId": "harmony-2023",
-    "outlet": "The New York Sun",
-    "critic": "Elysa Gardner",
-    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
-    "textLength": 628,
-    "timestamp": "2026-02-02T03:28:15.414Z"
   },
   {
     "reviewId": "illinoise-2024/timeout--adam-feldman.json",
@@ -10958,5 +10886,185 @@
     "garbageReason": "Multiple shows mentioned (6): company, once, elling, company, well...",
     "textLength": 1335,
     "timestamp": "2026-02-04T02:28:30.771Z"
+  },
+  {
+    "reviewId": "harmony-2023/deadline--greg-evans.json",
+    "showId": "harmony-2023",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2023/11/harmony-danny-and-the-deep-blue-sea-reviews-1235600743/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): leopoldstadt, funny girl, carousel, the audience, once...",
+    "textLength": 8002,
+    "timestamp": "2026-02-04T02:29:27.975Z"
+  },
+  {
+    "reviewId": "harmony-2023/observer--david-cote.json",
+    "showId": "harmony-2023",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 6799,
+    "timestamp": "2026-02-04T02:29:58.306Z"
+  },
+  {
+    "reviewId": "harmony-2023/the-new-york-sun--elysa-gardner.json",
+    "showId": "harmony-2023",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 1890,
+    "timestamp": "2026-02-04T02:30:36.227Z"
+  },
+  {
+    "reviewId": "harmony-2023/timeout--adam-feldman.json",
+    "showId": "harmony-2023",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/harmony-review-broadway-musical-barry-manilow",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 8094,
+    "timestamp": "2026-02-04T02:31:14.753Z"
+  },
+  {
+    "reviewId": "heart-of-rock-and-roll-2024/the-new-york-sun--elysa-gardner.json",
+    "showId": "heart-of-rock-and-roll-2024",
+    "outlet": "The New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, company, the audience, hair, evita...",
+    "textLength": 4538,
+    "timestamp": "2026-02-04T02:33:58.545Z"
+  },
+  {
+    "reviewId": "heart-of-rock-and-roll-2024/timeout--regina-robbins.json",
+    "showId": "heart-of-rock-and-roll-2024",
+    "outlet": "Time Out New York",
+    "critic": "Regina Robbins",
+    "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7052,
+    "timestamp": "2026-02-04T02:34:24.355Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/newsday--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Newsday",
+    "critic": "Unknown",
+    "url": "http://www.newsday.com/entertainment/theater/hedwig-and-the-angry-inch-review-neil-patrick-harris-triumphs-1.7782175",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, spring awakening, misery, kinky boots, once...",
+    "textLength": 3810,
+    "timestamp": "2026-02-04T02:36:23.571Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/thewrap--unknown.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "The Wrap",
+    "critic": "Unknown",
+    "url": "http://www.thewrap.com/hedwig-and-the-angry-inch-theater-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): giant, bullets over broadway, hair, elling, well...",
+    "textLength": 2592,
+    "timestamp": "2026-02-04T02:37:31.635Z"
+  },
+  {
+    "reviewId": "hedwig-and-the-angry-inch-2014/timeout--adam-feldman.json",
+    "showId": "hedwig-and-the-angry-inch-2014",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/hedwig-and-the-angry-inch",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 2232,
+    "timestamp": "2026-02-04T02:38:15.103Z"
+  },
+  {
+    "reviewId": "how-to-succeed-in-business-without-really-trying-2011/observer--rex-reed.json",
+    "showId": "how-to-succeed-in-business-without-really-trying-2011",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2011/03/how-to-succeed-in-business-without-really-trying-daniel-radcliffe-makes-a-solid-broadway-debut/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-04T02:39:18.707Z"
+  },
+  {
+    "reviewId": "how-to-succeed-in-business-without-really-trying-2011/timeout--david-cote.json",
+    "showId": "how-to-succeed-in-business-without-really-trying-2011",
+    "outlet": "Time Out New York",
+    "critic": "David Cote",
+    "url": "https://www.timeout.com/newyork/theater/how-to-succeed-in-business-without-really-trying",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 2351,
+    "timestamp": "2026-02-04T02:39:59.696Z"
+  },
+  {
+    "reviewId": "job-2024/guardian--adrian-horton.json",
+    "showId": "job-2024",
+    "outlet": "The Guardian",
+    "critic": "Adrian Horton",
+    "url": "https://www.theguardian.com/stage/article/2024/jul/30/job-broadway-review",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): giant, purpose, company, once, rain...",
+    "textLength": 5439,
+    "timestamp": "2026-02-04T02:41:02.474Z"
+  },
+  {
+    "reviewId": "job-2024/new-york-sun--elysa-gardner.json",
+    "showId": "job-2024",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/with-mesmerizing-performance-by-sydney-lemmon-and-peter-friedman-broadways-job-keeps-us-on-the-edge-of-our-seats",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Paywall/subscription prompt: \"Sign in to continue\"",
+    "textLength": 710,
+    "timestamp": "2026-02-04T02:41:53.410Z"
+  },
+  {
+    "reviewId": "job-2024/observer--david-cote.json",
+    "showId": "job-2024",
+    "outlet": "Observer",
+    "critic": "David Cote",
+    "url": "https://observer.com/2024/07/review-that-internet-can-drive-a-person-crazy-in-the-gimmicky-job/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 5390,
+    "timestamp": "2026-02-04T02:42:53.963Z"
+  },
+  {
+    "reviewId": "job-2024/theatermania--david-gordon.json",
+    "showId": "job-2024",
+    "outlet": "TheaterMania",
+    "critic": "David Gordon",
+    "url": "https://www.theatermania.com/news/review-on-broadway-downtown-hit-job-has-emperors-new-clothes-syndrome_1746201/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): oh, mary!, home, purpose, sweeney todd, king lear...",
+    "textLength": 8086,
+    "timestamp": "2026-02-04T02:43:06.828Z"
   }
 ]
