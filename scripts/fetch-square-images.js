@@ -27,7 +27,9 @@ const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const replaceCrops = args.includes('--replace-crops'); // Replace .webp Contentful crops with native squares
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const sinceYear = args.find(a => a.startsWith('--since='))?.split('=')[1];
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0') || 0;
 
 function sleep(ms) {
@@ -314,15 +316,32 @@ async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
   let shows = showsData.shows;
 
-  // Filter to shows missing thumbnails
+  // Filter shows
   if (showFilter) {
     shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+  } else if (replaceCrops) {
+    // Replace .webp Contentful crops and CDN URL thumbnails with native squares
+    // Skip shows that already have .jpg thumbnails (from previous Google Images runs)
+    shows = shows.filter(s => {
+      const thumb = s.images?.thumbnail;
+      if (!thumb) return true; // No thumbnail at all
+      if (thumb.endsWith('.jpg')) return false; // Already has native square from Google Images
+      return true; // .webp (Contentful crop) or CDN URL — needs replacement
+    });
   } else {
     shows = shows.filter(s => {
       const thumb = s.images?.thumbnail;
       return !thumb || thumb === null;
     });
   }
+
+  // Filter by year if specified
+  if (sinceYear) {
+    shows = shows.filter(s => s.openingDate && s.openingDate >= sinceYear);
+  }
+
+  // Sort newest first (most visible shows get processed first)
+  shows.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''));
 
   if (limit > 0) {
     shows = shows.slice(0, limit);
