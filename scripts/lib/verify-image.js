@@ -54,12 +54,18 @@ ACCEPT (match=true) in these cases:
 KEY PRINCIPLE: If the image title matches the show title and there's no visible evidence of a wrong venue/production, ACCEPT IT. Do not reject just because you can't confirm the exact year.
 
 Reply with ONLY this JSON (no markdown fencing, no explanation):
-{"match":true,"confidence":"high","description":"brief description of what the image shows","issues":[]}
+{"match":true,"confidence":"high","description":"brief description of what the image shows","issues":[],"imageType":"promotional_art"}
 
 Or if there's a problem:
-{"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"]}
+{"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"],"imageType":"other"}
 
 Issue categories: wrong_show, wrong_production, non_broadway, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo
+
+Also classify the image type. Add an "imageType" field to your JSON response:
+- "promotional_art" — Official poster, key art, logo treatment, title card with stylized design, marketing material
+- "production_still" — Photo from actual stage performance, rehearsal, or backstage
+- "headshot_cast" — Individual actor headshot or cast photo not from the show itself
+- "other" — Anything else (venue exterior, playbill, generic)
 
 Confidence levels:
 - "high": You are very sure of your assessment
@@ -141,17 +147,20 @@ function parseResponse(text) {
       confidence: parsed.confidence || 'low',
       description: parsed.description || '',
       issues: Array.isArray(parsed.issues) ? parsed.issues : [],
+      imageType: parsed.imageType || 'other',
     };
   } catch {
     const matchResult = /\"match\"\s*:\s*(true|false)/i.exec(cleaned);
     const confResult = /\"confidence\"\s*:\s*\"(high|medium|low)\"/i.exec(cleaned);
     const descResult = /\"description\"\s*:\s*\"([^\"]*)\"/i.exec(cleaned);
+    const typeResult = /\"imageType\"\s*:\s*\"(promotional_art|production_still|headshot_cast|other)\"/i.exec(cleaned);
     if (matchResult) {
       return {
         match: matchResult[1] === 'true',
         confidence: confResult?.[1] || 'low',
         description: descResult?.[1] || 'Could not fully parse response',
         issues: [],
+        imageType: typeResult?.[1] || 'other',
       };
     }
     return {
@@ -159,6 +168,7 @@ function parseResponse(text) {
       confidence: 'error',
       description: `Unparseable response: ${cleaned.substring(0, 200)}`,
       issues: ['parse_error'],
+      imageType: 'other',
     };
   }
 }
@@ -199,6 +209,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
       confidence: 'low',
       description: 'Verification skipped (no GEMINI_API_KEY)',
       issues: [],
+      imageType: 'other',
     };
   }
 
@@ -230,6 +241,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
           match: true, confidence: 'low',
           description: `Could not download image for verification: HTTP ${resp.status}`,
           issues: ['download_error'],
+          imageType: 'other',
         };
       }
       imageData = Buffer.from(await resp.arrayBuffer());
@@ -239,6 +251,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
         match: true, confidence: 'low',
         description: `Could not download image for verification: ${err.message}`,
         issues: ['download_error'],
+        imageType: 'other',
       };
     }
   } else {
@@ -246,6 +259,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
       match: true, confidence: 'low',
       description: 'Invalid image input type',
       issues: ['invalid_input'],
+      imageType: 'other',
     };
   }
 
@@ -255,6 +269,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
       match: false, confidence: 'high',
       description: `Image too small (${imageData.length} bytes) — likely broken or placeholder`,
       issues: ['placeholder'],
+      imageType: 'other',
     };
   }
 
@@ -293,7 +308,29 @@ async function verifyImage(imageInput, showTitle, options = {}) {
     confidence: 'low',
     description: `Verification failed after ${MAX_RETRIES} retries: ${lastError?.message}`,
     issues: ['api_error'],
+    imageType: 'other',
   };
+}
+
+// ============================================================
+// URL HEURISTIC CLASSIFICATION
+// ============================================================
+
+/**
+ * Classify image type from URL/filename patterns.
+ * Used as a tiebreaker when Gemini classification is uncertain.
+ */
+function classifyImageUrl(url) {
+  const lower = (url || '').toLowerCase();
+  // Patterns suggesting promotional art
+  if (/poster|key[_-]?art|logo|promo|official|title|artwork|keyart/.test(lower)) return 'promotional_art';
+  // TodayTix API images are always promotional
+  if (lower.includes('todaytix.imgix.net') || lower.includes('tix-content')) return 'promotional_art';
+  // Contentful assets are typically curated promotional images
+  if (lower.includes('images.ctfassets.net')) return 'promotional_art';
+  // Patterns suggesting production stills
+  if (/gallery|production|rehearsal|stage|perform|_r\d|IMG_|backstage/.test(lower)) return 'production_still';
+  return 'unknown';
 }
 
 // ============================================================
@@ -304,4 +341,4 @@ function createRateLimiter(rpm) {
   return new RateLimiter(rpm || RPM_LIMIT);
 }
 
-module.exports = { verifyImage, createRateLimiter };
+module.exports = { verifyImage, createRateLimiter, classifyImageUrl };
