@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2018/legit/reviews/pretty-woman-the-musical-review-1202902681/",
   "publishDate": "August 16, 2018",
-  "fullText": "The musical adaptation of 'Pretty Woman' is a shiny, superficial entertainment that delivers exactly what you'd expect — no more, no less.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of 'Pretty Woman' is a shiny, superficial entertainment that delivers exactly what you'd expect — no more, no less.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,7 +16,48 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of 'Pretty Woman' is a shiny, superficial entertainment that delivers exactly what you'd expect — no more, no less.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 259,
+  "archivePath": "data/archives/reviews/pretty-woman-the-musical-2018/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:45:57.247Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 259 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Aug 11, 2018 2:14pm PT \n\n \n\n \n \n \n\n \n\n \n Trump Calls Omarosa a ‘Lowlife’ in Response to Book Claims\n\nPresident Donald Trump has responded to the claims that he used racial slurs on the set of “The Apprentice,” which have stemmed from former senior adviser and “The Apprentice” contestant Omarosa Manigault Newman‘s book, “Unhinged.”\n\nOn Saturday, reporters asked the president while on his golf course if he felt betrayed by Manigault Newman: “Lowlife. She’s a lowlife,” he said, according to the Associated Press.\n\n“Unhinged” is set to release Tuesday, but various outlets published some of its statements ahead of time. In the book, Manigault Newman says that Trump is a “racist” and claims that a tape exists of him using racial slurs from the set of “The Apprentice.” While she doesn’t provide direct evidence, she cites three unnamed sources who attest to the existence of the tape.\n\nShe also writes that Trump is showing signs of “mental decline that could not be denied.”\n\nThe White House slammed the book as “riddled with lies.”\n\n“Instead of telling the truth about all the good President Trump and his administration are doing to make America safe and prosperous, this book is riddled with lies and false accusations,” said White House press secretary Sarah Huckabee Sanders. “It’s sad that a disgruntled former White House employee is trying to profit off these false attacks, and even worse that the media would now give her a platform, after not taking her seriously when she had only positive things to say about the President during her time in the administration.”"
 }
