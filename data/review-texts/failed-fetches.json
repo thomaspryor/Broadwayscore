@@ -8320,18 +8320,6 @@
     "timestamp": "2026-02-03T12:51:34.661Z"
   },
   {
-    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
-    "showId": "1984-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): appropriate, purpose, company, allegiance, the audience...",
-    "textLength": 5148,
-    "timestamp": "2026-02-03T14:14:01.062Z"
-  },
-  {
     "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
     "showId": "a-chorus-line-2006",
     "outlet": "The New York Times",
@@ -11798,5 +11786,53 @@
     "garbageReason": "Multiple shows mentioned (10): hamilton, company, mean girls, the price, the audience...",
     "textLength": 4430,
     "timestamp": "2026-02-04T04:17:00.443Z"
+  },
+  {
+    "reviewId": "1776-2022/variety--frank-rizzo.json",
+    "showId": "1776-2022",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): hamilton, the present, the audience, once, rain...",
+    "textLength": 4814,
+    "timestamp": "2026-02-04T04:20:06.944Z"
+  },
+  {
+    "reviewId": "1776-2022/vulture--james-frankie-thomas.json",
+    "showId": "1776-2022",
+    "outlet": "Vulture",
+    "critic": "James Frankie Thomas",
+    "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): hamilton, company, oklahoma!, the audience, once...",
+    "textLength": 6944,
+    "timestamp": "2026-02-04T04:23:53.084Z"
+  },
+  {
+    "reviewId": "1984-2017/hollywood-reporter--david-rooney.json",
+    "showId": "1984-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, appropriate, purpose, company, allegiance...",
+    "textLength": 5177,
+    "timestamp": "2026-02-04T04:24:09.375Z"
+  },
+  {
+    "reviewId": "700-sundays-2013/hollywood-reporter--unknown.json",
+    "showId": "700-sundays-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, home, cats, fiddler on the roof, the audience...",
+    "textLength": 5579,
+    "timestamp": "2026-02-04T04:28:22.715Z"
   }
 ]
