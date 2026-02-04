@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": null,
+  "isFullReview": true,
+  "textWordCount": 192,
+  "archivePath": "data/archives/reviews/first-date-2013/bloomberg-news--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:11:20.215Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "has_footer_text"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 192 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "XLinkedInEmailLinkGiftFacebookXLinkedInEmailLinkGiftGift this articleContact us:Provide news feedback or report an errorConfidential tip?Send a tip to our reportersSite feedback:Take our SurveyNew Windowfailed to render body of articleBefore it's here, it's on the Bloomberg TerminalBloomberg Terminal LEARN MOREMore From BloombergAnthropic AI Tool Sparks Selloff From Software to Broader Market\n\nTrump Cuts India Tariffs in Deal He Links to Russian Oil\n\nMusk’s SpaceX Combines With xAI at $1.25 Trillion Valuation\n\nTrump Says He’ll Close Kennedy Center for Two Years in July\n\nTrump Says He Wants $1 Billion From Harvard in New Attack\n\nHomeBTV+Market DataOpinionAudioOriginalsMagazineEventsNewsMarketsEconomicsTechnologyPoliticsGreenCryptoAIWork & LifeWealthPursuitsBusinessweekCityLabSportsEqualityManagement & WorkMarket DataStocksCommoditiesRates & BondsCurrenciesFuturesSectorsEconomic CalendarExploreNewslettersExplainersPointed News QuizAlphadots GameThe Big TakeGraphicsSubmit a TipAbout UsTerms of ServiceDo Not Sell or Share My Personal InformationTrademarksPrivacy PolicyCareersAdvertiseAd ChoicesHelp©2026 Bloomberg L.P. All Rights Reserved.\n\nBy accepting, you agree to our updated\n Terms of Service,\n including the arbitration provision and class action waiver. You understand that we process your information as described in the\n Privacy Policy,\n which may include sharing information about your use of\n Bloomberg.com\n with third parties. Accepting does not affect your right to opt-out at any time via the Do Not Sell or Share My Personal Information link in the website footer.",
+  "contentTier": "needs-rescrape"
 }

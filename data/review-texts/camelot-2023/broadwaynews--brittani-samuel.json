@@ -8,11 +8,12 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"The riotous new work, with a book by Robert Horn, nabs acoustic inspiration from country music and tonal humor from shows like \"The Book of Mormon\" and \"Tootsie\" (the latter of which Horn adapted for stage) to form a delirious production that treats a seasonal crop  corn  more like the second coming.\"",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available",
+  "contentTier": "truncated",
+  "tierReason": "Short text (232 words)",
   "assignedScore": 81,
   "llmScore": {
     "score": 81,
@@ -67,5 +68,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "showScoreExcerpt": "“Perhaps this ‘Camelot’ is a manifestation practice for Sorkin, one that bolsters egalitarian rulers who value love and mercy just as highly as power and might...Genial heroes are needed to move us forward.”\n\nRead more"
 }

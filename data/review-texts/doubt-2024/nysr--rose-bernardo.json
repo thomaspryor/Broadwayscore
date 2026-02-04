@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "This production might not be overflowing with tension, but Shanley’s text rings truer than ever. He packs more into 90 minutes than most playwrights do into 150. (This season’s revival of his Danny and the Deep Blue Sea and premiere of his Brooklyn Laundry are proof.) And while he may not provide an...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shanley's text rings truer than ever.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive language about the text ringing 'truer than ever' and praising the playwright's efficiency, but acknowledges production lacks tension. Truncated at key moment, so scored conservatively in lower positive range. | GPT-4o: The excerpt praises Shanley's text for its truthfulness and efficiency, suggesting a positive view. However, the lack of tension and the single excerpt warning indicate a cautious approach, leading to a lower positive score. | Gemini: The excerpt praises the playwright's writing, suggesting a positive, though possibly qualified, recommendation. Given the limited text, confidence is low. | Kimi: The excerpt offers strong praise for Shanley's writing ('rings truer than ever,' packs more into 90 minutes than most playwrights do in 150) with only a minor caveat about tension levels, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:21:36.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

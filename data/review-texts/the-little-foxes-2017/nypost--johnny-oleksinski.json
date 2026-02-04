@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production is worth it for the chance to see Laura Linney and Cynthia Nixon trade off playing Regina, the story's deliciously wicked Southern belle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The production is worth it for the chance to see Laura Linney and Cynthia Nixon trade off playing Regina, the story's deliciously wicked Southern belle.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is worth it for the chance to see Laura Linney and Cynthia Nixon trade off playing Regina.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation ('worth it') focused on the star performances, but very brief excerpt limits confidence in full review assessment. | GPT-4o: The review suggests the production is worth seeing specifically for the performances of Linney and Nixon, indicating a positive but qualified recommendation. | Gemini: The review explicitly states the production is \"worth it\", placing it in the positive bucket. The recommendation is based on the performances of the leads, suggesting a reservation. | Kimi: The critic explicitly recommends the production as 'worth it' specifically to see the lead actresses alternate roles, indicating solid if qualified praise focused on the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:50:47.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

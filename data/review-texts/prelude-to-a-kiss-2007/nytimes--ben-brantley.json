@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly compares the production unfavorably to a rehearsal, suggesting it's unprofessional and undercooked. This is clearly negative criticism of the production quality. | GPT-4o: The critic suggests the production lacks polish and completeness, implying a negative view of the show's execution. | Gemini: The critic states the production feels like a rehearsal, indicating a lack of polish and overall quality, leading to a negative assessment. | Kimi: The critic employs a pointed metaphor comparing the production to a 'rehearsal rather than a revival,' signaling that the show lacks polish, preparation, and professional finish. This represents a clear judgment of inadequacy, placing it in the negative range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the production unfavorably to a rehearsal, suggesting it feels unfinished or underprepared for Broadway. | GPT-4o: The review suggests the production lacks polish and readiness, comparing it unfavorably to a rehearsal, which indicates a negative assessment. | Gemini: The critic states that the production feels more like a rehearsal than a revival, indicating a negative assessment. | Kimi: The critic dismisses the production as lacking polish, comparing it to a rehearsal rather than a finished revival, indicating a clear lack of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:16:06.106Z",
+    "scoredAt": "2026-02-04T01:59:08.705Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

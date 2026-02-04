@@ -1,27 +1,23 @@
 {
   "showId": "days-of-wine-and-roses-2024",
-  "outletId": "nysr",
+  "outletId": "nystagereview",
   "outlet": "New York Stage Review",
   "criticName": "David Finkle",
-  "url": null,
-  "publishDate": "2024-01-28T20:39:32-05:00",
+  "url": "https://nystagereview.com/2024/01/28/days-of-wine-and-roses-musical-on-alcoholic-sorrows-shakes-and-stirs/",
+  "publishDate": null,
   "fullText": null,
-  "isFullReview": false,
-  "dtliExcerpt": null,
-  "bwwExcerpt": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction’s origins, on the assumption that explanations don’t carry much meaning when the alcoholic’s throes are what need to be immediately addressed. When Kirsten and Joe first spend time together...",
-  "showScoreExcerpt": null,
-  "assignedScore": 72,
+  "bwwExcerpt": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction’s origins, on the assumption that explanations don’t carry much meaning when the alcoholic’s throes are what need to be immediately addressed. When Kirsten and Joe first spend time together at a waterfront, she tells him that she prefers to watch the water farther out. The water immediately below her, she insists, is too dirty. That’s all the rationale needed to set the parameters for t",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
+  "originalScore": null,
+  "assignedScore": 75,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 72,
-    "confidence": "medium",
+    "score": 75,
+    "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,12 +29,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "One strength of the 90-minute intermissionless piece is its refusal to offer any easy explanation of addiction’s origins.",
+        "quote": "'Days of Wine and Roses,' a 'beautifully' executed musical",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt highlights a strength of the production, suggesting a positive view, but lacks comprehensive context to determine the overall tone. Given the single excerpt warning, a lower score within the Positive range is appropriate. | Gemini: The excerpt is descriptive and mentions a strength, but it doesn't offer a clear recommendation. Given the limited text, it's hard to determine the overall sentiment, so I've classified it as mixed with low confidence. | Kimi: The excerpt explicitly cites a 'strength' in the show's handling of addiction narratives, indicating a positive critical assessment. However, as a single curated quote, it provides limited visibility into the overall verdict, warranting a conservative score at the lower end of the Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt provides a positive descriptor ('beautifully executed'), indicating a recommendation. However, due to the limited text and lack of full context, the confidence is low. | Gemini: The quote indicates a positive assessment, but the limited text and excerpt-only warning suggest a lower confidence score. | Kimi: Brief excerpt offers unambiguous praise for the production's execution ('beautifully executed'), indicating a solid positive assessment, though limited context prevents higher confidence or score.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,26 +44,37 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:51:12.988Z",
+    "scoredAt": "2026-02-03T04:41:29.175Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": null,
-    "openaiScore": 72,
-    "geminiScore": 60,
-    "kimiScore": 72,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "openaiBucket": "Positive",
-    "geminiBucket": "Mixed",
+    "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
-  }
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "dateUnknown": true,
+  "dateSource": "could-not-extract",
+  "showScoreExcerpt": "\" ‘Days of Wine and Roses,’ a ‘beautifully’ executed musical\"",
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "wrongAttribution": true,
+  "sources": [
+    "bww-roundup",
+    "show-score-playwright"
+  ]
 }

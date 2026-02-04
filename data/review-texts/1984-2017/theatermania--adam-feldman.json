@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.theatermania.com/broadway/reviews/1984_78608.html",
   "publishDate": "June 23, 2017",
-  "fullText": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined, with moments of genuine terror and claustrophobia.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined, with moments of genuine terror and claustrophobia.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production succeeds in creating a visceral sense of the totalitarian nightmare that Orwell imagined, with moments of genuine terror and claustrophobia.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 77,
@@ -73,5 +73,49 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 232,
+  "archivePath": "data/archives/reviews/1984-2017/theatermania--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:22:33.796Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 232 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Mazzie will receive the Phyllis Newman Dame Award.\n\nTony nominee Marin Mazzie will be honored at the 2016 Nothing Like a Dame benefit, to be held October 24 at the Samuel J. Friedman Theatre. The 20th anniversary benefit, produced by Phyllis Newman and benefiting the Actors Fund’s Phyllis Newman Women’s Health Initiative, will honor Mazzie (The King and I) with the first-ever Phyllis Newman Dame Award.\n\nDirected by Bebe Neuwirth, Nothing Like a Dame will feature performances by Christine Ebersole, Melissa Errico, Julie Halston, Judy Kuhn, Tonya Pinkins, Karen Ziemba, Ali Stroker, Erin Hill, and Ava Briglia, Willow McCarthy, and Aviva Winick from Broadway's Matilda The Musical.\n\nBetty Buckley, Misty Copeland, Kelli O’Hara, Bernadette Peters, and Janice Reals Ellig serve as the show's host committee.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

@@ -5,7 +5,7 @@
   "criticName": "David Finkle",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/harvey_58726.html",
   "publishDate": "June 15, 2012",
-  "fullText": "Jim Parsons brings his own brand of nervous energy to Elwood P. Dowd, the gentle soul who sees a six-and-a-half-foot-tall rabbit named Harvey.",
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "Jim Parsons brings his own brand of nervous energy to Elwood P. Dowd, the gentle soul who sees a six-and-a-half-foot-tall rabbit named Harvey.",
   "originalScore": null,
@@ -16,11 +16,57 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jim Parsons brings his own brand of nervous energy to Elwood P. Dowd, the gentle soul who sees a six-and-a-half-foot-tall rabbit named Harvey.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "rejectedAt": "2026-02-03T17:08:11.144Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief plot summary or cast description rather than an evaluative review with critical assessment; openai: This text is a brief description of Jim Parsons' role in the show, not an evaluative review of the production.; gemini: This is a single sentence with no evaluative content. It's a plot summary or cast announcement, not a review.; kimi: This 29-word excerpt provides only descriptive casting information and character context without any evaluative verdict, recommendation, or critical assessment of the production's quality. It appears to be a truncated opening sentence or cast listing rather than a review with a scorable opinion.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/harvey-2012/theatermania--david-finkle_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:16:39.182Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Insufficient text: 141 chars"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 42,
+  "tierReason": "Short text (42 words)"
 }

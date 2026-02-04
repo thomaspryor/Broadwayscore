@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Tovah Feldshuh gives a commanding performance in this Holocaust drama, though the play itself feels more like an earnest history lesson than compelling theater.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,14 +64,14 @@
   "wordCount": 955,
   "tierReason": "Full review text",
   "llmScore": {
-    "score": 69,
+    "score": 70,
     "confidence": "medium",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 65,
+      "high": 75
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -80,12 +80,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "It's a testament to the integrity of Feldshuh's performance and of the woman she's playing that the audience responds even while being so transparently manipulated.",
+        "quote": "There's a difference between an inspiring story and inspired storytelling.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic consistently praises Feldshuh's transformative performance and acknowledges the story's power, but heavily criticizes the 'by-the-numbers script,' 'clunky dramaturgy,' and 'bad playwriting.' The review concludes that audiences respond despite transparent manipulation, indicating a qualified, mixed recommendation. | GPT-4o: The review acknowledges the compelling story and strong lead performance but criticizes the script and production as over-explanatory and lacking in depth. The overall tone suggests appreciation for the story and performance but significant reservations about the execution. | Gemini: The review acknowledges flaws in the writing and production but ultimately finds the story engrossing and Feldshuh's performance compelling, making it a qualified recommendation. | Kimi: While the critic heavily criticizes the 'by-the-numbers' script, 'pedestrian' direction and 'thinly fleshed-out' supporting characters, they ultimately recommend the show based on Feldshuh's 'transformative' central performance and the 'engrossing' true story, noting that the emotional power of the material outweighs the flawed execution. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges the powerful true story and Feldshuh's transformative performance, but consistently criticizes the 'by-the-numbers script,' 'clunky dramaturgy,' and 'bad playwriting.' The final line crystallizes this mixed assessment - praising the story while faulting the theatrical execution. | GPT-4o: The review acknowledges the compelling nature of the story and Feldshuh's performance but criticizes the script's execution and the production's reliance on manipulation, resulting in a mixed recommendation. | Gemini: The review acknowledges flaws in the script and production, but ultimately finds the story engrossing and Feldshuh's performance compelling, suggesting it's worth seeing despite its weaknesses. | Kimi: While the critic finds Dan Gordon's script 'by-the-numbers' and the production 'pedestrian,' he praises Tovah Feldshuh's 'transformative performance' and calls the true story 'engrossing,' suggesting the emotional impact and lead performance outweigh the dramaturgical flaws. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -95,7 +95,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:12:32.324Z",
+    "scoredAt": "2026-02-04T01:11:44.088Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -105,12 +105,12 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
-    "kimiScore": 72,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

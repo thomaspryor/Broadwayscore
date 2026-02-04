@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/of-mice-and-men",
   "publishDate": "April 16, 2014",
-  "fullText": "Franco and O'Dowd make for an unlikely but effective pairing, with Franco's George displaying a weary tenderness and O'Dowd's Lennie avoiding the trap of making his character's disability seem like a cute quirk.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Franco and O'Dowd make for an unlikely but effective pairing, with Franco's George displaying a weary tenderness and O'Dowd's Lennie avoiding the trap of making his character's disability seem like a cute quirk.",
   "originalScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Franco and O'Dowd make for an unlikely but effective pairing, with Franco's George displaying a weary tenderness and O'Dowd's Lennie avoiding the trap of making his character's disability seem like a cute quirk.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (33 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/of-mice-and-men",
@@ -77,5 +77,37 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "textWordCount": 73,
+  "archivePath": "data/archives/reviews/of-mice-and-men-2014/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:39:27.075Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140405235202",
+  "archiveOrgUrl": "http://web.archive.org/web/20140405235202/http://www.timeout.com:80/newyork/theater/of-mice-and-men",
+  "textIssues": [
+    "Word count too low: 73 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Director Anna D. Shapiro (August: Osage County) revives John Steinbeck's 1937 dramatization of his hardscrabble novel about migrant field workers in Depression-era California. James Franco plays big-dreaming George and Chris O'Dowd is the man-child Lennie, who doesn't know his own strength.\n\nLongacre Theatre\n \n 220 W 48th St\n \n \n Midtown West\n \n New York\n\nbetween Broadway and Eighth Ave\n\nshubertorganization.com/theatres/longacre.asp\n\nSubway: C, E, 1 to 50th St; N, Q, R to 49th St\n\nTheater. Revival. Drama"
 }

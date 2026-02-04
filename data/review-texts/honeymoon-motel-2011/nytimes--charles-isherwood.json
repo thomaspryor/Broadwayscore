@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'Honeymoon Motel' feels like an extended comedy sketch that has overstayed its welcome, despite some clever moments and energetic performances from its cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical 'Honeymoon Motel' feels like an extended comedy sketch that has overstayed its welcome, despite some clever moments and energetic performances from its cast.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical 'Honeymoon Motel' feels like an extended comedy sketch that has overstayed its welcome, despite some clever moments and energetic performances from its cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows a mixed verdict - acknowledges 'clever moments and energetic performances' but criticizes it as overstaying its welcome. With only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt describes the show as having 'overstayed its welcome,' indicating a negative overall impression despite acknowledging 'clever moments' and 'energetic performances.' The lack of full context and single excerpt warning suggest a cautious approach, placing it in the Negative bucket. | Gemini: The review acknowledges \"clever moments and energetic performances\" but ultimately states the show \"has overstayed its welcome,\" indicating a mixed reaction. Due to the single excerpt, confidence is low. | Kimi: The review uses 'despite' to frame the performances and clever moments as insufficient to overcome the central criticism that the show 'overstayed its welcome.' This indicates a negative overall verdict where performer praise does not redeem the production. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:30:57.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

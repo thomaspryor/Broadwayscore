@@ -425,7 +425,7 @@ async function searchDTLI(show) {
   for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('review-item')) {
+    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
@@ -1097,8 +1097,11 @@ async function searchBWWRoundup(show, year) {
 
   const searchUrls = [];
   for (const title of titleVariations) {
+    // BWW URLs have inconsistent capitalization — try common variants
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
+    searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
   }
 
@@ -1122,6 +1125,45 @@ async function searchBWWRoundup(show, year) {
       return { url, html: result.html };
     }
     await sleep(200);
+  }
+
+  // Final fallback: Google search for the BWW roundup page
+  const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+  if (SCRAPINGBEE_KEY) {
+    try {
+      const titleForSearch = show.title.replace(/'/g, '');
+      const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" broadway ${year}`;
+      console.log(`    Trying Google search for BWW roundup...`);
+      const apiUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(searchQuery)}&nb_results=5`;
+      const searchResult = await new Promise((resolve, reject) => {
+        const req = https.get(apiUrl, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) {
+              try {
+                const results = JSON.parse(data);
+                const urls = (results.organic_results || [])
+                  .map(r => r.url)
+                  .filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'));
+                resolve(urls.length > 0 ? urls[0] : null);
+              } catch (e) { resolve(null); }
+            } else { resolve(null); }
+          });
+        });
+        req.on('error', () => resolve(null));
+        req.setTimeout(15000, () => { req.destroy(); resolve(null); });
+      });
+      if (searchResult) {
+        console.log(`    ✓ Found via Google: ${searchResult}`);
+        if (chromium) {
+          const result = await scrapeBWWRoundupWithPlaywright(searchResult);
+          if (result) return { url: searchResult, html: result.html };
+        }
+        const result = await searchAggregator('BWW', searchResult);
+        if (result.found && result.html) return { url: searchResult, html: result.html };
+      }
+    } catch (e) { /* Google search failed, continue */ }
   }
 
   console.log('    ✗ Not found on BWW');

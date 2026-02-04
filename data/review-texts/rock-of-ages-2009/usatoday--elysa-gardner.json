@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment highlighting the show's success and balanced approach, though brief text limits confidence in full critical stance. | GPT-4o: The review expresses a positive view of the show, highlighting its success and genuine affection for the era, indicating a solid recommendation. | Gemini: The review expresses a positive sentiment, highlighting the show's respect for its source material and its lighthearted approach, indicating a recommendation. | Kimi: The critic offers clear praise for the show's lighthearted tone and genuine affection for the era, explicitly stating it succeeds, though the brevity suggests this may be an excerpt rather than a complete review.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment saying the show 'succeeds' with praise for its approach and genuine affection for the material, though brief text limits confidence. | GPT-4o: The review praises the show's approach and affection for its subject, indicating a positive recommendation. However, the lack of superlatives or detailed praise suggests some reservations, placing it in the lower range of the Positive bucket. | Gemini: The review expresses a positive sentiment, highlighting the show's success due to its lightheartedness and respect for the music. This indicates a recommendation, albeit with a possible reservation implied by the 'in large part' qualifier. | Kimi: While brief, the review clearly praises the show's self-aware tone and genuine affection for the 1980s rock era, offering a solid recommendation despite the excerpt length.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:33:49.411Z",
+    "scoredAt": "2026-02-04T02:13:59.950Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,12 +61,12 @@
     "claudeScore": 76,
     "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -8,5 +8,41 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 169,
+  "archivePath": "data/archives/reviews/bob-fosses-dancin-2023/broadwaynews--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:56:18.221Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 181 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "New York City streets dance with Bob Fosse's influence. The American artist materialized as one of the great, idiosyncratic talents of the mid-20th century with a genre of choreography that became standard practice in musical theater, burlesque and drag. References to his work continue to emerge in popular culture (FX's starry 2019 series \"Fosse/Verdon,\" performances in recent seasons of \"RuPaul's Drag Race\" for starters), and a new production of the 1978 musical \"Dancin'\" aims to educate younger generations, and remind seasoned ones, of the man from which they originated. Now called \"Bob Fosse's Dancin',\" the revue of the late maestro of movement's signature stylings includes classics like \"Mr. Bojangles,\" \"Big Spender,\" \"Let Me Entertain You\" and more. Sixteen formidable dancers with the endurance of Olympic athletes push through two hours and 15 minutes of hip rolls and bevels, high-flying leaps and fouetté turns to a raucous audience of fans who treat the recital more like a rock concert. Rightfully so, because \"Dancin'\" is as metal as musical theater gets.",
+  "contentTier": "needs-rescrape"
 }

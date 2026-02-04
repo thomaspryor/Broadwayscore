@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf_90646.html",
   "publishDate": "April 21, 2022",
-  "fullText": "The revival brings fresh energy and contemporary relevance to Ntozake Shange's groundbreaking choreopoem, with performances that are both powerful and deeply moving.",
-  "isFullReview": false,
+  "fullText": "Chris Evans is in talks to costar in an upcoming film remake of Little Shop of Horrors, according to published reports.\n\nEvans would take on the role of sadistic dentist Orin Scrivello. The leading roles, Seymour and Audrey, are in talks to be played by Taron Egerton and Scarlett Johansson, with Billy Porter already signed, according to the Hollywood Reporter, to play carnivorous plant Audrey II. Greg Berlanti will direct.\n\nLittle Shop of Horrors is written by Howard Ashman and Alan Menken. An off-Broadway revival, starring Tammy Blanchard, Christian Borle, and Gideon Glick, is currently running at the Westside Theatre.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "The revival brings fresh energy and contemporary relevance to Ntozake Shange's groundbreaking choreopoem, with performances that are both powerful and deeply moving.",
   "originalScore": null,
   "assignedScore": 79,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 200,
+  "archivePath": "data/archives/reviews/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:56:14.346Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 200 (min: 300)"
+  ],
+  "wordCount": 200,
+  "tierReason": "Short text (200 words)"
 }

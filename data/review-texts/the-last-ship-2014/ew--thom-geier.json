@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Last Ship has a handsome, weathered look and a game cast, but Sting's songs feel more like a collection of pretty ballads than a cohesive score that drives the story forward.",
   "originalScore": 72,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sting's songs feel more like a collection of pretty ballads than a cohesive score that drives the story forward.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic's own 72 rating suggests mixed-positive territory, but the review emphasizes significant structural flaws in the score despite praising visual elements and cast commitment. | GPT-4o: The review highlights positive aspects like the 'handsome, weathered look' and 'game cast' but criticizes the music for lacking cohesion. The original rating of 72 suggests a barely positive view, but the text leans more towards a mixed assessment. | Gemini: The review acknowledges positive aspects like the show's look and the cast, but criticizes the cohesiveness of the songs. Given the critic's rating of 72, this aligns with a barely positive recommendation. | Kimi: The critic's own rating of 72 places this firmly in the Positive bucket. While the review praises the visual design and performances, it criticizes the score's lack of narrative drive, warranting a score at the lower end of the Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:48:19.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

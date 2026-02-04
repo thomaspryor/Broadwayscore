@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 45,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the lead's talent, the critic finds major flaws in direction ('automatic pilot'), adaptation choices ('suffocatingly close'), and performances ('discomfort', 'doesn't seem entirely at ease'). The overall assessment is clearly negative. | GPT-4o: The excerpt highlights significant criticism of the direction and performance discomfort, suggesting a negative view. However, the single excerpt limits confidence in fully capturing the review's sentiment. | Gemini: The review excerpt is mostly negative, criticizing the direction, choreography, and the lead actress's performance. The overall tone suggests a lack of originality and discomfort. | Kimi: While acknowledging Barks' innate talent, the excerpt criticizes the direction as uninspired ('automatic pilot'), the adaptation as suffocatingly faithful to the film, and both lead performances as uneasy and uncomfortable.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the lead performer as uncomfortable and sitcom-like, pans the direction as 'automatic pilot,' and faults the adaptation for being suffocatingly close to the source. However, single excerpt warning applies - the full review verdict may differ from this negative sample. | GPT-4o: The excerpt criticizes the direction and choreography as uninspired and suggests the performances fail to overcome comparisons to the original. The tone is negative, but due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is mostly negative, criticizing the direction, choreography, and adherence to the film. While acknowledging the actress's talent, it ultimately suggests a disappointing experience. | Kimi: While acknowledging the lead's talent, the critic pans the direction as mechanical and the adaptation as suffocatingly faithful to the film, noting the performers' visible discomfort.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:18:13.491Z",
+    "scoredAt": "2026-02-04T02:01:19.310Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,14 +61,14 @@
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 46,
+    "kimiScore": 44,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 4,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

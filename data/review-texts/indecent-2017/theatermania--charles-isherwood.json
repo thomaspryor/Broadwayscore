@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/indecent_78825.html",
   "publishDate": "April 19, 2017",
-  "fullText": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power, a meditation on art, persecution, and the enduring strength of love that transcends boundaries of time and geography.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power, a meditation on art, persecution, and the enduring strength of love that transcends boundaries of time and geography.",
   "originalScore": null,
   "assignedScore": 86,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's Indecent is a work of considerable ambition and genuine emotional power, a meditation on art, persecution, and the enduring strength of love that transcends boundaries of time and geography.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
     "score": 86,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 86,
+  "textWordCount": 257,
+  "archivePath": "data/archives/reviews/indecent-2017/theatermania--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:52:56.446Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 257 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The ”Dancing With the Stars” favorite makes his Broadway debut.\n\nDancing With the Stars favorite Mark Ballas makes his Broadway debut as Frankie Valli in the Tony Award-winning musical Jersey Boys tonight, October 18, at the August Wilson Theatre.\n\nThe musical — written by Marshall Brickman and Rick Elice, with music by Bob Gaudio, lyrics by Bob Crewe — tells the story of Frankie Valli and the Four Seasons: Frankie Valli, Bob Gaudio, Tommy DeVito, and Nick Massi, and includes dozens of their popular hits including \"Walk Like a Man,\" \"Sherry,\" \"Big Girls Don't Cry,\" \"Oh What a Night,\" and \"Can't Take My Eyes Off of You.\"\n\nJersey Boys opened on Broadway on November 6, 2005, after playing an out-of-town tryout run at the La Jolla Playhouse. A film version directed by Clint Eastwood was released in 2014. The Broadway mounting will end its run after 11 years in January.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

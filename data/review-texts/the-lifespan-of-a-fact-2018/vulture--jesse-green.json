@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Lifespan of a Fact is a play about the clash between truth and art, between journalism and literature, between what happened and what makes for a good story.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T03:50:15.365Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be just a plot summary or description of the play's themes, with no critical evaluation or recommendation from the critic.; openai: This text is a plot summary with no evaluation or opinion about the production.; gemini: This is a plot summary with no evaluative content or recommendation.; kimi: The text provides only a thematic summary of the play's subject matter (journalism vs. literature) with no evaluative content, opinion, or critical assessment of the production quality.",
+  "promptVersion": "5.2.0"
 }

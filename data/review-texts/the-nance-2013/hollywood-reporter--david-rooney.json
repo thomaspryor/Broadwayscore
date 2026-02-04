@@ -6,10 +6,10 @@
   "url": "https://www.hollywoodreporter.com/news/general-news/broadway-review-nance-645127/",
   "publishDate": "April 16, 2013",
   "fullText": null,
-  "isFullReview": true,
+  "isFullReview": false,
   "dtliExcerpt": "Nathan Lane gives a powerhouse performance in Douglas Carter Beane's moving drama about a comedian who performs in drag in 1930s burlesque houses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,49 +23,59 @@
     "web-search",
     "playbill-verdict"
   ],
-  "textWordCount": 453,
-  "archivePath": "data/archives/reviews/the-nance-2013/hollywood-reporter--david-rooney_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T01:55:20.070Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Nathan Lane gives a powerhouse performance in Douglas Carter Beane's moving drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises Lane's 'powerhouse performance' and calls the drama 'moving', indicating positive reception. However, this is only one curated quote, so confidence is low and verdict may not represent the full review. | GPT-4o: The excerpt highlights a strong performance by Nathan Lane and describes the drama as 'moving,' suggesting a positive impression. However, due to the single excerpt warning, the overall sentiment might not be fully captured, leading to a lower confidence level. | Gemini: The excerpt praises Nathan Lane's performance as a \"powerhouse\" in a \"moving drama.\" Given the limited text, I am scoring it as positive, but with low confidence. | Kimi: The single available excerpt contains strongly positive language ('powerhouse performance,' 'moving drama'), indicating a clear recommendation in the upper Positive range. However, confidence is low due to the limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "RIO DE JANEIRO – “In season 5 I pitched to kill Sookie, I really did,” revealed True Blood writer/executive producer Raelle Tucker of Anna Paquin's character who was close to disappearing from the show “because I think nobody should be safe.”\n\nTucker joined Grey's Anatomy's co-producer William Harper last week to talk about their decision to kill off characters and other curiosities about their shows at a seminar about TV series production at Rio Market, an industry sidebar at Rio de Janeiro Film Festival.\n\nDuring the seminar moderated by Brazilian screenwriter Ren&ecirc; Belmonte, the Brazilian audience was interested to know how they felt about the audience being upset after a character is out of the show.\n\nPHOTOS: ‘True Blood’s’ 10 Bloodiest Deaths\n\n\"It's a good feeling if the audience is feeling upset when a character dies, that means we have done our job right,\" Tucker said. The TV writer continued to explain that there is a certain amount of death that they need to have because people are constantly on the verge of almost being killed, so if authors don't kill somebody, “there is no point.”\n\nMeanwhile, Grey's Anatomy's Harper said he finds it challenging when a great actor needs to exit the show, stating, \"Our stories have a naturally ending, so it's a combination of actors wanting to move on and a character having a naturally end to their stories.”\n\nHarper also addressed the success of the medical TV series going strong in its tenth season.\n\n\"Shonda [Rhimes] has a very specific voice and in 2005 no one had never heard that voice before and she came up with the show that put a lot of people in the same position as the main characters and spoke to that voice and it wrap the audience really quickly,\" he said.\n\nMeanwhile, Tucker said that one of the main reasons for True Blood's success is the support of the network and the studio.\n\nSTORY: On the Set of Stephen Daldry’s ‘Trash’ in Rio: Stray Dogs and a Massive Garbage Dump\n\nTucker also expressed that television \"has never been so exciting\", especially with the addition of the new platforms like Netflix, Amazon and Hulu: “It feels that the only limitation on television is what you can imagine, there is no boundaries of what you can say, what you can do.”\n\nThe producer/screenwriter is also developing two new series including an untitled project about a woman trying to break into a male dominated industry involving murder and drugs. The second is called Junction, a story set in Silver Lake, a neighborhood in Los Angeles. The series is about an unconventional relationship between two women in their 20’s.\n\nRio de Janeiro International Film Festival ends Oct. 10."
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:57:19.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

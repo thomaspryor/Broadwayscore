@@ -20,7 +20,7 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 61,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 56,
       "high": 66
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the show 'overly familiar and schematic' despite praising performances. This suggests significant structural flaws that outweigh the acting positives. Single excerpt warning requires caution - the negative framing may not represent the full verdict. | GPT-4o: The excerpt suggests a mixed review, noting the play's familiarity and schematic nature, but also acknowledging some positive performances. The single excerpt warning and lack of full context lead to a low confidence score. | Gemini: The review excerpt indicates that the play is \"overly familiar and schematic\" but has \"some winning performances,\" suggesting a mixed assessment. Due to the limited text, confidence is low. | Kimi: The excerpt criticizes the play as 'overly familiar and schematic' while acknowledging 'winning performances,' but the contrast word 'despite' indicates the acting doesn't overcome the script's formulaic nature. With only one excerpt available, the verdict remains uncertain but leans mixed.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows fundamental criticism of the material as 'overly familiar and schematic' while acknowledging 'winning performances.' The structure suggests overall disappointment despite positive elements. | GPT-4o: The excerpt indicates a mixed review, highlighting the play's familiarity and schematic nature while acknowledging some positive aspects in the performances. The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review notes that the show feels \"overly familiar and schematic\" but acknowledges \"some winning performances,\" indicating a mixed assessment. Due to the limited text, confidence is low. | Kimi: The critic finds the play itself 'overly familiar and schematic' (clear criticisms) while acknowledging 'winning performances' as the only redeeming quality. This follows the classic pattern of performer-praise-not-redeeming-pan, indicating a recommendation against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:41:57.140Z",
+    "scoredAt": "2026-02-04T01:38:20.458Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,17 +60,17 @@
     "claudeScore": 62,
     "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 61,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

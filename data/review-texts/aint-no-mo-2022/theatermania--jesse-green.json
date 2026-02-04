@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/aint-no-mo-jordan-e-cooper_93179.html",
   "publishDate": "December 4, 2022",
-  "fullText": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper's play is a fierce, funny, and sometimes messy satire that uses the fantasy of Black exodus to examine the reality of Black existence in America.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 76,
@@ -73,5 +73,48 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 373,
+  "archivePath": "data/archives/reviews/aint-no-mo-2022/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:33:33.191Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The new musical is set to songs made famous by female artists.\n\nCasting has been announced for the world premiere of Punk Rock Girl, coming to Long Island's Argyle Theatre this January. Performances are set to run from January 20-February 27, 2022, with an official opening on January 22.\n\nPunk Rock Girl is a new musical scored by popular songs written and made famous by female artists and female-fronted bands including Blondie, Pat Benatar, Avril Lavigne, Joan Jett, P!nk, Gwen Stefani, and more. In partnership with Lively McCabe Entertainment, the show features a book and arrangements by Tony nominee Joe Iconis (Be More Chill), and arrangements and orchestrations by Rob Rokicki (The Lightning Thief). Jennifer Werner directs and choreographs, with musical direction by Jennifer Peacock.\n\nPunk Rock Girl is described as follows: \"16-year-old Angela Quivers is a perfectionist who never takes chances and feels like there's no place where she belongs … until she meets Proxi, a teenager who pulls her into a world of grungy guitars, shocking secrets, and big, loud, messy emotions. A musical about a young person finding a community and creating her tribe, Punk Rock Girl is a noisy celebration of all things raw and ragged; trashy and heartfelt; familiar and alien.\"\n\nThe cast features Philippe Arroyo, Kayla Catan, Seth Eliser, Jaylan Evans, Kalonjee Gallimore, Ashley LaLonde, Lauren Marcus, Jackson Mattek, Jordan Leigh McCaskill, Kelly McIntyre, Natalie Powers, Mikaela Rada, Brooke Shapiro, and Brad Weatherford.\n\nRounding out the creative team are associate director and choreographer Leonard Sullivan, set designer Nate Bertone, costume designer Jen Caprio, lighting designer John Salutz, sound designer Carlos Dias Jr, and prop designer Steven Velasquez.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "James Tyrone is as miserly as ever in the Roundabout Theatre Company’s Broadway revival of Eugene O’Neill’s “Long Day’s Journey Into Night,” which opened Wednesday at the American Airlines Theatre. Gabriel Byrne plays Tyrone with reserved, desiccated style. Every prematurely extinguished lightbulb, all those cheap hotel rooms he booked on the road, that quack doctor he ordered for his wife, and now the charity sanitarium where he’ll send his son to die of consumption — it’s all there in the tight, controlled way Byrne talks and moves and even sips his whiskey.",
+  "isFullReview": false,
+  "textWordCount": 92,
+  "archivePath": "data/archives/reviews/long-days-journey-into-night-2016/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:20:50.926Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 92,
+  "tierReason": "Short text (92 words)"
 }

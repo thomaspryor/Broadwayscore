@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Beatles tribute show, which opened Wednesday night at the Neil Simon Theater, is a slick, shriekingly loud and numbingly faithful reproduction of the Fab Four's musical evolution.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 44,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The language is clearly critical - 'shriekingly loud' and 'numbingly faithful' are negative descriptors, suggesting the show is overly loud and boringly predictable. However, with only one excerpt available, the full verdict may not be represented here. | GPT-4o: The excerpt describes the show as 'slick, shriekingly loud and numbingly faithful,' suggesting a negative tone. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes the show as a 'reproduction,' which suggests accuracy but lacks enthusiasm. The terms 'slick' and 'shriekingly loud' are neutral, indicating a mixed assessment. Given the limited text, a 'Mixed' score is appropriate. | Kimi: While the critic acknowledges the production is 'slick' and technically faithful to the source material, the descriptors 'shriekingly loud' and 'numbingly' suggest the experience is sensory-overloading and dull rather than entertaining, indicating a recommendation against seeing the show.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The language is clearly negative - 'shriekingly loud' and 'numbingly faithful' are critical descriptions, with 'numbingly' being particularly damning. However, with only one excerpt available, I'm scoring conservatively in the negative range. | GPT-4o: The excerpt describes the show as 'slick' and 'numbingly faithful,' indicating a lack of originality or excitement. The tone suggests a mixed reception, with neither strong praise nor outright criticism. | Gemini: The review excerpt describes the show as a \"reproduction,\" which suggests accuracy but lacks enthusiasm or a clear recommendation. Given the limited text, a mixed score seems appropriate. | Kimi: The excerpt offers faint praise ('slick') but emphasizes negative sensory experience ('shriekingly loud') and boredom ('numbingly faithful'), suggesting a technically proficient but tedious production. With only one excerpt available, the full verdict remains unclear.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:27:16.949Z",
+    "scoredAt": "2026-02-04T02:09:59.455Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
+    "claudeScore": 40,
+    "openaiScore": 60,
     "geminiScore": 60,
-    "kimiScore": 46,
+    "kimiScore": 62,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

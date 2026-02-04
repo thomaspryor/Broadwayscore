@@ -5,8 +5,8 @@
   "criticName": "David Finkle",
   "url": "https://www.theatermania.com/broadway/reviews/gypsy_17953.html",
   "publishDate": "March 27, 2008",
-  "fullText": "Patti LuPone's Rose is a force of nature, delivering one of the most powerful performances Broadway has seen in years.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Patti LuPone's Rose is a force of nature, delivering one of the most powerful performances Broadway has seen in years.",
   "originalScore": null,
   "assignedScore": 86,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Patti LuPone's Rose is a force of nature, delivering one of the most powerful performances Broadway has seen in years.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (20 words)",
   "llmScore": {
     "score": 86,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 86,
+  "textWordCount": 212,
+  "archivePath": "data/archives/reviews/gypsy-2008/theatermania--david-finkle_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:22:33.166Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 212 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "City Lit Theater has announced casting for its productions of Noel Coward’s Private Lives and Harold Pinter’s Old Times, which will play in rotating repertory. Both productions feature Don Bender and Cameron Feagin in the lead roles, with direction by Terry McCabe.\n\nPrivate Lives (March 20-May 3) will also feature Maggie Kettering, George Seegebrecht, and Shawna Tucker. The design team will include Tamar Geist (lighting), Thomas Kieffer (costumes), Christopher Kriz, (sound), Grant Sabin (set), and David Yondorf (fight choreography).\n\nGianine DeFrancesco will join Bender and Feagin in Old Times (March 27-May 3), with the design team including Tamar Geist (lighting), Thomas Kieffer (costumes), and Grant Sabin (set).\n\nFor more information, visit www.citylit.org.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

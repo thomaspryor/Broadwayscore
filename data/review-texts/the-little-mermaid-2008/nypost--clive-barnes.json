@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is visually sumptuous but dramatically thin, with a score that rarely soars above the mediocre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is visually sumptuous but dramatically thin, with a score that rarely soars above the mediocre.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is visually sumptuous but dramatically thin, with a score that rarely soars above the mediocre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt warning applies - this balanced critique praises visuals but criticizes drama and score as thin/mediocre, suggesting mixed reception without clear recommendation. | GPT-4o: The excerpt describes the show as visually appealing but lacking in dramatic substance and musical quality. The mixed assessment of strengths and weaknesses suggests a neither fully positive nor negative verdict. | Gemini: The review acknowledges visual appeal but criticizes the dramatic depth and score, indicating a mixed assessment. Given the single excerpt, confidence is low. | Kimi: While the critic praises the visual design as 'sumptuous,' the core theatrical elements receive sharp criticism: the drama is deemed 'thin' and the score 'mediocre.' For a musical, these are fundamental weaknesses that outweigh the production values, suggesting the critic does not recommend the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:51:21.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

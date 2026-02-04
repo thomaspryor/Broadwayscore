@@ -48,16 +48,16 @@
   "contentTier": "complete",
   "wordCount": 1032,
   "tierReason": "Full review text",
-  "assignedScore": 71,
+  "assignedScore": 65,
   "llmScore": {
-    "score": 71,
+    "score": 65,
     "confidence": "medium",
     "range": {
-      "low": 66,
-      "high": 76
+      "low": 60,
+      "high": 70
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -66,12 +66,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But, strange bird or not, I'm glad it's here.",
+        "quote": "I'm glad it's here. Not everything perfect is true, and not everything messy isn't.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic expresses clear appreciation for the show's bold ambition and unique qualities, praising the design, performances, and concept while acknowledging its messiness and structural issues. The final sentiment 'I'm glad it's here' indicates a positive recommendation despite reservations. | GPT-4o: The review acknowledges the play's messiness and lack of humor but appreciates its ambition and certain powerful moments. The critic expresses mixed feelings, appreciating its presence despite its flaws. | Gemini: The review is mixed, praising aspects like design and individual moments, but also noting that the argument wanders and the humor doesn't always land. The final sentiment is positive ('I'm glad it's here') but not a strong recommendation. | Kimi: While criticizing the play's structural messiness and inconsistent tone, the reviewer praises the design, direction, and performances, ultimately expressing gratitude for its presence on Broadway and defending its aesthetic of beautiful chaos. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green appreciates the ambition and design but finds significant flaws in execution - performances push too hard, arguments wander, not as funny as hoped. His final sentiment expresses qualified appreciation rather than recommendation. | GPT-4o: The review acknowledges the play's messiness and flaws but expresses appreciation for its presence on Broadway. The critic finds moments of power and conviction but notes the play isn't as funny as hoped and struggles with its contradictions. | Gemini: The review is mixed, praising aspects like design and individual moments but also noting that the argument wanders and the play isn't as funny as hoped. The final sentiment is positive ('I'm glad it's here') but qualified. | Kimi: The critic acknowledges significant flaws—the play is messy, the argument wanders, and it isn't as funny as hoped—but ultimately appreciates its ambition and unique vision, explicitly stating gratitude for its presence on Broadway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -81,26 +81,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:09:00.383Z",
+    "scoredAt": "2026-02-04T01:07:44.997Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 65,
     "openaiScore": 65,
     "geminiScore": 65,
-    "kimiScore": 77,
-    "claudeBucket": "Positive",
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

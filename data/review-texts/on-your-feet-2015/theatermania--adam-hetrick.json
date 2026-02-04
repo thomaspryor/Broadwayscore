@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical biography of Gloria and Emilio Estefan is a crowd-pleasing celebration of Latin music and culture, even if it hits familiar biographical beats.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The musical biography of Gloria and Emilio Estefan is a crowd-pleasing celebration of Latin music and culture, even if it hits familiar biographical beats.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical biography of Gloria and Emilio Estefan is a crowd-pleasing celebration of Latin music and culture, even if it hits familiar biographical beats.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'crowd-pleasing celebration' but the 'even if' qualifier about familiar beats suggests minor reservations, placing it in the lower positive range. | GPT-4o: The review describes the show as 'crowd-pleasing' and a 'celebration', indicating a positive reception, though it notes the familiarity of the biographical elements, suggesting some reservations. | Gemini: The review calls the show a \"crowd-pleasing celebration\" but notes that it \"hits familiar biographical beats,\" indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers a clear recommendation calling the show a 'crowd-pleasing celebration' with only a minor caveat about predictable biographical structure, indicating solid entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:46:20.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

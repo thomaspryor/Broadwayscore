@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "If you ever wondered what might happen if a karaoke machine exploded into a million bejeweled and bedazzled pieces, \"Moulin Rouge!\" is your answer. For the most part, it's also a smashing entertainment - exuberantly performed, briskly paced, and sumptuously designed in more shades of red than you pr...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part, it's also a smashing entertainment - exuberantly performed, briskly paced, and sumptuously designed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('smashing entertainment', 'exuberantly performed', 'sumptuously designed') indicates clear recommendation. Single excerpt warning noted - positioned in upper Positive range due to enthusiastic tone. | GPT-4o: The excerpt describes the show as 'smashing entertainment' with positive attributes like 'exuberantly performed' and 'sumptuously designed'. The single excerpt suggests a strong positive tone, but the lack of full context requires caution. | Gemini: The review excerpt describes the show as a \"smashing entertainment\" that is \"exuberantly performed, briskly paced, and sumptuously designed.\" This indicates a positive assessment, so I scored it as positive. Given that this is a single excerpt, I am setting the confidence to low. | Kimi: The excerpt offers strong praise for the production's entertainment value, performances, and design with phrases like 'smashing entertainment' and 'sumptuously designed,' though the 'for the most part' qualification and single excerpt format prevent a higher score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:41:22.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

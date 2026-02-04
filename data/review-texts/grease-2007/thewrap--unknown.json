@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "With live events being all the rage on broadcast television these days, it was only a matter of time before someone attempted to top NBC’s one-stage theatrical productions (“Peter Pan,” “The Sound of Music”). And so on Sunday night, weeks after NBC finally figured out that the third time’s a charm with “The Wiz Live,” Fox took over the reins with “Grease: Live,” two sound stages and an outdoor set at the mercy of El Nino.",
+  "isFullReview": false,
+  "textWordCount": 76,
+  "archivePath": "data/archives/reviews/grease-2007/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:19:44.845Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 82 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 76,
+  "tierReason": "Short text (76 words)"
 }

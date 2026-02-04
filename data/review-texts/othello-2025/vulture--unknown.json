@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Kenny Leon's passionless new production is about as far from that overlap as it's possible to get. Audience and ensemble alike are lost in a hinterland so disconcertingly sleepy and beige that it's hard to summon anything as visceral as fury.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's passionless new production is about as far from that overlap as it's possible to get.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the production 'passionless' and 'disconcertingly sleepy and beige,' but confidence is low due to single excerpt warning. | GPT-4o: The excerpt describes the production as 'passionless' and 'disconcertingly sleepy and beige,' indicating a negative assessment. However, with only one excerpt, the confidence is medium. | Gemini: The review excerpt describes the production as \"passionless,\" \"sleepy,\" and \"beige,\" indicating a negative assessment. Given the single excerpt, confidence is low. | Kimi: The critic describes the production as passionless, sleepy, and beige, indicating a lifeless staging that fails to engage emotionally, warranting a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:51:22.009Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "There’s an old Hollywood truism that good movies are made from second-rate books, not the classics. On Broadway, the new musical “Honeymoon in Vegas,” which opened Thursday at the Nederlander Theatre in New York, uses a second-rate movie from 1992 for its source material. Have its makers been able to turn it into a good musical? Or is this one effort that should have stayed in Vegas?\n\nHere and there, “Honeymoon in Vegas,” the musical, is better than good, with most of the good being Jason Robert Brown’s very plentiful score, which shows him in a much lighter, less ponderous...",
+  "isFullReview": false,
+  "textWordCount": 100,
+  "archivePath": "data/archives/reviews/honeymoon-in-vegas-2015/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:51:08.533Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "ends_with_ellipsis"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 106 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 100,
+  "tierReason": "Short text (100 words)"
 }

@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2017/jan/20/jitney-review-august-wilson-broadway",
+  "url": "https://www.theguardian.com/stage/2017/jan/19/jitney-review-august-wilson-manhattan-theatre-club",
   "publishDate": "January 20, 2017",
-  "fullText": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
-  "isFullReview": false,
+  "fullText": "‘One of Wilson’s great gifts has been locating the poetic and the performative in what strikes the ear as ordinary speech’ ... Jitney. Photograph: Joan MarcusView image in fullscreen‘One of Wilson’s great gifts has been locating the poetic and the performative in what strikes the ear as ordinary speech’ ... Jitney. Photograph: Joan Marcus This article is more than 9 years oldReviewJitney review – August Wilson's playful and poignant drama is a triumphThis article is more than 9 years oldSamuel J Friedman TheatreExtraordinary performances help to bring the decorated playwright’s 1979 script to life for the first time on Broadway\n\nThe Broadway debut of August Wilson’s Jitney by Manhattan Theatre Club is that very rare thing – a play that ought to be longer. Ruben Santiago-Hudson’s production runs two and a half hours and uses the whole of the published text. But the immersion in these characters and their world is so closely woven and complete that when the final line peals out, it’s hard not to wish for another act, another scene, another ride.\n\nRead moreOriginally written in 1979, though subsequently revised, Jitney, the last of Wilson’s century-cycle Decalogue to make it to Broadway, is set in 1977 at the station of an unlicensed car service on a crumbling block in Pittsburgh’s Hill District. (David Gallo did the tumbledown set, Toni Leslie-James the wide-lapel costumes.) The service is run by Becker (John Douglas Thompson), a retired mill worker and church deacon whose only son, Booster (Brandon J Dirden), has spent the last 20 years in prison for murder.\n\nEach day, a clutch of Becker’s drivers gather at the dispatch office to while away the time between fares with gossip, squabbles, jokes and games of checkers. Jitney, a masterful and garrulous piece of naturalism, is a play of rending and mending, an exploration of how we rip apart ourselves, each other, the fabric of a city, and how we might then go about patching what we have torn. The very station where the men loiter is slated to be condemned, though no one no believes that anything will be built to replace it. Many of the relationships – between father and son, between friends, between lovers – threaten to split in ways that resist repair. It is no accident that one of the drivers, Fielding, is a former tailor who can no longer makes clothes. “You don’t always have the kind of life that you dream about,” he says.\n\nMuch of the acting is extraordinary, particularly the lacerating father and son confrontation that closes the first act. Thompson and Dirden play characters who long desperately for closeness with one another, but are unwilling and unable to achieve it.\n\nBoth of them believe themselves right and admitting otherwise would shake their worlds too violently to risk it. Their quarrel is an interleaving of love and rage and pain, finely wrought and unnervingly raw. Particular praise should also go to Anthony Chisholm’s puckish, mournful Fielding.\n\nOne of Wilson’s great gifts has been locating the poetic and the performative in what strikes the ear as ordinary speech, to lift casual conversation into something more striking and more resonant. Santiago-Hudson, a longtime Wilson adherent as performer and director, has a fine ear for the play’s musicality. He is generous with his actors, letting them lark and preen as the language invites, but always in service of the play’s plot and themes. A moment of slack abstraction is one of the few wrong notes rung in what is otherwise a playful and poignant work.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
   "originalScore": null,
   "assignedScore": 91,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of August Wilson's Jitney is a masterclass in ensemble acting, bringing the playwright's keen eye for working-class Pittsburgh life to vivid, heartbreaking reality.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 91,
@@ -72,5 +72,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Rave"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2017/jan/20/jitney-review-august-wilson-broadway",
+  "urlDiscoveredAt": "2026-02-04T03:30:40.349Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "textWordCount": 607,
+  "archivePath": "data/archives/reviews/jitney-2017/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:30:40.352Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 607,
+  "tierReason": "Full review text"
 }

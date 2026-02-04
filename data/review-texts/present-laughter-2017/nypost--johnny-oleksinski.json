@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic directly criticizes the lead performance as irritating rather than charming, calling it 'a problem' for a show where the character dominates stage time. This suggests the production fails due to its central element. | GPT-4o: The review highlights a significant issue with the main character's portrayal, suggesting a negative impact on the show. The tone is critical, but the review is brief, leading to medium confidence. | Gemini: The review focuses on the negative portrayal of the main character, which significantly impacts the overall experience, leading to a negative assessment. | Kimi: The critic finds the central performance irritating rather than endearing, which they explicitly identify as a significant problem given the actor's constant presence onstage, indicating a negative recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the lead performance that dominates the show, calling the protagonist irritating rather than endearing, which indicates a negative assessment of the production overall. | GPT-4o: The review criticizes the lead performance as more negative than positive, which is problematic given the character's prominence in the show. This suggests a negative overall impression. | Gemini: The review focuses on a negative aspect of the lead performance, which is a major problem for the show's overall appeal. | Kimi: The critic identifies the central performance as irritating and problematic, particularly given the actor's constant presence. While the critique is specific to the lead rather than the entire production, the language ('problem') indicates a clear lack of recommendation, though the truncated nature of the text limits certainty about the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:16:34.299Z",
+    "scoredAt": "2026-02-04T01:59:47.637Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 42,
+    "kimiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

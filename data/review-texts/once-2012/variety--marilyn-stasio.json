@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This small, simple musical about the power of music to heal broken hearts and inspire artistic collaboration is so irresistibly charming that it practically seduces you into loving it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language with 'irresistibly charming' and 'seduces you into loving it' indicates enthusiastic recommendation without reservations. | GPT-4o: The review uses strong positive language, describing the musical as 'irresistibly charming' and suggesting it 'seduces you into loving it', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"irresistibly charming\" and \"seduces you into loving it,\" indicating a strong recommendation. | Kimi: The critic employs superlative language ('irresistibly charming', 'seduces you into loving it') to express unqualified enthusiasm for the production's emotional impact and artistry, with no caveats or reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:46:55.636Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

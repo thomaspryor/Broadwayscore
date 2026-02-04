@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1088,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taymor and Hwang have inadvertently undercut its pathos.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review consistently criticizes the revival's approach as 'didactic,' 'heavy-handed,' and lacking the mystery of the original. While acknowledging some visual spectacle and individual performances, the critic finds the production fundamentally flawed in its attempt to update the material. | GPT-4o: The review criticizes the production for being heavy-handed and lacking the original's theatricality, while praising some visual elements. The overall tone suggests disappointment, but the text is truncated, so the final verdict may be missing. | Gemini: The review acknowledges the play's importance and provocative nature, but criticizes the revival's execution and over-explanation. The truncated text makes the final verdict unclear, but the overall tone is mixed. | Kimi: While acknowledging Jin Ha's performance and the visual spectacle as strong elements, the critic consistently criticizes the revival as sluggish, didactic, and heavy-handed, finding that the production's literal approach fights against the work's inherent theatricality and emotional power. The text appears truncated, but the available conclusion clearly expresses disappointment with the directorial and adaptation choices.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:14:03.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

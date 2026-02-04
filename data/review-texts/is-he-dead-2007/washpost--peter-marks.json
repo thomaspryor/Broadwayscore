@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Shannon gives a wonderfully kooky performance as the artist who fakes his death to boost the value of his paintings, then must masquerade as his own sister to pull off the ruse.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michael Shannon gives a wonderfully kooky performance as the artist who fakes his death to boost the value of his paintings, then must masquerade as his own sister to pull off the ruse.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michael Shannon gives a wonderfully kooky performance as the artist who fakes his death to boost the value of his paintings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'wonderfully kooky.' Given limited text and potential cherry-picking, scored in upper Positive range but with low confidence due to incomplete review. | GPT-4o: The excerpt praises Michael Shannon's performance as 'wonderfully kooky', suggesting a positive view of his role. However, the lack of broader context makes it difficult to assess the overall tone of the review, leading to a low confidence score. | Gemini: The excerpt praises Michael Shannon's performance as \"wonderfully kooky.\" Given the limited text, it's difficult to ascertain the overall quality of the show, but the positive description of the performance suggests a positive, but not rave, review. | Kimi: The excerpt offers unqualified praise for Shannon's performance ('wonderfully kooky'), suggesting a positive assessment, though as a single curated quote it may not reflect the full review's verdict on the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:31:27.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

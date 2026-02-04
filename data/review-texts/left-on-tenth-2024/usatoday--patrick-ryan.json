@@ -31,12 +31,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But despite its very best intentions, the play is frustratingly surface level, rarely delving beyond Hallmark card sentiments",
+        "quote": "But despite its very best intentions, the play is frustratingly surface level, rarely delving beyond Hallmark card sentiments.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt clearly criticizes the show as 'frustratingly surface level' with 'Hallmark card sentiments' and 'verbose exposition,' indicating disappointment despite acknowledging good intentions. | GPT-4o: The excerpt criticizes the play for being surface level and relying on exposition, indicating a negative view. The lack of depth and hasty storytelling suggest a recommendation against seeing it. | Gemini: The review excerpt expresses disappointment, calling the play \"frustratingly surface level\" and relying on \"Hallmark card sentiments.\" The brevity of the excerpt lowers confidence. | Kimi: The excerpt consistently criticizes the production for lacking depth, rushing through material, and relying on verbose exposition, indicating a recommendation against seeing the show despite acknowledging its good intentions.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the play as 'frustratingly surface level' with 'Hallmark card sentiments' and 'verbose exposition.' Single excerpt warning noted, but the language is unambiguously negative about the show's execution despite acknowledging good intentions. | GPT-4o: The excerpt criticizes the play for being superficial and rushed, with a negative tone suggesting disappointment. The lack of depth and reliance on exposition are highlighted as significant flaws. | Gemini: The review excerpt expresses disappointment, stating the play is \"frustratingly surface level\" and relies on \"verbose exposition.\" This indicates a negative assessment, but the single excerpt and lack of a full review make confidence low. | Kimi: The critic describes the play as shallow, rushed, and reliant on verbose exposition, with dismissive comparisons to Hallmark sentiments indicating a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,13 +46,13 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:39:49.963Z",
+    "scoredAt": "2026-02-04T01:36:57.646Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 42,
     "openaiScore": 45,
     "geminiScore": 45,
     "kimiScore": 46,
@@ -60,7 +60,7 @@
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 1,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

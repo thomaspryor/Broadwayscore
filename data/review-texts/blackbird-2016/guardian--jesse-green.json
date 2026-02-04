@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2016/mar/11/blackbird-review-jeff-daniels-michelle-williams-broadway",
+  "url": "https://www.theguardian.com/stage/2016/mar/10/blackbird-review-michelle-williams-and-jeff-daniels-stun-in-abuse-drama",
   "publishDate": "March 11, 2016",
-  "fullText": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
-  "isFullReview": false,
+  "fullText": "Blackbird: the play courts ethical dangers. Photograph: Brigitte LacombeView image in fullscreenBlackbird: the play courts ethical dangers. Photograph: Brigitte Lacombe This article is more than 9 years oldReviewBlackbird review – Michelle Williams and Jeff Daniels stun in abuse dramaThis article is more than 9 years oldBelasco Theater, New YorkA distressing, nuanced two-hander about the dangerous influence and magnetism of traumatic events, this is the most lacerating play on Broadway\n\nIt is hard to imagine a setting more drab than that of David Harrower’s Blackbird, an office lunchroom devoid of any detail or character, its sole splashes of color provided by food wrappers spilling from an overflowing trash can and unappetizing snacks arrayed in a half-filled vending machine. It is lit only by buzzing fluorescents. At least until the fireworks start.\n\nThese pyrotechnics are provided by Jeff Daniels as Ray and Michelle Williams as Una, former lovers who meet 15 years later when Una tracks Ray down at his dismal office job. Few reunions of this sort are happy, but this one is especially fraught. When they began and ended their sexual relationship, Una was 12 and Ray was 40. He spent time in jail once the abuse was discovered and has since changed his name and perhaps his life.\n\nBlackbird, which was last seen in 2007 with Daniels as Ray and Alison Pill as Una, is a distressing two-hander about the dangerous influence and magnetism of traumatic events. It courts ethical dangers, in daring to characterize the bond between abuser and abused as a kind of perverse love story, though that is doubtless how some survivors and aggressors will choose to view their experience.\n\nView image in fullscreenThe play explores the crossed wires of pain and desire. Photograph: Brigitte LacombeUnder Joe Mantello’s direction, there is considerable tension in the opening moments, not all of it calculated or purposeful. Daniels begins the play in such a paroxysm of fear and anger that one worries he will quickly exhaust himself. Williams’s speech and gait (she’s wearing a pair of tawdry high heels) have a troubling artificiality.\n\nYet this reveals itself not as actorly uncertainty, but rather as particular and nuanced approaches to character. In Ray’s immediate panic, Daniels suggests the flimsy ground on which his new life is built and the improbability that he has indeed changed. “I was never one of them,” he insists, referring to other child predators. “I was never that.” The play and Daniels’ performance make these protestations ambiguous.\n\nIn Una’s self-conscious performativity, Williams indicates an emotionally stunted young woman whose earlier ordeal has prevented her from ever establishing a coherent adult identity. As the play continues, she begins to exhibit a strong dissociative quality, showing the confusion she still experiences, the crossed wires of pain and desire. When Ray complains that he has already served his sentence, Una responds: “I did the sentence. I did your sentence for 15 years.” And it’s clear that she’s doing it still. “I lost more than you ever did,” she says. “I lost because I never had time to begin.”\n\nThere are no weapons on display here – no knives, no guns, no stage blood – but this is the most lacerating play on Broadway this season. It leaves marks – on the audience, who may find some moments almost unbearably painful to watch, and on the actors too, who appeared drained and devastated at the curtain call. Despite the evocations of the title, in this Blackbird, no one gets to be free.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 77,
@@ -78,5 +78,48 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.theguardian.com/stage/2016/mar/11/blackbird-review-jeff-daniels-michelle-williams-broadway",
+  "urlDiscoveredAt": "2026-02-04T02:48:15.958Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 600,
+  "archivePath": "data/archives/reviews/blackbird-2016/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:48:15.962Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 600,
+  "tierReason": "Full review text"
 }

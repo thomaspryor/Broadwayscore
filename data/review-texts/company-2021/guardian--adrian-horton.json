@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Adrian Horton",
-  "url": "https://www.theguardian.com/stage/2021/dec/10/company-review-patti-lupone-katrina-lenk-broadway",
+  "url": "https://www.theguardian.com/stage/2018/oct/17/company-review-sex-switch-sondheim-gielgud-theatre-london",
   "publishDate": "December 10, 2021",
-  "fullText": "This gender-flipped revival of Stephen Sondheim's Company is a revelatory reimagining that feels both fresh and faithful, anchored by Katrina Lenk's nuanced performance as Bobbie.",
-  "isFullReview": false,
+  "fullText": "Dream-like quality … Rosalie Craig as Bobbie with Pattie LuPone, left, as Joanne, in Company directed by Marianne Elliott. Photograph: Tristram Kenton/The GuardianView image in fullscreenDream-like quality … Rosalie Craig as Bobbie with Pattie LuPone, left, as Joanne, in Company directed by Marianne Elliott. Photograph: Tristram Kenton/The Guardian This article is more than 7 years oldReviewCompany review – sex-switch Sondheim proves a heavenly flingThis article is more than 7 years oldGielgud theatre, London Rosalie Craig and Patti LuPone star in Marianne Elliott’s reimagining of the musical about marriage and the single life\n\nA gender change can work wonders. It is no secret that Robert, the 35-year-old bachelor hero of this 1970 show with music and lyrics by Stephen Sondheim and book by George Furth, has now become the similarly unattached Bobbie. The transition, as embodied by Rosalie Craig, makes total sense in today’s world: my only reservation about an exhilarating evening is that the musical, in Marianne Elliott’s production, has lost some of its specific Manhattan identity.\n\nThe starting point is a surprise birthday party for Bobbie that both pinpoints her single status and enables her to view her married friends with an outsider’s mix of amusement and envy. Inevitably. the gender swap has a ripple effect on key numbers. You Could Drive a Person Crazy was originally an Andrews Sisters-style pastiche but now becomes the cry of three guys unable to comprehend the heroine’s refusal to conform. Even more radically, Getting Married Today articulates the prenuptial panic of a gay man, rather than a reluctant bride on the threshold of matrimony: Jonathan Bailey is both hilarious and sad as the sweatily nervous Jamie who, seeking to avoid final commitment, claims: “People will think I’m pregnant.”\n\nIf the show sharpens, through Bobbie, the dilemma facing the semi-detached woman, it also offers a hauntingly ambivalent study of marriage. You see that in one of Sondheim’s finest numbers, Sorry-Grateful, in which three married men express the constant tug between security and freedom: “You’re scared she’s starting to drift away – and scared she’ll stay.” And it’s a sign of the show’s complex structure that the same idea is reprised to comic effect in Barcelona where Bobbie is similarly torn over a one-night stand with a not-so-bright flight attendant.\n\nView image in fullscreenSharply characterised … Ben Lewis as Larry with Patti LuPone and Rosalie Craig. Photograph: Tristram Kenton/The GuardianCompany is one of the great grown-up musicals. However, where Harold Prince’s 1970 production was vertical, Elliott’s is horizontal. The original had a split-level chrome and Plexiglas set that captured the frenzy, anxiety and isolation of life in Manhattan.\n\nThe key idea behind Elliott’s production and Bunny Christie’s design is of Bobbie as a modern Alice in Wonderland exploring a set of sliding rooms that expose the foibles of married life. It gives the show a dream-like quality but obscures the implied connection between Manhattan and marriage and cramps Liam Steel’s choreography of the swaggering vaudevillian number, Side By Side By Side.\n\nAll else is heavenly. While a male Robert can sometimes seem a cold fish, Craig invests Bobbie with a palpable warmth, curiosity and hunger for life. She also registers a visible hurt when one potential husband turns out to be already committed.\n\nRead moreAbove all, Craig makes the point that the stakes are higher for Bobbie because of her ever-ticking biological clock. Patti LuPone brings her own brand of calculated asperity to the much-married Joanne and renders The Ladies Who Lunch like a cocktail-bar Medusa. The various couples are also sharply characterised, with Mel Giedroyc and Gavin Spokes as the jujitsu-loving Sarah and Harry, showing that marriage is often a sophisticated form of combat.\n\nCompany was the first musical I saw on Broadway and has always had a special place in my affections. It is gratifying to see it not just being revived but also intelligently reimagined.\n\nAt the Gielgud theatre, London, until 22 December.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "This gender-flipped revival of Stephen Sondheim's Company is a revelatory reimagining that feels both fresh and faithful, anchored by Katrina Lenk's nuanced performance as Bobbie.",
   "originalScore": null,
   "assignedScore": 87,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This gender-flipped revival of Stephen Sondheim's Company is a revelatory reimagining that feels both fresh and faithful, anchored by Katrina Lenk's nuanced performance as Bobbie.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 87,
@@ -73,5 +73,48 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.theguardian.com/stage/2021/dec/10/company-review-patti-lupone-katrina-lenk-broadway",
+  "urlDiscoveredAt": "2026-02-04T02:59:35.967Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 87,
+  "textWordCount": 670,
+  "archivePath": "data/archives/reviews/company-2021/guardian--adrian-horton_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:59:35.970Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 670,
+  "tierReason": "Full review text"
 }

@@ -5,8 +5,8 @@
   "criticName": "David Finkle",
   "url": "https://www.theatermania.com/broadway/reviews/sweeney-todd-the-demon-barber-of-fleet-street_6138/",
   "publishDate": "November 4, 2005",
-  "fullText": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
-  "isFullReview": false,
+  "fullText": "Two shows will be presented in Fall 2005: The Gay Life (October 18-30), with a score by Arthur Schwartz and Howard Dietz, concerns Anatol, a determined bachelor in turn-of-the century Vienna who eventually succumbs to the enchanting Liesl. Next up will be Good News (November 1-13), the Henderson, DeSylva & Brown romp about a football-obsessed collegian who falls for his tutor.\n\nIn Spring 2006, the company will present three shows, starting off with Jerome Kern and Otto Harbach’s Roberta (March 21-April 2), about an American man who inherits a Parisian dress shop and wisely seeks the assistance of a young woman of style and allure. It will be followed by Show Girl (April 25-May 7), a romanticization of the lives of aspiring theater people, with a score by George and Ira Gershwin and Gus Kahn. Set to close out the season is Let’s Face It (May 9-21), by Cole Porter and Dorothy and Herbert Fields, which concerns three suspicious wives who recruit three eager soldiers to help make their philandering husbands take notice of them.\n\nFor a subscription form, write to Musicals Tonight, 150 West 79th Street, Apt. 9A, New York, NY 10024. Single tickets will go on sale in September.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
   "originalScore": null,
   "assignedScore": 91,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (34 words)",
   "textQuality": "truncated",
   "llmScore": {
@@ -72,5 +72,43 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "textWordCount": 301,
+  "archivePath": "data/archives/reviews/sweeney-todd-2005/theatermania--david-finkle_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:23:02.388Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 301,
+  "tierReason": "Full review text"
 }

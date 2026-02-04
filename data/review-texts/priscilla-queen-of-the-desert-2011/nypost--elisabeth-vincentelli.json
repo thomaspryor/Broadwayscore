@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive overall assessment calling it a 'crowd-pleaser' with 'heart,' but acknowledges 'calculated moments' that need forgiving, suggesting solid recommendation with minor reservations. | GPT-4o: The review describes the show as a 'crowd-pleaser' with 'enough heart', indicating a positive recommendation despite some calculated elements. The overall tone is positive, suggesting the show is worth seeing. | Gemini: The review describes the show as a \"crowd-pleaser\" with \"enough heart\", indicating a positive recommendation, but the phrase \"calculated moments\" suggests reservations. | Kimi: While acknowledging manipulative elements ('calculated moments'), the critic clearly recommends the show as an entertaining, heartfelt crowd-pleaser that succeeds despite its flaws.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowd-pleaser' with 'heart,' though acknowledges some calculated manipulation. The 'forgive its calculated moments' suggests minor reservations but overall endorsement. | GPT-4o: The review describes the show as a 'crowd-pleaser' and acknowledges its ability to engage the audience, indicating a positive recommendation. However, the mention of 'calculated moments' suggests some reservations, placing it in the positive range with a moderate score. | Gemini: The review calls the show a 'crowd-pleaser' and says it has enough heart to forgive its flaws, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic clearly recommends the show as a 'crowd-pleaser' with 'heart,' while acknowledging some 'calculated moments' that require forgiveness—indicating a solid but qualified endorsement.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:21:21.905Z",
+    "scoredAt": "2026-02-04T02:03:48.841Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 74,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

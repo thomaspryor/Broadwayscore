@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2018/nov/09/king-kong-review-broadway-musical",
+  "url": "https://www.theguardian.com/stage/2018/nov/08/king-kong-review-braodway-musical",
   "publishDate": "November 9, 2018",
-  "fullText": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
-  "isFullReview": false,
+  "fullText": "Christiani Pitts in King Kong, less a musical than an amusement park ride perpetually needing repairs. Photograph: Matthew MurphyView image in fullscreenChristiani Pitts in King Kong, less a musical than an amusement park ride perpetually needing repairs. Photograph: Matthew Murphy This article is more than 7 years oldReviewKing Kong review – Broadway kills the beast in monstrously bad musicalThis article is more than 7 years oldBroadway Theatre, New YorkDespite the spectacle of a 2,400lb puppet, a shambolic production doesn’t know what to do with him and any magic quickly evaporates\n\nKing Kong arrives fashionably late. A third of the way through his eponymous, preposterous Broadway show, we hear his basso roar. And then we wait – two minutes, maybe three – white-knuckling our Playbills as his lowering footsteps come closer. Suddenly there he is, thundering pell-mell on to the stage, bellowing to shake the seats, with a leading lady gripped in his simian paw and a look like he means to murder most of the mezzanine. The ape knows how to make an entrance.\n\nRead moreBut it’s bountifully clear, from the first forgettable lyrics to the last gratuitous lines that no hominid involved in this glitzy shambles has any idea what to do with him. As a feat of stagecraft and structural engineering, Kong is cool. A creature with the delts of a prize fighter, the potbelly of a toddler, a possible addiction to Crest White Strips and the external genitalia of a Ken doll (the “he” is provisional), he is brought to animatronic life by the King’s Company, a troupe of 10 black-clad puppeteers who tug his marionette strings in some version of a maypole dance, and four voodoo operators, who control his facial expressions from a booth at the back of the theater. Put it all together and you have a double-decker bus who looks like he’s lost badly at beer pong. It’s unlikely he’ll sign at the stage door.\n\nThe book by the Harry Potter and the Cursed Child playwright Jack Thorne, the score by Marius de Vries and the songs by Eddie Perfect, under Drew McOnie’s direction, provide a clumsy retread of the 1933 movie though now with a less coded racism, less coded rape and fewer anxieties about the tension between primitivism and modernity. What’s left? A show that makes breathlessly little sense and is rarely even fun. The people who brought you Walking with Dinosaurs have now brought you Lumbering with Primates. This is less a musical than an amusement park ride perpetually needing repairs, a feat of projection design (Peter England) with occasional dance breaks.\n\nView image in fullscreenChristiani Pitts is a farm girl trying to make it as a Broadway hoofer. Photograph: Matthew MurphyHere is what generously might be described as plot: Ann Darrow (Christiani Pitts, sweet, wasted) is a farm girl trying to make it as a Broadway hoofer. Huddling for warmth in an eatery, she meets the movie director Carl Denham (Eric William Morris), decked out in Wizard of Oz cosplay. One song later, they’re on a boat bound for Skull Island, a malevolent Galapagos where Kong waits scowling. Denham decides – for once he’s not wrong – that the monster has star quality. Denham brings him to New York and puts him in a terrible musical. Which is a very meta idea. And a very bad one.\n\nIf King Kong is an allegory of the havoc that ensues when you give a star subpar material, well done. Otherwise it’s a one-ton cockup. Ann, who spends one night as Kong’s prisoner before he’s etherized and brought to New York, has to sing lines like “You gave me an education / In how to be free.” When Kong does break free and rampages from New York, the chorus is too busy doing choreography to run away. Perfect can’t be bothered to rhyme his songs.\n\nThere’s plenty of spectacle, as when Kong climbs a de-phallicized Empire State Building. But when he falls to his death, probably crushing a lot of midtown in the process, it doesn’t much matter. Robbed of its terrible metaphors, the character is meaningless. Carl sings cynically that “People want pleasure however it comes,” but even an audience hopped up on the lobby bar’s Skull Island Iced Teas have to want better than this.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The $35m Broadway musical about the giant ape is spectacular in places but feels more like a theme park ride than a cohesive piece of theater.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 61,
@@ -72,5 +72,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2018/nov/09/king-kong-review-broadway-musical",
+  "urlDiscoveredAt": "2026-02-04T03:47:21.548Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 733,
+  "archivePath": "data/archives/reviews/king-kong-2018/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:47:21.552Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 733,
+  "tierReason": "Full review text"
 }

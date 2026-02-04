@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Miller has structured this one precisely...many will value the disruption",
+        "quote": "Miller has structured this one precisely",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows measured praise for structure and craft, but qualified language ('many will value') suggests reserved recommendation. Low confidence due to single excerpt warning. | GPT-4o: The excerpt praises the structure but notes a disruption in the final third. The phrase 'many will value' suggests a mixed reception, as it implies not everyone may appreciate the change. | Gemini: The review notes a precise structure but also mentions a disruptive final third, suggesting a mixed assessment. The truncated nature of the text lowers confidence. | Kimi: The excerpt offers solid praise for the play's precise structure, though the analytical tone and 'prima facie' qualifier suggest mild rather than enthusiastic recommendation. With only one curated excerpt available per the warning, confidence is reduced. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt shows measured praise for structure and craft, but notes disruption in final third. Positive assessment but qualified, and low confidence due to limited text. | GPT-4o: The review excerpt praises the structure but notes a significant change in the final third, suggesting a mixed view. The excerpt's tone is not clearly positive or negative, leading to a mixed classification with low confidence due to limited context. | Gemini: The review excerpt notes a positive structure but also mentions a disruptive final third, suggesting a mixed experience. The truncated nature of the text lowers confidence. | Kimi: The excerpt praises the play's structure as 'precise' but employs distanced language ('many will value') regarding the final third, suggesting a mild, qualified recommendation rather than an enthusiastic endorsement. Single-excerpt limitations warrant conservative scoring in the lower Positive range. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:19:12.933Z",
+    "scoredAt": "2026-02-04T02:02:37.533Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,7 +63,7 @@
     "claudeScore": 74,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 73,
+    "kimiScore": 72,
     "claudeBucket": "Positive",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

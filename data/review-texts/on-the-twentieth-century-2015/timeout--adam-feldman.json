@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/on-the-twentieth-century",
   "publishDate": "March 12, 2015",
-  "fullText": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
-  "isFullReview": false,
+  "fullText": "On the Twentieth Century: Theater review by Adam Feldman\n\nOn the Twentieth Century is set on a high-speed 1930s luxury train from Chicago to New York, and it’s the vehicle Kristin Chenoweth has been waiting for all her life. La Cheno is one of the great Broadway stars of our time, but she has never had a role that cast so bright and sustained a light on her multifaceted talents, and the resulting shine is dazzling. All the powers stuffed into her tiny frame—the huge voice that rises from kazoo to coloratura soprano, the brash look-at-me confidence, the Carol Channing–esque precision clowning—are harnessed to propel the show forward. She’s the little engine that could do anything.\n\nThe 1978 musical itself is written in an affectionately arch style that combines comic operetta with farce and screwball sex-battle comedy. Adapted from the 1932 play by Ben Hecht and Charles MacArthur (and an earlier source by Bruce Millholland), it sounds like few other shows in recent musical-theater history: The action and the notes are at a higher pitch than we’re used to. Although the small orchestra can’t quite convey the sweep of the score, the cast of Scott Ellis’s swell revival has a grand time with Cy Coleman’s merrily frantic music and Betty Comden and Adolph Green’s clever libretto, a fizzy tribute to the delusional grandeur of old-time show business.\n\nA grinning, swooping Peter Gallagher, in a cape and pin-striped suit, plays down-on-his-luck impresario Oscar Jaffee, bent on cajoling his former flame, glamorous movie star Lily Garland (Chenoweth), into starring in his next play. The excellent Mark Linn-Baker and Michael McGrath are his weary henchmen; Mary Louise Wilson is a religious loon who may be their financial salvation; and Andy Karl is Lily’s lover, a puffed-up studpuppy. (At one point, he uses Chenoweth as a barbell.) David Rockwell’s sleek Deco set and Warren Carlyle’s nifty choreography—the porters stop the show with a tap number at the start of Act Two—add to the hammy elegance. On the Twentieth Century may be a cartoon, but it’s a Hirschfeld cartoon, and worth a trip.\n\nAmerican Airlines Theatre (see Broadway). Music by Cy Coleman. Book and lyrics by Betty Comden and Adolph Green. Directed by Scott Ellis. With Kristin Chenoweth, Peter Gallagher. Running time: 2hrs 20mins. One intermission.",
+  "isFullReview": true,
   "dtliExcerpt": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
   "originalScore": 80,
   "assignedScore": 80,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of Cy Coleman, Betty Comden and Adolph Green's 1978 musical is a glorious train wreck—and I mean that in the best possible way.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 80,
     "confidence": "high",
@@ -73,5 +73,32 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 381,
+  "archivePath": "data/archives/reviews/on-the-twentieth-century-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:10:25.832Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150318072622",
+  "archiveOrgUrl": "http://web.archive.org/web/20150318072622/http://www.timeout.com:80/newyork/theater/on-the-twentieth-century",
+  "wordCount": 381,
+  "tierReason": "Full review text"
 }

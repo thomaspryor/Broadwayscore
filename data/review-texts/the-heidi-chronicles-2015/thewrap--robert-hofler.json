@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "If Wendy Wasserstein had lived beyond her 56 years, would she have written a sequel to “The Heidi Chronicles,” a revival of which opened Thursday at the Music Box on Broadway? The lasting power of this 1988 play is that, more than ever, we really want to know what happens to the girl Heidi Holland (Elisabeth Moss) adopts at the end of “Chronicles.”",
+  "isFullReview": false,
+  "textWordCount": 63,
+  "archivePath": "data/archives/reviews/the-heidi-chronicles-2015/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:33:12.294Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 69 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 63,
+  "tierReason": "Short text (63 words)"
 }

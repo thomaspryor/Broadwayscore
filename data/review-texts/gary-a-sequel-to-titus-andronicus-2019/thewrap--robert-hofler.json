@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "If a gay mayor from South Bend has a shot at the presidency, then it’s possible for Charles Ludlam to make it to Broadway. Finally.\n\nWay back in the late 20th century, one of the great disappointments was that Ludlam, head of the Ridiculous Theatrical Company, passed away before he could stage Shakespeare’s first, bloodiest and worst-written tragedy, “Titus Andronicus,” in Central Park for Joe Papp.",
+  "isFullReview": false,
+  "textWordCount": 66,
+  "archivePath": "data/archives/reviews/gary-a-sequel-to-titus-andronicus-2019/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:37:24.864Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 72 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 66,
+  "tierReason": "Short text (66 words)"
 }

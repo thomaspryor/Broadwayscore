@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Radio Golf is a fitting capstone to Wilson's cycle, a play that looks both backward and forward while standing confidently in its own present.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the play as a 'fitting capstone' that 'stands confidently,' indicating clear approval. However, with only one curated quote available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt provides a positive assessment of the play, describing it as a 'fitting capstone' and 'confident,' which suggests a solid recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses positive language like \"fitting capstone\" and \"standing confidently,\" suggesting a positive assessment. Given that it's a single excerpt, I'm placing the score at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers clear praise describing the play as a 'fitting capstone' that stands 'confidently,' indicating a solid recommendation. However, confidence is reduced due to the availability of only a single curated excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play as a 'fitting capstone' that 'stands confidently' - clearly positive language, but limited text prevents full assessment of recommendation strength. | GPT-4o: The excerpt provides a positive evaluation of the play as a 'fitting capstone' that stands 'confidently,' suggesting a strong recommendation. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The excerpt is positive, calling the play a 'fitting capstone' and noting its confident stance. Due to the limited text, confidence is low, but the positive language suggests a recommendation. | Kimi: The excerpt offers unqualified praise, calling the play a 'fitting capstone' that 'stands confidently,' indicating a clear recommendation. Per instructions for clearly positive single excerpts, score placed in the 80-84 range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:25:57.228Z",
+    "scoredAt": "2026-02-04T02:08:52.902Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,13 +59,13 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 81,
+    "geminiScore": 79,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

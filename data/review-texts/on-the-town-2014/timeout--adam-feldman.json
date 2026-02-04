@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/on-the-town",
   "publishDate": "October 16, 2014",
-  "fullText": "This revival of the 1944 Bernstein-Comden-Green musical about three sailors on shore leave in New York is a joy from start to finish.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This revival of the 1944 Bernstein-Comden-Green musical about three sailors on shore leave in New York is a joy from start to finish.",
   "originalScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of the 1944 Bernstein-Comden-Green musical about three sailors on shore leave in New York is a joy from start to finish.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/on-the-town",
@@ -78,5 +78,38 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "textWordCount": 98,
+  "archivePath": "data/archives/reviews/on-the-town-2014/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:07:24.801Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140926053042",
+  "archiveOrgUrl": "http://web.archive.org/web/20140926053042/http://www.timeout.com:80/newyork/theater/on-the-town",
+  "textIssues": [
+    "Word count too low: 98 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The 1944 Broadway classic about sailors on shore leave in New York returns to remind us that it's a \"helluva town.\" The irresistible Leonard Bernstein score and snappy lyrics by Comden and Green will be handled by a charming cast directed by John Rando. For lovers of the sublime score, music to your ears: the orchestra will number 28.\n\nLyric Theatre\n \n 213 W 42nd St\n \n \n Midtown West\n \n New York\n\nbetween Seventh and Eighth Aves\n\nSubway: A, C, E to 42nd St–Port Authority; N, Q, R, 42nd St S, 1, 2, 3, 7 to 42nd St–Times Sq\n\nTheater. Musicals",
+  "misattributedFullText": true,
+  "extractedByline": "Times Sq",
+  "expectedCritic": "Adam Feldman"
 }

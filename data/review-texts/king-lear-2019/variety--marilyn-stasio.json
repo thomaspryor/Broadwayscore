@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jackson's Lear is a tyrant in the tradition of the great storm kings, raging against the dying of the light with magnificent fury.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20250426204043",
   "archiveOrgUrl": "http://web.archive.org/web/20250426204043/https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
   "wordCount": 586,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wouldn't have missed it for the world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic clearly recommends seeing the show for Jackson's performance ('Wouldn't have missed it for the world'), despite criticizing the direction and staging. The positive verdict outweighs the production flaws. | GPT-4o: The review praises Glenda Jackson's performance but criticizes the overall production as 'rickety' with 'bland staging' and 'no discernible unity or vision'. The recommendation is primarily for Jackson's performance, not the production as a whole. | Gemini: The review is mixed on the production overall, but strongly praises Glenda Jackson's performance, ultimately saying it's worth seeing for her alone. The final line, \"Wouldn't have missed it for the world,\" seals the positive recommendation. | Kimi: While criticizing the rickety direction, bland staging, and uneven supporting cast, the review ultimately recommends the production based on Glenda Jackson's masterful central performance, closing with the enthusiastic declaration that they 'wouldn't have missed it for the world.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:12:23.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

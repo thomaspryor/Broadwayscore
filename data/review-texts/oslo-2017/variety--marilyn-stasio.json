@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "J.T. Rogers has written a gripping political thriller that reads like a John le Carré novel, but one based on real events that changed the course of Middle East diplomacy.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (30 words)",
   "textQuality": "full",
   "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/oslo-review-play-1201812346/",
@@ -24,45 +24,9 @@
     "web-search",
     "playbill-verdict"
   ],
-  "textWordCount": 665,
-  "archivePath": "data/archives/reviews/oslo-2017/variety--marilyn-stasio_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T00:51:40.088Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "truncationSignals": [],
-  "textStatus": "complete",
-  "sourceMethod": "brightdata",
-  "wordCount": 665,
-  "tierReason": "Full review text"
+  "rejectedAt": "2026-02-04T01:50:42.612Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single promotional sentence or excerpt describing the playwright's work, not a full review with critical evaluation of the Broadway production.; openai: This text is a brief description of the play's genre and style, not an evaluative review of the Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": null,
+  "isFullReview": false,
+  "textWordCount": 91,
+  "archivePath": "data/archives/reviews/ann-2013/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:18:13.683Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 97 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Sarah Jessica Parker made her evolution from Broadway’s Annie to HBO’s Carrie Bradshaw by playing a dog in A. R. Gurney’s 1995 play, “Sylvia.” Parker’s real-life husband, Matthew Broderick, now stars in the comedy’s first Broadway production, which opened Tuesday at the Cort Theatre in New York.\n\nHe’s not the dog, he’s the man, Greg, who adopts the stray dog, Sylvia (Annaleigh Ashford), much to the dismay of his wife, Kate (Julie White), who doesn’t want to raise a child substitute now that her own human kids have left the nest.",
+  "contentTier": "needs-rescrape"
 }

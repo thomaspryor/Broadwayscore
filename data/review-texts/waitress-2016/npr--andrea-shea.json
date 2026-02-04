@@ -27,7 +27,12 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "playwright",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "wordCount": 921,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T01:20:00.276Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a feature article about the development and production process of Waitress, not a review evaluating the show's quality or recommending whether to see it.; openai: The text is about the American Repertory Theater production of Waitress, not the current Broadway run.; gemini: This review discusses the pre-Broadway run at the American Repertory Theater in Cambridge, MA, not the Broadway production itself.; kimi: This is a feature article about the adaptation process and creative team behind the musical, containing extensive interviews with the director, composer, and producers, along with plot summary. It lacks critical evaluation, performance assessment, or any recommendation verdict from the critic regarding whether audiences should see the show.",
+  "promptVersion": "5.2.0"
 }

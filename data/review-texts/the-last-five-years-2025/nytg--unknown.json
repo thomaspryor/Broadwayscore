@@ -9,6 +9,11 @@
   "sources": [
     "nyc-theatre"
   ],
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "tierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T03:47:18.344Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is purely descriptive exposition about the show's structure, not an evaluative review with critical assessment or recommendation.; openai: The provided text is a description of the show's concept, not an evaluative review or opinion.; gemini: The provided text is a descriptive statement about the show's concept, not an evaluative review. There is no critical opinion or recommendation.; kimi: The text provides only a structural description of the show (explaining it is a 'memory musical' with an internal narrative perspective) without any evaluative language, critical assessment, or recommendation regarding the production's quality.",
+  "promptVersion": "5.2.0"
 }

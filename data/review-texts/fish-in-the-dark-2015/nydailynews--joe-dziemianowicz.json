@@ -3,10 +3,10 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "https://www.nydailynews.com/2015/03/06/fish-in-the-dark-review-larry-david-comedy-broadway/",
+  "url": "https://www.nydailynews.com/2015/03/05/fish-in-the-dark-review-larry-david-hooks-a-funny-one-on-broadway/",
   "publishDate": "March 6, 2015",
-  "fullText": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
-  "isFullReview": false,
+  "fullText": "Did you hear the one about the unbearable Jewish mama who drives her sons and everyone around her meshuganah? Yep, her again.\n\nLarry David hacks that old saw into the chronically amusing, if creakily old-school “Fish in the Dark.” David wrote and stars in the funny full-length sketch that aims for, but just misses, the lofty territory of great 1960s Broadway comedies.\n\nDavid has a huge following from “Seinfeld” and “Curb Your Enthusiasm” — and when you add in everyone’s deep craving for light entertainment, the show is a bona fide must-see.\n\nMake that a wanna-see. Tickets are harder to come by than a public toilet in Times Square.\n\nFans will be pleased to know that David, a Broadway rookie, holds his own with seasoned stage pros in this solid production helmed by Anna D. Shapiro (“August: Osage County”), who is as good as it gets for shaking hilarity from family dysfunction.\n\nThe plot centers on Norman Drexel (David) and his brother Ben (Ben Shenkman), who square off as their beloved father Sidney (Jerry Adler) is on his deathbed. Before you know it, family members line up for the spoils, like a pricey Rolex, and the brothers’ overbearing mom Gloria (a deliciously spiky Jayne Houdyshell) wreaks havoc on her sons and on Norman’s disenchanted wife Brenda (Rita Wilson, invaluable) and housekeeper Fabiana (a droll Rosie Perez).\n\nYou don’t need to be a fan of David’s hit TV series to appreciate zingers, which come laced with cultural clichés. David has made a career out of characters who say the unspeakable and do the unthinkable.\n\nA hilarious plot twist centers on Gloria’s unwitting encounter with Fabiana’s teenaged son Diego (Jake Cannavale) as part of a larger David-esque scheme by Norman to get some of his dad’s loot.\n\nFor the most part, the play offers only echoes of David’s prior rants, but prime-time fans will recognize some self-plagiarism, as when the awkward Norman complains he has “no moves” or when he later describes something as “pretty, pretty good” in the exact style of David’s “Curb” character.\n\nThe best thing about the humor is that it’s also unembellished and played without irony. These are just people, often very obnoxious people, lurching through lives and oddball dilemmas. Can you bring a date to the hospital where a loved one lies dying? Should you tip a doctor? Is it ever okay for an uncle to shame a niece who’s upstaged him?\n\nBut the best laughs in the show arise from sly observations that paint instant pictures in your mind, like when Gloria grouses that Brenda keeps her house too dark to properly eat a bony meal like the fish of the title.\n\n“I dim the lights a little when I eat,” says Brenda. “Your house is like a Baskin-Robbins.”\n\nThe ice cream giant is known for its cornucopia of flavors. “Fish in the Dark” scoops up the yuks.",
+  "isFullReview": true,
   "dtliExcerpt": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
   "originalScore": 40,
   "assignedScore": 42,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 42,
@@ -77,5 +77,47 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nydailynews.com/2015/03/06/fish-in-the-dark-review-larry-david-comedy-broadway/",
+  "urlDiscoveredAt": "2026-02-04T03:06:06.887Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 42,
+  "textWordCount": 482,
+  "archivePath": "data/archives/reviews/fish-in-the-dark-2015/nydailynews--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:06:06.890Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 482,
+  "tierReason": "Full review text"
 }

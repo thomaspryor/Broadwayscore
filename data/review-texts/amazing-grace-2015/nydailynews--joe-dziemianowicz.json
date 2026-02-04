@@ -3,10 +3,10 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "https://www.nydailynews.com/2015/07/17/amazing-grace-on-broadway-review-inspiring-musical-about-john-newton/",
+  "url": "https://www.nydailynews.com/2015/07/16/amazing-grace-review-well-meant-but-a-musical-shipwreck/",
   "publishDate": "July 17, 2015",
-  "fullText": "The show has heart and good intentions, but the execution is uneven and the pacing drags in spots.",
-  "isFullReview": false,
+  "fullText": "Midway through “Amazing Grace” there’s a theatrical illusion that’s a real doozy. Shipwrecked in the middle of a roiling ocean in the 1740s, Englishman John Newton, who’s known for writing lyrics to the hymn that gives the musical its title, goes overboard.\n\nThe audience is underwater with this young English upstart and slave trader. Snared in heavy ropes and sinking fast, Newton (Josh Young, a burly singer with boyish good looks) is a goner. But his trusted friend, Thomas, a family slave (a poignant Chuck Cooper), intervenes. The men break the surface.\n\nIt’s a remarkable moment — the show’s only one, alas — in this fact-fudged telling of a historical figure’s life. Otherwise, this earnest but plodding musical by Broadway newcomers needs lifelines of its own.\n\nSongs by Christopher Smith are serviceable but lack significance and surprise. You can hear the boilerplate lyrics coming a mile away. Even the potential power ballads don’t have the structure to make an impact.\n\nThe jumbled book, a joint effort by Smith and playwright Arthur Giron, is another issue. The creators have good instincts about a story worth telling. But their reach exceeds their grasp.\n\nThat Newton, an unapologetic human trafficker, is the same man who wrote a ubiquitous hymn to God’s soul-saving grace amounts to fertile material. Sin and salvation, inhumanity and humanity, all in a single person.\n\nDirector Gabriel Barre includes a number of scenes of shackled slaves, including one who’s pregnant. They’re branded and marketed like cattle, showing the barbarity of slavery and reinforcing the show’s sincere intent.\n\nBut the production self-sabotages with mood shifts. Mary Catlett (a fine Erin Mackey), who Newton loves, is a burgeoning abolitionist who romances powerful Major Gray (Chris Hoch) to help the movement. Gray is so cartoonish that he can’t be taken seriously.\n\nThe same is true of Peyai, a fashion-forward West African princess and slave trader (Harriett D. Foy), who holds Newton captive after he washes up on her shores. These scenes have a “Gilligan’s Island” vibe.\n\nAnd the show could do a better job of connecting the dots between Newton’s experiences and the writing of the title song, which famously notes, “I once was lost, but now I’m found.”\n\n“Amazing Grace” has come to Broadway. But it still hasn’t found its way.",
+  "isFullReview": true,
   "dtliExcerpt": "The show has heart and good intentions, but the execution is uneven and the pacing drags in spots.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show has heart and good intentions, but the execution is uneven and the pacing drags in spots.",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 61,
@@ -73,10 +73,57 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "excerpt",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/amazing-grace-review-well-meant-musical-shipwreck-article-1.2293240",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nydailynews.com/2015/07/17/amazing-grace-on-broadway-review-inspiring-musical-about-john-newton/",
+  "urlDiscoveredAt": "2026-02-04T02:43:01.774Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 379,
+  "archivePath": "data/archives/reviews/amazing-grace-2015/nydailynews--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:43:01.776Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 379,
+  "tierReason": "Full review text"
 }

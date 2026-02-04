@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt describes a performance as 'compelling to watch' but qualified with 'not entirely convincing' - suggests mixed feelings about the lead performance, which typically reflects the overall assessment. | GPT-4o: The excerpt praises the actor's energy and presence but notes a lack of full conviction. The single excerpt and lack of full context suggest a mixed impression. | Gemini: The review excerpt describes Law's performance as compelling, but also notes that he is not entirely convincing. This suggests a positive, but qualified, recommendation. | Kimi: The excerpt praises Jude Law's manic energy and presence as 'compelling to watch,' recommending the performance, but includes the significant caveat that he's 'not entirely convincing,' indicating qualified rather than enthusiastic praise. As a single curated excerpt, this likely represents a mildly positive review. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows balanced assessment - praises Law's energy and compelling presence but notes he's 'not entirely convincing.' This mixed evaluation suggests neither clear recommendation nor discouragement. | GPT-4o: The excerpt provides a mixed assessment of the performance, noting both compelling aspects and lack of full conviction. With only one excerpt, the overall sentiment is unclear, leading to a low confidence mixed score. | Gemini: The review excerpt describes Law's performance as \"compelling to watch\" but also notes he's \"not entirely convincing,\" suggesting a positive but qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise for Law's physical performance and watchability, but explicitly notes it is not entirely convincing, suggesting a mildly positive assessment typical of a 70-74 range score. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:31:54.858Z",
+    "scoredAt": "2026-02-04T01:29:57.219Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,7 +60,7 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 75,
-    "kimiScore": 73,
+    "kimiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Positive",

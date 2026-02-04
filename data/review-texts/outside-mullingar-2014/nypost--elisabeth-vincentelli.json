@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Debra Messing and Brian F. O'Byrne are perfectly matched in John Patrick Shanley's tender, funny tale of middle-aged romance in rural Ireland.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Debra Messing and Brian F. O'Byrne are perfectly matched in John Patrick Shanley's tender, funny tale",
+        "quote": "Debra Messing and Brian F. O'Byrne are perfectly matched in John Patrick Shanley's tender, funny tale of middle-aged romance in rural Ireland.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt with clear praise ('perfectly matched', 'tender, funny') but very limited text reduces confidence in scoring. | GPT-4o: The review highlights the strong performances and describes the play as 'tender' and 'funny', indicating a positive recommendation. However, the brevity of the review limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review states that the leads are perfectly matched and describes the play as tender and funny, indicating a positive experience. | Kimi: The critic offers warm praise for the lead performances ('perfectly matched') and describes the play as 'tender' and 'funny,' indicating a solid recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('perfectly matched', 'tender, funny') but very brief excerpt makes it difficult to assess the full critical stance with confidence. | GPT-4o: The review highlights the strong performances and describes the play as 'tender' and 'funny', indicating a positive reception. However, the brief length of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review uses positive language such as 'perfectly matched,' 'tender,' and 'funny,' indicating a positive assessment of the play. | Kimi: The critic praises the lead performances as 'perfectly matched' and the play as both 'tender' and 'funny,' indicating a clear recommendation despite the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:05:44.104Z",
+    "scoredAt": "2026-02-04T01:51:59.606Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,12 +66,12 @@
     "claudeScore": 76,
     "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

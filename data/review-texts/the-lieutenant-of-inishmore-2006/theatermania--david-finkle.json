@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonagh has written a play that's simultaneously hilarious and horrifying, and director Wilson Milam has staged it with just the right balance of comedy and carnage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "McDonagh has written a play that's simultaneously hilarious and horrifying, and director Wilson Milam has staged it with just the right balance of comedy and carnage.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonagh has written a play that's simultaneously hilarious and horrifying, and director Wilson Milam has staged it with just the right balance of comedy and carnage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both writing and direction with positive language about balance and staging. However, confidence is low due to extremely brief excerpt lacking fuller context or explicit recommendation language. | GPT-4o: The review uses strong positive language ('hilarious and horrifying', 'just the right balance') indicating a highly favorable impression of both the writing and direction. | Gemini: The review praises the writing and direction of the play, indicating a positive overall assessment. | Kimi: The critic delivers strong praise for both the playwright's skill in blending tones and the director's execution, using words like 'hilarious' and 'just the right balance' that indicate a high recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:49:54.572Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -23,7 +23,7 @@
   ],
   "llmScore": {
     "score": 63,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows praise for the first half ('brilliant sitcom') but clear disappointment with how it ends ('jumps the shark'). Classic mixed review pattern but low confidence due to limited text. | GPT-4o: The excerpt praises the show as 'deeply imagined' and 'brilliant' but also notes it 'jumps the shark,' indicating a mix of positive and negative elements. The single excerpt warning suggests caution, leading to a mixed classification with low confidence. | Gemini: The review starts positively but then indicates a decline in quality, suggesting a mixed reaction overall. The truncated nature of the text lowers confidence. | Kimi: The excerpt contains strong praise ('brilliant', 'deeply imagined') suggesting merit, but the 'jumps the shark' caveat indicates significant disappointment in the show's later development. With only one curated excerpt available, the overall verdict is interpreted as a cautious, qualified recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows clear split assessment - praises the show as 'brilliant' initially but criticizes it for 'jumping the shark.' Classic mixed review structure with both positive and negative elements. | GPT-4o: The excerpt praises the show as 'deeply imagined' and 'brilliant' but criticizes it for 'jumping the shark,' indicating a mix of positive and negative elements. The single excerpt limits confidence in the overall sentiment. | Gemini: The review starts with praise but then states it \"jumps the shark\", indicating a decline in quality. The overall sentiment is mixed, but I am scoring it with low confidence due to the limited text. | Kimi: The excerpt offers strong praise ('brilliant sitcom') but ends on a significant negative note ('jumps the shark'), suggesting a decline in quality. With only one curated excerpt available, the review appears to offer a genuinely mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:24:15.537Z",
+    "scoredAt": "2026-02-04T02:06:09.370Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,17 +63,17 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 72,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   }
 }

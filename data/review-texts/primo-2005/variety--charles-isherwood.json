@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('deeply moving theatrical experience', 'honors') suggests enthusiastic recommendation. Single excerpt warning applied - using upper Positive range due to clearly laudatory tone, but medium confidence due to limited text. | GPT-4o: The excerpt describes the show as 'deeply moving' and honors the subject's legacy, indicating a strong positive impression. However, the single excerpt warning necessitates a cautious approach, leading to a low confidence level. | Gemini: The excerpt uses strong positive language such as \"deeply moving\" and \"honors.\" Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('deeply moving theatrical experience', 'honors') suggests clear recommendation, but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt uses strong positive language ('deeply moving', 'honors') suggesting a highly favorable view of the production. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes the show as a \"deeply moving theatrical experience\" that \"honors\" its subject, indicating a positive recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Single excerpt contains strong praise ('deeply moving') indicating clear recommendation, but cherry-picking risk and lack of full context warrant upper-positive range score and low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:20:48.113Z",
+    "scoredAt": "2026-02-04T02:03:15.228Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 82,
@@ -65,7 +65,7 @@
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Brian Logan",
-  "url": "https://www.theguardian.com/stage/2011/apr/22/jerusalem-broadway-review",
+  "url": "https://www.theguardian.com/stage/2010/feb/10/jerusalem-review",
   "publishDate": "April 22, 2011",
-  "fullText": "Mark Rylance's Johnny Byron is a performance of extraordinary richness and complexity, a master class in inhabiting a character so fully that the actor disappears entirely into the role.",
-  "isFullReview": false,
+  "fullText": "Hypnotic ... Mark Rylance as Rooster Byron in Jez Butterworth's Jerusalem. Photograph: Tristram KentonHypnotic ... Mark Rylance as Rooster Byron in Jez Butterworth's Jerusalem. Photograph: Tristram Kenton This article is more than 15 years oldReviewJerusalemThis article is more than 15 years oldApollo, LondonJez Butterworth's play gains ­immeasurably from a second viewing. Like everyone else, I was mesmerised, on its first appearance at the Royal Court, by Mark Rylance's tremendous ­performance as Rooster Byron. But what I took to be a romantic nostalgia for a lost rural England, symbolised by the charismatic hero, is much more morally equivocal than I initially realised.\n\nButterworth's Byron is a born ­spellbinder: a Wiltshire Falstaff and ­ex-daredevil who dispenses drink, drugs and stories to his acolytes in the woody retreat from which he faces ­eviction. But, just as Shakespeare's Falstaff has a cruelty rarely brought out in the ­theatre, so Byron is not exactly a rustic role model. Davey, one of his ­followers, says of the people on the new estate signing anti-Byron petitions, \"They've got a point though, haven't they?\" And, though Butterworth clearly laments the loss of a memory of old ­England, it is significant that these hymns to \"the rhythms of the earth\" issue from a man higher than several kites.\n\nMuch of the greatness of Rylance's performance lies in the way he captures the twin aspects of Byron's character. He tells of meeting giants on the A14 with the relish of a natural charmer, and swaggers about his ­woodland grove like a dispossessed monarch. Yet Rylance also conveys the inner solitude of the public performer: he seems shy with his young son and even with the teenage May queen he protectively shelters.\n\nPraise is also due to Ian ­Rickson's ­production and Ultz's design; and the play is anything but a one-man show. ­Gerard Horan as a publican, ­Mackenzie Crook as a wannabe DJ and Danny ­Kirrane as the treacherous Davey are all first-rate. As for Byron, there is great ambivalence in his portrait: he's ­hypnotic, but you wouldn't want to live near him.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Mark Rylance's Johnny Byron is a performance of extraordinary richness and complexity, a master class in inhabiting a character so fully that the actor disappears entirely into the role.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,11 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance's Johnny Byron is a performance of extraordinary richness and complexity, a master class in inhabiting a character so fully that the actor disappears entirely into the role.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "rejectedAt": "2026-02-03T17:44:02.961Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt praising a performance, not a complete review with an overall verdict or recommendation; openai: This text is a single sentence focused on praising an actor's performance without evaluating the overall production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "previousUrl": "https://www.theguardian.com/stage/2011/apr/22/jerusalem-broadway-review",
+  "urlDiscoveredAt": "2026-02-04T03:40:25.858Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 360,
+  "archivePath": "data/archives/reviews/jerusalem-2011/guardian--brian-logan_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:40:25.861Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 360,
+  "tierReason": "Missing proper ending or other signals"
 }

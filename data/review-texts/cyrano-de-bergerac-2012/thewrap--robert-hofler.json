@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The theater’s most famous nose is mentioned only twice in the new musical “Cyrano,” which opened Thursday at Off Broadway’s Daryl Roth Theatre. Presented by the New Group, Erica Schmidt’s adaptation of the Edmond Rostand classic dismisses the big schnoz as soon as Peter Dinklage says, “What woman could love me with this this” — he pauses to make a large, sweeping gesture over his body — “nose?”\n\nThere’s a novel twist on size here, since Dinklage plays the title role with no facial padding.",
+  "isFullReview": false,
+  "textWordCount": 85,
+  "archivePath": "data/archives/reviews/cyrano-de-bergerac-2012/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:00:26.945Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 91 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 85,
+  "tierReason": "Short text (85 words)"
 }

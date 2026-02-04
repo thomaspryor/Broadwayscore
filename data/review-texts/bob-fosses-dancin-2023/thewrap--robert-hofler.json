@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Memory doesn’t serve me well in reviewing “Bob Fosse’s Dancin’,” which opened Sunday at the Music Box on Broadway. I saw the original show, simply titled “Dancin’,” and remember very little about it. Oddly enough, I do remember the date I saw the show, because it was the first preview (March 28, 1978), and some people at the Shubert Organization had decided to give the Broadhurst Theatre a little makeover.",
+  "isFullReview": false,
+  "textWordCount": 70,
+  "archivePath": "data/archives/reviews/bob-fosses-dancin-2023/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:59:02.962Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 76 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 70,
+  "tierReason": "Short text (70 words)"
 }
