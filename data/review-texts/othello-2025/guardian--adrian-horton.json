@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Directed by Tony winner Kenny Leon, who guided Washington to a Tony in 2010's Fences, this austere, underwhelming take on Shakespeare seems to acknowledge that people are not paying for a revival of this particular play, which hasn't been on Broadway since 1982 and still has rich insights on the masculinity, human fallibility and race over 400 years after its debut. Instead, it's for the opportunity to see Gyllenhaal, one of the most versatile and thrilling millennial actors, and especially the widely beloved Washington, rightly hailed in the Playbill as \"the most lauded stage and screen actor of his generation\", without the mediation of a screen.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this austere, underwhelming take on Shakespeare seems to acknowledge that people are not paying for a revival of this particular play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls the production 'austere, underwhelming' and suggests audiences are only there for the star power, not the actual revival. However, this is a single excerpt and may not represent the full verdict. | GPT-4o: The review excerpt describes the production as 'austere' and 'underwhelming', suggesting a lack of enthusiasm. The focus is on the star power of the actors rather than the quality of the production itself, indicating a mixed reception. | Gemini: The review describes the production as \"austere, underwhelming\" but acknowledges the draw of the actors. It doesn't clearly recommend or discourage seeing the show, suggesting a mixed assessment. The single excerpt and truncated text lower confidence. | Kimi: While the critic praises the star power of Gyllenhaal and Washington, they explicitly describe the production itself as 'austere' and 'underwhelming,' indicating the direction and revival quality disappoint despite the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:51:36.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -18,19 +18,35 @@
   "showScoreExcerpt": "This Oklahoma! doesn't just dust off a classic; it shakes it up, turning what was once a comfort-food musical into something closer to a psychological thriller.",
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "full",
-  "previousUrl": "https://variety.com/2019/legit/reviews/oklahoma-review-broadway-revival-1203176925/",
-  "urlDiscoveredAt": "2026-02-04T00:55:51.563Z",
-  "urlDiscoveryMethod": "google-serp",
-  "textWordCount": 762,
-  "archivePath": "data/archives/reviews/oklahoma-2019/variety--peter-debruge_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T00:55:51.570Z",
-  "fetchMethod": "archive",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": true
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Oklahoma! doesn't just dust off a classic; it shakes it up, turning what was once a comfort-food musical into something closer to a psychological thriller.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production's bold reimagining with vivid, positive language ('shakes it up'), though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review describes the production as a transformative take on a classic, suggesting a highly positive and enthusiastic recommendation. | Gemini: The review suggests a positive, albeit unconventional, take on the classic musical. The phrase \"shakes it up\" implies a bold and interesting reinterpretation. | Kimi: The critic strongly praises the production's innovative interpretation, using enthusiastic language ('shakes it up') and favorably comparing the transformation to a 'psychological thriller,' indicating a high recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   ],
   "fetchTier": 4,

@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Always a composer of intricacy, Mr. Guettel mostly eschews traditional musical-theater forms and simplified melodies; his lyrics here are sometimes conversational, sometimes fragmentary, reflecting the characters’ muddled psyches and their conflicting desires: for the high and the happy blur of booz...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his lyrics here are sometimes conversational, sometimes fragmentary, reflecting the characters’ muddled psyches",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt highlights the complexity and non-traditional nature of the music and lyrics, suggesting a nuanced but potentially challenging experience. The lack of clear praise or criticism indicates a mixed assessment. | Gemini: The excerpt describes the composer's style as intricate and unconventional, which could be seen as both a positive and a negative depending on the listener's preference. The description of the lyrics as \"sometimes conversational, sometimes fragmentary\" suggests a lack of consistent quality. | Kimi: The excerpt respectfully analyzes the score's complexity and psychological depth without explicit enthusiasm or criticism, suggesting qualified appreciation for the artistry. Single excerpt limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:54:27.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

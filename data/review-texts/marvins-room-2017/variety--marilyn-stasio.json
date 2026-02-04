@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production benefits enormously from Janeane Garofalo's beautifully restrained performance as Bessie, the dutiful daughter who has devoted her life to caring for her bedridden father and dotty aunt.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production benefits enormously from Janeane Garofalo's beautifully restrained performance as Bessie, the dutiful daughter who has devoted her life to caring for her bedridden father and dotty aunt.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production benefits enormously from Janeane Garofalo's beautifully restrained performance as Bessie.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance suggests positive assessment, but limited text prevents confident scoring. Using lower end of Positive range due to single excerpt warning and uncertainty about overall verdict. | GPT-4o: The excerpt highlights a strong performance by Janeane Garofalo, suggesting a positive view of the production. However, with only one curated excerpt available, the overall sentiment of the review is unclear, warranting a low confidence score at the lower end of the Positive range. | Gemini: The excerpt praises Garofalo's performance, suggesting a positive aspect of the production. However, with only one excerpt available, the overall verdict is uncertain, leading to a 'low' confidence score and a score on the lower end of the positive bucket. | Kimi: Single excerpt provides strong praise for the lead performance ('benefits enormously,' 'beautifully restrained'), indicating a clear positive recommendation, though limited context prevents Rave classification or higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:27:34.840Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

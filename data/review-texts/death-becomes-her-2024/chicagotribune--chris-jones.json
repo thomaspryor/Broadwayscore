@@ -3,22 +3,72 @@
   "outletId": "chicagotribune",
   "outlet": "Chicago Tribune",
   "criticName": "Chris Jones",
-  "url": "https://www.chicagotribune.com/2024/05/20/review-death-becomes-her-has-retro-comedic-charm-but-needs-more-emotional-connection/",
+  "url": null,
   "publishDate": "2024-11-21T20:53:22-05:00",
   "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": null,
   "bwwExcerpt": "“Death Becomes Her” arrives on Broadway as a silly, campy, go-for-broke show that’s filled with hearty laughs (especially in the stronger Act 1) and a pair of gutsy, zesty and highly skilled lead performances from Megan Hilty and Jennifer Simard that land right where a good chunk of the Broadway-goi...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
   "tierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.chicagotribune.com/2024/05/20/review-death-becomes-her-has-retro-comedic-charm-but-needs-more-emotional-connection/",
-  "sources": [
-    "bww-roundup",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "arrives on Broadway as a silly, campy, go-for-broke show that's filled with hearty laughs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clearly positive language ('hearty laughs', 'gutsy, zesty and highly skilled lead performances') but excerpt cuts off mid-sentence. Single excerpt warning suggests upper end of Positive bucket. | GPT-4o: The excerpt describes the show as 'silly, campy, go-for-broke' with 'hearty laughs' and praises the lead performances. This suggests a strong positive tone, but due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes the show as \"silly, campy, go-for-broke\" and filled with \"hearty laughs\" with strong lead performances, indicating a positive but not rave review. Confidence is low due to the truncated text. | Kimi: The excerpt offers clear praise for the show's comedic energy and lead performances, calling it 'filled with hearty laughs' with 'highly skilled' stars, though the note that Act 1 is 'stronger' suggests some reservations about the second act. Given this is a single curated excerpt that is truncated, confidence is low, but the tone is clearly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:57:26.709Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

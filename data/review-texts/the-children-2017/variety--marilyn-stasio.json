@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/the-children-review-broadway-1202634084/",
   "publishDate": "December 13, 2017",
-  "fullText": "Lucy Kirkwood's post-apocalyptic drama about nuclear scientists confronting the consequences of their life's work is a thoughtful, well-crafted play that asks hard questions about responsibility and sacrifice.",
-  "isFullReview": false,
+  "fullText": "Lucy Kirkwood's scary play makes tense drama out of the catastrophic results of human meddling in the natural world.\n\nPack your bags, people — the apocalypse is coming. This warning comes to you courtesy of Lucy Kirkwood, whose cautionary disaster drama, \"The Children,\" scared the wits out of audiences at London's Royal Court Theater and promises to do the same on Broadway, where it recently opened in a Manhattan Theatre Club production.\n\nIts sterling cast intact, Kirkwood's harrowing play exposes us to the drab lives and dark pasts of three nuclear physicists who meet in a cottage by the sea to contemplate the end of the world. Long-married Hazel (Deborah Findlay) and Robin (Ron Cook) live alone in this dreary cottage and seem to have no neighbors — understandably, since their snug little corner of the world has seen earthquakes, tsunamis, and a nuclear meltdown at the nearby power plant where they once worked.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Michael J. Fox Says Retiring in 2020 Was 'Non-Emotional' and Finally Acting Again Is 'Not the Beginning of Any Campaign to Reestablish My Career'\n\nAfter an absence of almost 40 years, a former colleague and friend named Rose (Francesca Annis) arrives on a mission that she dramatically refrains from revealing until the very end. But when the play opens, she's splattered with blood from a fierce nosebleed – a plot detail that can't be ignored in a talky but ultimately chilling play about the consequences of nuclear fallout.\n\nThe three scientists have a lot of history: They worked together on the nuclear power station that looms so large in the plot. To complicate things, Robin once had a relationship with Rose and now seems interested in renewing it – right under his wife's nose. But Hazel is no dummy, and she might even be the one manipulating this entire romantic charade.\n\nExcept for the fact that, in the end, there is no romantic charade, because Kirkwood has far more serious things on her mind than who slept with whom a million years ago. Director James Macdonald, whose credits run to plays by the substantive likes of Caryl Churchill and Christopher Shinn, does a masterful job of deepening and darkening the sense of menace that haunts this strange play. (Peter Mumford's shrewd lighting design heightens the mood, while Max Pappenheim's suspenseful use of sound distances us from knowing exactly what is going on here.)\n\nStructurally, the play is composed in the I've-got-a-secret storytelling style, which means that the playwright withholds the big payoff until the very end while teasing our expectations with subtle and not-so-subtle clues. It's a treacherous device, not only because it necessitates a lot of talk that goes nowhere, but also because so much depends on the actors to hold off our impatience. Luckily, these mesmerizing performers could keep us enthralled through any of the cataclysmic events alluded to in the play.\n\nFindlay, a National Theatre stalwart featured in the original local production of \"Top Girls,\" gives Hazel a will of steel. While projecting the appearance of unwavering control, she hacks the hell out of a defenseless salad she's preparing for dinner. You really don't want to turn your back on her when she's got a knife in her hand.\n\nRose is the one with the secret, so there's something faintly menacing about the personal warmth and social congeniality of Annis's engaging performance. What does this woman really want, you might wonder, when she casually plays the friendship card? And what of Robin, who seems to have secrets of his own? Cook plays Robin as something of a catalyst figure, a solid center in an uneasy world, but someone who might also blow this whole place up with an unguarded word.\n\nReparation and redemption are the wistful themes of this morose play about the catastrophic results of human meddling in the natural world. But it's way too late for the generation who killed the planet to kiss it and make it all better, and none of their feelings of guilt and regret will matter when the Big Wave comes – and it will.",
+  "isFullReview": true,
   "dtliExcerpt": "Lucy Kirkwood's post-apocalyptic drama about nuclear scientists confronting the consequences of their life's work is a thoughtful, well-crafted play that asks hard questions about responsibility and sacrifice.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Lucy Kirkwood's post-apocalyptic drama about nuclear scientists confronting the consequences of their life's work is a thoughtful, well-crafted play that asks hard questions about responsibility and sacrifice.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 77,
     "confidence": "high",
@@ -73,5 +73,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 681,
+  "archivePath": "data/archives/reviews/the-children-2017/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:23:05.772Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 681,
+  "tierReason": "Full review text"
 }

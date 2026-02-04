@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/cabaret_71611.html",
   "publishDate": "April 25, 2014",
-  "fullText": "The new Broadway revival of Cabaret is a thrilling, dark, and sexually charged production that captures the decadence and danger of Weimar-era Berlin with remarkable intensity.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of Cabaret is a thrilling, dark, and sexually charged production that captures the decadence and danger of Weimar-era Berlin with remarkable intensity.",
   "originalScore": null,
   "assignedScore": 87,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of Cabaret is a thrilling, dark, and sexually charged production that captures the decadence and danger of Weimar-era Berlin with remarkable intensity.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 87,
@@ -73,5 +73,48 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 87,
+  "textWordCount": 359,
+  "archivePath": "data/archives/reviews/cabaret-2014/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:53:10.640Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The actress is known for making dozens of screen appearances and starring on Broadway opposite Orson Welles.\n\nBroadway veteran and screen favorite Mary Healy died on February 3 at a health care facility in Calabasas, CA. The actress and singer was 96.\n\nHealy was born on April 14, 1918 in New Orleans, Louisiana. Winner of the 1935 Miss New Orleans pageant, Healy made her first (uncredited) screen appearance in Josette in 1938. She went on to act in Second Fiddle (1939), Star Dust (1940), Strictly in the Groove (1942) and many more films.\n\nIn 1942, Healy made her Broadway debut in Walter Kerr's musical revue Count Me In. Her Broadway career went on to include a main role in Cole Porter's Around the World, which also starred Orson Welles, as well as appearances in Common Ground (1945) and Who Was That Lady I Saw You With? (1958).\n\nHealy married Peter Lind Hayes, a performer she met in Los Angeles, in 1940. The two remained married and performed together almost exclusively until Hayes' death in 1998. One of their best known films, The 5,000 Fingers of Dr. T. (1953), is a musical fantasy written by Theodor Seuss Geisel (Dr. Seuss).\n\nThe duo also starred together in several television projects, including The Peter Lind Hayes Show (1950) and Star of the Family (1950-1952). They led the cast of the 1960 NBC situation comedy Peter Loves Mary. In 1961, the couple published the memoir Twenty-Five Minutes From Broadway.\n\nHealy is survived by a daughter, Cathy Lind Hayes, and son, Peter Michael Hayes.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

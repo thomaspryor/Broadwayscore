@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2017/legit/reviews/the-parisian-woman-review-uma-thurman-1202617324/",
   "publishDate": "November 30, 2017",
-  "fullText": "Uma Thurman brings her movie-star presence to Broadway in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant costume party than urgent theater.",
-  "isFullReview": false,
+  "fullText": "Uma Thurman is hung out to dry in this inert production of Beau Willimon’s trifling play about an ambitious Washington hostess.\n\nWriter Beau Willimon made his mark on the stage with \"Farragut North,\" which shape-shifted into the film \"Ides of March,\" starring George Clooney, and led to his role as the creator of Netflix's \"House of Cards.\" If his 2013 play, \"The Parisian Woman,\" leads anywhere, it will be down the drain.\n\nNaming no names here, but any number of savvy Broadway actresses might have made a formidable stage presence of Chloe (Uma Thurman), a vibrant Washington hostess who exercises her considerable seductive wiles to claw her way to political power. But entrusting this captivating character to a star from another artistic solar system proves an unkindness to both character and star.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n TMZ Receives Alleged Ransom Note for Savannah Guthrie's Mom Nancy Demanding 'Millions' in Bitcoin; Police 'Taking All Tips Very Seriously' \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Tracy Zamot, Veteran Publicist for Atlantic, Virgin and Motown Records and Pandora, Dies at 55\n\nChloe's current project is to wrangle a circuit court judgeship for her husband, Tom (Josh Lucas, bringing charm to a charmless role), a tax attorney with no experience on the bench. To this end, she goes about beguiling every character, male and female, who might help her cause. And to show how ruthless she is, she'll blackmail anyone who resists her blandishments.\n\n\"I can't control who falls in love with me,\" she tells Peter (Marton Csokas), a besotted banker who squirms with jealousy when she flaunts her other admirers. \"I flirt a little,\" she admits. \"That's who I am.\" That may well be, but it's not who Thurman is, and the effort to play the naughty heroine in a drawing room comedy (which is how director Pam MacKinnon has misdirected her) is beyond her skill set.\n\nDerek McLane has designed an elegant Washington town house for Chloe and Tom, and Thurman inhabits these classy digs with grace. But it gives no pleasure to watch the star struggling to keep up with Chloe as she trolls for current power players and/or future lovers. One scene in which she does connect is a spirited exchange with Jeanette Simpson (Blair Brown, taking charge of things), future Chairman of the Federal Reserve, over Tom's employment status.\n\nBut in the end, the question of whether or not Tom gets a judgeship is a trifling matter, unworthy of all Chloe's efforts. Willimon has updated his play to reflect players in the current administration. There are mentions of \"General Kelly\" and \"Mattis,\" and a few stinging references to the current resident of the White House. (\"It's okay. We've got good people around him now. Well, mostly good people.\") But he fails to draw on any of the many issues bedeviling the president and his minions, missing his chance to turn this mannered trifle into a substantive political drama.",
+  "isFullReview": true,
   "dtliExcerpt": "Uma Thurman brings her movie-star presence to Broadway in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant costume party than urgent theater.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Uma Thurman brings her movie-star presence to Broadway in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant costume party than urgent theater.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://variety.com/2017/legit/reviews/the-parisian-woman-review-uma-thurman-1202626394/",
   "sources": [
     "web-search",
@@ -78,5 +78,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 480,
+  "archivePath": "data/archives/reviews/the-parisian-woman-2017/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:04:00.137Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 480,
+  "tierReason": "Full review text"
 }

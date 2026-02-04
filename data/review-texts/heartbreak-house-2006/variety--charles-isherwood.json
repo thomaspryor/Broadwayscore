@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production in the Roundabout Theater Company's revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,43 +18,59 @@
   "showScoreExcerpt": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production in the Roundabout Theater Company's revival.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textWordCount": 670,
-  "archivePath": "data/archives/reviews/heartbreak-house-2006/variety--charles-isherwood_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T23:57:47.590Z",
-  "fetchMethod": "scrapingbee",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Shaw's sprawling fantasia about England on the brink of World War I gets a handsome but dramatically sluggish production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges good production values ('handsome') but delivers a clear negative verdict with 'dramatically sluggish.' Single excerpt warning applied - this appears to be the critic's core assessment. | GPT-4o: The excerpt describes the production as 'handsome' but 'dramatically sluggish', indicating a mix of positive and negative elements. The lack of full context and the single excerpt warning suggest a cautious approach, leading to a mixed classification. | Gemini: The review excerpt uses the phrase \"dramatically sluggish production,\" indicating a negative assessment. Given that it's a single excerpt, the confidence is low. | Kimi: Single excerpt presents a balanced mixed assessment, acknowledging aesthetic merits ('handsome') while delivering significant criticism of the dramatic execution ('sluggish'). With only one curated quote available, the confidence is low. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 2,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "scrapingbee",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "Jul 26, 2006 2:19pm PT \n\n \n\n \n \n \n\n \n\n \n Severance\n \n \n\n \n\n Escalating blend of black humor and grisly goings-on in the wilds of Hungary, \"Creep\" fully delivers in its latter half, and drew whoops and gasps during packed screenings at South Korea's PiFan fantasy fest. With a fair wind, some juicy theatrical action looks to be in the cards for this Aug. 25 release in Blighty. U.S. distrib Magnolia has set no opening date as yet.\n\nAfter the blah Franka Potente starrer, “Creep,” British helmer Christopher Smith more than comes up with the goods in slasher pic “Severance,” his sophomore trip to the genre well. Escalating blend of black humor and grisly goings-on in the wilds of Hungary fully delivers in its latter half, and drew whoops and gasps during packed screenings at South Korea’s PiFan fantasy fest. With a fair wind, some juicy theatrical action — followed by robust ancillary — looks to be in the cards for this Aug. 25 release in Blighty. U.S. distrib Magnolia has set no opening date as yet.\n\n1/1\n\nSkip Ad\n \nContinue watchingafter the adVisit Advertiser websiteGO TO PAGE\n\nWith a whammo opening that only becomes clear near the end of the movie, pic follows the European sales team of multinational arms supplier Palisade Defence, sent on a team-building weekend in Central Europe. Stranded when the road is blocked by a fallen tree, and then abandoned by their Hungarian driver, the team, led by stiff-upper-lip Richard (Tim McInnerny), has to leg it through the forest to find the luxury lodge of Palisade’s Yank exec, George (David Gilliam).\n\nDysfunctional, raggedy bunch includes womanizing, Cockney pothead Steve (Danny Dyer), hunky yuppie Harris (Toby Stephens), geeky Gordon (Andy Nyman), Richard’s assistant, Billy (Babou Ceesay), Brit brunette Jill (Claudie Blakley) and Canuck blonde Maggie (Laura Harris). What they find is not a swanky lodge but a rundown building with dusty files on Serbian lowlifes in the basement.\n\nOnscreen chemistry and humorous exchanges among the group take a while to click, and direction in the opening reels is uneven. But the pic’s off-kilter approach starts to cohere in a section where Harris, Jill and then Steve spin wild stories about what the old lodge used to be — all visualized as brief movies-within-the-movie.\n\nThe film starts ratcheting up the scares from the halfway point as Jill gets up during the night for a drink of water. Nicely modulated sequence, full of false alarms prior to the actual surprise, sets the style for helmer Smith’s approach to his subsequent setpieces.\n\nCasual way in which special effects are thrown at the viewer pays dividends as the story progresses. As the violence mounts, film’s comic shock value comes as much from the way in which no cast member is spared as from what’s actually shown onscreen. In that respect, “Severance” is a long way from formula slasher fare.\n\nOne gag in particular, involving the gung-ho George and a rocket launcher, is a guaranteed roof-raiser for its sheer audaciousness and political cheekiness.\n\nDyer (“Human Traffic,” “The Great Ecstasy of Robert Carmichael”) and Harris slowly dominate the goings-on, but it’s the increasingly outrageous action that becomes the real star of the movie.\n\nTechnical package is fine on a budget, and locations in Hungary and the U.K.’s Isle of Man are blended seamlessly. Original script’s title was “P45,” the English name for the form employees get upon job severance.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice."
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:10:45.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2015/legit/reviews/the-gin-game-review-james-earl-jones-cicely-tyson-1201617381/",
   "publishDate": "October 14, 2015",
-  "fullText": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977 Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977 Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
   "originalScore": null,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977 Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (39 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
   "sources": [
     "web-search",
@@ -78,5 +78,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 45,
+  "textWordCount": 177,
+  "archivePath": "data/archives/reviews/the-gin-game-2015/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:23:56.716Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 177 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The 29th Israel Film Festival will honor Helen Mirren with its Career Achievement Award at its opening night on Oct. 28 at the Saban Theatre in Beverly Hills.\n\nMirren most recently starred as Maria Altmann in \"Woman in Gold,\" which will screen as part of the festival. She will next be seenin \"Eye in the Sky” and as Hedda Hopper in Bryan Cranston’s “Trumbo.”\n\nShe received an Academy Award, Golden Globe, SAG Award and Bafta Award for her portrayal of Queen Elizabeth II in 2006 for \"The Queen.\" She won a Tony this year for reprising her role as the British monarch in “The Audience.”\n\n\"We are very proud to honor such an extraordinary talent as Helen Mirren whose work inspires and emotionally moves millions of filmgoers around the world,\" said Meir Fenigstein, founder and executive director of IsraFest Foundation.\n\nAaron Sorkin has been announced as the recipient of the festival’s achievement in film and television award. \"Baba Joon,\" Israel's entry to the 2016 Academy Awards for Best Foreign Language Film, will be the opening night film."
 }

@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.theatermania.com/broadway/reviews/frozen_81114.html",
   "publishDate": "March 22, 2018",
-  "fullText": "The musical's creative team has managed to translate the film's emotional core to the stage while expanding its world in ways that feel organic rather than forced.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The musical's creative team has managed to translate the film's emotional core to the stage while expanding its world in ways that feel organic rather than forced.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical's creative team has managed to translate the film's emotional core to the stage while expanding its world in ways that feel organic rather than forced.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 77,
@@ -71,5 +71,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 320,
+  "archivePath": "data/archives/reviews/frozen-2018/theatermania--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:24:27.596Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The new Broadway musical is nominated for nine Tony Awards.\n\nThe Tony-nominated new musical Dear Evan Hansen will launch its first national tour at the Denver Center for the Performing Arts in October 2018. The production will open the theater's 2018-19 season. Additional tour stops have not yet been announced.\n\nWith a score by Oscar winners Benj Pasek and Justin Paul (La La Land), and a book by Steven Levenson (Masters of Sex), Dear Evan Hansen is described as follows: \"All his life Evan Hansen has felt invisible. To his peers, to the girl he loves, sometimes even to his own mother. But that was before he wrote the letter — that led to the incident— that started the lie — that ignited a movement – that inspired a community — and changed Evan's status from the ultimate outsider into the somebody everyone wants to know. But how long can Evan keep his secret? And at what price?\"\n\nThe production opened at Broadway's Music Box Theatre on December 4, 2016 and is currently nominated for nine Tony Awards, including Best Musical. The cast is led by Ben Platt, alongside Laura Dreyfuss, Mike Faist, Rachel Bay Jones, Will Roland, Jennifer Laura Thompson, Kristolyn Lloyd, and Michael Park. Michael Greif directs.\n\nFor tickets and more information about the Broadway production, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

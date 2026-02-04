@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a show that sneaks up on you the way a good song does, when you find yourself humming it long after you first heard it, and you can't figure out why it made such an impression.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This is a show that sneaks up on you the way a good song does, when you find yourself humming it long after you first heard it, and you can't figure out why it made such an impression.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (38 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a show that sneaks up on you the way a good song does.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review uses a positive metaphor to describe the show's impact, suggesting it leaves a lasting impression. However, the lack of detailed praise or strong superlatives keeps it from being a rave. | Gemini: The review uses a positive analogy to a good song, suggesting a favorable impression despite the lack of overt enthusiasm. | Kimi: The critic employs an appreciative metaphor comparing the show to a memorable song that lingers, indicating a warm recommendation based on its lasting emotional resonance, though the single-sentence excerpt limits assessment scope.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:40:03.015Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 77,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Left on Tenth is a slight endeavor  slighter, probably, than a cancer odyssey has any right to be  and certainly falls short of better Ephron Sister efforts. Even so, there can be only one response to it, and that's well wishes for all.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Left on Tenth is a slight endeavor and certainly falls short of better Ephron Sister efforts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'slight' and says it 'falls short' of better works, but ends with 'well wishes' suggesting some sympathy. Mixed verdict with lean toward disappointment. | GPT-4o: The review describes the show as 'slight' and 'falls short', indicating a lack of strong recommendation. The 'well wishes' sentiment suggests a neutral stance rather than a clear positive or negative verdict. | Gemini: The review calls the show \"slight\" and says it \"falls short\" but ultimately offers \"well wishes\", suggesting a mixed but not negative reaction. | Kimi: The critic describes the show as insubstantial and disappointing compared to the creators' previous work, explicitly stating it falls short. The closing well-wishes are directed at the creators rather than the production itself, indicating no recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:21:32.185Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

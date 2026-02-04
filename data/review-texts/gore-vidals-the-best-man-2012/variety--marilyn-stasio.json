@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,50 +18,59 @@
   "showScoreExcerpt": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textWordCount": 212,
-  "archivePath": "data/archives/reviews/gore-vidals-the-best-man-2012/variety--marilyn-stasio_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T23:55:49.768Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "No CDX snapshots found"
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Gore Vidal's astute political drama 'The Best Man' feels as relevant today as it did when it opened on Broadway in 1960, and this handsome revival directed by Michael Wilson makes the most of its timeless themes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the play as 'astute' and 'relevant', calls the revival 'handsome', and notes it 'makes the most of its timeless themes' - all positive language indicating a recommendation. However, with only one excerpt available, confidence is low as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the revival as 'handsome' and highlights its relevance and effective direction. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review excerpt uses positive language such as \"astute,\" \"relevant,\" and \"handsome revival,\" suggesting a strong recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range but with low confidence. | Kimi: The excerpt offers unqualified praise for the production's direction and timeless relevance, placing it clearly in the positive range despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Word count too low: 212 (min: 300)",
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "A prime contender for most peculiar wide release of the year, this unknown commodity faces an uphill challenge luring moppets and parents into theaters.\n\nA prime contender for most peculiar wide release of the year, “The Oogieloves in the Big Balloon Adventure” reps a passion project in children’s entertainment for producer Kenn Viselman (“Teletubbies“). Designed to get young viewers out of their seats singing, dancing, jumping and shouting at the screen, this exhausting “interactive” pic charts the quest of three candy-colored creatures to retrieve five magic balloons as a birthday surprise for their slumberous pillow pal, Schluffy. Filmed over four days in 2009 and only now hitting theaters through Viselman’s self-distribution chutzpah, this unknown commodity faces an uphill challenge luring moppets and parents into theaters.\n\nThe simple plot serves as an excuse to string together kid-friendly production numbers for 10 original songs; conceivably, that should play to the strengths of director Matthew Diamond, whose credits include numerous televised musical-theater specials and Disney’s “Camp Rock.” Instead, the low-budget production feels chintzy and impossibly square, even by tyke standards. Six “name” celebrities pop up for single-sequence cameos, each gamely involved in a song-and-dance number. Supposedly, Viselman has two additional “Oogieloves” adventures in the works, but it’s unlikely anyone leaves this one clamoring for more."
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:08:29.164Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

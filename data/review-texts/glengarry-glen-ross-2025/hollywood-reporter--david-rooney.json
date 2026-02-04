@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"The curtain image is a clever wink to audiences likely more familiar with the movie than with previous stage incarnations. But this punchy revival  directed with surgical precision by Patrick Marber and played by an ideally cast ensemble firing on all cylinders and pinging off one another with camaraderie that often curdles into contempt  doesn't need the nostalgic assist.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this punchy revival directed with surgical precision by Patrick Marber and played by an ideally cast ensemble firing on all cylinders",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction ('surgical precision') and cast ('ideally cast ensemble firing on all cylinders'), but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the direction and ensemble performance, indicating a strong recommendation. The use of 'punchy' and 'firing on all cylinders' suggests an energetic and well-executed production. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses positive language such as \"punchy revival\", \"surgical precision\", and \"ideally cast ensemble firing on all cylinders\", indicating a strong recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the direction ('surgical precision'), ensemble ('ideally cast,' 'firing on all cylinders'), and overall energy ('punchy'), indicating a strong recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:07:05.983Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

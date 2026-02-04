@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stewart brings his trademark intensity and intelligence to the role, but the production feels more like an acting exercise than a fully realized theatrical experience.",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 54,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production feels more like an acting exercise than a fully realized theatrical experience",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises Stewart's performance but criticizes the production as incomplete, suggesting it's not quite worth seeing despite the star turn. | GPT-4o: The review acknowledges Stewart's performance but criticizes the production as lacking a fully realized theatrical experience, indicating a negative overall impression. | Gemini: The review praises Stewart's performance but criticizes the overall production, suggesting a mixed experience. | Kimi: While the critic praises Stewart's individual performance as intelligent and intense, the decisive judgment characterizes the overall production as an 'acting exercise' rather than a 'fully realized theatrical experience,' indicating the show fails to cohere into a satisfying piece of theater. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:26:17.992Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 53
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

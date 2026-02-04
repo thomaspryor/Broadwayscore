@@ -8,5 +8,41 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Love and marriage. Birth and death. Sorrows and joys. Loss and renewal. Bacon and eggs. Love and marriage. Birth and death. Sorrows and joys. Loss and renewal. Bacon and eggs. Whoops — sorry! My mind wandered to breakfast plans while I was attempting to think of something interesting to say about “Sea Wall” and “A Life,” two modestly engaging solo plays that have rather unnecessarily washed up on Broadway at the Hudson Theatre after a run last season at the Public Theater. The tide that has borne them here is the centrifugal force that draws many plays of minor distinction to Broadway, namely celebrity. Jake Gyllenhaal, a film star and Oscar nominee, stars along with the lesser-known but also talented British actor Tom Sturridge. Each performs a monologue from the point of view of a father and husband, although one tale — “Sea Wall,” by Simon Stephens, presented first, with Sturridge starring — is notably more bleak than the comparatively benign “A Life,” by Nick Payne.",
+  "isFullReview": false,
+  "textWordCount": 166,
+  "archivePath": "data/archives/reviews/a-life-2019/broadwaynews--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:27:44.510Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 178 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 166,
+  "tierReason": "Short text (166 words)"
 }

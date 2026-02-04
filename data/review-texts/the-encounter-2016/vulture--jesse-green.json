@@ -3,10 +3,10 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2016/09/theater-review-the-encounter.html",
+  "url": "https://www.vulture.com/2016/09/theater-review-the-sound-of-the-encounter.html",
   "publishDate": "September 30, 2016",
-  "fullText": "The Encounter is a remarkable piece of theater that uses binaural audio technology to create an immersive experience that puts you directly inside the Amazon rainforest with National Geographic photographer Loren McIntyre.",
-  "isFullReview": false,
+  "fullText": "Things you buy through our links may earn Vox Media a commission.\n\nSimon McBurney in The Encounter.\n Photo: Tristram Kenton\n \n \n \n In 1969, a National Geographic photographer named Loren McIntyre made what was supposed to be a three-day expedition to Brazil’s Javari Valley in search of the Mayouruna, an indigenous, itinerant Amazonian tribe. He found them, or they found him, and over the course of several months of quasi-captivity (they seemed to regard him as both a god and a danger) he suffered near-starvation, hallucinatory delirium, and a subcutaneous infestation of maggots. You can skip the starvation and the maggots, if you like; to experience McIntyre’s existential odyssey at close range all you need is a ticket to The Encounter. The new play from Complicite — conceived, directed, and written by the company’s artistic director, Simon McBurney — opened incongruously on Broadway tonight in a production billed as the last word in immersive theater.\n\nImmersive it is. Each theatergoer is provided with headphones through which nearly the entire play — a 110-minute monologue — is performed using audio technology that makes it seem as if sounds are emanating from real locations around you. The illusion, a kind of trompe l’oreille, is uncanny; you reflexively turn toward the apparent source of mosquito buzzings, monkey cacklings, even a child’s singing before your consciousness reminds you that it’s all happening in what McBurney calls the “2.6 pounds of electrified pâté” between your ears. That pâté can process more aural information than you might imagine; as the chaos of McIntyre’s experience grows, the sound design (by Gareth Fry and Pete Malkin) becomes so layered you may feel a kind of auditory nausea.\n\nThis is thrilling in its way, but as you begin to adjust to the tech tricks you also begin to wonder how relevant and expressive they really are. The story, adapted from a 1992 account of McIntyre’s journey called Amazon Beaming, trades heavily in the slightly stoned and gassy sense of wonder you might experience in a freshman anthropology course. The Mayouruna, we learn, have a different concept of time than ours. They are radically anti-materialistic and practice a form of wordless communication that McIntrye calls “beaming” and that we might call telepathy. McBurney tries to connect these themes — well, not the anti-materialism; the sound equipment must be expensive — to the technology at hand, noting that most of what we call reality is a fiction constructed, like the show’s soundscape, from bits of information and shared assumptions. For McIntyre, those assumptions collapsed in his months with the Mayouruna, as dissociated, primal thoughts crept out of the gaps formerly filled with guesses.\n\nHence the audio illusions. But even if you buy the connection, and groove to the mystical musings of this South American Heart of Darkness, you may find the spell wearing off well before the story does. It’s immersive, yes, but not so much theater: It’s more like watching a radio show in a studio, with special kudos to the Foley artist. Even McBurney’s exhausting efforts to bring the story to gestural life (he’s spelled for two performances a week by Richard Katz) are undercut by the sound; privileging the ears so exclusively diminishes other aspects of the dramatic experience. There’s not much to see, for instance, in Michael Levine’s set design, and the lighting by Paul Anderson is in any case quite dim, which is probably why several people around me shut their eyes and dropped off. The Encounter may be happening in your head but, ultimately, it’s someone else’s trip.\n\nThe Encounter is at the John Golden Theatre through January 8.\n\nShow \n \n \n Comment\n \n\n \n \n \n \n\n \n \n \n \n \n\n \n \n\n \n \n \n\n \n Your product is saved! You’ll receive emails when your saved products go on sale. Manage preferences.\n \n \n\n \n \n\n \n \n\n Things you buy through our links may earn Vox Media a commission.",
+  "isFullReview": true,
   "dtliExcerpt": "The Encounter is a remarkable piece of theater that uses binaural audio technology to create an immersive experience that puts you directly inside the Amazon rainforest with National Geographic photographer Loren McIntyre.",
   "originalScore": null,
   "assignedScore": 79,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Encounter is a remarkable piece of theater that uses binaural audio technology to create an immersive experience that puts you directly inside the Amazon rainforest with National Geographic photographer Loren McIntyre.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 79,
     "confidence": "medium",
@@ -72,5 +72,51 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.vulture.com/2016/09/theater-review-the-encounter.html",
+  "urlDiscoveredAt": "2026-02-04T01:25:59.686Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 632,
+  "archivePath": "data/archives/reviews/the-encounter-2016/vulture--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:25:59.695Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "page.waitForTimeout: Target page, context or browser has been closed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 632,
+  "tierReason": "Full review text"
 }

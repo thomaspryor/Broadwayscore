@@ -3,10 +3,48 @@
   "outletId": "ew",
   "outlet": "Entertainment Weekly",
   "criticName": "Unknown",
-  "url": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html",
+  "url": "https://ew.com/article/2014/11/20/delicate-balance-ew-review/?srsltid=AfmBOooeYaCgopBTsK9vDLOtJ41SxkCbhgK5UMqL4bqNt2LC8ao7eRGP",
   "playbillVerdictUrl": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html",
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html",
+  "urlDiscoveredAt": "2026-02-04T01:54:03.000Z",
+  "urlDiscoveryMethod": "google-serp",
+  "fullText": "Whenever Edward Albee writes a play, a well-crafted egg is perpetually laid, and continuously hatched with new casts, directors and paradigms of thought; only time can exert its force and lay waste to the text’s relevance. But Albee’s Pulitzer Prize-winning A Delicate Balance bears that hallowed distinction of timelessness—unbound by the trappings of a relic zeitgeist or turns of phrase—and the play’s age is wisely never shown in the hands of a trio of seasoned actors (Glenn Close, John Lithgow and Lindsay Duncan) and Tony-winning director Pam MacKinnon (Who’s Afraid of Virginia Woolf?), who at this point, we may as well dub the Albee Whisperer. MacKinnon’s feisty if occasionally restless revival (now playing at Broadway’s intimate Golden Theatre) makes intriguing work of Albee’s portrait of WASPy retired couple Agnes and Tobias (Close and Lithgow) contemplating family and friendship in the final act of their lives, particularly when the arrival of their daughter (Martha Plimpton) and their fellow empty-nest neighbors (Bob Balaban and Clare Higgins) cause priorities to shift. The production can feel like it’s oscillating speeds, but the constant is shimmering character work, and why wouldn’t you expect that from such a cast of heavy-hitters? In her first leading Broadway appearance since 1994’s Sunset Boulevard, Glenn Close makes a comfy return to the stage as the self-important Agnes, whose self-pity is as dramatic as her pashminas. Close exudes the kind of veteran flair and magnetism you’d presume from such a marquee name. But although this seems to be Close’s marquee, it’s John Lithgow who runs away with the show. As insular dilemmas pile on for the pensive, settled Tobias, Lithgow offers a tremendous master class in the art of the slow burn, cautiously placing weight on Tobias until he hits his emotional tipping point with touching resonance. The rest of the play—which clocks in at a sometimes-noticeable two hours and 45 minutes in total—belongs to the incendiary Lindsay Duncan, who charges Agnes’s inebriated sister Claire with bite and heart (giving Judith Light a run for her money in the sassy featured-broad department). Plimpton is ferocious if perhaps too eloquent as spoiled daughter Julia, and if the goal of Balaban and Higgins’ Harry and Edna is to be infuriating, then both actors do just fine. But on this balanced stage—gorgeously designed by Santo Loquasto—the scales are surely tipped in Close, Lithgow, and Duncan’s direction. B",
+  "isFullReview": true,
+  "textWordCount": 394,
+  "archivePath": "data/archives/reviews/a-delicate-balance-2014/ew--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:54:03.004Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
+  "contentTier": "truncated",
+  "wordCount": 394,
+  "tierReason": "Missing proper ending or other signals"
 }

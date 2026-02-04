@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "In a crowded Broadway market place, Moulin Rouge has a show that has it all: it's not just 70 songs that are rolled into one show, but also a canvas of spectacle and emotion that isn't just a floorshow but left me floored with its sublime artistry.",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "left me floored with its sublime artistry",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Clear rave language ('sublime artistry', 'left me floored') with unqualified praise for the show's spectacle and emotional impact. Despite being a single excerpt, the superlative language suggests strong enthusiasm. | GPT-4o: The excerpt uses superlative language ('has it all', 'left me floored', 'sublime artistry') suggesting a strong recommendation. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review excerpt is highly positive, using strong language like \"floored with its sublime artistry.\" Given the single excerpt, confidence is low, but the strength of the language suggests a strong positive score. | Kimi: The excerpt delivers enthusiastic praise with 'sublime artistry' and 'floored,' indicating a strong recommendation, though the single-excerpt format necessitates low confidence in the overall verdict. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:31:41.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

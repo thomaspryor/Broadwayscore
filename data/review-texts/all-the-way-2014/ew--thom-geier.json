@@ -3,10 +3,10 @@
   "outletId": "ew",
   "outlet": "Entertainment Weekly",
   "criticName": "Thom Geier",
-  "url": "https://ew.com/article/2014/03/07/all-the-way-broadway-review/",
+  "url": "https://ew.com/article/2014/03/06/all-way-ew-review/?srsltid=AfmBOorciZvmWtcDsy6rlo2oTiX1Co6Uyq5XSlIdZ3EiwKHvycy3UTGZ",
   "publishDate": "March 7, 2014",
-  "fullText": "Cranston's LBJ is a marvel of physical and vocal transformation, capturing Johnson's legendary arm-twisting political style and crude charisma with astonishing authenticity.",
-  "isFullReview": false,
+  "fullText": "Bryan Cranston doesn’t look or sound much like Lyndon B. Johnson, a broad-shouldered, doughy-faced Texan with a distinctively mumble-mouthed drawl. But in Robert Schenkkan’s impressive historical pageant All the Way, the reedy star effectively evokes the late president’s shrewdness, his delight in folksy yarns and dirty jokes, his insecurity, and his almost innate sense of how to exploit his opponents’ weaknesses. The play traces the first year of LBJ’s presidency, crosscutting cinematically between Johnson and his inner circle, FBI director J. Edgar Hoover (a slightly miscast Michael McKean), Martin Luther King Jr. (Brandon J. Dirden, who has the orator’s cadences down), congressional leaders on both sides of the civil rights issue, and rivals in the 1964 campaign. Perhaps because there’s so much ground to cover in three hours, All the Way can feel like a particularly rushed History channel miniseries, with scenes that are either perfunctory?especially those with female characters such as Lady Bird Johnson (Betsy Aidem) and Coretta Scott King (Roslyn Ruff)?or extraneous. (The play has been revised only slightly since its run last fall at the American Repertory Theater in Cambridge, Mass., with much the same cast.) Still, Schenkkan teases out telling parallels to modern political gridlock, and director Bill Rauch achieves some purely theatrical tableaux. At one point, LBJ’s Oval Office desk sinks into the stage to create a grave to punctuate both military escalation in Vietnam and the deaths of Freedom Riders in Mississippi. And while Cranston may never pass for LBJ’s doppelgänger, he embraces the role’s showmanship and physicality with gusto, close-talking and buttonholing and tie-grabbing to make his case. Even Walter White would be intimidated. B+",
+  "isFullReview": true,
   "dtliExcerpt": "Cranston's LBJ is a marvel of physical and vocal transformation, capturing Johnson's legendary arm-twisting political style and crude charisma with astonishing authenticity.",
   "originalScore": 87,
   "assignedScore": 87,
@@ -73,5 +73,46 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Rave"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "previousUrl": "https://ew.com/article/2014/03/07/all-the-way-broadway-review/",
+  "urlDiscoveredAt": "2026-02-04T02:03:55.103Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 87,
+  "textWordCount": 272,
+  "archivePath": "data/archives/reviews/all-the-way-2014/ew--thom-geier_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:03:55.106Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 272 (min: 300)",
+    "Show title not found in text"
+  ],
+  "wordCount": 272,
+  "tierReason": "Short text (272 words)"
 }

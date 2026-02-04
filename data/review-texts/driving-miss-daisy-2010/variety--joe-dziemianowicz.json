@@ -9,112 +9,68 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the material feels dated and the staging is static, stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip.",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Though the material feels dated and the staging is static, stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip.",
-  "contentTier": "complete",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textWordCount": 570,
-  "archivePath": "data/archives/reviews/driving-miss-daisy-2010/variety--joe-dziemianowicz_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T23:45:30.293Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "wordCount": 570,
-  "tierReason": "Full review text",
   "llmScore": {
-    "score": 25,
+    "score": 73,
     "confidence": "high",
     "range": {
-      "low": 20,
-      "high": 30
+      "low": 68,
+      "high": 78
     },
-    "bucket": "Pan",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 45,
-      "direction": 25
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Chen is unable to turn the proceedings into either a full-blown three-hankie weepie or a female empowerment pic.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Without a clear handle on the tone of the material, the film achieves only minor impact.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "The uneven ensemble to pump some life into this moribund tale of late-in-the-game familial bonding.",
-        "sentiment": "negative",
-        "strength": 4
+        "quote": "stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "The critic finds fundamental flaws in the script, direction, and tone, describing it as 'moribund' with only 'minor impact' and structural problems that feel like 'a rudimentary template.'",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('worthwhile trip') despite acknowledging significant flaws ('dated material', 'static staging'). Single excerpt with qualified praise suggests lower end of Positive range. | GPT-4o: The review acknowledges dated material and static staging but ultimately recommends the show due to the strong performances of the lead actors. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges dated material and static staging, but ultimately concludes that the performances of Redgrave and Jones make the revival \"a worthwhile trip,\" indicating a positive recommendation with reservations. | Kimi: The excerpt clearly recommends the show ('worthwhile trip') but emphasizes that this is due entirely to the star performances, while explicitly noting major weaknesses in the material and staging. With only one curated excerpt available, this qualified endorsement fits the lower end of the Positive bucket.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-04T00:16:50.770Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T20:58:39.048Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 3493,
-    "outputTokens": 376,
-    "textSource": {
-      "type": "fullText",
-      "status": "complete",
-      "field": "fullText",
-      "confidence": "high",
-      "reasoning": "Complete review text with verdict"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

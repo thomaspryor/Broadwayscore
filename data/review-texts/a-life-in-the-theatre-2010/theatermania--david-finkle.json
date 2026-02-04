@@ -5,8 +5,8 @@
   "criticName": "David Finkle",
   "url": "https://www.theatermania.com/broadway/reviews/a-life-in-the-theatre_28089.html",
   "publishDate": "October 13, 2010",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "The Signature Theatre Company’s production of Chess will now run through October 3, with tickets for the extension go on sale on September 7.\n\nEric Schaeffer has directed the production, which features music direction and new orchestrations by David Holcenberg and choreography by Karma Camp. The show features music by Björn Ulvaeus and Benny Andersson, lyrics by Tim Rice, and book by Richard Nelson.\n\nThe show stars Jill Paice(Florence), Euan Morton‘ (Anatoly), Jeremy Kushnier (Freddie), Eleasha Gamble (Svetlana), Christopher Bloch (Molokov), Russell Sunday (Walter) and Chris Sizemore (Arbiter), along with ensemble members Jonathan Atkinson, Jamie Eacker, James Gardiner, Gregory Maheu, Katie McManus, Christopher Mueller, Bayla Whitten, and Rachel Zampelli.\n\nThe creative team includes Daniel Conway (scenic design), Chris Lee (lighting design), Kathleen Geldard (costume design), Matt Rowe (sound design) and Aaron Fisher (projection design).\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
+  "isFullReview": true,
   "dtliExcerpt": "What Schreiber and Wilson accomplish is a master class in acting, particularly in the way they handle Mamet's distinctive dialogue with its repetitions, interruptions, and abrupt shifts.",
   "originalScore": null,
   "assignedScore": 82,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What Schreiber and Wilson accomplish is a master class in acting, particularly in the way they handle Mamet's distinctive dialogue with its repetitions, interruptions, and abrupt shifts.",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 82,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 234,
+  "archivePath": "data/archives/reviews/a-life-in-the-theatre-2010/theatermania--david-finkle_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:57:27.391Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 234 (min: 300)"
+  ],
+  "wordCount": 234,
+  "tierReason": "Short text (234 words)"
 }

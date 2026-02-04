@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Oklahoma! is a thrilling reinvention that makes Rodgers and Hammerstein's 1943 musical feel urgent and contemporary while honoring its enduring emotional truths.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This Oklahoma! is a thrilling reinvention that makes Rodgers and Hammerstein's 1943 musical feel urgent and contemporary while honoring its enduring emotional truths.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Oklahoma! is a thrilling reinvention that makes Rodgers and Hammerstein's 1943 musical feel urgent and contemporary while honoring its enduring emotional truths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses strong positive language ('thrilling reinvention', 'urgent and contemporary') with no reservations or caveats expressed in the excerpt. | GPT-4o: The review uses strong positive language like 'thrilling reinvention' and 'urgent and contemporary,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"thrilling reinvention\" and \"urgent and contemporary\" while also honoring the original work, indicating a very high level of praise. | Kimi: The critic offers unqualified praise with superlatives like 'thrilling' and 'urgent', describing a successful reinvention that honors the original while feeling contemporary, with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:35:19.270Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

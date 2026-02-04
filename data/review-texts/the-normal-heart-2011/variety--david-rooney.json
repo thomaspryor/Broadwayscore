@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2011/legit/reviews/the-normal-heart-1117945301/",
   "publishDate": "April 27, 2011",
-  "fullText": "Larry Kramer's furious 1985 drama about the early years of the AIDS crisis burns with undiminished urgency in this superb Broadway revival, directed with searing intensity by Joel Grey and George C. Wolfe.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Larry Kramer's furious 1985 drama about the early years of the AIDS crisis burns with undiminished urgency in this superb Broadway revival, directed with searing intensity by Joel Grey and George C. Wolfe.",
   "originalScore": null,
   "assignedScore": 91,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Larry Kramer's furious 1985 drama about the early years of the AIDS crisis burns with undiminished urgency in this superb Broadway revival, directed with searing intensity by Joel Grey and George C. Wolfe.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2014%2Ftv%2Freviews%2Ftv-review-the-normal-heart-1201183609%2F",
   "sources": [
     "web-search",
@@ -78,5 +78,52 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "textWordCount": 412,
+  "archivePath": "data/archives/reviews/the-normal-heart-2011/variety--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:02:47.136Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Helmer Nathan Christ's attempt to celebrate struggling indie musicians in Austin, Texas, simultaneously warns that the gentrification of neighborhoods long dominated by live music venues may imperil the city's creative class.\n\nThere’s a potentially fascinating and appreciably more concise 60-minute documentary to be found somewhere amid the uneven and unfocused 88-minute hodgepodge that is “Echotone,” helmer Nathan Christ’s attempt to celebrate struggling indie musicians in Austin, Texas, while simultaneously warning that the gentrification of neighborhoods long dominated by live music venues may imperil the city’s creative class. Although limited theatrical playdates may give ticketbuyers better opportunity to fully appreciate Robert L. Garza’s artful lensing, the pic likely will resonate better on homevid.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Tracy Zamot, Veteran Publicist for Atlantic, Virgin and Motown Records and Pandora, Dies at 55 \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Ray Romano to Lead HBO Max Pilot 'How to Survive Without Me'\n\nChrist sporadically sounds distress signals while focusing on clashes between musicians and club owners — clearly the good guys here — and condo-residing newcomers who demand noise-restriction ordinances. (Ironically, some of the pic’s more beautiful images involve twilight views of condominium construction sites.)\n\nBut the bulk of “Echotone” is a sympathetic but repetitious account of Austin musicians who want to concentrate on art, not commerce, and make a living while remaining independent: Cari Palazzollo of the synth-pop group Belaire goes as far as manufacturing her own CD packaging and souvenir T-shirts, while blues artist Joe Black (of Black Joe Lewis and the Honeybears) drives a delivery truck for a fish market to support his budding career. Even as he tries to launch a new band, Sunset, rocker Bill Baird comes across as someone literally traumatized by his experiences with a previous group (Sound Design) that was signed, over-hyped and then quickly dropped by a major label.\n\n“We’re not into mass distribution or anything like that,” the elfin Palazzollo insists. “We don’t want to get our name out there. We want people to come to us and find us.” A noble sentiment, perhaps, though “Echotone” duly notes a discouraging statistic: In the self-proclaimed “Live Music Capital of the World,” 70% of working musicians make less than $15,000 a year.\n\nSurprisingly, there are few complete performances of any songs by any of the acts Christ includes in his doc. Even so, singer-songwriter Dana Falconberry manages to be the pic’s equivalent of a show-stopper with her unaffectedly sweet acoustic set. Other artists may get the chance to shine more brightly on the soundtrack CD."
 }

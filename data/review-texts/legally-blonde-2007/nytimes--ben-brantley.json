@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical, based on the movie that made Reese Witherspoon a star, turns out to be a sweet-tempered and only occasionally toe-curling addition to the current Broadway lineup.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This musical, based on the movie that made Reese Witherspoon a star, turns out to be a sweet-tempered and only occasionally toe-curling addition to the current Broadway lineup.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical turns out to be a sweet-tempered and only occasionally toe-curling addition to the current Broadway lineup.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified positive language ('sweet-tempered') but with clear reservations ('only occasionally toe-curling'). Given single excerpt warning and mild praise, scoring at lower end of Positive bucket. | GPT-4o: The excerpt describes the musical as 'sweet-tempered' with only occasional flaws, suggesting a generally positive but not overwhelmingly enthusiastic recommendation. | Gemini: The excerpt is positive (\"sweet-tempered\") but qualified (\"only occasionally toe-curling\"). Given the limited text, I'm scoring it at the lower end of the positive range with low confidence. | Kimi: The excerpt offers faint praise, describing the show as pleasant but qualified by the concession that it is only occasionally not cringe-worthy, indicating a lukewarm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:22:06.553Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

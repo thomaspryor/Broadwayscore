@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "With its blatant messaging about female empowerment and revisionist approach, not unlike two recent Broadway musicals - \"Six\" and \"Diana,\" both of which recast famous women from history as self-possessed and self-reliant feminist icons - \"Once Upon a One More Time\" reflects the broad strokes of mode...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"With its blatant messaging about female empowerment and revisionist approach... reflects the broad strokes of mode...\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt suggests a comparison to other musicals with similar themes, but lacks clear evaluative language indicating strong praise or criticism. The mention of 'blatant messaging' implies a mixed reception, without a definitive recommendation. | Gemini: The excerpt compares the show negatively to other musicals, suggesting a lack of originality and potentially heavy-handed messaging. Given the single excerpt, I'm placing it in the negative bucket with low confidence. | Kimi: The excerpt uses critical language ('blatant', 'broad strokes') to describe the show's feminist approach, comparing it to both the well-received 'Six' and the panned 'Diana', suggesting a lack of subtlety. However, with only one truncated excerpt available, the full verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:44:13.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

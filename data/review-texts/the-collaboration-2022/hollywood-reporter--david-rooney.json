@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-collaboration-broadway-review-1235274104/",
   "publishDate": "December 20, 2022",
-  "fullText": "Paul Bettany and Jeremy Pope are magnetic as Andy Warhol and Jean-Michel Basquiat in Anthony McCarten's play about the unlikely partnership between two titans of the New York art world.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Paul Bettany and Jeremy Pope are magnetic as Andy Warhol and Jean-Michel Basquiat in Anthony McCarten's play about the unlikely partnership between two titans of the New York art world.",
   "originalScore": null,
@@ -16,7 +16,52 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paul Bettany and Jeremy Pope are magnetic as Andy Warhol and Jean-Michel Basquiat in Anthony McCarten's play about the unlikely partnership between two titans of the New York art world.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 226,
+  "archivePath": "data/archives/reviews/the-collaboration-2022/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:47:17.842Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 226 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Orion Pictures — the MGM label headed by Alana Mayo — has acquired the feature directorial debut of Watchmen writer Cord Jefferson. Jeffery Wright stars in the project from Rian Johnson and Ram Bergman's T-Street and MRC.\n\nBased on the 2001 novel Erasure by Percival Everett, the movie centers on Thelonious “Monk” Ellison, a writer and English professor whose writing career has stalled because his work isn’t deemed “Black enough.” The description for the project continues that Monk “writes a satirical novel under a pseudonym, aiming to lay bare the hypocrisies of the publishing world. The book's immediate success forces Monk to get deeper enmeshed in his assumed identity and challenges his closely-held worldviews.”\n\nJefferson adapted the novel for the screen.\n\nThe project, which recently wrapped filming in Boston, will also star Tracee Ellis Ross, Erika Alexander, Leslie Uggams, Sterling K. Brown, Myra Lucretia Taylor, John Ortiz, Issa Rae and Adam Brody.\n\nT-Street's Ben LeClair and Nikos Karamigios produced, with Jermaine Johnson of 3Arts and Jefferson.\n\n\"As longtime fans of Cord, we are thrilled to be a part of his feature film debut and for the opportunity to share his vision with global audiences,” May said in a statement. “His adaptation of Everett's biting novel and Jeffrey's brilliant take on the character, along with this incredibly talented cast, create a wonderful alchemy to tell this story.\""
 }

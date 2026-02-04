@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/a-christmas-carol_87234.html",
   "publishDate": "December 5, 2019",
-  "fullText": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
     "score": 77,
@@ -73,5 +73,49 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 294,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2019/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:19:02.093Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 294 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The first slate of award nominees have been announced.\n\nThe 2019 Golden Globe Award nominees have been announced, and Tony winners Billy Porter and Lin-Manuel Miranda have topped the list.\n\nMiranda and leading lady Emily Blunt are up for their performances in Mary Poppins Returns, which also received a Best Motion Picture — Musical or Comedy nod. Composer Marc Shaiman is also nominated for his score, though none of the songs that Shaiman penned with longtime writing partner Scott Wittman made it into the \"Best Original Song\" category. Porter received a nomination in the Best Performance by an Actor in a Television Series – Drama category for his work on Pose.\n\nAdditional theater veterans nominated in film categories include Glenn Close (The Wife), Bradley Cooper (who, along with Lady Gaga, are nominated for A Star Is Born), Lucas Hedges (Boy Erased), Adam Driver (BlacKkKlansman), and Timothée Chalamet (Beautiful Boy).\n\nOn the television side, stage vets Candice Bergen (Murphy Brown), Rachel Brosnahan (The Marvelous Mrs. Maisel), Debra Messing (Will & Grace), and Darren Criss (The Assassination of Gianni Versace: American Crime Story) are all up for honors.\n\nClick here for a complete list of nominees.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
