@@ -22,7 +22,7 @@
   ],
   "llmScore": {
     "score": 45,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 40,
       "high": 50
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The excerpt directly criticizes fundamental production elements - cast and staging - for failing to work together cohesively, indicating a negative assessment despite limited text available. | GPT-4o: The excerpt suggests significant issues with the production, indicating a lack of coherence in both cast and staging. This points to a negative assessment, though the single excerpt limits the ability to gauge the full sentiment. | Gemini: The review excerpt indicates a lack of cohesion in key elements of the production, suggesting a negative overall assessment.",
+    "keyPhrases": [
+      {
+        "quote": "both cast and staging struggle to cohere",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt suggests fundamental production problems with both performances and direction failing to work together, indicating a negative assessment, but limited text requires low confidence. | GPT-4o: The excerpt indicates a lack of cohesion in both cast and staging, suggesting a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The single excerpt indicates a negative assessment of both the cast and staging, suggesting a lack of overall cohesion in the production. Given the limited text, confidence is low. | Kimi: The excerpt criticizes fundamental integration of performance and direction, indicating the show fails to gel as a unified whole. With only one curated excerpt available and the review truncated, confidence must remain low.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,9 +51,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:31:16.265Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:18:02.560Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 45,
@@ -55,22 +61,23 @@
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 48,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "scoreDelta": 0,
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 45,
   "textWordCount": 125,
@@ -113,5 +120,6 @@
     "Word count too low: 125 (min: 300)"
   ],
   "wordCount": 125,
-  "tierReason": "Short text (125 words)"
+  "tierReason": "Short text (125 words)",
+  "rescoreCompletedAt": "2026-02-04T23:18:02.560Z"
 }

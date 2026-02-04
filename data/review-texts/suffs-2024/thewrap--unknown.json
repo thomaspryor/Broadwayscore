@@ -10,13 +10,13 @@
     "nyc-theatre",
     "playbill-verdict"
   ],
-  "assignedScore": 79,
+  "assignedScore": 80,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -26,8 +26,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the book, direction, performances, and timeliness while noting some musical limitations. The enthusiastic closing about perfect timing and the audience's energy clearly indicates a positive recommendation. | GPT-4o: The review highlights the show's engaging and entertaining qualities, despite some reservations about changes from its original production. The critic appreciates the performances and the show's relevance, indicating a strong recommendation to see it. | Gemini: The review is generally positive, highlighting Taub's writing and the performances, but also points out some issues with the musical's transfer to Broadway and the monochromatic choral writing. The overall tone suggests a recommendation with reservations.",
+    "keyPhrases": [
+      {
+        "quote": "The perfect moment for a show like 'Suffs' is now, the timing could not be better, and the preview I attended had all the red-hot fire of a raucous political rally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the book, direction, and performances extensively, calling Taub's achievement 'terrific' and Silverman a 'master general.' Despite some reservations about vocal arrangements and minor changes from the Off-Broadway version, the overall assessment is strongly positive with enthusiastic endorsement of the timeliness. | GPT-4o: The review praises the show's ability to entertain while addressing serious themes, highlights strong performances, and notes the show's timely relevance. The positive tone and enthusiastic language suggest a strong recommendation. | Gemini: The review is generally positive, highlighting Taub's book and songs and the show's timeliness. While noting some reservations about changes from the off-Broadway production, the overall assessment is that the show is entertaining and well-directed. | Kimi: The critic offers enthusiastic praise for Taub's 'terrific' book and Silverman's masterful direction, declaring the show entertaining and perfectly timed, though noting reservations about the revised opening and monochromatic choral writing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -36,28 +42,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T03:41:13.194Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:36:38.698Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 79,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "rescoreReason": "fullText added after excerpt-based scoring",
@@ -91,9 +99,8 @@
   "textQuality": "full",
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "rescoreCompletedAt": "2026-02-02T03:41:13.194Z",
+  "rescoreCompletedAt": "2026-02-04T22:36:38.698Z",
   "wordCount": 1044,
   "tierReason": "Full review text",
-  "needsRescore": true,
   "playbillVerdictUrl": "https://www.thewrap.com/suffs-broadway-review-shaina-taub/"
 }

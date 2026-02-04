@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SPAMALOT-Opens-on-Broadway-20231115",
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 54,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "The mustiness now is downright allergy-inducing. One visual reference to “Man of La Mancha” delivered not a laugh at the preview I attended, but then, it has been a while since TCM aired the movie version.",
@@ -20,22 +20,28 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 54,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 49,
+      "high": 59
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[two-model-fallback] | Both models agree: Mixed | Claude: The review criticizes the show as musty and derivative with manic energy substituting for wit, but acknowledges strong performances from several cast members that bring the comedy to life. | Gemini: The review is critical of the show's dated humor and manic energy, but praises the performances of several cast members, suggesting it has redeeming qualities but is not a strong recommendation overall.",
+    "keyPhrases": [
+      {
+        "quote": "The comedy often comes to life whenever a handful of performers grab the spotlight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review is heavily critical of the material ('mustiness now is downright allergy-inducing', 'manic quality often substitutes for wit') but praises specific performances from Kritzer, Fitzgerald, Slater, Urie and Walker. Mixed signals with no clear recommendation either way. | GPT-4o: The review criticizes the revival for being outdated and lacking wit, despite some praise for individual performances. Overall, it suggests the production is disappointing and not worth seeing. | Gemini: The review is mixed, praising some performances but criticizing the show's dated humor and manic quality. It doesn't strongly recommend or discourage seeing it. | Kimi: While praising individual performances by the cast, the critic finds the revival derivative and lacking wit, describing songs that feed from the 'corpses' of older musicals and long stretches run by 'automatic pilot.' | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,36 +50,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:48:25.522Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:30:12.046Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 48,
-    "previousVersion": "5.0.0"
+    "previousScore": 62,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": null,
+    "openaiScore": 45,
     "geminiScore": 62,
+    "kimiScore": 44,
     "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 0,
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 38,
-  "rescoreCompletedAt": "2026-02-01T16:09:49.727Z",
+  "rescoreCompletedAt": "2026-02-04T22:30:12.046Z",
   "contentTier": "complete",
   "wordCount": 429,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/"
 }

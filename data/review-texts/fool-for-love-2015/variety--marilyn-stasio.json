@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sam Rockwell and Nina Arianda bring a ferocious sexual heat to their performances as the doomed lovers in Sam Shepard's 'Fool for Love,' but even their blazing chemistry can't ignite this oddly passionless revival.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
-    "score": 44,
+    "score": 53,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 48,
+      "high": 58
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Praises the lead performances and their chemistry but clearly states this isn't enough to make the revival work, calling it 'oddly passionless' - a mixed verdict that acknowledges strengths while finding the overall production lacking. | GPT-4o: The review acknowledges strong performances but criticizes the overall production as 'oddly passionless,' indicating a lack of recommendation despite individual merits. | Gemini: The review praises the actors' performances but ultimately finds the revival itself to be \"oddly passionless,\" indicating a negative overall assessment. | Kimi: While praising Sam Rockwell and Nina Arianda's performances, the critic concludes the revival itself is passionless and fails to ignite, recommending against the production.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises the lead performances and their chemistry but criticizes the revival as 'oddly passionless,' suggesting the production fails despite strong individual elements. Single excerpt warning requires caution about overall verdict. | GPT-4o: While the performances are praised for their chemistry, the overall production is described as 'oddly passionless,' indicating a negative verdict despite strong individual performances. | Gemini: The review praises the actors' performances but ultimately finds the revival passionless, indicating a mixed assessment. Given the limited excerpt, confidence is low. | Kimi: While the critic praises the lead performances with words like 'ferocious sexual heat' and 'blazing chemistry,' the concluding clause indicates these assets fail to overcome a fundamental flaw: the revival itself is deemed 'passionless' and unable to ignite, indicating an overall negative verdict. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,35 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:08:08.551Z",
+    "scoredAt": "2026-02-04T23:27:58.717Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 44,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 58,
     "openaiScore": 45,
-    "geminiScore": 45,
-    "kimiScore": 42,
+    "geminiScore": 62,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
+    "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/fool-for-love-review-broadway-1201612517/",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 44,
   "textWordCount": 642,
@@ -127,5 +127,6 @@
   "wordCount": 642,
   "tierReason": "Full review text",
   "wrongFullText": "Top Iranian star Niki Karimi and sweet-faced newcomer Sahar Ahmadpour display their acting chops in this trio of connected stories.\n\nThree O. Henry-esque stories from contempo Tehran are woven together with mixed results in \"Wednesday, May 9,\" the debut feature of multihyphenate Vahid Jalilvand. Excellent acting from top star Niki Karimi in a decidedly unglamorous part in the first episode, and from sweet-faced newcomer Sahar Ahmadpour in the second, raises their tales of woe above mere melodrama. But the third story, about a would-be philanthropist who hasn't fully considered the best way to distribute his largesse, comes off as forced and awkward. Some critical support, plus the top prize from the recent Reykjavik Film Festival, should parlay the pic into further festival exposure; sales agent Noori Pictures closed deals with Italy and Benelux after its Venice world premiere.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Industry' Season 4 Premiere Viewership Jumps 20% From Season 3 \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'White Lotus' Season 4 Casts Steve Coogan, Caleb Jonte Edwards\n\nEarly on the morning of Wednesday, May 9, long lines of the poor and afflicted wait outside an office building in an upscale Tehran neighborhood, drawn by an unusual advertisement in the newspaper offering 30 million tomans (about $10,000) to someone in need. Overwhelmed by the sheer numbers, the local police panic and try to disperse the crowds before driving off with Jalal (Amir Aghaei, the weak link in the acting department), the man who placed the ad. The shots of the crowd, consisting of the disabled, disfigured and truly distressed, register an almost documentary-like authenticity.\n\nMeanwhile, waiting apart from the throng, clad in a billowing black chador that marks her as working-class religious, Leila (Karimi) observes the goings-on with sadness before rushing to her job at a chicken slaughterhouse. Her husband, Ali (played by the helmer), is paralyzed and requires nearly full-time care, but an expensive operation might restore his mobility. In a turn of events that strains credibility, it turns out that Jalal is Leila's ex-fiance from long ago, who abandoned her when he had a chance to leave their village. He promises her the money, but the jealous Ali is opposed to accepting his help. In filming Leila and Ali's humble abode, veteran lenser Morteza Poursamadi uses tight compositions and framing within windows and doors to express the characters’ sense of isolation. (His expressive work is the standout of the attractive tech package.)\n\nOrphan Setareh (Ahmadpour) is another supplicant for Jalal's money. She lives with her strict aunt (Afarin Obeisi), whose son Esmaeel (Borzou Arjmand) nurses an unrequited passion for his pretty cousin that has turned to bitter jealousy. Without telling her relatives, Setareh marries Morteza (Milad Yazdani), a young man from an impoverished family, whose proposal her aunt has refused many times. When the truth comes out, Morteza accidentally breaks Esmaeel's nose in a fight and winds up in jail, hounded for 30 million tomans of blood money unless the now-pregnant Setareh agrees to a divorce.\n\nWhile the third episode supplies background on Jalal, finally revealing why he wants to give away this money — and where it came from — it never provides a satisfactory explanation of why he chose to do it in such a complicated and obtuse manner. Where the other two episodes feature lower-class women who are in thrall to their husbands, Jalal's wife (Kataneh Afsharinejad) doesn't hesitate to express her displeasure. Her angry monologue places Jalal's act of charity in another light entirely.\n\nThe script, written by Jalilvand with Ali Zarnegar and Hossein Mahkam, functions well as a societal critique, provoking some interesting questions about misguided charity and highlighting the suffering of women in this patriarchal culture. Perhaps the gimmick of the advertisement serves as commentary on the handouts to the poor that former president Mahmoud Ahmadinejad used to boost his popularity; nevertheless, it plays as the least credible element of the narrative.",
-  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show"
+  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show",
+  "rescoreCompletedAt": "2026-02-04T23:27:58.717Z"
 }

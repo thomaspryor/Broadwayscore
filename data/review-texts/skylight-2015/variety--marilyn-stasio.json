@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Bill Nighy and Carey Mulligan are both excellent in David Hare's drama about a love affair that bridges class lines, but the production feels emotionally distant despite the stars' committed performances.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the production feels emotionally distant despite the stars' committed performances",
+        "quote": "The fierce pas de deux of love and loss and anguish executed by Carey Mulligan and Bill Nighy leaves you breathless.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises both lead performances as 'excellent' and 'committed' but finds the overall production 'emotionally distant,' indicating a mixed assessment where individual elements succeed but the whole doesn't work. | GPT-4o: While the performances are praised, the overall production is criticized for lacking emotional impact, leading to a mixed review. | Gemini: The review praises the actors but states that the production feels emotionally distant, suggesting a mixed experience overall. | Kimi: The critic offers strong praise for the lead performances ('excellent', 'committed') but balances this with a significant criticism that the production lacks emotional connection, creating a neither-here-nor-there assessment without a clear recommendation to see or skip.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performances with vivid, admiring language ('breathless', 'thrilling entrance', 'brilliantly makes do'). While noting the play's political preachiness, the critic clearly recommends it for the exceptional acting and emotional impact. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and emotional impact of the show. The critic highlights the intensity and skill of the actors, as well as the effective staging and thematic depth, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's emotional impact. The critic highlights the intensity and skill of the actors, making it a strong recommendation. | Kimi: While the review notes that Hare's political arguments can be preachy and schematic, it lavishes praise on Mulligan and Nighy's 'breathless' performances and Daldry's direction, emphasizing that the emotional impact transcends the script's ideological debates.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,33 +56,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:52:48.528Z",
+    "scoredAt": "2026-02-04T22:27:58.768Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2015/legit/reviews/theater-review-skylight-1201482176/",
   "urlDiscoveredAt": "2026-02-04T01:00:48.916Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 919,
@@ -125,5 +125,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 919,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:27:58.768Z"
 }

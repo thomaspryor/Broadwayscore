@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Will Eno's darkly comic play about two couples sharing more than just a surname is a thoughtful meditation on mortality that benefits from stellar performances by Toni Collette, Michael C. Hall, Tracy Letts and Marisa Tomei.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 78,
-    "confidence": "high",
+    "score": 70,
+    "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 65,
+      "high": 75
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "benefits from stellar performances by Toni Collette, Michael C. Hall, Tracy Letts and Marisa Tomei",
+        "quote": "The marvelous cast of all-stars makes every syllable worth savoring.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt describes the play as a 'thoughtful meditation' and highlights 'stellar performances' by the entire cast, indicating a positive assessment though the truncated nature limits confidence in the full verdict. | GPT-4o: The review highlights 'stellar performances' and describes the play as 'thoughtful,' indicating a positive recommendation. However, the brevity of the text and lack of more detailed evaluation suggest some reservations. | Gemini: The review highlights the play as a \"thoughtful meditation\" and praises the \"stellar performances,\" indicating a positive recommendation, though without strong enthusiasm. | Kimi: The critic praises the play as a 'thoughtful meditation on mortality' and highlights 'stellar performances' from the entire cast, indicating a solid recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Stasio praises the performances extensively but questions whether this downtown-style show belongs on Broadway and warns it's hard to digest for general audiences. The review ends by suggesting the show might not sustain its run due to its challenging nature. | GPT-4o: The review praises the cast and some aspects of the production, but questions the show's fit for Broadway and suggests it's not for everyone. The overall tone is mixed, with appreciation for performances but reservations about the play's broader appeal. | Gemini: The review praises the cast and their performances, but notes that the play's style may not appeal to everyone, leading to a recommendation with reservations. | Kimi: The critic lavishes praise on the all-star cast as 'marvelous' and 'pretty perfect,' explicitly stating they make the play 'worth savoring' and might keep the house open. However, significant reservations about the play's niche 'downtown' sensibility being 'hard to digest' for general Broadway audiences temper the enthusiasm. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,30 +56,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:20:16.408Z",
+    "scoredAt": "2026-02-04T22:56:11.486Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 76,
-    "geminiScore": 78,
-    "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1026,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1026,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:56:11.486Z"
 }

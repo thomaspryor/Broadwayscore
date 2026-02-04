@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play works because it takes a hard look at the ethics of journalism without getting preachy about it, and because the three actors are so good at making their characters' professional positions feel personal.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (35 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The play works because it takes a hard look at the ethics of journalism without getting preachy about it.",
+        "quote": "This is terrifically funny dialogue, and both actors savor every comeback.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict stating 'the play works' with praise for both writing and performances, but brief excerpt limits full assessment of enthusiasm level. | GPT-4o: The review praises the play for its effective examination of journalism ethics and strong performances, indicating a positive recommendation. | Gemini: The review states that the play 'works' and praises the actors and the play's handling of its subject matter, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic explicitly states the play 'works' and praises both the writing and performances, indicating a clear recommendation despite the brief excerpt length.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for the performances ('master of comedy', 'ferociously talented', 'brilliantly argued'), direction, and writing quality. The critic finds the material both funny and substantively important, with consistent positive language and no significant reservations about the production itself. | GPT-4o: The review is filled with praise for the performances, writing, and direction, highlighting the play's humor and depth. The critic emphasizes the play's relevance and impact, indicating a strong recommendation. | Gemini: The review is generally positive, highlighting the witty dialogue and the performances, but also acknowledges the play's limitations. The play is recommended, but not without reservations. | Kimi: The critic consistently praises the performances (particularly Radcliffe's comedic mastery), the witty dialogue, and Leigh Silverman's direction, offering an enthusiastic endorsement without significant reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:13:09.043Z",
+    "scoredAt": "2026-02-04T22:52:15.100Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 76,
-    "geminiScore": 75,
-    "kimiScore": 77,
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 79,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2018/legit/reviews/the-lifespan-of-a-fact-review-daniel-radcliffe-cherry-jones-bobby-cannavale-1202972895/",
   "urlDiscoveredAt": "2026-02-04T01:32:09.252Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 756,
@@ -103,5 +103,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T22:52:15.100Z"
 }

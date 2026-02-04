@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,12 +40,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This stage production boasts swell performances, dandy twists and turns, razzmatazz dancing and a whole lotta energy",
+        "quote": "What could have been a dated drag farce ends up as a show that many will like immensely — a musical filled with fun, energy and heart.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('swell performances', 'dandy', 'razzmatazz', 'whole lotta energy') with only minor caveat about songs. The 'Nobody's perfect' ending suggests overall endorsement despite flaws. | GPT-4o: The excerpt highlights strong performances, engaging twists, and energetic dancing, suggesting a positive recommendation. The mild critique of the songs is outweighed by the overall enthusiasm. Given the single excerpt, confidence is low. | Gemini: The review excerpt praises the performances, twists, dancing, and energy, but notes that the songs don't always score high marks. This suggests a positive but not rave review. | Kimi: The excerpt offers enthusiastic praise for the production's performances, choreography, and energy using upbeat language ('swell,' 'dandy,' 'razzmatazz'), while dismissing concerns about the songs with a playful 'Nobody's perfect.' Single excerpt limits confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the updated book, performances (especially Ghee and Borle), and contemporary relevance while criticizing the score as disappointing and generic. The final verdict clearly recommends despite reservations. | GPT-4o: The review praises the fresh perspectives, performances, and transformation of the original film into a study of gender and identity, while noting some disappointment with the score. Overall, it strongly recommends the show for its fun, energy, and heart. | Gemini: The review is generally positive, highlighting the show's fun, energy, and heart. While it notes that the score is disappointing, it concludes that the many positives add up considerably. | Kimi: While the critic finds the score disappointing and generic, they offer strong praise for the fresh adaptation, the performances (particularly J. Harrison Ghee and Christian Borle), and the contemporary approach to gender identity. The enthusiastic closing verdict clearly recommends the show despite its musical shortcomings.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,22 +55,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T14:09:05.885Z",
+    "scoredAt": "2026-02-04T22:28:32.576Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 81,
-    "geminiScore": 75,
-    "kimiScore": 82,
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 79,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -78,7 +79,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 824,
@@ -110,5 +110,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 824,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:28:32.576Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "King Kong is a marvel of engineering and stagecraft, but the story and score never quite match the technical wizardry.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Short text (20 words)",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - praises the spectacular technical elements while noting the fundamental storytelling and musical components don't measure up. Classic 'impressive but flawed' assessment. | GPT-4o: The review praises the technical aspects but criticizes the story and score, resulting in a mixed verdict with no clear recommendation. | Gemini: The review praises the technical aspects but criticizes the story and score, indicating a mixed opinion. | Kimi: The critic praises the spectacle as a 'marvel' but explicitly states the fundamental elements of story and score fail to live up to the production values, resulting in an ambivalent assessment that neither recommends nor rejects the show outright.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt praises technical achievements but criticizes fundamental elements (story, score). The 'but' structure indicates mixed feelings rather than recommendation. | GPT-4o: The excerpt praises the technical aspects but criticizes the story and score. With only one excerpt available, the overall sentiment seems mixed, highlighting strengths in production but weaknesses in narrative elements. | Gemini: The review praises the technical aspects but criticizes the story and score, indicating a mixed overall impression. The single excerpt and lack of a clear recommendation lead to a lower confidence score. | Kimi: Single excerpt praises the technical achievement as a 'marvel' but clearly notes that essential elements (story and score) fall short, suggesting a qualified recommendation in the lower Positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T17:14:51.403Z",
+    "scoredAt": "2026-02-04T23:29:18.450Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 72,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 456,
@@ -114,5 +114,6 @@
   "tierReason": "Full review text",
   "wrongFullText": "The new musical begins previews this week.\n\nBroadway's Gettin' the Band Back Together has announced a rush offer that will feature 40 tickets per performance available at $40 each for people 40 years of age and older. Directed by Tony Award winner John Rando and choreographed by Chris Bailey, the production will begin preview performances on July 19 at the Belasco Theatre with the official opening set for August 13.\n\nThe rush ticket offer is available at the box office and online using the code BT40440. Customers are able to select from seats in the front orchestra, including the front row, for all preview performances.\n\nGettin' the Band Back Together follows Mitch Papadopolous, who always dreamed about being the next Bon Jovi. However, he chose security over stardom and left those daydreams behind for a day job. For a while, he thought he had everything — the high-paying job, the high-rise apartment — until his 40th birthday, when he got handed a pink slip and had to move back in with his mom in Sayreville, New Jersey. When his high school archnemesis threatens to foreclose on their house, this big-shot banker must save his small-town home the only way he can…by winning the Battle of the Bands.\n\nThe cast of Gettin' the Band Back Together features Mitchell Jarvis (Mitch Papadopoulos), Jay Klaitz (Bart Vickers), Manu Narayan (Dr. Rummesh \"Robbie\" Patel), Paul Whitty (Michael \"Sully\" Sullivan), Sawyer Nunes (Ricky \"Bling\" Goldstein), Marilu Henner (\"Mitch's Mom,\" aka Sharon Papadopoulos), Kelli Barrett (Dani), Becca Kötte (Tawney), Garth Kravits (Ritchie), Tamika Lawrence (Roxanne Velasco), Noa Solorio (Billie), and Brandon Williams (Tygen Billows). The cast also includes Lindsey Brett Carothers, Ryan Duncan, Scott Richard Foster, Jenny Hill, Nehal Joshi, J. Elaine Marcos, Rob Marnell, Jasmin Richardson, Ian Ward, and Tad Wilson.\n\nThe work features music and lyrics by Mark Allen and a book by Ken Davenport and the Grundleshotz with additional material by Sarah Saltzberg. The creative team includes Tony Award winners Derek McLane (scenic design), Emily Rebholz (costume design), Ken Billington (lighting design), John Shivers (sound design), in addition to music direction by Sonny Paladino and casting by Eisenberg/Beans Casting.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
   "contentMismatchNote": "Show title \"King Kong\" not found in text; Different show \"gettin' the band back together\" mentioned 3+ times",
-  "contentMismatchScore": -4
+  "contentMismatchScore": -4,
+  "rescoreCompletedAt": "2026-02-04T23:29:18.450Z"
 }

@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Doyle's production of Sweeney Todd is nothing short of brilliant. By having the actors play their own instruments, he's created a chamber piece that's more intimate and perhaps more chilling than the original.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (34 words)",
   "textQuality": "truncated",
   "llmScore": {
@@ -113,5 +113,10 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T22:38:09.006Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a season announcement/promotional listing of upcoming shows with subscription information, not a review of any specific production; openai: This text is a listing of upcoming shows and promotional content, not a review of a specific Broadway production.; gemini: This is a listing of upcoming shows for a theater company, not a review of a specific production. It includes subscription information and other non-review content.; kimi: This text is a season announcement for Musicals Tonight containing plot summaries and subscription information for upcoming productions, with no critical evaluation or opinion of a specific show. It also includes promotional content and navigation links to other reviews.",
+  "promptVersion": "5.2.0"
 }

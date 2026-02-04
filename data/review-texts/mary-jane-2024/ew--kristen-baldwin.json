@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rachel McAdams delivers a powerhouse performance as a mother caring for her severely disabled son in this emotionally devastating but ultimately uplifting drama.",
   "originalScore": 88,
-  "assignedScore": 88,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,13 +18,13 @@
   "showScoreExcerpt": "Rachel McAdams delivers a powerhouse performance as a mother caring for her severely disabled son in this emotionally devastating but ultimately uplifting drama.",
   "needsScoring": true,
   "llmScore": {
-    "score": 88,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic's own 88 rating places this firmly in Rave territory, supported by praise for a 'powerhouse performance' and describing the work as 'ultimately uplifting' despite emotional content. | GPT-4o: The critic's original rating of 88 suggests a strong recommendation, and the review highlights a 'powerhouse performance' and describes the drama as 'emotionally devastating but ultimately uplifting,' indicating a highly positive assessment. | Gemini: The review uses strong positive language like \"powerhouse performance\" and \"uplifting drama,\" and the original rating is high, indicating a positive recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Rachel McAdams delivers a powerhouse performance as a mother caring for her severely disabled son in this emotionally devastating but ultimately uplifting drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes 'powerhouse performance' and 'ultimately uplifting' verdict. Critic's 88 rating confirms strong positive assessment. Used upper Positive range due to single excerpt warning and strong language. | GPT-4o: The excerpt praises McAdams' performance and describes the drama as 'emotionally devastating but ultimately uplifting,' indicating a strong positive sentiment. The original rating of 88 suggests a high positive score, but with only one excerpt, the confidence is low. | Gemini: The excerpt highlights a 'powerhouse performance' and describes the drama as 'emotionally devastating but ultimately uplifting,' suggesting a strong positive experience. Given the single excerpt, the score is placed at the higher end of the positive range. | Kimi: The critic's original rating of 88 places this firmly in rave territory, supported by superlatives like 'powerhouse performance' and 'ultimately uplifting drama.' However, confidence is low due to the availability of only a single excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,9 +48,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:33:55.459Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:30:41.368Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 88,
@@ -53,21 +59,22 @@
   "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (23 words)",
   "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 88,
+    "claudeScore": 83,
+    "openaiScore": 82,
     "geminiScore": 82,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 6,
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "modelAgreement": "3/4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 88,
   "textWordCount": 191,
@@ -94,5 +101,6 @@
   "tierReason": "Short text (191 words)",
   "garbageFullText": "Amy Herzog’s play about a mother and her ill son is an expertly-crafted exploration of allegiance and love. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “Mary Jane.” Theater has the potential to transport us to new worlds, but sometimes the most impactful shows take the time to mirror our own. Amy Herzog’s humanistic marvel of a play, “Mary Jane,” drops us into a sentiment we can all relate to — loving an ill person — but a situation most of us can’t: mothering a two-year-old with congenital cerebral palsy, seizure disorder and lung disease. Herzog sets her revival to “nowish” New York City so that other monstrous virus, while never specifically named, also hovers over the world of this play. Herzog loves this; she loves to drop hints and turns her nose up at exposition. Herzog trusts her audience, dumping us into conversations that began long before we arrived at the theater. Her characters are everyday people — supers and tenants, nurses and nieces — that already know each other intimately.",
   "garbageReason": "Wrong outlet: BroadwayNews content scraped from EW URL (Brittani Samuel, not Kristen Baldwin)",
-  "garbageFixedAt": "2026-02-02T19:44:12.912Z"
+  "garbageFixedAt": "2026-02-02T19:44:12.912Z",
+  "rescoreCompletedAt": "2026-02-04T23:30:41.368Z"
 }

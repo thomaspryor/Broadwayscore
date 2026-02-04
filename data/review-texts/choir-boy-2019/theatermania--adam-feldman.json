@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "McCraney has written a beautiful play about masculinity, sexuality, and faith, and it deserves to be seen by as wide an audience as possible.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "excerpt",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 86,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive assessment calling the play 'beautiful' with an explicit recommendation that it 'deserves to be seen by as wide an audience as possible.' However, confidence is medium due to the brevity of the excerpt. | GPT-4o: The review uses strong, positive language ('beautiful play', 'deserves to be seen by as wide an audience as possible') indicating an enthusiastic recommendation. | Gemini: The review explicitly states the play 'deserves to be seen by as wide an audience as possible,' indicating a strong positive recommendation. | Kimi: The critic offers unqualified praise calling the play 'beautiful' and explicitly stating it deserves the widest possible audience, indicating an enthusiastic rave recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive verdict with 'beautiful play' and strong recommendation that it 'deserves to be seen by as wide an audience as possible.' However, confidence is low due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt uses strong positive language ('beautiful play', 'deserves to be seen by as wide an audience as possible'), suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt expresses strong positive sentiment and a clear recommendation to see the play, indicating a positive review. Given it's a single excerpt, I've placed it on the higher end of the positive range. | Kimi: The excerpt offers strong praise ('beautiful play') and a universal recommendation ('deserves to be seen by as wide an audience as possible'), warranting a high Positive score. As a single curated excerpt, confidence is low regarding the full review context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,31 +50,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:05:24.328Z",
+    "scoredAt": "2026-02-04T23:25:05.162Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 86,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
+    "claudeScore": 82,
+    "openaiScore": 88,
     "geminiScore": 82,
-    "kimiScore": 90,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 9,
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "textQuality": "truncated",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 86,
   "textWordCount": 1072,
@@ -123,5 +123,6 @@
   "tierReason": "Full review text",
   "wrongFullText": "The Tony-winning actor will perform at both the Café Carlyle and Joe’s Pub for two weeks in June.\n\nAlan Cumming may be best known for his Tony-winning turn as the Emcee in the revival of Kander and Ebb's Cabaret, but he's recently been making a splash in the world of small-c cabaret. That's when performers get in front of an audience to sing songs and tell stories as themselves, rather than as a character onstage. \"I really found my feet as a cabaret singer in this room,\" Cumming says about the Café Carlyle and his previous show, Alan Cumming Sings Sappy Songs.\n\nNaturally, he couldn't pass up an opportunity to return to the Carlyle in a new show called Legal Immigrant. \"I'm Alan Cumming,\" he opens the show, \"I'm a proud Scottish-American, and I'm here to remind you of what a great and magical country this can be and how much greater and more magical it is because of people who have immigrated here and made it their home.\" Cumming's sincerest hope is to turn the tide of negative rhetoric around immigration.\n\nOf course, he's realistic about the capacity to change the world from the Carlyle's tiny dining room. For the last two months, Cumming has been touring Legal Immigrant around the country, sometimes playing to houses as large as 2,000 seats. For two weeks this June, he will play an 8:45pm show at the Carlyle and then hop in a car downtown for a midnight performance at Joe's Pub. After that, he'll probably stop for a nightcap at Club Cumming, the East Village cabaret space he recently founded.\n\nAs if that weren't enough, Cumming is also starring in the CBS crime series Instinct, which was renewed for a second season. He also appears in the new documentary Always at the Carlyle, currently playing at an independent cinema near you. Cumming returns to the New York stage next February in Jeremy O. Harris's new play, Daddy. Oh, and if you've ridden the New York City subway recently, you've probably seen his smiling face staring down at you from a Bloomingdale's ad.\n\nCumming took some time out of his busy schedule to talk about Legal Immigrant and the egalitarian politics that drive him.\n\nCould you share a little about your immigration story?I've had two green cards, and I decided to go the whole hog and become a citizen in 2008. There's a very intense process involved. I got my first visa in 1996 and my green card in 1998, so that was 12 years. It's not easy to become a citizen of this country, and the idea that we're just streaming in unchecked is a total lie.\n\nWhen you hear people say the undocumented should go back and do it legally, how do you respond?I feel that it's much more complicated than that. There's a reason they've remained undocumented for so long: We want them to be here to do the jobs we don't want to do. You can't entice people here because you want cheap labor, and then suddenly say, \"Get out.\" People make their lives and have children here while they're doing these jobs. It's irresponsible to suddenly tell them to go away when you've invited them in the past.\n\nIs this ire about immigration just about legal status?There's a negative view of immigration as a whole right now. And for me as a recent immigrant, it's really upsetting — and I'm a white man! Imagine if I was a person of color or a woman (or both) how much more difficult that would be. This country is great because of immigrants. And also, unless you're a Native American, we're all f*cking immigrants. This idea that we are different from immigrants coming here is not true.\n\nSo how do you go about choosing songs to fit that theme? There's no reason for me to sing a song unless there's something I can bring to it. The opening song is one that Liza Minnelli told me I had to sing: \"The Singer\" by Kander and Ebb. It's part of a big long opening medley. I also mash-up a P!nk song with a Marlene Dietrich song. I really enjoy stuff like that. I do that and then I talk about the writers and singers and their immigrant stories.\n\nWhat do you love about the Carlyle?Seeing and being a part of Always at the Carlyle made me even fonder of the tradition and loyalty of the people at the hotel. In my part of the documentary, I talk about how I took all my clothes off and stood outside the Carlyle for my album cover.\n\nWhy are you repeating the show at Joe's Pub at midnight? I debuted Sappy Songs at the Carlyle in 2015, and I finished the show this past December at Joe's Pub. And while I was performing at Joe's Pub, I realized that it was the first time a lot of my friends could afford to come see it. I'm a downtown boy living in an uptown world, so I thought this would be the perfect way to encompass the range of people I know and who want to see me.\n\nWhat have you learned from owning your own club?I learned that you can put out an idea about how you want something to feel, and it actually happens! I wanted to create a home for people of all ages and genders and sexualities. Kindness and acceptance were very important to me. I also wanted it to be fun and sexy and dancy and drunky. It's humbling and moving that it turned out that way. There's a need for places like that in the city. My favorite compliment is when people tell me that it's like old New York and that we're keeping the tradition of East Village performance going.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre.",
   "contentMismatchNote": "Show title \"Choir Boy\" not found in text; Different show \"cabaret\" mentioned 3+ times",
-  "contentMismatchScore": -5
+  "contentMismatchScore": -5,
+  "rescoreCompletedAt": "2026-02-04T23:25:05.162Z"
 }

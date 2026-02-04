@@ -21,7 +21,7 @@
   ],
   "llmScore": {
     "score": 18,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 13,
       "high": 23
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic delivers an overwhelmingly negative assessment, calling it 'forced, unfunny,' 'inept,' and comparing it unfavorably to another failed show while suggesting it belongs in 'the world of lousy theater.' | GPT-4o: The review is overwhelmingly negative, describing the play as 'forced' and 'unfunny' with a comparison to a past failure. The critic suggests the show is destined for failure beyond New York, indicating a strong recommendation to avoid. | Gemini: The review is overwhelmingly negative, describing the play as \"forced, unfunny\" and comparing it unfavorably to other poorly received productions. The critic clearly does not recommend seeing it.",
+    "keyPhrases": [
+      {
+        "quote": "Sitting through this forced, unfunny take on British sex comedies of yore, I was reminded of an equally inept exercise in pandering to the tourist trade.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Devastating pan comparing the show to another Broadway flop, calling it 'forced, unfunny' and 'inept.' Despite praising one performance (Cooper), the overall verdict is total rejection with multiple warnings to audiences. | GPT-4o: The review is overwhelmingly negative, describing the play as 'forced' and 'unfunny' with a comparison to a previously panned show. The critic suggests it is destined for 'lousy theater beyond New York City,' indicating a strong recommendation against seeing it. | Gemini: The review is overwhelmingly negative, describing the play as \"forced, unfunny\" and destined for \"lousy theater.\" The critic finds the plot confusing and the direction shrill, with only Cooper's performance receiving faint praise. The overall tone and explicit negative language indicate a pan. | Kimi: The critic consistently pans the show as forced, unfunny, inept, and pandering, comparing it to a previous flop that was run out of town. While acknowledging one understated performance and excellent sound design, the overall verdict is that this is a subpar production destined for regional theaters.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:01:12.571Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:43:36.307Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 15,
-    "previousVersion": "5.0.0"
+    "previousScore": 18,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 15,
+    "claudeScore": 18,
     "openaiScore": 20,
-    "geminiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 38,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",
-    "scoreDelta": 5,
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Pan"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 25,
@@ -83,12 +91,11 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20251208165217",
   "archiveOrgUrl": "http://web.archive.org/web/20251208165217/https://www.thewrap.com/the-cottage-broadway-review-jason-alexander-eric-mccormack/",
-  "rescoreCompletedAt": "2026-02-01T16:17:19.170Z",
+  "rescoreCompletedAt": "2026-02-04T22:43:36.307Z",
   "contentTier": "complete",
   "wordCount": 481,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/the-cottage-broadway-review-jason-alexander-eric-mccormack/"
 }

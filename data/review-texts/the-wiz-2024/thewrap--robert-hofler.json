@@ -54,8 +54,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for performances and ensemble work with explicit 'not to be missed' recommendation language, though text is truncated limiting full assessment. | GPT-4o: The review highlights the strong performances of the cast and the effective direction, with a clear recommendation not to miss the show. The tone is enthusiastic and positive. | Gemini: The review excerpt praises the actors and director, highlighting the performances as a must-see. The positive tone and enthusiastic language suggest a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "the actors and dancers in this 'Wiz' carry the show magnificently",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for cast performances ('magnificently', 'funniest trio', 'not to be missed') and direction, but text is truncated mid-sentence limiting full assessment of verdict. | GPT-4o: The review excerpt praises the performances of the actors and the direction, indicating a strong recommendation. The phrase 'not to be missed' suggests an enthusiastic endorsement. However, the text is an excerpt, so confidence is low. | Gemini: The review excerpt praises the actors and dancers, calling them magnificent and the trio of misfits the funniest ever. The aggregator context also indicates a positive reception. Given the truncated text, confidence is low. | Kimi: The critic offers high praise for the ensemble performances, calling them 'magnificent' and 'not to be missed,' with specific acclaim for the principal trio and direction, indicating a strong recommendation despite the excerpted nature of the text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -64,37 +70,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:27:45.336Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:08:00.689Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 80,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 0,
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "showScoreExcerpt": "\"The Wiz is all about feeling...in complex times, its simple message rings loud and clear\"",
   "contentTier": "complete",
   "wordCount": 555,
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 81,
-  "rescoreCompletedAt": "2026-02-01T16:32:01.162Z",
+  "rescoreCompletedAt": "2026-02-04T23:08:00.689Z",
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/the-wiz-live-review/"
 }

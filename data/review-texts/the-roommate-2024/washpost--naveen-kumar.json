@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -18,22 +18,28 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 78,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 73,
+      "high": 83
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt cuts off mid-sentence at a crucial evaluation point. The setup describes casting choices and character dynamics but provides no clear verdict on the production's success or recommendation. | GPT-4o: The excerpt highlights the strengths of the cast but suggests an uneven dynamic, indicating a mixed reception. The lack of a clear positive or negative verdict leads to a medium confidence in the mixed classification. | Gemini: The truncated text suggests a mixed assessment, highlighting both the strengths and potential drawbacks of the production. The phrase \"blessing and a trap\" further indicates a nuanced and not entirely positive experience.",
+    "keyPhrases": [
+      {
+        "quote": "Despite the occasionally meandering pace of 'The Roommate,' it's a privilege to watch two formidable talents traverse underexplored territory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic clearly recommends the show, calling it 'a privilege to watch' and praising both lead performances extensively. However, he notes significant reservations about pacing ('meandering') and structure ('waiting game'), keeping it in the lower positive range. | GPT-4o: The review praises the performances of Farrow and LuPone, highlighting their chemistry and the insight they bring to the play. While acknowledging some pacing issues, the overall tone is positive, recommending the show for its exploration of themes and the actors' performances. | Gemini: The review praises the performances of Farrow and LuPone and their rapport, but notes the play's unevenness and meandering pace. It's a qualified recommendation, leaning towards mixed. | Kimi: While acknowledging the play's uneven structure and meandering pace, the critic clearly recommends the production based on the tremendous performances of Mia Farrow and Patti LuPone, describing the experience as a 'privilege' with 'tangible rewards.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,28 +48,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:23:32.076Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:58:47.715Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 63,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 65,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
@@ -94,10 +102,9 @@
   "isFullReview": true,
   "textQuality": "full",
   "textWordCount": 735,
-  "rescoreCompletedAt": "2026-02-01T16:25:46.800Z",
+  "rescoreCompletedAt": "2026-02-04T22:58:47.715Z",
   "garbageReasoningDetected": "undeterminable",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.149Z",
-  "needsRescore": true,
   "truncationSignals": [],
   "textStatus": "complete",
   "tierReason": "Full review text",

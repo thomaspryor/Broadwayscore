@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Lucy Kirkwood's post-apocalyptic drama about nuclear scientists confronting the consequences of their life's work is a thoughtful, well-crafted play that asks hard questions about responsibility and sacrifice.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 77,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "a thoughtful, well-crafted play that asks hard questions about responsibility and sacrifice",
+        "quote": "Director James Macdonald does a masterful job of deepening and darkening the sense of menace that haunts this strange play.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'thoughtful' and 'well-crafted,' but brief excerpt limits confidence in full recommendation strength. | GPT-4o: The review describes the play as 'thoughtful' and 'well-crafted,' indicating a solid recommendation. The language suggests a positive view without any significant reservations. | Gemini: The review uses positive language such as \"thoughtful\" and \"well-crafted,\" indicating a recommendation, but it doesn't express overwhelming enthusiasm, suggesting a score in the lower end of the positive range. | Kimi: The critic offers clear praise for the play's intelligence and construction, though the brevity of the excerpt (under 150 words) limits confidence in the full critical assessment.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout: 'masterful job', 'mesmerizing performers', 'sterling cast intact', and 'could keep us enthralled'. The critic praises the direction, performances, and production values with consistent enthusiasm despite the play's dark subject matter. | GPT-4o: The review praises the production's direction, performances, and the play's ability to create a chilling atmosphere. The critic highlights the masterful direction and the mesmerizing performances, indicating a strong recommendation. | Gemini: The review highlights the play's tense drama and the sterling cast, suggesting a positive experience despite the morose themes and the 'I've-got-a-secret storytelling style' which necessitates a lot of talk that goes nowhere. | Kimi: Despite noting the play's talky structure and 'treacherous' narrative device, the critic praises the 'masterful' direction, 'sterling' cast, and 'mesmerizing' performances, endorsing the production as a chilling success that promises to scare Broadway audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,17 +51,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:02:47.177Z",
+    "scoredAt": "2026-02-04T22:42:29.993Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 76,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -74,7 +75,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 681,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 681,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:42:29.993Z"
 }

@@ -6,17 +6,17 @@
   "url": "https://deadline.com/2024/03/the-whos-tommy-broadway-review-1235869837/",
   "publishDate": "March 28, 2024",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 93,
   "dtliThumb": "Up",
   "source": "dtli",
   "llmScore": {
-    "score": 82,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -24,8 +24,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the production as a successful 'top-to-bottom reimagining' with a 'superb cast' and specifically states that 'nearly all of it works beautifully,' indicating strong enthusiasm for the revival. | GPT-4o: The review is highly enthusiastic about the production, praising the direction, staging, and performances. The phrase 'nearly all of it works beautifully' indicates a strong recommendation, placing it in the Rave bucket. | Gemini: The review is overwhelmingly positive, praising the direction, cast, and reimagining of the show. The phrase \"Nearly all of it works beautifully\" indicates a strong recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "The Who's Tommy is thrilling proof that the premiere concept album of 1969 is great music indeed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'thrilling proof,' 'gloriously directed,' 'superb cast,' and 'visual magic.' Critic calls it better than a revival - a 'top-to-bottom reimagining' that 'works beautifully.' Standing ovation mentioned, no significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production as a triumphant reimagining of a classic, highlighting its energy, relevance, and superb execution without any reservations. | Gemini: The review is overwhelmingly positive, using strong language like \"thrilling proof\", \"gloriously directed\", \"non-stop surge of electrified energy\", and praising nearly all aspects of the production. The critic clearly recommends seeing the show. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -34,28 +40,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:25:15.951Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:04:04.949Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "claudeBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "scoreDelta": 8,
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
   },
   "dtliExcerpt": "With a superb cast headed by Broadway newcomer Ali Louis Bourzgui as Tommy, the “deaf, dumb and blind kid” – most of whatever language less-than-acceptable by today’s standards has been retained – and Alison Luff as his mom Mrs. Walker, Tommy feels less like a stick-to-what-works revival than a top-to-bottom reimagining. Nearly all of it works beautifully.",
   "sources": [
@@ -67,7 +75,7 @@
   "bwwThumb": "Up",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-02-02T14:26:18.001Z",
+  "rescoreCompletedAt": "2026-02-04T23:04:04.949Z",
   "garbageFullText": "Director Des McAnuff’s high-frequency revival pushes Broadway’s boundaries and possibly, its sound barriers. Good morning, and welcome to Broadway News’ Broadway Review by Brittani Samuel — our overview of reactions, recommendations and information tied to last night’s Broadway opening of “The Who’s Tommy.” If the first 10 minutes of a show are supposed to rope you in, “The Who’s Tommy” dares you to need more than 10 seconds. Director Des McAnuff’s revival staging of the electric rock opera he co-wrote explodes onto the Nederlander Theatre stage in a paroxysm of booming sound, blinding light and crackling projections. That digital gluttony carries throughout this high-octane production about a traumatized young boy named Tommy, who morphs into a “pinball wizard” and then a rock music demigod. At first, it may seem odd that McAnuff encases his and co-book writer Pete Townshend’s story about a young man’s spiritual ascension in so much high-tech, but that juxtaposition is exactly where the magic (and music, also by Townshend) lies. Because amid the digital frenzy, the heart of this musical is still the sad, abused human at its center. There is a darkness to the way Ali Louis Bourzgui plays Tommy — crooning through Townshend’s iconic, primarily sung-through score, his posture erect as he pulls haunting focus. And what a score it is: Townshend’s layered compositions have never sounded better, and sound designer Gareth Owen maintains control. The full band is so loud, yet we can still hear individual chord progressions. There is a cacophony of guitar strums and drum beats, but we can still hear individual zippy sound effects of the pinball machine.",
   "garbageReason": "Wrong outlet: BroadwayNews content scraped from Deadline URL (Brittani Samuel, not Greg Evans)",
   "garbageFixedAt": "2026-02-02T19:44:12.956Z",
@@ -94,7 +102,6 @@
   "textStatus": "partial",
   "sourceMethod": "archive",
   "duplicateTextOf": "broadwaynews--brittani-samuel.json",
-  "needsRescore": true,
   "archiveOrgTimestamp": "20250901211809",
   "archiveOrgUrl": "http://web.archive.org/web/20250901211809/https://deadline.com/2024/03/the-whos-tommy-broadway-review-1235869837/",
   "tierReason": "Full review text",

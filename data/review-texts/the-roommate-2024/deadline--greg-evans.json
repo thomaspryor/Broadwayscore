@@ -8,17 +8,17 @@
   "dtliExcerpt": "And those aren’t the only flaws in this awkwardly paced, abruptly mood-shifting tale of two very different women on the verge of old age looking to outrun their pasts and stake new claims on the future. Not even the ever-reliable director Jack O’Brien can get a firm grasp on this squiggly story, but at least he doesn’t have to make the effort alone: Who wouldn’t want Farrow and LuPone on their team?",
   "showScoreExcerpt": "\"The Roommate has Farrow and LuPone to lean into, and their appeal is not small.\"",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "dtli",
   "dtliThumb": "Down",
   "bwwExcerpt": "If The Roommate would have us believe that this Grace & Frankie could become Bonnie & Clyde in the blink of an eye, it at least does so with enough good humor and easy charm to keep our eye-rolling in relative check.",
   "sourceMethod": "archive",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -28,8 +28,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The excerpt suggests the show relies heavily on its star power rather than the material itself, indicating lukewarm reception. However, with only one curated excerpt available, the full verdict remains unclear. | GPT-4o: The review highlights the appeal of the performers Farrow and LuPone, suggesting some positive aspects, but the lack of a strong recommendation or enthusiasm indicates a mixed reception. The aggregator context supports this interpretation. | Gemini: The review excerpt focuses on the appeal of the actors, but doesn't offer a clear recommendation or discouragement. The aggregator verdicts also suggest a mixed reception.",
+    "keyPhrases": [
+      {
+        "quote": "their appeal is not small",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises Farrow and LuPone's performances and acknowledges the show's charm, but identifies multiple significant flaws including dated details, awkward pacing, mood inconsistencies, and an unbelievable ending. The review neither clearly recommends nor discourages attendance. | GPT-4o: The review highlights both strengths (performances of Farrow and LuPone) and significant weaknesses (dated elements, inconsistent tone). The critic expresses mixed feelings, noting audience enjoyment but also pointing out flaws in the play's execution. | Gemini: The review acknowledges flaws in the play's writing and pacing, but praises the performances of Farrow and LuPone, suggesting the show has enough charm to be enjoyable despite its issues. The overall tone is mixed, leaning slightly positive due to the actors. | Kimi: While the critic extensively criticizes the play's dated writing, awkward pacing, and unbelievable ending, the review ultimately recommends the show based on the strength of its two leads, describing them as an 'appealing and very welcome stage duo' whose charm and talent compensate for the material's weaknesses.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -38,9 +44,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:22:08.127Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:56:52.877Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 62,
@@ -49,17 +55,19 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 74,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "archivePath": "data/archives/reviews/the-roommate-2024/deadline--greg-evans_2026-02-02.html",
   "textFetchedAt": "2026-02-02T23:20:57.254Z",
@@ -86,7 +94,7 @@
   ],
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
-  "rescoreCompletedAt": "2026-01-29T14:31:52.103Z",
+  "rescoreCompletedAt": "2026-02-04T22:56:52.877Z",
   "garbageFullText": "Mia Farrow and Patti LuPone make for an appealing and very welcome stage duo in Broadway‘s new comedy-drama The Roommate, a pairing that’s selling out the Booth Theatre in an engagement opening tonight.\n\nUnfortunately, their third costar – a beige landline telephone that gets an implausibly large role for a play set in the current day – is required to pull more weight than it or the story can handle.\n\nFirst produced in 2015 at a Louisville regional theater, Jen Silverman’s play shows its age with that wall phone – the superfluous presence of an iPhone suggests maybe there’s been some tinkering over the years, and, if so, not enough – while other details (jitters over sexuality, naiveté about pot, jokes about “Nigerian prince” phone scams) might have seemed dated even nine years ago.\n\nAnd those aren’t the only flaws in this awkwardly paced, abruptly mood-shifting tale of two very different women on the verge of old age looking to outrun their pasts and stake new claims on the future. Not even the ever-reliable director Jack O’Brien can get a firm grasp on this squiggly story, but at least he doesn’t have to make the effort alone: Who wouldn’t want Farrow and LuPone on their team?\n\n\n\n\t\t\t\n\t\t\tWatch on Deadline\n\nAs this odd play’s odd couple, Farrow and LuPone portray, respectively, Sharon, a recently divorced 65-year-old Iowa housewife, and Robyn, a sunglassed, leather-jacketed lesbian from the Bronx who has, for reasons we’ll learn soon enough, made the unlikely decision to pack some boxes and relocate her life to a not-so-little-house on the prairie.\n\nWe’re never quite sure exactly how these two strangers found one another, but we, like them, are soon glad they did. Farrow’s Sharon, in her mom jeans, flannel shirts and braided pigtails, is smothered by loneliness and boredom – even before her husband walked out, she’d been all but abandoned by her adult son who some time ago set out for a New York City career in women’s fashion (all evidence to the contrary, he’s not gay, mom insists).\n\nSharon’s isolation is evident in her chatterbox enthusiasm at the prospect of a new pal, while LuPone’s Robyn is all mystery and dodgy answers. She’s very protective of her moving boxes, smokes the odd joint (an activity that The Roommate treats with a degree of pearl-clutching not seen in years, even, one suspects, in Iowa). Robyn’s jittery defensiveness about her past tips us off that she’s on the run from something sinister, and audiences will get the gist long before Sharon finds a trove of fake drivers licenses in one of those boxes.\n\nAs is de rigueur in these opposites attract pairings, each woman will come to appreciate the other while discovering her own very similar otherness lurking beneath carefully constructed facades. The Roommate mostly avoids the character-as-talking-life-lesson trap, though not always.\n\nFor LuPone’s tough-talking Robyn, her journey means learning to be more emotionally available, to stop looking over her shoulder at imagined pursuers (but are they imagined?). For Sharon, it means opening herself up to risk, to some chance-taking, some pot-smoking, some Patti Smith music and even a bit of petty larceny, drug pushing to school kids and conning old folks out of life savings.\n\nIf The Roommate would have us believe that this Grace & Frankie could become Bonnie & Clyde in the blink of an eye, it at least does so with enough good humor and easy charm to keep our eye-rolling in relative check.\n\nOr at least most of the time. Silverman too often can’t seem to get the details right. It’s one thing to present Farrow’s Sharon as one of life’s perpetual wallflowers, at least until Robyn arrives, but would a 65-year-old woman who went to college presumably in the late 1970s-early ’80s actually have only one CD for her old boombox, and would that one CD really be the Singing Nun’s 1963 hit “Dominique?” And would a hip pot-smoking (and worse) New Yorker in 2024 still consider Patti Smith’s 1979 song “Dancing Barefoot” to be “new music?”\n\nIf the play’s moods were consistent – if Silverman had leaned more confidently into dark absurdism, say, or, settled more comfortably into Neil Simon formulaic sentiment – details about landlines and music eras wouldn’t stick out so much.\n\nFortunately, The Roommate has Farrow and LuPone to lean into, and their appeal is not small. LuPone is urban angst and wiseguy humor personified, while Farrow, handed the bulk of the play’s jokes, is at her quirky best, all jitters and tics and a neediness that’s as credible to us as it is annoying to her unseen, far-off son (unseen, by the way, but not unheard: thanks to that landline’s very loud voicemail, we’re treated to a vocal cameo that will be immediately recognizable to anyone who knows Farrow’s family life or has paid attention to the career of a particular journalist).\n\nIn fact, the delightful Farrow is so thoroughly invested in her characterization that she almost manages to pull off an ending that’s so slap-in-the-face unbelievable, so bizarrely amoral that it careens from the walk on the wild side to a breaking bad trip to bountiful. Maybe The Roommate is telling us to beware of the lessons we take from strangers, or maybe it just decides on an easy goodbye jolt. Or maybe The Roommate doesn’t really care much about the difference.\n\nTitle: The RoommateVenue: Broadway's Booth TheatreWritten By: Jen SilvermanDirected By: Jack O'BrienCast: Mia Farrow and Patti LuPoneRunning time: 1 hr 40 min (no intermission)\n\nGet our Breaking News Alerts and Keep your inbox happy.\n\nDeadline is a part of Penske Media Corporation. © 2025 Deadline Hollywood, LLC. All Rights Reserved.",
   "garbageReason": "Legal/privacy page: \"All Rights Reserved.\"",
   "garbageFixedAt": "2026-01-29T22:45:23.300Z",
@@ -94,7 +102,6 @@
   "wordCount": 1040,
   "fullText": "Mia Farrow and Patti LuPone make for an appealing and very welcome stage duo in Broadway‘s new comedy-drama The Roommate, a pairing that’s selling out the Booth Theatre in an engagement opening tonight.\n\nUnfortunately, their third costar – a beige landline telephone that gets an implausibly large role for a play set in the current day – is required to pull more weight than it or the story can handle.\n\nFirst produced in 2015 at a Louisville regional theater, Jen Silverman’s play shows its age with that wall phone – the superfluous presence of an iPhone suggests maybe there’s been some tinkering over the years, and, if so, not enough – while other details (jitters over sexuality, naiveté about pot, jokes about “Nigerian prince” phone scams) might have seemed dated even nine years ago.\n\nAnd those aren’t the only flaws in this awkwardly paced, abruptly mood-shifting tale of two very different women on the verge of old age looking to outrun their pasts and stake new claims on the future. Not even the ever-reliable director Jack O’Brien can get a firm grasp on this squiggly story, but at least he doesn’t have to make the effort alone: Who wouldn’t want Farrow and LuPone on their team?\n\n \n Watch on Deadline\n\nAs this odd play’s odd couple, Farrow and LuPone portray, respectively, Sharon, a recently divorced 65-year-old Iowa housewife, and Robyn, a sunglassed, leather-jacketed lesbian from the Bronx who has, for reasons we’ll learn soon enough, made the unlikely decision to pack some boxes and relocate her life to a not-so-little-house on the prairie.\n\nWe’re never quite sure exactly how these two strangers found one another, but we, like them, are soon glad they did. Farrow’s Sharon, in her mom jeans, flannel shirts and braided pigtails, is smothered by loneliness and boredom – even before her husband walked out, she’d been all but abandoned by her adult son who some time ago set out for a New York City career in women’s fashion (all evidence to the contrary, he’s not gay, mom insists).\n\nSharon’s isolation is evident in her chatterbox enthusiasm at the prospect of a new pal, while LuPone’s Robyn is all mystery and dodgy answers. She’s very protective of her moving boxes, smokes the odd joint (an activity that The Roommate treats with a degree of pearl-clutching not seen in years, even, one suspects, in Iowa). Robyn’s jittery defensiveness about her past tips us off that she’s on the run from something sinister, and audiences will get the gist long before Sharon finds a trove of fake drivers licenses in one of those boxes.\n\nAs is de rigueur in these opposites attract pairings, each woman will come to appreciate the other while discovering her own very similar otherness lurking beneath carefully constructed facades. The Roommate mostly avoids the character-as-talking-life-lesson trap, though not always.\n\nFor LuPone’s tough-talking Robyn, her journey means learning to be more emotionally available, to stop looking over her shoulder at imagined pursuers (but are they imagined?). For Sharon, it means opening herself up to risk, to some chance-taking, some pot-smoking, some Patti Smith music and even a bit of petty larceny, drug pushing to school kids and conning old folks out of life savings.\n\nIf The Roommate would have us believe that this Grace & Frankie could become Bonnie & Clyde in the blink of an eye, it at least does so with enough good humor and easy charm to keep our eye-rolling in relative check.\n\nOr at least most of the time. Silverman too often can’t seem to get the details right. It’s one thing to present Farrow’s Sharon as one of life’s perpetual wallflowers, at least until Robyn arrives, but would a 65-year-old woman who went to college presumably in the late 1970s-early ’80s actually have only one CD for her old boombox, and would that one CD really be the Singing Nun’s 1963 hit “Dominique?” And would a hip pot-smoking (and worse) New Yorker in 2024 still consider Patti Smith’s 1979 song “Dancing Barefoot” to be “new music?”\n\nIf the play’s moods were consistent – if Silverman had leaned more confidently into dark absurdism, say, or, settled more comfortably into Neil Simon formulaic sentiment – details about landlines and music eras wouldn’t stick out so much.\n\nFortunately, The Roommate has Farrow and LuPone to lean into, and their appeal is not small. LuPone is urban angst and wiseguy humor personified, while Farrow, handed the bulk of the play’s jokes, is at her quirky best, all jitters and tics and a neediness that’s as credible to us as it is annoying to her unseen, far-off son (unseen, by the way, but not unheard: thanks to that landline’s very loud voicemail, we’re treated to a vocal cameo that will be immediately recognizable to anyone who knows Farrow’s family life or has paid attention to the career of a particular journalist).\n\nIn fact, the delightful Farrow is so thoroughly invested in her characterization that she almost manages to pull off an ending that’s so slap-in-the-face unbelievable, so bizarrely amoral that it careens from the walk on the wild side to a breaking bad trip to bountiful. Maybe The Roommate is telling us to beware of the lessons we take from strangers, or maybe it just decides on an easy goodbye jolt. Or maybe The Roommate doesn’t really care much about the difference.\n\nTitle: The RoommateVenue: Broadway's Booth TheatreWritten By: Jen SilvermanDirected By: Jack O'BrienCast: Mia Farrow and Patti LuPoneRunning time: 1 hr 40 min (no intermission)\n\nGet our Breaking News Alerts and Keep your inbox happy.\n\nAs I understand it she working under Equity and paying all their fees but is no longer entitled to any of their benefits.\n\nWhat none of the 3 reviews I have read so far note, the audience is laughing constantly for the first hour of the 90 minute play and jumped to their feet at the end. It was a love fest, and I would highly recommend it. Farrow especially has sturdier stage legs than I thought, a lovely surprise.\n\nUh, I thought the ingracious Miss LuPone tore up her Equity Card? Or is she working non-union now?\n\nDeadline is a part of Penske Media Corporation. © 2025 Deadline Hollywood, LLC.",
   "isFullReview": true,
-  "needsRescore": true,
   "textWordCount": 1040,
   "textQuality": "partial",
   "truncationSignals": [

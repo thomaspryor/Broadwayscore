@@ -11,16 +11,16 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"And the production is fun: The actors use the in-the-round theater to its fullest\"\n\nRead more",
-  "assignedScore": 74,
+  "assignedScore": 61,
   "llmScore": {
-    "score": 74,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -29,12 +29,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "And the production is fun: The actors use the in-the-round theater to its fullest",
+        "quote": "Although the production has a heartbeat, it's missing a heart.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt calls the production 'fun' and praises how actors use the space, but this brief quote may not represent the full review sentiment. Given the single excerpt warning, scoring at lower end of Positive range. | GPT-4o: The excerpt provides a positive evaluation of the production, highlighting its fun nature and effective use of the theater space. However, due to the single excerpt warning and lack of a full review, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The single excerpt is positive, calling the production 'fun' and praising the use of the theater. Given the limited text, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers unambiguous praise calling the production 'fun' with effective use of staging, indicating a positive recommendation, though the limited single-excerpt format prevents a more precise assessment or higher confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises the production's visual inventiveness and acknowledges it's 'fun,' but finds it fundamentally lacking in emotional depth and dramatic weight. The critic appreciates the spectacle but finds the performances shallow and the tragic elements unconvincing. | GPT-4o: The review criticizes the production for lacking emotional depth and gravitas, despite being entertaining. The performances are described as lacking real feeling, and the overall tone suggests disappointment with the adaptation's approach. | Gemini: The review acknowledges the production is \"fun\" and inventive, but ultimately finds it lacking in emotional depth and gravitas. It's neither a strong recommendation nor a complete dismissal, landing it in the mixed category. | Kimi: The critic praises the inventive staging, costumes, and energetic spectacle but finds the production fails to deliver the play's tragic emotional core, with lead performances that don't convey the necessary heartbreak, resulting in a fun but hollow experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,29 +44,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T13:24:51.083Z",
+    "scoredAt": "2026-02-04T22:24:42.336Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 74,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 73,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "fullText": "You'd think in a world so divided by war and pain as ours, a story about ill-fated young lovers torn apart by their families' senseless but devastating feud would be treated with more gravitas than director Sam Gold treats it in his somewhat vulgar Broadway adaptation of Shakespeare's \"Romeo and Juliet.\"\n\nThe Bard's \"Romeo and Juliet\" is a somber play: The audience is told from the very start that the lovers will die tragically, and they're told why. So no matter how sweet their first kiss, or heartbreaking their two nights of youthful romance, there's a pall hanging over the play. Both Romeo and Juliet have terrible premonitions on the night they meet, so the vibe couldn't be clearer.\n\n \n \n \n\n \n \n \n\n \n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Tracy Zamot, Veteran Publicist for Atlantic, Virgin and Motown Records and Pandora, Dies at 55\n\nBut Gold's \"Romeo + Juliet,\" while using Shakespeare's language, feels like it's designed to draw in tweens, teens and theater-averse adults who might not otherwise be interested in Shakespeare; the trick is to woo them and then keep them in their seats with a fun hipster spectacle led by a British TV heartthrob (Kit Connor from \"Heartstopper\") and a movie star with good pipes (Rachel Zegler, from Steven Spielberg's \"West Side Story\"). Throw in a couple of original tunes by singer-songwriter Jack Antonoff and a gaggle of young actors in high-tops and baggy jeans humping teddy bears and dancing to club music, and you've got two hours of fun. Who needs tragedy or relevance when you've got pop music and disco balls?\n\n \n Popular on Variety\n\nAnd the production is fun: The actors use the in-the-round theater to its fullest, performing from the rafters and in every corner. (Although Connor running around the theater expressing his love for Juliet to audience members is preposterous, it's also funny.) Juliet's balcony, designed by dots, is a single bed that appears from the ceiling like a four-poster swing. At one point the floor opens like a book to reveal a bed of flowers for Romeo to lay in, thinking of his love.\n\nEnver Chakartash's costumes are inventive, too: Romeo wears a gold-sequined outfit to the Capulet's party where he sees Juliet for the first time, and it sparkles in Isabella Byrd's flashing lights. Juliet wears jean shorts and Doc Martens at one point, and pink bike shorts as pajama bottoms.\n\nAlthough the production has a heartbeat, it's missing a heart. Connor is adorable in \"Heartstoppers,\" where he plays a high school jock who falls in love with a skinny, unconventional boy, but that's the same energy he brings to Juliet — he's a goofy puppy. When the shit hits the fan, though — when his best friend, Mercutio (Gabby Beans), is murdered by Juliet's cousin, Tybalt (Tommy Dorfman) — Connor doesn't register the pain of the loss, but stands dumbly on the stage. When he kills Tybalt in revenge, the moment is empty of real feeling. In the moments after that — when he's exiled and so must leave his love; when he discovers Juliet is dead; etc. — there is no heartbreak at all. There's not a wet eye in the house.\n\nZegler is competent as Juliet, more like a teenager in a sitcom who has to decide what to wear on a date to the malt shop than a girl who has accidently fallen in love with her father's enemy.\n\nIt’s early in the run, and it's possible that Gold spent less time with his actors on the second act of the play. But it's also possible that it takes real genius to pull off the death scene in \"Romeo and Juliet.\" The audience has to believe that these are not just two children caught up in the early days of first love, but that they're fated by the Gods and the universe to have met and to have died. What we have here instead is a fun night out and a hangover.",
@@ -101,5 +102,6 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 657,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:24:42.336Z"
 }

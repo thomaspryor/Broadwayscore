@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This adaptation of Natalie Babbitt's beloved children's novel about a family blessed (or cursed) with eternal life has been turned into a musical that feels surprisingly earthbound for a story about transcendence.",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 52,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This adaptation has been turned into a musical that feels surprisingly earthbound for a story about transcendence.",
+        "quote": "A warm-spirited and piercingly touching musical that has nothing flashy or splashy about it.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds the musical disappointing, describing it as 'earthbound' when it should be transcendent - a clear negative assessment of how the adaptation fails to capture the essence of its source material. | GPT-4o: The review suggests disappointment with the adaptation, indicating it lacks the expected transcendence, which implies a negative assessment. | Gemini: The review implies the musical adaptation doesn't quite capture the essence of the original story, suggesting a mixed or lukewarm reception. | Kimi: Extracted from malformed response | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the show as 'warm-spirited and piercingly touching' with a 'winning, varied score' and commends the direction for handling both spectacle and emotional depth. However, the text appears truncated mid-review, so the full critical verdict may not be available. | Gemini: The review is generally positive, highlighting the show's touching nature and the quality of the adaptation and score. While noting the director's usual style is different, the critic finds he handles the material well. The truncated text makes confidence medium. | Kimi: The review consistently praises the adaptation, score, and direction as 'deft,' 'winning,' and 'piercingly touching,' offering a clear recommendation despite the text appearing truncated at the end.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,33 +56,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:29:32.589Z",
+    "scoredAt": "2026-02-04T23:11:14.805Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 52,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 58,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 17,
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2016/04/27/theater/tuck-everlasting-review-musical-broadway.html",
   "urlDiscoveredAt": "2026-02-04T02:15:11.725Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 52,
   "textWordCount": 345,
@@ -103,5 +102,6 @@
   "archiveOrgTimestamp": "20250716102453",
   "archiveOrgUrl": "http://web.archive.org/web/20250716102453/https://www.nytimes.com/2016/04/27/theater/review-tuck-everlasting-a-lyrical-meditation-on-life-death-and-immortality.html",
   "wordCount": 345,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:11:14.805Z"
 }

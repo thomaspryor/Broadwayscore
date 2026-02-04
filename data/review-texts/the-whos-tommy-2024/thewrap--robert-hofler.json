@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "Well, McAnuff is back at it with a new revival of “The Who’s Tommy” that opened Thursday at the Nederlander Theatre, and it made me want to see the Russell movie again.",
@@ -20,11 +20,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds strong elements (breathtaking visuals, Ali Louis Bourzgui's performance) but significant flaws (pedestrian choreography, mawkish performances). The review neither recommends nor discourages attendance, focusing on uneven execution. | GPT-4o: The review highlights both positive and negative aspects of the production, with criticism of the direction, costumes, and choreography, but acknowledges some visual elements and performances as redeeming features. | Gemini: The review has both positive and negative elements. The critic praises Ali Louis Bourzgui's performance but criticizes the costumes, choreography, and direction in parts, leading to a mixed assessment.",
+    "keyPhrases": [
+      {
+        "quote": "Some tableaux are breathtaking; others are rather pedestrian.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic praises specific technical elements (projections, lead performance) but finds the direction pedestrian, costumes unimaginative, and the overall approach problematic. No clear recommendation emerges. | GPT-4o: The review is mixed, highlighting both positive and negative aspects. While the visuals and Ali Louis Bourzgui's performance are praised, the direction, costumes, and choreography are criticized. The overall tone suggests a lack of strong recommendation. | Gemini: The review is mixed, praising Bourzgui's performance but criticizing the direction, choreography, costumes, and overall impact. It neither strongly recommends nor discourages seeing the show. | Kimi: While the critic praises Ali Louis Bourzgui's performance and occasional breathtaking visuals, the overwhelming verdict is negative: the revival suffers from mundane choreography, unimaginative costumes, and mawkish direction, ultimately making the reviewer want to watch Ken Russell’s 1975 film instead.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,9 +50,9 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:26:05.104Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:05:23.606Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 63,
@@ -54,18 +60,20 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 58,
     "geminiScore": 62,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 33,
@@ -85,10 +93,9 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250919143956/https://www.thewrap.com/the-whos-tommy-broadway-review-pete-townshend-musical/",
   "contentTier": "complete",
   "wordCount": 505,
-  "rescoreCompletedAt": "2026-02-01T16:29:48.832Z",
+  "rescoreCompletedAt": "2026-02-04T23:05:23.606Z",
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/the-whos-tommy-broadway-review-pete-townshend-musical/"
 }

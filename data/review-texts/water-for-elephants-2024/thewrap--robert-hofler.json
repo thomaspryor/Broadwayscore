@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Disney Theatricals can let out a sigh of relief. Its “Lion King” franchise on cute animal puppets is safe. Very safe.",
@@ -20,22 +20,28 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 46,
+    "score": 62,
     "confidence": "medium",
     "range": {
-      "low": 41,
-      "high": 51
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic highlights one standout element (Silver Star's aerial ballet) but finds the show overall disappointing with colorless characters, eliminated drama, and puppet effects that pale compared to other productions. | GPT-4o: The review highlights several shortcomings in the production, including lackluster drama, colorless characters, and disappointing visual effects. While there are some positive mentions, such as the horse puppet, the overall tone is critical and suggests the show is not worth seeing. | Gemini: The review highlights some impressive aspects, like the white horse performance and initial acrobatic displays, but criticizes the lack of drama, colorless characters, and disappointing animal stampede visualization. This suggests a mixed experience with both positive and negative elements.",
+    "keyPhrases": [
+      {
+        "quote": "gets off to a good start when a number of talented acrobats set up the circus tent for the first time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises specific elements like Boissereau's horse performance and opening circus effects as 'absolutely terrific' and 'dazzling,' but finds the overall production disappointing with 'colorless characters,' reduced drama, and effects that 'pale considerably' compared to superior shows like Lion King and War Horse. No clear recommendation either way. | GPT-4o: The review highlights significant issues with the production, including a lack of drama, underwhelming character portrayals, and disappointing visual effects. While there are some positive elements, such as the aerial ballet, the overall tone is negative. | Gemini: The review praises the horse puppet and some acrobatic effects, but criticizes the book, direction, and other puppet designs. Overall, it's a mixed bag with some standout moments. | Kimi: While the critic praises specific elements like the horse puppet (\"absolutely terrific\") and initial circus spectacle (\"dazzling\"), they find the book undercuts dramatic tension, the leads are \"colorless,\" and the second act devolves into \"filler,\" resulting in an experience that disappoints compared to superior animal-puppet productions.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,37 +50,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:32:38.323Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:20:39.546Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 62,
+    "previousScore": 46,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 50,
+    "claudeScore": 62,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "claudeBucket": "Negative",
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "scoreDelta": 20,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 47,
-  "rescoreCompletedAt": "2026-02-01T16:36:32.520Z",
+  "rescoreCompletedAt": "2026-02-04T23:20:39.546Z",
   "contentTier": "complete",
   "wordCount": 649,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/water-for-elephants-broadway-review-grant-gustin/"
 }

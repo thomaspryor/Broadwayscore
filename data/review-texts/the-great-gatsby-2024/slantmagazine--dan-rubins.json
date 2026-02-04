@@ -7,7 +7,7 @@
   "publishDate": "2024-04-25",
   "bwwExcerpt": "the soundtrack to Jack Clayton’s 1974 movie adaptation did, nor a spirit of wild abandon, like the soundtrack to Baz Luhrmann’s 2013 take. The score to this “Great Gatsby” is missing a vital urgency. Dan Rubins, Slant Magazine: And while any adaptation of The Great Gatsby has to thread the needle between wowing audiences with opulence and inviting critique of the ostentatious hollow center (those pyrotechnics are surely ironic, right?), the show’s final images seem to find that balance successfully. “I don’t want to live here, but I never want to leave,” the bombastically independent Jordan Baker (Samantha Pauly) sings as she enters one of Gatsby’s extravagant parties. That’s about right: If The Great Gatsby doesn’t have the makings of a long-term Broadway resident, it’s become, in its newly minted tension and decadence, a welcome visitor. Christian Lewis, Variety: For any fan of “The Great Gatsby,” though, it’s likely you’ll have moments of wanting more, of missing out on all the subt",
   "originalScore": null,
-  "assignedScore": 73,
+  "assignedScore": 77,
   "source": "bww-roundup",
   "needsFullText": false,
   "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-20240425",
@@ -16,11 +16,11 @@
   "sourceMethod": "archive",
   "scoreSource": null,
   "llmScore": {
-    "score": 73,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -30,8 +30,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite criticizing the score for missing 'vital urgency,' the review concludes positively, calling the show 'a welcome visitor' and praising its balance of opulence and critique. The single excerpt warning and truncated text suggest conservative scoring within the positive range. | GPT-4o: The review acknowledges the show's successful balance between opulence and critique, suggesting it has merit. However, it also notes missing elements and implies it may not have lasting appeal, indicating a mixed reception. | Gemini: The review concludes that the show is a \"welcome visitor,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. The \"welcome visitor\" phrasing implies it's worth seeing, but not necessarily a must-see.",
+    "keyPhrases": [
+      {
+        "quote": "If The Great Gatsby doesn't have the makings of a long-term Broadway resident, it's become, in its newly minted tension and decadence, a welcome visitor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes significant improvements from the off-Broadway version, calling the Broadway adaptation 'engaging, tautly rendered, and visually dazzling' and 'the most miraculous' success of the season. While noting it's 'imperfect' and has some flaws, the overall verdict is positive with the closing metaphor of it being 'a welcome visitor' to Broadway. | GPT-4o: The review acknowledges improvements and praises the production's visuals and performances, while noting some imperfections and risk-averse storytelling. Overall, it suggests the show is worth seeing but with some reservations. | Gemini: The review acknowledges the show's flaws but ultimately finds it engaging and visually dazzling, indicating a positive recommendation with some reservations. | Kimi: The critic praises the 'miraculous' transformation from the poorly received Paper Mill production, calling it engaging and visually dazzling, while acknowledging it remains imperfect and risk-averse.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -40,28 +46,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:21:19.229Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:49:09.984Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 10,
-    "previousVersion": "3.0.0"
+    "previousScore": 73,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 62,
-    "geminiScore": 74,
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "bwwThumb": "Meh",
   "sources": [
@@ -76,7 +84,6 @@
   "previousUrl": "https://www.slantmagazine.com/music/the-great-gatsby-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T15:09:22.578Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 73,
   "fullText": "‘Tis the Broadway season of reinvention. Shaina Taub smartly retooled half of Suffs’s score since its off-Broadway premiere in 2022, allowing her jam-packed historical musical to shed some weight and soar. Branden Jacobs-Jenkins revisited the text of his 2014 play Appropriate, his subtle, meaningful edits transforming the work into a monster hit on Broadway. But he had a decade to do so and the play was already great.\n\nNot so great, in contrast, was The Great Gatsby’s inauspicious world premiere at the Paper Mill Playhouse in Millburn, New Jersey, last October. Crafted initially as an international commission intended to be performed in translation for South Korean audiences, The Great Gatsby’s first soiree was kind of like the man himself, an impotent facsimile hiding behind pretty faces and loud voices. Even the gilded sets wobbled in New Jersey.\n\nA hasty Broadway transfer was commercially understandable in a competitive landscape (another high-profile Gatsby musical, with music by Florence Welch of Florence and the Machine, premieres at A.R.T. in Cambridge next month) but artistically insane. Surely the show couldn’t be fixed in a matter of months? But if the new Great Gatsby isn’t among the clogged spring season’s finest successes, it’s certainly the most miraculous.\n\nBookwriter Kait Kerrigan’s restructuring of the story restores the vital satirical edge of F. Scott Fitzgerald’s iconic 1925 novel and rescues this adaptation from the trash heap of Broadway flops. Imperfect, yes, and risk-averse in its storytelling, but this version of The Great Gatsby that premiered in October is engaging, tautly rendered, and visually dazzling ride.\n\nStarring two Broadway phenoms—Jeremy Jordan and Eva Noblezada—with rabid fanbases, the Paper Mill production was essentially the Jeremy and Eva show. In that iteration of the musical, Gatsby, the mysterious host of Long Island’s glitziest parties, and Daisy Buchanan, his former lover living with her husband and baby across the bay, seemed like the Prohibition era’s Romeo and Juliet, and the show revolved around the star-crossed lovers’ burning passions.\n\nIt seems unnecessary to list out the themes of the novel, but the power of true love between wonderful people sure isn’t one of them. Gatsby is a desperately deluded striver who’s stripped himself of every facet of his identity until only his ultimately unreciprocated desire for Daisy remains, and Daisy is a woman defined by her (unhappy) marriage who, disempowered by her gender, will always flee to the safety of her class. “They were careless people,” Nick Carraway (Noah J. Ricketts) narrates in the novel, describing Daisy (his cousin) and her nasty, cocky husband, Tom (John Zdrojeski). “They smashed up things and creatures and then retreated back into their money or their vast carelessness or whatever it was that kept them together.”\n\nSince Nick wasn’t a real narrator last fall, there was no proxy for the audience to help us see the faux-lavish lifestyles on stage for what they are. Kerrigan’s greatest achievement on Broadway is centering Nick—thereby re-centering the clearer-eyed moral lens of the novel—and Ricketts rises to the challenge, rendering in bold, sharp strokes Nick’s desire for the glamorous life and growing despair at discovering what lies beneath it. Nick’s gradual disbelief that his companions are content to live in a world of glamorous make-believe, fatal consequences be damned, has the effectively creeping momentum of a horror film. Gone from this adaptation are Fitzgerald’s intimations of Nick’s queerness, a disappointing excision, and it’s a pity that Kerrigan never really attempts to translate the hazy unreliability of Nick’s narration to the stage.\n\nBut both star performances are wildly refreshed, too, and the opportunities for audiences to lose themselves in the pair’s powerful voices have been diminished. And that’s as it should be, since we shouldn’t be seduced by Gatsby or Daisy any longer than Nick is. For Broadway, Jordan has assumed a strangely affected Transatlantic accent that suggests how hard Gatsby is working to be something that he’s not. Instead of the puppy-dog sincerity he displayed at the Paper Mill, there’s now a healthy greasing of sleaze around his performance. Gatsby has gone so far to degrade himself for Daisy that the stench of the underworld won’t wash out.\n\nAnd Noblezada similarly allows her Daisy to be colder and crueler. Certainly the flint in Noblezada’s belt makes sense now: Daisy’s all charm on the surface, but there’s something rougher and calloused, if not wholly callous, underneath. Composer Jason Howland’s beefed-up orchestrations (with Kim Scharnberg) go a long way toward fleshing out the characters as well: There’s a slithering oboe solo beneath Daisy’s late-blooming aria, “Beautiful Little Fool,” as if to remind us how little we should trust her purported self-knowledge.\n\nThe show’s new crackling tension can still slacken whenever Nick isn’t on stage; Daisy and Gatsby aren’t really built to breathe without the oxygen of his observant, wary eye. Kerrigan’s book, for all its newfound momentum, loses focus in sussing out exactly who Gatsby actually is or what he’s done to get here, and those details remain weirdly murky. But even the soppy duet “My Green Light,” a slightly cringey literalization of the novel’s most over-analyzed metaphor, now seems to land within a newly cynical gaze. We know how frail and frivolous their declamations of love are, even if Gatsby thinks he’s living out his fantasy.\n\nNathan Tysen’s lyrics sometimes slip into singing the subtext out loud: “For better or worse/When we came out east/I learned that it is not what feels the best/It is what will hurt the least,” Daisy confesses, with a suspiciously out-of-character knack for self-articulation. But Howland’s music sets the words more-or-less appealingly, and to the point that it’s hard not to swoon ever so slightly at the luxuriating melody of Gatsby’s pining ballad “For Her.”\n\nThe score is by far at its most interesting, though, at its darkest. In a rundown corner of Queens, we meet the miserable gas station owner George Wilson (Paul Whitty) and his wife, Myrtle (Sara Chase), who’s also Tom’s mistress and dreaming hopelessly of replacing Daisy. Howland gives George a thorny tune, “Valley of Ashes,” that’s rich with specificity, and Myrtle’s “One-Way Road” pulses with rhythmic desperation: Tysen and Howland, through song, offer both characters a thicker slice of humanity than the book allows them. Even if Howland’s music can drift toward generic pop balladry and some of the semi-pastiche numbers are undistinguished, the orchestrations wrap the score in an appealing lushness.\n\nThat lushness is exceeded in the show’s visuals, under Marc Bruni’s fluid direction: Paul Tate dePoo III’s set is appropriately sleek and grand (two cars traverse the stage—take that, Back to the Future!), but it’s his projections that are extraordinary. In one driving sequence that takes place crossing over a bridge, de Poo III conjures the impressively dizzying optical illusion of the car passing under arches that throttle back from the front of the stage as the vehicle moves forward. He’s well-partnered by Cory Pattak’s explosive lighting, with a particularly evocative flash at the end of the first act. Dominique Kelley’s slinky, sinewy choreography animates Linda Cho’s sumptuous flapper costumes, the most convincing 1920s element.\n\nAnd while any adaptation of The Great Gatsby has to thread the needle between wowing audiences with opulence and inviting critique of the ostentatious hollow center (those pyrotechnics are surely ironic, right?), the show’s final images seem to find that balance successfully. “I don’t want to live here, but I never want to leave,” the bombastically independent Jordan Baker (Samantha Pauly) sings as she enters one of Gatsby’s extravagant parties. That’s about right: If The Great Gatsby doesn’t have the makings of a long-term Broadway resident, it’s become, in its newly minted tension and decadence, a welcome visitor.\n\nThe Great Gatsby is now running at the Broadway Theatre.\n\nDan Rubins is a writer, composer, and arts nonprofit leader. He’s also written about theater for CurtainUp, Theatre Is Easy, A Younger Theatre, and the journal Shakespeare. Check out his podcast The Present Stage.\n\nYour email address will not be published.\n\nSave my name, email, and website in this browser for the next time I comment.",
@@ -96,5 +103,6 @@
   "archiveOrgTimestamp": "20250724140833",
   "archiveOrgUrl": "http://web.archive.org/web/20250724140833/https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
   "tierReason": "Full review text",
-  "playbillVerdictUrl": "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/"
+  "playbillVerdictUrl": "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
+  "rescoreCompletedAt": "2026-02-04T22:49:09.984Z"
 }

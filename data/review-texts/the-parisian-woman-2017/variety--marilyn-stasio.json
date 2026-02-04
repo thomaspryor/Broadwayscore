@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Uma Thurman brings her movie-star presence to Broadway in Beau Willimon's adaptation of Henry Becque's 19th-century French drama, but the production feels more like an elegant costume party than urgent theater.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 61,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the production feels more like an elegant costume party than urgent theater",
+        "quote": "Thurman is hung out to dry in this inert production of Beau Willimon's trifling play.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Brief excerpt acknowledges Thurman's star power but criticizes the production as lacking theatrical urgency. Too short to confidently assess full critical verdict. | GPT-4o: The review acknowledges Uma Thurman's presence but criticizes the production for lacking urgency, suggesting it is more style than substance. This indicates a mixed reception. | Gemini: The review acknowledges Thurman's presence but ultimately finds the production lacking urgency, suggesting a mixed or lukewarm reception. | Kimi: The critic acknowledges Thurman's star power as a positive element, but the 'but' pivot emphasizes that the production itself lacks theatrical substance, comparing it unfavorably to an 'elegant costume party' rather than 'urgent theater.' Without a clear recommendation and with the brief length suggesting this may be an excerpt, the assessment falls in the mixed range.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment calling the production 'inert' and the play 'trifling,' criticizing the lead performance as miscast and noting the material is 'unworthy' and lacks substance. | GPT-4o: The review is overwhelmingly negative, criticizing the production as 'inert' and the play as 'trifling'. It suggests that the play is unworthy of attention and that Thurman's performance does not suit the role, offering no redeeming qualities. | Gemini: The review is largely negative, criticizing the play as \"trifling\" and the production as \"inert.\" While the set design is praised, the overall assessment is that the play is not worth seeing, especially due to Thurman's miscasting. | Kimi: The critic pans the production as 'inert' and the play as 'trifling,' criticizes the lead performance as miscast, and declares it gives 'no pleasure' to watch, despite acknowledging elegant set design and one strong supporting turn.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,30 +56,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:17:14.193Z",
+    "scoredAt": "2026-02-04T22:54:58.318Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 480,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 480,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:54:58.318Z"
 }

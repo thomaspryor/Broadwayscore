@@ -12,7 +12,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,11 +21,11 @@
   "showScoreExcerpt": "It's a feast for the senses but leaves you hungry for more... The musical adaptation of Baz Luhrmann's film is undeniably spectacular, yet it feels oddly hollow at its core.",
   "needsScoring": true,
   "llmScore": {
-    "score": 64,
-    "confidence": "medium",
+    "score": 62,
+    "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review presents a classic mixed assessment - praising the spectacle ('feast for the senses', 'undeniably spectacular') while criticizing the substance ('leaves you hungry', 'oddly hollow at its core'). This balanced critique with no clear recommendation falls into Mixed territory. | GPT-4o: The review acknowledges the spectacle and sensory appeal of the production but criticizes it for lacking depth, suggesting a mixed reception. | Gemini: The review acknowledges the spectacle but also notes a hollowness, suggesting a recommendation with reservations. Given the single excerpt, I'm placing it at the lower end of the positive range.",
+    "keyPhrases": [
+      {
+        "quote": "It's a feast for the senses but leaves you hungry for more.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the spectacle ('undeniably spectacular') but finds it ultimately unsatisfying ('oddly hollow', 'leaves you hungry for more'). However, confidence is low due to limited excerpt text that may not capture the full verdict. | GPT-4o: The review acknowledges the spectacle and sensory appeal but criticizes the show for feeling 'oddly hollow at its core.' This suggests a mixed verdict with both positive and negative elements. The excerpt is limited, so confidence is low. | Gemini: The review acknowledges the show's visual appeal but ultimately finds it emotionally unfulfilling, suggesting a mixed experience. The truncated text lowers confidence. | Kimi: The review offers strong praise for the production's spectacle ('feast for the senses,' 'spectacular') but balances this with significant criticism about emotional emptiness ('hollow at its core,' 'leaves you hungry for more'), creating an ambivalent assessment without a clear recommendation. Confidence is low due to excerpt-only availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +51,32 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T18:43:14.239Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:31:20.678Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 64,
     "previousVersion": "5.1.0"
   },
   "contentTier": "needs-rescrape",
   "contentTierReason": "Wrong production text removed; needs rescrape from correct Broadway URL",
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 74,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "scoreDelta": 12,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "wrongUrlHistory": "google-serp replaced Broadway URL with Kennedy Center tour URL (https://www.washingtonpost.com/entertainment/theater/2023/08/17/moulin-rouge-review-kennedy-center/) on 2026-02-02",
   "urlDiscoveredAt": "2026-02-02T23:30:34.316Z",
@@ -90,7 +98,6 @@
   "textStatus": "complete",
   "sourceMethod": "archive",
   "previousUrl": "https://www.washingtonpost.com/entertainment/theater_dance/moulin-rouge-the-musical-is-a-feast-for-the-senses-but-leaves-you-hungry-for-more/2019/07/26/8b5a5a5c-af8a-11e9-bc5c-e73b603e7f38_story.html",
-  "needsRescore": true,
   "rescoreReason": "Wrong article was scraped - clearing fullText for re-scrape",
   "previousLlmScore": 64,
   "archiveOrgTimestamp": "20250725201826",
@@ -103,5 +110,6 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.washingtonpost.com/entertainment/theater_dance/will-you-love-moulin-rouge-as-a-stage-musical-well-youll-certainly-fall-in-like/2019/07/25/4aa3a796-aedf-11e9-a0c9-6d2d7818f3da_story.html"
+  "playbillVerdictUrl": "https://www.washingtonpost.com/entertainment/theater_dance/will-you-love-moulin-rouge-as-a-stage-musical-well-youll-certainly-fall-in-like/2019/07/25/4aa3a796-aedf-11e9-a0c9-6d2d7818f3da_story.html",
+  "rescoreCompletedAt": "2026-02-04T23:31:20.678Z"
 }

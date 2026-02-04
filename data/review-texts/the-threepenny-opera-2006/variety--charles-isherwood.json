@@ -120,5 +120,11 @@
     "Show title not found in text"
   ],
   "wordCount": 689,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T23:02:34.607Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This review is about a play called 'Platform' at the 2006 Edinburgh International Festival, not a current Broadway production; openai: The review is about a play staged at the 2006 Edinburgh International Festival, not a current Broadway production.; kimi: This review covers a 2006 Edinburgh International Festival production of 'Platform,' not a Broadway production. The text explicitly references the 2006 Edinburgh Intl. Festival and describes a festival staging with translation for English-speaking audiences, not a current Broadway run.",
+  "promptVersion": "5.2.0"
 }

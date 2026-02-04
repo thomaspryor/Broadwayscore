@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of classical training to bear on Samuel Beckett's existential masterpiece, but the real surprise is how funny they make this bleak meditation on the human condition.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (38 words)",
   "textQuality": "partial",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of classical training to bear on Samuel Beckett's existential masterpiece",
+        "quote": "Patrick Stewart and Ian McKellen bring their considerable star power and decades of classical training to bear on Samuel Beckett's existential masterpiece, but the real surprise is how funny they make this bleak meditation on the human condition.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the star performances and finds positive qualities (humor) in the production, but this appears to be a brief excerpt with limited evaluative content about the overall production quality. | GPT-4o: The review praises the performances of Stewart and McKellen, highlighting their ability to bring humor to a typically bleak play, suggesting a strong recommendation. | Gemini: The review highlights the actors' performances and how they bring humor to the play, suggesting a positive experience despite the play's bleak nature. | Kimi: The critic offers clear praise for the star performances and highlights the production's unexpected humor, recommending the show despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the lead performances with emphasis on star power, classical training, and successful comedic interpretation. Single excerpt limits confidence, but tone suggests solid recommendation. | GPT-4o: The excerpt highlights the star power and classical training of the lead actors, along with the unexpected humor they bring to the production, suggesting a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt highlights the star power and classical training brought to the production, emphasizing how funny they make the bleak meditation. This suggests a positive and enthusiastic recommendation, though confidence is low due to the single excerpt. | Kimi: The excerpt offers clear praise for Stewart and McKellen's performances, highlighting their star power and the surprising humor they bring to Beckett's material. While brief, the tone is distinctly appreciative and recommends the production on the strength of its leads.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:31:18.596Z",
+    "scoredAt": "2026-02-04T23:18:58.334Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "kimiScore": 79,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2013/legit/reviews/waiting-for-godot-1200818160/",
   "urlDiscoveredAt": "2026-02-04T02:08:57.976Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1180,
@@ -100,5 +100,6 @@
   "archiveOrgTimestamp": "20251011172249",
   "archiveOrgUrl": "http://web.archive.org/web/20251011172249/https://variety.com/2013/legit/reviews/broadway-review-no-mans-landwaiting-for-godot-1200851722/",
   "wordCount": 1180,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:18:58.334Z"
 }

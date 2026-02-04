@@ -35,8 +35,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses 'prestidigitation' (magic/skillful performance) positively, praising the show's ability to create both entertainment and emotional engagement. This suggests strong recommendation despite limited text. | GPT-4o: The excerpt uses highly positive language, describing the show as both entertaining and emotionally engaging, which suggests a strong recommendation. The single excerpt warning advises using the upper end of the bucket for clearly positive quotes. | Gemini: The phrase \"Entertainment and real emotional engagement are pulled out of thin air\" indicates a strong positive sentiment, suggesting the show is highly entertaining and emotionally resonant. Given that this is the only excerpt, I'm placing it in the upper range of 'Positive'.",
+    "keyPhrases": [
+      {
+        "quote": "It is an act of prestidigitation: Entertainment and real emotional engagement are pulled out of thin air.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The quote describes the show as achieving both entertainment and emotional engagement through skillful artistry ('prestidigitation'), suggesting strong praise. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt suggests a strong positive reaction, highlighting both entertainment value and emotional engagement. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The single quote is strongly positive, suggesting a successful and engaging theatrical experience. Given the single excerpt warning, I've scored it in the upper end of the positive range. | Kimi: Single excerpt provides clearly positive evaluation praising the show's skillful creation of entertainment and emotional impact, warranting upper Positive range per instructions for cherry-picked excerpts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,30 +51,31 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:28:31.247Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:11:37.671Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 76,
+    "previousScore": 82,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 82,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "isFullReview": true,
@@ -90,5 +97,6 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:11:37.672Z"
 }

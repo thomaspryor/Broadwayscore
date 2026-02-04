@@ -29,8 +29,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses positive language like 'very punchy revival' and notes the production avoids the typical problem of ennui in Chekhov, but the brief excerpt limits confidence in the full assessment. | GPT-4o: The review highlights the director's effective approach, suggesting a lively and engaging production. The mention of the characters suffering less from ennui in this version indicates a positive take on the production's energy and engagement. | Gemini: The review describes the revival as \"punchy,\" indicating a positive assessment, and implies it's a worthwhile production.",
+    "keyPhrases": [
+      {
+        "quote": "Lila Neugebauer directs a very punchy revival of 'Uncle Vanya'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the production as 'very punchy' and notes that Chekhov's typically ennui-filled characters 'suffer from ennui, but not so much in this production,' suggesting the director successfully energized the material. However, the brief excerpt limits full assessment of the critic's overall recommendation. | GPT-4o: The review describes the production as 'punchy', suggesting a lively and engaging interpretation, which is a positive assessment. However, the lack of revolutionary changes to the story indicates some reservation, leading to a solid but not overly enthusiastic recommendation. | Gemini: The review describes the revival as \"punchy,\" suggesting a positive take on the classic play. While not a rave, it indicates an engaging and lively production, meriting a positive score. | Kimi: The review opens with clear praise for the direction as 'very punchy,' indicating a recommendation despite truncated text that includes ambiguous observations about the performances.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -39,28 +45,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:30:51.411Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T23:17:20.135Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 75,
+    "previousScore": 76,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 75,
     "geminiScore": 75,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "truncated",
   "wordCount": 83,
@@ -96,12 +104,12 @@
     "Word count too low: 83 (min: 300)"
   ],
   "tierReason": "Short text (83 words)",
-  "needsRescore": true,
   "playbillVerdictUrl": "https://www.thewrap.com/uncle-vanya-broadway-review-steve-carell/",
   "sources": [
     "dtli",
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "Lila Neugebauer directs a very punchy revival of \"Uncle Vanya,"
+  "nycTheatreExcerpt": "Lila Neugebauer directs a very punchy revival of \"Uncle Vanya,",
+  "rescoreCompletedAt": "2026-02-04T23:17:20.135Z"
 }

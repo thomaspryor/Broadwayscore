@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Cher Show is a jukebox musical that celebrates the life and career of the iconic entertainer, but it's more spectacle than substance, relying heavily on costume changes and musical numbers rather than dramatic depth.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (35 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 62,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 40,
+      "high": 50
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "it's more spectacle than substance, relying heavily on costume changes and musical numbers rather than dramatic depth",
+        "quote": "Despite an icon with attitude, an armful of pop tunes and a can-do cast, the script never quite finds a satisfying style — or a genuine heart — as a winning stage musical.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges the show as a celebration of Cher but criticizes it for prioritizing spectacle over dramatic depth, indicating neither a clear recommendation nor discouragement. | GPT-4o: The review criticizes the show for lacking dramatic depth and being more focused on spectacle, indicating a negative assessment. | Gemini: The review acknowledges the show's celebratory nature but criticizes its lack of dramatic depth, suggesting a mixed experience. | Kimi: The review acknowledges the celebratory spectacle and costume elements but explicitly criticizes the lack of dramatic depth, creating a balanced assessment that neither recommends nor discourages attendance.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review acknowledges strong individual performances and production elements but consistently criticizes the script's superficiality and lack of genuine emotion. The critic finds pleasures in specific moments while clearly stating the show doesn't work as a whole. | GPT-4o: The review criticizes the show's format and script, stating it rarely rises above cliches and lacks genuine emotion. While individual performances are praised, the overall tone is negative, focusing on the show's shortcomings. | Gemini: The review is overall negative, citing a schlocky format and a script that doesn't find a satisfying style or genuine heart. While praising individual performances, the overall assessment is that the show falls short. | Kimi: While the critic praises the talented cast's individual performances, the review consistently criticizes the show's schlocky variety-show format, clichéd script, and lack of genuine emotional heart, ultimately finding it fails to work as a winning stage musical.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,30 +51,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:02:06.883Z",
+    "scoredAt": "2026-02-04T22:41:09.554Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 45,
-    "geminiScore": 62,
-    "kimiScore": 62,
+    "geminiScore": 45,
+    "kimiScore": 46,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
     "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "modelAgreement": "3/4 models agree: Negative"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 670,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 670,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:41:09.554Z"
 }

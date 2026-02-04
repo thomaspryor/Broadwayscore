@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This bold musical adaptation of Frank Wedekind's 1891 play about teenage sexual awakening is a powerhouse of raw emotion and contemporary relevance that should connect strongly with younger audiences.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,13 +25,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This bold musical adaptation is a powerhouse of raw emotion and contemporary relevance.",
+        "quote": "This strange, beguiling show is by no means flawless, but with subtle, nurturing changes, the creative team and cast have fashioned an already seductive work into something even more lovely and lyrical.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'powerhouse' and 'bold', predicting strong audience connection. Clear recommendation despite brief text. | GPT-4o: The review uses strong positive language ('powerhouse', 'raw emotion', 'contemporary relevance') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"powerhouse of raw emotion\" and states that it \"should connect strongly with younger audiences,\" indicating a positive recommendation. | Kimi: The excerpt offers strong evaluative praise ('powerhouse', 'bold') and a clear recommendation for the target demographic, though its brevity as a single-sentence excerpt warrants low confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Consistently enthusiastic praise throughout with superlatives like 'exhilarating,' 'transfixing,' 'striking,' and 'gorgeous.' Despite acknowledging minor flaws, the critic celebrates the show's authenticity, vitality, and overall achievement with unqualified admiration. | GPT-4o: The review is filled with superlatives and praises the originality, depth, and execution of the production. It highlights the show's evolution, its emotional impact, and the strong performances, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the originality, music, direction, and performances. While acknowledging minor flaws, the overall assessment is enthusiastic and recommends the show. | Kimi: The review offers consistent superlatives including 'exhilarating,' 'transfixing,' and 'gorgeous,' praising the show's authenticity and artistry with only minor reservations about the lyrics.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,30 +56,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T19:55:04.339Z",
+    "scoredAt": "2026-02-04T22:33:11.979Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
+    "claudeScore": 90,
+    "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 953,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 953,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:33:11.979Z"
 }

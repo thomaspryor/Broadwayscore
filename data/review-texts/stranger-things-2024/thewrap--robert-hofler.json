@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: The critic calls the play 'muddled' and 'pedestrian,' criticizes the writing as inferior to its source material, and dismisses most elements except one performance. Despite praising some technical aspects and McCartney's performance, the overall assessment is clearly negative. | GPT-4o: The review criticizes the play for its muddled storytelling, lack of strong material, and ineffective special effects, ultimately suggesting it is not worth seeing. | Gemini: The review is largely negative, criticizing the play's writing, special effects, and direction, despite praising one actor's performance. The reviewer clearly states the play is \"muddled\" and compares it unfavorably to the Netflix series.",
+    "keyPhrases": [
+      {
+        "quote": "Her stage play is a muddled, pedestrian prequel, set in the 1950s, in which a government experiment-gone-wrong unleashes lots of ill effects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the play 'muddled' and 'pedestrian,' criticizing weak material and comparing it unfavorably to other works, despite acknowledging some technical achievements and McCartney's performance. | GPT-4o: The review criticizes the stage adaptation as 'muddled' and 'pedestrian' with ineffective special effects and weak storytelling. Despite some praise for McCartney's performance, the overall tone is negative. | Gemini: The review is largely negative, describing the play as a \"muddled, pedestrian prequel\" and criticizing the special effects and comic relief. While praising McCartney's performance, the overall assessment is unfavorable. | Kimi: The critic delivers consistent criticism of the writing ('muddled, pedestrian'), direction ('haphazardly thrown in'), and effects ('less imaginative'), while explicitly undercutting the sole praised performance (McCartney) by noting it disappears in the second act. Despite acknowledging one bright spot, the overall verdict clearly advises against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,28 +43,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T00:45:24.141Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:35:46.834Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 32,
-    "previousVersion": "5.0.0"
+    "previousScore": 42,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 45,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
     "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Negative"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "sourceMethod": "archive",
   "archivePath": "data/archives/reviews/stranger-things-2024/thewrap--robert-hofler_2026-01-27.html",
@@ -97,11 +105,10 @@
   "bwwThumb": null,
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 39,
-  "rescoreCompletedAt": "2026-02-01T16:14:09.375Z",
+  "rescoreCompletedAt": "2026-02-04T22:35:46.834Z",
   "contentTier": "complete",
   "wordCount": 580,
   "isFullReview": false,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/stranger-things-broadway-review-netflix/",
   "sources": [

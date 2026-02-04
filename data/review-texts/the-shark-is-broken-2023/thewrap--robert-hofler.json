@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-SHARK-IS-BROKEN-Opens-on-Broadway-20230809",
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Fun summer movies are being turned into dreary summer theater this August. The tone-deaf “Back to the Future” musical is now followed by “The Shark Is Broken,” written by Ian Shaw and Joseph Nixon, which tells the behind-the-scenes story of the making of “Jaws.”",
@@ -20,11 +20,11 @@
     "dtli"
   ],
   "llmScore": {
-    "score": 44,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The review consistently criticizes core elements of the production - the performances are described as 'grating' and 'over-the-top acting exercises', the writing has logical problems, and the direction 'does nothing to mitigate' the issues. While acknowledging good video projections, the overall assessment is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the play's execution, acting, and direction. The critic describes the performances as grating and the direction as blunt, with no redeeming qualities mentioned beyond the video projections. | Gemini: The review is largely negative, criticizing the writing, acting, and direction. While the video projections are praised, the overall assessment is that the play is disappointing and doesn't effectively capture the behind-the-scenes drama of \"Jaws.\"",
+    "keyPhrases": [
+      {
+        "quote": "It's odd when you go to the theater to see a show like 'Shark' and the only thing of interest on stage isn't even a movie, but a video.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment throughout - calls performances 'grating,' criticizes plot logic, dismisses acting as 'over-the-top exercises,' and finds only the video projections worthwhile. No recommendation implied. | GPT-4o: The review is overwhelmingly negative, criticizing the performances, direction, and lack of engaging content. It describes the show as 'tone-deaf' and 'dreary,' with only the video projections receiving any praise. The overall tone suggests a strong recommendation to avoid the show. | Gemini: The review is largely negative, criticizing the writing, direction, and performances. While acknowledging the video projections, the overall assessment is unfavorable, leading to a negative classification. | Kimi: The reviewer consistently criticizes the play as dreary theater with illogical plotting, grating performances, and blunt direction, recommending against it despite praising the video design.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,28 +50,30 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:24:43.962Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:59:59.688Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 20,
+    "claudeScore": 38,
+    "openaiScore": 22,
     "geminiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Negative"
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 18,
@@ -83,11 +91,10 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250908152242",
   "archiveOrgUrl": "http://web.archive.org/web/20250908152242/https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
-  "rescoreCompletedAt": "2026-02-01T16:27:39.168Z",
+  "rescoreCompletedAt": "2026-02-04T22:59:59.688Z",
   "contentTier": "complete",
   "wordCount": 560,
   "isFullReview": false,
   "showScoreExcerpt": "“ ‘Shark’ is written so that each actor gets his solo moment to unload on Dad, blow up in a dramatic fashion and show off his thespian chops. Guy Masterson’s blunt direction does nothing to mitigate these over-the-top acting exercises.”\n\nRead more",
-  "needsRescore": true,
   "textQuality": "full"
 }

@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"Given the year the play is set, these developments seem more a matter of pandering to contemporary ideas than anything else. But linear logic is not a hallmark of farce, good, bad or, as in this case, indifferent.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/the-cottage-broadway",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -27,8 +27,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls the show 'indifferent' and criticizes pandering and lack of logic, but with only one excerpt available, this could be cherry-picked from a longer mixed review. | GPT-4o: The review excerpt describes the play as 'indifferent,' suggesting a neutral stance. The lack of enthusiasm and the critique of pandering to contemporary ideas indicate a mixed assessment. | Gemini: The review excerpt suggests the play is \"indifferent,\" which falls into the mixed category. The single excerpt and lack of full context make it difficult to assess a stronger positive or negative leaning.",
+    "keyPhrases": [
+      {
+        "quote": "the play had me smiling indulgently more often than clutching my belly",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Critic appreciates the effort to revive bedroom farce and praises the cast/director, but clearly states the play doesn't fully succeed ('doesn't rise into a soufflé') and only provoked mild amusement rather than genuine laughter. | Gemini: The review is mixed, noting that the play is performed with gusto and had the critic smiling, but it doesn't quite reach the level of delightful door-slamming confusion. It's a qualified positive but not a strong recommendation. | Kimi: The critic praises the cast's boisterous gusto and admits the play deserves credit for reviving the farce genre, but the key verdict 'smiling indulgently more often than clutching my belly' indicates mild enjoyment rather than strong recommendation, balanced against criticism that it 'doesn't rise into a soufflé of delightful door-slamming.' Text appears truncated at the end.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -37,22 +43,23 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T01:01:23.995Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:44:19.427Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 39,
-    "previousVersion": "3.0.0"
+    "previousScore": 61,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 62,
+    "claudeScore": 62,
+    "openaiScore": null,
     "geminiScore": 62,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -62,7 +69,6 @@
   },
   "contentTier": "truncated",
   "wordCount": 293,
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "isFullReview": true,
@@ -88,5 +94,6 @@
   "sources": [
     "show-score",
     "show-score-playwright"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T22:44:19.427Z"
 }

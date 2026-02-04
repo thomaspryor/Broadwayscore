@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What distinguishes 'Suffs' is its creator's ability to transform the mechanics of political organizing into engaging musical theater, making the often tedious work of activism feel urgent and alive.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "What distinguishes 'Suffs' is its creator's ability to transform the mechanics of political organizing into engaging musical theater, making the often tedious work of activism feel urgent and alive.",
   "needsScoring": true,
   "llmScore": {
-    "score": 77,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic praises the show's ability to make political activism 'urgent and alive' through 'engaging musical theater,' indicating a clear positive recommendation despite the brief excerpt. | GPT-4o: The review highlights the show's ability to make political organizing engaging and alive, indicating a positive assessment of the production's impact and creativity. | Gemini: The review highlights the show's ability to make political organizing engaging, suggesting a positive experience.",
+    "keyPhrases": [
+      {
+        "quote": "Version 2.0 is tighter, more confident, often rousing and downright entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly distinguishes between the problematic 2022 production ('didactic, dull, overstuffed mess') and the current Broadway version, which is praised as 'tighter, more confident, often rousing and downright entertaining.' Despite noting some ongoing issues with character development and the lead performance, the overall assessment is positive with the critic expressing relief that the creative team 'did not back down.' | GPT-4o: The review acknowledges past issues but praises the current production as improved and entertaining. Despite some reservations about depth and performance, the overall tone is positive. | Gemini: The review acknowledges the show's previous flaws but states that the current production is \"tighter, more confident, often rousing and downright entertaining,\" indicating a positive, but not rave, recommendation. | Kimi: While the review acknowledges the previous Off-Broadway production was flawed and notes some remaining weaknesses (shallow character development, uneven lead performance), the critic delivers a clear positive verdict for the current Broadway production, calling it 'downright entertaining' and expressing gratitude that the creative team 'did not back down.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,34 +48,36 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:51.235Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:37:03.402Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 75,
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "previousUrl": "https://www.washingtonpost.com/theater-dance/2024/04/19/suffs-broadway-review/",
   "urlDiscoveredAt": "2026-02-02T15:11:58.137Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 767,
@@ -94,5 +102,6 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T22:37:03.403Z"
 }

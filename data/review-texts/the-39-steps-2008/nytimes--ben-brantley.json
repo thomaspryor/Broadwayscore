@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (37 words)",
   "textQuality": "partial",
   "llmScore": {
@@ -101,5 +101,10 @@
     "Word count too low: 292 (min: 300)"
   ],
   "wordCount": 292,
-  "tierReason": "Short text (292 words)"
+  "tierReason": "Short text (292 words)",
+  "rejectedAt": "2026-02-04T22:39:09.640Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's final verdict.; openai: The text is a mix of review content and a message about retrieving article content, indicating it is incomplete and not scoreable.",
+  "promptVersion": "5.2.0"
 }

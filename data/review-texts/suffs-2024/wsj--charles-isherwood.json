@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Taub has created a stirring and accomplished work that brings fresh energy to the well-worn format of the biographical musical.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,11 +18,11 @@
   "showScoreExcerpt": "Ms. Taub has created a stirring and accomplished work that brings fresh energy to the well-worn format of the biographical musical.",
   "needsScoring": true,
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -32,8 +32,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic uses clearly positive language ('stirring and accomplished') and notes the show brings 'fresh energy' to its genre, indicating a solid recommendation. | GPT-4o: The review uses positive language like 'stirring', 'accomplished', and 'fresh energy', indicating a strong recommendation. | Gemini: The review uses positive language like \"stirring and accomplished\" indicating a recommendation.",
+    "keyPhrases": [
+      {
+        "quote": "Suffs largely succeeds in showcasing the accomplishments of its creators and performers, particularly with regard to Ms. Taub's rich and often rousing score and the terrific cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive language like 'largely succeeds,' 'rich and often rousing score,' and 'stirring and accomplished work,' but the phrase 'largely succeeds' suggests some reservations, placing it in the solid positive range. | GPT-4o: The review praises the show's creators and performers, highlighting the rich and rousing score and the vivid engagement of the cast. The language used is enthusiastic, indicating a strong recommendation. | Gemini: The review states that the show \"largely succeeds\" and calls the score \"rich and often rousing.\" This indicates a positive recommendation, though the truncated text suggests some reservations. | Kimi: Despite truncated text suggesting some reservations ('Nevertheless...'), the review praises the 'rich and often rousing' score, 'terrific cast,' and calls the work 'stirring and accomplished'—clearly recommending the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,34 +48,36 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-01T21:00:53.666Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:37:50.367Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 79,
     "openaiScore": 82,
     "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
   "previousUrl": "https://www.wsj.com/arts-culture/theater/suffs-broadway-review-shaina-taub-music-box-theatre-b9c1a8f4",
   "urlDiscoveredAt": "2026-02-02T18:04:03.392Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 86,
@@ -124,5 +132,6 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "Suffs largely succeeds in showcasing the accomplishments of its creators and performers, particularly with regard to Ms. Taub's rich and often rousing score and the terrific cast, all radiating vivid engagement in the history unfolding before us."
+  "nycTheatreExcerpt": "Suffs largely succeeds in showcasing the accomplishments of its creators and performers, particularly with regard to Ms. Taub's rich and often rousing score and the terrific cast, all radiating vivid engagement in the history unfolding before us.",
+  "rescoreCompletedAt": "2026-02-04T22:37:50.367Z"
 }

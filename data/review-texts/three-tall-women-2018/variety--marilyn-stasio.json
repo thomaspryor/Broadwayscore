@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Glenda Jackson makes a triumphant return to Broadway after a 25-year absence in Edward Albee's Pulitzer Prize-winning drama, delivering a performance of such ferocious intelligence and emotional complexity that it redefines the very notion of a tour de force.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,13 +25,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 94,
-    "confidence": "high",
+    "score": 81,
+    "confidence": "medium",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 76,
+      "high": 86
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Glenda Jackson makes a triumphant return to Broadway after a 25-year absence in Edward Albee's Pulitzer Prize-winning drama, delivering a performance of such ferocious intelligence and emotional complexity that it redefines the very notion of a tour de force.",
+        "quote": "What makes Jackson so absolutely riveting in these flashbacks is her total investment in each fragment of 'A's' many persona.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language like 'triumphant return' and 'redefines the very notion of a tour de force' with unqualified praise for the lead performance, indicating an enthusiastic rave recommendation. | GPT-4o: The review uses superlatives like 'triumphant' and 'redefines the very notion of a tour de force,' indicating unqualified praise and a strong recommendation. | Gemini: The review uses strong positive language such as \"triumphant\" and \"tour de force\", indicating a rave review. | Kimi: Unreserved superlatives including 'triumphant,' 'ferocious intelligence,' and 'redefines' with no caveats indicate the highest possible recommendation for both the production and performance.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Jackson's performance ('absolutely riveting', 'total investment', 'thrills') with detailed appreciation of her craft and commitment to truth. While noting the play itself is 'punishing' and has structural limitations, the critic's focus on Jackson's commanding presence and memorable characterization indicates a positive recommendation based on the star performance. | GPT-4o: The review is filled with praise for Glenda Jackson's performance, describing her as 'absolutely riveting' and 'fascinating'. The critic highlights the beauty and intensity of the play, despite its punishing nature, and commends Jackson's commitment to truth in performance. | Gemini: The review focuses heavily on Glenda Jackson's performance, calling it \"absolutely riveting.\" While the play itself is described as \"punishing,\" the recommendation hinges on Jackson's portrayal. | Kimi: Despite noting that supporting cast members are miscast, the review lavishes extraordinary praise on Glenda Jackson's 'absolutely riveting' performance and admires the play's 'beautiful' and 'fierce' language, clearly endorsing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,33 +56,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:26:08.214Z",
+    "scoredAt": "2026-02-04T23:10:27.924Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 94,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 95,
-    "geminiScore": 92,
-    "kimiScore": 96,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Rave",
-    "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2018/legit/reviews/three-tall-women-review-glenda-jackson-1202728170/",
   "urlDiscoveredAt": "2026-02-04T01:40:54.809Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 94,
   "textWordCount": 745,
@@ -125,5 +125,6 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 745,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:10:27.924Z"
 }

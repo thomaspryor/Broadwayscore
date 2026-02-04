@@ -11,13 +11,13 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"By having a uniformly young cast, Romeo + Juliet successfully drives home the juvenile pettiness of the Montague/Capulet feud and sorrow...But this production of the love story hasn't quite found its heartbeat.\"\n\nRead more",
-  "assignedScore": 63,
+  "assignedScore": 65,
   "llmScore": {
-    "score": 63,
+    "score": 65,
     "confidence": "high",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 60,
+      "high": 70
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -29,12 +29,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But this production of the love story hasn't quite found its heartbeat.",
+        "quote": "With its energetic and game cast, Romeo + Juliet on Broadway is enjoyable, but uneven.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the casting choice and its thematic effectiveness but delivers a significant negative verdict about the production's core emotional impact. The phrase 'hasn't quite found its heartbeat' suggests fundamental problems despite positive elements. | GPT-4o: The excerpt acknowledges a successful aspect of the production with the young cast but ultimately suggests it lacks a crucial element, indicating a mixed review. | Gemini: The review notes a successful aspect of the production but concludes it \"hasn't quite found its heartbeat,\" indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt offers qualified praise for the casting concept while delivering a significant criticism about the production's emotional heartbeat, suggesting an evenly mixed assessment. Confidence is low due to availability of only a single curated excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic calls it 'hit-and-miss' and 'enjoyable, but uneven' with clear reservations about the production choices feeling like 'empty spectacle,' while acknowledging the cast's talent and entertainment value. | GPT-4o: The review acknowledges the production's entertainment value and strong performances but criticizes it for being uneven and relying on spectacle. The mixed verdict is clear, though not strongly negative or positive. | Gemini: The review acknowledges entertaining aspects and a strong cast, but ultimately finds the production uneven and reliant on spectacle over substance, resulting in a mixed assessment. | Kimi: While the critic praises the energetic cast and finds the production undeniably entertaining, they criticize the modern additions as empty spectacle and note the show hasn't quite found its heartbeat, resulting in a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T13:21:42.782Z",
+    "scoredAt": "2026-02-04T22:23:54.307Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
-    "outputTokens": 0
+    "outputTokens": 0,
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 62,
-    "kimiScore": 62,
+    "geminiScore": 65,
+    "kimiScore": 66,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -66,7 +68,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "fullText": "Read our review of Romeo + Juliet on Broadway, a revival of Shakespeare's tragedy starring Kit Connor and Rachel Zegler and featuring music by Jack Antonoff. Director Sam Gold's hyperactive revival of Romeo + Juliet smacks as his answer to Baz Luhrmann's now-iconic film adaptation of the play, right down to the plus sign. With beachy garb, contemporary music, and a little homoeroticism, that 1996 movie earned cult-classic status, largely among then-young Generation X and millennials. Instead of presenting Romeo + Juliet as the ultimate love story or one that moralizes teenagers making dumb, impulsive choices (two common but ultimately misguided readings), Luhrmann's film champions Shakespeare's centuries-old story as one of adolescent passion, rage, and rebellion so great, they have the power to both affirm life and end it. Gold's production — featuring buzzy young stars Kit Connor (Heartstopper) and Rachel Zegler (West Side Story) in the title roles — aims to do the same for Generation Z, and in much the same way. The result is hit-and-miss. Sporty streetwear, gender-swapped casting, and original pop songs by of-the-moment music producer Jack Antonoff are all on display in the Circle in the Square Theatre, transformed into something like the site of an unsupervised high school house party. Stuffed animals are strewn about, characters take swigs from a gallon jug of an unidentified blood-red drink, and everyone's running and raging and singing with abandon. The whole thing is undeniably entertaining, but the additions of Antonoff's songs, Sonya Tayeh's choreography, and intermittent modern slang don't serve the play as much as they feel like empty spectacle, inserted out of fear its target audience — short-form TikTok devotees, per the stereotypes of us Gen Z-ers — won't otherwise stay engaged for 2.5 hours. One can infer that a similar rationale is behind the casting, but these Insta-famous actors have genuine talent that commands attention all on its own. Connor particularly captivates as an achingly earnest Romeo who embodies every emotion to its extreme. He materializes both love and anger into muscle by performing an impressive pull-up to kiss Juliet, but later uses that strength to avenge a friend's death. That blurring of love and pain is also evident in the casting of a swaggering Tommy Dorfman (known for Netflix's 13 Reasons Why) as both Juliet's doting, sassy nurse and violent cousin Tybalt. (Less clear, occasionally, is when other double-cast actors are playing which role.) By having a uniformly young cast, Romeo + Juliet successfully drives home the juvenile pettiness of the Montague/Capulet feud and sorrow for the lives lost too soon, just as these characters were growing up and coming into their own. But this production of the love story hasn't quite found its heartbeat. During an early fight sequence, a Montague and a Capulet pause fistfighting and forcefully kiss. Captured in that blink-and-you'll-miss-it moment is the idea that it's not just Romeo and Juliet who want to bury their families' feud. Suggested is a richer show in which Gold more deeply explores how youthful passion, rage, and rebellion can affirm life, end it — and change it. Though their story ends fatally, Shakespeare's teenage lovers are now synonymous with the concept of love itself. Easily lovesick Romeo Montague falls for headstrong Juliet Capulet at a party thrown by her family — a party he's not supposed to be at, as the Montagues and Capulets are bitter rivals who'd never approve of their coupling. The pair carry on a short-lived romance in secret and plan to escape their hometown of Verona together, but a miscommunication leads to tragedy. Audiences are swept up in the colorful, pulsating world of Romeo + Juliet from the moment they enter the lobby, outfitted with multicolored club lights, even more stuffed animals, and even a claw machine. It's an extension of the performance space itself, where the actors play around pre-show, lounging on inflatable chairs and rolling around in shopping carts and dancing. There's no Montague or Capulet yet, just a group of friends having fun. To Gold's credit, he makes maximum use of the Circle in the Square, having his actors run down the aisles, converse from the rafters, and even interact with a couple audience members seated up against the stage. A 10-minute intermission lets you catch your breath in between acts of this production that practically bounces off the walls. Romeo + Juliet has mixed reviews from audiences on Show-Score, receiving praise for the cast, particularly Connor's charismatic performance. Read more audience reviews of Romeo + Juliet on Show-Score. With its energetic and game cast, Romeo + Juliet on Broadway is enjoyable, but uneven. It's worth noting that Luhrmann's Romeo + Juliet received similar criticism when it premiered, and it gained a legacy anyway. If Gold's production succeeds in hooking a new generation into Shakespeare, I won't hold an ancient grudge. Learn more and get Romeo + Juliet tickets on New York Theatre Guide. Romeo + Juliet is at the Circle in the Square Theatre through February 16. Photo credit: Romeo + Juliet on Broadway. (Photos by Matthew Murphy and Evan Zimmerman) Originally published on Oct 24, 202423:00",
@@ -91,5 +92,6 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 852,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:23:54.307Z"
 }

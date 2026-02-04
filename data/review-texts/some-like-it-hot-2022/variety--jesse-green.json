@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (28 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 75,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
+        "quote": "What could have been a dated drag farce ends up as a show that many will like immensely — a musical filled with fun, energy and heart.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review indicates that the adaptation successfully updates the classic while retaining its enduring qualities, suggesting a positive but not overly enthusiastic recommendation. | Gemini: The review states that the musical manages to update the material while preserving what made the original enduring, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The critic clearly praises the adaptation's ability to modernize the material while maintaining the original's appeal, indicating a solid recommendation. Confidence is low due to the truncated length of the provided text.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the adaptation's fresh perspective, standout performances (especially Ghee), and contemporary relevance, but criticizes the disappointing score. The final verdict is clearly positive despite reservations. | GPT-4o: The review praises the show's fresh perspective, performances, and humor but notes that the score is a disappointment. The overall tone is positive, recommending the show despite some reservations about the music. | Gemini: The review is mostly positive, praising the performances, script, and overall feel of the show. While it notes that the score is disappointing, it concludes that the many positives outweigh the negatives, resulting in a recommendation. | Kimi: While the critic finds the score disappointing and generic, they praise the fresh adaptation's treatment of gender identity, the stellar performances (particularly Ghee's 'revelation' and Borle's impeccable timing), and the show's heart and humor, concluding it transforms the material into something 'many will like immensely.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,29 +51,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:59:01.378Z",
+    "scoredAt": "2026-02-04T22:29:38.174Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 75,
-    "geminiScore": 75,
-    "kimiScore": 76,
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 824,
@@ -117,5 +118,6 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--frank-rizzo.json",
   "wordCount": 824,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:29:38.174Z"
 }

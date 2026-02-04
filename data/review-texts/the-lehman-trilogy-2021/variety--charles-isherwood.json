@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,13 +20,13 @@
   "contentTierReason": "Short text (33 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 82,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "brought to vivid life by three superb actors",
+        "quote": "It's sheer joy to have the show back in all its stately, tragic glory.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the performances and production quality with positive descriptors like 'vivid life' and 'superb actors', though the excerpt is brief and may not capture the full critical assessment. | GPT-4o: The review praises the production as both an intimate character study and a sweeping historical panorama, highlighting the vivid portrayal by superb actors, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"vivid life\" and \"superb actors,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the acting ('superb') and staging ('vivid life'), describing the production as both an intimate character study and sweeping epic without any reservations or caveats.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'dazzling,' 'brilliantly helmed,' 'sheer joy,' and 'knockout.' No reservations or criticisms expressed. | GPT-4o: The review is filled with superlatives and unqualified praise for the production, performances, and design. The critic describes the show as 'dazzling' and 'a knockout,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"dazzling\" and \"brilliantly helmed.\" The critic clearly enjoyed the show and recommends it. | Kimi: The critic offers unreserved praise for Sam Mendes' direction, the lead performances, and Es Devlin's scenic design, using superlatives like 'dazzling,' 'brilliantly helmed,' and 'knockout' with no significant reservations expressed.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,30 +51,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:12:24.302Z",
+    "scoredAt": "2026-02-04T22:51:23.006Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Rave"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 557,
@@ -111,5 +111,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 557,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:51:23.006Z"
 }

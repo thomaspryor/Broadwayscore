@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kevin Kline brings his customary intelligence and theatrical flair to the title role, but the production feels overly respectful and lacks the passion that should drive this romantic drama.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the production feels overly respectful and lacks the passion that should drive this romantic drama",
+        "quote": "Kevin Kline brings his customary intelligence and theatrical flair to the title role, but the production feels overly respectful and lacks the passion that should drive this romantic drama.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review praises Kevin Kline's performance but criticizes the production for lacking passion, indicating a mixed reception. | Gemini: The review praises Kline's performance but criticizes the production for lacking passion, resulting in a mixed assessment. | Kimi: The review praises Kevin Kline's performance but fundamentally criticizes the production for lacking the passion essential to a romantic drama, creating a balanced assessment that neither recommends nor discourages attendance.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Kline's performance but criticizes the production as lacking passion and being overly respectful. Single excerpt warning applies - this balanced critique suggests mixed reception. | GPT-4o: The review praises Kevin Kline's performance but criticizes the production for lacking passion, suggesting a mixed impression. With only one excerpt, the confidence is low. | Gemini: The review praises Kline's performance but criticizes the production for lacking passion. This suggests a mixed assessment, leaning slightly positive due to the praise for Kline. | Kimi: Single excerpt praises the lead actor's performance but criticizes the production as lacking passion and being overly respectful, suggesting a split verdict where the star shines but the show itself disappoints.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:48:16.149Z",
+    "scoredAt": "2026-02-04T23:26:36.945Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "textQuality": "partial",
   "sources": [
     "web-search"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 932,
@@ -120,5 +121,6 @@
   "wordCount": 932,
   "tierReason": "Full review text",
   "wrongFullText": "Super Bowl LX \n \n \n\n \n \n \n \n \n All the ads and trailers from the big game\n\nWinners, snubs and surprises from music's major night\n\nNetflix, Paramount Skydance face off\n\nEarly reactions are calling the steamy literary romance a \"bodice-ripping crowd-pleaser\" that is \"destined to be a massive hit for Warner Bros.\"\n\nWall Street seemed to prefer D'Amaro, who has knowledge of parks and attractions, areas of Disney's business that are growing.\n\nBaby is making her way across the United States.\n\n “Dirty Dancing: The Musical,” a stage adaptation of the beloved 1987 romantic drama, is embarking on a North…\n\nU.S. President Donald Trump has spoken out on the disappearance of “Today” anchor Savannah Guthrie’s mother Nancy, telling reporters that he would commit more federal…\n\nS.S. Rajamouli has worked with some of Indian cinema’s biggest stars, but Mahesh Babu managed to surprise him in unexpected ways. \n\n “As an actor, not much surprised…\n\nEXCLUSIVE | Pedro Pascal is confirmed to replace Joaquin Phoenix with shooting starting next month.\n\nThe two discuss 'Wicked: For Good,' what makes them cry and loving 'The Waterboy.'\n\nThe two on their life-changing 'Mummy' friendship, loneliness and learning to stop trying so hard.\n\nA Variety and iHeartRadio Podcast\n\nRachel McAdams thrives on a desert island in Sam Raimi's twisted survival thriller. Going back to his roots, Raimi wickedly flips the dynamic between a number cruncher and her nightmare boss.\n\nIn a mockumentary that plays it straight, Charli xcx is teamed with a doofus director (Alexander Skarsgård) who wants to clean up her image. But why would any version of Charli xcx say yes?\n\nBrett Ratner's First Lady documentary is a cheeseball infomercial of staggering inertia. There's no drama to a film that should have been called \"Day of the Living Tradwife.\"\n\nThe first feature by the YouTube gamer personality Markiplier is a murky sci-fi horror tale that confines us to a midget submarine. The claustrophobic perils are plentiful but wear thin.\n\n'Interior Chinatown' Struggles to Turn an Allegorical Novel Into a Show\n\nHBO Prequel Series 'Dune: Prophecy' Capably Tailors the Epic Franchise to Television\n\nTaylor Sheridan's 'Landman' Gives the West Texas Oil Fields the 'Yellowstone' Treatment\n\nEddie Redmayne and Lashana Lynch's 'The Day of the Jackal' Is an Exhilarating Assassin Thriller\n\nBillie Eilish and producer Finneas keep up their winning streak with a surprising and intimate third album.\n\nChildish Gambino's latest is a masterpiece, and a kaleidoscopic showcase for his seemingly endless talents.\n\nVince Staples searches for light on his new album, his most vulnerable project to date.\n\nDua Lipa's new album is a joyous blast of pop savvy.\n\nSam Gold's production is an actorly face-off between Jeremy Strong and Michael Imperioli, but the script ultimately let's the audience off the hook.\n\nPatricia Clarkson gives a luminous performance in an otherwise uneven revival of Eugene O'Neill's family drama.\n\nThe stage adaptation has escapism, enchantment and heart, all elevated to new, literal heights that blend theater and cirque.\n\nPopular on Variety\n\n \n \n \n\n \n\n \n \n ‘Joybubbles’ Director Rachael Morrison and Editors Bradford Thomason and Patrick Lawrence on Their Retro Phone Hacker Doc\n \n \n \n\n \n \n Perfection is rarely achieved in movies, but this heaven-sent concert doc hits the sweet spot. Over two days in January 1972, the Queen of Soul, Aretha Franklin — she was 29 at the time — sweeps into the New Temple Missionary Baptist Church in Watts in front of a congregation and testifies to God in song. The blessed thing took nearly half a century to come out because director Sydney Pollack failed to sync the image with the sound. Then digital angels stepped in, and glory, glory, hallelujah!\n\nPopular on Variety\n\n \n \n \n\n \n\n \n \n ‘Joybubbles’ Director Rachael Morrison and Editors Bradford Thomason and Patrick Lawrence on Their Retro Phone Hacker Doc\n \n \n \n\n \n \n Perfection is rarely achieved in movies, but this heaven-sent concert doc hits the sweet spot. Over two days in January 1972, the Queen of Soul, Aretha Franklin — she was 29 at the time — sweeps into the New Temple Missionary Baptist Church in Watts in front of a congregation and testifies to God in song. The blessed thing took nearly half a century to come out because director Sydney Pollack failed to sync the image with the sound. Then digital angels stepped in, and glory, glory, hallelujah!\n\nPopular on Variety\n\n \n \n \n\n \n\n \n \n ‘Time and Water’ Editors Erin Casper, Mark Harrison and Jocelyne Chaput on Capturing the Generational Trauma of Climate Change in Iceland\n \n \n \n\n \n \n Perfection is rarely achieved in movies, but this heaven-sent concert doc hits the sweet spot. Over two days in January 1972, the Queen of Soul, Aretha Franklin — she was 29 at the time — sweeps into the New Temple Missionary Baptist Church in Watts in front of a congregation and testifies to God in song. The blessed thing took nearly half a century to come out because director Sydney Pollack failed to sync the image with the sound. Then digital angels stepped in, and glory, glory, hallelujah!\n\nPopular on Variety\n\n \n \n \n\n \n\n \n \n ‘Undertone’ Editor Sonny Atkins and Colorist AJ McLauchlin on Bringing the A24 Podcast Horror Movie to Life\n \n \n \n\n \n \n Perfection is rarely achieved in movies, but this heaven-sent concert doc hits the sweet spot. Over two days in January 1972, the Queen of Soul, Aretha Franklin — she was 29 at the time — sweeps into the New Temple Missionary Baptist Church in Watts in front of a congregation and testifies to God in song. The blessed thing took nearly half a century to come out because director Sydney Pollack failed to sync the image with the sound. Then digital angels stepped in, and glory, glory, hallelujah!\n\n'Sinners' Dominates With 16 Nods, 'One Battle After Another' Follows With 13",
-  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show"
+  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show",
+  "rescoreCompletedAt": "2026-02-04T23:26:36.945Z"
 }

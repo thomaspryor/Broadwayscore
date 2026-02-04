@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show delivers on its promise and will satisfy audiences, but emphasizes it's 'light on substance.' This balanced assessment with qualified approval places it in Mixed territory. | GPT-4o: The review acknowledges the show's lack of substance but ultimately recommends it for audiences seeking escapist entertainment. The single excerpt suggests a positive tone, but the lack of full context reduces confidence. | Gemini: The review acknowledges a lack of substance but states it delivers on its promise and should satisfy audiences, indicating a positive but not rave recommendation. | Kimi: While the critic notes the production is light on substance, they affirm it successfully delivers promised entertainment value and spectacle, recommending it for audiences seeking escapism.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges the show delivers entertainment value and will satisfy audiences, but criticizes it as lacking substance. The balanced 'heavy on flash and light on substance, but...' structure suggests a mixed assessment rather than clear recommendation. | GPT-4o: The review acknowledges the show as 'slickly packaged' and 'heavy on flash,' but ultimately suggests it delivers on its promise of entertainment, indicating a positive recommendation for those seeking escapism. | Gemini: The review acknowledges a lack of substance but suggests it delivers on its promise and provides escapist entertainment, indicating a positive but qualified recommendation. Confidence is low due to the limited excerpt. | Kimi: The review acknowledges the show is 'light on substance' but affirms it delivers on its promises of 'athletic prowess and eye candy' for audiences seeking escapism, indicating a qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,17 +50,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:49:01.716Z",
+    "scoredAt": "2026-02-04T23:23:10.946Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 72,
+    "kimiScore": 73,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -73,7 +74,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 537,
@@ -122,5 +122,6 @@
   "wordCount": 537,
   "tierReason": "Full review text",
   "wrongFullText": "Pic showcases the acting chops and engaging screen presence of Ksenia Rappoport.\n\nA foreign-born chambermaid working in a plush Turinese hotel finds love but then seems to lose her way in “The Double Hour,” the effective debut feature of Italo musicvid helmer Giuseppe Capotondi. Pic further showcases the acting chops and engaging screen presence of Ksenia Rappoport (“The Unknown Woman”) as her character undergoes various shocks and transformations. Not so much a genre movie as a movie that switches between genres — and comes out on top — this film will be tough to market but should find a home at passionate distribs and fests. It goes out locally Oct. 9.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Damon Lindelof Sets Limited Series 'The Chain' at HBO Under New Overall Deal \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'Industry' Season 4 Premiere Viewership Jumps 20% From Season 3\n\nA far cry from his work as a pro shutterbug for glossy mags such as Vanity Fair and Marie Claire, and his musicvideos for Keane, the Spice Girls and others, Capotondi’s first film has a measured pace, a deceptively simple and unglamorous look, and an admirably complex (though never complicated) narrative.\n\nThe title refers to any time when the hour and minute indications consist of the same numbers (i.e., 10:10). According to serial speed-dater Guido (Filippo Timi, Mussolini in “Vincere“), each time one catches a clock showing the double hour, you can make a wish. Or at least, that’s what he tells his latest conquest, Italo-Slovenian chambermaid Sonia (Rappoport).\n\nSonia is new to the northern industrial town of Turin and the speed-dating scene, and has just started working at a local hotel. Against all odds, the two hit it off straight away and a romance quickly develops. But about 20 minutes in, the lovebirds find themselves held at gunpoint during a burglary, and shots are fired.\n\nRemaining 75 minutes detail the bumpy road to Sonia’s (and the audience’s) understanding of what really happened, with Capotondi and the screenwriters going through different genres — horror, mystery, psychodrama — and their required elements in rapid succession. Though info is only gradually parceled out and backtracking is necessary several times, editor Guido Notari and the screenwriters keep things impressively lean and uncluttered. Only in a few instances do the jumps and twists attract so much attention to themselves that they impede the natural flow of the story.\n\nNarrative glue is provided by Capotondi’s mastery of tone and Rappoport’s magnetic perf. Her sheer screen presence and ambiguous take on Sonia will, much like in her star-making turn in “The Unknown Woman,” have auds sticking with her no matter what. Timi, in a smaller role, oozes macho sexuality; Antonia Truppo adds some lightness as a saucy colleague of Sonia’s.\n\nShot in widescreen by d.p. Tat Radcliffe, the film has a deliberate, slightly rough look that imparts an air of apparent normality that works well. Production designer Totoi Santoro’s work on Sonia’s barely furnished working-class digs speaks volumes about her life. Sound work is also strong, and other tech credits are fine.\n\nPic hides quite a few pleasures that might only become apparent on multiple viewings. In a nod to the title, the screenplay’s biggest twist is revealed exactly one hour and one minute into the film.",
-  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show"
+  "contentMismatchNote": "Wrong content detected by audit - fullText is about different show",
+  "rescoreCompletedAt": "2026-02-04T23:23:10.946Z"
 }

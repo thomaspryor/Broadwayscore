@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show is essentially an extended sketch built around the premise of watching a theatrical production fall apart in every conceivable way, and the cast executes the escalating mayhem with admirable precision and commitment.",
   "originalScore": null,
-  "assignedScore": 69,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,14 +20,14 @@
   "contentTierReason": "Short text (34 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 69,
-    "confidence": "medium",
+    "score": 79,
+    "confidence": "high",
     "range": {
-      "low": 64,
-      "high": 74
+      "low": 74,
+      "high": 84
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "the cast executes the escalating mayhem with admirable precision and commitment",
+        "quote": "Under the go-for-broke direction of Mark Bell, its high-energy cast is comic gold.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Praises the cast's execution and commitment while acknowledging the show's limited premise. Positive but measured assessment. | GPT-4o: The review praises the cast's execution and commitment, suggesting a positive experience despite the show being described as an 'extended sketch'. | Gemini: The review describes the show's premise and praises the cast's execution, but doesn't offer a clear recommendation for or against seeing it. It falls into the 'Mixed' category. | Kimi: While praising the cast's 'admirable precision and commitment,' the critic characterizes the show as merely an 'extended sketch,' suggesting limited substance. The extremely brief excerpt prevents determination of a clear recommendation. | Buckets: claude=Positive, openai=Positive, gemini=Mixed, kimi=Mixed",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation with praise for cast, direction, and entertainment value, though acknowledging it's lowbrow and could benefit from cutting. | GPT-4o: The review praises the show as 'comic gold' and 'deliciously demented,' with a high-energy cast, despite noting it's not as clever as 'Noises Off!' and has some lowbrow elements. Overall, it recommends the show for its humor and entertainment value. | Gemini: The review is generally positive, calling the show \"deliciously demented\" and praising the cast and direction. While noting it's not as clever as \"Noises Off!\" and could be shorter, the overall recommendation is clear. | Kimi: The reviewer praises the cast as 'comic gold' and calls the production an 'idiot's delight,' clearly recommending the show despite noting it is lowbrow, less elegant than 'Noises Off!,' and slow to start.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:17:32.314Z",
+    "scoredAt": "2026-02-04T22:55:31.266Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 69,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 75,
-    "geminiScore": 62,
-    "kimiScore": 62,
+    "claudeScore": 78,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 14,
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2017/legit/reviews/the-play-that-goes-wrong-broadway-review-1202019087/",
   "urlDiscoveredAt": "2026-02-04T01:52:50.408Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 69,
   "textWordCount": 473,
@@ -120,5 +120,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 473,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:55:31.266Z"
 }

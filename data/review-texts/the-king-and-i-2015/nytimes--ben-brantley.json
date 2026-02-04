@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Rodgers and Hammerstein's 1951 musical about the culture clash between a British governess and the King of Siam is a handsome, well-sung production that honors the show's considerable virtues while mostly sidestepping its obvious problems.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (38 words)",
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/04/17/theater/review-the-king-and-i-back-on-broadway.html",
@@ -103,5 +103,10 @@
   "archiveOrgTimestamp": "20250715080452",
   "archiveOrgUrl": "http://web.archive.org/web/20250715080452/https://www.nytimes.com/2015/04/17/theater/review-the-king-and-i-back-on-broadway.html",
   "wordCount": 360,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T22:50:43.179Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text is truncated mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript; openai: The text is truncated and includes a technical error message, making it impossible to fully evaluate the review.; gemini: The review is cut off mid-sentence, so the final verdict is unknown.",
+  "promptVersion": "5.2.0"
 }

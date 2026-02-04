@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Cynthia Nixon's performance as Vivian Bearing, the English professor dying of ovarian cancer, is a masterclass in controlled devastation, finding comedy in the most unlikely places while never shortchanging the play's emotional brutality.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 81,
+    "score": 78,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Cynthia Nixon's performance as Vivian Bearing, the English professor dying of ovarian cancer, is a masterclass in controlled devastation",
+        "quote": "This isn't the finest production imaginable, yet it's fine enough, indeed, and that, I think, is the mark of an enduring piece of writing.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for Nixon's performance as 'masterclass' with appreciation for finding comedy amid brutality, but this appears to be a fragment focusing only on the lead performance without broader production assessment. | Gemini: The review praises Cynthia Nixon's performance as a \"masterclass\" and highlights the emotional impact of the play, indicating a positive recommendation. | Kimi: Though brief, the excerpt offers unqualified superlative praise ('masterclass') for the lead performance, indicating a strong recommendation, though the limited scope prevents assessment of other production elements.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green clearly recommends the production, praising Nixon's performance and the play itself as 'good, small' and 'enduring,' though he notes some staging issues and acknowledges it's not the definitive production. | Gemini: The review acknowledges some staging issues but ultimately finds the production \"fine enough\" and praises Nixon's performance and the enduring quality of the writing, leading to a positive but not rave recommendation. | Kimi: Despite reservations about the workmanlike direction and slightly fumbled staging, Green praises the play as an enduring piece of writing and Nixon's performance as incandescent, concluding that the revival is 'fine enough, indeed' and clearly recommending it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,21 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:34:22.819Z",
+    "scoredAt": "2026-02-04T23:22:17.290Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 76,
     "openaiScore": null,
-    "geminiScore": 82,
-    "kimiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.vulture.com/2012/01/theater-review-wit.html",
   "urlDiscoveredAt": "2026-02-04T01:51:31.647Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 621,
@@ -105,5 +105,6 @@
     "Show title not found in text"
   ],
   "wordCount": 621,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:22:17.290Z"
 }

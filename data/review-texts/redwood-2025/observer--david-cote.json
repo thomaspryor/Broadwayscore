@@ -9,58 +9,63 @@
   "showScoreExcerpt": "\"You want to leave shivering with the majesty of nature\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/redwood-broadway",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 44,
   "source": "show-score",
   "dtliThumb": "Down",
   "llmScore": {
-    "score": 60,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt is too brief and context-free to determine the critic's verdict. The aggregator suggests negative, but the quote itself could be describing what the show should achieve rather than what it does achieve. | GPT-4o: The quote suggests that the production fails to deliver the intended emotional impact, aligning with the aggregator's 'Down' verdict, indicating a negative review. | Gemini: The quote suggests a positive experience, but the lack of further context and the \"Down\" aggregator verdict indicate some reservations. | Buckets: claude=Mixed, openai=Negative, gemini=Positive",
+    "keyPhrases": [
+      {
+        "quote": "\"You want to leave shivering with the majesty of nature\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | GPT-4o: The quote suggests a lack of fulfillment or disappointment with the show's impact. The aggregator verdict 'Down' supports a negative interpretation, but the text is limited, so confidence is low. | Gemini: The quote suggests the reviewer wanted to feel a certain way but did not, indicating a negative experience. Given the limited text, confidence is low. | Kimi: The excerpt implies the show aims for an awe-inspiring, transformative effect that the audience desires but ultimately fails to achieve, consistent with the aggregator's negative classification. Without additional context, the phrasing suggests unfulfilled potential rather than delivered impact.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:02:30.161Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:21:40.439Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 60,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 40,
-    "geminiScore": 75,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Positive",
-    "scoreDelta": 35,
+    "claudeScore": null,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "3-way bucket disagreement"
-    ],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "dtliExcerpt": "You want to leave shivering with the majesty of nature; instead, it feels like 110 minutes staring at a potted plant.",
   "sources": [
@@ -74,11 +79,10 @@
   "contentTier": "complete",
   "wordCount": 1077,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "rescoreCompletedAt": "2026-02-01T16:05:10.880Z",
+  "rescoreCompletedAt": "2026-02-04T22:21:40.439Z",
   "garbageReasoningDetected": "stub-or-fragment",
   "garbageReasoningFlaggedAt": "2026-02-02T00:01:17.131Z",
   "isFullReview": true,
-  "needsRescore": true,
   "previousLlmScore": 60,
   "textWordCount": 1077,
   "archivePath": "data/archives/reviews/redwood-2025/observer--david-cote_2026-02-02.html",

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Patti LuPone and Christine Ebersole are perfectly cast as the cosmetics titans Helena Rubinstein and Elizabeth Arden in this biomusical that's as glossy and appealing as the products these women sold.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (31 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 79,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Patti LuPone and Christine Ebersole are perfectly cast as the cosmetics titans Helena Rubinstein and Elizabeth Arden in this biomusical that's as glossy and appealing as the products these women sold.",
+        "quote": "The 'Grey Gardens' team is reunited and in good form here.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: This appears to be an excerpt with positive language ('perfectly cast', 'glossy and appealing') but lacks sufficient context for a full evaluation. Confidence is low due to the brief nature of the text. | GPT-4o: The review praises the casting and describes the show as 'glossy and appealing,' indicating a strong positive recommendation. | Gemini: The review states the leads are perfectly cast and the show is as glossy and appealing as the products they sold, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers unqualified praise for the lead performances ('perfectly cast') and describes the biomusical as 'glossy and appealing,' indicating a clear recommendation despite the excerpt's brevity.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite noting limitations in the book and plot structure, Stasio praises the performances, music, costumes, and overall production. She calls the creative team 'in good form' and appreciates the show's themes, indicating a solid recommendation with reservations. | GPT-4o: The review praises the costumes, performances, and music but notes a lack of plot tension and depth in character development. The overall tone is appreciative of certain elements but acknowledges significant limitations, leading to a mixed verdict. | Gemini: The review is generally positive, praising the performances, costumes, and music, while noting weaknesses in the book. It's a recommendation with reservations. | Kimi: Stasio praises the magnificent lead performances by LuPone and Ebersole, fabulous costumes, and smart lyrics, while acknowledging the plot is thin and the book 'lite.' The clear recommendation is conditional on appreciating the stars, but the evaluation of the production values is strongly favorable.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,33 +51,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:33:26.057Z",
+    "scoredAt": "2026-02-04T23:19:43.609Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 78,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2017/legit/reviews/war-paint-review-patti-lupone-christine-ebersole-1202024275/",
   "urlDiscoveredAt": "2026-02-04T02:21:29.704Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 848,
@@ -103,5 +103,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T23:19:43.609Z"
 }

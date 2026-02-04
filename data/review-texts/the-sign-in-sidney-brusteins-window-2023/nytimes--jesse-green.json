@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the production, directed by Anne Kauffman, is often beautiful to watch and occasionally moving to experience, it cannot overcome the fundamental problem that Hansberry died before solving: how to make Sidney himself worthy of our sustained attention.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
   ],
   "textQuality": "truncated",
   "llmScore": {
-    "score": 60,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Though the production is often beautiful to watch and occasionally moving to experience, it cannot overcome the fundamental problem",
+        "quote": "And despite some sluggish moments, it does not feel overlong at two hours and 40 minutes.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive elements (beautiful, moving) but identifies a fundamental structural flaw that the production cannot overcome, resulting in a balanced but ultimately lukewarm assessment. | GPT-4o: The review acknowledges the production's visual and emotional appeal but highlights a significant flaw in the character's development, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects (beautiful, moving) but ultimately finds the production unable to overcome a core flaw, resulting in a mixed assessment. | Kimi: The critic acknowledges the production's visual beauty and emotional resonance but identifies an insurmountable flaw in the material itself, resulting in a neither-here-nor-there assessment that prevents a full recommendation while admitting aesthetic merit.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws (unwieldy script, uninteresting central character, sluggish moments) but finds the production compelling overall, praising the women's roles, performances by Brosnahan and Silverman, and the play's historical significance. The tone is appreciative rather than dismissive. | Gemini: The review acknowledges the play's unwieldiness and unevenness but ultimately finds it fascinating as a piece of theatrical and cultural history, with strong female characters. The critic suggests it's worth seeing despite its flaws. | Kimi: The critic praises the female performances, particularly Brosnahan and Silverman, and values the play's cultural significance, while acknowledging the script's unevenness and the uninteresting central male character.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,33 +56,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:22:54.111Z",
+    "scoredAt": "2026-02-04T23:02:21.331Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 60,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 4,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "previousUrl": "https://www.nytimes.com/2023/02/26/theater/the-sign-in-sidney-brusteins-window-review.html",
   "urlDiscoveredAt": "2026-02-04T01:55:16.621Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
   "textWordCount": 1062,
@@ -109,5 +108,6 @@
   "archiveOrgTimestamp": "20230505143253",
   "archiveOrgUrl": "http://web.archive.org/web/20230505143253/https://www.nytimes.com/2023/05/05/theater/the-sign-in-sidney-brusteins-window-review.html/",
   "wordCount": 1062,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T23:02:21.331Z"
 }

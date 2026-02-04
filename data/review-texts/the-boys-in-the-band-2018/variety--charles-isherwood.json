@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Mart Crowley's groundbreaking 1968 play about gay men gathering for a birthday party crackles with wit and wisdom, powered by a superb ensemble cast.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "full",
   "llmScore": {
-    "score": 83,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival crackles with wit and wisdom, powered by a superb ensemble cast.",
+        "quote": "Festivities are certainly in order for this superbly mounted 50th anniversary production.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'crackles with wit and wisdom' and 'superb ensemble cast' indicates clear enthusiasm and recommendation without reservations. | GPT-4o: The review uses strong positive language ('crackles with wit and wisdom', 'superb ensemble cast') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"crackles with wit and wisdom\" and \"superb ensemble cast,\" indicating a strong recommendation. | Kimi: The critic employs energetic, laudatory language ('crackles', 'superb') to praise the production's intelligence and performances, indicating a strong recommendation. Confidence is reduced due to the brevity of the provided text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with terms like 'superbly mounted,' calls the cast 'super ensemble,' praises individual performances extensively, and concludes the production is 'doubly welcome.' Clear recommendation despite acknowledging the play's darker themes. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and production. It highlights the play's relevance and emotional impact, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and overall production quality, making it a strong positive recommendation. | Kimi: The critic consistently praises the ensemble cast (particularly Jim Parsons and Zachary Quinto), Joe Mantello's direction, and the production design, offering an enthusiastic recommendation for this revival while acknowledging its historical significance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:33:09.141Z",
+    "scoredAt": "2026-02-04T22:39:26.946Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 83,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 84,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +75,6 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 83,
   "textWordCount": 934,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 934,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T22:39:26.946Z"
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Down",
   "originalScore": null,
-  "assignedScore": 23,
+  "assignedScore": 29,
   "source": "bww-roundup",
   "dtliThumb": "Meh",
   "dtliExcerpt": "It is too early in the Broadway season to call something the worst. That caveat aside, “The Roommate” is the saddest spectacle of wasted talent on Broadway since Andre De Shields played a gorilla in “Prymate” in 2004.",
@@ -20,11 +20,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 23,
+    "score": 29,
     "confidence": "medium",
     "range": {
-      "low": 18,
-      "high": 28
+      "low": 24,
+      "high": 34
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -34,8 +34,14 @@
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: The critic delivers a scathing review, calling it potentially the worst show of the season, criticizing outdated writing, poor performances, and comparing it to notorious Broadway failures. The overall tone is devastatingly negative despite praising the stars' past work. | GPT-4o: The review is overwhelmingly negative, highlighting the play's failure to utilize its talented cast effectively and criticizing its outdated humor and sentimentalization of crime. The critic uses strong language to express disappointment, indicating a strong recommendation to avoid the show. | Gemini: The review is overwhelmingly negative, criticizing the writing, performances, and direction. The reviewer calls it \"the saddest spectacle of wasted talent\".",
+    "keyPhrases": [
+      {
+        "quote": "It is too early in the Broadway season to call something the worst.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: Devastating pan that calls the show 'the saddest spectacle of wasted talent on Broadway' and nearly declares it the worst of the season. Despite praising the stars' past work, the critic finds the material dated, unfunny, and problematic. | GPT-4o: The review is overwhelmingly negative, criticizing the play's humor, topicality, and performances. It describes the production as the 'saddest spectacle of wasted talent' and compares it unfavorably to a notorious Broadway flop. | Gemini: The review is largely negative, criticizing the writing, jokes, and overall message of the play. The critic calls it the \"saddest spectacle of wasted talent on Broadway\". | Kimi: While the critic acknowledges Patti LuPone's ability to earn laughs and one clever directorial choice, the overwhelming verdict condemns the play as dated, unfunny, and a waste of two talented stars, comparing it to one of Broadway's most notorious flops. | Buckets: claude=Pan, openai=Pan, gemini=Negative, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,37 +50,38 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
-    "scoredAt": "2026-02-02T19:23:04.474Z",
-    "promptVersion": "5.1.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T22:57:45.096Z",
+    "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 23,
     "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 25,
+    "claudeScore": 18,
     "openaiScore": 20,
     "geminiScore": 40,
+    "kimiScore": 38,
     "claudeBucket": "Pan",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 20,
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Pan"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 15,
-  "rescoreCompletedAt": "2026-02-01T16:25:19.523Z",
+  "rescoreCompletedAt": "2026-02-04T22:57:45.096Z",
   "contentTier": "complete",
   "wordCount": 625,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/the-roommate-broadway-review-mia-farrow-patti-lupone/"
 }
