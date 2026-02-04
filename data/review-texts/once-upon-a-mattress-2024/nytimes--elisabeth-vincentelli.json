@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "When it comes to this particular couple, Urie and Foster make you believe in a happy future that may include all kinds of calisthenics."
+  "nycTheatreExcerpt": "When it comes to this particular couple, Urie and Foster make you believe in a happy future that may include all kinds of calisthenics.",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When it comes to this particular couple, Urie and Foster make you believe in a happy future that may include all kinds of calisthenics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the leads' chemistry and suggests audience investment in their relationship. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt suggests a positive view of the performances by Urie and Foster, implying a believable and engaging portrayal. However, due to the single excerpt warning and lack of full context, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt suggests a positive view of the performances, implying a recommendation. However, due to the limited text, the confidence is low and the score is at the lower end of the 'Positive' bucket. | Kimi: Single available excerpt warmly praises the chemistry between leads Urie and Foster, suggesting convincing, appealing performances. Following the single-excerpt guidance for clearly positive quotes, scoring in the upper Positive range (80-84), though confidence is low due to cherry-picking risk.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:29:19.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

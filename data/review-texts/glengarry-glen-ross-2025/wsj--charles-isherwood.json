@@ -14,5 +14,59 @@
   "nycTheatreExcerpt": "\"Individually, all give sharp-elbowed, effective performances even if, under the direction of Patrick Marber, this staging never quite develops the head of steam that could keep the tension rising throughout the play's brisk running time of less than two hours, including intermission.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"Mr. Mamet’s savage comedy may be his finest achievement\"\n\nRead more"
+  "showScoreExcerpt": "\"Mr. Mamet’s savage comedy may be his finest achievement\"\n\nRead more",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Mamet’s savage comedy may be his finest achievement",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The excerpt provides a strong endorsement, calling the play 'his finest achievement'. However, due to the lack of full text, the confidence is low. | Gemini: The quote indicates extremely high praise, suggesting a rave review. However, the excerpted nature of the text lowers the confidence. | Kimi: The excerpt contains superlative praise describing the production as potentially the playwright's best work, indicating a rave recommendation. Confidence is low due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:31:45.464Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 92,
+    "geminiScore": 85,
+    "kimiScore": 90,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

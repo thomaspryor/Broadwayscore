@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of 'Parade' is a stunning production of a flawed but deeply moving musical that tells the tragic story of Leo Frank with uncommon power and sensitivity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of 'Parade' is a stunning production of a flawed but deeply moving musical that tells the tragic story of Leo Frank with uncommon power and sensitivity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway revival of 'Parade' is a stunning production of a flawed but deeply moving musical that tells the tragic story of Leo Frank with uncommon power and sensitivity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls the production 'stunning' with 'uncommon power and sensitivity' while acknowledging the musical itself is 'flawed but deeply moving.' Strong praise for the production outweighs reservations about the source material. | GPT-4o: The excerpt describes the production as 'stunning' and 'deeply moving' with 'uncommon power and sensitivity', indicating strong praise despite acknowledging flaws. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The review excerpt uses strong positive language such as \"stunning production\", \"deeply moving\", and \"uncommon power and sensitivity\". Although the musical is described as \"flawed\", the overall sentiment is highly positive, justifying a score in the upper end of the \"Positive\" bucket. | Kimi: The excerpt contains strong endorsements ('stunning', 'deeply moving', 'uncommon power') that clearly recommend the show, despite acknowledging the material is 'flawed'. As a single curated quote, confidence is reduced, but the language suggests a clear positive verdict in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:43:33.278Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

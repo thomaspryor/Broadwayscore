@@ -11,13 +11,13 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"In short, as I felt the production's blunt force more and more, I grasped its aura and aims less and less.\"",
-  "assignedScore": 44,
+  "assignedScore": 45,
   "llmScore": {
-    "score": 44,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: This single excerpt suggests confusion and disconnect from the production despite acknowledging its 'blunt force.' The critic is struggling to understand the show's purpose. However, with only one curated quote, the full verdict is unclear. | GPT-4o: The excerpt suggests a negative view, indicating a disconnect between the production's impact and its intended message. However, with only a single excerpt, the confidence is low. | Gemini: The single excerpt suggests a negative experience, indicating a lack of understanding and appreciation for the production's goals. | Kimi: The excerpt suggests the production has physical impact but lacks clarity of purpose, with the critic becoming increasingly confused about its intentions as the show progressed. Given only a single curated excerpt is available, the confidence is low.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: This single excerpt expresses confusion and disconnection from the production despite acknowledging its power. The critic feels the show's force but doesn't understand its purpose, suggesting a mixed but leaning negative experience. Low confidence due to single excerpt warning. | GPT-4o: The excerpt suggests a negative view, indicating confusion and lack of understanding of the production's purpose. However, due to the single excerpt warning, the confidence is low. | Gemini: The critic states that they grasped the production's aims less and less, indicating a negative experience. Given this single excerpt and the negative sentiment, I've classified it as negative with low confidence. | Kimi: The excerpt indicates the critic found the production heavy-handed yet increasingly unclear, suggesting it fails to effectively convey its intentions. This confusion represents a significant criticism of the production's clarity and direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,7 +44,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T10:11:12.353Z",
+    "scoredAt": "2026-02-04T12:34:51.516Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -53,12 +53,12 @@
     "claudeScore": 58,
     "openaiScore": 45,
     "geminiScore": 45,
-    "kimiScore": 42,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 16,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

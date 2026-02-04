@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single curated excerpt describes the show positively as having emotional impact ('sends a chill'), but the qualifier 'nevertheless' suggests some ambiguity. Given single excerpt warning and gentle praise, scoring at lower end of Positive bucket. | GPT-4o: The excerpt suggests a positive impression with its mention of the piece being 'gentle' yet impactful ('sends a chill'). However, due to the single excerpt warning, confidence is low. | Gemini: The phrase \"sends a chill up one's spine\" suggests a positive, albeit potentially unsettling, experience, indicating a recommendation with reservations. Given that only one excerpt is available, confidence is low. | Kimi: The excerpt indicates a strong physical and emotional impact ('sends a chill up one's spine'), which is clearly positive praise. However, given this is a single curated excerpt that may not represent the full review, confidence is reduced per the provided warning.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show positively as both 'gentle' and effectively chilling, suggesting artistic success, but insufficient text to determine full recommendation strength. | GPT-4o: The excerpt suggests a positive reaction, noting the piece's ability to evoke a strong emotional response despite its gentle nature. However, with only a single excerpt available, the confidence is low. | Gemini: The single quote suggests a positive but potentially unsettling experience, indicating a recommendation with reservations. Due to the limited text, confidence is low. | Kimi: The excerpt offers clear praise for the show's atmospheric impact and emotional effectiveness ('sends a chill up one's spine'), indicating a recommendation despite the gentle tone. As a single curated excerpt, this represents clearly positive sentiment warranting the upper end of the Positive bucket, though confidence is reduced due to limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:40:59.652Z",
+    "scoredAt": "2026-02-04T12:08:23.630Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 74,
-    "openaiScore": 80,
+    "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

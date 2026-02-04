@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tom Stoppard’s \"Leopoldstadt\" is a powerful achievement, a history of our time as well as a cautionary tale. In depicting Jewish society in Vienna from 1899 - 1955, it also reveals a way of life and a culture rarely seen on our stage. Patrick Marber’s superb production keeps the story progressing at just the right tempo both to follow the plot as well as reflect family life as it is really lived. There is not a weak link among the 36 actors in which all of the children’s roles are double cast. The excellent design team puts four generations of Vienna on the stage of Broadway’s Longacre Theatre.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tom Stoppard's 'Leopoldstadt' is a powerful achievement, a history of our time as well as a cautionary tale.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'a powerful achievement' with 'superb production' and 'excellent design team.' However, confidence is low due to single excerpt warning - this appears to be cherry-picked positive content that may not represent the full review verdict. | GPT-4o: The excerpt provides strong praise for the production, calling it a 'powerful achievement' with 'superb production' and 'excellent design'. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"powerful achievement\" and \"superb production\", and states that there is not a weak link in the cast. The excerpt clearly indicates a positive recommendation. | Kimi: The excerpt offers strong praise using terms like 'powerful achievement,' 'superb production,' and 'excellent design,' clearly recommending the show. However, confidence is reduced given the single-excerpt warning that the quote may be cherry-picked.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:04:31.274Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

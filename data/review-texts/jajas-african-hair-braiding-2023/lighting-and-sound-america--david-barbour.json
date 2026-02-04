@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“With its workplace setting, Jaja's African Hair Braiding recalls any number of plays, including Steel Magnolias and Thoughts of a Colored Man, but it offers a distinctive atmosphere and an often-uproarious sense of humor. It also has something pointed and troubling to say about our broken immigration system…[the play] gets us to fall in love with these skilled, funny, contentious, and thoroughly independent women, then reminds us how easily their talents and spirits can be squandered in our so-called land of opportunity. It's an argument we can't hear enough right now and Bioh makes it with uncommon eloquence.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bioh makes it with uncommon eloquence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('distinctive atmosphere', 'often-uproarious', 'uncommon eloquence') with substantive praise for both entertainment value and social impact. Single excerpt warning suggests this could be cherry-picked, but the consistent praise throughout warrants upper Positive range. | GPT-4o: The excerpt praises the play's humor, atmosphere, and message, describing it as distinctive and eloquent. Despite the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The excerpt praises the play's distinctive atmosphere, humor, and eloquence, suggesting a strong positive recommendation. Given the single excerpt, I've scored it on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the play's uproarious humor, emotional depth, and thematic eloquence regarding immigration, though as a single curated quote it may not capture potential reservations elsewhere in the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:49:25.685Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

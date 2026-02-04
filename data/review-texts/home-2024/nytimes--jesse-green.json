@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What follows is a moving meditation on family, memory and the places we call home, anchored by performances that feel lived-in and true.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What follows is a moving meditation on family, memory and the places we call home, anchored by performances that feel lived-in and true.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise ('moving meditation', 'lived-in and true' performances) but limited context from one curated quote requires low confidence and upper-positive scoring. | GPT-4o: The excerpt provides a positive evaluation, highlighting the emotional impact and authenticity of the performances. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the show as a \"moving meditation\" with \"lived-in and true\" performances, indicating a positive recommendation. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers clearly positive evaluations ('moving', 'lived-in and true') without reservations, warranting an upper-range Positive score despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:43:31.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

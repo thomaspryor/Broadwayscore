@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hell’s Kitchen...is a propulsive, high-energy dose of music and dance that will have you bopping your head, waving your arms, and tapping your knees. The sugar rush of its two-dozen musical numbers, three new ones joined to those chosen from the Keys songbook, however, comes with meager nutrients for the brain; the net result is audibly and visually entertaining but not otherwise fulfilling. I suspect few will care.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audibly and visually entertaining but not otherwise fulfilling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds it entertaining and engaging (propulsive, high-energy, will have audiences moving) but criticizes the shallow content (meager nutrients for the brain). This is a qualified positive recommendation with clear reservations about substance. | GPT-4o: The review describes the show as 'propulsive' and 'high-energy' with entertaining music and dance, but notes a lack of depth. The positive aspects are emphasized, but the lack of fulfillment suggests a lower score within the Positive range. Confidence is low due to the single excerpt warning. | Gemini: The review describes the show as \"propulsive, high-energy\" and \"audibly and visually entertaining\" but notes it lacks intellectual depth, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic praises the high-energy music and dance but criticizes the lack of intellectual depth, ultimately suggesting audiences will enjoy the spectacle regardless of the thin content.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:41:16.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

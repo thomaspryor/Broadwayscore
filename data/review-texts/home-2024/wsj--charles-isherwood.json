@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"It may take a while for audiences to tune in to the play’s rollicking rhythms.\"\n\nRead more"
+  "showScoreExcerpt": "\"It may take a while for audiences to tune in to the play’s rollicking rhythms.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It may take a while for audiences to tune in to the play's rollicking rhythms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt suggests the show has merit ('rollicking rhythms') but acknowledges accessibility issues for audiences. However, with only one curated quote available, the full verdict is unclear. | GPT-4o: The single excerpt suggests a mixed reception, indicating that the play's appeal may not be immediate for audiences. Without more context, it's unclear if the critic ultimately recommends the show. | Gemini: The single excerpt suggests a potentially engaging experience, but with a caveat about needing time to adjust. This indicates a mixed reception, as it's neither outright positive nor negative. | Kimi: The excerpt uses the enthusiastic descriptor 'rollicking' to describe the play's rhythms, suggesting an ultimately enjoyable experience, but qualifies this with a warning that it takes time to 'tune in,' indicating a qualified recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:44:06.678Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

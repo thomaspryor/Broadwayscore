@@ -9,18 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola's irreverent comedy reimagines Mary Todd Lincoln as a boozy, foul-mouthed misfit desperate to escape the White House for a career on the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cole Escola's irreverent comedy reimagines Mary Todd Lincoln as a boozy, foul-mouthed misfit desperate to escape the White House for a career on the stage.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "rejectedAt": "2026-02-04T09:55:54.518Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This is only a plot description with no evaluative content - it describes what the show is about but contains no critical assessment or recommendation; kimi: The provided excerpt consists solely of plot summary and premise description ('reimagines Mary Todd Lincoln as...'), with no evaluative language regarding the production's quality, performances, or overall merit. While it identifies the show as an 'irreverent comedy,' this is descriptive categorization rather than critical assessment.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cole Escola's irreverent comedy reimagines Mary Todd Lincoln as a boozy, foul-mouthed misfit desperate to escape the White House for a career on the stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: This single excerpt is purely descriptive of the show's premise and tone, with no evaluative language or clear verdict. Given the excerpt warning and lack of recommendation language, this appears neutral/descriptive rather than critical assessment. | GPT-4o: The excerpt describes the show's premise but lacks clear evaluative language indicating a positive or negative verdict. With only one curated quote, the overall sentiment is ambiguous, leading to a mixed classification with low confidence. | Gemini: The single excerpt describes the premise and tone, but offers no clear evaluative statement about the show's quality or recommendation. It's intriguing, but not enough to recommend without reservations. | Kimi: The excerpt characterizes the show as an 'irreverent comedy' with a distinctive premise, implying an engaging and inventive quality, though explicit evaluative or recommendation language is absent from this single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:23:00.652Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

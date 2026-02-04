@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\" 'Peter Pan Goes Wrong' exceedingly well. I mean to say, it goes right by going very wrong and avoiding ever going right.\"\n\nRead more"
+  "showScoreExcerpt": "\" 'Peter Pan Goes Wrong' exceedingly well. I mean to say, it goes right by going very wrong and avoiding ever going right.\"\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Peter Pan Goes Wrong' exceedingly well. I mean to say, it goes right by going very wrong and avoiding ever going right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The wordplay strongly suggests the critic enjoyed how the show succeeds at its intended comedic premise of theatrical disasters. However, this is only a single curated excerpt, so confidence is low despite the positive tone. | GPT-4o: The excerpt suggests a positive evaluation through clever wordplay, indicating the show succeeds by intentionally 'going wrong'. The tone is enthusiastic, implying a strong recommendation. | Gemini: The excerpt indicates that the reviewer enjoyed the show, stating that it 'goes right by going very wrong'. Due to the limited text, confidence is low. | Kimi: The excerpt delivers enthusiastic praise for the show's meta-theatrical premise, indicating the production succeeds 'exceedingly well' at its intentional comic failure. Per the single-excerpt warning, scored at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:49:04.310Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

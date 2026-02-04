@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "KPOP is a visually stunning spectacle that delivers high-energy performances and infectious music, though the narrative occasionally gets lost in the dazzling production.",
   "originalScore": 83,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "KPOP is a visually stunning spectacle that delivers high-energy performances and infectious music, though the narrative occasionally gets lost in the dazzling production.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "KPOP is a visually stunning spectacle that delivers high-energy performances and infectious music, though the narrative occasionally gets lost in the dazzling production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with mixed signals - praises visual spectacle, performances and music but notes narrative weakness. Given only one curated quote available, this suggests a positive but qualified recommendation in the lower Positive range. | GPT-4o: The excerpt praises the show's visual and musical elements, aligning with the original rating of 83, indicating a strong positive review despite some narrative issues. | Gemini: The review is positive overall, highlighting the visual spectacle, performances, and music, but notes a narrative weakness. Given the single excerpt and the critic's rating of 83, a score in the upper end of the positive range is appropriate. | Kimi: The excerpt offers clear praise for the production's visual spectacle, performances, and music, while noting minor narrative shortcomings. With an original rating of 83 and strongly positive language outweighing the single caveat, this represents a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:57:03.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 83,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

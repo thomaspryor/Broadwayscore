@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is visually spectacular and the performers are undeniably talented, but the book is thin and the songs, while energetic, lack the melodic sophistication that would make them memorable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is visually spectacular and the performers are undeniably talented, but the book is thin and the songs, while energetic, lack the melodic sophistication that would make them memorable.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is visually spectacular and the performers are undeniably talented, but the book is thin and the songs, while energetic, lack the melodic sophistication that would make them memorable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows balanced evaluation praising visual and performance elements while criticizing fundamental aspects (book, songs). Mixed sentiment with no clear recommendation. Low confidence due to single curated quote that may not represent full verdict. | GPT-4o: The review highlights strong visual and performance elements but criticizes the book and songs for lacking depth and memorability. The mixed elements suggest a balanced view without a strong recommendation. | Gemini: The review praises the visuals and performers but criticizes the book and songs, resulting in a mixed assessment. Due to the limited text, confidence is low. | Kimi: Single excerpt presents balanced critique praising production values and performances while criticizing fundamental book and songs. Lacks clear recommendation language, suggesting neither endorsement nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:00:48.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

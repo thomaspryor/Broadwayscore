@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Into the Woods is arguably the most humorous of Sondheim’s shows, and this ensemble of some of New York’s finest musical-theater talents has a ball playing up the comedy. But the merriment is never at the expense of the characters’ fragile humanity or the material’s poignancy.\"\n\nRead more"
+  "showScoreExcerpt": "\"Into the Woods is arguably the most humorous of Sondheim’s shows, and this ensemble of some of New York’s finest musical-theater talents has a ball playing up the comedy. But the merriment is never at the expense of the characters’ fragile humanity or the material’s poignancy.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this ensemble of some of New York's finest musical-theater talents has a ball playing up the comedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the cast as 'finest musical-theater talents' and emphasizes they balance comedy with emotional depth. However, confidence is low due to limited text available. | GPT-4o: The excerpt praises the ensemble's comedic performance and maintains the show's emotional depth, suggesting a strong positive impression. However, with only one excerpt, confidence is low. | Gemini: The excerpt praises the humor and the ensemble, indicating a positive experience. Given the single excerpt and lack of full context, confidence is low, but the tone is enthusiastic. | Kimi: The excerpt offers strong praise for the ensemble as 'some of New York's finest musical-theater talents' and highlights the production's successful balance of comedy with emotional poignancy, indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:47:45.021Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

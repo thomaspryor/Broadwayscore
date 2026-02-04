@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels less like a musical than like a very long and expensive music video, with a wisp of a story providing the thinnest possible excuse for a Tupac concert.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show feels less like a musical than like a very long and expensive music video, with a wisp of a story providing the thinnest possible excuse for a Tupac concert.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the show unfavorably to a music video and dismissing the story as a mere 'excuse' for concert material. | GPT-4o: The critic describes the show as lacking substance, comparing it unfavorably to a music video rather than a musical. This indicates a negative assessment. | Gemini: The critic compares the show unfavorably to a music video and criticizes the weak story, indicating a negative assessment. | Kimi: The critic fundamentally criticizes the production as a glorified concert with an insubstantial narrative, dismissing it as overpriced and lacking theatrical merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:43:00.086Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 44
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

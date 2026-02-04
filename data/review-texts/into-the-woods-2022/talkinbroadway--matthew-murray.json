@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Into the Woods revival is a lean, mean fairy-tale machine that cuts right to the heart of Stephen Sondheim and James Lapine's masterpiece without losing any of its complexity or emotional impact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Into the Woods revival is a lean, mean fairy-tale machine that cuts right to the heart of Stephen Sondheim and James Lapine's masterpiece without losing any of its complexity or emotional impact.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Into the Woods revival is a lean, mean fairy-tale machine that cuts right to the heart of Stephen Sondheim and James Lapine's masterpiece without losing any of its complexity or emotional impact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it a 'masterpiece' that maintains full complexity and emotional impact. The 'lean, mean fairy-tale machine' phrasing suggests enthusiasm. Single excerpt limits confidence, but tone is clearly positive. | GPT-4o: The excerpt uses strong positive language ('lean, mean fairy-tale machine', 'masterpiece', 'without losing any complexity or emotional impact') indicating a highly favorable view of the production. However, due to the single excerpt warning, confidence is low as it may not represent the full review sentiment. | Gemini: The excerpt is highly positive, calling the revival a 'masterpiece' and praising its emotional impact. Given it's a single excerpt, confidence is low, but the strong language suggests a score in the upper end of the Positive bucket. | Kimi: The excerpt offers strong praise for the revival's focus and emotional impact, describing it as successfully preserving the source material's complexity. While clearly positive, the single-excerpt limitation warrants the upper range of the Positive bucket rather than a Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:48:12.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

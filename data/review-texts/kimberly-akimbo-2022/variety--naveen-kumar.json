@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "show-score-playwright",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In a field crowded with fan service - 'Kimberly Akimbo' is an exception — one that proves musicals can be deeply strange and spirited, and can challenge audiences to see things from another point of view.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls the show 'an exception' in a positive way, praising it as 'deeply strange and spirited' that 'proves' musicals can challenge audiences. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises 'Kimberly Akimbo' as an exception in a crowded field, highlighting its unique and spirited nature. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt praises the musical as an exception in its field, highlighting its unique and challenging qualities. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Single excerpt presents strong praise calling the show an 'exception' that is 'deeply strange and spirited,' indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:56:18.603Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

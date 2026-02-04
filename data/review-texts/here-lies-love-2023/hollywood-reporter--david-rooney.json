@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The immersive staging transforms the Broadway Theatre into a gleaming dance club, with audience members standing on the floor and moving around as the story unfolds around them.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The immersive staging transforms the Broadway Theatre into a gleaming dance club, with audience members standing on the floor and moving around as the story unfolds around them.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The immersive staging transforms the Broadway Theatre into a gleaming dance club.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises the immersive staging, suggesting a positive experience. However, with only a single excerpt, the overall sentiment is unclear, leading to a low confidence score. | Gemini: The single excerpt focuses on the immersive staging, which is a positive aspect of the show. Given the limited information, a mildly positive score is appropriate. | Kimi: Single excerpt describes the production design in appreciative terms ('gleaming,' 'transforms'), suggesting mild approval of the staging concept, though the full review context and explicit recommendation are unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:41:46.577Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

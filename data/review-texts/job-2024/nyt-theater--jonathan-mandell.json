@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "Job sacrifices its potential as thought-provoking drama for horror movie-level theatrics.\n\nRead more"
+  "showScoreExcerpt": "Job sacrifices its potential as thought-provoking drama for horror movie-level theatrics.\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Job sacrifices its potential as thought-provoking drama for horror movie-level theatrics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show 'sacrifices its potential' and chooses cheap theatrics over substantive drama, indicating clear disappointment and a negative recommendation. | GPT-4o: The excerpt criticizes the show for not fulfilling its potential and instead opting for less sophisticated theatrics. With only one excerpt available, the confidence is low, but the sentiment is clearly negative. | Gemini: The review excerpt indicates that the play sacrifices its potential for theatrics, which suggests a negative assessment. | Kimi: The excerpt criticizes the show for abandoning intellectual substance in favor of cheap thrills, indicating the production fails to achieve its dramatic ambitions. With only one curated excerpt available, the full verdict may contain additional nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:50:48.635Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

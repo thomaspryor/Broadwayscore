@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The stakes were high and the risks were great. And that is why I am so happy to report that Once Upon a One More Time is a full-fledged, grade A, gold star success and exactly the party we need after 21 months of COVID. The gamble is already paying off for Shakespeare Theatre Company, where the musi...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time is a full-fledged, grade A, gold star success and exactly the party we need after 21 months of COVID.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Extremely enthusiastic language ('grade A, gold star success', 'exactly the party we need') indicates a rave review. However, confidence is low due to truncated text and only one excerpt available. | GPT-4o: The excerpt provides strong positive language ('full-fledged, grade A, gold star success') indicating a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses very positive language, calling the show a \"full-fledged, grade A, gold star success.\" Given the single excerpt warning, I'm placing it at the higher end of the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:31:04.031Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

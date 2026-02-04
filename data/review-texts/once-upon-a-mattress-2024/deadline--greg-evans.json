@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive language ('winner', 'in the zone') but notes minor flaws ('occasionally overdoing it'). Low confidence due to limited text from curated excerpt that may not represent full review sentiment. | GPT-4o: The excerpt praises Foster's performance as a 'winner' but notes occasional overacting. The single excerpt and text quality warning suggest a cautious, low-confidence score at the lower end of the Positive range. | Gemini: The excerpt is generally positive about the lead performance, but the 'occasionally overdoing it' suggests reservations. Given the limited text, a score in the lower-middle of the positive range seems appropriate. | Kimi: The excerpt offers clear praise for the lead performance ('winner', 'mostly in the zone') with only a mild caveat ('occasionally overdoing it'), indicating a solid recommendation despite the limited context.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performer as 'a winner' with minor criticism about 'occasionally overdoing it.' Given excerpt limitations and mild qualification, scored at lower end of Positive range. | GPT-4o: The excerpt praises Foster as a 'winner' but notes occasional overacting. The single excerpt and text warning suggest a cautious approach, leading to a low-confidence, barely positive score. | Gemini: The review excerpt praises the lead performance but notes some overacting, suggesting a positive but not rave review. Confidence is low due to the limited text. | Kimi: The excerpt offers clear praise for the lead performance using the word 'winner' and noting they are 'mostly in the zone,' though with minor reservations about occasionally overdoing it. As a single curated excerpt, confidence is reduced.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T10:04:04.957Z",
+    "scoredAt": "2026-02-04T12:28:49.703Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

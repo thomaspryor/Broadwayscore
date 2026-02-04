@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Visual appeal can’t quite wash away a stacked-deck ending, or make a convincing case for the fanciful over the plausible. Deep down, Mr. Okamoto probably agrees.”\n\nRead more"
+  "showScoreExcerpt": "“Visual appeal can’t quite wash away a stacked-deck ending, or make a convincing case for the fanciful over the plausible. Deep down, Mr. Okamoto probably agrees.”\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Visual appeal can't quite wash away a stacked-deck ending, or make a convincing case for the fanciful over the plausible.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt suggests the show has visual merits but fundamental story problems that undermine it. The critic seems unconvinced by the production's choices, placing it in mixed territory but toward the lower end given the structural criticisms. | GPT-4o: The excerpt suggests mixed feelings, noting visual appeal but criticizing the ending and plausibility. With only one excerpt, confidence is low. | Gemini: The excerpt suggests reservations about the ending and the show's plausibility, but doesn't explicitly recommend against seeing it. Due to the limited text, confidence is low. | Kimi: The excerpt acknowledges the production's visual strengths but criticizes the narrative as unconvincing and manipulative ('stacked-deck ending'), resulting in a qualified assessment that neither recommends nor strongly discourages.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:06:06.086Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

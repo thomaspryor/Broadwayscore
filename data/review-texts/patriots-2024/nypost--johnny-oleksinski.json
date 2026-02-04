@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg is brilliant in this captivating political drama that chronicles the rise and fall of Russian oligarch Boris Berezovsky and his relationship with Vladimir Putin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michael Stuhlbarg is brilliant in this captivating political drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('brilliant') and show ('captivating'), but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt praises Michael Stuhlbarg's performance and describes the drama as 'captivating,' suggesting a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"brilliant\" and \"captivating,\" suggesting a positive review. Due to the single excerpt, confidence is low, but the strength of the language pushes the score to the upper end of the positive bucket. | Kimi: The excerpt contains strong praise ('brilliant', 'captivating') for both the lead performance and the production itself, indicating a clear positive recommendation. As a single curated excerpt, confidence is reduced though the language suggests solid enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:45:22.351Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

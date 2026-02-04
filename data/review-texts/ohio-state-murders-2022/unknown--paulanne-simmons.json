@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic questions why the play deserves Broadway placement, criticizes the director's restraint of the lead performance, and compares the direction to an 'incompetent jockey.' Despite praising McDonald as 'supreme,' the overall assessment is negative about the production choices. | GPT-4o: The excerpt questions the play's presence on Broadway and criticizes the direction of Audra McDonald's performance, suggesting a negative impression. However, with only a single excerpt, confidence is low. | Gemini: The review questions the play's presence on Broadway and criticizes the direction, even while acknowledging Audra McDonald's talent. The analogy of a thoroughbred held back suggests a negative overall assessment. | Kimi: Despite praising Audra McDonald as 'supreme,' the critic questions why the play is on Broadway at all and delivers a devastating assessment of the direction as 'incompetent,' suggesting the production wastes its star's talent.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic questions why the show exists on Broadway and criticizes the direction for restraining McDonald's performance. While praising the lead actress, the overall assessment is negative about the production choices and its Broadway worthiness. | GPT-4o: The excerpt questions the play's presence on Broadway and criticizes the direction as restraining Audra McDonald's performance. The tone is negative, but due to the single excerpt warning, the confidence is low. | Gemini: The review questions why the play is on Broadway and criticizes the direction, even though it acknowledges Audra McDonald's presence. The analogy of a restrained thoroughbred suggests a negative assessment of the production. | Kimi: The excerpt strongly criticizes the production's justification for being on Broadway, its brief runtime, and the director's 'incompetent' handling of Audra McDonald's performance, indicating a clear negative verdict despite acknowledging the star's talent.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T10:01:25.372Z",
+    "scoredAt": "2026-02-04T12:27:00.200Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,12 +60,12 @@
     "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 40,
+    "kimiScore": 38,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

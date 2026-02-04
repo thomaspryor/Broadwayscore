@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,12 +18,17 @@
   "showScoreExcerpt": "\"Like nervous parents giving their kids a bit more attention than they might need, Ohio State Murders in a production that’s sometimes just much for its own good, portentous when it needn’t be, with a here-and-there vibe of being overcooked when pared-down simplicity might be called for.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
+  "playbillVerdictUrl": "https://deadline.com/2022/12/ohio-state-murders-broadway-review-audra-mcdonald-1235193494/",
+  "sources": [
+    "show-score-playwright",
+    "playbill-verdict"
+  ],
   "llmScore": {
-    "score": 63,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +40,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ohio State Murders in a production that's sometimes just much for its own good, portentous when it needn't be",
+        "quote": "Like nervous parents giving their kids a bit more attention than they might need, Ohio State Murders in a production that's sometimes just much for its own good.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows clear criticism of the production as overcooked and portentous, suggesting problems with execution. However, with only one curated quote available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a mixed review, noting the production is 'sometimes just much for its own good' and 'portentous when it needn’t be.' The lack of full context and the single excerpt warning lead to a low confidence score. | Gemini: The review excerpt suggests the production is uneven and \"overcooked,\" indicating a mixed reaction. Given the limited text, confidence is low. | Kimi: The excerpt criticizes the production as excessive ('overcooked,' 'portentous,' 'too much'), indicating the critic found the directorial approach flawed and heavy-handed rather than restrained. While not a vicious pan, the absence of any redeeming praise in this sole excerpt suggests a negative verdict.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the production as 'overcooked' and 'portentous,' suggesting mixed feelings about execution. However, this is only one curated excerpt which may not represent the full verdict, so confidence is low. | GPT-4o: The excerpt suggests the production is overly complex and could benefit from simplicity, indicating mixed feelings. The lack of a clear positive or negative recommendation places it in the Mixed bucket. | Gemini: The review excerpt suggests the production is uneven, with moments of being \"overcooked\" and \"portentous.\" This indicates a mixed assessment, as it is neither strongly positive nor negative. | Kimi: The excerpt criticizes the production as 'overcooked' and 'portentous,' suggesting directorial excess that detracts from the show, indicating the reviewer does not recommend it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +55,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:57:39.918Z",
+    "scoredAt": "2026-02-04T12:24:42.067Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +63,14 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 65,
+    "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 52,
+    "kimiScore": 48,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

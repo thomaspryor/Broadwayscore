@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"an entertainment that doubles as a lesson for teenagers in history and literature\"\n\nRead more"
+  "showScoreExcerpt": "\"an entertainment that doubles as a lesson for teenagers in history and literature\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "an entertainment that doubles as a lesson for teenagers in history and literature",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as 'entertainment' and educational value, suggesting mild recommendation, but extremely limited text makes assessment uncertain. | GPT-4o: The excerpt suggests a positive view, highlighting educational value, but lacks strong enthusiasm. Given the single excerpt and text quality warning, the score is on the lower end of the Positive range. | Gemini: The single excerpt suggests a positive, educational experience, but the lack of full text warrants a lower confidence and score within the positive range. | Kimi: Single curated excerpt indicates mild approval by describing the show as entertaining and educational, placing it at the lower end of the Positive range per scoring guidelines for limited excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:51:30.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

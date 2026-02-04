@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production's success with superlatives like 'magnificently' and 'dazzling', but confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed overall review. | GPT-4o: The excerpt uses strong positive language ('succeeds magnificently', 'technically dazzling', 'emotionally resonant'), indicating a highly favorable view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"succeeds magnificently\" and describes the puppetry as \"technically dazzling and emotionally resonant,\" indicating a strong recommendation. Given that this is the only excerpt available, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt offers unqualified praise using superlatives ('magnificently', 'dazzling') for the production's puppetry and emotional resonance, indicating strong recommendation, though confidence is lowered due to the single-excerpt format.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with 'succeeds magnificently' and 'technically dazzling and emotionally resonant,' but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt uses strong positive language ('succeeds magnificently', 'technically dazzling', 'emotionally resonant') indicating a highly favorable view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"succeeds magnificently\" and \"technically dazzling and emotionally resonant,\" indicating a positive review. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise using superlatives like 'magnificently' and 'dazzling' to describe the puppetry and emotional impact, indicating a strong recommendation despite the limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:37:34.124Z",
+    "scoredAt": "2026-02-04T12:06:48.804Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 88,
+    "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

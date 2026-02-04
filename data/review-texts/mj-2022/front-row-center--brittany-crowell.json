@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Each element of the piece, however, was a true showcase of talent, craft, and artistry and deserves to be championed independently. The cast of tour dancers (consisting of Raymond Baynard, Kali May Grinder, Carina-Kay Louchiey, Michelle Mercedes, Kyle Robinson, Ryan Vandenboom, and Zelig Williams) were precise and sculpted in their choreography helmed by director-choreographer Christopher Wheeldon. There wasn’t a morsel of muscle that wasn’t fully activated in support of the movement and together with the background singers (Tavon Olds-Sample; John Edwards; Ayana George; Apollo Levine; and Lamont Walker II), they slid and moonwalked seamlessly into the various side-characters of Michael Jackson’s life story.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Each element of the piece was a true showcase of talent, craft, and artistry and deserves to be championed independently.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for cast performances and choreography ('true showcase of talent', 'precise and sculpted', 'seamless'). However, confidence is low due to limited text and potential cherry-picking of positive moments. | GPT-4o: The excerpt praises the talent, craft, and artistry of the production, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the talent, craft, and artistry of the production, suggesting a positive overall assessment. However, due to the limited text available, the confidence is medium. | Kimi: The excerpt offers enthusiastic praise for the choreography, dancers, and overall production values, using words like 'showcase' and 'deserves to be championed' that indicate a strong recommendation, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:16:50.119Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

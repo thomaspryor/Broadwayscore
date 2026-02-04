@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Thornton Wilder's masterpiece, directed by Kenny Leon, finds fresh relevance in its eternal themes while maintaining the play's timeless simplicity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Thornton Wilder's masterpiece, directed by Kenny Leon, finds fresh relevance in its eternal themes while maintaining the play's timeless simplicity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival finds fresh relevance in its eternal themes while maintaining the play's timeless simplicity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise ('fresh relevance', positive framing of 'masterpiece' revival), but limited text and curation warning requires caution. Upper end of Positive range due to unqualified praise tone. | GPT-4o: The excerpt praises the revival for finding fresh relevance and maintaining timeless simplicity, indicating a strong positive recommendation. However, the single excerpt warning suggests caution, so the score is set at the upper end of the Positive range. | Gemini: The review excerpt uses the word \"masterpiece\" and states that the revival finds fresh relevance, indicating a strong positive sentiment. Given that it is only one excerpt, the confidence is low. | Kimi: The excerpt offers clear praise for the revival's relevance and execution, describing it as fresh yet timeless. As a single curated excerpt, confidence is low, but the tone is distinctly positive with no reservations mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:36:12.711Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sing-along celebration of the powers of the imagination and the written word is that rarest of Broadway creatures: a musical that feels both brand-new and comfortably timeless.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 86,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 80,
+      "high": 90
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'that rarest of Broadway creatures' with positive descriptors like 'brand-new and comfortably timeless', though this appears to be an excerpt with limited evaluative content. | GPT-4o: The review uses highly positive language, describing the musical as a 'sing-along celebration' and 'that rarest of Broadway creatures,' indicating a strong recommendation. | Gemini: The review uses strong positive language, describing the show as a \"sing-along celebration\" and \"rarest of Broadway creatures\", indicating a strong recommendation. | Kimi: The excerpt offers unqualified superlatives, describing the show as a 'rarest of Broadway creatures' that achieves the difficult balance of feeling both innovative and classic, indicating exceptional artistic merit. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'that rarest of Broadway creatures' with positive descriptors 'brand-new and comfortably timeless', though the excerpt is brief which reduces confidence. | GPT-4o: The review uses highly positive language, describing the show as a 'sing-along celebration' and 'that rarest of Broadway creatures,' indicating a strong recommendation. | Gemini: The review uses strong positive language, calling the musical a \"sing-along celebration\" and \"rarest of Broadway creatures\", indicating a strong recommendation. | Kimi: The critic employs superlatives ('rarest of Broadway creatures') to celebrate the show's unique synthesis of novelty and timelessness, indicating strong enthusiasm despite the brief excerpt. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:43:50.868Z",
+    "scoredAt": "2026-02-04T12:10:44.962Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,7 +66,7 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 90,
+    "kimiScore": 88,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

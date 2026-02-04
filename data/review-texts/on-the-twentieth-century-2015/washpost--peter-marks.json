@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Chenoweth is a marvel of controlled hysteria, a petite dynamo who can make even the most ridiculous theatrical gesture seem both preposterous and touching.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T12:28:19.339Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a single sentence fragment about a performer, not a complete review with an evaluative verdict about a show; openai: This text is a single sentence praising Kristin Chenoweth's performance without evaluating the overall show.",
+  "promptVersion": "5.2.0"
 }
