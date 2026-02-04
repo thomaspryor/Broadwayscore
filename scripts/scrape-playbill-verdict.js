@@ -462,7 +462,7 @@ async function processShowViaGoogle(show, showId, shows) {
   searchTitle = searchTitle.replace(/:\s+.+$/, '');              // "Title: Subtitle" → "Title"
   searchTitle = searchTitle.replace(/\s+[–—]\s+.+$/, '');        // "Title — Subtitle" → "Title"
 
-  const query = `site:playbill.com/article ("what are the reviews" OR "the verdict" OR "critics think" OR "what do the critics") "${searchTitle}" broadway`;
+  const query = `site:playbill.com/article (reviews OR verdict OR critics) "${searchTitle}" broadway`;
 
   try {
     stats.googleSearches++;
