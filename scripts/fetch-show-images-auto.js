@@ -880,6 +880,193 @@ async function fetchFromPlaybill(show) {
   return null;
 }
 
+// ============================================================
+// Google Images search via ScrapingBee SERP API
+// ============================================================
+
+// Image magic number signatures for binary validation
+const IMAGE_SIGNATURES = {
+  jpeg: [0xFF, 0xD8, 0xFF],
+  png:  [0x89, 0x50, 0x4E, 0x47],
+  webp: [0x52, 0x49, 0x46, 0x46],  // "RIFF" (WebP starts with RIFF....WEBP)
+};
+
+function isImageBuffer(buffer) {
+  if (buffer.length < 4) return false;
+  for (const [, sig] of Object.entries(IMAGE_SIGNATURES)) {
+    if (sig.every((byte, i) => buffer[i] === byte)) return true;
+  }
+  return false;
+}
+
+function extractDirectImageUrl(url) {
+  // Google redirect URLs: google.com/imgres?imgurl=ACTUAL_URL&...
+  if (url.includes('google.com/imgres')) {
+    const match = url.match(/[?&]imgurl=([^&]+)/);
+    if (match) return decodeURIComponent(match[1]);
+  }
+  return url;
+}
+
+function searchGoogleImages(query) {
+  return new Promise((resolve, reject) => {
+    if (!SCRAPINGBEE_API_KEY) {
+      reject(new Error('SCRAPINGBEE_API_KEY not set'));
+      return;
+    }
+
+    const serpUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_API_KEY}&search=${encodeURIComponent(query)}&search_type=images&nb_results=10`;
+    https.get(serpUrl, (response) => {
+      if (response.statusCode !== 200) {
+        reject(new Error(`Google Images SERP HTTP ${response.statusCode}`));
+        return;
+      }
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          resolve(parsed.image_results || parsed.images || []);
+        } catch { reject(new Error('Failed to parse image search results')); }
+      });
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+async function fetchFromGoogleImages(show) {
+  const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
+  const showType = show.type === 'play' ? 'play' : 'musical';
+  // Sanitize title: escape quotes that would break SERP query
+  const safeTitle = show.title.replace(/"/g, '');
+  const query = `"${safeTitle}" Broadway ${showType} ${year} poster`;
+  console.log(`   Trying Google Images: "${query}"`);
+
+  let results;
+  try {
+    results = await searchGoogleImages(query);
+  } catch (err) {
+    console.log(`   ⚠ Google Images search failed: ${err.message}`);
+    return null;
+  }
+
+  await sleep(1500);  // Rate limit after SERP call
+
+  if (!results || results.length === 0) {
+    console.log(`   ✗ No Google Images results`);
+    return null;
+  }
+
+  // ScrapingBee Google Images SERP returns:
+  //   url: source page URL (not direct image)
+  //   image: base64-encoded thumbnail (data:image/jpeg;base64,...)
+  //   title, domain, position
+  // We use the base64 thumbnails directly — they're 10-25 KB JPEG images,
+  // sufficient for our thumbnail format (resized to WebP by archive script).
+  // This avoids extra ScrapingBee page-scrape calls per candidate.
+  const candidates = results
+    .filter(r => {
+      if (!r.image || !r.image.startsWith('data:image/')) return false;
+      const domain = (r.domain || r.url || '').toLowerCase();
+      // Skip merchandise sites and low-quality sources
+      if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
+      return true;
+    })
+    .slice(0, 5);  // Top 5 candidates max
+
+  if (candidates.length === 0) {
+    console.log(`   ✗ No usable image results`);
+    return null;
+  }
+
+  console.log(`   Found ${candidates.length} candidate images`);
+
+  // Try each candidate — decode base64 and validate
+  for (const result of candidates) {
+    try {
+      const b64Data = result.image;
+      // Extract raw bytes from data URL: "data:image/jpeg;base64,/9j/4AAQ..."
+      const commaIdx = b64Data.indexOf(',');
+      if (commaIdx === -1) {
+        console.log(`     Skip: invalid data URL — ${result.title?.substring(0, 50)}...`);
+        continue;
+      }
+      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
+
+      if (buffer.length < 3000) {
+        console.log(`     Skip: too small (${buffer.length} bytes) — ${result.title?.substring(0, 50)}...`);
+        continue;
+      }
+
+      // Validate magic bytes
+      if (!isImageBuffer(buffer)) {
+        console.log(`     Skip: invalid image data — ${result.title?.substring(0, 50)}...`);
+        continue;
+      }
+
+      console.log(`   ✓ Valid image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
+
+      // Save the image directly to the show's image directory
+      // (archive-show-images.js will convert to WebP and skip if already exists)
+      const showDir = path.join(IMAGES_DIR, show.id);
+      fs.mkdirSync(showDir, { recursive: true });
+      const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
+      fs.writeFileSync(thumbnailPath, buffer);
+      console.log(`   ✓ Saved thumbnail to ${thumbnailPath}`);
+
+      // Return local path as thumbnail + buffer for LLM verification
+      // Return ALL remaining candidates so tier chain can try the next one if rejected
+      const remaining = candidates.slice(candidates.indexOf(result) + 1);
+      return {
+        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
+        poster: null,
+        hero: null,
+        _verifyBuffer: buffer,  // Used by verifyAndCollect for LLM gate
+        _remainingCandidates: remaining,  // For retry if this one is rejected
+      };
+    } catch (err) {
+      console.log(`     Skip: ${err.message} — ${result.title?.substring(0, 50)}...`);
+      continue;
+    }
+  }
+
+  console.log(`   ✗ All candidate images failed validation`);
+  return null;
+}
+
+// Try next Google Images candidate after rejection
+// Re-uses the remaining candidates from the initial search
+async function tryNextGoogleCandidate(show, remainingCandidates) {
+  for (const result of remainingCandidates) {
+    try {
+      const b64Data = result.image;
+      const commaIdx = b64Data.indexOf(',');
+      if (commaIdx === -1) continue;
+      const buffer = Buffer.from(b64Data.substring(commaIdx + 1), 'base64');
+      if (buffer.length < 3000 || !isImageBuffer(buffer)) continue;
+
+      console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
+
+      const showDir = path.join(IMAGES_DIR, show.id);
+      fs.mkdirSync(showDir, { recursive: true });
+      const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
+      fs.writeFileSync(thumbnailPath, buffer);
+
+      const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
+      return {
+        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
+        poster: null,
+        hero: null,
+        _verifyBuffer: buffer,
+        _remainingCandidates: nextRemaining,
+      };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
 // Score an image candidate based on verification result and URL heuristics.
 // Higher score = more desirable image (promotional art > production still > other).
 function scoreCandidate(verifyResult, url) {
@@ -897,7 +1084,11 @@ function scoreCandidate(verifyResult, url) {
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
 async function verifyAndCollect(images, show, tierName, verifyCtx) {
-  if (!verifyCtx) return { images, verifyResult: null, tierName, score: 0 };
+  if (!verifyCtx) {
+    delete images._verifyBuffer;
+    delete images._remainingCandidates;
+    return { images, verifyResult: null, tierName, score: 0 };
+  }
 
   const { verifyImage } = require('./lib/verify-image');
 
@@ -905,10 +1096,16 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   const urlToVerify = images.thumbnail || images.poster || images.hero;
   if (!urlToVerify) return { images, verifyResult: null, tierName, score: 0 };
 
+  // Use pre-downloaded buffer if available (e.g., Google Images base64 data)
+  const imageInput = images._verifyBuffer || urlToVerify;
+  // Clean up internal fields so they don't leak into shows.json
+  delete images._verifyBuffer;
+  delete images._remainingCandidates;
+
   const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
   console.log(`   🔍 Verifying ${tierName} image...`);
 
-  const result = await verifyImage(urlToVerify, show.title, {
+  const result = await verifyImage(imageInput, show.title, {
     year,
     openingDate: show.openingDate,
     rateLimiter: verifyCtx.rateLimiter,
@@ -1053,10 +1250,33 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       }
       if (!verifyCtx) return candidate.images;
     }
-    if (verifyCtx && !candidate) console.log(`   Falling through to Playbill...`);
+    if (verifyCtx && !candidate) console.log(`   Falling through to Google Images...`);
   }
 
-  // Step 4: Playbill fallback (landscape OG image only)
+  // Step 4 (NEW): Google Images search for promotional art
+  // Broad coverage — finds thumbnail art that structured sources miss
+  // Loops through multiple candidates if verification rejects the first one
+  let googleImages = await fetchFromGoogleImages(show);
+  while (googleImages && googleImages.thumbnail) {
+    // Save remaining candidates before verifyAndCollect deletes them
+    const remaining = googleImages._remainingCandidates || [];
+    const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (candidate.verifyResult?.imageType === 'promotional_art' &&
+          candidate.verifyResult?.confidence === 'high') {
+        console.log(`   ★ Promotional art found at high confidence — using this`);
+        return candidate.images;
+      }
+      if (!verifyCtx) return candidate.images;
+      break;  // Accepted — stop trying more candidates
+    }
+    // Rejected — try next candidate from the same search results
+    if (remaining.length === 0) break;
+    googleImages = await tryNextGoogleCandidate(show, remaining);
+  }
+
+  // Step 5 (was Step 4): Playbill fallback (landscape OG image only)
   // NEEDS VERIFICATION — last resort
   const playbillImages = await fetchFromPlaybill(show);
   if (playbillImages) {
