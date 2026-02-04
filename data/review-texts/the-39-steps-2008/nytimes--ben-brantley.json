@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2008/01/16/theater/reviews/16step.html",
+  "url": "https://www.nytimes.com/2008/01/16/theater/reviews/16steps.html",
   "publishDate": "January 16, 2008",
-  "fullText": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
-  "isFullReview": false,
+  "fullText": "https://www.nytimes.com/2008/01/16/theater/reviews/16steps.htmlAdvertisement\n\nIt’s all too easy to identify with Richard Hannay as he first appears in “The 39 Steps,” the absurdly enjoyable, gleefully theatrical riff on Alfred Hitchcock’s 1935 film. True, the odds are that you’re not as deeply, fatuously handsome as Richard (Charles Edwards), or as square of jaw, clipped of diction or cocked of eyebrow.\n\nStill, there’s something about Richard’s restless ennui in the first scene of this production, which opened on Tuesday night at the American Airlines Theater, that rings loud and true with New Yorkers sinking into the gray oatmeal of January in the city.\n\nBored with the tedium of his life, Richard is also fed up with newspapers bearing tales of “elections and wars and rumors of wars.” He longs for “something mindless and trivial. Something utterly pointless.” His jaw unclenches for a “Eureka!” moment. “I know!” he says. “I’ll go to the theater!”\n\nOn the evidence of “The 39 Steps,” directed by Maria Aitken and performed by a cast of four that seems like a cast of thousands, this is very sound advice. Adapted by Patrick Barlow from both the classic spy movie and the John Buchan novel of 1915, this fast, frothy exercise in legerdemain is throwaway theater at its finest. And that’s no backhanded compliment.\n\nA perfect soufflé, after all, requires a precise and confident chef. While the small, heavy-duty ensemble  rounded out by Arnie Burton, Jennifer Ferrin and Cliff Saunders  exudes a breezy effortlessness, its words and movements are governed by an intricate master plan that the plot’s hapless double agents and policemen would do well to emulate.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
   "originalScore": null,
   "assignedScore": 77,
@@ -18,7 +18,7 @@
   "showScoreExcerpt": "This cheeky stage adaptation of John Buchan's thriller, by way of Alfred Hitchcock's 1935 film, turns what might have been a standard evening of spoof into something more substantial: a meditation on the art of illusion itself.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (37 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "llmScore": {
     "score": 77,
     "confidence": "high",
@@ -73,5 +73,33 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2008/01/16/theater/reviews/16step.html",
+  "urlDiscoveredAt": "2026-02-04T01:20:50.589Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 292,
+  "archivePath": "data/archives/reviews/the-39-steps-2008/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:20:50.592Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250131100801",
+  "archiveOrgUrl": "http://web.archive.org/web/20250131100801/https://www.nytimes.com/2008/01/16/theater/reviews/16steps.html",
+  "textIssues": [
+    "Word count too low: 292 (min: 300)"
+  ],
+  "wordCount": 292,
+  "tierReason": "Short text (292 words)"
 }
