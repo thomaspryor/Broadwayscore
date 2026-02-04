@@ -13,8 +13,8 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "The Southern comfort show, with a tuneful country score by Brandy Clark and Shane McAnally and a superb book by Robert Horn, is just so damn funny. If any of the outrageous yokel characters open their mouths to do anything but sing, 99% of the time they will deliver a winning joke or pun. The receptive audience sits in a state of perpetual giggle, with heads bobbing up and down like buoys.",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SHUCKED-Opens-On-Broadway-The-Critics-Weigh-In-20230404",
   "showScoreExcerpt": "This Broadway musical about corn is as corny as it sounds — and that's exactly the point. 'Shucked' is a delightfully silly show that knows exactly what it is and never apologizes for it.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
@@ -22,7 +22,9 @@
   "sources": [
     "web-search",
     "show-score-playwright",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews",
+    "bww-roundup"
   ],
   "textQuality": "truncated",
   "llmScore": {
@@ -79,5 +81,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "bwwScore": 9
 }
