@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/doctor-zhivago_72219.html",
   "publishDate": "April 21, 2015",
-  "fullText": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new musical Doctor Zhivago, which opened tonight at the Broadway Theatre, is a handsome, well-intentioned adaptation of Boris Pasternak's novel that never quite finds its theatrical heartbeat.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 61,
@@ -73,5 +73,49 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 288,
+  "archivePath": "data/archives/reviews/doctor-zhivago-2015/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:09:34.227Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 288 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The Edgar Allan Poe-inspired musical will soon end its run at New World Stages.\n\nNevermore — The Imaginary Life and Mysterious Death of Edgar Allan Poe has announced plans to record an original off-Broadway cast album, which will be released on Broadway Records in June 2015. As previously announced, the production, which is currently running at New World Stages, will end its run on March 29.\n\nNevermore is a whimsical production following Edgar Allan Poe as he struggles with tragedy and addiction, poverty and loss — all while producing some of the world's most original literature. The musical play blurs the line between fact and fiction, exploring the events that shaped Poe's character and career.\n\nOriginally produced by Canada's Catalyst Theatre of Edmonton in 2009 to commemorate the bicentennial of Poe's birth, this production of Nevermore includes six of the seven original cast members: Gaelan Beatty, Shannon Blanchett, Beth Graham, Ryan Parker, Garett Ross, and Scott Shpeley.\n\nThe design team includes sets, costumes, and lighting designed by Bretta Gerecke. Choreography is by Laura Krewski, and sound design is by Wade Staples.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

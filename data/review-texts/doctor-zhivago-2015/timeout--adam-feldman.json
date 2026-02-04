@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/doctor-zhivago",
   "publishDate": "April 21, 2015",
-  "fullText": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
-  "isFullReview": false,
+  "fullText": "Doctor Zhivago: Theater review by David Cote\n\nBased on a sweeping historical novel crammed with characters and incident, Doctor Zhivago follows the fortunes of a heroic man with a divided heart across decades of turmoil and revolution, as he is hounded by a self-righteous upholder of justice. Sounds a little like Les Misérables, non? But we already have a pale imitation of that long-running juggernaut; it’s called Les Misérables and it’s playing at the Imperial. Zhivago, on the other hand, is Jean Valjean with a poetic streak and a medical bag.\n\nThere are crucial differences between the shows, of course: Les Miz’s epic narrative is far better organized, and the music is bombastic, but effective. Zhivago, based on Boris Pasternak’s 1957 doorstop (which also inspired the great David Lean film) is a dauntingly interior novel to distill into a musical. Its stakes are more nuanced than in Hugo’s moral fable, and there’s not much drama watching our hero (Tam Mutu) sit down to write a poem after finally sleeping with longtime obsession Lara (Kelli Barrett). This happens toward the end, long after we’ve absorbed the point that Bolsheviks are weasels and love and art transcend ideology.\n\nNo amount of Lucy Simon’s syrupy, portentous music—swamping Michael Korie and Amy Powers’s workmanlike lyrics—can make us care for the synthetic, drably colored pageant. Des McAnuff’s staging looks expensive but ugly, with cheesy video close‑ups of actors, giant Soviet propaganda posters, eruptions of fire and the occasional explosion or gunshot to wake us up. To Siberia with it.—David Cote\n\nBroadway Theatre (Broadway). Book by Michael Weller. Music by Lucy Simon. Lyrics by Michael Korie and Amy Powers. Directed by Des McAnuff. With Tam Mutu, Kelli Barrett. Running time: 2hrs 40mins. One intermission.",
+  "isFullReview": true,
   "dtliExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
   "originalScore": 40,
   "assignedScore": 42,
@@ -73,10 +73,40 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/doctor-zhivago",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 42,
+  "textWordCount": 288,
+  "archivePath": "data/archives/reviews/doctor-zhivago-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:10:25.768Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150515022602",
+  "archiveOrgUrl": "http://web.archive.org/web/20150515022602/http://www.timeout.com:80/newyork/theater/doctor-zhivago",
+  "textIssues": [
+    "Word count too low: 294 (min: 300)"
+  ],
+  "wordCount": 288,
+  "tierReason": "Short text (288 words)"
 }
