@@ -24,6 +24,7 @@ const FORMATS = ['poster', 'thumbnail', 'hero'];
 
 // Import pinned images list from fetch script to prevent overwriting curated thumbnails
 const PINNED_IMAGES = new Set([
+  // Manually curated promotional art (restored/selected by human review)
   'sunset-boulevard-2024',        // Nicole Scherzinger Tony Award promo art
   'an-enemy-of-the-people-2024',  // Jeremy Strong underwater poster art
   'waiting-for-godot-2025',       // Reeves & Winter blue promo poster
@@ -35,7 +36,35 @@ const PINNED_IMAGES = new Set([
   'maybe-happy-ending-2024',      // Square key art (protected from poster crop)
   'romeo-juliet-2024',            // Manually uploaded promotional art
   'art-2025',                     // Manually sourced thumbnail
-  'operation-mincemeat-2025',     // Native 1080x1080 square asset
+  // Currently open shows — thumbnails curated/verified by human
+  'aladdin-2014',
+  'all-out-2025',
+  'and-juliet-2022',
+  'book-of-mormon-2011',
+  'buena-vista-social-club-2025',
+  'bug-2026',
+  'chess-2025',
+  'chicago-1996',
+  'death-becomes-her-2024',
+  'hadestown-2019',
+  'hamilton-2015',
+  'harry-potter-2021',
+  'hells-kitchen-2024',
+  'just-in-time-2025',
+  'marjorie-prime-2025',
+  'mj-2022',
+  'moulin-rouge-2019',
+  'oedipus-2025',
+  'oh-mary-2024',
+  'operation-mincemeat-2025',
+  'ragtime-2025',
+  'six-2021',
+  'stranger-things-2024',
+  'the-great-gatsby-2024',
+  'the-lion-king-1997',
+  'the-outsiders-2024',
+  'two-strangers-bway-2025',
+  'wicked-2003',
 ]);
 
 // Contentful transformation parameters for each format
