@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2008/legit/reviews/the-little-mermaid-1200472087/",
   "publishDate": "January 11, 2008",
-  "fullText": "While Disney's stage adaptation of 'The Little Mermaid' delivers the expected visual splendor and memorable songs, the show feels more like an expensive theme park attraction than compelling musical theater.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "While Disney's stage adaptation of 'The Little Mermaid' delivers the expected visual splendor and memorable songs, the show feels more like an expensive theme park attraction than compelling musical theater.",
   "originalScore": null,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While Disney's stage adaptation of 'The Little Mermaid' delivers the expected visual splendor and memorable songs, the show feels more like an expensive theme park attraction than compelling musical theater.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "sources": [
     "web-search"
   ],
@@ -76,5 +76,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 57,
+  "textWordCount": 219,
+  "archivePath": "data/archives/reviews/the-little-mermaid-2008/variety--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:55:31.119Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 219 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "When circus life is a family business, as it's viewed in the lightweight docu \"Pindorama: The True Story of the Seven Dwarves,\" it can be so pleasant that it doesn't make for much of a film.\n\nWhen circus life is a family business, as it’s viewed in the lightweight docu “Pindorama: The True Story of the Seven Dwarves,” it can be so pleasant that it doesn’t make for much of a film. While Brazilian filmmakers Rodrigo Berliner, Lula Queiroga and Leo Crivellare adore the distinctive Pindorama Circus — run by and starring a family of dwarf performers, most close to 2 feet tall — they make what amounts to an inconsequential promo that runs too long in its theatrical form at 84 minutes. Forty-eight-minute version, beamed on Brazilian channels and ready for vid, is more like it.\n\nAs the circus sets up in a rural spot, the dwarf stars (Charles, Cleide, Gilberto, Zuleide, Claudio, Rogerio and Lobao Gomes de Oliveira) amusedly boss around the technical crew. The film proceeds to show why the septet has earned its privileged place, starting with Charles and Gilberto, who run the operation, while Claudio negotiates contracts with each municipality the circus visits. Too many interview segments overwhelm the sense viewers should get of the Pindorama show itself, which looks both ribald and goofy."
 }
