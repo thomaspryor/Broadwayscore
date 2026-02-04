@@ -54,7 +54,7 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent } = require('./lib/content-quality');
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
@@ -2756,6 +2756,38 @@ function updateReviewJson(review, text, validation, archivePath, method, attempt
       }
     } catch (e) {
       // Skip if can't read directory
+    }
+  }
+
+  // 1D. Content-show match verification
+  // Uses weighted signals (title, director, venue, cast) to detect wrong-show content.
+  // Only auto-nulls on confident_mismatch (score <= -3) with 2+ independent negative signals,
+  // per critique review recommendations. For probable_mismatch, logs warning only.
+  if (cleanedText && cleanedText.length > 500 && data.fullText) {
+    const showIdForContent = data.showId || review.showId || '';
+    let showMeta = null;
+    try {
+      if (!_showsJsonCache) {
+        _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      }
+      showMeta = _showsJsonCache.shows.find(s => s.id === showIdForContent);
+    } catch (e) { /* shows.json unavailable */ }
+
+    if (showMeta) {
+      const contentMatch = verifyFullTextContent(cleanedText, showMeta);
+      if (contentMatch.verdict === 'confident_mismatch' && contentMatch.negativeSignalCount >= 2) {
+        // Strong mismatch with multiple independent signals — null the fullText
+        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt);
+        data.wrongFullText = data.fullText;
+        data.fullText = null;
+        data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
+        data.contentMismatchScore = contentMatch.score;
+        data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        console.log(`    ⚠ Content mismatch (score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+      } else if (contentMatch.verdict === 'confident_mismatch' || contentMatch.verdict === 'probable_mismatch') {
+        // Weaker signal — log warning but don't auto-null
+        console.log(`    ⚠ Content match warning (${contentMatch.verdict}, score ${contentMatch.score}): ${contentMatch.negativeSignals.join(', ')}`);
+      }
     }
   }
 

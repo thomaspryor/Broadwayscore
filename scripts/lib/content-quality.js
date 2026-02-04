@@ -1374,6 +1374,302 @@ function detectGarbageFromReasoning(reasoning, confidence) {
   return { isGarbage: false, matchedPattern: null };
 }
 
+// ========================================
+// CONTENT-TO-SHOW VERIFICATION (1D)
+// ========================================
+
+/**
+ * Common English words that are also surnames — skip these in name matching
+ * to avoid false positives (e.g., "Young" appearing in review text ≠ director named Young).
+ * @type {Set<string>}
+ */
+const COMMON_WORD_NAMES = new Set([
+  'young', 'lee', 'green', 'white', 'king', 'rose', 'grace', 'grey', 'gray',
+  'long', 'stone', 'wood', 'fields', 'love', 'page', 'rice', 'cross', 'bell',
+  'day', 'park', 'fox', 'wolf', 'ford', 'chase', 'rich', 'wall', 'grant',
+  'joy', 'hope', 'may', 'mark', 'art', 'new', 'best', 'fine', 'bright',
+  'strong', 'fair', 'sharp', 'will', 'cash', 'bush', 'lane', 'miles',
+]);
+
+/**
+ * Check if a person name appears in text, with safeguards against false positives.
+ *
+ * @param {string} text - Lowercased review text
+ * @param {string} name - Person name (e.g., "Marc Bruni")
+ * @returns {boolean}
+ */
+function nameFoundInText(text, name) {
+  if (!name || !text) return false;
+
+  const parts = name.toLowerCase().replace(/-/g, ' ').trim().split(/\s+/).filter(p => p.length > 0);
+  if (parts.length === 0) return false;
+
+  const lastName = parts[parts.length - 1];
+  const firstName = parts[0];
+
+  // Skip if last name is a common English word
+  if (COMMON_WORD_NAMES.has(lastName)) {
+    // For common-word last names, require BOTH first and last name present
+    if (parts.length >= 2 && firstName.length >= 3) {
+      return text.includes(firstName) && text.includes(lastName);
+    }
+    return false;
+  }
+
+  // Short last names (<5 chars) require first+last to avoid false positives
+  if (lastName.length < 5 && parts.length >= 2) {
+    return text.includes(firstName) && text.includes(lastName);
+  }
+
+  // For longer last names, last name alone is sufficient
+  // Also try hyphen-stripped version ("Lin-Manuel" → "lin manuel")
+  const nameNormalized = name.toLowerCase().replace(/-/g, ' ');
+  if (text.includes(nameNormalized)) return true;
+  if (text.includes(lastName)) return true;
+
+  return false;
+}
+
+/**
+ * Verify whether fullText content matches the expected show.
+ *
+ * Uses weighted signals from show metadata (title, director, venue, cast, creative team)
+ * to determine if the scraped text is actually about the right show. Designed to catch
+ * wrong-show content (film reviews, different productions, unrelated articles) while
+ * minimizing false positives.
+ *
+ * Key design decisions (informed by critique review):
+ * - Title matching uses word-level matching, not just exact substring, to handle
+ *   informal names ("Gatsby" for "The Great Gatsby", "Outsiders" for "The Outsiders")
+ * - Film/movie penalty REMOVED: 40%+ of Broadway shows are adaptations where critics
+ *   routinely compare stage to screen — this caused mass false deletions in testing
+ * - Auto-null threshold requires score <= -5 with 2+ independent negative signals
+ *   (the function returns the score; callers enforce the threshold)
+ * - Reuses show title list from loadBroadwayShows() for "wrong show" detection
+ *
+ * @param {string} fullText - The review full text to verify
+ * @param {Object} showMetadata - Show object from shows.json
+ * @param {string} showMetadata.title - Show title
+ * @param {string} [showMetadata.venue] - Theater/venue name
+ * @param {Array<{name: string, role: string}>} [showMetadata.creativeTeam] - Creative team
+ * @param {Array<{name: string}>} [showMetadata.cast] - Cast members
+ * @param {string} [showMetadata.id] - Show ID (e.g., "great-gatsby-2024")
+ * @returns {{
+ *   verdict: 'confident_match' | 'probable_match' | 'uncertain' | 'probable_mismatch' | 'confident_mismatch',
+ *   score: number,
+ *   negativeSignalCount: number,
+ *   positiveSignals: string[],
+ *   negativeSignals: string[],
+ *   details: { titleFound: boolean, directorFound: boolean, venueFound: boolean, castFound: number, wrongShowMentioned: string|null }
+ * }}
+ */
+function verifyFullTextContent(fullText, showMetadata) {
+  if (!fullText || !showMetadata) {
+    return {
+      verdict: 'uncertain',
+      score: 0,
+      negativeSignalCount: 0,
+      positiveSignals: [],
+      negativeSignals: ['Missing fullText or showMetadata'],
+      details: { titleFound: false, directorFound: false, venueFound: false, castFound: 0, wrongShowMentioned: null }
+    };
+  }
+
+  const text = fullText.toLowerCase();
+  const title = (showMetadata.title || '').toLowerCase().trim();
+  let score = 0;
+  const positiveSignals = [];
+  const negativeSignals = [];
+  let negativeSignalCount = 0;
+  const details = {
+    titleFound: false,
+    directorFound: false,
+    venueFound: false,
+    castFound: 0,
+    wrongShowMentioned: null
+  };
+
+  // --- POSITIVE SIGNALS ---
+
+  // 1. Show title check (+3)
+  // Use multiple matching strategies to handle informal names
+  if (title.length > 0) {
+    let titleFound = false;
+
+    // Exact title match
+    if (text.includes(title)) {
+      titleFound = true;
+    }
+
+    // Without "The"/"A"/"An" prefix
+    if (!titleFound) {
+      const withoutArticle = title.replace(/^(the|a|an)\s+/, '');
+      if (withoutArticle.length > 3 && text.includes(withoutArticle)) {
+        titleFound = true;
+      }
+    }
+
+    // Title words check: for multi-word titles, check if significant words appear
+    // This handles "Gatsby" for "The Great Gatsby", "Outsiders" for "The Outsiders"
+    if (!titleFound) {
+      const titleWords = title
+        .replace(/^(the|a|an)\s+/, '')
+        .split(/[\s:,\-–—]+/)
+        .filter(w => w.length > 3 && !['the', 'and', 'for', 'with', 'from', 'that', 'this', 'into'].includes(w));
+
+      if (titleWords.length > 0) {
+        const matchedWords = titleWords.filter(w => text.includes(w));
+        // For single-word titles, require exact match
+        // For multi-word titles, require majority of significant words
+        if (titleWords.length === 1 && matchedWords.length === 1) {
+          titleFound = true;
+        } else if (titleWords.length >= 2 && matchedWords.length >= Math.ceil(titleWords.length * 0.6)) {
+          titleFound = true;
+        }
+      }
+    }
+
+    // Check show ID words as fallback (e.g., "back-to-the-future-2023" → "back", "future")
+    if (!titleFound && showMetadata.id) {
+      const idBase = showMetadata.id.replace(/-\d{4}$/, '');
+      const idWords = idBase.split('-').filter(w => w.length > 4 && !['the', 'and', 'for'].includes(w));
+      if (idWords.length >= 2) {
+        const matchedIdWords = idWords.filter(w => text.includes(w));
+        if (matchedIdWords.length >= 2) {
+          titleFound = true;
+        }
+      }
+    }
+
+    if (titleFound) {
+      score += 3;
+      positiveSignals.push(`Show title "${showMetadata.title}" found in text`);
+      details.titleFound = true;
+    }
+  }
+
+  // 2. Director name (+2)
+  const creativeTeam = showMetadata.creativeTeam || [];
+  const directors = creativeTeam.filter(c =>
+    c.role && c.role.toLowerCase().includes('direct')
+  );
+  for (const director of directors) {
+    if (nameFoundInText(text, director.name)) {
+      score += 2;
+      positiveSignals.push(`Director "${director.name}" found`);
+      details.directorFound = true;
+      break; // Only count once
+    }
+  }
+
+  // 3. Theater/venue name (+1)
+  if (showMetadata.venue) {
+    const venue = showMetadata.venue.toLowerCase();
+    // Try full venue name, then just the distinctive part (e.g., "Shubert" from "Shubert Theatre")
+    const venueWords = venue.replace(/\s*(theatre|theater)\s*/gi, '').trim();
+    if (venueWords.length > 3 && text.includes(venueWords)) {
+      score += 1;
+      positiveSignals.push(`Venue "${showMetadata.venue}" found`);
+      details.venueFound = true;
+    }
+  }
+
+  // 4. Cast members (+2 if 2+ found)
+  const cast = showMetadata.cast || [];
+  if (cast.length > 0) {
+    let castMatches = 0;
+    for (const member of cast) {
+      if (nameFoundInText(text, member.name)) {
+        castMatches++;
+        if (castMatches >= 2) break;
+      }
+    }
+    if (castMatches >= 2) {
+      score += 2;
+      positiveSignals.push(`${castMatches} cast members found`);
+      details.castFound = castMatches;
+    }
+  }
+
+  // 5. Other creative team (choreographer, playwright, composer) (+1 each, cap +2)
+  let creativeBonus = 0;
+  const nonDirectorCreative = creativeTeam.filter(c =>
+    c.role && !c.role.toLowerCase().includes('direct') &&
+    /choreograph|book|music|lyrics|playwright|compos/i.test(c.role)
+  );
+  for (const person of nonDirectorCreative) {
+    if (nameFoundInText(text, person.name)) {
+      creativeBonus++;
+      positiveSignals.push(`Creative team "${person.name}" (${person.role}) found`);
+      if (creativeBonus >= 2) break;
+    }
+  }
+  score += Math.min(creativeBonus, 2);
+
+  // --- NEGATIVE SIGNALS ---
+
+  // 6. Show title NOT found (-3)
+  if (!details.titleFound && title.length > 0) {
+    score -= 3;
+    negativeSignals.push(`Show title "${showMetadata.title}" not found in text`);
+    negativeSignalCount++;
+  }
+
+  // 7. Different show title mentioned 3+ times (-2)
+  // Use cached show titles from loadBroadwayShows()
+  const allShowTitles = loadBroadwayShows();
+  const titleLower = title.toLowerCase();
+  for (const otherTitle of allShowTitles) {
+    // Skip if it's the current show or a substring of the current show
+    if (otherTitle === titleLower) continue;
+    if (titleLower.includes(otherTitle) || otherTitle.includes(titleLower)) continue;
+    // Skip very short titles that match common words
+    if (otherTitle.length <= 4) continue;
+
+    // Count occurrences
+    let count = 0;
+    let searchStart = 0;
+    while (searchStart < text.length) {
+      const idx = text.indexOf(otherTitle, searchStart);
+      if (idx === -1) break;
+      count++;
+      searchStart = idx + otherTitle.length;
+      if (count >= 3) break;
+    }
+
+    if (count >= 3) {
+      score -= 2;
+      negativeSignals.push(`Different show "${otherTitle}" mentioned ${count}+ times`);
+      negativeSignalCount++;
+      details.wrongShowMentioned = otherTitle;
+      break; // Only flag the first wrong show
+    }
+  }
+
+  // --- VERDICT ---
+  let verdict;
+  if (score >= 3) {
+    verdict = 'confident_match';
+  } else if (score >= 1) {
+    verdict = 'probable_match';
+  } else if (score === 0) {
+    verdict = 'uncertain';
+  } else if (score >= -2) {
+    verdict = 'probable_mismatch';
+  } else {
+    verdict = 'confident_mismatch';
+  }
+
+  return {
+    verdict,
+    score,
+    negativeSignalCount,
+    positiveSignals,
+    negativeSignals,
+    details
+  };
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -1392,6 +1688,8 @@ module.exports = {
   extractByline,
   matchesCritic,
   computeContentFingerprint,
+  // Phase 1D: Content-to-show verification
+  verifyFullTextContent,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,
