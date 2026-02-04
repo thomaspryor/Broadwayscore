@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-02-03",
+    "lastUpdated": "2026-02-04",
     "version": "2.0.0"
   },
   "outlets": {
@@ -31,7 +31,8 @@
         "new york magazine",
         "nymag/vulture",
         "vulture/nymag",
-        "ny-mag"
+        "ny-mag",
+        "newyorkmagazine"
       ],
       "domain": "vulture.com"
     },
@@ -115,7 +116,8 @@
         "associated press",
         "the associated press",
         "ap news",
-        "apnews"
+        "apnews",
+        "assocoiated-press"
       ],
       "domain": "apnews.com"
     },
@@ -253,7 +255,8 @@
       "displayName": "Newsday",
       "tier": 2,
       "aliases": [
-        "newsday"
+        "newsday",
+        "newday"
       ],
       "domain": "newsday.com"
     },
@@ -264,7 +267,8 @@
         "guardian",
         "the-guardian",
         "the guardian",
-        "theguardian"
+        "theguardian",
+        "the-guardian-uk"
       ],
       "domain": "theguardian.com"
     },
@@ -486,7 +490,8 @@
       "aliases": [
         "forward",
         "the forward",
-        "the-forward"
+        "the-forward",
+        "the-jewish-daily-forward"
       ],
       "domain": "forward.com"
     },
@@ -556,7 +561,8 @@
         "bergen-record",
         "bergen record",
         "the record bergen",
-        "northjersey record"
+        "northjersey record",
+        "the-record"
       ],
       "domain": "northjersey.com"
     },
@@ -576,7 +582,8 @@
         "one-minute-critic",
         "one minute critic",
         "oneminutecritic",
-        "one-minute critic"
+        "one-minute critic",
+        "1minutecritic"
       ],
       "domain": "oneminutecritic.com"
     },
@@ -597,7 +604,8 @@
         "dctheatrescene",
         "dc theatre scene",
         "dc-theatre-scene",
-        "dcmetro"
+        "dcmetro",
+        "dc-metro"
       ],
       "domain": "dctheatrescene.com"
     },
@@ -607,7 +615,8 @@
       "aliases": [
         "ny1",
         "ny 1",
-        "ny-1"
+        "ny-1",
+        "new-york-1"
       ],
       "domain": "ny1.com"
     },
@@ -649,7 +658,9 @@
         "nj.com",
         "nj-com",
         "njcom-star-ledger",
-        "nj.com star ledger"
+        "nj.com star ledger",
+        "the-star-ledger",
+        "newjerseycom"
       ],
       "domain": "nj.com"
     },
@@ -660,7 +671,8 @@
         "the-times",
         "the times",
         "times uk",
-        "the times uk"
+        "the times uk",
+        "the-times-uk"
       ],
       "domain": "thetimes.co.uk"
     },
@@ -693,7 +705,8 @@
         "huffpost",
         "huffington post",
         "huff post",
-        "huffingtonpost"
+        "huffingtonpost",
+        "the-huffington-pos"
       ],
       "domain": "huffpost.com"
     },
@@ -741,7 +754,8 @@
       "displayName": "Bloomberg",
       "tier": 3,
       "aliases": [
-        "bloomberg"
+        "bloomberg",
+        "bloomberg-news"
       ],
       "domain": "bloomberg.com"
     },
@@ -762,7 +776,8 @@
       "aliases": [
         "toronto-star",
         "toronto star",
-        "torontostar"
+        "torontostar",
+        "thestarcom"
       ],
       "domain": "thestar.com"
     },
@@ -858,7 +873,8 @@
         "telegraph",
         "the telegraph",
         "the-telegraph",
-        "daily telegraph"
+        "daily telegraph",
+        "the-telegraph-uk"
       ],
       "domain": "telegraph.co.uk"
     },
@@ -868,7 +884,8 @@
       "aliases": [
         "showbiz411",
         "showbiz 411",
-        "showbiz-411"
+        "showbiz-411",
+        "shobwiz411"
       ],
       "domain": "showbiz411.com"
     },
@@ -1011,7 +1028,8 @@
         "the-philadelphia-inquirer",
         "philadelphia inquirer",
         "the philadelphia inquirer",
-        "philly inquirer"
+        "philly inquirer",
+        "the-inquirer"
       ],
       "domain": "inquirer.com"
     },
@@ -1826,7 +1844,8 @@
       "tier": 3,
       "aliases": [
         "radio-times",
-        "radiotimes"
+        "radiotimes",
+        "the-radio-times"
       ],
       "domain": "radiotimes.com"
     },
@@ -2066,6 +2085,1210 @@
         "canada-am"
       ],
       "domain": "ctv.ca"
+    },
+    "theaterscenenet": {
+      "displayName": "Theater Scene (theaterscene.net)",
+      "tier": 3,
+      "aliases": [
+        "theaterscenenet",
+        "theater-scene-net",
+        "theaterscene.net"
+      ],
+      "domain": "theaterscene.net"
+    },
+    "theatersceneorg": {
+      "displayName": "Theater Scene (theaterscene.org)",
+      "tier": 3,
+      "aliases": [
+        "theatersceneorg",
+        "theater-scene-org",
+        "theaterscene.org"
+      ],
+      "domain": "theaterscene.org"
+    },
+    "newsweek": {
+      "displayName": "Newsweek",
+      "tier": 3,
+      "aliases": [
+        "newsweek",
+        "newsweek-magazine"
+      ],
+      "domain": "newsweek.com"
+    },
+    "boston-herald": {
+      "displayName": "Boston Herald",
+      "tier": 3,
+      "aliases": [
+        "boston-herald",
+        "boston herald",
+        "bostonherald"
+      ],
+      "domain": "bostonherald.com"
+    },
+    "abc-news": {
+      "displayName": "ABC News",
+      "tier": 3,
+      "aliases": [
+        "abc-news",
+        "abc news",
+        "abcnews"
+      ],
+      "domain": "abcnews.go.com"
+    },
+    "washington-times": {
+      "displayName": "The Washington Times",
+      "tier": 3,
+      "aliases": [
+        "washington-times",
+        "washington times",
+        "the washington times",
+        "the-washington-times"
+      ],
+      "domain": "washingtontimes.com"
+    },
+    "tv-guide": {
+      "displayName": "TV Guide",
+      "tier": 3,
+      "aliases": [
+        "tv-guide",
+        "tv guide",
+        "tvguide"
+      ],
+      "domain": "tvguide.com"
+    },
+    "san-diego-union-tribune": {
+      "displayName": "San Diego Union-Tribune",
+      "tier": 3,
+      "aliases": [
+        "san-diego-union-tribune",
+        "san diego union-tribune",
+        "the-san-diego-union-tribune"
+      ],
+      "domain": "sandiegouniontribune.com"
+    },
+    "vogue": {
+      "displayName": "Vogue",
+      "tier": 3,
+      "aliases": [
+        "vogue",
+        "vogue-magazine"
+      ],
+      "domain": "vogue.com"
+    },
+    "fox-news": {
+      "displayName": "Fox News",
+      "tier": 3,
+      "aliases": [
+        "fox-news",
+        "fox news",
+        "foxnews"
+      ],
+      "domain": "foxnews.com"
+    },
+    "cnn": {
+      "displayName": "CNN",
+      "tier": 3,
+      "aliases": [
+        "cnn"
+      ],
+      "domain": "cnn.com"
+    },
+    "flavorwire": {
+      "displayName": "Flavorwire",
+      "tier": 3,
+      "aliases": [
+        "flavorwire"
+      ],
+      "domain": "flavorwire.com"
+    },
+    "hitfix": {
+      "displayName": "HitFix",
+      "tier": 3,
+      "aliases": [
+        "hitfix"
+      ],
+      "domain": "hitfix.com"
+    },
+    "dread-central": {
+      "displayName": "Dread Central",
+      "tier": 3,
+      "aliases": [
+        "dread-central",
+        "dread central",
+        "dreadcentral"
+      ],
+      "domain": "dreadcentral.com"
+    },
+    "british-theatre": {
+      "displayName": "British Theatre",
+      "tier": 3,
+      "aliases": [
+        "british-theatre",
+        "british theatre",
+        "britishtheatrecom",
+        "britishtheatre"
+      ],
+      "domain": "britishtheatre.com"
+    },
+    "sfgate": {
+      "displayName": "SFGate",
+      "tier": 3,
+      "aliases": [
+        "sfgate",
+        "sf-gate",
+        "sfchronicle",
+        "sf gate"
+      ],
+      "domain": "sfgate.com"
+    },
+    "roger-ebert": {
+      "displayName": "RogerEbert.com",
+      "tier": 3,
+      "aliases": [
+        "roger-ebert",
+        "rogerebert",
+        "rogerebertcom",
+        "roger ebert"
+      ],
+      "domain": "rogerebert.com"
+    },
+    "broadway-journal": {
+      "displayName": "Broadway Journal",
+      "tier": 3,
+      "aliases": [
+        "broadway-journal",
+        "broadway journal",
+        "broadwayjournal"
+      ],
+      "domain": "broadwayjournal.com"
+    },
+    "lilith-magazine": {
+      "displayName": "Lilith Magazine",
+      "tier": 3,
+      "aliases": [
+        "lilith-magazine",
+        "lilith magazine",
+        "lilith"
+      ],
+      "domain": "lilith.org"
+    },
+    "epoch-times": {
+      "displayName": "The Epoch Times",
+      "tier": 3,
+      "aliases": [
+        "epoch-times",
+        "the epoch times",
+        "the-epoch-times",
+        "epochtimes"
+      ],
+      "domain": "theepochtimes.com"
+    },
+    "westfield-news": {
+      "displayName": "The Westfield News",
+      "tier": 3,
+      "aliases": [
+        "westfield-news",
+        "westfield news",
+        "the-westfield-news"
+      ],
+      "domain": "thewestfieldnews.com"
+    },
+    "parterre-box": {
+      "displayName": "Parterre Box",
+      "tier": 3,
+      "aliases": [
+        "parterre-box",
+        "parterre box",
+        "parterrebox"
+      ],
+      "domain": "parterre.com"
+    },
+    "the-mary-sue": {
+      "displayName": "The Mary Sue",
+      "tier": 3,
+      "aliases": [
+        "the-mary-sue",
+        "the mary sue",
+        "themarysue"
+      ],
+      "domain": "themarysue.com"
+    },
+    "seattle-times": {
+      "displayName": "The Seattle Times",
+      "tier": 3,
+      "aliases": [
+        "seattle-times",
+        "the seattle times",
+        "the-seattle-times",
+        "seattletimes"
+      ],
+      "domain": "seattletimes.com"
+    },
+    "san-diego-reader": {
+      "displayName": "San Diego Reader",
+      "tier": 3,
+      "aliases": [
+        "san-diego-reader",
+        "san diego reader"
+      ],
+      "domain": "sandiegoreader.com"
+    },
+    "san-diego-gay-and-lesbian-news": {
+      "displayName": "San Diego Gay & Lesbian News",
+      "tier": 3,
+      "aliases": [
+        "san-diego-gay-and-lesbian-news"
+      ],
+      "domain": "sdgln.com"
+    },
+    "cape-cod-times": {
+      "displayName": "Cape Cod Times",
+      "tier": 3,
+      "aliases": [
+        "cape-cod-times",
+        "cape cod times"
+      ],
+      "domain": "capecodtimes.com"
+    },
+    "patriot-ledger": {
+      "displayName": "The Patriot Ledger",
+      "tier": 3,
+      "aliases": [
+        "patriot-ledger",
+        "patriot ledger",
+        "the patriot ledger"
+      ],
+      "domain": "patriotledger.com"
+    },
+    "reading-eagle": {
+      "displayName": "Reading Eagle",
+      "tier": 3,
+      "aliases": [
+        "reading-eagle",
+        "reading eagle"
+      ],
+      "domain": "readingeagle.com"
+    },
+    "harlem-community-news": {
+      "displayName": "Harlem Community News",
+      "tier": 3,
+      "aliases": [
+        "harlem-community-news",
+        "harlem community news"
+      ],
+      "domain": null
+    },
+    "shaw-local": {
+      "displayName": "Shaw Local",
+      "tier": 3,
+      "aliases": [
+        "shaw-local",
+        "shaw local"
+      ],
+      "domain": "shawlocal.com"
+    },
+    "daily-herald": {
+      "displayName": "Daily Herald",
+      "tier": 3,
+      "aliases": [
+        "daily-herald",
+        "daily herald"
+      ],
+      "domain": "dailyherald.com"
+    },
+    "chicago-reader": {
+      "displayName": "Chicago Reader",
+      "tier": 3,
+      "aliases": [
+        "chicago-reader",
+        "chicago reader"
+      ],
+      "domain": "chicagoreader.com"
+    },
+    "chicago-sun-times": {
+      "displayName": "Chicago Sun-Times",
+      "tier": 3,
+      "aliases": [
+        "chicago-sun-times",
+        "chicago sun-times",
+        "chicagosuntimes"
+      ],
+      "domain": "suntimes.com"
+    },
+    "edge-media-network": {
+      "displayName": "Edge Media Network",
+      "tier": 3,
+      "aliases": [
+        "edge-media-network",
+        "edge media network",
+        "edge"
+      ],
+      "domain": "edgemedianetwork.com"
+    },
+    "kget": {
+      "displayName": "KGET",
+      "tier": 3,
+      "aliases": [
+        "kget"
+      ],
+      "domain": "kget.com"
+    },
+    "drama-in-the-hood": {
+      "displayName": "Drama in the Hood",
+      "tier": 3,
+      "aliases": [
+        "drama-in-the-hood"
+      ],
+      "domain": null
+    },
+    "sfist": {
+      "displayName": "SFist",
+      "tier": 3,
+      "aliases": [
+        "sfist"
+      ],
+      "domain": "sfist.com"
+    },
+    "third-coast-review": {
+      "displayName": "Third Coast Review",
+      "tier": 3,
+      "aliases": [
+        "third-coast-review",
+        "third coast review"
+      ],
+      "domain": "thirdcoastreview.com"
+    },
+    "outbuzz": {
+      "displayName": "OutBuzz",
+      "tier": 3,
+      "aliases": [
+        "outbuzz"
+      ],
+      "domain": "outbuzz.com"
+    },
+    "black-girl-nerds": {
+      "displayName": "Black Girl Nerds",
+      "tier": 3,
+      "aliases": [
+        "black-girl-nerds",
+        "black girl nerds"
+      ],
+      "domain": "blackgirlnerds.com"
+    },
+    "from-the-fourth-row": {
+      "displayName": "From the Fourth Row",
+      "tier": 3,
+      "aliases": [
+        "from-the-fourth-row"
+      ],
+      "domain": null
+    },
+    "unscripted-takes": {
+      "displayName": "Unscripted Takes",
+      "tier": 3,
+      "aliases": [
+        "unscripted-takes"
+      ],
+      "domain": null
+    },
+    "theatre-talk-boston": {
+      "displayName": "Theatre Talk Boston",
+      "tier": 3,
+      "aliases": [
+        "theatre-talk-boston"
+      ],
+      "domain": null
+    },
+    "theatre-weekly": {
+      "displayName": "Theatre Weekly",
+      "tier": 3,
+      "aliases": [
+        "theatre-weekly",
+        "theatre weekly"
+      ],
+      "domain": "theatreweekly.com"
+    },
+    "broadway-baby": {
+      "displayName": "Broadway Baby",
+      "tier": 3,
+      "aliases": [
+        "broadway-baby",
+        "broadway baby"
+      ],
+      "domain": "broadwaybaby.com"
+    },
+    "west-end-best-friend": {
+      "displayName": "West End Best Friend",
+      "tier": 3,
+      "aliases": [
+        "west-end-best-friend",
+        "west end best friend"
+      ],
+      "domain": "westendbestfriend.co.uk"
+    },
+    "matinee-radio": {
+      "displayName": "Matinee Radio",
+      "tier": 3,
+      "aliases": [
+        "matinee-radio"
+      ],
+      "domain": null
+    },
+    "londonist": {
+      "displayName": "Londonist",
+      "tier": 3,
+      "aliases": [
+        "londonist"
+      ],
+      "domain": "londonist.com"
+    },
+    "leicester-times": {
+      "displayName": "Leicester Times",
+      "tier": 3,
+      "aliases": [
+        "leicester-times"
+      ],
+      "domain": null
+    },
+    "the-reviews-hub": {
+      "displayName": "The Reviews Hub",
+      "tier": 3,
+      "aliases": [
+        "the-reviews-hub",
+        "reviews hub"
+      ],
+      "domain": "thereviewshub.com"
+    },
+    "the-queer-review": {
+      "displayName": "The Queer Review",
+      "tier": 3,
+      "aliases": [
+        "the-queer-review",
+        "queer review"
+      ],
+      "domain": "thequeerreview.com"
+    },
+    "city-am": {
+      "displayName": "City A.M.",
+      "tier": 3,
+      "aliases": [
+        "city-am",
+        "city am",
+        "cityam"
+      ],
+      "domain": "cityam.com"
+    },
+    "metro-uk": {
+      "displayName": "Metro UK",
+      "tier": 3,
+      "aliases": [
+        "metro-uk",
+        "metro uk",
+        "metro-source"
+      ],
+      "domain": "metro.co.uk"
+    },
+    "the-sun": {
+      "displayName": "The Sun",
+      "tier": 3,
+      "aliases": [
+        "the-sun",
+        "the sun"
+      ],
+      "domain": "thesun.co.uk"
+    },
+    "empire": {
+      "displayName": "Empire",
+      "tier": 3,
+      "aliases": [
+        "empire",
+        "empire magazine"
+      ],
+      "domain": "empireonline.com"
+    },
+    "screen-daily": {
+      "displayName": "Screen Daily",
+      "tier": 3,
+      "aliases": [
+        "screen-daily",
+        "screen daily",
+        "screendaily"
+      ],
+      "domain": "screendaily.com"
+    },
+    "soundsphere-magazine": {
+      "displayName": "Soundsphere Magazine",
+      "tier": 3,
+      "aliases": [
+        "soundsphere-magazine",
+        "soundsphere"
+      ],
+      "domain": "soundspheremag.com"
+    },
+    "nerds-of-color": {
+      "displayName": "The Nerds of Color",
+      "tier": 3,
+      "aliases": [
+        "nerds-of-color",
+        "the-nerds-of-color"
+      ],
+      "domain": "thenerdsofcolor.org"
+    },
+    "geeks-of-color": {
+      "displayName": "Geeks of Color",
+      "tier": 3,
+      "aliases": [
+        "geeks-of-color"
+      ],
+      "domain": "geeksofcolor.co"
+    },
+    "oakland-post": {
+      "displayName": "The Oakland Post",
+      "tier": 3,
+      "aliases": [
+        "oakland-post",
+        "the-oakland-post"
+      ],
+      "domain": null
+    },
+    "daily-cal": {
+      "displayName": "The Daily Californian",
+      "tier": 3,
+      "aliases": [
+        "daily-cal",
+        "the-daily-cal"
+      ],
+      "domain": "dailycal.org"
+    },
+    "the-daily": {
+      "displayName": "The Daily",
+      "tier": 3,
+      "aliases": [
+        "the-daily"
+      ],
+      "domain": null
+    },
+    "usc-guardian": {
+      "displayName": "USC Guardian",
+      "tier": 3,
+      "aliases": [
+        "usc-guardian"
+      ],
+      "domain": null
+    },
+    "berkeleyside": {
+      "displayName": "Berkeleyside",
+      "tier": 3,
+      "aliases": [
+        "berkeleyside"
+      ],
+      "domain": "berkeleyside.org"
+    },
+    "business-insider": {
+      "displayName": "Business Insider",
+      "tier": 3,
+      "aliases": [
+        "business-insider",
+        "business insider",
+        "businessinsider"
+      ],
+      "domain": "businessinsider.com"
+    },
+    "screen-rant": {
+      "displayName": "Screen Rant",
+      "tier": 3,
+      "aliases": [
+        "screen-rant",
+        "screen rant",
+        "screenrant"
+      ],
+      "domain": "screenrant.com"
+    },
+    "screen-zealots": {
+      "displayName": "Screen Zealots",
+      "tier": 3,
+      "aliases": [
+        "screen-zealots"
+      ],
+      "domain": "screenzealots.com"
+    },
+    "movieweb": {
+      "displayName": "MovieWeb",
+      "tier": 3,
+      "aliases": [
+        "movieweb",
+        "movie-web"
+      ],
+      "domain": "movieweb.com"
+    },
+    "moviefone": {
+      "displayName": "Moviefone",
+      "tier": 3,
+      "aliases": [
+        "moviefone",
+        "movie-fone"
+      ],
+      "domain": "moviefone.com"
+    },
+    "crooked-marquee": {
+      "displayName": "Crooked Marquee",
+      "tier": 3,
+      "aliases": [
+        "crooked-marquee",
+        "crooked marquee"
+      ],
+      "domain": "crookedmarquee.com"
+    },
+    "cbc": {
+      "displayName": "CBC",
+      "tier": 3,
+      "aliases": [
+        "cbc",
+        "cbc-news"
+      ],
+      "domain": "cbc.ca"
+    },
+    "so-sumi": {
+      "displayName": "So Sumi",
+      "tier": 3,
+      "aliases": [
+        "so-sumi",
+        "so sumi"
+      ],
+      "domain": null
+    },
+    "minneapolis-star-tribune": {
+      "displayName": "Minneapolis Star Tribune",
+      "tier": 3,
+      "aliases": [
+        "minneapolis-star-tribune",
+        "star tribune",
+        "startribune"
+      ],
+      "domain": "startribune.com"
+    },
+    "purewow": {
+      "displayName": "PureWow",
+      "tier": 3,
+      "aliases": [
+        "purewow",
+        "pure-wow"
+      ],
+      "domain": "purewow.com"
+    },
+    "uk-film-review": {
+      "displayName": "UK Film Review",
+      "tier": 3,
+      "aliases": [
+        "uk-film-review"
+      ],
+      "domain": "ukfilmreview.co.uk"
+    },
+    "we-are-movie-geeks": {
+      "displayName": "We Are Movie Geeks",
+      "tier": 3,
+      "aliases": [
+        "we-are-movie-geeks"
+      ],
+      "domain": "wearemoviegeeks.com"
+    },
+    "solzy-at-the-movies": {
+      "displayName": "Solzy at the Movies",
+      "tier": 3,
+      "aliases": [
+        "solzy-at-the-movies"
+      ],
+      "domain": "solzyatthemovies.com"
+    },
+    "nexus-point-news": {
+      "displayName": "Nexus Point News",
+      "tier": 3,
+      "aliases": [
+        "nexus-point-news"
+      ],
+      "domain": null
+    },
+    "scmp": {
+      "displayName": "South China Morning Post",
+      "tier": 3,
+      "aliases": [
+        "scmp",
+        "south china morning post"
+      ],
+      "domain": "scmp.com"
+    },
+    "inverse": {
+      "displayName": "Inverse",
+      "tier": 3,
+      "aliases": [
+        "inverse"
+      ],
+      "domain": "inverse.com"
+    },
+    "joysauce": {
+      "displayName": "JoySauce",
+      "tier": 3,
+      "aliases": [
+        "joysauce"
+      ],
+      "domain": "joysauce.com"
+    },
+    "cbr": {
+      "displayName": "CBR",
+      "tier": 3,
+      "aliases": [
+        "cbr"
+      ],
+      "domain": "cbr.com"
+    },
+    "mamas-geeky": {
+      "displayName": "Mama's Geeky",
+      "tier": 3,
+      "aliases": [
+        "mamas-geeky"
+      ],
+      "domain": "mamasgeeky.com"
+    },
+    "fresh-fiction": {
+      "displayName": "Fresh Fiction",
+      "tier": 3,
+      "aliases": [
+        "fresh-fiction",
+        "fresh fiction"
+      ],
+      "domain": "freshfiction.com"
+    },
+    "consequence": {
+      "displayName": "Consequence",
+      "tier": 3,
+      "aliases": [
+        "consequence",
+        "consequence-of-sound"
+      ],
+      "domain": "consequence.net"
+    },
+    "collider": {
+      "displayName": "Collider",
+      "tier": 3,
+      "aliases": [
+        "collider"
+      ],
+      "domain": "collider.com"
+    },
+    "den-of-geek": {
+      "displayName": "Den of Geek",
+      "tier": 3,
+      "aliases": [
+        "den-of-geek",
+        "den of geek",
+        "denofgeek"
+      ],
+      "domain": "denofgeek.com"
+    },
+    "gizmodo": {
+      "displayName": "Gizmodo",
+      "tier": 3,
+      "aliases": [
+        "gizmodo"
+      ],
+      "domain": "gizmodo.com"
+    },
+    "awards-watch": {
+      "displayName": "Awards Watch",
+      "tier": 3,
+      "aliases": [
+        "awards-watch",
+        "awards watch"
+      ],
+      "domain": "awardswatch.com"
+    },
+    "wbur": {
+      "displayName": "WBUR",
+      "tier": 3,
+      "aliases": [
+        "wbur",
+        "wburboston-npr",
+        "909wbur"
+      ],
+      "domain": "wbur.org"
+    },
+    "weliveentertainment": {
+      "displayName": "We Live Entertainment",
+      "tier": 3,
+      "aliases": [
+        "weliveentertainment",
+        "we-live-entertainment"
+      ],
+      "domain": "weliveentertainment.com"
+    },
+    "upi": {
+      "displayName": "UPI",
+      "tier": 3,
+      "aliases": [
+        "upi",
+        "united press international"
+      ],
+      "domain": "upi.com"
+    },
+    "gamesradar": {
+      "displayName": "GamesRadar+",
+      "tier": 3,
+      "aliases": [
+        "gamesradar",
+        "games-radar",
+        "gamesradar+"
+      ],
+      "domain": "gamesradar.com"
+    },
+    "seattle-gay-scene": {
+      "displayName": "Seattle Gay Scene",
+      "tier": 3,
+      "aliases": [
+        "seattle-gay-scene"
+      ],
+      "domain": "seattlegayscene.com"
+    },
+    "santa-barbara-independent": {
+      "displayName": "Santa Barbara Independent",
+      "tier": 3,
+      "aliases": [
+        "santa-barbara-independent",
+        "santa barbara independent"
+      ],
+      "domain": "independent.com"
+    },
+    "berkshire-eagle": {
+      "displayName": "The Berkshire Eagle",
+      "tier": 3,
+      "aliases": [
+        "berkshire-eagle",
+        "the berkshire eagle",
+        "the-berkshire-eagle"
+      ],
+      "domain": "berkshireeagle.com"
+    },
+    "berkshire-edge": {
+      "displayName": "The Berkshire Edge",
+      "tier": 3,
+      "aliases": [
+        "berkshire-edge",
+        "the berkshire edge",
+        "the-berkshire-edge"
+      ],
+      "domain": "theberkshireedge.com"
+    },
+    "albany-times-union": {
+      "displayName": "Albany Times-Union",
+      "tier": 3,
+      "aliases": [
+        "albany-times-union",
+        "the-albany-times-union",
+        "the albany times-union",
+        "albany times-union"
+      ],
+      "domain": "timesunion.com"
+    },
+    "winningham-writes": {
+      "displayName": "Winningham Writes",
+      "tier": 3,
+      "aliases": [
+        "winningham-writes"
+      ],
+      "domain": null
+    },
+    "onstage-blog": {
+      "displayName": "OnStage Blog",
+      "tier": 3,
+      "aliases": [
+        "onstage-blog",
+        "onstage blog",
+        "onstageblog"
+      ],
+      "domain": "onstageblog.com"
+    },
+    "hot-pepper-theater": {
+      "displayName": "Hot Pepper Theater",
+      "tier": 3,
+      "aliases": [
+        "hot-pepper-theater"
+      ],
+      "domain": null
+    },
+    "artsatl": {
+      "displayName": "ArtsATL",
+      "tier": 3,
+      "aliases": [
+        "artsatl",
+        "arts-atl"
+      ],
+      "domain": "artsatl.org"
+    },
+    "atlanta-intown": {
+      "displayName": "Atlanta INtown",
+      "tier": 3,
+      "aliases": [
+        "atlanta-intown",
+        "atlanta intown"
+      ],
+      "domain": "atlantaintownpaper.com"
+    },
+    "boston-arts-diary": {
+      "displayName": "Boston Arts Diary",
+      "tier": 3,
+      "aliases": [
+        "boston-arts-diary",
+        "boston arts diary"
+      ],
+      "domain": null
+    },
+    "culture-vulture": {
+      "displayName": "Culture Vulture",
+      "tier": 3,
+      "aliases": [
+        "culture-vulture",
+        "culture vulture"
+      ],
+      "domain": "culturevulture.net"
+    },
+    "wnbc": {
+      "displayName": "WNBC",
+      "tier": 3,
+      "aliases": [
+        "wnbc",
+        "wnbc-tv"
+      ],
+      "domain": "nbcnewyork.com"
+    },
+    "sacramento-bee": {
+      "displayName": "Sacramento Bee",
+      "tier": 3,
+      "aliases": [
+        "sacramento-bee",
+        "sacramento bee",
+        "the sacramento bee"
+      ],
+      "domain": "sacbee.com"
+    },
+    "burlington-free-press": {
+      "displayName": "Burlington Free Press",
+      "tier": 3,
+      "aliases": [
+        "burlington-free-press",
+        "burlington free press"
+      ],
+      "domain": "burlingtonfreepress.com"
+    },
+    "contra-costa-times": {
+      "displayName": "Contra Costa Times",
+      "tier": 3,
+      "aliases": [
+        "contra-costa-times",
+        "contra costa times"
+      ],
+      "domain": "eastbaytimes.com"
+    },
+    "news-tribune": {
+      "displayName": "News Tribune",
+      "tier": 3,
+      "aliases": [
+        "news-tribune",
+        "news tribune",
+        "the news tribune"
+      ],
+      "domain": "thenewstribune.com"
+    },
+    "herald-tribune": {
+      "displayName": "Herald Tribune",
+      "tier": 3,
+      "aliases": [
+        "herald-tribune",
+        "herald tribune"
+      ],
+      "domain": "heraldtribune.com"
+    },
+    "harvard-magazine": {
+      "displayName": "Harvard Magazine",
+      "tier": 3,
+      "aliases": [
+        "harvard-magazine",
+        "harvard magazine"
+      ],
+      "domain": "harvardmagazine.com"
+    },
+    "wgbh": {
+      "displayName": "WGBH/GBH",
+      "tier": 3,
+      "aliases": [
+        "wgbh",
+        "wghbmorning-edition",
+        "gbh"
+      ],
+      "domain": "wgbh.org"
+    },
+    "around-the-town-chicago": {
+      "displayName": "Around the Town Chicago",
+      "tier": 3,
+      "aliases": [
+        "around-the-town-chicago",
+        "aroundthetownchicago"
+      ],
+      "domain": null
+    },
+    "australian": {
+      "displayName": "The Australian",
+      "tier": 3,
+      "aliases": [
+        "australian",
+        "the-australian",
+        "the australian"
+      ],
+      "domain": "theaustralian.com.au"
+    },
+    "age": {
+      "displayName": "The Age",
+      "tier": 3,
+      "aliases": [
+        "age",
+        "the-age",
+        "the age"
+      ],
+      "domain": "theage.com.au"
+    },
+    "herald-sun": {
+      "displayName": "Herald Sun",
+      "tier": 3,
+      "aliases": [
+        "herald-sun",
+        "the-herald-sun",
+        "the herald sun"
+      ],
+      "domain": "heraldsun.com.au"
+    },
+    "smh": {
+      "displayName": "Sydney Morning Herald",
+      "tier": 3,
+      "aliases": [
+        "smh",
+        "the-sydney-morning-herald",
+        "the sydney morning herald",
+        "sydney morning herald"
+      ],
+      "domain": "smh.com.au"
+    },
+    "mirror": {
+      "displayName": "The Mirror",
+      "tier": 3,
+      "aliases": [
+        "mirror",
+        "the-mirror",
+        "the mirror",
+        "daily mirror"
+      ],
+      "domain": "mirror.co.uk"
+    },
+    "nz-herald": {
+      "displayName": "New Zealand Herald",
+      "tier": 3,
+      "aliases": [
+        "nz-herald",
+        "the-new-zealand-herald",
+        "new zealand herald",
+        "nzherald"
+      ],
+      "domain": "nzherald.co.nz"
+    },
+    "detroit-news": {
+      "displayName": "The Detroit News",
+      "tier": 3,
+      "aliases": [
+        "detroit-news",
+        "the-detroit-news",
+        "the detroit news"
+      ],
+      "domain": "detroitnews.com"
+    },
+    "australian-stage": {
+      "displayName": "Australian Stage",
+      "tier": 3,
+      "aliases": [
+        "australian-stage",
+        "australian stage"
+      ],
+      "domain": "australianstage.com.au"
+    },
+    "aussie-theatre": {
+      "displayName": "Aussie Theatre",
+      "tier": 3,
+      "aliases": [
+        "aussie-theatre",
+        "aussie theatre"
+      ],
+      "domain": "aussietheatre.com.au"
+    },
+    "canberra-times": {
+      "displayName": "Canberra Times",
+      "tier": 3,
+      "aliases": [
+        "canberra-times",
+        "canberra times",
+        "the canberra times"
+      ],
+      "domain": "canberratimes.com.au"
+    },
+    "3news": {
+      "displayName": "3 News",
+      "tier": 3,
+      "aliases": [
+        "3news",
+        "3-news"
+      ],
+      "domain": "newshub.co.nz"
+    },
+    "tap-into": {
+      "displayName": "TAPinto",
+      "tier": 3,
+      "aliases": [
+        "tap-into",
+        "tapinto"
+      ],
+      "domain": "tapinto.net"
+    },
+    "metro-source": {
+      "displayName": "MetroSource",
+      "tier": 3,
+      "aliases": [
+        "metro-source",
+        "metrosource"
+      ],
+      "domain": "metrosource.com"
+    },
+    "berkshire-on-stage": {
+      "displayName": "Berkshire on Stage",
+      "tier": 3,
+      "aliases": [
+        "berkshire-on-stage",
+        "berkshire on stage"
+      ],
+      "domain": "berkshireonstage.com"
+    },
+    "the-movie-cricket": {
+      "displayName": "The Movie Cricket",
+      "tier": 3,
+      "aliases": [
+        "the-movie-cricket",
+        "movie cricket",
+        "moviecricket"
+      ],
+      "domain": "moviecricket.net"
+    },
+    "about-entertainment": {
+      "displayName": "About Entertainment",
+      "tier": 3,
+      "aliases": [
+        "about-entertainment",
+        "about entertainment"
+      ],
+      "domain": null
     }
   },
   "_aliasIndex": {
@@ -2176,6 +3399,354 @@
     "chelsea-community-news-michael-musto": "chelsea-community-news",
     "america-magazine-rob-weinert-kendt": "america-magazine",
     "chicago-tribute": "chicagotribune",
-    "did-they-like-it": "dtli"
+    "did-they-like-it": "dtli",
+    "bloomberg-news": "bloomberg",
+    "the-star-ledger": "njcom",
+    "the-inquirer": "philadelphia-inquirer",
+    "the-telegraph-uk": "telegraph",
+    "the-guardian-uk": "guardian",
+    "the-huffington-pos": "huffpost",
+    "the-record": "bergen-record",
+    "the-radio-times": "radio-times",
+    "the-australian": "australian",
+    "the-age": "age",
+    "the-herald-sun": "herald-sun",
+    "the-sydney-morning-herald": "smh",
+    "the-mirror": "mirror",
+    "the-new-zealand-herald": "nz-herald",
+    "the-detroit-news": "detroit-news",
+    "dc-metro": "dctheatrescene",
+    "newyorkmagazine": "vulture",
+    "sf-gate": "sfgate",
+    "rogerebertcom": "roger-ebert",
+    "thestarcom": "toronto-star",
+    "shobwiz411": "showbiz411",
+    "assocoiated-press": "ap",
+    "newday": "newsday",
+    "new-york-1": "ny1",
+    "newjerseycom": "njcom",
+    "the-jewish-daily-forward": "forward",
+    "britishtheatrecom": "british-theatre",
+    "1minutecritic": "one-minute-critic",
+    "the-washington-times": "washington-times",
+    "the-albany-times-union": "albany-times-union",
+    "wburboston-npr": "wbur",
+    "wghbmorning-edition": "wgbh",
+    "aroundthetownchicago": "around-the-town-chicago",
+    "theater-scene-net": "theaterscenenet",
+    "theaterscene.net": "theaterscenenet",
+    "theater-scene-org": "theatersceneorg",
+    "theaterscene.org": "theatersceneorg",
+    "newsweek-magazine": "newsweek",
+    "boston herald": "boston-herald",
+    "bostonherald": "boston-herald",
+    "abc news": "abc-news",
+    "abcnews": "abc-news",
+    "washington times": "washington-times",
+    "the washington times": "washington-times",
+    "tv guide": "tv-guide",
+    "tvguide": "tv-guide",
+    "san diego union-tribune": "san-diego-union-tribune",
+    "the-san-diego-union-tribune": "san-diego-union-tribune",
+    "vogue-magazine": "vogue",
+    "fox news": "fox-news",
+    "foxnews": "fox-news",
+    "dread central": "dread-central",
+    "dreadcentral": "dread-central",
+    "british theatre": "british-theatre",
+    "britishtheatre": "british-theatre",
+    "sfchronicle": "sfgate",
+    "sf gate": "sfgate",
+    "rogerebert": "roger-ebert",
+    "roger ebert": "roger-ebert",
+    "broadway journal": "broadway-journal",
+    "broadwayjournal": "broadway-journal",
+    "lilith magazine": "lilith-magazine",
+    "lilith": "lilith-magazine",
+    "the epoch times": "epoch-times",
+    "the-epoch-times": "epoch-times",
+    "epochtimes": "epoch-times",
+    "westfield news": "westfield-news",
+    "the-westfield-news": "westfield-news",
+    "parterre box": "parterre-box",
+    "parterrebox": "parterre-box",
+    "the mary sue": "the-mary-sue",
+    "themarysue": "the-mary-sue",
+    "the seattle times": "seattle-times",
+    "the-seattle-times": "seattle-times",
+    "seattletimes": "seattle-times",
+    "san diego reader": "san-diego-reader",
+    "cape cod times": "cape-cod-times",
+    "patriot ledger": "patriot-ledger",
+    "the patriot ledger": "patriot-ledger",
+    "reading eagle": "reading-eagle",
+    "harlem community news": "harlem-community-news",
+    "shaw local": "shaw-local",
+    "daily herald": "daily-herald",
+    "chicago reader": "chicago-reader",
+    "chicago sun-times": "chicago-sun-times",
+    "chicagosuntimes": "chicago-sun-times",
+    "edge media network": "edge-media-network",
+    "edge": "edge-media-network",
+    "third coast review": "third-coast-review",
+    "black girl nerds": "black-girl-nerds",
+    "theatre weekly": "theatre-weekly",
+    "broadway baby": "broadway-baby",
+    "west end best friend": "west-end-best-friend",
+    "reviews hub": "the-reviews-hub",
+    "queer review": "the-queer-review",
+    "city am": "city-am",
+    "cityam": "city-am",
+    "metro uk": "metro-uk",
+    "metro-source": "metro-uk",
+    "the sun": "the-sun",
+    "empire magazine": "empire",
+    "screen daily": "screen-daily",
+    "screendaily": "screen-daily",
+    "soundsphere": "soundsphere-magazine",
+    "the-nerds-of-color": "nerds-of-color",
+    "the-oakland-post": "oakland-post",
+    "the-daily-cal": "daily-cal",
+    "business insider": "business-insider",
+    "businessinsider": "business-insider",
+    "screen rant": "screen-rant",
+    "screenrant": "screen-rant",
+    "movie-web": "movieweb",
+    "movie-fone": "moviefone",
+    "crooked marquee": "crooked-marquee",
+    "cbc-news": "cbc",
+    "so sumi": "so-sumi",
+    "star tribune": "minneapolis-star-tribune",
+    "startribune": "minneapolis-star-tribune",
+    "pure-wow": "purewow",
+    "south china morning post": "scmp",
+    "fresh fiction": "fresh-fiction",
+    "consequence-of-sound": "consequence",
+    "den of geek": "den-of-geek",
+    "denofgeek": "den-of-geek",
+    "awards watch": "awards-watch",
+    "909wbur": "wbur",
+    "we-live-entertainment": "weliveentertainment",
+    "united press international": "upi",
+    "games-radar": "gamesradar",
+    "gamesradar+": "gamesradar",
+    "santa barbara independent": "santa-barbara-independent",
+    "the berkshire eagle": "berkshire-eagle",
+    "the-berkshire-eagle": "berkshire-eagle",
+    "the berkshire edge": "berkshire-edge",
+    "the-berkshire-edge": "berkshire-edge",
+    "the albany times-union": "albany-times-union",
+    "albany times-union": "albany-times-union",
+    "onstage blog": "onstage-blog",
+    "onstageblog": "onstage-blog",
+    "arts-atl": "artsatl",
+    "atlanta intown": "atlanta-intown",
+    "boston arts diary": "boston-arts-diary",
+    "culture vulture": "culture-vulture",
+    "wnbc-tv": "wnbc",
+    "sacramento bee": "sacramento-bee",
+    "the sacramento bee": "sacramento-bee",
+    "burlington free press": "burlington-free-press",
+    "contra costa times": "contra-costa-times",
+    "news tribune": "news-tribune",
+    "the news tribune": "news-tribune",
+    "herald tribune": "herald-tribune",
+    "harvard magazine": "harvard-magazine",
+    "gbh": "wgbh",
+    "the australian": "australian",
+    "the age": "age",
+    "the herald sun": "herald-sun",
+    "the sydney morning herald": "smh",
+    "sydney morning herald": "smh",
+    "the mirror": "mirror",
+    "daily mirror": "mirror",
+    "new zealand herald": "nz-herald",
+    "nzherald": "nz-herald",
+    "the detroit news": "detroit-news",
+    "australian stage": "australian-stage",
+    "aussie theatre": "aussie-theatre",
+    "canberra times": "canberra-times",
+    "the canberra times": "canberra-times",
+    "3-news": "3news",
+    "tapinto": "tap-into",
+    "metrosource": "metro-source",
+    "towleroad-naveen-kumar": "towleroad",
+    "theater-news-online-jeremy-gerard": "theater-news-online",
+    "theater-news-online-joe-dziemianowicz": "theater-news-online",
+    "theater-news-online-david-cote": "theater-news-online",
+    "theater-news-online-brian-scott-lipton": "theater-news-online",
+    "theatre-news-online-jeremy-gerard": "theater-news-online",
+    "theatre-news-online-joe-dziemianowicz": "theater-news-online",
+    "theatre-news-online-david-cote": "theater-news-online",
+    "theaternewsonline-joe-dziemianowicz": "theater-news-online",
+    "broadway-journal-philip-boroff": "broadway-journal",
+    "broadway-journal-richard-dana": "broadway-journal",
+    "mashable-erin-strecker": "mashable",
+    "mashable-kristy-puchko": "mashable",
+    "off-script-dan-dwyer": "off-script-with-dan-dwyer",
+    "bloomberg-jason-zinoman": "bloomberg",
+    "the-times-ann-treneman": "the-times",
+    "the-times-dominic-maxwell": "the-times",
+    "the-times-david-jays": "the-times",
+    "the-times-kevin-maher": "the-times",
+    "the-times-uk-jesse-oxfeld": "the-times",
+    "the-recs-randall-david-cook": "the-recs",
+    "the-village-voice-david-cote": "village-voice",
+    "the-village-voice-michael-feingold": "village-voice",
+    "village-voice-david-cote": "village-voice",
+    "village-voice-michael-musto": "village-voice",
+    "national-review-kyle-smith": "national-review",
+    "medium-christian-lewis": "medium",
+    "showbiz411-roger-friedman": "showbiz411",
+    "lilith-aileen-jacobson": "lilith-magazine",
+    "lilith-magazine-aileen-jacobson": "lilith-magazine",
+    "joe-dziemianowicz": "theater-news-online",
+    "david-cote": "observer",
+    "jeremy-gerard": "theater-news-online",
+    "what-should-we-do-david-cote": "observer",
+    "amnew-york-matt-windman": "amny",
+    "the-globe-and-mail-j-kelly-nestruck": "the-globe-and-mail",
+    "the-inquirer-toby-zinman": "philadelphia-inquirer",
+    "the-la-times-charles-mcnulty": "latimes",
+    "los-angeles-daily-news-dany-margolies": "latimes",
+    "los-angeles-time-charles-mcnulty": "latimes",
+    "the-mercury-news-karen-dsouza": "san-jose-mercury-news",
+    "the-theatre-times-michael-appler": "theater-news-online",
+    "the-boston-globe-terry-byrne": "boston-globe",
+    "the-chicago-sun-times-miriam-di-nunzio": "chicagotribune",
+    "abc-news-14-bob-miller": "abc-news",
+    "albany-times-union-steve-barnes": "albany-times-union",
+    "the-albany-times-union-steve-barnes": "albany-times-union",
+    "the-times-union-steve-barnes": "albany-times-union",
+    "toronto-star-joshua-chong": "toronto-star",
+    "the-rolling-stone-peter-travers": "rollingstone",
+    "boston-herald-jed-gottlieb": "boston-herald",
+    "winningham-writes-madie-winningham": "winningham-writes",
+    "the-independent-clarisse-loughrey": "the-independent",
+    "the-independent-uk": "the-independent",
+    "philadelphia-inquirer-toby-zinman": "philadelphia-inquirer",
+    "the-berkeley-eagle-j-peter-bergman": "berkshire-eagle",
+    "the-berkshire-eagle-j-peter-bergman": "berkshire-eagle",
+    "the-berkshire-eagle-lily-goldberg": "berkshire-eagle",
+    "the-berkshire-edge-j-peter-bergman": "berkshire-edge",
+    "berkshire-eagle-jeffrey-borak": "berkshire-eagle",
+    "berkshire-on-stage-barbara-waldinger": "berkshire-on-stage",
+    "hartford-courant-christopher-arnott": "hartford-courant",
+    "northjerseycom-robert-feldberg": "northjerseycom",
+    "splash-magazine-elaine-mura": "splash-magazines",
+    "times-square-chronicle-suzanna-bowling": "times-square-chronicles",
+    "the-epoch-times-betty-mohr": "epoch-times",
+    "the-westfield-news-mark-g-auerbach": "westfield-news",
+    "westfield-news-mark-g-auerbach": "westfield-news",
+    "parterre-david-fox": "parterre-box",
+    "parterre-box-david-fox-and-cameron-kelsall": "parterre-box",
+    "onstage-blog-jill-weinlein": "onstage-blog",
+    "the-mary-sue-rachel-leishman": "the-mary-sue",
+    "roger-ebert-matt-zoller-seitz": "roger-ebert",
+    "the-seattle-times-misha-berson": "seattle-times",
+    "seattle-times-gemma-wilson": "seattle-times",
+    "san-diego-tribune-james-hebert": "san-diego-union-tribune",
+    "san-diego-reader-jeff-smith": "san-diego-reader",
+    "san-diego-gay-and-lesbian-news-jean-lowerison": "san-diego-gay-and-lesbian-news",
+    "cape-cod-times-debbie-forman": "cape-cod-times",
+    "patriot-ledger-iris-fanger": "patriot-ledger",
+    "reading-eagle-george-hatza": "reading-eagle",
+    "harlem-community-news-linda-armstrong": "harlem-community-news",
+    "shaw-local-paul-lockwood": "shaw-local",
+    "daily-herald-barbara-vitello": "daily-herald",
+    "chicago-reader-kerry-reid": "chicago-reader",
+    "chicago-sun-times-steven-oxman": "chicago-sun-times",
+    "edge-media-network-robert-nesti": "edge-media-network",
+    "kget-rick-bentley": "kget",
+    "drama-in-the-hood-mark-douglass": "drama-in-the-hood",
+    "sfist-jay-barmann": "sfist",
+    "sf-gate-lily-janiak": "sfgate",
+    "third-coast-review-nancy-s-bishop": "third-coast-review",
+    "outbuzz-steven-ross": "outbuzz",
+    "black-girl-nerds-stacey-yvonne": "black-girl-nerds",
+    "from-the-fourth-row-nick-nitkowski": "from-the-fourth-row",
+    "unscripted-takes-brett-burger": "unscripted-takes",
+    "theatre-talk-boston-kobi-kassal": "theatre-talk-boston",
+    "theatre-talk-boston-lara-mccallister": "theatre-talk-boston",
+    "theatre-weekly-greg-stewart": "theatre-weekly",
+    "broadway-baby-katerina-partolina-schwartz": "broadway-baby",
+    "west-end-best-friend-james-edge": "west-end-best-friend",
+    "west-end-best-friend-laura-lott": "west-end-best-friend",
+    "matinee-radio-jamie-griffiths": "matinee-radio",
+    "londonist-franco-milazzo": "londonist",
+    "leicester-times-louise-steel": "leicester-times",
+    "the-reviews-hub-selwyn-knight": "the-reviews-hub",
+    "the-queer-review-james-kleinmann": "the-queer-review",
+    "city-am-adam-bloodworth": "city-am",
+    "metro-uk-adam-bloodworth": "metro-uk",
+    "metro-tori-brazier": "metro-uk",
+    "metro-tmichelle-murphy": "metro-uk",
+    "the-sun-chloe-kerr": "the-sun",
+    "empire-john-nugent": "empire",
+    "empire-helen-ohara": "empire",
+    "screen-daily-tim-grierson": "screen-daily",
+    "screen-daily-nikki-baughan": "screen-daily",
+    "radio-times-james-mottram": "radio-times",
+    "soundsphere-magazine-christopher-mills": "soundsphere-magazine",
+    "the-nerds-of-color-edward-hong": "nerds-of-color",
+    "geeks-of-color-joshua-mackey": "geeks-of-color",
+    "the-oakland-post-conway-jones": "oakland-post",
+    "the-daily-cal-lynn-zhou": "daily-cal",
+    "the-daily-daniel-green": "the-daily",
+    "usc-guardian-chloe-esser": "usc-guardian",
+    "berkeleyside-emily-s-mendel": "berkeleyside",
+    "the-av-club-leigh-monson": "av-club",
+    "cnn-brian-lowry": "cnn",
+    "business-insider-jason-guerrasio": "business-insider",
+    "screen-rant-rachel-labonte": "screen-rant",
+    "screen-zealots-louisa-moore": "screen-zealots",
+    "movieweb-mark-keizer": "movieweb",
+    "movie-fone-james-white": "moviefone",
+    "crooked-marquee-jason-bailey": "crooked-marquee",
+    "cbc-jackson-weaver": "cbc",
+    "so-sumi-glenn-sumi": "so-sumi",
+    "minnesota-star-tribune-jon-bream-and-rohan-preston": "minneapolis-star-tribune",
+    "purewow-danielle-long": "purewow",
+    "uk-film-review-george-wolf": "uk-film-review",
+    "we-are-movie-geeks-jim-batts": "we-are-movie-geeks",
+    "solzy-at-the-movies-danielle-solzman": "solzy-at-the-movies",
+    "nexus-point-news-demet-koc": "nexus-point-news",
+    "scmp-james-mottram": "scmp",
+    "inverse-lyvie-scott": "inverse",
+    "joysauce-siddhant-adlakha": "joysauce",
+    "huron-daily-jake-coyle": "ap",
+    "cbr-caralynn-matassa": "cbr",
+    "mamas-geeky-tessa-smith": "mamas-geeky",
+    "fresh-fiction-courtney-howard": "fresh-fiction",
+    "consequence-liz-shannon-miller": "consequence",
+    "collider-therese-lacson": "collider",
+    "collider-ross-bonaime": "collider",
+    "collider-matt-goldberg": "collider",
+    "collider-maggie-lovitt": "collider",
+    "den-of-geek-david-crow": "den-of-geek",
+    "gizmodo-germain-lussier": "gizmodo",
+    "bbc-caryn-james": "bbc-news",
+    "bbc-caryn-jones": "bbc-news",
+    "bbc-nicholas-barber": "bbc-news",
+    "av-club-jesse-hassenger": "av-club",
+    "av-club-ignatiy-vishnevetsky": "av-club",
+    "av-club-caroline-siede": "av-club",
+    "awards-watch-sophia-ciminello": "awards-watch",
+    "boston-globe-odie-henderson": "boston-globe",
+    "wbur-sean-burns": "wbur",
+    "weliveentertainment-aaron-neuwirth": "weliveentertainment",
+    "upi-fred-topel": "upi",
+    "games-radar-molly-edwards": "gamesradar",
+    "josh-at-the-movies-josh-batchelder": "josh-at-the-movies",
+    "seattle-gay-scene-michael-strangeways": "seattle-gay-scene",
+    "santa-barbara-independent-maggie-yates": "santa-barbara-independent",
+    "the-times-uk": "the-times",
+    "the-movie-cricket-sean-p-means": "the-movie-cricket",
+    "berkshire-on-stage-barbara-waldinger": "berkshire-on-stage",
+    "about entertainment": "about-entertainment",
+    "movie cricket": "the-movie-cricket",
+    "moviecricket": "the-movie-cricket",
+    "berkshire on stage": "berkshire-on-stage",
+    "newyorktheater": "nyt-theater"
   }
 }
