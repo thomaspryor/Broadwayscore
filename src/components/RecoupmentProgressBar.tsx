@@ -38,7 +38,7 @@ export default function RecoupmentProgressBar({ estimatedPct, source }: Recoupme
         />
       </div>
       {source && (
-        <p className="text-[10px] text-gray-600 mt-1">Source: {source}</p>
+        <p className="text-[10px] text-gray-500 mt-1">Source: {source}</p>
       )}
     </div>
   );

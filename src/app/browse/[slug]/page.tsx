@@ -172,7 +172,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
             <li>
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
             </li>
-            <li className="text-gray-600">/</li>
+            <li className="text-gray-500">/</li>
             <li className="text-gray-300">{config.title}</li>
           </ol>
         </nav>

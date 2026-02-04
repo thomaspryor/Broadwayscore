@@ -17,7 +17,7 @@ function TicketIcon({ className }: { className?: string }) {
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -208,7 +208,7 @@ export function LotteryTable({ data }: LotteryTableProps) {
                         </span>
                       )}
                       {!item.lotteryData.rush && !item.lotteryData.standingRoom && (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-500">—</span>
                       )}
                     </div>
                   </td>
@@ -411,7 +411,7 @@ export function RushTable({ data }: RushTableProps) {
                         </span>
                       )}
                       {!item.rushData.lottery && !item.rushData.standingRoom && (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-500">—</span>
                       )}
                     </div>
                   </td>

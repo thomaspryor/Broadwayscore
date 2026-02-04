@@ -267,7 +267,7 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
           <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
             Other Major Awards
           </span>
-          <span className="text-xs text-gray-600">({totalCount} wins)</span>
+          <span className="text-xs text-gray-500">({totalCount} wins)</span>
         </div>
         <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
       </button>
@@ -433,7 +433,7 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
               Tony Awards {tonySeason && `(${tonySeason})`}
             </span>
             {tonyCeremony && (
-              <span className="text-xs text-gray-600">{tonyCeremony} Ceremony</span>
+              <span className="text-xs text-gray-500">{tonyCeremony} Ceremony</span>
             )}
           </div>
 

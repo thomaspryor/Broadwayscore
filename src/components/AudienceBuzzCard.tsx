@@ -107,7 +107,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
       <div className="flex items-center gap-2 mb-2">
         {icon}
         <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">{name}</span>
-        {url && <ExternalLinkIcon className="text-gray-600 ml-auto" />}
+        {url && <ExternalLinkIcon className="text-gray-500 ml-auto" />}
       </div>
       {comingSoon ? (
         <div className="text-sm text-gray-500">Coming soon</div>
@@ -128,7 +128,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
     </>
   );
 
-  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 ${url ? 'hover:border-white/10 transition-colors' : ''} ${comingSoon ? 'opacity-50' : ''}`;
+  const className = `flex-1 basis-0 min-w-0 bg-surface-overlay rounded-lg p-3 border border-white/5 hover:bg-white/5 transition-colors ${url ? 'hover:border-white/10' : ''} ${comingSoon ? 'opacity-50' : ''}`;
 
   if (url) {
     return (
