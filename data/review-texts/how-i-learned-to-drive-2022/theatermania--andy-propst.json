@@ -5,8 +5,8 @@
   "criticName": "Andy Propst",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/how-i-learned-to-drive-broadway_90642.html",
   "publishDate": "April 20, 2022",
-  "fullText": "Parker and Morse give performances that are nothing short of extraordinary, finding new depths in characters they originated 25 years ago.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Parker and Morse give performances that are nothing short of extraordinary, finding new depths in characters they originated 25 years ago.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,11 +16,52 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Parker and Morse give performances that are nothing short of extraordinary, finding new depths in characters they originated 25 years ago.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (21 words)",
   "rejectedAt": "2026-02-03T16:45:34.833Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief excerpt or pull quote rather than a complete review with sufficient evaluative content to score.; openai: This text is a brief excerpt focusing on performances without a comprehensive evaluation of the show itself.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 344,
+  "archivePath": "data/archives/reviews/how-i-learned-to-drive-2022/theatermania--andy-propst_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:07:29.486Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Caldwell played Maria Callas in the original Broadway production of Terrence McNally’s ”Master Class”, among other roles.\n\nTo commemorate the life of the late actor Zoe Caldwell, all Broadway theaters will dim their lights for one minute on Friday, February 28, at exactly 7:45pm.\n\n\"Zoe Caldwell was indisputably Broadway royalty with four Tony Awards and four decades of thrilling performances in work ranging from Tennessee Williams to Euripides to Terrence McNally,\" said Thomas Schumacher, chairman of the Broadway League. \"Her audiences were struck by her elegance, her strength and the penetrating timbre of her extraordinary voice. But those of us lucky enough to have worked with her — whether on stage or in one of her rare film roles — likely equally remember her kindness and beaming smile. She was a great star and a great woman.\"\n\nCaldwell made her Broadway debut in 1965 in The Devils, returning the following year in Slapstick Tragedy, a double bill of Tennessee Williams one-act plays, for which she earned her first Tony Award for Best Featured Actress in a Play. She went on to win three more Tony Awards for her performances in The Prime of Miss Jean Brodie (1968), Medea (1982), and Master Class (1995), leading the cast as Maria Callas opposite Audra McDonald, who also earned a Tony Award for her performance as Sharon.\n\nZoe Caldwell, a Four-Time Tony-Winning Broadway Legend, Has Died at 86 \n \n \n \n\n \n \n \n\n \n\n \n\n \n\n \n\n \n\n \n \n\n \n \n \n \n Tagged in this Story\n \n\n \n \n \n Zoe Caldwell\n \n \n \n \n \n\n \n\n \n \n\n \n Latest Reviews\n \n \n See all\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
