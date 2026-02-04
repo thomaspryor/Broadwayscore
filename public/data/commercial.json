@@ -2096,7 +2096,7 @@
       "designation": "Flop",
       "weeklyRunningCost": 600000,
       "costMethodology": "trade-reported",
-      "notes": "Show closed after approximately 9 weeks with estimated weekly operating losses of over $100k. Despite 7 Tony nominations, grosses remained below break-even point.",
+      "notes": "New musical by David Yazbek, Erik Della Penna, and Itamar Moses. Off-Broadway premiere then transferred to Longacre Theatre, opened Apr 2025. Earned 7 Tony nominations including Best Musical (reunited Band's Visit team). Despite critical respect and nominations, grosses remained below $600K/week breakeven. Closed Jun 2025 after 87 total performances (~9 weeks). Nominations didn't translate to ticket sales.",
       "sources": [
         {
           "type": "reddit",
@@ -2107,16 +2107,31 @@
           "type": "reddit",
           "url": "https://www.reddit.com/r/Broadway/comments/1mifhzs/im_still_mad_dead_outlaw_closed_so_fast/",
           "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
         }
       ],
       "lastUpdated": "2026-02-04",
-      "firstAdded": "2026-02-04"
+      "firstAdded": "2026-02-04",
+      "recouped": false,
+      "deepResearch": {
+        "verifiedFields": [
+          "weeklyRunningCost",
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: 7 Tony noms including Best Musical. 87 performances. $600K/week breakeven. Band's Visit team reunion. Flop despite critical praise."
+      }
     },
     "bob-fosses-dancin-2023": {
       "designation": "Flop",
       "recouped": false,
       "recoupedSource": "Federal judge ordered producer Joey Parnes to pay more than $200,000 owed to designers, indicating financial difficulties",
-      "notes": "Short-lived revival that closed after less than 2 months. Producer ordered to pay over $200,000 to unpaid designers, suggesting severe financial distress and likely minimal investor recovery.",
+      "notes": "Revival of Fosse dance revue, directed by original cast member Wayne Cilento. Opened Mar 2023 at Music Box Theatre. Failed to secure any 2023 Tony nominations — first post-nominations casualty of the season. Closed May 2023 after only 65 regular performances (~2 months). Producer ordered to pay $200K+ to unpaid designers, indicating severe financial distress. Near-total loss of investment.",
       "sources": [
         {
           "type": "trade",
@@ -2132,10 +2147,23 @@
           "type": "trade",
           "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
           "date": "2023-12-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
         }
       ],
       "lastUpdated": "2026-02-04",
-      "firstAdded": "2026-02-04"
+      "firstAdded": "2026-02-04",
+      "deepResearch": {
+        "verifiedFields": [
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: No Tony nominations. First post-nominations casualty. 65 performances. Near-total loss."
+      }
     },
     "bad-cinderella-2023": {
       "designation": "Flop",
@@ -2170,16 +2198,41 @@
       "recouped": true,
       "recoupedDate": "2023-06",
       "recoupedSource": "Reddit post indicating Prima Facie recouped $4.1M",
-      "notes": "Limited run show starring Jodie Comer that recouped its investment during its brief 10-week Broadway run",
+      "notes": "One-woman play starring Jodie Comer in her Broadway debut. Opened Apr 2023 at Golden Theatre. Sold-out crowds from day one. Won Tony for Best Leading Actress. Recouped entire $4.1M investment by Jun 18, 2023 (~10 weeks). Broke Golden Theatre house record with $1.107M single-week gross — extraordinary for a non-musical play. Closed Jul 2, 2023 as scheduled. Definition of an easy winner.",
       "sources": [
         {
           "type": "reddit",
           "url": "https://www.reddit.com/r/Broadway/comments/14ea93c/prima_facie_starring_jodie_comer_recoups_41m/",
           "date": "2023-06-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/prima-facie-recoups-on-broadway_1706028/",
+          "date": "2023-06-18"
         }
       ],
       "lastUpdated": "2026-02-04",
-      "firstAdded": "2026-02-04"
+      "firstAdded": "2026-02-04",
+      "capitalization": 4100000,
+      "capitalizationSource": "TheaterMania recoupment announcement",
+      "weeklyRunningCost": null,
+      "weeklyRunningCostNote": "One-woman show with single set — very low running costs",
+      "costMethodology": "trade-reported",
+      "deepResearch": {
+        "verifiedFields": [
+          "capitalization",
+          "recouped",
+          "recoupedDate"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: $4.1M cap, recouped in ~10 weeks. $1.107M single-week record at Golden Theatre. Tony winner."
+      }
     },
     "new-york-new-york-2023": {
       "designation": "Flop",
@@ -2876,6 +2929,102 @@
         "verifiedDate": "2026-02-04",
         "verifiedBy": "chatgpt-deep-research",
         "notes": "GPT Deep Research: ~$35M cap (HR), ~$1M/week operating. $63M advance at opening. ~$120-130M estimated gross over 825 perf but did not recoup. COVID casualty."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "illinoise": {
+      "designation": "Flop",
+      "capitalization": 6500000,
+      "capitalizationSource": "Broadway Journal",
+      "weeklyRunningCost": 1100000,
+      "weeklyRunningCostNote": "Needed ~$1.1M/week to recoup per Broadway Journal",
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "notes": "Dance musical by Justin Peck (choreography) and Sufjan Stevens (music). Transferred from sold-out Park Avenue Armory tryout to St. James Theatre for planned 16-week limited engagement. Earned 4 Tony nominations including Best Musical, won Best Choreography. Despite critical acclaim, closed Aug 2024 after 116 regular performances without recouping its $6.5M investment.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/illinoise-to-squeak-into-broadway-season",
+          "date": "2024-04-01"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "capitalization",
+          "weeklyRunningCost",
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: $6.5M cap, needed ~$1.1M/week. 116 performances. Tony nom for Best Musical, won Choreography. Did not recoup."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "the-whos-tommy": {
+      "designation": "Fizzle",
+      "capitalization": 15700000,
+      "capitalizationSource": "Trade press / deep research synthesis",
+      "weeklyRunningCost": null,
+      "costMethodology": "deep-research",
+      "recouped": false,
+      "notes": "Revival of Pete Townshend rock opera, reuniting original 1993 creative team. Opened Mar 2024, closed Jul 2024 after 132 regular performances (~4 months). Critically acclaimed with Tony nomination for Best Revival. $15.7M capitalization not recouped during short run. Ticket sales slowed after spring opening. National tour announced.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://pitchfork.com/news/the-whos-tommy-to-close-on-broadway-after-fourth-month-revival/",
+          "date": "2024-06-25"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "capitalization",
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: $15.7M cap, critically acclaimed but 4-month run. 132 performances. Did not recoup."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "real-women-have-curves": {
+      "designation": "Flop",
+      "capitalization": null,
+      "weeklyRunningCost": null,
+      "costMethodology": "deep-research",
+      "recouped": false,
+      "notes": "New musical adaptation of Josefina López play/2002 film. Opened Apr 2025 at James Earl Jones Theatre. Almost entirely Hispanic cast and creative team. Justina Machado earned Tony nom for Best Featured Actress, score also Tony-nominated. Performed on Tony Awards telecast. Despite cultural significance, closed Jun 2025 after only 73 regular performances (~10 weeks). Too brief to recoup.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/REAL-WOMEN-HAVE-CURVES-Will-Close-On-Broadway-This-Month-20250617",
+          "date": "2025-06-17"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: Cap not disclosed. 73 performances in ~10 weeks. Tony noms but closed early. Flop."
       },
       "lastUpdated": "2026-02-04",
       "firstAdded": "2026-02-04"
