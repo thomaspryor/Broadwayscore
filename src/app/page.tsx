@@ -195,15 +195,11 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               tier3Count={show.criticScore?.tier3Count}
               showTooltip={true}
             />
-            {show.status === 'open' && show.openingDate && (() => {
-              const yearsOld = Math.floor((Date.now() - new Date(show.openingDate).getTime()) / (365.25 * 24 * 60 * 60 * 1000));
-              const openYear = new Date(show.openingDate).getFullYear();
-              return yearsOld >= 10 ? (
-                <span className="text-[8px] text-gray-500 whitespace-nowrap leading-tight">
-                  Reviews from {openYear}
-                </span>
-              ) : null;
-            })()}
+            {show.reviewYearNote && (
+              <span className="text-[8px] text-gray-500 whitespace-nowrap leading-tight">
+                {show.reviewYearNote}
+              </span>
+            )}
           </>
         )}
       </div>
