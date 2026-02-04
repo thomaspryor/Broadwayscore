@@ -69,6 +69,18 @@ git add -A && git commit -m "description" && git push origin staging
 - If you can't access a source, say so. If you don't know, say "I don't know."
 - Always fetch and verify actual data before reporting numbers
 
+### 7. NEVER Extract Metadata from URLs
+**URL structure is wildly inconsistent across outlets.** NEVER extract years, production info, show identifiers, or any other metadata from URL patterns. URLs contain republished content paths, migrated slugs, article IDs that resemble years, and other misleading patterns.
+
+- **NEVER** extract a year from a URL to determine which production a review belongs to
+- **NEVER** compare a URL year to a show's opening year to flag wrong-production content
+- **NEVER** filter or skip reviews based on URL path patterns
+- **DO** use publish date (editorially set, reliable) for date-based checks
+- **DO** use review text content (cast names, theater names) for production verification
+- **DO** use exact URL matching (same URL = same article) for deduplication
+
+Multiple past sessions have introduced bugs by assuming URL years indicate production years. This is wrong — a 2021 URL can contain a 2024 Broadway review (republished), and a URL with `/6910/` is an article ID, not a year.
+
 ---
 
 ## Project Overview
@@ -84,7 +96,7 @@ A website aggregating Broadway show reviews into composite scores (independent B
 - **8,900+ review source files**, **3,439 scored reviews** in `reviews.json`
 - **Critics-only scoring** (V1 approach)
 - **TodayTix-inspired UI** with card layout, hero images, show detail pages
-- **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`. Open shows use native square thumbnails (1080x1080) from TodayTix API; closed shows use cropped-from-portrait squares via Contentful transforms
+- **Locally archived images** in `public/images/shows/`, CDN URL backups in `data/image-sources.json`. Open shows use native square thumbnails (1080x1080) from TodayTix API; closed shows use cropped-from-portrait squares via Contentful transforms. **Feb 2026 cleanup**: 280 wrong/cross-contaminated images deleted via LLM vision audit (see [Image Audit & Cleanup](#image-audit--cleanup-feb-2026)). ~250 closed shows now show placeholders pending Phase 2 re-fetch.
 - **URL-based filtering** with shareable filter state
 
 ### Shows Database
@@ -258,6 +270,8 @@ data/
 - `scripts/update-commercial-data.js` - Weekly commercial data automation
 - `scripts/generate-critic-consensus.js` - LLM editorial summaries
 - `scripts/fetch-show-images-auto.js` - Image fetcher: TodayTix API (open shows) → page scrape → Playbill fallback
+- `scripts/audit-images-llm.js` - LLM vision audit of all thumbnails using Gemini 2.0 Flash
+- `scripts/apply-image-cleanup.js` - Curated image cleanup with false positive overrides
 - `scripts/archive-show-images.js` - Downloads CDN images to local WebP files
 - `scripts/scrape-nysr-reviews.js` - NYSR full text + star ratings via WordPress API
 - `scripts/scrape-playbill-verdict.js` - Playbill Verdict review URL discovery
@@ -668,15 +682,11 @@ Each review file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
 
 **Wrong-production prevention guards (Feb 2026):** Three layers prevent wrong-production/wrong-show content from entering the corpus:
 
-1. **`gather-reviews.js`** — `production-verifier.js` checks review text against show metadata at intake time. Only runs for reviews entering via aggregator sources (DTLI, BWW, Show Score, etc.).
+1. **`gather-reviews.js`** — `production-verifier.js` checks review publish date and text against show metadata at intake time. Cross-production URL dedup prevents the same URL from being saved in multiple production directories (e.g., `les-miserables-1987/` and `les-miserables-2014/`).
 
-2. **`scrape-playbill-verdict.js`** — Two guards:
-   - Title filter (`isNotBroadway()`) rejects streaming/TV keywords: "apple tv", "netflix", "hulu", "disney+", "streaming", "amazon prime", "tv series", "tv show"
-   - URL year check: extracts year from review URL, compares to show opening year. Skips if gap > 3 years before or 2 years after opening. Catches TV series reviews (e.g., 2021 Schmigadoon! Apple TV+ vs 2026 Broadway) and old off-Broadway productions.
+2. **`scrape-playbill-verdict.js`** — Title filter (`isNotBroadway()`) rejects streaming/TV keywords: "apple tv", "netflix", "hulu", "disney+", "streaming", "amazon prime", "tv series", "tv show".
 
-3. **`collect-review-texts.js`** — Post-scrape date check in `updateReviewJson()`: after successfully scraping fullText, extracts year from URL, compares to show opening year. Auto-flags `wrongProduction: true` with explanatory note if gap exceeds ±3/+2 years. Uses `_showsJsonCache` for efficient shows.json lookups.
-
-**Year gap thresholds:** `urlYear < showYear - 3` or `urlYear > showYear + 2`. The asymmetric window accounts for pre-opening press (reviews up to 3 years before) and post-opening coverage (up to 2 years after). URL year extraction uses `/\/((?:19|20)\d{2})\//` pattern restricted to plausible years (avoids matching article IDs like `/6910/`).
+3. **Cross-production URL dedup** — `gather-reviews.js` builds a global URL index on startup and blocks saving any review whose URL already exists in a different production directory.
 
 ## Subscription Access for Paywalled Sites
 
@@ -831,12 +841,96 @@ Detection: `scripts/audit-content-quality.js` "Critic Name Mismatch" check.
 - **2 fullText matches excerpt:** purlie-victorious-2023 and the-roommate-2024 — partial scrapes marked truncated for rescrape.
 - **1 web-search null URL:** lion-king washpost legacy entry.
 
-**Schmigadoon TV series pattern (FIXED Feb 2026):** 14 reviews in `schmigadoon-2026/` were for the 2021 Apple TV+ series, not the 2026 Broadway musical. All entered via `scrape-playbill-verdict.js` which lacked streaming/TV title filters and URL year checks. Fixed: all 14 flagged `wrongShow: true`, fullText nulled. Prevention: playbill-verdict now has title keyword filter + URL year check (see wrong-production guards above).
+**Schmigadoon TV series pattern (FIXED Feb 2026):** 14 reviews in `schmigadoon-2026/` were for the 2021 Apple TV+ series, not the 2026 Broadway musical. All entered via `scrape-playbill-verdict.js` which lacked streaming/TV title filters. Fixed: all 14 flagged `wrongShow: true`, fullText nulled. Prevention: playbill-verdict now has title keyword filter (`isNotBroadway()`) that rejects streaming/TV keywords.
 
 **L&SA and TalkingBroadway URLs are NOT generic:** Earlier audit flagged these as cross-show duplicate URLs, but they use query parameters for routing (`?ID=`, `?page=&id=`). The audit's `normalizeUrl()` was stripping query params, causing false positives. Fixed by preserving query params (only strips tracking params like `utm_*`).
 
 **27 cross-outlet duplicate-text reviews:** Files with `duplicateTextOf` field where the same fullText appears at a different outlet (e.g., Chris Jones at both Chicago Tribune and NY Daily News). These are legitimate — the same freelance critic published in multiple outlets.
 
-**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 17 issues (9 URL year mismatches for long-running shows, 4 domain mismatches from freelancer syndication, 1 cross-show roundup, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
+**Content quality audit:** Run `node scripts/audit-content-quality.js` after any bulk data changes. Current baseline: 17 issues (4 domain mismatches from freelancer syndication, 1 cross-show roundup, 2 fullText≈excerpt, 1 null URL). Zero critic name mismatches.
 
 **Test infrastructure (ALL GREEN Feb 2026):** CI fully passing. Both `ensemble.test.mjs` and `trade-press-scraper.test.mjs` use Node test runner with `createRequire` for CJS module loading. Text quality audit uses `contentTier` fallback. Review-text validator treats unknown outlets and garbage critic names as warnings (not errors). Symlink double-counting fixed in all validation scripts.
+
+## Image Audit & Cleanup (Feb 2026)
+
+### Background
+
+The `fetch-square-images.js` pipeline (Google Images) had **zero content validation** — it saved whatever Google returned as a thumbnail. This resulted in X/Twitter logos, Instagram logos, WordPress logos, seating charts, and wrong-show art being used as thumbnails for ~230 shows. That pipeline commit was reverted, but the bad images persisted in `public/images/shows/`.
+
+### What Was Done (Phase 1 — COMPLETE)
+
+1. **LLM Vision Audit** (`scripts/audit-images-llm.js`): Used Gemini 2.0 Flash to classify all 700+ show thumbnails as correct/wrong. Cost: ~$0.12.
+2. **Manual false positive review**: Gemini had ~30% false positive rate on images where show title was cropped off in the square crop. Manually verified all 17 recent (2019+) DELETE flags → 10 were false positives, 5 true positives, 2 borderline.
+3. **Curated cleanup** (`scripts/apply-image-cleanup.js`): Deleted 280 images (229 bad + 51 orphaned .jpg where .webp exists), archived all originals to `data/audit/deleted-images/`, nulled 229 thumbnails in shows.json.
+4. **Verified**: All 45 open/previews shows retain correct thumbnails. Zero null thumbnails for currently running shows. Build passes. Live site verified.
+
+### Key Learnings
+
+**Image format reliability hierarchy:**
+- `.webp` from TodayTix API (open shows) → **highly reliable**, native square 1080x1080
+- `.webp` from Contentful transforms (closed shows) → **reliable**, cropped-from-portrait
+- `.jpg` from Google Images pipeline → **unreliable**, caused all contamination
+- CDN URLs in shows.json → **mostly reliable** (21 shows, all verified correct)
+
+**LLM vision prompt issues:**
+- Asking "is this the correct thumbnail for [SHOW]?" causes ~30% false positives when show title is cropped off
+- Legitimate generic art (Playbill-standard template logos, cast photos without title text) gets flagged
+- Pre-2019 shows from Google Images pipeline are almost all genuinely wrong (confirmed by spot-checks)
+- Post-2019 shows (TodayTix era) are almost all correctly flagged as false positives
+
+**Cross-contaminated hash groups found (4 groups, all cleaned):**
+- **X/Twitter logo**: bob-fosses-dancin-2023, jerusalem-2011, ohio-state-murders-2022
+- **Instagram logo**: arcadia-2011, catch-me-if-you-can-2011
+- **"The Monsters" art**: the-country-house-2014, the-royal-family-2009
+- **WordPress logo**: gigi-2015, that-championship-season-2011, the-lieutenant-of-inishmore-2006
+
+**False positives (10 shows — correct images, title cropped in square):**
+giant-2026, appropriate-2023, sunset-boulevard-2024, cult-of-love-2024, all-in-comedy-about-love-2024, purpose-2025, good-night-and-good-luck-2025, leopoldstadt-2022, sweeney-todd-2023, sea-wall-2019. These are listed in `FALSE_POSITIVES` set in `apply-image-cleanup.js`.
+
+### How to Re-Run
+
+```bash
+# Re-run full audit (dry-run, takes ~70 min due to rate limiting)
+node scripts/audit-images-llm.js
+
+# Validate prompt with known samples first
+node scripts/audit-images-llm.js --validate-only
+
+# Apply curated cleanup (archives originals first)
+node scripts/apply-image-cleanup.js --dry-run   # Preview
+node scripts/apply-image-cleanup.js --apply      # Execute
+```
+
+### Recovery
+
+All deleted originals are archived in `data/audit/deleted-images/{show-id}/`. To restore an image:
+```bash
+cp data/audit/deleted-images/{show-id}/thumbnail.webp public/images/shows/{show-id}/thumbnail.webp
+```
+Then update `shows.json` to set the thumbnail path back to `/images/shows/{show-id}/thumbnail.webp`.
+
+### Current Image State
+
+- **~460 shows** with local thumbnails (`.webp` or `.jpg` in `public/images/shows/`)
+- **~21 shows** with CDN URL thumbnails (verified correct)
+- **~250 shows** with null thumbnails (display placeholder via `ShowImage.tsx` fallback)
+- **0 open/previews shows** with null or wrong thumbnails
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `scripts/audit-images-llm.js` | LLM vision audit (Gemini 2.0 Flash), ~$0.12/run |
+| `scripts/apply-image-cleanup.js` | Curated cleanup with false positive overrides |
+| `data/audit/image-verification.json` | Full audit results (per-show classification) |
+| `data/audit/deleted-images/` | Archive of all deleted originals |
+| `data/image-sources.json` | Backup of original CDN URLs |
+| `src/components/ShowImage.tsx` | Image component with fallback chain: thumbnail → poster → hero → placeholder |
+
+### Phase 2 (NOT YET DONE): LLM-Verified Image Pipeline
+
+Plan at `/Users/tompryor/.claude/plans/temporal-hugging-bachman.md`. Steps remaining:
+1. Fix `fetch-show-images-auto.js` matching (exact-match-first, block bad sources)
+2. Create shared `scripts/lib/verify-image.js` module (LLM gate for all image fetching)
+3. Re-fetch images for ~250 shows with null thumbnails (open shows first via TodayTix)
+4. Add weekly CI audit cron
