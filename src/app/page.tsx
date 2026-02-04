@@ -172,7 +172,11 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         ) : (
           // Critics mode: Show tier label + numeric score badge
           <>
-            {tier && (
+            {show.status === 'previews' || (show.criticScore?.reviewCount !== undefined && show.criticScore.reviewCount < 5) ? (
+              <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
+                Not Yet Rated
+              </span>
+            ) : tier ? (
               <span
                 className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
                 style={{ color: tier.color }}
@@ -180,7 +184,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               >
                 {tier.label}
               </span>
-            )}
+            ) : null}
             <ScoreBadge
               score={score}
               size="lg"
@@ -451,6 +455,8 @@ function HomePageInner() {
 
     // Non-search filtering: apply score mode, status, and type filters
     let result = shows.filter(show => {
+      // Previews shows appear in the Upcoming carousel, not the main grid
+      if (show.status === 'previews') return false;
       if (scoreMode === 'audience') {
         // Only show shows with audience buzz data
         const buzz = getAudienceBuzz(show.id);
