@@ -8,5 +8,41 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "People generally don’t attend a Broadway show expecting to become flushed with anxiety. But it’s hard to watch the documentary drama “Is This A Room” without beginning to feel a little tense. People generally don’t attend a Broadway show expecting to become flushed with anxiety. But it’s hard to watch the documentary drama “Is This A Room” without beginning to feel a little tense. The play is a reenactment of the initial FBI interrogation of Reality Winner, an Air Force veteran who was jailed for leaking classified information about Russian attempts to manipulate the 2016 election. The information was published by The Intercept and Winner later pleaded guilty to one count of felony transmission of national defense information. The play, conceived and directed with a laser-like precision by Tina Satter, uses the verbatim transcript of the interrogation as its dialogue — there are no attempts to heighten the drama by editing or rewriting the encounter. Still, it’s hard not to feel an innate, squirm-inducing sympathy for Winner, played with luminous transparency by Emily Davis, as she faces fusillades of questions from three FBI agents.",
+  "isFullReview": false,
+  "textWordCount": 184,
+  "archivePath": "data/archives/reviews/is-this-a-room-2021/broadwaynews--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:31:40.886Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 196 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 184,
+  "tierReason": "Short text (184 words)"
 }
