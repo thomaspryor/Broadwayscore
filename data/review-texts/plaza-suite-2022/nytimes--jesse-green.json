@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "The first thing you see when the curtain goes up on 'Plaza Suite' is an aquatint image of that grand hotel in its antique glory. But when it comes to datedness, the faux-French pile that opened its doors in 1907 has nothing on the Neil Simon comedy - itself a faux-French pile - that debuted on Broadway in 1968. Despite the wearying efforts of a likable cast headed by Matthew Broderick and Sarah Jessica Parker, the passage of 54 years is more than enough to reveal the triptych of one-act plays as uninhabitable in 2022.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Parker and Broderick, married in real life, bring a lived-in quality to their performances that makes even the weaker sketches feel authentic and emotionally grounded.",
   "contentTier": "invalid",
@@ -22,11 +22,13 @@
   "playbillVerdictUrl": "https://www.nytimes.com/2022/03/28/theater/plaza-suite-review.html",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "rejectedAt": "2026-02-03T22:04:57.228Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is just a single sentence fragment about performances, not a complete review with a critical verdict; openai: The review text does not specify the show being reviewed, making it impossible to determine if it is about the target Broadway show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 4
 }
