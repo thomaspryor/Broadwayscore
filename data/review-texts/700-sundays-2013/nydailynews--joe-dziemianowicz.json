@@ -3,10 +3,10 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "https://www.nydailynews.com/2013/11/14/billy-crystal-700-sundays-review-imperial-theatre/",
+  "url": "https://www.nydailynews.com/2013/11/13/700-sundays-theater-review/",
   "publishDate": "November 14, 2013",
-  "fullText": "Crystal's warmth and wit make '700 Sundays' a touching tribute to his father and a celebration of family bonds that resonates long after the final bow.",
-  "isFullReview": false,
+  "fullText": "Actor-comedian-Oscar host Billy Crystal‘s career is packed with indelible moments, like when he watched Meg Ryan shiver through a sham orgasm in “When Harry Met Sally… .”\n\nNo need for faking it during “700 Sundays,” Crystal’s big-hearted and seat-shakingly funny one-man memoir. The laughter and poignance he generates are the real deal.\n\nThat’s just like it was in the show’s original 2004 run, which won Crystal a Tony. Since closing in New York about 400 Sundays ago, Mr. “You Look Mahvelous” has performed his autobiography across the U.S. and in Australia.\n\nBack on Broadway, Crystal has so much energy and enthusiasm it’s as if he’s unwrapping a world premiere, even though it’s the same show, lightly tweaked with tangy, topical references to Obamacare, Rand Paul’s plagiarism and Osama bin Laden.\n\nLike most Broadway bios, Crystal’s story concerns a time and place — specifically growing up Jewish in Long Beach, N.Y, in the ’50s and ’60s. Standing before a brick house conjuring his snug childhood home, he affectionately summons a “world filled with maniacs, lunatics and gas — my family.”\n\nIn fast-moving, ever-entertaining fashion, Crystal covers the traits of his nutty relatives who spoke Yiddish (“It’s German plus phlegm,” he deadpans), and how he caught the standup bug on getaways to the borscht belt resort Kutcher’s.\n\nBut the real focus is his father, whom Crystal adored and lost too soon. He figures 700 was the number of Sundays the two shared. Crystal’s father, whose invaluable 8mm home movies pepper the show, taught his Yankee-obsessed youngest son how to hit a curve ball and fostered an enduring love for jazz.\n\nDad ran the Commodore Music Shop, which became the go-to spot for jam sessions by jazz greats. Crystal recalls seeing the movie “Shane” as a 5-year-old seated on the lap of one of his father’s shop friends — Billie Holiday. “He ain’t never coming back,” Crystal recalls the iconic singer whispering in his ear at the film’s famous sad ending.\n\nA decade later, 15-year-old Crystal faced that same harsh truth when a heart attack took his dad and left him with “a huge boulder that I would carry around for the rest of my life.”\n\nDirected by Des McAnuff (“Jersey Boys”), Crystal nails a perfect balance of funny and touching, never letting things get syrupy. The second act, which concentrates on his mother and her failing health, drags slightly. But that’s nitpicking.\n\n“Give it your best shot,” Mom would tell her baby boy. Crystal does here — and it’s more than enough.",
+  "isFullReview": true,
   "dtliExcerpt": "Crystal's warmth and wit make '700 Sundays' a touching tribute to his father and a celebration of family bonds that resonates long after the final bow.",
   "originalScore": 80,
   "assignedScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Crystal's warmth and wit make '700 Sundays' a touching tribute to his father and a celebration of family bonds that resonates long after the final bow.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 80,
@@ -73,10 +73,51 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/music-arts/700-sundays-theater-review-article-1.1515628",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nydailynews.com/2013/11/14/billy-crystal-700-sundays-review-imperial-theatre/",
+  "urlDiscoveredAt": "2026-02-04T02:27:41.954Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 420,
+  "archivePath": "data/archives/reviews/700-sundays-2013/nydailynews--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:27:41.957Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 420,
+  "tierReason": "Full review text"
 }

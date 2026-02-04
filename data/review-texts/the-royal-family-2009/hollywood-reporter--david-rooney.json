@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/review/royal-family-theater-review-90298/",
   "publishDate": "December 17, 2009",
-  "fullText": "This sublime production of George S. Kaufman and Edna Ferber's 1927 backstage comedy about a theatrical dynasty is a glorious showcase for three generations of accomplished actors.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This sublime production of George S. Kaufman and Edna Ferber's 1927 backstage comedy about a theatrical dynasty is a glorious showcase for three generations of accomplished actors.",
   "originalScore": null,
@@ -16,7 +16,57 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This sublime production of George S. Kaufman and Edna Ferber's 1927 backstage comedy about a theatrical dynasty is a glorious showcase for three generations of accomplished actors.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 154,
+  "archivePath": "data/archives/reviews/the-royal-family-2009/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:08:11.620Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 168 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "By James Hibberd, The Associated Press \n\n \n\n October 20, 2009 5:43pm\n\nEndemol USA is launching a new Web series showing consumers creative ways to save money.\n\nThe series is a partnership between the production company and CouponMom.com. The 20-episode online series will be hosted by CouponMom.com CEO Stephanie Nelson, with Clorox signed on as sponsor.\n\nUsers can submit shopping challenges for Nelson and then watch as she uses creative savings techniques.\n\n“The concept of empowering the buyer to save money and plan accordingly is not only timely but will provide exciting content for the users,” said Joerg Bachmaier, senior vp digital media and business development at Endemol USA. “The interactive viewing experience has truly transformed entertainment as we know it, and we at Endemol are proud to be continuing this trend with a subject that our users can relate to in this economic climate.”\n\nEndemol’s previous online-only series include “Married on MySpace” and “Crossed Lives.”",
+  "misattributedFullText": true,
+  "extractedByline": "James Hibberd",
+  "expectedCritic": "David Rooney"
 }
