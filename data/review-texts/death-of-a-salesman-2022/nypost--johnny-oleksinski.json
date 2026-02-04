@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/"
+  "playbillVerdictUrl": "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The climactic fight all the way to the inevitable conclusion is not affectingly tragic, and there is no build to speak of.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging 'nice songs,' the critic finds fundamental flaws in the dramatic structure and emotional impact. The lack of build and ineffective climax suggests a show that fails to deliver on its basic promises. | GPT-4o: The excerpt criticizes the lack of emotional impact and structure in the show, indicating a negative assessment. However, the single excerpt and lack of full context reduce confidence. | Gemini: The review excerpt indicates a lack of emotional impact and insufficient attention to fundamental aspects of the production, leading to a negative assessment. | Kimi: The critic finds the climactic sequences ineffective and lacking build, criticizing the dramatic fundamentals while offering only faint praise for the music, indicating a negative assessment of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:22:10.710Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

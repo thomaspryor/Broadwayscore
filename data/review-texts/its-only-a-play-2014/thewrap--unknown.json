@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 77 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 64,
-  "tierReason": "Short text (64 words)"
+  "tierReason": "Short text (64 words)",
+  "rejectedAt": "2026-02-04T10:25:07.713Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief plot summary or show description providing historical context about the play's development, but contains no critical evaluation or recommendation about the current Broadway production.; openai: This text is a historical context about the play's past productions and does not provide any evaluation of the current Broadway production.; gemini: This is just a brief announcement of the opening, with historical context, but no evaluative content or recommendation.; kimi: The provided text consists solely of historical background about previous productions and basic information about the current cast/venue. It contains no critical evaluation, opinions on performances, direction, or writing, and offers no recommendation regarding the quality of the current Broadway production.",
+  "promptVersion": "5.2.0"
 }

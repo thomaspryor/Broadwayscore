@@ -32,5 +32,59 @@
   ],
   "contentTier": "complete",
   "wordCount": 880,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But if you have ever loved a pet, it is almost impossible not to feel moved by the interspecies romance of Greg and Sylvia.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the play's flaws (antiquated, predictable, conservative) but consistently praises the performances, especially Ashford's star turn, and admits being moved by the story despite its problems. The positive elements outweigh the criticisms. | Gemini: The review acknowledges the play's flaws but ultimately suggests it's moving for pet lovers, making it a positive but not rave review. The text is also followed by a request for support, which may have truncated the review. | Kimi: While criticizing the play itself as antiquated and predictable, the reviewer delivers a clear recommendation based on Annaleigh Ashford's irrepressible star turn and the production's emotional resonance for pet owners.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:07:38.577Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

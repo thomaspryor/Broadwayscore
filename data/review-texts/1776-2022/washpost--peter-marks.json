@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "show-score-playwright",
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The delightful ensemble owns the script and score of this 1969 musical as if the story of the signing of the Declaration of Independence were written explicitly about them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise with 'delightful ensemble owns the script and score', suggesting enthusiastic recommendation. However, confidence is low due to single excerpt limitation - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the ensemble's performance and suggests a strong connection to the material, indicating an enthusiastic recommendation. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The excerpt is strongly positive, praising the ensemble's performance and ownership of the material. Given the single excerpt and positive tone, I'm scoring it in the upper end of the positive range, but with low confidence. | Kimi: Single excerpt displays unambiguous enthusiasm, praising the ensemble as 'delightful' and perfectly suited to the material. Following the instruction to use the upper end of the Positive bucket (80-84) for clearly positive curated excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:51:11.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

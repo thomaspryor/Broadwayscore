@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'The Book of Mormon' is sure to offend or at least discomfort Disney, the Government of Uganda, Wal-Mart, Starbucks, people who don’t like humor that used to be called unprintable, and the devout of any faith. Yet in an almost surreal way, 'The Book of Mormon' is indeed a happy musical, the kind of traditional sweet and sassy Broadway entertainment that offers a generous and strategic mix of gorgeous sets, razzmatazz dance numbers, catchy tunes, a clever story, and well-timed hilarity.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Book of Mormon' is indeed a happy musical, the kind of traditional sweet and sassy Broadway entertainment that offers a generous and strategic mix of gorgeous sets, razzmatazz dance numbers, catchy tunes, a clever story, and well-timed hilarity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging the show will offend many, the critic calls it 'a happy musical' and praises multiple elements (sets, dance, tunes, story, humor) as 'generous' entertainment. Single excerpt warning suggests this positive assessment may represent the full review's verdict. | GPT-4o: The excerpt praises the show as a 'happy musical' with 'gorgeous sets' and 'catchy tunes', indicating a strong recommendation. The lack of full context and single excerpt warning lowers confidence. | Gemini: The review excerpt describes the show as a \"happy musical\" and \"traditional sweet and sassy Broadway entertainment\" with \"gorgeous sets, razzmatazz dance numbers, catchy tunes, a clever story, and well-timed hilarity.\" Given the single excerpt warning, I am scoring on the higher end of positive. | Kimi: The excerpt offers enthusiastic praise for the production's entertainment value, describing it as a 'happy musical' with 'gorgeous sets,' 'catchy tunes,' and 'well-timed hilarity,' indicating a strong recommendation despite its potentially offensive content.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:11:45.158Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

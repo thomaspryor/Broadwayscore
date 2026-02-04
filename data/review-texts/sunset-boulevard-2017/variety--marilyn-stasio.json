@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Close's performance is so ferociously committed that it's impossible to look away, even when you want to.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 709,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Close is divine in these early glimpses of Norma, obviously batty, but clinging to her dreams.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for Close's 'triumphant return' and 'divine' performance, calling her a 'show-stopper' with moments that will have 'grown men weeping in the aisles.' Despite some criticism of supporting performances and choreography, the overall tone is highly enthusiastic about the star and production. | GPT-4o: The review is filled with superlatives and strong praise for Glenn Close's performance and the production, describing it as a 'triumphant return' and highlighting 'genuine show-stopper' moments. There are no significant reservations mentioned. | Gemini: The review is overwhelmingly positive, highlighting Close's performance and the production's strengths. The critic uses words like \"triumphant\", \"regal\", \"spectacular\", and \"divine\" to describe the experience. | Kimi: While the critic notes significant flaws in supporting performances, choreography, and lyrics, the review is overwhelmingly positive about Glenn Close's central turn, describing it as 'triumphant,' 'divine,' and 'imperial,' with the final line offering a strong recommendation to witness her performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:37:57.171Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

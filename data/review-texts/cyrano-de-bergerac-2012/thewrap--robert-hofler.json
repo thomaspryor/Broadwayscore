@@ -38,5 +38,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 85,
-  "tierReason": "Short text (85 words)"
+  "tierReason": "Short text (85 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T10:14:06.649Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about an Off-Broadway production at Daryl Roth Theatre, not a Broadway show; openai: The review is about an Off-Broadway production at the Daryl Roth Theatre, not the current Broadway run.; gemini: This review is for an off-Broadway production, not the Broadway production.; kimi: The review explicitly states the show opened at Off Broadway's Daryl Roth Theatre and is presented by the New Group, not a current Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -47,5 +47,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150425205646/http://observer.com:80/2015/04/boris-pasternak-would-not-be-proud-of-doctor-zhivago/",
   "contentTier": "complete",
   "wordCount": 1275,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 17,
+  "llmScore": {
+    "score": 17,
+    "confidence": "high",
+    "range": {
+      "low": 12,
+      "high": 22
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After just under three hours, a verdict is reached. It's a colossal bore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Pan | Claude: The critic delivers a devastating pan of Doctor Zhivago, calling it 'a colossal bore,' referencing audience 'snoring,' and describing it as having 'gag-worthy lyrics' and a 'corpse' that can't be brought to life. The comprehensive negative assessment throughout warrants a deep pan score. | Gemini: The review is overwhelmingly negative, calling the show a \"colossal bore\" and criticizing nearly every aspect of the production. The critic clearly does not recommend seeing it. | Kimi: The critic explicitly calls the show a 'colossal bore' and a 'corpse,' panning the direction, lead performances, and score while only begrudgingly acknowledging the visual design and one supporting performance. The closing image of Pasternak turning in his grave confirms the total rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:15:34.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": null,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Pan"
+  }
 }

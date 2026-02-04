@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 57 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 51,
-  "tierReason": "Short text (51 words)"
+  "tierReason": "Short text (51 words)",
+  "rejectedAt": "2026-02-04T10:10:02.164Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only a plot summary or opening context describing the subject matter, with no critical evaluation of the Broadway production's performances, direction, or theatrical merits.; openai: This text is a plot summary and contextual setup without any evaluative content or opinion about the production.; gemini: This is just a plot summary/setup with no evaluative content or recommendation.; kimi: The text provides only plot summary and contextual information about the show's subject matter (child sexual abuse) without evaluating the production quality, performances, direction, or offering any recommendation to see or skip the show.",
+  "promptVersion": "5.2.0"
 }

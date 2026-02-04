@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘Camelot ’is a love story, after all, and we definitely swoon. But not only that: this production is a very welcome journey into a land of courage and integrity, something that our own world is in very short supply of.”\n\nRead more"
+  "showScoreExcerpt": "“ ‘Camelot ’is a love story, after all, and we definitely swoon. But not only that: this production is a very welcome journey into a land of courage and integrity, something that our own world is in very short supply of.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production is a very welcome journey into a land of courage and integrity",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('we definitely swoon', 'very welcome journey') with emotional endorsement, but single excerpt limits confidence in full verdict. | GPT-4o: The excerpt praises the production as a 'very welcome journey' and notes it causes the audience to 'swoon', indicating a strong positive sentiment. Given the single excerpt and its positive tone, a score in the upper range of the Positive bucket is appropriate. | Gemini: The excerpt is overwhelmingly positive, using words like \"swoon\" and \"very welcome journey\". Given the single excerpt, I'm scoring it at the higher end of the positive range with low confidence. | Kimi: The excerpt offers enthusiastic praise ('definitely swoon', 'very welcome journey') and highlights the production's emotional resonance and thematic relevance, indicating a strong recommendation despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:15:49.457Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

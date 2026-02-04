@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Through swift and astonishing vocal and physical alterations and expressive gestures, Jefferson Mays creates one distinctive Dickensian characterization after another while accompanied by superior stagecraft. Mr. Mays’ towering Ebenezer Scrooge is the centerpiece around which he brings the other 50 characters to life with histrionic gusto.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jefferson Mays creates one distinctive Dickensian characterization after another while accompanied by superior stagecraft.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performance ('towering', 'astonishing', 'histrionic gusto') and production ('superior stagecraft'), but single excerpt warning means full verdict unclear - scored in upper Positive range due to enthusiastic tone. | GPT-4o: The excerpt offers high praise for Jefferson Mays' performance and the stagecraft, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on Jefferson Mays' performance and the stagecraft, using strong positive language such as \"swift and astonishing\" and \"superior.\" Given the single excerpt, I'm scoring it as positive but with low confidence. | Kimi: Single excerpt contains superlative praise for the lead performance ('astonishing,' 'towering,' 'histrionic gusto') and production values ('superior stagecraft'), warranting a high-positive score, though confidence is reduced due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:53:38.981Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

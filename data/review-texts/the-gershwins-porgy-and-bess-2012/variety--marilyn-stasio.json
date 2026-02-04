@@ -62,5 +62,11 @@
     "Show title not found in text"
   ],
   "wordCount": 487,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T10:41:10.251Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'I Am Not a Hipster', not a Broadway theater review; openai: The text is a review of the film 'I Am Not a Hipster', not a Broadway show.; gemini: This is a review for the film 'I Am Not a Hipster', not a Broadway show.; kimi: This is a film review of 'I Am Not a Hipster' (a 2012 feature film), not a Broadway theater review. The text references Sundance Film Festival, feature debut, cinematic direction, and home-format release.",
+  "promptVersion": "5.2.0"
 }

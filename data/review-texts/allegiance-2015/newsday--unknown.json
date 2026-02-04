@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151117033136/http://www.newsday.com/entertainment/theater/allegiance-review-george-takei-on-wwii-japanese-american-camps-1.11069303",
   "contentTier": "complete",
   "wordCount": 514,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But I was engrossed throughout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws (too earnest, obvious rhymes, serviceable score), the critic was 'engrossed throughout' and praises the strong cast, fully developed characters, and important story. The 'Not perfect, but important history, lovingly told' bottom line confirms a clear recommendation. | GPT-4o: The review praises the show's storytelling, character development, and cast, while acknowledging some potential criticisms of the music and earnestness. Overall, it recommends the show as an important and lovingly told piece of history. | Gemini: The review is generally positive, highlighting the importance of the story and the strength of the cast, while acknowledging some flaws in the score and book. The \"Not perfect, but important history, lovingly told\" bottom line confirms a positive but not rave recommendation. | Kimi: The critic praises the strong performances (particularly Takei, Leung, and Salonga) and finds the historical story engrossing and moving, while criticizing the score as serviceable and the book as too earnest, resulting in a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:06:42.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

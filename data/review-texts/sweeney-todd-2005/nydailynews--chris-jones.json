@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230510213559/https://www.nydailynews.com/entertainment/broadway/ny-broadway-sweeney-todd-review-20230327-evqibkjo6vb5vhtzavhi2b3vdy-story.html",
   "contentTier": "complete",
   "wordCount": 919,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At once funny, scary and disarmingly moving, this must-see production is content to peel back any cobwebs or artifice and let Stephen Sondheim and Hugh Wheeler's Gothic revenge tragedy of a musical howl anew.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses explicit must-see language and calls it a 'triumphant revival.' Lavishes praise on all elements - performances, direction, design, orchestrations - with superlatives throughout and no meaningful reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise, describing the production as 'triumphant' and 'must-see'. The critic highlights exceptional performances and the successful fusion of gravitas and theatricality, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling it a \"triumphant revival\" and a \"must-see production.\" The critic praises the performances, direction, and musical supervision, indicating a high level of satisfaction. | Kimi: Unqualified praise with superlatives ('triumphant', 'must-see', 'masterful'), enthusiastic tone throughout, and explicit recommendation language with only minor caveats about secondary elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:38:40.389Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

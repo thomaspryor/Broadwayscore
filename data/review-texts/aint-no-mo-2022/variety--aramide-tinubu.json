@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, provocative and deeply funny satire that tackles Black trauma with unflinching honesty and biting wit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,59 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, provocative and deeply funny satire that tackles Black trauma with unflinching honesty and biting wit.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan E. Cooper's 'Ain't No Mo'' is a bold, provocative and deeply funny satire.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt uses strong positive language ('bold', 'provocative', 'deeply funny') suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"bold, provocative, deeply funny, unflinching honesty, and biting wit.\" Given the single excerpt and positive tone, I'm scoring it as positive with a higher score within the bucket, but with low confidence due to the limited text. | Kimi: Single excerpt provides enthusiastic praise ('bold', 'deeply funny', 'unflinching honesty') placing it in the upper Positive range. Confidence is low due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:58:59.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

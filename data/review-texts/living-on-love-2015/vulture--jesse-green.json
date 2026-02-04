@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Living on Love is a farce that takes place in real time, and while that's an admirable discipline, it also means that every minute of stage time must earn its keep. Too many don't.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20250426203920",
   "archiveOrgUrl": "http://web.archive.org/web/20250426203920/https://www.vulture.com/2015/04/theater-review-living-on-love.html",
   "wordCount": 981,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Living on Love no longer seems pleasant enough, let alone diverting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with systematic criticism of performances, direction, and material. Critic finds the Broadway production disappointing compared to its summer theater version, with only one lead actor able to handle the weak material effectively. | GPT-4o: The review highlights significant issues with the production, including lackluster performances and weak material, despite some individual strengths. The overall tone is negative, with the critic suggesting the show is not worth seeing. | Gemini: The review is largely negative, pointing out the show's lack of improvement from its previous production and the weak performances, especially Fleming's. The critic clearly does not recommend it. | Kimi: The critic finds the comedy falls flat with only one genuine laugh, calls the production tacky and downmarket, and judges that it shrank rather than grew in its Broadway transfer, though he acknowledges strong work from Douglas Sills and the supporting cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:28:30.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

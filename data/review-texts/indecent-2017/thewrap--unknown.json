@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 59 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 53,
-  "tierReason": "Short text (53 words)"
+  "tierReason": "Short text (53 words)",
+  "rejectedAt": "2026-02-04T10:23:48.696Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only the opening paragraph of a review that sets up context about the show's history, with no evaluative content or critical assessment provided.; openai: The text is a plot summary and background information about the play, not an evaluative review.; kimi: The text provides only plot summary and production history (describing the premise and Off-Broadway transfer) without any evaluative criticism of the show's quality, performances, or direction.",
+  "promptVersion": "5.2.0"
 }

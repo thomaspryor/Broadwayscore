@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220605035153/https://www.nydailynews.com/entertainment/broadway/ny-broadway-hangmen-review-martin-mcdonagh-20220422-jw74l3332zclnps4tbornkxhbq-story.html",
   "contentTier": "complete",
   "wordCount": 669,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a fabulous offering — a throwback, really, to the heyday of juicy, creepy London imports",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong enthusiastic language throughout ('fabulous offering', 'towering, relentless' performance, 'deliciously gripping') with extensive praise for performances, direction, and writing. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and enthusiastic praise for the production, direction, and performances, particularly highlighting the gripping nature of the show and its unforgettable central character. | Gemini: The review is overwhelmingly positive, calling it a \"fabulous offering\" and praising the direction, design, and central performance. The critic clearly enjoyed the show and recommends it. | Kimi: The critic delivers unqualified praise for the production, performances, and direction, using superlatives like 'fabulous,' 'deliciously gripping,' and 'towering' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:21:28.717Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "show-score-playwright",
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson and 'Between Riverside and Crazy' provide the deepest satisfaction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows strong praise ('deepest satisfaction') comparing favorably to other Broadway shows. Given it's a curated quote from a major critic, this suggests enthusiastic recommendation, warranting upper Positive range. | GPT-4o: The excerpt provides strong praise, indicating the show offers 'the deepest satisfaction' among recent Broadway offerings. However, due to the single excerpt warning, confidence is low. | Gemini: The quote expresses a very positive sentiment, stating that the show provides the \"deepest satisfaction\" among other Broadway shows in 2022. Given this strong endorsement and the single excerpt warning, I've scored it at the higher end of the positive range. However, confidence is low due to the limited text available. | Kimi: The excerpt offers strong praise, ranking the show as providing the 'deepest satisfaction' among its Broadway peers, but confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:10:25.405Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250723060735/https://www.vulture.com/2015/03/theater-review-the-audience.html",
   "contentTier": "complete",
   "wordCount": 1243,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's dazzling fun. But for Mirren no less than the rest of the cast the play appears to be little more than a series of meaty and not especially difficult exercises",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises Mirren's tour de force performance and production design while criticizing the play's structure as 'completely undramatic' and relying on biodrama clichés. Mixed verdict acknowledging entertainment value but questioning substance. | GPT-4o: The review praises Helen Mirren's performance and the costume design but criticizes the play's structure and lack of dramatic impact. It acknowledges enjoyment from Mirren's performance but questions the overall significance and coherence of the play. | Gemini: The review praises Mirren's performance and the costume design but criticizes the play's writing and overall dramatic impact, resulting in a mixed assessment. | Kimi: While praising Helen Mirren's performance as 'dazzling fun' and the design as 'superb,' the critic finds the play itself 'completely undramatic,' reliant on clichés, and ultimately 'of little consequence,' creating a mixed verdict that values the star but not the script.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:40:21.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

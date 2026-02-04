@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"Stoppard’s play is more autobiographical than he wants to delineate.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/10/02/leopoldstadt-tom-stoppard-at-his-absolute-autobiographical-best/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/10/02/leopoldstadt-tom-stoppard-at-his-absolute-autobiographical-best/",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It undeniably ranks, perhaps with Arcadia and The Coast of Utopia, as his most exhilarating, most comprehensive, most serious accomplishment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with extraordinary praise throughout. Critic calls it one of Stoppard's 'astonishing works' and 'most exhilarating, most comprehensive, most serious accomplishment,' comparing it favorably to his greatest plays. Praises the final tableau as rivaling 'every denouement in the annals of modern playwrighting history.' | GPT-4o: The review praises 'Leopoldstadt' as one of Stoppard's most significant works, with high praise for the production and performances. Despite the truncation warning, the 5/5 stars and enthusiastic language indicate a strong recommendation. | Gemini: Despite the truncated text, the review is overwhelmingly positive, calling it one of Stoppard's most exhilarating and comprehensive works. The 5/5 star rating confirms this classification. | Kimi: Awarding 5/5 stars, the critic hails the play as Stoppard's 'most exhilarating, most comprehensive, most serious accomplishment' and praises the production's emotional power and stand-out performances, despite noting minor issues with some sequences being delivered broadly.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:27:58.581Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 93,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 97,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 849,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"terrifically acted crowd-pleaser marking Phylicia Rashad’s Broadway directorial debut\"\n\nRead more"
+  "showScoreExcerpt": "\"terrifically acted crowd-pleaser marking Phylicia Rashad’s Broadway directorial debut\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a consistently entertaining play, and something more, a subtle, intelligent contemplation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite truncation warning, the available text shows clear praise ('terrifically acted crowd-pleaser', 'consistently entertaining', 'subtle, intelligent contemplation'). The only criticism is about runtime, which is minor. The aggregator excerpt reinforces positive reception. | GPT-4o: The review praises the acting and direction, calling it a 'crowd-pleasing production.' Despite noting the play's length as a drawback, it is described as 'consistently entertaining,' indicating a positive recommendation with some reservations. | Gemini: The review states that the play is \"consistently entertaining\" and \"a subtle, intelligent contemplation.\" Although the review is truncated, these positive remarks, combined with the Show-Score excerpt, suggest a positive recommendation with some reservations. Confidence is low due to the truncation. | Kimi: The review praises the 'terrifically acted' production as 'consistently entertaining' and an 'extraordinary play' with only minor reservations about the running time, though the truncated ending necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:34:45.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 76,
+    "geminiScore": 79,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

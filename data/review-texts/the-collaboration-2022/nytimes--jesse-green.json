@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play, about the friendship between Andy Warhol and Jean-Michel Basquiat, is more interested in the artists' emotional lives than their art.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20250818015901",
   "archiveOrgUrl": "http://web.archive.org/web/20250818015901/https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html",
   "wordCount": 1075,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels emptily formulaic — less like an insider's view of its famous subjects' lives than a kind of biographical tourism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Jesse Green finds the play formulaic and empty despite strong praise for Jeremy Pope's performance. He criticizes the script as a 'blunt instrument,' questions the character development, and suggests audiences would be better served by visiting a Basquiat exhibition instead. The overall assessment is clearly negative despite acknowledging some production elements. | GPT-4o: The review criticizes the play as 'emptily formulaic' and lacking insight, suggesting the audience would be better served by other exhibitions. Despite some praise for performances, the overall recommendation is negative. | Gemini: The review is overall negative, describing the play as \"emptily formulaic\" and \"biographical tourism.\" While Pope's performance is praised, Bettany's is not, and the script is criticized for being slender and padded. | Kimi: While Jeremy Pope's performance receives glowing praise, the critic ultimately pans the production as 'emptily formulaic' and 'biographical tourism' that fails to provide insight into the artists' relationship, instead recommending viewers see an art exhibition for that purpose.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:40:57.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sarah Paulson gives a searing performance in this revival of Branden Jacobs-Jenkins's family drama, which crackles with dark humor and uncomfortable truths about American racial dynamics.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sarah Paulson gives a searing performance in this revival of Branden Jacobs-Jenkins's family drama, which crackles with dark humor and uncomfortable truths about American racial dynamics.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sarah Paulson gives a searing performance in this revival of Branden Jacobs-Jenkins's family drama, which crackles with dark humor and uncomfortable truths about American racial dynamics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating aligns with Positive bucket. 'Searing performance' and 'crackles with dark humor' are strong praise indicators, placing this in the upper Positive range despite being a single excerpt. | GPT-4o: The excerpt highlights a 'searing performance' and describes the play as one that 'crackles with dark humor and uncomfortable truths,' indicating a strong recommendation. The original rating of 80 supports a high Positive score. | Gemini: The excerpt highlights a \"searing performance\" and describes the play as cracking with \"dark humor and uncomfortable truths.\" This suggests a strong positive assessment, justifying a score in the higher end of the positive range. | Kimi: The critic's explicit rating of 80 places this firmly in the Positive bucket, and the excerpt offers strong praise for the lead performance and the production's crackling energy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:06:14.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

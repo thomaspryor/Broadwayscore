@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on Cameron Crowe's semi-autobiographical film, has charm but lacks the movie's specificity and emotional weight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, based on Cameron Crowe's semi-autobiographical film, has charm but lacks the movie's specificity and emotional weight.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical, based on Cameron Crowe's semi-autobiographical film, has charm but lacks the movie's specificity and emotional weight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt acknowledges positive qualities ('has charm') but emphasizes significant shortcomings ('lacks specificity and emotional weight'). This balanced criticism with no clear recommendation suggests mixed reception. | GPT-4o: The excerpt suggests a mixed review, noting charm but also significant shortcomings compared to the film. The lack of specificity and emotional weight indicates a lack of strong recommendation. | Gemini: The review states that the musical has charm but lacks the emotional weight of the movie, indicating a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt acknowledges the production's charm but emphasizes its failure to capture the original film's emotional depth and specificity, suggesting a middling, unenthusiastic assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:00:49.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

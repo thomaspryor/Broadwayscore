@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hugh Jackman gives a commanding performance in Jez Butterworth's cryptic drama about a man obsessed with fly-fishing, but the play itself remains as elusive as the salmon he's trying to catch.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20250427171509",
   "archiveOrgUrl": "http://web.archive.org/web/20250427171509/https://variety.com/2014/legit/reviews/the-river-review-hugh-jackman-broadway-1201357833/",
   "wordCount": 579,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "just about everything else about Jez Butterworth's strange chamber piece, 'The River,' is a downer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: While praising Jackman's charismatic performance and the atmospheric staging, the critic finds major flaws in the writing, supporting performances, and overall execution, calling it 'a downer' and suggesting the material doesn't live up to its poetic aspirations. | GPT-4o: The review praises Hugh Jackman's performance but criticizes the play overall as a 'downer' with shallow characters and speeches that 'grate on the ear.' The negative aspects outweigh the positive, leading to a negative verdict. | Gemini: The review praises Jackman's performance and the staging, but criticizes the writing and other aspects of the play, leading to a mixed assessment. | Kimi: While the review praises Hugh Jackman's intense performance and the atmospheric staging and design, it heavily criticizes Butterworth's script as tedious and the characters as shallow, resulting in an uneven assessment that offers only qualified interest.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:46:04.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

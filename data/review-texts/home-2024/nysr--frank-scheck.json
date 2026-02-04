@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "dtliExcerpt": "The story is touching, but the ritualistic telling proves problematic. It’s done in large part through narration, often delivered in a poetical, incantational style that can be distancing. Not helping matters is the fact that the two female members of the cast, Stori Ayers and Inge, are tasked with playing dozens of characters which makes the already confusing narrative even harder to follow.",
-  "dtliThumb": "MEH"
+  "dtliThumb": "MEH",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Although difficult to know for sure, I suspect it's a combination of the play feeling dated and the current production being lacking in certain respects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with critic expressing nostalgia for original but finding current revival lacking. Praises lead performance but criticizes direction, staging, and overall execution as disappointing compared to memory. | GPT-4o: The review acknowledges the play's touching story and Kittles' vibrant performance but criticizes the production's lack of theatricality and confusing narrative. The original 3/5 star rating aligns with a mixed review. | Gemini: 3/5 stars suggests a mixed reaction. The critic notes the play feels dated and the production lacking, despite a touching story and vibrant performance from Kittles. | Kimi: While praising Kittles' charismatic performance and Inge's endearing portrayal, the critic finds the play dated, the narrative confusing, and Leon's staging lacking theatricality. The 3/5 rating and balanced criticism point to a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:22:39.443Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

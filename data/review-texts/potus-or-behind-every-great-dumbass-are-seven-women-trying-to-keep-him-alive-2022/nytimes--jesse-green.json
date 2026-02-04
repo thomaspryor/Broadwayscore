@@ -37,5 +37,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220427210719/https://www.nytimes.com/2022/04/27/theater/potus-review-broadway.html",
   "contentTier": "complete",
   "wordCount": 1105,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The snappy and intermittently hilarious farce makes White and Nakamura a terrific comedy team.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Green finds the show 'snappy and intermittently hilarious' with strong praise for performances, but notes the comedy loses steam in act two and has structural issues. Overall positive but with clear reservations. | Gemini: The review acknowledges funny moments and strong performances, but also points out flaws in the physical humor and the play's overall message. It neither strongly recommends nor discourages seeing the show. | Kimi: While the critic praises the ensemble cast (particularly White and Nakamura as a 'terrific comedy team') and the sharp initial satire, significant reservations about the second act's shift to physical humor and structural issues ('the ways aren't always working together') keep this from a higher score. The review recommends the show primarily for its performances and feminist perspective despite playwriting flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:34:11.775Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

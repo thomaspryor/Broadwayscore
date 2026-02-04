@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150326000846/http://forward.com:80/articles/216972/how-wendy-wasserstein-and-heidi-holland-remade-the/?",
   "contentTier": "complete",
   "wordCount": 1149,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 89,
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's still fantastic — searching, thought-provoking, very funny, and more than a little bit sad",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Strong praise throughout with superlatives like 'fantastic,' 'excellent,' and 'starry.' The critic finds both the writing and performances compelling, with only minor casting quibbles that don't diminish the overall enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, calling the play \"fantastic\" and praising the performances, direction, and writing. The critic clearly recommends seeing the revival. | Kimi: The critic offers unqualified praise for the 'landmark' play's sharp writing and timeless relevance, highlights Elisabeth Moss's excellent performance, and declares the revival 'fantastic' with only minor reservations about one supporting role.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:42:14.270Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 89,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

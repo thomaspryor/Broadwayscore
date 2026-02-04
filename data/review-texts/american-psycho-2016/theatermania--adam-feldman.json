@@ -18,10 +18,10 @@
   "showScoreExcerpt": "Duncan Sheik's score is sophisticated and varied, moving fluidly between styles while maintaining a consistent sonic identity.",
   "contentTier": "complete",
   "contentTierReason": "Short text (17 words)",
-  "rejectedAt": "2026-02-03T13:26:15.658Z",
+  "rejectedAt": "2026-02-04T10:06:52.064Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This is a single sentence fragment describing the score, not a complete review with any verdict or recommendation about seeing the show.; openai: The text is a single sentence evaluating the score, not a full review of the show.",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production presented by the Boston Center for American Performance and Boston's Playwrights' Theatre, not a current Broadway run.; gemini: This is a review of a production of \"Exposed\" at the Boston Center for the Arts, not a Broadway production.; kimi: This review covers a world premiere production at Boston Center for Arts (presented by Boston Center for American Performance and Boston's Playwrights' Theatre), not a Broadway production.",
   "promptVersion": "5.2.0",
   "textQuality": "truncated",
   "textWordCount": 678,
@@ -58,5 +58,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 678,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true
 }

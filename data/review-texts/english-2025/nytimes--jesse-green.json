@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "The Broadway transfer of Sanaz Toossi's \"English,\" which opened on Thursday at the Todd Haimes Theater, is the consummate consomm. Even more so than when it debuted Off Broadway in 2022, and won the Pulitzer Prize in Drama in 2023, it strikes me as a work of uncommon discipline despite its big and occasionally easy laughs. Without ever releasing a tight grip on its theme  or perhaps because of that tight grip  it suggests a world of small tragedies and smaller compensations."
+  "nycTheatreExcerpt": "The Broadway transfer of Sanaz Toossi's \"English,\" which opened on Thursday at the Todd Haimes Theater, is the consummate consomm. Even more so than when it debuted Off Broadway in 2022, and won the Pulitzer Prize in Drama in 2023, it strikes me as a work of uncommon discipline despite its big and occasionally easy laughs. Without ever releasing a tight grip on its theme  or perhaps because of that tight grip  it suggests a world of small tragedies and smaller compensations.",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it strikes me as a work of uncommon discipline despite its big and occasionally easy laughs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Jesse Green praises the show as 'consummate' and highlights its 'uncommon discipline' while noting it's 'even more so' effective than its Pulitzer-winning Off-Broadway run. The positive assessment is clear despite being a single excerpt. | GPT-4o: The excerpt praises the play's discipline and thematic grip, suggesting a positive view despite noting 'easy laughs'. The Pulitzer Prize mention implies quality. With only one excerpt, confidence is low, but the tone leans positive. | Gemini: The critic describes the play as a work of \"uncommon discipline\" and suggests a world of small tragedies and smaller compensations, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The excerpt offers strong praise for the Broadway transfer, deeming it superior to the Pulitzer-winning Off-Broadway production and highlighting its 'uncommon discipline' and thematic depth, though with minor reservations about 'easy laughs.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:25:44.298Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

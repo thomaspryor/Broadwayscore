@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 717,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"For all its star power...not much of this production is particularly original\"\n\nRead more"
+  "showScoreExcerpt": "\"For all its star power...not much of this production is particularly original\"\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leon's buttoned-up production is a perfectly enjoyable, if not particularly memorable Othello.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges good performances and chemistry but repeatedly emphasizes lack of originality and memorability. Final verdict calls it 'valiant' but says it 'struggles to distinguish itself,' indicating neither strong recommendation nor discouragement. | GPT-4o: The review acknowledges the star power and chemistry but criticizes the production for lacking originality and memorability. The overall tone is mixed, with some positive elements but no strong recommendation. | Gemini: The review acknowledges the star power and chemistry but ultimately finds the production unoriginal and not particularly memorable, indicating a mixed recommendation. | Kimi: The critic praises Gyllenhaal's natural performance and finds the production 'perfectly enjoyable' with strong chemistry between leads, but criticizes Washington's dispassionate approach and finds the overall work unmemorable and lacking originality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:33:09.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

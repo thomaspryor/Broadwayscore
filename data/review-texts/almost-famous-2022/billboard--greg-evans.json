@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's heart is in the right place, even if its dramatic beats don't always land with the precision of Stillwater's guitar solos.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical's heart is in the right place, even if its dramatic beats don't always land with the precision of Stillwater's guitar solos.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical's heart is in the right place, even if its dramatic beats don't always land with the precision of Stillwater's guitar solos.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows classic mixed review language: acknowledges good intentions ('heart is in the right place') but criticizes execution ('don't always land'). However, with only one curated quote available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt suggests a mix of positive and negative elements, acknowledging the musical's good intentions but also its shortcomings in execution. The single excerpt and text quality warning limit confidence in the overall sentiment. | Gemini: The excerpt suggests a positive sentiment but with reservations, indicating a 'Positive' bucket. Given the single excerpt and its mild positivity, a score on the lower end of the range is appropriate. | Kimi: Single excerpt offers mild praise for intentions while noting inconsistent execution ('don't always land'). Per single-excerpt guidelines for mildly positive quotes, scored at lower end of Positive bucket. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:00:09.879Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

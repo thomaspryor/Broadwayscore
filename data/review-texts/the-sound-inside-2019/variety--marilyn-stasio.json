@@ -48,5 +48,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parker will take your breath away with her deeply felt and sensitively drawn portrait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'stunning,' 'gorgeously directed,' 'breathtaking,' and 'hypnotic.' The critic is completely captivated by Parker's performance and Cromer's direction, with only minor technical observations about pacing that don't detract from the overall rave. | GPT-4o: The review is filled with superlatives and praises the direction, acting, and writing. It describes the play as 'stunning' and highlights the performances as breathtaking, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, acting, and character study. The critic uses strong language like \"gorgeously directed\" and \"beautifully acted\", indicating a strong recommendation. | Kimi: Unqualified praise throughout with superlatives ('stunning', 'perfect', 'gorgeous', 'ravishing'), strong endorsement of both lead performances and direction, with only minor caveats immediately dismissed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:46:37.310Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 93
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

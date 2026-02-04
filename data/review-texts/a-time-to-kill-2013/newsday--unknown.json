@@ -57,5 +57,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200303043145/https://www.newsday.com/entertainment/theater/a-time-to-kill-review-john-grisham-by-the-numbers-1.6280956",
   "contentTier": "complete",
   "wordCount": 551,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paint-by-numbers adaptation of Grisham favorite.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising individual performances, the critic calls the show 'monotonous storytelling,' 'theatrical hokum,' and 'paint-by-numbers.' The bottom line summary confirms this is not recommended viewing. | GPT-4o: The review criticizes the production for its lack of fresh urgency and monotonous storytelling, despite some praise for individual performances. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review acknowledges competent acting but criticizes the storytelling as monotonous and lacking urgency. The truncated text and lack of a clear recommendation lead to a \"low\" confidence score. | Kimi: While praising several performances (particularly John Douglas Thompson), the critic finds the adaptation 'paint-by-numbers' and 'hokum,' concluding it lacks the urgency to justify a big-ticket Broadway production despite competent acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:05:26.660Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

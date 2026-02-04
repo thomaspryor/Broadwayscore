@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203922/https://nypost.com/2014/09/18/mia-farrow-brian-dennehy-examine-a-50-year-relationship-in-love-letters/",
   "contentTier": "complete",
   "wordCount": 412,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Surprisingly, Farrow — who has considerably less stage experience than Dennehy — is the stronger.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review acknowledges the play's limitations ('static', 'banal plot') but praises the craft of the writing and especially Farrow's performance. The critic finds merit in the execution and expresses anticipation for future cast changes, indicating a positive recommendation despite reservations. | Gemini: The review is generally positive, highlighting Farrow's performance. However, it also notes the static nature of the play and Dennehy's less impactful performance, leading to a score on the lower end of the positive range. | Kimi: The review praises Mia Farrow's performance and calls the writing 'craftily written,' but criticizes the play's static nature and Brian Dennehy's one-note performance. Without a clear recommendation to attend, the assessment balances positive and negative elements equally.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:29:20.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

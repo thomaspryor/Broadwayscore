@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20141023083318/http://www.ew.com/ew/article/0,,20364394_20776737,00.html",
   "contentTier": "complete",
   "wordCount": 306,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, Machinal isn't consistently intriguing or the tiniest bit emotionally involving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The D grade and consistent criticism ('tiresome', 'exasperatingly unfulfilling') outweigh praise for individual elements like Hall's performance and production design. The critic clearly does not recommend the show overall. | GPT-4o: The review highlights strong performances and staging but criticizes the play for being unengaging and tiresome, aligning with the original 'D' rating. The text is truncated, so the final verdict might be missing, but the existing content suggests a negative assessment. | Gemini: The review praises the aesthetics and Rebecca Hall's performance, but ultimately finds the play unintriguing and unemotional. The critic gives the production a 'B-', which translates to a negative score. However, the text is truncated, so confidence is low. | Kimi: While the review lavishes praise on the aesthetic achievements, Rebecca Hall's performance, and the production design, it ultimately finds the play emotionally hollow and frequently tedious. The B- grade and significant caveats place this in the Mixed bucket, acknowledging the technical brilliance while noting the lack of emotional engagement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:30:21.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 68,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 28,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

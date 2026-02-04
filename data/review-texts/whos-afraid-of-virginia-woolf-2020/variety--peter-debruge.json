@@ -41,5 +41,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1004,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T10:48:49.334Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Geffen Playhouse, not the current Broadway run.; kimi: This review covers the 60th-anniversary production at the Geffen Playhouse in Los Angeles, not a current Broadway production. The text explicitly references a 2020 Broadway production that was in previews when the pandemic hit, distinguishing this regional theater run from Broadway.",
+  "promptVersion": "5.2.0"
 }

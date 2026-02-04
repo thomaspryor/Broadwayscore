@@ -41,9 +41,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 246,
   "tierReason": "Short text (246 words)",
-  "rejectedAt": "2026-02-04T05:52:11.851Z",
+  "rejectedAt": "2026-02-04T10:23:21.074Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This is website navigation menus, error messages, and legal footer text - not a review article; openai: This text is a collection of navigation menus, error messages, and unrelated news headlines, not a review.; gemini: This is not a review, but a collection of links, navigation, and promotional material.; kimi: The text explicitly states 'failed to render body of article' and contains only navigation menus, social media links, site footers, and unrelated news headlines with no actual review content.",
+  "rejectionReasoning": "claude: This is website navigation menus, links, and footer content - not a theater review article; openai: This text is a collection of navigation menus, terms of service, and other non-article content, not a review.; gemini: This is not a review, but rather a collection of links, contact information, and other non-article content.; kimi: This text consists of website navigation menus, footer links, and an explicit error message ('failed to render body of article'). No actual review content is present.",
   "promptVersion": "5.2.0"
 }

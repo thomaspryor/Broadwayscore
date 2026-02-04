@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 678,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all its dizzying charms, the overstuffed show doesn't quite deliver on what really counts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review praises Mays' virtuoso performance and the production's stagecraft, but concludes the show is 'overstuffed' and fails to deliver on its most important elements - the Christmas spirits that drive the story's transformation. | GPT-4o: The review praises Jefferson Mays' performance and the production's design, but notes that the portrayal of the three Spirits falls short. The overall tone is positive, highlighting the show's strengths while acknowledging some weaknesses. | Gemini: The review is generally positive, highlighting Mays' performance and the staging, but notes that the show doesn't fully deliver on the Spirits of Christmas, indicating a reservation. | Kimi: The reviewer heaps praise on Jefferson Mays' tour-de-force performance and the virtuoso design, calling the adaptation 'lean and fit.' However, significant reservations about the rushed, lifeless treatment of the three crucial Spirits prevent this from being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:02:35.039Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -33,5 +33,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250427142823/https://ew.com/theater/2018/01/11/john-lithgow-stories-by-heart-review/",
   "contentTier": "complete",
   "wordCount": 894,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is ultimately a basic piece of theater that never really digs below its cozy, slightly drab surface.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review gives a B- grade and praises Lithgow's acting prowess while criticizing the play's structure as 'disjointed' and 'clunky.' The critic finds the memoir portions more compelling than the literary adaptations, suggesting an uneven but not wholly negative experience. | GPT-4o: The review praises Lithgow's performance but criticizes the play's structure and coherence. The positive aspects of his acting are countered by the critique of the play's disjointed nature. The text is truncated, so the final verdict may be missing, leading to low confidence. | Gemini: The review praises Lithgow's acting but finds the play itself disjointed and clunky. The B- grade suggests a mixed assessment, but the truncated text makes it difficult to gauge the overall recommendation with high confidence. | Kimi: While praising John Lithgow's performance as an 'acting masterclass,' the critic finds the show's structure 'clunky' and 'disjointed,' resulting in a qualified B- recommendation that values the star's work over the production itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:26:12.959Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

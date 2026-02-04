@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 66,
-  "tierReason": "Short text (66 words)"
+  "tierReason": "Short text (66 words)",
+  "assignedScore": 20,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the new incarnation proves only one thing: gay and trans people of color have just as bad taste in show tunes",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Opens with reference to original poster as 'threat', dismisses revival as proof of 'bad taste', mocking tone throughout with no redeeming qualities mentioned. | GPT-4o: The review is strongly negative, mocking the show's appeal and suggesting it has poor taste. There is no positive evaluation of the current production. | Gemini: The review expresses a negative opinion of the show, implying it's not worth seeing. The critic's tone is sarcastic and dismissive. | Kimi: The review is sarcastic and dismissive throughout, mocking the show's return ('baaaack') and describing the material as 'bad taste in show tunes' with no redeeming qualities mentioned. The tone suggests the critic finds the production worthless regardless of its diverse casting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:13:15.159Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 22,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

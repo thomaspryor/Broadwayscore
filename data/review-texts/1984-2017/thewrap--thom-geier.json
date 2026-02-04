@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 62 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 56,
-  "tierReason": "Short text (56 words)"
+  "tierReason": "Short text (56 words)",
+  "rejectedAt": "2026-02-04T10:01:47.317Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be just the opening paragraph or excerpt of a review, providing only contextual setup about the show's timeliness without any evaluation or critical assessment of the production.; openai: The text provided is an incomplete review and does not contain any evaluative content or a verdict on the Broadway production.; gemini: This is just an opening paragraph providing context, not a full review with a clear evaluation of the production.",
+  "promptVersion": "5.2.0"
 }
