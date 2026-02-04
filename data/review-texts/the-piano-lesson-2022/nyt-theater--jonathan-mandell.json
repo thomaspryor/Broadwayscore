@@ -31,5 +31,60 @@
   "contentTier": "complete",
   "wordCount": 1200,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "The first Broadway revival of August Wilson’s “The Piano Lesson” is full of stars and ghosts. The ghosts are what make it brilliant... It would be foolish to deny the appeal and the power of (Samuel Jackson, John David Washington and Danielle Brooks’) celebrity. But they work as an ensemble, portraying a family of storytellers in a play haunted by ghosts – literal, metaphoric, historic…above all, by August Wilson...\n\nRead more"
+  "showScoreExcerpt": "The first Broadway revival of August Wilson’s “The Piano Lesson” is full of stars and ghosts. The ghosts are what make it brilliant... It would be foolish to deny the appeal and the power of (Samuel Jackson, John David Washington and Danielle Brooks’) celebrity. But they work as an ensemble, portraying a family of storytellers in a play haunted by ghosts – literal, metaphoric, historic…above all, by August Wilson...\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The first Broadway revival of August Wilson's 'The Piano Lesson' is full of stars and ghosts. The ghosts are what make it brilliant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Excerpt calls the production 'brilliant' and praises the ensemble work, but single excerpt warning requires caution about incomplete picture of full verdict. | GPT-4o: The excerpt praises the revival as 'brilliant' and highlights the ensemble's powerful performance. Despite the limited excerpt, the strong positive language suggests a highly favorable review. | Gemini: The review excerpt praises the play as \"brilliant\" and highlights the ensemble work of the cast, indicating a positive recommendation, although the truncated text and single excerpt reduce confidence. | Kimi: The excerpt uses strong positive language ('brilliant,' 'power,' 'appeal') to praise the ensemble performances and supernatural elements, indicating a clear recommendation, though the single excerpt format limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:25:25.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 74 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 68,
-  "tierReason": "Short text (68 words)"
+  "tierReason": "Short text (68 words)",
+  "rejectedAt": "2026-02-04T05:50:55.045Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be just the opening paragraph providing background information about the playwright's death and production history, with no critical evaluation of the show; openai: The text provided is an introductory paragraph mentioning the playwright's death and the play's revival, without any evaluative content or review of the current production.; gemini: This is an obituary and background information on the play, not a review of the current production.",
+  "promptVersion": "5.2.0"
 }

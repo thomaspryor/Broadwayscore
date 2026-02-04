@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 58,
-  "tierReason": "Short text (58 words)"
+  "tierReason": "Short text (58 words)",
+  "assignedScore": 34,
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 29,
+      "high": 39
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Disaster\" is too dynamic a word to describe the new jukebox musical \"Disaster!\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: The critic explicitly rejects calling it a 'disaster' because that would be too flattering, instead calling it a 'lukewarm mess.' This is clearly a pan with no redeeming qualities mentioned. | GPT-4o: The review uses strong negative language, describing the show as a 'lukewarm mess' and suggesting 'Disaster' is too dynamic a word, indicating a strongly negative verdict. | Gemini: The review uses negative language such as \"lukewarm mess\" to describe the show, indicating a negative recommendation. | Kimi: The critic explicitly describes the show as a 'lukewarm mess,' suggesting it lacks the dynamism even to be called a disaster, which constitutes a clear negative verdict. Confidence is low due to the brief excerpt length. | Buckets: claude=Pan, openai=Pan, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:34:36.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
+  }
 }

@@ -49,5 +49,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150216201459/http://www.newsday.com/entertainment/theater/broadway-love-letters-returns-with-brian-dennehy-mia-farrow-1.9339473",
   "contentTier": "complete",
   "wordCount": 455,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a beguiling and wrenching kaleidoscope of real emotions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for both lead performances, especially Farrow described as a 'revelation' and 'preternatural effectiveness'. The production is called 'subtle' and the material 'beguiling and wrenching' despite initial concerns about celebrity gimmick. | Gemini: The review is overwhelmingly positive, praising the performances of Farrow and Dennehy and the subtle production. The critic calls it \"beguiling and wrenching\". | Kimi: Review offers unqualified praise for the production and lead performances, calling Farrow 'phenomenal' and Dennehy 'touchingly solid' while describing the show as a 'revelation' and 'beguiling.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:01:36.085Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

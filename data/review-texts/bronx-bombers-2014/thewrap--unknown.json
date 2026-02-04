@@ -52,5 +52,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140207061311/http://www.thewrap.com/bronx-bombers-theater-review-yogi-berra-reggie-jackson-broadway",
   "contentTier": "complete",
   "wordCount": 578,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "No, it's just a very misguided second act.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review consistently criticizes the play's structure, dialogue, and direction, calling the second act 'misguided,' the dinner conversation 'bad,' and criticizing the playwright-director for lacking necessary collaborative buffer. Despite truncation, the negative verdict is clear throughout. | GPT-4o: The review criticizes the play's execution, particularly the 'endless dream sequence' and the direction, suggesting the playwright should stick to writing. The negative tone is clear, but the text is truncated, so the final verdict may be missing. | Gemini: The review is largely negative, criticizing the play's writing, direction, and dream sequence. While Scolari's performance is praised, the overall assessment is unfavorable, suggesting the playwright should stick to writing. | Kimi: While the critic praises Peter Scolari's performance, the review consistently criticizes the 'misguided' second act, 'endless' dream sequence, and heavy-handed direction, ending with a clear verdict that the playwright should not have directed. Text is truncated but the visible content establishes a firmly negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:26:15.388Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Parker and Morse are perfection together, two actors who know how to find the truth in every moment and make us believe it completely.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,62 @@
   "archiveOrgTimestamp": "20250720093417",
   "archiveOrgUrl": "http://web.archive.org/web/20250720093417/https://deadline.com/2022/04/how-i-learned-to-drive-broadway-review-mary-louise-parker-david-morse-1235004844/",
   "wordCount": 979,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "low",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Parker and Morse fill the larger Broadway stage with performances not so much expanded but deepened by time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Strong praise for the leads' performances as 'deepened by time,' calls it a 'first-rate' production, and describes the play as remaining 'unsettling, disarmingly funny and as deeply moving as ever.' No significant reservations expressed. | GPT-4o: The review acknowledges the play's emotional complexity and strong performances but criticizes the first act as 'pretty boring' and 'low energy.' The second half is noted as an improvement, leading to an overall mixed impression. | Gemini: The review is mostly positive, praising the performances and the play's emotional complexity. However, the critic notes the first act was \"pretty boring\" and \"very low energy\", which tempers the recommendation. | Kimi: The critic offers unqualified praise, calling the play a 'masterwork' and the production 'first-rate,' with superlatives for the lead performances ('beautifully playing,' 'deepened by time'). Despite the difficult subject matter, the review is overwhelmingly enthusiastic about the artistic achievement. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:51:26.743Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 29,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

@@ -55,5 +55,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210805222758/https://www.newsday.com/entertainment/theater/airline-highway-review-less-interesting-losers-1.10314358",
   "contentTier": "complete",
   "wordCount": 402,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard not to root for 'Airline Highway,' Broadway's only serious new American play in a spring season obsessed with light comedies and British imports.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the play's strengths (vibrant cast, poignant performances) and wants to support it, but finds it derivative and forced. The ending 'I wish I could [embrace it]' signals clear disappointment despite sympathy for the material. | GPT-4o: The review acknowledges the play's vibrant cast and poignant performances but criticizes its lack of originality and forced narrative. The final sentiment 'I wish I could' suggests the critic wanted to embrace the play but ultimately couldn't, indicating a mixed verdict. | Gemini: The review acknowledges poignant performances and a vibrant cast, but ultimately finds the story unoriginal and formulaic, leading to a mixed assessment. | Kimi: While praising the ensemble cast and director Joe Mantello's work, the critic finds the play derivative ('we have been down such a road far too often'), the characters formulaic, and the premise forced. The closing sentiment—'I wish I could' embrace the play's incoherence—signals a clear rejection of the work despite its good intentions and performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:14:03.264Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

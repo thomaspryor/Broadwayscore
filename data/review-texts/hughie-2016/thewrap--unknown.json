@@ -40,5 +40,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 83,
-  "tierReason": "Short text (83 words)"
+  "tierReason": "Short text (83 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It’s the best painting that Edward Hopper never painted, and you can see it at Broadway’s Booth Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review praises the design and direction, comparing it to a painting by Edward Hopper, but the text is truncated, and the final verdict is missing. This suggests a mixed review with potential positive elements, but the lack of a clear conclusion necessitates a cautious approach. | Gemini: The review is positive in its description of the set design and direction, comparing it to a Hopper painting. However, the truncated text and lack of a clear overall verdict lower the confidence. | Kimi: The available text offers strong praise for the production design using the Hopper comparison and invites readers to see the show, but the review is truncated mid-sentence before delivering a final verdict on the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:51:54.138Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

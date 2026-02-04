@@ -46,5 +46,60 @@
   "sourceMethod": "playwright",
   "contentTier": "truncated",
   "wordCount": 394,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MacKinnon's feisty if occasionally restless revival makes intriguing work of Albee's portrait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear B grade with consistent praise for the cast performances, especially Close, Lithgow, and Duncan. Some reservations about pacing and runtime, but overall positive assessment. Confidence medium due to truncated text, though the B grade strongly indicates positive territory. | GPT-4o: The review praises the timelessness of the play and the performances of the cast, particularly highlighting Glenn Close and John Lithgow. While noting some pacing issues, the overall tone is positive, recommending the production for its character work and cast. However, the text is truncated, so the final verdict may be missing. | Gemini: The review praises the performances of the leads and the direction, but notes that the production can feel like it's oscillating speeds. The B grade suggests a positive but not rave review. | Kimi: The review praises the veteran cast (particularly Lithgow, Close, and Duncan) and MacKinnon's direction as 'intriguing work,' but notes pacing issues ('oscillating speeds,' 'occasionally restless') and a lengthy runtime. The truncated text ending with 'B' suggests a solid but not exceptional grade, consistent with a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:11:32.092Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

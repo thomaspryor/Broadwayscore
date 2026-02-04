@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 84 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 78,
-  "tierReason": "Short text (78 words)"
+  "tierReason": "Short text (78 words)",
+  "rejectedAt": "2026-02-04T06:05:17.120Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a plot summary or description of the show's themes rather than an evaluative review with the critic's opinion or recommendation.; openai: The text provides a thematic description and context but lacks evaluative content or a clear verdict on the production.",
+  "promptVersion": "5.2.0"
 }

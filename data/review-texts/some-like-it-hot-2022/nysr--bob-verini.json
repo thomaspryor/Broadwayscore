@@ -10,12 +10,68 @@
   "source": "nysr-api",
   "sources": [
     "nysr-api",
-    "show-score-playwright"
+    "show-score-playwright",
+    "playbill-verdict"
   ],
   "originalScore": "5/5 stars",
   "textQuality": "partial",
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"The new show is filled top to bottom with skilled pros, many of whom deserve to become instant headliners with this appearance...If you’re a sucker for fast-paced glamour executed in high style, this is the one for you.\"\n\nRead more"
+  "showScoreExcerpt": "\"The new show is filled top to bottom with skilled pros, many of whom deserve to become instant headliners with this appearance...If you’re a sucker for fast-paced glamour executed in high style, this is the one for you.\"\n\nRead more",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "medium",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a freakin' joy, one of the most confident of Broadway musicals since… well, since Hairspray",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with rapturous praise throughout. Opens calling it 'a freakin' joy' and 'one of the most confident Broadway musicals,' praises every element from performances to design, and concludes with complete satisfaction despite minor reservations about one character. | GPT-4o: The review is filled with superlatives and high praise, comparing the show to 'Hairspray' and calling it a 'freakin’ joy'. The 5/5 stars rating and the enthusiastic language indicate a rave review. Despite the text being truncated, the provided excerpts support a highly positive assessment. | Gemini: The review is overwhelmingly positive, calling the show a \"freakin’ joy\" and praising the performances, choreography, and design. Although the text is truncated, the overall tone and the 5/5 star rating suggest a strong recommendation. | Kimi: 5/5 star rating with unqualified enthusiasm throughout, calling the show a 'freakin' joy' and praising performances, score, and direction as 'simply amazing' and 'wholly high-gloss.' Confidence reduced to 'low' due to truncation warning, though the visible text indicates a clear rave verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:13:16.521Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 83,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

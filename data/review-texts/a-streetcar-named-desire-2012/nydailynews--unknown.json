@@ -34,5 +34,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 247,
-  "tierReason": "Short text (247 words)"
+  "tierReason": "Short text (247 words)",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her star turn as Tennessee Williams' doomed southern belle in 'A Streetcar Named Desire' is a mixed bag.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it 'a mixed bag' and offers balanced praise (Foster 'nails' his role, Anderson 'quite touching') with criticism (Anderson's 'overripe posturing', gimmicky directorial choices). No clear recommendation either way. | Gemini: The review praises some performances (Foster as Stanley) and Anderson's vulnerability, but criticizes her accent and the production's modern setting. The overall assessment is 'a mixed bag,' indicating a middle ground. | Kimi: The critic explicitly labels both the lead performance and the revival a 'mixed bag,' praising Anderson's vulnerability and the supporting cast while criticizing her accent, the revolving stage gimmick, and intrusive rock music.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:13:31.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

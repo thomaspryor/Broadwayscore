@@ -38,5 +38,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 76,
-  "tierReason": "Short text (76 words)"
+  "tierReason": "Short text (76 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T05:46:26.668Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This text reviews 'Grease: Live,' a television broadcast production, not a Broadway theater production.; openai: The text is about a television broadcast of 'Grease: Live' and not a Broadway show.; gemini: This review is about \"Grease: Live\" on Fox, not a Broadway production.; kimi: The text discusses the Fox television broadcast 'Grease: Live,' a TV special, not a Broadway theatrical production. It references broadcast television trends, NBC's live musicals, and Fox's TV staging.",
+  "promptVersion": "5.2.0"
 }

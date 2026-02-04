@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 551,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 20,
+  "llmScore": {
+    "score": 20,
+    "confidence": "medium",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nothing wears out its welcome faster than bombast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Despite praising lead actor Mutu, the review savages nearly every aspect of the show - score, book, direction, pacing. Calls it ponderous, compares runtime to slow Soviet train, mocks lyrics extensively, and explicitly states it's not even entertainingly bad. | GPT-4o: The review is overwhelmingly negative, criticizing the music, lyrics, and direction, and implying that the show is not enjoyable even in a 'so-bad-it's-good' way. The praise for the lead actor does not redeem the overall negative assessment. | Gemini: The review is overwhelmingly negative, describing the show as having too much noise, a bad score, and ponderous direction. The critic explicitly states it's not even so-bad-it's-good, and the few positive comments about Mutu don't redeem the overall pan. | Kimi: The review relentlessly attacks the score, lyrics, book, and direction as bombastic, treacly, and tedious, with sarcastic comments about the runtime and political messaging. While praising lead actor Tam Mutu, the critic makes clear the production is irredeemable and not even enjoyably bad.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:36:35.004Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

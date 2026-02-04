@@ -35,5 +35,11 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 801,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T06:17:49.996Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the pre-Broadway version of 'The Cher Show' in Chicago, not the current Broadway run.; kimi: This review explicitly covers the pre-Broadway production premiering in Chicago ('In its pre-Broadway version premiering in Chicago'), not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

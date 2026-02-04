@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Kline has found the dark undertow in what is often regarded as frothy boulevard comedy, and he lets it pull him into deeper, more turbulent waters than you might expect.",
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (31 words)",
   "textQuality": "partial",
   "playbillVerdictUrl": "http://www.nytimes.com/2017/04/05/theater/review-kevin-kline-serves-ham-in-soignee-silk-in-present-laughter.html?_r=0",
@@ -48,5 +48,10 @@
     "Word count too low: 232 (min: 300)"
   ],
   "wordCount": 232,
-  "tierReason": "Short text (232 words)"
+  "tierReason": "Short text (232 words)",
+  "rejectedAt": "2026-02-04T06:09:57.959Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text is truncated and ends with an error message about retrieving content and enabling JavaScript - this is a technical error page, not a complete review.; openai: The text is incomplete and contains navigation instructions and error messages, indicating it is not a full review.",
+  "promptVersion": "5.2.0"
 }

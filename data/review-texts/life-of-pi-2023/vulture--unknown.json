@@ -33,5 +33,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230605233650/https://www.vulture.com/2023/03/theater-review-life-of-pi-broadway.html",
   "contentTier": "complete",
   "wordCount": 1356,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a pity that he's stranded in a story awash with platitudes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises the spectacular puppetry and tiger but consistently criticizes the story as heavy-handed and full of platitudes. The critic finds the production technically impressive but dramatically weak, landing in mixed territory. | Gemini: The review is mostly positive, focusing on the impressive puppetry and spectacle, but it also notes the play's weaknesses in its moralizing and drawn-out prologue. The truncated text and mixed feelings lead to a lower confidence score. | Kimi: The critic has significant reservations about the platitude-heavy script and slow first act, but praises the puppetry and visual design as exceptional. Despite finding the story 'awash with platitudes,' they explicitly recommend seeing the production, particularly for the tiger and animal puppets, ending on a positive note about the spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:00:25.977Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

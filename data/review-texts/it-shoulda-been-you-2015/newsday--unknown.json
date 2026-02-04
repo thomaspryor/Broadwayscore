@@ -51,5 +51,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150423013719/http://www.newsday.com:80/entertainment/theater/it-shoulda-been-you-review-tired-plot-expertly-done-1.10256155",
   "contentTier": "complete",
   "wordCount": 450,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this conscientiously good-humored 100-minute show may well be a demographic crowd-pleaser",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the material is tired and clichéd but praises the professional cast and direction. The critic suggests it works for its target audience despite being a 'throwback,' landing in mixed territory with qualified approval. | GPT-4o: The review acknowledges the professionalism of the cast and some humor, but also highlights the dated nature of the material and lack of originality. The tone suggests a mixed reception, with some positive elements but no strong recommendation. | Gemini: The review acknowledges the show's flaws and dated nature, but also highlights the strength of the cast and its potential to please a specific audience. The truncated nature of the text lowers the confidence. | Kimi: The critic praises the professional cast and direction but repeatedly criticizes the material as 'creaky,' 'ancient,' and derivative, ending with the observation that 'seen it all before' are the truest words in the show. While acknowledging it may please certain demographics, the review neither endorses nor rejects the production outright.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:54:20.789Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

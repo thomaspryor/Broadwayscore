@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1013,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is the best sung version of the Stephen Sondheim and Hugh Wheeler musical I've ever heard",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the vocal performances extensively, calls it the best sung version they've heard, and celebrates the full orchestra. While noting significant directional and staging problems, the overall assessment is positive with strong recommendation for the musical elements. | GPT-4o: The review praises the vocal performances and orchestration highly, calling it the best sung version of the musical. However, there are reservations about the direction and set design, which prevent it from being a full rave. | Gemini: The review is generally positive, highlighting the superb vocals and orchestra. While it notes some issues with the direction and set design, the overall recommendation is positive due to the vocal performances. | Kimi: Despite significant criticisms of the direction and set design that keep the drama at a distance, the critic lavishes praise on the vocal performances, orchestration, and sound design, explicitly calling it the best sung version of the show they have encountered. The review establishes that for this hybrid work, the superior musical values override the staging flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:15:44.887Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

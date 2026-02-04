@@ -55,5 +55,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200425135929/https://www.thewrap.com/macbeth-theater-review-ethan-hawke-anne-marie-duff-movie-friendly/",
   "contentTier": "complete",
   "wordCount": 496,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Brien's flashy staging isn't the Bard for Dummies, but it does help if you know less about Shakespeare and more about the movies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review is ambivalent throughout, praising the production's visual spectacle and some performances while questioning the casting choices and whether the leads are convincing in their roles. The critic seems entertained by the movie references but uncertain about the overall effectiveness. | GPT-4o: The review provides a mix of observations about the production's scale and references but lacks a clear recommendation. The tone suggests intrigue and spectacle but also confusion and lack of coherence. | Gemini: The review is mixed, highlighting both positive and negative aspects of the production. It neither strongly recommends nor discourages seeing the show, landing it in the mixed bucket. | Kimi: The review praises the conceptual movie references and spectacular design but criticizes the lead performances as unconvincing and overwhelmed by the production scale.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:02:48.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210413235622/https://www.nydailynews.com/entertainment/broadway/ny-burn-this-broadway-review-20190417-4g4mtboqbzbehc44ugpnlx2roi-story.html",
   "contentTier": "complete",
   "wordCount": 703,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As its title implies, 'Burn/This' is complex and dangerous; it is worth more risk.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises Driver's performance and Wilson's writing, but finds the production lacks boldness and doesn't fully utilize its potential. Mixed signals with qualified appreciation. | GPT-4o: The review acknowledges strong performances, especially by Adam Driver, but criticizes the production for not fully capturing the era's context and lacking boldness. It suggests the play has complexity and danger but falls short in execution. | Gemini: The review is generally positive, highlighting Driver's performance and Wilson's writing. However, it also notes that the production doesn't fully contextualize the era and that Russell's choices need to be more amplified, indicating reservations. | Kimi: While the critic finds the production insufficiently bold and lacking contextualization of the 1980s setting, they deliver strong praise for Adam Driver's lead performance ('vulnerability,' 'erotic charge') and find Lanford Wilson's play 'compassionate and haunting.' The recommendation is qualified by production flaws but ultimately positive due to the lead performances and source material. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:26:53.154Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

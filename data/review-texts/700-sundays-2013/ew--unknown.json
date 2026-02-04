@@ -39,5 +39,62 @@
   ],
   "contentTier": "truncated",
   "wordCount": 267,
-  "tierReason": "Short text (267 words)"
+  "tierReason": "Short text (267 words)",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sure, some of it feels like Old Jew Telling Jokes, but Crystal knows his audience and he kills with lines like 'Bris is the prefix for brisket.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite the D grade, the review is consistently positive about Crystal's performance and audience connection. The critic finds it 'laugh-out-loud,' calls many stories 'riveting,' and shows affection for Crystal's enthusiasm. The D grade appears to be a typo or error given the positive tone throughout. | GPT-4o: The review praises Crystal's performance and the show's humor, despite noting some parts drag. The original 'D' rating suggests a positive but qualified recommendation. The text is truncated, so the final verdict may be missing. | Gemini: The critic gives the show a D, which is a negative rating. While there are some positive comments about Crystal's stage presence and some of the stories, the review also mentions that some parts drag on and feel like \"Old Jew Telling Jokes.\" | Kimi: The review carries an A- grade and consistently praises Crystal's performance as 'laugh-out-loud' and 'riveting,' with the critic noting it's 'hard to begrudge' the star's evident joy. While noting the show runs long and some jokes drag, the overall tone is warmly appreciative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:10:30.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 45,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 38,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier gemini chose Negative, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

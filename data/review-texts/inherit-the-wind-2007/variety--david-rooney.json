@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Brian Dennehy and Christopher Plummer bring gravity and theatrical thunder to this handsome revival of Jerome Lawrence and Robert Edwin Lee's courtroom drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1215,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brian Dennehy and Christopher Plummer bring gravity and theatrical thunder to this handsome revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances and production ('gravity and theatrical thunder', 'handsome revival'), but single excerpt limits full assessment of critic's verdict. | GPT-4o: The excerpt praises the performances and describes the revival as 'handsome,' indicating a positive view. However, the single excerpt warning suggests caution, so the score is at the higher end of Positive but not a Rave. | Gemini: The excerpt praises the performances of the leads and calls the revival 'handsome,' suggesting a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the limited text. | Kimi: The excerpt offers strong praise for the lead performances and production values, describing them with weighty positive terms like 'theatrical thunder' and 'handsome,' indicating a clear recommendation despite the limited context available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:53:27.456Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Metcalf gives a performance of such breathtaking emotional honesty that you may find yourself holding your breath, afraid that exhaling might break the spell.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,59 @@
   "archiveOrgTimestamp": "20231003212533",
   "archiveOrgUrl": "http://web.archive.org/web/20231003212533/https://www.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html",
   "wordCount": 862,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In what is shaping up to be a lousy season for new plays on Broadway, perhaps this alone is worth a cheer or two.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises Metcalf's 'superb performance' and calls it a 'cunningly constructed entertainment' that keeps audiences intrigued. While he acknowledges the plot twist is 'too tidy to be credible' and compares it to 'lesser cable-television fare,' his overall assessment is positive, specifically recommending it as worthy entertainment in a weak Broadway season. | Gemini: The review acknowledges flaws (tidy twist, cable-television fare) but ultimately praises the entertainment value, production, and especially Laurie Metcalf's performance, making it a positive but not rave review. | Kimi: While Brantley criticizes the play's twist as 'far too tidy' and compares it to cable television fare, he delivers consistent praise for Laurie Metcalf's 'superb,' 'heartbreaking' performance, the 'fine production,' and 'excellent supporting performances,' clearly recommending the show as a welcome entry in a weak season.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:24:20.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

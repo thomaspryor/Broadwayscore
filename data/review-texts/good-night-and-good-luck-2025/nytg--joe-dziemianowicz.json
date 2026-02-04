@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 748,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"The creators can’t resist hammering home how that speaks to today.\"\n\nRead more"
+  "showScoreExcerpt": "\"The creators can’t resist hammering home how that speaks to today.\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It simply fails to catch fire, save for all the cigarettes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production's merits (Clooney's performance, design work) but finds it 'tepid' and 'unexciting.' Despite calling it a 'newsworthy event,' the overall assessment is lukewarm with significant reservations about the drama's impact. | GPT-4o: The review acknowledges the play's historical significance and Clooney's performance but criticizes it for being unexciting and failing to catch fire. The overall tone is mixed, with some praise for specific elements but a lack of enthusiasm for the production as a whole. | Gemini: The review is mixed, praising Clooney's performance and the set design, but ultimately finding the production \"tepid\" and \"unexciting.\" The critic acknowledges its newsworthiness but doesn't strongly recommend it. | Kimi: The critic praises the handsome production design and Clooney's reasonable performance but repeatedly calls the drama 'tepid,' 'unexciting,' and notes it 'fails to catch fire,' concluding it's a 'newsworthy event' only due to Clooney's star presence rather than dramatic quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:46:14.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

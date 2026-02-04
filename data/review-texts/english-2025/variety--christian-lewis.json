@@ -43,5 +43,60 @@
   "contentTier": "complete",
   "wordCount": 1112,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Undeniably one of the best plays of the decade, it is both thought-provoking and deeply affecting. This Broadway run will thankfully allow even more audiences to enroll in Toossi’s class.\"\n\nRead more"
+  "showScoreExcerpt": "\"Undeniably one of the best plays of the decade, it is both thought-provoking and deeply affecting. This Broadway run will thankfully allow even more audiences to enroll in Toossi’s class.\"\n\nRead more",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's hands down a masterpiece of theater. Undeniably one of the best plays of the decade",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic uses the strongest possible language: 'masterpiece,' 'undeniably one of the best plays of the decade,' 'very rightfully won the Pulitzer Prize.' This is unqualified, superlative praise with enthusiastic recommendation for audiences to see it. | GPT-4o: The review is filled with superlatives and praises the play as a masterpiece, highlighting its emotional and intellectual impact. The critic calls it one of the best plays of the decade, which strongly indicates a rave review. | Gemini: The review is overwhelmingly positive, calling the play a \"masterpiece of theater\" and \"undeniably one of the best plays of the decade.\" The critic praises the writing, direction, performances, and design elements. | Kimi: The review offers unqualified praise with superlatives like 'masterpiece,' 'genius,' and 'undeniably one of the best plays of the decade,' enthusiastically recommending the show without any caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:37:32.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 95,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

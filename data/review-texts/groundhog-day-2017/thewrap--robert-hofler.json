@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 77,
-  "tierReason": "Short text (77 words)"
+  "tierReason": "Short text (77 words)",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'll find it in the inventive, acerbic, and thoroughly irreverent \"Groundhog Day,\" which opened Monday at the August Wilson Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('inventive, acerbic, and thoroughly irreverent') and states the creative team 'has successfully transferred' the material to stage, indicating a solid recommendation. | GPT-4o: The review describes the show as 'inventive, acerbic, and thoroughly irreverent,' indicating a strong positive recommendation. The critic praises the successful adaptation from film to stage, suggesting a solid endorsement. | Gemini: The review is positive, stating the show is \"inventive, acerbic, and thoroughly irreverent\" and that the movie was successfully transferred to the musical stage. | Kimi: The review enthusiastically praises the adaptation as 'inventive, acerbic, and thoroughly irreverent,' highlighting the successful transfer from screen to stage and explicitly recommending it as an antidote to more saccharine musicals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:46:53.162Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

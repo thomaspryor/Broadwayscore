@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210302090841/https://www.nydailynews.com/entertainment/theater-arts/jake-gyllenhaal-ruth-wilson-light-constellations-article-1.2076106",
   "contentTier": "complete",
   "wordCount": 341,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "as brainy as it is sweet-hearted",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout ('ace their debuts', 'swoon-worthy cast', 'combustible chemistry') with praise for performances, direction, and staging. No significant reservations expressed. | GPT-4o: The review praises the performances, the play's thematic depth, and the direction, indicating a strong recommendation. The critic describes the chemistry between the leads as 'combustible' and the production as touching 'both the head and the heart deeply,' suggesting an enthusiastic endorsement. | Gemini: The review is generally positive, highlighting the performances of the leads and the play's intellectual and emotional depth. While acknowledging the potential for the structure to be \"off-putting,\" the critic ultimately recommends the play. | Kimi: The critic offers enthusiastic praise for the lead performances ('ace', 'swoon-worthy', 'combustible chemistry') and direction, with only a minor reservation about the initial structure that is quickly resolved. The overall tone is warm and strongly recommending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:31:00.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

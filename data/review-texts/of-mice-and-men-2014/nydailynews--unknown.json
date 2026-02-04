@@ -50,5 +50,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 370,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The '127 Hours' Oscar nominee and Chris O'Dowd do first-rate work in this stirring revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for the production and performances. Calls the revival 'stirring,' praises director for 'evocative production,' and highlights 'first-rate work' from leads and 'ace cast.' No significant reservations expressed. | GPT-4o: The review praises the performances and the direction, highlighting the evocative nature of the production. While it notes some lack of terror in the cast's grip, the overall tone is positive with strong recommendations for the performances and production. | Gemini: The review praises the performances of Franco, O'Dowd, and other cast members, as well as the evocative production. While not a rave, it's a clear recommendation. | Kimi: The review consistently praises the lead performances, direction, and supporting cast, describing the production as 'stirring,' 'evocative,' and featuring an 'ace cast' that grips the audience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:05:37.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

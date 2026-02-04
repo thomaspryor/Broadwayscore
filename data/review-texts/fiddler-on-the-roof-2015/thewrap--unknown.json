@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 67,
-  "tierReason": "Short text (67 words)"
+  "tierReason": "Short text (67 words)",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "moving but occasionally muddled new Broadway production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review describes the production as 'moving' (positive) but 'occasionally muddled' (negative), suggesting mixed feelings. However, this appears to be only an opening excerpt, so confidence is low due to the truncated nature. | GPT-4o: The review describes the production as 'moving but occasionally muddled,' indicating a mixed verdict with both positive and negative elements. | Gemini: The review describes the production as \"moving but occasionally muddled,\" indicating a mixed assessment. The critic acknowledges positive aspects but also points out flaws. | Kimi: The review offers a split verdict, praising the production as 'moving' while criticizing it as 'occasionally muddled.' The text appears truncated, cutting off before a full conclusion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:39:36.347Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

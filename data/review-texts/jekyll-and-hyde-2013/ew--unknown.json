@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20131001223152/http://www.ew.com/ew/article/0,,20364394_20692464,00.html",
   "contentTier": "complete",
   "wordCount": 498,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's good and — well, not evil, but head-scratchingly, laughably, even painfully bad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The D grade and consistent criticism ('painfully bad,' 'puzzlements,' things going 'terribly wrong') clearly indicate a negative review, though the critic acknowledges some strong vocal performances and good songs. The truncation warning noted, but enough evaluative content is present to determine the verdict. | GPT-4o: The review is largely negative, highlighting numerous flaws in the production, despite some praise for individual performances. The original rating of 'D' supports a negative classification, though the text is truncated, which suggests caution. | Gemini: The review is mostly negative, pointing out flaws in the lyrics, direction, and performances. The critic gives it a C- grade, which translates to a negative recommendation. However, the truncated text and some positive comments about the music lower the confidence. | Kimi: Despite acknowledging strong vocals and some catchy songs, the critic describes the show as 'painfully bad' and 'a struggle to sit through,' with harsh criticism of the lyrics, direction, and overall production quality, warranting a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:55:29.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

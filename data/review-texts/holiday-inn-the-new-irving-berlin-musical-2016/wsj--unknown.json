@@ -50,5 +50,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 177,
-  "tierReason": "Short text (177 words)"
+  "tierReason": "Short text (177 words)",
+  "assignedScore": 30,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's slick, synthetic and soulless, a musical full of robotic jokes and devoid of genuine romance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Devastating critique calling the show a 'cynical cash machine' that's 'soulless' with 'uncharismatic leading men.' Only praise is for one supporting performer, which doesn't redeem the overall pan. | GPT-4o: The review criticizes the show as a 'cash machine,' 'slick, synthetic and soulless,' with uncharismatic leads. Despite praise for Megan Lawrence, the overall verdict is strongly negative. | Gemini: The review is largely negative, describing the show as a cynical cash grab. While Megan Lawrence's performance is praised, the overall assessment is unfavorable. | Kimi: The review excoriates the production as a mercenary, soulless repurposing of the film with robotic humor and uncharismatic leads, offering praise only to a supporting performer in a thankless role. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:48:59.673Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

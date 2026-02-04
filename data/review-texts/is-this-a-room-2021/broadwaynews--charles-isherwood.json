@@ -44,5 +44,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 184,
-  "tierReason": "Short text (184 words)"
+  "tierReason": "Short text (184 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play, conceived and directed with a laser-like precision by Tina Satter, uses the verbatim transcript of the interrogation as its dialogue",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praises direction as 'laser-like precision' and performance as 'luminous transparency'. Acknowledges the show creates intended anxiety/tension effects, suggesting artistic success despite discomfort. | Gemini: The review highlights the play's precision and the actress's performance, indicating a positive experience despite the anxiety-inducing subject matter. The critic expresses sympathy for the character, suggesting a compelling and worthwhile production. | Kimi: The review praises the direction as having 'laser-like precision' and the lead performance as 'luminous,' while noting the show effectively creates tension. Though the text appears truncated, the evaluative tone is clearly appreciative of the production's craft.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:53:50.819Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -35,5 +35,11 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 756,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T06:16:38.440Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Almeida Theatre in London, not the current Broadway run.; kimi: This review covers the London premiere at the Almeida Theatre, not the current Broadway production. The text explicitly mentions 'Almeida, London' and is dated as 'more than 3 years old', referring to the 2022 London run rather than the Broadway transfer.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Stephen Karam's 'The Humans' is a family drama that finds the profound in the mundane, and the terrifying in the familiar.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20240723192023",
   "archiveOrgUrl": "http://web.archive.org/web/20240723192023/https://variety.com/2016/legit/reviews/the-humans-review-play-broadway-1201709685/",
   "wordCount": 812,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That alone should keep this lovely play, an Off Broadway transfer, running in its inviting new Broadway house until kingdom come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with phrases like 'lovely play' and prediction it should run 'until kingdom come.' Praises cast, direction, and emotional impact with no significant reservations. | GPT-4o: The review is filled with praise for the play's emotional depth, performances, and direction, with no significant reservations. The critic's language suggests a strong endorsement, indicating a 'Rave' classification. | Gemini: The review is overwhelmingly positive, calling the play \"warm-hearted\" and \"lovely.\" The critic praises the performances, direction, and set design, and suggests it will have a long run. | Kimi: The critic offers extensive praise for Stephen Karam's warm-hearted writing, the excellent ensemble cast, and Joe Mantello's direction, declaring the show deserves a long Broadway run while acknowledging its dark ambiguities are overcome by genuine tenderness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:22:10.397Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

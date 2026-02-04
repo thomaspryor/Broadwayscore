@@ -19,5 +19,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“Herzog has trimmed the play of excessive dramaturgy without losing Ibsen’s effectiveness, handily getting us out of the theatre in less than two hours instead of what typically approaches three. “\n\nRead more"
+  "showScoreExcerpt": "“Herzog has trimmed the play of excessive dramaturgy without losing Ibsen’s effectiveness, handily getting us out of the theatre in less than two hours instead of what typically approaches three. “\n\nRead more",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Herzog has trimmed the play of excessive dramaturgy without losing Ibsen's effectiveness, handily getting us out of the theatre in less than two hours.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for direction, lighting, and adaptation. Chastain is 'quite good' but not transcendent, and Moayed's performance 'dampens' key scenes. Overall positive but with notable reservations. | GPT-4o: The review praises the adaptation and performances, particularly Chastain's, while noting some reservations about Moayed's performance and the absence of children affecting emotional impact. The original 4/5 stars rating supports a Positive classification. | Gemini: The review is mostly positive, praising the adaptation, lighting, and some performances, but it also expresses reservations about Chastain's performance and the absence of the children. The 4/5 star rating supports a positive classification. | Kimi: The 4/5 star review offers strong praise for Herzog's adaptation and the stark staging, calling Chastain 'altogether admirable,' but tempers enthusiasm with criticism of Moayed's weak Torvald and the lessened emotional impact of omitting the children.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:12:05.372Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

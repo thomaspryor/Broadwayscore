@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 67 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 61,
-  "tierReason": "Short text (61 words)"
+  "tierReason": "Short text (61 words)",
+  "rejectedAt": "2026-02-04T05:37:53.312Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a brief descriptive summary with cast/performance details but contains no critical evaluation or recommendation about the show's quality.; openai: The text is a brief description of the play's concept and cast, without any evaluative content or critical assessment.; gemini: This is just a brief announcement of the show's opening, with no evaluative content or recommendation.; kimi: The text contains only factual description of the show's premise, cast, and opening details with no evaluative language or critical assessment of the production quality.",
+  "promptVersion": "5.2.0"
 }

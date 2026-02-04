@@ -38,7 +38,12 @@
   "textIssues": [
     "Word count too low: 69 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 63,
-  "tierReason": "Short text (63 words)"
+  "tierReason": "Short text (63 words)",
+  "rejectedAt": "2026-02-04T06:21:32.068Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be just an opening paragraph or excerpt that provides context about the playwright and poses a question, but contains no actual evaluation or criticism of the current Broadway production.; openai: The text provided is more of a speculative question about the possibility of a sequel rather than an evaluation of the current Broadway production.; gemini: This is an introduction to a review, but it doesn't contain any evaluative statements about the current production. It mainly discusses Wendy Wasserstein and the original play.",
+  "promptVersion": "5.2.0"
 }

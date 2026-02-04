@@ -51,5 +51,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200302223728/https://www.newsday.com/entertainment/theater/choir-boy-review-1.25654718",
   "contentTier": "complete",
   "wordCount": 571,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fortunately, this show redeems itself with magnificent a cappella vocals and spot-on performances from the uniformly strong cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges the familiar premise but explicitly states the show 'redeems itself' with strong performances and vocals. However, confidence is low due to truncated text potentially missing the final verdict. | Gemini: The review acknowledges a familiar story but praises the performances and singing, suggesting a positive experience despite some reservations. The truncated text lowers confidence. | Kimi: While the critic finds the coming-of-age narrative formulaic ('old story,' 'overdose of teenage angst'), the review consistently praises the magnificent a cappella vocals, uniformly strong cast, and emotional performances—particularly Jeremy Pope's—ultimately redeeming the production and recommending it for its heart and execution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:30:38.546Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

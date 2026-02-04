@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150105202128/http://www.newsday.com:80/entertainment/theater/betrayal-review-daniel-craig-and-rachel-weisz-shine-1.6321091",
   "contentTier": "complete",
   "wordCount": 535,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm willing, but with reservations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic finds the production 'entertaining' with a 'luscious cast' but has significant reservations about Nichols making the work 'awfully ordinary' and losing Pinter's essential mysteries. Mixed praise with clear caveats. | GPT-4o: The review acknowledges the production as entertaining with a 'luscious cast', though it notes it is less Pinteresque than expected. The critic is willing to enjoy the production despite these reservations, indicating a positive but not unqualified recommendation. | Gemini: The review is generally positive, calling the production \"warm and approachable\" and \"entertaining.\" However, it also notes that it is \"not Pinteresque\" and that Nichols \"makes these people understandable but awfully ordinary,\" indicating reservations. | Kimi: The critic praises the luscious cast and finds the production entertaining, but has significant reservations about Nichols' warm, accessible approach sacrificing Pinter's characteristic mystery. The 'entertaining' verdict and willingness to recommend outweigh the stylistic criticisms.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:21:31.196Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
