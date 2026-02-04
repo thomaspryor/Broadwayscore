@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen is a musical that pulses with the authentic energy of New York City, featuring powerhouse vocals and a story that feels both personal and universal.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hell's Kitchen is a musical that pulses with the authentic energy of New York City, featuring powerhouse vocals and a story that feels both personal and universal.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen is a musical that pulses with the authentic energy of New York City, featuring powerhouse vocals and a story that feels both personal and universal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('pulses with authentic energy', 'powerhouse vocals', 'personal and universal') aligns with the critic's 80 rating. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides a positive evaluation, highlighting the show's energy, vocal performances, and relatable story. The original rating of 80 supports a solid positive classification. | Gemini: The quote is very positive, praising the show's energy, vocals, and story. Given the single excerpt and the critic's rating of 80, I placed the score at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's energy, vocals, and storytelling, consistent with the critic's 80/100 rating. Confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:08:55.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

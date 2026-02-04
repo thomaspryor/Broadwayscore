@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Leon's production doesn't reinvent the wheel, but it does polish it to a gorgeous shine, reminding us why Wilder's meditation on love, loss, and the preciousness of ordinary moments remains so vital.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Leon's production doesn't reinvent the wheel, but it does polish it to a gorgeous shine, reminding us why Wilder's meditation on love, loss, and the preciousness of ordinary moments remains so vital.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leon's production doesn't reinvent the wheel, but it does polish it to a gorgeous shine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment praising the production's quality and the play's enduring relevance. Given the original 87 rating and positive language about 'gorgeous shine' and 'vital,' this sits in the strong Positive range. | GPT-4o: The excerpt praises the production for its polished execution and highlights its vitality, aligning with the critic's original high rating of 87. The positive tone and the original rating suggest a strong recommendation. | Gemini: The excerpt indicates a strong positive assessment, describing the production as polished to a \"gorgeous shine\" and highlighting the enduring vitality of the play's themes. Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise ('gorgeous shine,' 'vital') and a clear recommendation, though the caveat about not reinventing the wheel keeps it from unqualified rapture. Per the single-excerpt warning, the score is capped at the upper end of the Positive bucket despite the critic's own 87 rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:54:53.361Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Justin Peck's dance-driven musical adaptation of Sufjan Stevens' album creates moments of transcendent beauty, even if the storytelling sometimes feels as ephemeral as morning mist.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Justin Peck's dance-driven musical adaptation of Sufjan Stevens' album creates moments of transcendent beauty, even if the storytelling sometimes feels as ephemeral as morning mist.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "creates moments of transcendent beauty, even if the storytelling sometimes feels as ephemeral as morning mist",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - 'transcendent beauty' is strong positive language, but 'ephemeral storytelling' suggests significant reservations. Lower end of Positive range due to mixed signals and single excerpt limitation. | GPT-4o: The excerpt praises the production for its 'transcendent beauty' but notes that the storytelling can feel 'ephemeral.' This suggests a positive review with some reservations, placing it in the lower end of the Positive bucket due to the single excerpt warning. | Gemini: The review excerpt highlights \"transcendent beauty\" but notes the storytelling is \"ephemeral\". This suggests a positive but qualified recommendation. Confidence is low due to the single excerpt. | Kimi: The excerpt praises the dance and visual elements as 'transcendent' while criticizing the storytelling as 'ephemeral,' indicating a qualified recommendation that appreciates the production's aesthetic achievements despite narrative weaknesses.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:18:32.960Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"a sly, witty, and heartfelt take on a moment in history\"\n\nRead more"
+  "showScoreExcerpt": "\"a sly, witty, and heartfelt take on a moment in history\"\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a sly, witty, and heartfelt take on a moment in history",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses three positive descriptors ('sly, witty, and heartfelt') suggesting clear praise, but with only one curated quote available, the full review sentiment is uncertain. Positioned in upper Positive range given the clearly favorable language. | GPT-4o: The excerpt describes the show as 'sly, witty, and heartfelt,' indicating a positive assessment. However, due to the single excerpt warning, the confidence is low, but the tone suggests a solid recommendation. | Gemini: The single excerpt is strongly positive, suggesting a recommendation. Given the limited text, confidence is low, but the positive language warrants a score on the higher end of the positive range. | Kimi: The excerpt offers unqualified praise using multiple positive descriptors (sly, witty, heartfelt), indicating a clear recommendation. As a single curated excerpt, confidence is reduced despite the clearly positive language.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:52:44.939Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

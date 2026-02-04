@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show ambitions to resurrect time, mood, character and place over any sort of innovative plot. With that, there are inevitable moments when Williams’ play seems a bit lulling or dated. However, if the mission is to simply revive something that’s been lost — an action we, sadly, can’t do with human beings but can do with art — then “Home” is more than successful.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/home/",
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "However, if the mission is to simply revive something that's been lost — then 'Home' is more than successful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws (lulling, dated moments) but concludes the show is 'more than successful' in its mission. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt acknowledges some dated elements but ultimately describes the show as successful in its revival mission. The positive tone suggests a recommendation, though the single excerpt limits confidence. | Gemini: The review acknowledges dated aspects but ultimately concludes the show is \"more than successful\" in its mission, suggesting a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the single excerpt. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:13:51.259Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

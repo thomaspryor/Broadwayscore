@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Despite being slightly downscaled for the road — most notably in a set that feels a little flimsy — this is a fine iteration of “Mamma Mia!” It certainly is sprightlier than it was the last time I saw the show, dejectedly limping toward the end of the first Broadway run....",
   "showScoreExcerpt": "\"Despite being slightly downscaled for the road — most notably in a set that feels a little flimsy — this is a fine iteration of “Mamma Mia!” sprightlier than it was the last time I saw the show.\"\n\nRead more",
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
@@ -21,5 +21,59 @@
     "bww-roundup",
     "show-score-playwright",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a fine iteration of \"Mamma Mia!\" sprightlier than it was the last time I saw the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Critic calls it a 'fine iteration' that's 'sprightlier' than before, despite noting some production compromises. Positive but not enthusiastic. Low confidence due to truncated excerpt. | GPT-4o: The review excerpt describes the production as 'fine' and 'sprightlier' than before, indicating a positive view despite some reservations about the set. The lack of a full review text and the mention of downscaling suggest a lower confidence level. | Gemini: The review states that this is a \"fine iteration\" of the show, but notes that it is \"slightly downscaled for the road.\" This suggests a positive recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:33:04.612Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

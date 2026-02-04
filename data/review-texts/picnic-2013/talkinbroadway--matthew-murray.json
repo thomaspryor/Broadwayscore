@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of William Inge's 1953 Pulitzer Prize-winning drama proves that some plays are worth waiting for, and that the right cast can make even familiar material feel fresh and urgent.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of William Inge's 1953 Pulitzer Prize-winning drama proves that some plays are worth waiting for, and that the right cast can make even familiar material feel fresh and urgent.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival proves that some plays are worth waiting for, and that the right cast can make even familiar material feel fresh and urgent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('worth waiting for', 'fresh and urgent') with praise for the cast and production, but brief excerpt limits confidence in full assessment. | GPT-4o: The review strongly praises the revival, highlighting how the cast revitalizes the material, suggesting a must-see recommendation. | Gemini: The review states that the play is \"worth waiting for\" and that the cast makes the material feel \"fresh and urgent,\" indicating a positive recommendation. | Kimi: The review offers strong praise ('worth waiting for', 'fresh and urgent') with no reservations, indicating an enthusiastic recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:06:59.751Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

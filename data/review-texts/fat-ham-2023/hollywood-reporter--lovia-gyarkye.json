@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This version of 'Fat Ham' plays like a modern sitcom, although with more tragic undertones. The slapstick humor and expressive deliveries leave little room for boredom, which is a double-edged sword.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The slapstick humor and expressive deliveries leave little room for boredom, which is a double-edged sword.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 'double-edged sword' phrase signals mixed feelings - praising the entertainment value while implying drawbacks. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt suggests a mixed review, noting both positive elements (humor, expressive deliveries) and a potential downside (double-edged sword). The lack of full context and the single excerpt warning lead to a low confidence score. | Gemini: The review excerpt notes both positive and negative aspects, indicating a mixed reaction. The phrase \"double-edged sword\" suggests that while the humor is engaging, it may also detract from other elements. | Kimi: The excerpt acknowledges the production's energy and entertainment value ('leave little room for boredom') but explicitly frames these qualities as a 'double-edged sword,' indicating significant reservations or drawbacks. The sitcom comparison suggests the tone may undercut the source material's gravity. Single excerpt with truncated text limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:55:33.518Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

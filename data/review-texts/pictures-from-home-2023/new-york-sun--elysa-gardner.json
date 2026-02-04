@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“With ample support from its stars and their director, ‘Pictures From Home’ makes that synergy palpable and satisfying.”\n\nRead more"
+  "showScoreExcerpt": "“With ample support from its stars and their director, ‘Pictures From Home’ makes that synergy palpable and satisfying.”\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With ample support from its stars and their director, 'Pictures From Home' makes that synergy palpable and satisfying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as 'satisfying' with praise for performances and direction, indicating a positive recommendation. Low confidence due to limited text available. | GPT-4o: The excerpt suggests a positive view of the production, highlighting the synergy and satisfaction derived from the stars and director. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt available is clearly positive, using words like \"ample,\" \"palpable,\" and \"satisfying.\" Given the limited information, I'm placing it in the upper end of the positive range with low confidence. | Kimi: The single available excerpt offers unqualified praise for the production's synergy and deems it 'satisfying,' indicating a clear recommendation. Per instructions for clearly positive single excerpts, score falls in the upper Positive range (80-84), though confidence is low due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:08:47.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -1,5 +1,6 @@
-# One-time bulk collection of review full texts across all shows
+# Bulk collection of review full texts across all shows
 # Partitions shows across parallel runners for fast processing
+# Self-chaining: automatically dispatches next round when work remains
 # Re-runnable: reviews with fullText are skipped automatically
 name: Bulk Collect Review Texts
 
@@ -56,9 +57,20 @@ on:
         required: false
         default: false
         type: boolean
+      max_rounds:
+        description: 'Max chained rounds (0 = single run, no chaining)'
+        required: false
+        default: '3'
+        type: string
+      current_round:
+        description: 'Current round number (auto-set by chaining, do not change)'
+        required: false
+        default: '1'
+        type: string
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   prepare:
@@ -81,6 +93,8 @@ jobs:
         id: split
         env:
           JOBS: ${{ inputs.parallel_jobs }}
+          CURRENT_ROUND: ${{ inputs.current_round }}
+          MAX_ROUNDS: ${{ inputs.max_rounds }}
         run: |
           # Validate parallel_jobs is 1-10
           if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
@@ -142,7 +156,7 @@ jobs:
               }))
             };
 
-            console.log("=== BULK COLLECTION PLAN ===");
+            console.log("=== BULK COLLECTION PLAN (Round " + (process.env.CURRENT_ROUND || "1") + "/" + (process.env.MAX_ROUNDS || "1") + ") ===");
             console.log("Total reviews needing fullText:", totalReviews);
             console.log("Shows with pending reviews:", showCounts.length);
             console.log("Parallel jobs:", actualJobs);
@@ -162,7 +176,7 @@ jobs:
   collect:
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 355
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false
@@ -246,7 +260,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "feat: Bulk collect review texts (batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
+          git commit -m "feat: Bulk collect review texts (round ${{ inputs.current_round }}, batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
 
@@ -325,7 +339,7 @@ jobs:
           git add data/reviews.json data/critic-registry.json data/audit/
           git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
 
-          git commit -m "data: Auto-rebuild reviews.json after bulk collection"
+          git commit -m "data: Auto-rebuild reviews.json after bulk collection (round ${{ inputs.current_round }})"
 
           MAX_RETRIES=5
           RETRY_COUNT=0
@@ -352,3 +366,76 @@ jobs:
           done
           echo "Failed to push after $MAX_RETRIES attempts"
           exit 1
+
+      - name: Count remaining reviews needing fullText
+        id: count-remaining
+        run: |
+          git pull origin main --rebase 2>/dev/null || true
+          REMAINING=$(node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Reviews still needing fullText: $REMAINING"
+
+      - name: Chain next round
+        if: inputs.max_rounds != '0' && inputs.test_mode != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAINING=${{ steps.count-remaining.outputs.remaining }}
+          CURRENT_ROUND=${{ inputs.current_round }}
+          MAX_ROUNDS=${{ inputs.max_rounds }}
+
+          echo "=== CHAIN DECISION ==="
+          echo "Round: $CURRENT_ROUND / $MAX_ROUNDS"
+          echo "Remaining reviews: $REMAINING"
+
+          # Stop if no more rounds
+          if [ "$CURRENT_ROUND" -ge "$MAX_ROUNDS" ]; then
+            echo "Reached max rounds ($MAX_ROUNDS). Chain complete."
+            exit 0
+          fi
+
+          # Stop if fewer than 50 reviews remain (diminishing returns)
+          if [ "$REMAINING" -lt 50 ]; then
+            echo "Only $REMAINING reviews remaining (< 50 threshold). Chain complete."
+            exit 0
+          fi
+
+          NEXT_ROUND=$((CURRENT_ROUND + 1))
+
+          echo "Dispatching round $NEXT_ROUND..."
+          echo "  Reviews remaining: $REMAINING"
+          echo "  Rounds remaining: $((MAX_ROUNDS - NEXT_ROUND + 1))"
+
+          gh workflow run "Bulk Collect Review Texts" \
+            -f parallel_jobs=${{ inputs.parallel_jobs }} \
+            -f max_per_job=${{ inputs.max_per_job }} \
+            -f batch_size=${{ inputs.batch_size }} \
+            -f browserbase_enabled=${{ inputs.browserbase_enabled }} \
+            -f browserbase_per_job=${{ inputs.browserbase_per_job }} \
+            -f retry_failed=${{ inputs.retry_failed }} \
+            -f archive_first=${{ inputs.archive_first }} \
+            -f content_tier="${{ inputs.content_tier }}" \
+            -f aggressive=${{ inputs.aggressive }} \
+            -f test_mode=false \
+            -f max_rounds="$MAX_ROUNDS" \
+            -f current_round="$NEXT_ROUND"
+
+          echo "Round $NEXT_ROUND dispatched successfully."

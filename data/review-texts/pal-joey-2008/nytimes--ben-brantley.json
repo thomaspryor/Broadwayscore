@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This sleek revival of the Rodgers and Hart musical, starring Stockard Channing and the smoldering Christian Hoff, finds the perfect pitch between cynicism and romance.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This sleek revival of the Rodgers and Hart musical, starring Stockard Channing and the smoldering Christian Hoff, finds the perfect pitch between cynicism and romance.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sleek revival finds the perfect pitch between cynicism and romance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('sleek', 'perfect pitch') with praise for the production and leads. Single excerpt limits confidence, but tone is distinctly favorable. | GPT-4o: The excerpt describes the production as 'sleek' and praises its balance between 'cynicism and romance,' indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses positive language like \"perfect pitch\" and \"sleek revival\", suggesting a strong recommendation. Given it's a single excerpt, I'm placing it on the higher end of the positive bucket. | Kimi: The excerpt offers unambiguous praise ('sleek', 'perfect pitch') for the revival's execution and tone, indicating a clear recommendation. Per the single-excerpt guidance, the distinctly positive language warrants the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:56:27.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

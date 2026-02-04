@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The principals, some of whom play more than one role, all get a big chance to shine, and each makes the most of their moments. Ms. deBessonet’s direction is as laser-focused on the comedy as on the plot and score. The pumped-up cast, going for the comic jugular, sometimes does so by exaggerating their roles with the broadest farcical strokes, as when the princes keep topping each other for silliness in the hilarious “Agony.\"...At other times, a single look or syllable, delivered with diamond-cutting precision... can bring down the house.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. deBessonet's direction is as laser-focused on the comedy as on the plot and score.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('all get a big chance to shine'), direction ('laser-focused'), and specific moments ('hilarious', 'bring down the house'). Single excerpt warning suggests this is cherry-picked positive content, so scoring in upper Positive range. | GPT-4o: The excerpt praises the direction and performances, highlighting comedic precision and effectiveness. The positive tone suggests a strong recommendation, though confidence is low due to the single excerpt warning. | Gemini: The review excerpt is overwhelmingly positive, praising the performances and direction. Given the single excerpt warning, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the direction and performances, using superlatives like 'hilarious' and 'bring down the house', though as a single curated excerpt, the overall verdict requires cautious interpretation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:20:34.175Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

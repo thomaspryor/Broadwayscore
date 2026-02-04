@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 58,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 59,
+    "score": 58,
     "confidence": "medium",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 53,
+      "high": 63
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt suggests a shift from a previously imaginative portrayal to something more mundane, indicating a mixed impression. The lack of a full review and single excerpt warning lowers confidence. | Gemini: The excerpt suggests a shift in perception, implying a more nuanced or ambivalent view. Without more context, it's difficult to determine a clear recommendation, placing it in the mixed category. | Kimi: The excerpt indicates a decline from 'fanciful' to 'mundane,' suggesting the production has lost its imaginative appeal and become ordinary. With only one curated sentence available, the sentiment appears negative but confidence is reduced due to limited context.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt suggests a shift from an imaginative portrayal to something more mundane, indicating a lack of enthusiasm. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The excerpt suggests a shift in perception, implying the show's impact is diminished. This indicates a mixed or neutral sentiment. | Kimi: The excerpt criticizes the production for shifting from fanciful to mundane, suggesting a negative assessment of the show's current impact. Confidence is low due to limited excerpt availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T12:09:03.645Z",
+    "scoredAt": "2026-02-04T12:34:11.471Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,13 +58,13 @@
   },
   "ensembleData": {
     "claudeScore": null,
-    "openaiScore": 58,
+    "openaiScore": 55,
     "geminiScore": 60,
-    "kimiScore": 45,
+    "kimiScore": 42,
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 15,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

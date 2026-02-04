@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a small miracle of tone, managing to be both heartbreaking and funny, tender without being saccharine.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is a small miracle of tone, managing to be both heartbreaking and funny, tender without being saccharine.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a small miracle of tone, managing to be both heartbreaking and funny, tender without being saccharine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt uses strong praise language ('small miracle') with specific positive qualities. However, low confidence due to limited text - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language, describing the show as a 'small miracle' and balancing emotional tones effectively. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt is highly positive, describing the show as a \"small miracle.\" Given the limited information, I'm placing it at the higher end of the positive range, but with low confidence due to the single excerpt. | Kimi: The excerpt contains superlative praise ('small miracle') regarding the show's tonal mastery and emotional impact, indicating a strong recommendation. However, as only a single curated excerpt is available, confidence is reduced due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:24:38.036Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

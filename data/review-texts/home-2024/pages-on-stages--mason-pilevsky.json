@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "An allegory through the vessel of a man whose details stopped mattering.\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T12:14:50.788Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a teaser or excerpt prompt ('Read more') rather than actual review content with evaluative assessment.; gemini: The provided text is too short and vague to be considered a review. It lacks any substantial evaluation or recommendation.",
+  "promptVersion": "5.2.0"
 }

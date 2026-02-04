@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"not so much reconceived as tweaked…doesn’t get in the way of some exciting performances\"\n\nRead more"
+  "showScoreExcerpt": "\"not so much reconceived as tweaked…doesn’t get in the way of some exciting performances\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "doesn't get in the way of some exciting performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises performances as 'exciting' despite criticizing the production as merely 'tweaked', suggesting a qualified positive recommendation focused on the acting. | GPT-4o: The excerpt suggests the production is not significantly changed but allows for 'exciting performances'. The lack of a strong positive or negative tone and the limited context lead to a mixed classification. | Gemini: The excerpt suggests a positive view due to the \"exciting performances,\" but the \"tweaked\" comment indicates reservations. Given it's a single excerpt, confidence is low. | Kimi: While faintly praising the production as merely 'tweaked' rather than fully reimagined, the critic highlights 'exciting performances' as a clear positive, suggesting a qualified but genuine recommendation focused on the acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:12:55.913Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

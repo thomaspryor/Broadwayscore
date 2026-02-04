@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Well, time to freshen up the snuffbox and pass it around again, because now that ‘Parade’ has landed at Broadway's Jacobs Theatre, every quibble about the production has been thoroughly addressed and the whole shebang is bright and shiny and gloriously thrilling.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "every quibble about the production has been thoroughly addressed and the whole shebang is bright and shiny and gloriously thrilling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlatives like 'gloriously thrilling' and statement that all previous issues were 'thoroughly addressed' indicate enthusiastic recommendation, but single excerpt warning requires caution about scoring too high. | GPT-4o: The excerpt provides strong positive language ('gloriously thrilling') indicating a high level of enthusiasm. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using phrases like \"bright and shiny and gloriously thrilling\" and stating that all previous quibbles have been addressed. Given that this is a single excerpt, I'm scoring it at the higher end of the 'Positive' range, but with low confidence. | Kimi: The excerpt offers unqualified superlative praise ('gloriously thrilling') and indicates previous flaws have been completely resolved. As a single curated excerpt that may not represent the full review's nuance, the score is placed at the top of the Positive range per guidance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:58:14.569Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Beyond Harris’ very physical performance and all the staged deaths, the high point of 'Peter Pan Goes Wrong' is extremely low tech and of even lower humor.\"\n\nRead more"
+  "showScoreExcerpt": "\"Beyond Harris’ very physical performance and all the staged deaths, the high point of 'Peter Pan Goes Wrong' is extremely low tech and of even lower humor.\"\n\nRead more",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the high point of 'Peter Pan Goes Wrong' is extremely low tech and of even lower humor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic dismisses the show's humor as 'extremely low' and 'even lower humor,' suggesting the best moments are still poor quality. With only one excerpt available, confidence is low, but the tone is clearly dismissive. | GPT-4o: The excerpt highlights a performance and humor that might not appeal to everyone, suggesting a mixed reception. The lack of a clear recommendation or discouragement places it in the Mixed bucket. | Gemini: The review excerpt highlights a specific element (low-tech humor) as a high point, but the phrase \"of even lower humor\" suggests a mixed reaction. Without the full review, it's hard to gauge the overall recommendation, but this leans slightly positive, so I've classified it as mixed. | Kimi: The excerpt dismisses the production's comedic merits, sarcastically noting that even the show's 'high point' suffers from poor humor quality, while offering only limited praise for the lead actor's physicality. With only one curated excerpt available, the confidence is reduced. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:06:08.886Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

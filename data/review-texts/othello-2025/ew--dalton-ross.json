@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"There's nothing wrong with updating a Shakespeare classic from over 500 years ago to reflect modern times and sensibilities. But if you're going to do it  then do it! Director Kenny Leon's new production, however, seems caught between reverence for the original source material and a seemingly half-hearted attempt to renovate the setting around which the classic action revolves.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Kenny Leon's new production seems caught between reverence for the original source material and a seemingly half-hearted attempt to renovate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes the production as 'half-hearted' and 'caught between' approaches, suggesting disappointment with the execution. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt suggests a lack of commitment in the production's approach, indicating a mixed reception. The review does not clearly recommend or discourage seeing the show, hence a mixed classification with a score reflecting the ambiguity. | Gemini: The review excerpt suggests a production that doesn't fully commit to its modern update, indicating a mixed or lukewarm reception. The phrase \"caught between\" implies a lack of clear direction or success. | Kimi: The excerpt criticizes the production for being indecisive and 'half-hearted' in its modernization approach, suggesting execution flaws. Without the full review context, this qualified criticism places it in Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:53:54.755Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

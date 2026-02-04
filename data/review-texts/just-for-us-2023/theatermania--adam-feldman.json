@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blitzer's show is a thoughtful, nuanced exploration of identity that manages to be both deeply personal and universally relatable, even when dealing with the most specific cultural details.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Blitzer's show is a thoughtful, nuanced exploration of identity that manages to be both deeply personal and universally relatable, even when dealing with the most specific cultural details.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blitzer's show is a thoughtful, nuanced exploration of identity that manages to be both deeply personal and universally relatable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language with 'thoughtful', 'nuanced', and praise for achieving both personal depth and universal appeal. Single excerpt warning means caution needed, but the tone is clearly appreciative - upper end of Positive bucket. | GPT-4o: The excerpt praises the show as 'thoughtful' and 'nuanced', indicating a positive assessment. The caution about single excerpt suggests using the upper end of the Positive range if clearly positive. | Gemini: The excerpt uses strong positive language such as \"thoughtful, nuanced exploration\" and \"universally relatable\", suggesting a positive recommendation. However, as only one excerpt is available, the confidence is low. | Kimi: The excerpt offers strong praise for the show's thematic depth and universal accessibility, placing it in the upper range of Positive, though the single curated excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:24:17.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

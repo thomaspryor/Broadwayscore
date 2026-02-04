@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Quite possibly the most exciting new musical of the Broadway season...It also takes the nod for most-improved new musical...It is also very much a musical for our times, set in a world out of joint...The central genius of Mitchell's conception is that jazz/blues music -- a folk idiom that notes the world's wicked ways with a glint in its eye and a today-we-dance attitude -- is the right choice to revivify this story for a contemporary audience.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Quite possibly the most exciting new musical of the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlative praise calling it 'most exciting' and 'most-improved' with acclaim for the creative conception. Single excerpt warning requires caution, but the language is clearly enthusiastic. | GPT-4o: The excerpt contains strong praise, calling it 'the most exciting new musical' and 'most-improved', indicating a highly positive assessment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt contains very positive language, calling it the \"most exciting new musical\" and praising its improvement. Given it's a single excerpt, confidence is low, but the positive tone warrants a score on the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic superlatives ('most exciting,' 'central genius') indicating clear admiration, though the single-quote limitation prevents a higher confidence Rave designation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:04:28.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

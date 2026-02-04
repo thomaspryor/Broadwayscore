@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pass Over is a powerful piece of theatre that challenges audiences to confront uncomfortable truths about race and violence in America.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Pass Over is a powerful piece of theatre that challenges audiences to confront uncomfortable truths about race and violence in America.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pass Over is a powerful piece of theatre that challenges audiences to confront uncomfortable truths about race and violence in America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review calls the show 'powerful' and emphasizes its impact in challenging audiences, indicating a positive assessment. However, confidence is low due to the very brief excerpt with no clear recommendation language or detailed evaluation. | GPT-4o: The review uses strong language ('powerful', 'challenges') indicating a highly positive recommendation. However, the brevity of the text limits the confidence level. | Gemini: The review uses the word \"powerful\" to describe the play, indicating a positive recommendation. The phrase \"challenges audiences to confront uncomfortable truths\" suggests the play is thought-provoking and impactful. | Kimi: The excerpt provides strong praise ('powerful') and emphasizes the show's meaningful impact, indicating a solid recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:01:40.920Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

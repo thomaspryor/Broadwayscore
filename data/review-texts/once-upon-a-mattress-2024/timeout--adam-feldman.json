@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sutton Foster brings her considerable charm to this revival, though the production feels more dutiful than inspired. Still, there's enough fairy-tale magic to please musical theater fans.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sutton Foster brings her considerable charm to this revival, though the production feels more dutiful than inspired. Still, there's enough fairy-tale magic to please musical theater fans.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, there's enough fairy-tale magic to please musical theater fans.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own rating of 60 places this squarely in Mixed territory. The review acknowledges Foster's charm and some positives but describes the production as 'more dutiful than inspired,' suggesting a lukewarm recommendation mainly for existing fans. | GPT-4o: The critic's original rating is 60, which aligns with a mixed review. The excerpt praises Sutton Foster but notes the production feels 'dutiful' rather than 'inspired', suggesting a lukewarm reception overall. | Gemini: The review acknowledges Sutton Foster's charm but finds the production \"more dutiful than inspired.\" The phrase \"enough fairy-tale magic to please musical theater fans\" suggests a qualified positive, placing it in the Mixed bucket, closer to positive. | Kimi: The critic's own 60 rating places this firmly in Mixed territory. While Sutton Foster's charm is praised, the production is criticized as 'dutiful rather than inspired,' resulting in a qualified recommendation limited to genre enthusiasts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:49:09.687Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

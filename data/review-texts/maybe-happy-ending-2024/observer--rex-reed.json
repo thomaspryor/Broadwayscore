@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 93,
+    "score": 94,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being a single excerpt, this contains extremely strong praise ('extraordinary work of theatre artistry', 'levels of perfection', 'slack-jawed with awe') and an unqualified personal endorsement. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides unqualified praise with superlatives such as 'extraordinary work of theatre artistry' and 'levels of perfection'. The critic expresses a strong desire to see the show multiple times, indicating a rave review. | Gemini: The review uses extremely positive language such as \"extraordinary work of theatre artistry\", \"dazzling direction\", and \"reaches levels of perfection\". The critic also states that they \"love this show and cannot wait to see it again—and often.\" | Kimi: Despite being a single excerpt, the critic uses unambiguous superlatives ('extraordinary,' 'levels of perfection,' 'slack-jawed with awe') and explicitly declares love for the show, indicating a full-throated recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives throughout ('extraordinary', 'perfection', 'rapturous') with personal declaration of love and intention to return multiple times. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt is filled with superlatives and strong emotional impact, describing the show as 'extraordinary' and 'dazzling' with 'perfection in staging.' The critic expresses a strong desire to see it again, indicating a rave review. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses extremely positive language such as \"extraordinary work of theatre artistry\", \"reaches levels of perfection\", and \"leave you slack-jawed with awe\", indicating a rave review. The critic also states they \"love this show and cannot wait to see it again—and often.\" | Kimi: Despite being a single excerpt, the text contains unqualified superlatives ('extraordinary work,' 'levels of perfection,' 'slack-jawed with awe') and an explicit declaration of love, indicating an enthusiastic rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T12:11:48.753Z",
+    "scoredAt": "2026-02-04T12:35:17.677Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,12 +60,12 @@
     "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 92,
-    "kimiScore": 90,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

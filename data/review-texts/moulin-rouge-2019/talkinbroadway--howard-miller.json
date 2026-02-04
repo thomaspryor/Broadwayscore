@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Moulin Rouge,' Baz Luhrmann's psychedelic trip of a movie from 2001, has been reincarnated at the Al Hirschfeld Theatre in an adaptation for Broadway, looking like an explosion inside the Bott's Every Flavour Bean Factory and sounding like a mixtape of every love song ever written.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "looking like an explosion inside the Bott's Every Flavour Bean Factory and sounding like a mixtape of every love song ever written",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt uses vivid but potentially critical metaphors ('explosion,' 'mixtape') that could be either praise for spectacle or criticism of excess. Without full context, this reads as descriptive with mixed undertones rather than clear recommendation. | GPT-4o: The excerpt describes the show in vivid, colorful terms, suggesting a lively and engaging production. However, without explicit evaluative language or a clear recommendation, it is interpreted as mildly positive. The confidence is low due to the single excerpt limitation. | Gemini: The excerpt describes the show as a 'reincarnation' of the movie, suggesting a positive transformation. The description of the visuals and sound as an 'explosion' and 'mixtape' implies an exciting and engaging experience. However, due to the limited text, the confidence is low. | Kimi: The single excerpt provides vivid descriptive imagery of the production's visual and sonic chaos but offers no clear positive or negative judgment on its artistic success. As a curated excerpt without context, the overall recommendation is ambiguous. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:42:27.795Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws in playwriting and production but concludes they are 'overcome by its theatricality and storytelling,' with praise for the lead performance and director. Single excerpt with mixed elements but positive resolution. | GPT-4o: The review praises the theatrical experience and storytelling, despite noting some flaws in playwriting and production. The overall tone is positive, recommending the show for its theatricality. | Gemini: The review praises the theatricality and storytelling, but also mentions flaws in the playwriting and production. The overall tone suggests a positive experience despite some reservations. | Kimi: The critic praises the unique theatrical experience, puppetry, and lead performance while acknowledging flaws in the playwriting, but ultimately finds them overcome by the production's theatricality and strong direction.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review acknowledges significant flaws in playwriting and production but concludes these are 'overcome' by the show's strengths. The positive elements (unique experience, brio and flair, excellent cast and direction) ultimately prevail, but the qualification about flaws keeps this in lower Positive range. Confidence is low due to single excerpt limitation. | GPT-4o: The excerpt praises the theatrical experience and storytelling, despite acknowledging some flaws. The positive aspects seem to outweigh the negatives, leading to a recommendation with reservations. The confidence is low due to the single excerpt warning. | Gemini: The review acknowledges flaws but ultimately praises the theatricality and storytelling, indicating a positive recommendation with reservations. The single excerpt and \"Read more\" suggest a truncated text, lowering confidence. | Kimi: The critic praises the unique theatrical experience, puppetry, and performances, acknowledging flaws in the playwriting but emphasizing they are overcome by the production's theatricality and storytelling. This represents a solid recommendation with reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T12:07:43.321Z",
+    "scoredAt": "2026-02-04T12:32:23.988Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,12 +60,12 @@
     "claudeScore": 74,
     "openaiScore": 79,
     "geminiScore": 77,
-    "kimiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
