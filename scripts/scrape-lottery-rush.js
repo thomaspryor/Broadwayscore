@@ -559,18 +559,29 @@ async function extractPlaybillWithLLM(articleText) {
 Return ONLY a JSON array (no markdown fences, no explanation). Each element:
 {
   "title": "Show Title",
-  "lottery": { "type": "digital", "platform": "TodayTix|LuckySeat|Broadway Direct|Telecharge|Hamilton App", "url": "https://...", "price": 49, "time": "9 AM day of", "instructions": "..." } or null,
-  "rush": { "type": "general|digital", "price": 49, "time": "10 AM Mon-Sat", "location": "Theatre box office", "instructions": "...", "platform": "TodayTix" } or null,
+  "lottery": { "type": "digital", "platform": "...", "url": "...", "price": 49, "time": "...", "instructions": "..." } or null,
+  "rush": { "type": "general|digital", "price": 49, "time": "...", "location": "...", "instructions": "..." } or null,
   "digitalRush": { "platform": "...", "url": "...", "price": 49, "time": "...", "instructions": "..." } or null,
   "standingRoom": { "price": 45, "time": "...", "instructions": "..." } or null,
   "studentRush": { "price": 39, "time": "...", "instructions": "..." } or null,
   "specialLottery": { "name": "...", "platform": "...", "url": "...", "price": 15, "instructions": "..." } or null
 }
 
-Rules:
+CRITICAL classification rules:
+- LOTTERY = random drawing/selection. Winners are chosen randomly. Platforms: Broadway Direct, LuckySeat, Telecharge lottery, Hamilton App. Uses words like "lottery", "enter", "winners selected/drawn/notified".
+- RUSH = first-come first-served. No random drawing. Platforms: TodayTix (always rush, never lottery), box office window. Uses words like "rush", "available", "first-come".
+- DIGITAL RUSH = rush tickets via app/website. TodayTix is ALWAYS digitalRush, never lottery.
+- GENERAL RUSH = in-person at box office window.
+- STANDING ROOM = standing-only tickets sold when show is sold out. Must explicitly say "standing room" or "SRO". Do NOT classify LincTix, HipTix, or other named discount programs as standing room.
+- SPECIAL LOTTERY = a secondary/novelty lottery alongside the main one (e.g., "$15 anniversary lottery"). Only use if a show ALSO has a regular lottery.
+- If a show has only ONE lottery program, put it in "lottery" (not "specialLottery"), even if it has a special name.
+
+Other rules:
 - price must be a number (not a string with $)
-- Only include fields that exist in the article
+- Only include fields that actually exist in the article
 - Do not invent data not in the article
+- Do NOT include null-valued fields — omit them entirely
+- Do NOT create duplicate entries: if the same program appears in multiple fields (e.g., same price and platform in both "lottery" and "rush"), keep only the correct one
 
 Article:
 ${articleText}`;
@@ -606,7 +617,8 @@ ${articleText}`;
     const valid = shows.filter(entry => {
       if (!entry.title || typeof entry.title !== 'string') return false;
       return !!(entry.lottery || entry.rush || entry.digitalRush ||
-                entry.standingRoom || entry.studentRush || entry.specialLottery);
+                entry.standingRoom || entry.studentRush || entry.specialLottery ||
+                entry.under30 || entry.special || entry.studentTickets || entry.militaryTickets);
     });
 
     console.log(`  [LLM] ${shows.length} extracted, ${valid.length} valid`);
@@ -618,11 +630,143 @@ ${articleText}`;
   }
 }
 
+/**
+ * Post-process LLM-extracted data to fix common misclassifications.
+ * Runs on each show entry before mapping to show IDs.
+ */
+function postProcessPlaybillEntry(entry) {
+  // 1. Remove explicitly null fields
+  for (const key of Object.keys(entry)) {
+    if (entry[key] === null) delete entry[key];
+  }
+
+  // 2. TodayTix entries: usually rush, but can be lottery if it involves random drawing
+  if (entry.lottery && entry.lottery.platform === 'TodayTix') {
+    const lotteryText = JSON.stringify(entry.lottery).toLowerCase();
+    const hasLotteryLanguage = /\b(winner|drawing|drawn|selected|enter|entries|lottery)\b/.test(lotteryText);
+
+    if (hasLotteryLanguage) {
+      // Genuine lottery that uses TodayTix as platform (e.g., Harry Potter Friday Forty)
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Keeping TodayTix lottery (has lottery language)`);
+    } else {
+      // Plain TodayTix rush misclassified as lottery → move to digitalRush
+      if (!entry.digitalRush) {
+        entry.digitalRush = { ...entry.lottery };
+        delete entry.digitalRush.type;
+      } else if (!entry.rush) {
+        entry.rush = {
+          type: 'digital',
+          platform: 'TodayTix',
+          url: entry.lottery.url,
+          price: entry.lottery.price,
+          time: entry.lottery.time,
+          instructions: entry.lottery.instructions,
+        };
+      }
+      delete entry.lottery;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Moved TodayTix from lottery → digitalRush`);
+    }
+  }
+
+  // 2b. If digitalRush has lottery language and no lottery exists, promote it to lottery
+  if (entry.digitalRush && !entry.lottery) {
+    const drText = JSON.stringify(entry.digitalRush).toLowerCase();
+    const hasLotteryLanguage = /\b(winner|drawing|drawn|selected|entries\s+accepted)\b/.test(drText);
+    if (hasLotteryLanguage) {
+      entry.lottery = {
+        type: 'digital',
+        platform: entry.digitalRush.platform,
+        url: entry.digitalRush.url,
+        price: entry.digitalRush.price,
+        time: entry.digitalRush.time,
+        instructions: entry.digitalRush.instructions,
+      };
+      delete entry.digitalRush;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Promoted digitalRush → lottery (has lottery language)`);
+    }
+  }
+
+  // 3. Deduplicate lottery & specialLottery when same price (with tolerance)
+  if (entry.lottery && entry.specialLottery) {
+    const normPlatform = (p) => (p || '').toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
+    const samePlatform = normPlatform(entry.lottery.platform) === normPlatform(entry.specialLottery.platform);
+    const priceDiff = Math.abs(entry.lottery.price - entry.specialLottery.price);
+    const priceClose = priceDiff < 2 || priceDiff / Math.max(entry.lottery.price, entry.specialLottery.price) < 0.1;
+    if (priceClose && samePlatform) {
+      // If specialLottery has a distinctive name, it's the real program — remove lottery
+      if (entry.specialLottery.name && entry.specialLottery.name !== 'Special Lottery') {
+        delete entry.lottery;
+        if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed lottery (duplicate of named specialLottery "${entry.specialLottery.name}")`);
+      } else {
+        delete entry.specialLottery;
+        if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed duplicate specialLottery (same as lottery)`);
+      }
+    }
+  }
+
+  // 4. If only specialLottery exists (no lottery), promote it to lottery
+  if (entry.specialLottery && !entry.lottery) {
+    entry.lottery = {
+      type: 'digital',
+      platform: entry.specialLottery.platform,
+      url: entry.specialLottery.url,
+      price: entry.specialLottery.price,
+      time: entry.specialLottery.time || entry.specialLottery.instructions,
+      instructions: entry.specialLottery.instructions,
+    };
+    delete entry.specialLottery;
+    if (verbose) console.log(`  [PostProcess] ${entry.title}: Promoted specialLottery → lottery (only lottery program)`);
+  }
+
+  // 5. Deduplicate rush & lottery when same price+platform (keep lottery if it's a real lottery)
+  if (entry.lottery && entry.rush) {
+    if (entry.lottery.price === entry.rush.price &&
+        (entry.rush.type === 'digital' || !entry.rush.location)) {
+      // Digital rush duplicating lottery → remove rush
+      delete entry.rush;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed duplicate rush (same as lottery)`);
+    }
+  }
+
+  // 6. Deduplicate digitalRush & rush when both exist and are TodayTix
+  if (entry.digitalRush && entry.rush) {
+    if (entry.rush.type === 'digital' &&
+        entry.rush.platform === entry.digitalRush.platform &&
+        entry.rush.price === entry.digitalRush.price) {
+      delete entry.rush;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed duplicate rush (same as digitalRush)`);
+    }
+  }
+
+  // 7. Remove standingRoom if price matches a special program (LincTix, HipTix, etc.)
+  if (entry.standingRoom && entry.special) {
+    if (entry.standingRoom.price === entry.special.price) {
+      delete entry.standingRoom;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed standingRoom (duplicate of special program)`);
+    }
+  }
+  // Also check for non-integer SRO prices that suggest misclassification
+  if (entry.standingRoom && !Number.isInteger(entry.standingRoom.price)) {
+    if (verbose) console.log(`  [PostProcess] ${entry.title}: Suspicious SRO price $${entry.standingRoom.price} (non-integer)`);
+    // If there's no explicit "standing room" in instructions, likely misclassified
+    const sroText = JSON.stringify(entry.standingRoom).toLowerCase();
+    if (!sroText.includes('standing') && !sroText.includes('sro') && !sroText.includes('sold out')) {
+      delete entry.standingRoom;
+      if (verbose) console.log(`  [PostProcess] ${entry.title}: Removed non-integer SRO (likely misclassified)`);
+    }
+  }
+
+  return entry;
+}
+
 function mapPlaybillToShows(extracted) {
   const result = {};
   const unmatched = [];
 
   for (const entry of extracted) {
+    // Post-process to fix common LLM misclassifications
+    postProcessPlaybillEntry(entry);
+
     const resolved = resolveShowId(entry.title);
     if (!resolved) {
       unmatched.push(entry.title);
@@ -630,7 +774,10 @@ function mapPlaybillToShows(extracted) {
     }
 
     const showEntry = {};
-    const fields = ['lottery', 'rush', 'digitalRush', 'standingRoom', 'studentRush', 'specialLottery'];
+    const fields = [
+      'lottery', 'rush', 'digitalRush', 'standingRoom', 'studentRush',
+      'specialLottery', 'under30', 'special', 'studentTickets', 'militaryTickets',
+    ];
     for (const field of fields) {
       if (entry[field]) showEntry[field] = entry[field];
     }
@@ -776,6 +923,89 @@ function cleanClosedShows(existing) {
   return changes;
 }
 
+/**
+ * Post-merge cleanup: fix cross-source duplicates that can't be caught
+ * in per-source post-processing (which only sees one source at a time).
+ */
+function postMergeCleanup(existing) {
+  const fixes = [];
+
+  for (const [showId, show] of Object.entries(existing.shows)) {
+    // 1. Remove rush that duplicates lottery (same price, digital/null rush)
+    if (show.lottery && show.rush) {
+      if (show.lottery.price === show.rush.price &&
+          (show.rush.type === 'digital' || !show.rush.location) &&
+          (!show.rush.platform || !show.rush.url)) {
+        delete show.rush;
+        fixes.push(`${showId}: Removed rush (duplicate of lottery, same price $${show.lottery.price})`);
+      }
+    }
+
+    // 2. Remove non-integer standingRoom prices (always misclassified — SRO is whole dollars)
+    if (show.standingRoom && !Number.isInteger(show.standingRoom.price)) {
+      fixes.push(`${showId}: Removed standingRoom $${show.standingRoom.price} (non-integer, likely misclassified)`);
+      delete show.standingRoom;
+    }
+
+    // 3. Deduplicate lottery & specialLottery with null platform handling
+    if (show.lottery && show.specialLottery) {
+      const priceDiff = Math.abs(show.lottery.price - show.specialLottery.price);
+      const priceClose = priceDiff < 2 || priceDiff / Math.max(show.lottery.price, show.specialLottery.price) < 0.1;
+      // Null platform matches anything
+      const platformMatch = !show.lottery.platform || !show.specialLottery.platform ||
+        show.lottery.platform.toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim() ===
+        show.specialLottery.platform.toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
+      if (priceClose && platformMatch) {
+        if (show.specialLottery.name && show.specialLottery.name !== 'Special Lottery') {
+          // specialLottery IS the lottery — merge lottery details into specialLottery, then remove lottery
+          for (const k of ['platform', 'url', 'time', 'instructions']) {
+            if (!show.specialLottery[k] && show.lottery[k]) {
+              show.specialLottery[k] = show.lottery[k];
+            }
+          }
+          delete show.lottery;
+          fixes.push(`${showId}: Removed lottery (same as specialLottery "${show.specialLottery.name}")`);
+        } else {
+          delete show.specialLottery;
+          fixes.push(`${showId}: Removed specialLottery (duplicate of lottery)`);
+        }
+      }
+    }
+
+    // 4. Remove null-valued top-level fields
+    for (const key of Object.keys(show)) {
+      if (show[key] === null && key !== '_lastScrapedFrom' && key !== '_lastScrapedAt') {
+        delete show[key];
+      }
+    }
+
+    // 5. If specialLottery is the only lottery-type program, promote to lottery
+    if (show.specialLottery && !show.lottery) {
+      show.lottery = {
+        type: 'digital',
+        platform: show.specialLottery.platform,
+        url: show.specialLottery.url,
+        price: show.specialLottery.price,
+        time: show.specialLottery.time || show.specialLottery.instructions,
+        instructions: show.specialLottery.instructions,
+      };
+      // Clean null values from promoted entry
+      for (const k of Object.keys(show.lottery)) {
+        if (show.lottery[k] === null || show.lottery[k] === undefined) delete show.lottery[k];
+      }
+      delete show.specialLottery;
+      fixes.push(`${showId}: Promoted specialLottery → lottery (only lottery program)`);
+    }
+  }
+
+  if (fixes.length > 0 && verbose) {
+    console.log(`\n[PostMerge] ${fixes.length} fixes:`);
+    fixes.forEach(f => console.log(`  - ${f}`));
+  }
+
+  return fixes;
+}
+
 // ==================== Summary ====================
 
 function printSummary(changes) {
@@ -840,6 +1070,9 @@ async function main() {
       allChanges.push(...changes);
     }
   }
+
+  // Post-merge cleanup: fix cross-source duplicates
+  const mergeFixCount = postMergeCleanup(existing);
 
   // Clean closed shows
   const closedChanges = cleanClosedShows(existing);

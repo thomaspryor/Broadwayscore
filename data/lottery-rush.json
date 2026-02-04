@@ -1,27 +1,14 @@
 {
-  "lastUpdated": "2026-02-04T22:04:02.268Z",
+  "lastUpdated": "2026-02-04T22:32:45.350Z",
   "source": "https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003",
   "shows": {
     "and-juliet-2022": {
-      "lottery": {
-        "type": "digital-rush",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com",
-        "price": 49,
-        "time": "9 AM day of",
-        "instructions": "Available through the TodayTix app. Limit 2 tickets."
-      },
       "rush": {
         "type": "general",
         "price": 49,
         "time": "10 AM Monday - Sunday",
         "location": "Stephen Sondheim Theatre box office",
         "instructions": "Available on the day of the performance"
-      },
-      "standingRoom": {
-        "price": 45,
-        "time": "10 AM Monday - Sunday",
-        "instructions": "Available at the box office on the day of the performance only if the show is sold out"
       },
       "digitalRush": {
         "platform": "TodayTix",
@@ -30,50 +17,68 @@
         "time": "9 AM",
         "instructions": "Available through the TodayTix app"
       },
+      "standingRoom": {
+        "price": 45,
+        "time": "10 AM Monday - Sunday",
+        "instructions": "Available at the box office on the day of the performance only if the show is sold out"
+      },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "aladdin-2014": {
       "lottery": {
         "type": "digital",
-        "platform": "Broadway Direct",
+        "platform": "AladdinTheMusical.com",
         "url": "AladdinTheMusical.com/lottery",
         "price": 45,
         "time": "Lottery opens 9 AM day prior to desired performance. Lottery closes 3 PM day the prior to the performance",
-        "instructions": "Entrants must be 18 years of age or older. Tickets are non-transferable"
+        "instructions": "Entrants must be 18 years of age or older. Winners have 60 minutes to purchase"
       },
-      "rush": null,
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
+    },
+    "all-out-2025": {
+      "rush": {
+        "type": "general",
+        "price": 45,
+        "time": "10 AM",
+        "location": "Nederlander Theatre box office",
+        "instructions": "Available on the day of the performance"
+      },
+      "lottery": {
+        "type": "digital",
+        "platform": "Broadway Direct",
+        "url": "https://lottery.broadwaydirect.com/show/all-out-ny/",
+        "price": 45,
+        "time": "Lottery opens the day before the performance at 9:00AM and closes at 3:00PM the same day",
+        "instructions": "Winners will have 60 minutes to pay for tickets online with a credit card"
+      },
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "book-of-mormon-2011": {
+      "rush": {
+        "type": "digital",
+        "price": 53,
+        "platform": null,
+        "url": null
+      },
+      "specialLottery": {
+        "name": "15th anniv.",
+        "platform": null,
+        "url": null,
+        "price": 15
+      },
       "lottery": {
         "type": "digital",
         "platform": "LuckySeat",
         "url": "www.luckyseat.com/shows/thebookofmormon-newyork",
         "price": 49,
-        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance with winners being selected beginning at 10 AM ET",
+        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance",
         "instructions": "Tickets must be purchased by 3 PM the day prior to the performance. Tickets are non-transferable"
       },
-      "specialLottery": {
-        "name": "15th anniv.",
-        "platform": "Book of Mormon",
-        "url": "https://bookofmormonbroadway.com/15-lottery",
-        "price": 15,
-        "instructions": "Special 15th anniversary $15 lottery tickets."
-      },
-      "rush": {
-        "type": "digital",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com/nyc/shows/127-the-book-of-mormon-on-broadway",
-        "price": 53,
-        "time": "9 AM day of",
-        "instructions": "Available through TodayTix app. Limit 2 tickets."
-      },
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "digitalRush": {
         "platform": "TodayTix",
         "url": "todaytix.com",
@@ -83,14 +88,6 @@
       }
     },
     "buena-vista-social-club-2025": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 49,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
       "rush": {
         "type": "general",
         "price": 45,
@@ -98,30 +95,30 @@
         "location": "Gerald Schoenfeld Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "standingRoom": null,
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "rush.telecharge.com",
+        "price": 49,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
+      },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "bug-2026": {
-      "lottery": null,
       "rush": {
         "type": "digital",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com/nyc/shows/45086-bug-on-broadway",
         "price": 49,
-        "time": "9 AM day of",
-        "instructions": "Available through TodayTix app. Limit 2 tickets."
-      },
-      "standingRoom": null,
-      "studentRush": {
-        "price": 0
+        "platform": null,
+        "url": null
       },
       "special": {
         "name": "MTC $35",
         "price": 35
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "digitalRush": {
         "platform": "TodayTix",
         "url": "todaytix.com",
@@ -131,14 +128,6 @@
       }
     },
     "chess-2025": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 49,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
       "rush": {
         "type": "general",
         "price": 49,
@@ -146,12 +135,18 @@
         "location": "Imperial Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "standingRoom": null,
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "rush.telecharge.com",
+        "price": 49,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
+      },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "chicago-1996": {
-      "lottery": null,
       "rush": {
         "type": "general",
         "price": 49,
@@ -165,9 +160,16 @@
         "instructions": "Available at the box office on the day of the performance only if the show is sold out"
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "death-becomes-her-2024": {
+      "rush": {
+        "type": "general",
+        "price": 40,
+        "time": "10 AM Tuesday-Saturday; noon Sunday",
+        "location": "Lunt-Fontanne Theatre box office",
+        "instructions": "Available on the day of the performance"
+      },
       "lottery": {
         "type": "digital",
         "platform": "Broadway Direct",
@@ -176,25 +178,14 @@
         "time": "Lottery opens the day before the performance at 7:00AM and closes at 2:00PM the same day",
         "instructions": "Winners will have 60 minutes to pay for tickets online with a credit card"
       },
-      "rush": {
-        "type": "general",
-        "price": 40,
-        "time": "10 AM Tuesday-Saturday; noon Sunday",
-        "location": "Lunt-Fontanne Theatre box office",
-        "instructions": "Available on the day of the performance"
-      },
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "the-great-gatsby-2024": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 45,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
+      "studentRush": {
+        "price": 25,
+        "time": "10 AM Monday-Saturday, 12 PM Sunday",
+        "instructions": "Available on the day of the performance at Broadway Theatre box office with valid Student ID"
       },
       "rush": {
         "type": "general",
@@ -203,19 +194,16 @@
         "location": "Broadway Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "studentRush": {
-        "price": 25,
-        "time": "10 AM Monday-Saturday, 12 PM Sunday",
-        "instructions": "Available on the day of the performance"
-      },
-      "standingRoom": null,
-      "digitalRush": {
+      "lottery": {
+        "type": "digital",
         "platform": "Telecharge",
-        "url": "https://my.socialtoaster.com/st/rush_select/?key=BROADWAY&source=iframe",
-        "price": 49
+        "url": "rush.telecharge.com",
+        "price": 45,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "hadestown-2019": {
       "lottery": {
@@ -223,83 +211,45 @@
         "platform": "LuckySeat",
         "url": "LuckySeat.com",
         "price": 49,
-        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance with winners being selected beginning at 10 AM ET",
-        "instructions": "The digital lottery is limited to one entry per person and tickets must be purchased online with a credit card by 3 PM ET the day before the performance"
+        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance",
+        "instructions": "Tickets must be purchased online with a credit card by 3 PM ET the day before the performance"
       },
-      "rush": null,
       "standingRoom": {
         "price": 39,
         "time": "12 PM for matinees, 5 PM for evening performances",
         "instructions": "Available at the box office on the day of the performance only if the show is sold out"
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "hamilton-2015": {
+      "standingRoom": {
+        "price": 40
+      },
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "lottery": {
         "type": "digital",
         "platform": "Hamilton App",
         "url": "HamiltonMusical.com",
         "price": 10,
         "time": "Opens Friday at 10 AM ET through the following Thursday at Noon",
-        "instructions": "Enter a lottery for the upcoming week's performances"
-      },
-      "rush": {
-        "type": "digital",
-        "price": 10,
-        "platform": null,
-        "url": null
-      },
-      "standingRoom": {
-        "price": 40,
-        "time": "Box office opening day of",
-        "instructions": "Available only if sold out. Standing at back of orchestra."
-      },
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
-      "specialLottery": {
-        "name": "Digital Lottery",
-        "platform": "Hamilton App",
-        "url": "HamiltonMusical.com",
-        "price": 10,
-        "instructions": "Opens Friday at 10 AM ET through the following Thursday at Noon"
+        "instructions": "Enter a lottery for the upcoming week's performances. Winners will have two hours to claim and pay for their tickets"
       }
     },
     "harry-potter-2021": {
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "lottery": {
         "type": "digital",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com",
-        "price": 40,
-        "time": "Entries accepted Monday 12:01 AM to Friday 1 PM for the following week",
-        "instructions": "The Friday Forty: 40 tickets available. Winners notified Friday 1-5 PM, have 1 hour to claim."
-      },
-      "rush": {
-        "type": "digital",
-        "price": 40,
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com/nyc/shows/13709-harry-potter-and-the-cursed-child"
-      },
-      "standingRoom": null,
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
-      "specialLottery": {
-        "name": "The Friday Forty",
         "platform": "TodayTix",
         "url": "TodayTix.com",
         "price": 40,
-        "instructions": "Entries accepted from 12:01am each Monday to 1pm each Friday for every performance for the following week"
+        "time": "Entries accepted from 12:01am each Monday to 1pm each Friday",
+        "instructions": "40 tickets available. Winners notified between 1pm and 5pm on Friday and will have one hour to claim tickets"
       }
     },
     "hells-kitchen-2024": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 39,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
       "rush": {
         "type": "general",
         "price": 39,
@@ -307,19 +257,21 @@
         "location": "Sam S. Shubert Theatre box office",
         "instructions": "Available on the day of the performance"
       },
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "rush.telecharge.com",
+        "price": 39,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
+      },
       "standingRoom": {
         "price": 40
       },
-      "digitalRush": {
-        "platform": "Telecharge",
-        "url": "https://my.socialtoaster.com/st/rush_select/?key=BROADWAY&source=iframe",
-        "price": 49
-      },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "just-in-time-2025": {
-      "lottery": null,
       "rush": {
         "type": "general",
         "price": 40,
@@ -331,7 +283,7 @@
         "price": 69
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "the-lion-king-1997": {
       "lottery": {
@@ -340,32 +292,26 @@
         "url": "Lottery.BroadwayDirect.com/Show/The-Lion-King",
         "price": 60,
         "time": "Lottery opens 9 AM day prior to desired performance. Lottery closes 3 PM day the prior to the performance",
-        "instructions": "Winners will be notified via email, and have 60 minutes to pay for tickets via credit card"
+        "instructions": "Winners have 60 minutes to pay for tickets via credit card. Tickets are non-transferable"
       },
-      "rush": null,
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "marjorie-prime-2025": {
-      "lottery": null,
-      "rush": {
-        "type": "digital",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com/nyc/shows/44511-marjorie-prime",
-        "price": 49,
-        "time": "9 AM day of",
-        "instructions": "Available through TodayTix app. Limit 2 tickets."
-      },
-      "standingRoom": null,
       "studentRush": {
         "price": 25
+      },
+      "rush": {
+        "type": "digital",
+        "price": 49,
+        "platform": null,
+        "url": null
       },
       "under30": {
         "price": 30
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "digitalRush": {
         "platform": "TodayTix",
         "url": "todaytix.com",
@@ -375,14 +321,6 @@
       }
     },
     "maybe-happy-ending-2024": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 20.64,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
       "rush": {
         "type": "general",
         "price": 49,
@@ -390,26 +328,28 @@
         "location": "Belasco Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "digitalRush": {
-        "platform": "Telecharge",
-        "url": "https://rush.telecharge.com/",
-        "price": 49,
-        "time": "11am day of performance",
-        "instructions": "Submit online form"
-      },
       "standingRoom": {
         "price": 49,
         "time": "10 AM Monday–Saturday; noon Sunday",
         "instructions": "Available at the box office on the day of the performance only if the show is sold out"
       },
-      "specialLottery": {
-        "name": "Club 2064",
-        "platform": "Telecharge",
-        "url": "https://my.socialtoaster.com/st/lottery_select/?key=BROADWAY&source=iframe",
-        "price": 20.64
-      },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
+      "digitalRush": {
+        "platform": "Telecharge",
+        "url": "https://rush.telecharge.com/",
+        "price": 49,
+        "time": "11am day of performance",
+        "instructions": "Subject to availability"
+      },
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "rush.telecharge.com",
+        "price": 20.64,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
+      }
     },
     "mj-2022": {
       "lottery": {
@@ -420,14 +360,11 @@
         "time": "Lottery opens the day before the performance at 9:00AM and closes at 3:00PM",
         "instructions": "Winners will have 60 minutes to pay for tickets online with a credit card"
       },
-      "rush": null,
       "standingRoom": {
-        "price": 35,
-        "time": "Box office opening day of",
-        "instructions": "Available only if sold out. See mjthemusical.com/faq for details."
+        "price": 35
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "moulin-rouge-2019": {
       "lottery": {
@@ -435,27 +372,21 @@
         "platform": "LuckySeat",
         "url": "www.luckyseat.com/shows/moulinrouge!themusical-newyork",
         "price": 49,
-        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance with winners being selected beginning at 10 AM ET",
+        "time": "For weekday performances, entries will be accepted until 9:30 AM ET the day before the performance",
         "instructions": "Wins cannot be transferred to other performances or other people"
       },
-      "rush": null,
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "oedipus-2025": {
-      "lottery": null,
       "rush": {
         "type": "digital",
-        "platform": "TodayTix",
-        "url": "https://www.todaytix.com/nyc/shows/43903-oedipus-on-broadway",
         "price": 45,
-        "time": "9 AM day of",
-        "instructions": "Available through TodayTix app. Limit 2 tickets."
+        "platform": null,
+        "url": null
       },
-      "standingRoom": null,
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z",
       "digitalRush": {
         "platform": "TodayTix",
         "url": "todaytix.com",
@@ -465,14 +396,6 @@
       }
     },
     "oh-mary-2024": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "rush.telecharge.com",
-        "price": 47,
-        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
       "rush": {
         "type": "general",
         "price": 43,
@@ -480,19 +403,18 @@
         "location": "Lyceum Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "standingRoom": null,
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
-    },
-    "operation-mincemeat-2025": {
       "lottery": {
         "type": "digital",
         "platform": "Telecharge",
         "url": "rush.telecharge.com",
-        "price": 49,
+        "price": 47,
         "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
       },
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
+    },
+    "operation-mincemeat-2025": {
       "rush": {
         "type": "general",
         "price": 49,
@@ -500,26 +422,18 @@
         "location": "John Golden Theatre box office",
         "instructions": "Available on the day of the performance"
       },
-      "digitalRush": {
-        "platform": "Telecharge",
-        "url": "https://my.socialtoaster.com/st/rush_select/?key=BROADWAY&source=iframe",
-        "price": 59,
-        "time": "11 AM day of",
-        "instructions": "Subject to availability. Limit 2 tickets."
-      },
-      "standingRoom": null,
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.253Z"
-    },
-    "the-outsiders-2024": {
       "lottery": {
         "type": "digital",
         "platform": "Telecharge",
         "url": "rush.telecharge.com",
         "price": 49,
         "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
       },
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
+    },
+    "the-outsiders-2024": {
       "rush": {
         "type": "general",
         "price": 45,
@@ -528,9 +442,15 @@
         "instructions": "Available on the day of the performance"
       },
       "under30": {
-        "price": 30,
-        "time": "10 AM Mon-Sat, 12 PM Sunday",
-        "instructions": "$30 Under 30: For anyone 30 and under with valid ID. Limit 2 tickets."
+        "price": 30
+      },
+      "lottery": {
+        "type": "digital",
+        "platform": "Telecharge",
+        "url": "rush.telecharge.com",
+        "price": 49,
+        "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
       },
       "standingRoom": {
         "price": 39,
@@ -539,49 +459,39 @@
       },
       "special": {
         "name": "Ponyboy Seat",
-        "price": 79,
-        "instructions": "1 seat per performance. Stand for first 7 minutes, then seated in front row orchestra. Rain effect may cause water drops."
+        "price": 79
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.253Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "ragtime-2025": {
+      "studentRush": {
+        "price": 32
+      },
       "lottery": {
         "type": "digital",
         "platform": "Telecharge",
         "url": "rush.telecharge.com",
         "price": 49,
         "time": "The lottery will open at 12 AM on the day before the performance closing at 3 PM the day before the performance",
-        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM"
-      },
-      "rush": null,
-      "standingRoom": {
-        "price": 35.5
-      },
-      "studentRush": {
-        "price": 32
-      },
-      "special": {
-        "name": "LincTix",
-        "price": 35.5
+        "instructions": "Winners are drawn at 10:00 AM and 3:00 PM and have five hours to claim and purchase tickets online"
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.253Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "six-2021": {
+      "studentRush": {
+        "price": 35,
+        "time": "10 AM Monday-Saturday, 12 PM Sunday",
+        "instructions": "Available on the day of the performance at Lena Horne Theatre box office with valid Student ID. Minimum of 6 tickets"
+      },
       "lottery": {
         "type": "digital",
         "platform": "Broadway Direct",
         "url": "lottery.broadwaydirect.com/show/six-ny/",
         "price": 45,
         "time": "Entries will be accepted starting at 9:00am the day prior to the performance. The cutoff is 6:00pm the day prior to the performance",
-        "instructions": "A limited number of $45 tickets will be sold via a digital lottery"
-      },
-      "rush": null,
-      "studentRush": {
-        "price": 35,
-        "time": "10 AM Monday-Saturday, 12 PM Sunday",
-        "instructions": "Available on the day of the performance"
+        "instructions": "Winners will be notified by email and have 60 minutes to claim and pay for their tickets online"
       },
       "standingRoom": {
         "price": 49,
@@ -589,73 +499,7 @@
         "instructions": "Available at the box office on the day of the performance only if the show is sold out"
       },
       "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.253Z"
-    },
-    "wicked-2003": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Broadway Direct",
-        "url": "https://lottery.broadwaydirect.com/show/wicked/",
-        "price": 55,
-        "priceWeekend": 65,
-        "time": "For matinee performances, the lottery will open the day before at 10am and close the day before at 4PM. For evening performances, the lottery will open the day before at 8PM and close the day of the performance at 11AM",
-        "instructions": "A limited number of tickets will be sold via a digital lottery"
-      },
-      "rush": null,
-      "studentTickets": {
-        "price": 69,
-        "instructions": "Available in advance at select performances. See wickedthemusical.com for dates."
-      },
-      "militaryTickets": {
-        "price": 79,
-        "instructions": "For active military at select performances. See wickedthemusical.com for dates."
-      },
-      "standingRoom": null,
-      "studentRush": {
-        "price": 69
-      },
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.253Z"
-    },
-    "two-strangers-bway-2025": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Telecharge",
-        "url": "https://my.socialtoaster.com/st/lottery_select/?key=BROADWAY&source=iframe",
-        "price": 48,
-        "time": "Opens day before, closes 3 PM day before",
-        "instructions": "Winners have 5 hours to claim and purchase online. Tickets will be emailed."
-      },
-      "rush": {
-        "type": "general",
-        "price": 42,
-        "time": "10 AM Mon-Sat, 12 PM Sunday",
-        "location": "Longacre Theatre box office",
-        "instructions": "Available day of performance. Limit 2 tickets."
-      },
-      "standingRoom": null,
-      "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.530Z"
-    },
-    "all-out-2025": {
-      "lottery": {
-        "type": "digital",
-        "platform": "Broadway Direct",
-        "url": "https://lottery.broadwaydirect.com/show/all-out-ny/",
-        "price": 45,
-        "time": "Lottery opens the day before the performance at 9:00AM and closes at 3:00PM the same day",
-        "instructions": "Winners will have 60 minutes to pay for tickets online with a credit card"
-      },
-      "rush": {
-        "type": "general",
-        "price": 45,
-        "time": "10 AM",
-        "location": "Nederlander Theatre box office",
-        "instructions": "Available on the day of the performance"
-      },
-      "standingRoom": null,
-      "_lastScrapedFrom": "playbill",
-      "_lastScrapedAt": "2026-02-04T22:04:02.252Z"
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "stranger-things-2024": {
       "rush": {
@@ -664,12 +508,45 @@
       },
       "lottery": {
         "type": "digital",
-        "platform": "Broadway Direct",
-        "url": "https://lottery.broadwaydirect.com/show/st-nyc/",
+        "platform": null,
+        "url": null,
         "price": 45
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.530Z"
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
+    },
+    "two-strangers-bway-2025": {
+      "rush": {
+        "type": "general",
+        "price": 42
+      },
+      "lottery": {
+        "type": "digital",
+        "platform": null,
+        "url": null,
+        "price": 48
+      },
+      "_lastScrapedFrom": "bwayrush",
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
+    },
+    "wicked-2003": {
+      "lottery": {
+        "type": "digital",
+        "platform": "Broadway Direct",
+        "url": "https://lottery.broadwaydirect.com/show/wicked/",
+        "price": 55,
+        "priceWeekend": 65,
+        "time": "For matinee performances, the lottery will open the day before at 10am and close the day before at 4PM",
+        "instructions": "Tickets will be $65 for Friday evening, Saturday matinee & evening and Sunday matinee performances. All other performances will be $55"
+      },
+      "studentRush": {
+        "price": 69
+      },
+      "militaryTickets": {
+        "price": 79
+      },
+      "_lastScrapedFrom": "playbill",
+      "_lastScrapedAt": "2026-02-04T22:32:45.345Z"
     },
     "becky-shaw-2026": {
       "studentRush": {
@@ -679,7 +556,7 @@
         "price": 30
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.530Z"
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
     },
     "the-rocky-horror-show-2026": {
       "special": {
@@ -687,7 +564,7 @@
         "price": 30
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.531Z"
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
     },
     "fallen-angels-2026": {
       "special": {
@@ -695,18 +572,15 @@
         "price": 30
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.531Z"
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
     },
     "the-balusters-2026": {
-      "studentRush": {
-        "price": 0
-      },
       "special": {
         "name": "MTC $35",
         "price": 35
       },
       "_lastScrapedFrom": "bwayrush",
-      "_lastScrapedAt": "2026-02-04T22:03:09.531Z"
+      "_lastScrapedAt": "2026-02-04T22:31:50.627Z"
     }
   }
 }
