@@ -3,25 +3,21 @@
   "outletId": "new-york-sun",
   "outlet": "The New York Sun",
   "criticName": "Elysa Gardner",
-  "url": null,
-  "publishDate": "2023-11-13T22:29:54-05:00",
-  "fullText": null,
-  "isFullReview": false,
-  "dtliExcerpt": null,
-  "bwwExcerpt": "Mr. Manilow, who has always shown a flair for infusing melody with drama (or melodrama, at times), and who’s better educated in the music of this period than most of his peers, let alone more contemporary pop artists, has provided the company with both haunting romantic ballads and snazzy production...",
-  "showScoreExcerpt": null,
-  "assignedScore": 76,
+  "url": "https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
+  "publishDate": null,
+  "bwwExcerpt": "Mr. Manilow, who has always shown a flair for infusing melody with drama (or melodrama, at times), and who’s better educated in the music of this period than most of his peers, let alone more contemporary pop artists, has provided the company with both haunting romantic ballads and snazzy production numbers. Mr. Carlyle serves the latter with predictable buoyancy and wit; one romp catches the Harmonists without their pants, while a more darkly comic sequence casts them as marionettes, mocking th",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-HARMONY-Opens-on-Broadway-20231112",
+  "bwwThumb": "Up",
+  "originalScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,12 +29,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. Manilow has provided the company with both haunting romantic ballads and snazzy production",
+        "quote": "Mr. Manilow has provided the company with both haunting romantic ballads and snazzy production numbers.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Manilow's musical contributions with specific positive descriptors ('haunting', 'snazzy'), but limited context from one curated quote warrants conservative positive scoring. | GPT-4o: The excerpt praises Manilow's contribution to the show with positive descriptors like 'haunting' and 'snazzy'. However, due to the single excerpt warning and lack of a clear overall verdict, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt praises Manilow's contribution to the music, suggesting a positive but not overwhelmingly enthusiastic review. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for Manilow's musical contributions, describing the score as both 'haunting' and 'snazzy' while complimenting his musical sophistication, indicating a clear recommendation based on the music.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with measured praise for Manilow's music and Carlyle's performance, but text cuts off mid-sentence making full verdict unclear. BroadwayWorld aggregator shows 'Up' supporting positive assessment. | GPT-4o: The excerpt highlights positive elements such as 'haunting romantic ballads' and 'snazzy production numbers,' indicating a positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises Manilow's contributions to the music and mentions enjoyable performances, suggesting a positive but not overwhelmingly enthusiastic review. The limited text and excerpt-only warning lower the confidence. | Kimi: The excerpt offers strong praise for both Manilow's score (haunting romantic ballads, snazzy production numbers) and Carlyle's direction (buoyancy and wit), indicating a clearly positive assessment despite the limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,15 +44,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T08:14:12.229Z",
+    "scoredAt": "2026-02-03T08:05:50.395Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
     "claudeScore": 74,
-    "openaiScore": 74,
+    "openaiScore": 80,
     "geminiScore": 75,
     "kimiScore": 82,
     "claudeBucket": "Positive",
@@ -70,5 +67,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "rescoreReason": "low-conf: prompt=3.0.0, delta=30, upgrading to V5 + 3 models",
+  "previousLlmScore": 60,
+  "archivePath": "data/archives/reviews/harmony-2023/the-new-york-sun--elysa-gardner_2026-01-28.html",
+  "textFetchedAt": "2026-01-28T23:42:56.608Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "CAPTCHA or access blocked"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Access blocked in Bright Data response"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20250909111507",
+  "archiveOrgUrl": "http://web.archive.org/web/20250909111507/https://www.nysun.com/article/with-harmony-barry-manilow-and-bruce-sussman-offer-a-musical-that-is-almost-defiantly-life-affirming-and-joyous",
+  "rescoreCompletedAt": "2026-02-01T15:05:03.282Z",
+  "garbageFullText": "The New York SunJoin TodaySign InArts+With ‘Harmony,’ Barry Manilow and Bruce Sussman Offer a Musical That Is Almost Defiantly Life-Affirming and JoyousAs antisemitism again surges in the wake of the October 7 Hamas terrorist attacks, ‘Harmony’ is especially timely, as it follows a half-Jewish sextet between its formation in the late ’20s and its forced dissolution by the Nazis.\n\nGift this articleShare\nThe first act of Barry Manilow and Bruce Sussman’s musical “Harmony” wraps in 1933, with a German vocal ensemble that had by then gained international renown, the Comedian Harmonists, making its American debut at Carnegie Hall. As the show documents the event, the group receives congratulatory telegrams from Mayor Fiorello La Guardia, Fanny Brice, Will Rogers, and Gypsy Rose Lee.\n\nAs Mr. Sussman, who wrote the book and lyrics for “Harmony” — and who has been Mr. Manilow’s collaborator for more than 50 years, dating back to the latter’s heyday as a pop superstar — has noted, La Guardia, Brice, Rogers, and Lee all became enduring icons, not to mention the subjects of musicals themselves. This was not the case for the Harmonists, the victims of one of the worst catastrophes of a catastrophe-ridden century.\n\nThree of the group’s six members, you see, were Jewish, a point that did not escape the notice of the rising Nazi regime at home. By the mid-1930s, the Harmonists had been banned from performance, and its Jewish constituents fled Germany. “Harmony” follows the sextet between its formation in the late ’20s and its forced dissolution; it is framed and narrated from the more recent past by an octogenarian called Rabbi, the last surviving Harmonist, played by a (slightly younger) Broadway veteran, Chip Zien.\n\nThe elder Rabbi is a relatively new creation of Messrs. Manilow and Sussman, who have been working on different incarnations of “Harmony” for more than two decades. This current version had its premiere off-Broadway in April 2022; at that point, while antisemitism had been on the rise yet again for several years both here and abroad, few could have foreseen the explosion we’ve experienced this fall, in the wake of Hamas’s latest, unprecedentedly savage attack on Israeli civilians.\n\nYet if the timing of this musical’s arrival at the Ethel Barrymore Theatre makes its tracing of real events especially sobering, the show itself is also life-affirming and joyous, almost defiantly so. Its creators enlisted a crucial ally in director and choreographer Warren Carlyle, whose many Broadway credits include the most recent, exuberant revivals of “The Music Man” and “Hello, Dolly!”; for “Harmony,” Mr. Carlyle has recruited a cast of sparkling young performers to evoke both the talent and the determined spirit of young men fighting a losing battle with history.\n\nFive of the actors cast as the Harmonists — among them Danny Kornfeld, charming as the Young Rabbi — are making their Broadway debuts in this staging. All of them sing exquisitely, as do Sierra Boggess, who plays Young Rabbi’s resolute wife, a convert to Judaism, and Julie Benko — fresh from her star-making turn as Lea Michele’s standby and alternate in last year’s revival of “Funny Girl” — playing a Bolshevik activist who enters another interfaith marriage with one of the Harmonists’ non-Jewish singers.\n\nMr. Manilow, who has always shown a flair for infusing melody with drama (or melodrama, at times), and who’s better educated in the music of this period than most of his peers, let alone more contemporary pop artists, has provided the company with both haunting romantic ballads and snazzy production numbers. Mr. Carlyle serves the latter with predictable buoyancy and wit; one romp catches the Harmonists without their pants, while a more darkly comic sequence casts them as marionettes, mocking the servile behavior their fellow Germans have been forced to adopt.\n\nTowards the end, “Harmony” threatens for just a moment to lapse into heavy-handedness; Mr. Zien, whose otherwise powerful performance includes comedic stints in bit roles — among them Albert Epstein and composer Richard Strauss — bears the brunt of the histrionics. But given the circumstances Messrs. Manilow and Sussman are portraying, which essentially is an escape from hell, their choice is most forgivable.\n\nCertainly, the musical concludes with notes, literal and figurative, of warmth and hope, reminding us that harmony can be achieved not just by different musical parts but among different people. If only the latter were easier to accomplish.\n\nMs. Gardner has written about theater and music for The New York Times, The Village Voice, Town and Country, Time Out New York, Entertainment Weekly and other publications. She is a board member of the Drama Desk and has served on the jury for the Pulitzer Prize for drama twice, most recently as chair.\n\nX (Twitter)Schedule a call to learn moreSectionsMoreMembershipBecome a FounderAdvertiseEventsNewslettersShopSubmissionsContactLegalAbout© 2025 The New York Sun Company, LLC. All rights reserved.\n\nUse of this site constitutes acceptance of our Terms of Use and Privacy Policy. The material on this site is protected by copyright law and may not be reproduced, distributed, transmitted, cached or otherwise used.",
+  "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
+  "garbageFixedAt": "2026-01-29T22:45:22.855Z",
+  "dateUnknown": true,
+  "dateSource": "historical-review",
+  "contentTier": "excerpt",
+  "wordCount": 0
 }
