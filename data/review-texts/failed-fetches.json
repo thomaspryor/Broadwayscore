@@ -8212,18 +8212,6 @@
     "timestamp": "2026-02-03T16:08:11.796Z"
   },
   {
-    "reviewId": "blithe-spirit-2009/nytimes--ben-brantley.json",
-    "showId": "blithe-spirit-2009",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blit.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): oedipus, proof, sunset boulevard, tammy faye, sweeney todd...",
-    "textLength": 9446,
-    "timestamp": "2026-02-03T16:24:19.138Z"
-  },
-  {
     "reviewId": "boeingboeing-2008/nytimes--ben-brantley.json",
     "showId": "boeingboeing-2008",
     "outlet": "The New York Times",
@@ -8582,42 +8570,6 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the elephant man, hair, once, high...",
     "textLength": 4649,
     "timestamp": "2026-02-03T22:34:35.083Z"
-  },
-  {
-    "reviewId": "birthday-candles-2022/nytimes--maya-phillips.json",
-    "showId": "birthday-candles-2022",
-    "outlet": "New York Times",
-    "critic": "Maya Phillips",
-    "url": "https://www.nytimes.com/2022/04/10/theater/birthday-candles-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): our town, home, parade, company, king lear...",
-    "textLength": 7030,
-    "timestamp": "2026-02-03T22:47:09.362Z"
-  },
-  {
-    "reviewId": "birthday-candles-2022/variety--ayanna-prescod.json",
-    "showId": "birthday-candles-2022",
-    "outlet": "Variety",
-    "critic": "Ayanna Prescod",
-    "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-broadway-1235229155/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): home, smash, caroline, or change, trouble in mind, company...",
-    "textLength": 4425,
-    "timestamp": "2026-02-03T22:47:22.743Z"
-  },
-  {
-    "reviewId": "birthday-candles-2022/variety--marilyn-stasio.json",
-    "showId": "birthday-candles-2022",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-1235233772/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, smash, caroline, or change, trouble in mind, company...",
-    "textLength": 4280,
-    "timestamp": "2026-02-03T22:47:59.044Z"
   },
   {
     "reviewId": "burn-this-2019/hollywood-reporter--david-rooney.json",
@@ -13286,5 +13238,65 @@
     "garbageReason": "Multiple shows mentioned (12): our town, appropriate, take me out, the skin of our teeth, betrayal...",
     "textLength": 6808,
     "timestamp": "2026-02-04T20:13:55.134Z"
+  },
+  {
+    "reviewId": "birthday-candles-2022/nytimes--maya-phillips.json",
+    "showId": "birthday-candles-2022",
+    "outlet": "New York Times",
+    "critic": "Maya Phillips",
+    "url": "https://www.nytimes.com/2022/04/10/theater/birthday-candles-review.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): our town, home, parade, company, king lear...",
+    "textLength": 7553,
+    "timestamp": "2026-02-04T20:17:23.792Z"
+  },
+  {
+    "reviewId": "birthday-candles-2022/variety--ayanna-prescod.json",
+    "showId": "birthday-candles-2022",
+    "outlet": "Variety",
+    "critic": "Ayanna Prescod",
+    "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-broadway-1235229155/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, smash, caroline, or change, trouble in mind, company...",
+    "textLength": 4216,
+    "timestamp": "2026-02-04T20:18:29.835Z"
+  },
+  {
+    "reviewId": "birthday-candles-2022/variety--marilyn-stasio.json",
+    "showId": "birthday-candles-2022",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-1235233772/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, smash, caroline, or change, trouble in mind, company...",
+    "textLength": 3919,
+    "timestamp": "2026-02-04T20:19:03.310Z"
+  },
+  {
+    "reviewId": "blithe-spirit-2009/nytimes--ben-brantley.json",
+    "showId": "blithe-spirit-2009",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2009/03/16/theater/reviews/16blit.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple article boundaries detected (3)",
+    "textLength": 5910,
+    "timestamp": "2026-02-04T20:24:35.944Z"
+  },
+  {
+    "reviewId": "bob-fosses-dancin-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "bob-fosses-dancin-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/03/19/bob-fosses-dancin-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, giant, gypsy, new york, new york, company...",
+    "textLength": 8405,
+    "timestamp": "2026-02-04T20:27:53.484Z"
   }
 ]
