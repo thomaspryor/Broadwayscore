@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Let’s call it “Nightclerks.” It’s the best painting that Edward Hopper never painted, and you can see it at Broadway’s Booth Theatre in the new revival of “Hughie,” which opened Thursday.\n\nNo one captured urban isolation on canvas better than Hopper, and if he’d ever decided to paint the inside of a once elegant, now slightly crumbling lobby of a hotel in Times Square, placing a faceless clerk alone behind the counter, this “Hughie” as designed by Christopher Oram and directed by Michael",
+  "isFullReview": false,
+  "textWordCount": 83,
+  "archivePath": "data/archives/reviews/hughie-2016/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:28:30.801Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 89 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 83,
+  "tierReason": "Short text (83 words)"
 }
