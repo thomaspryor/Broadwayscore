@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2013/legit/reviews/pippin-1200334942/",
   "publishDate": "April 25, 2013",
-  "fullText": "This exhilarating revival of the 1972 Stephen Schwartz musical transforms a middling show into something magical through the inspired use of circus arts.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This exhilarating revival of the 1972 Stephen Schwartz musical transforms a middling show into something magical through the inspired use of circus arts.",
   "originalScore": null,
@@ -16,12 +16,59 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This exhilarating revival of the 1972 Stephen Schwartz musical transforms a middling show into something magical through the inspired use of circus arts.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/legit-review-pippin-1200411897/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 185,
+  "archivePath": "data/archives/reviews/pippin-2013/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:50:17.198Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 185 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The Billies honors women in sports\n\nHOLLYWOOD — The inaugural Billies, given by the Women in Sports Foundation to recognize excellence in media coverage of women’s sports and physical activity, went off with all the pomp and circumstance of a well-established show Thursday at the BevHilton.\n\nIt even added some bells and whistles of its own, complete with swimmer Diana Nyad tooting a horn. Laila Ali started off the Grand March of Athletes, strutting her stuff catwalk style. She was followed by more mellow marchers Amanda Beard, Misty May-Treanor, Maria Sharapova, Peggy Fleming, Mia Hamm and Brandi Chastain.\n\nTennis legend and Billies’ namesake Billie Jean King said, “I can’t believe they named them after me,” while Sharon Stone raised $300,000 for the org and even managed to get a plug in for “Basic Instinct 2”: “Have you seen it?Please do. I’m marvelous in it,” she quipped.\n\nSports producer Bud Greenspan was feted with the influential personality nod and, after watching clips of his illustrious career, asked, “I wonder why I’m still broke.”\n\nElton John wrapped up the ceremonies with an eight-song set including “Crocodile Rock.”"
 }
