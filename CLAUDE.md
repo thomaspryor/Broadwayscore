@@ -141,7 +141,17 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 
 ## Key Files
 
-**App:** `src/lib/engine.ts` (scoring), `src/lib/data.ts` (data loading), `src/app/page.tsx` (homepage), `src/app/show/[slug]/page.tsx` (show pages), `src/config/scoring.ts` (scoring rules/tiers/outlets), `src/config/commercial.ts` (commercial designations — single source of truth), `src/components/BoxOfficeStats.tsx`, `src/components/ShowImage.tsx` (fallback: thumbnail → poster → hero → placeholder)
+**App:** `src/lib/engine.ts` (scoring), `src/lib/data.ts` (barrel re-export — backward compat), `src/app/page.tsx` (homepage), `src/app/show/[slug]/page.tsx` (show pages), `src/config/scoring.ts` (scoring rules/tiers/outlets), `src/config/commercial.ts` (commercial designations — single source of truth), `src/components/BoxOfficeStats.tsx`, `src/components/ShowImage.tsx` (fallback: thumbnail → poster → hero → placeholder)
+
+**Data modules** (split from data.ts for bundle optimization — import from these directly, not the barrel):
+- `src/lib/data-types.ts` — All shared TypeScript interfaces (zero runtime cost)
+- `src/lib/data-core.ts` — `getAllShows()`, `getShowBySlug()`, directors, theaters, browse (imports reviews.json)
+- `src/lib/data-grosses.ts` — Box office functions (grosses.json only)
+- `src/lib/data-awards.ts` — Award functions (awards.json only)
+- `src/lib/data-audience.ts` — Audience buzz functions (audience-buzz.json only)
+- `src/lib/data-commercial.ts` — Biz/commercial functions (commercial.json + grosses-history.json, uses raw shows to avoid reviews.json)
+- `src/lib/data-consensus.ts` — Critic consensus (critic-consensus.json only)
+- `src/lib/data-lottery.ts` — Lottery/rush (lottery-rush.json only)
 
 **Core Scripts:**
 - `scripts/gather-reviews.js` — Main review gathering from all aggregators
