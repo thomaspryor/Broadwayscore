@@ -1,0 +1,133 @@
+name: Batch Commercial Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show slugs, or "top-historical-30"'
+        required: true
+        type: string
+      dry_run:
+        description: 'Dry run (no files written)'
+        required: false
+        type: boolean
+        default: false
+      skip_sec:
+        description: 'Skip SEC EDGAR lookups'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run batch commercial research
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          ARGS=""
+
+          # Parse shows input
+          INPUT_SHOWS="${{ github.event.inputs.shows }}"
+          if [ "$INPUT_SHOWS" = "top-historical-30" ]; then
+            ARGS="$ARGS --top-historical=30"
+          else
+            ARGS="$ARGS --shows=$INPUT_SHOWS"
+          fi
+
+          # Optional flags
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.skip_sec }}" = "true" ]; then
+            ARGS="$ARGS --skip-sec"
+          fi
+
+          echo "Running: node scripts/batch-commercial-research.js $ARGS"
+          node scripts/batch-commercial-research.js $ARGS
+
+      - name: Commit pending results
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git add data/commercial-pending-review.json
+
+          if git diff --staged --quiet; then
+            echo "No pending results to commit"
+          else
+            git commit -m "data: Batch commercial research results (pending review)
+
+          Results written to commercial-pending-review.json for human review.
+          Run 'node scripts/apply-commercial-pending.js --all' to apply.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            MAX_RETRIES=5
+            RETRY_COUNT=0
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+              if git pull --rebase origin main && git push origin main; then
+                echo "Successfully pushed"
+                break
+              fi
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                WAIT_TIME=$((10 + RANDOM % 20))
+                echo "Waiting $WAIT_TIME seconds..."
+                sleep $WAIT_TIME
+                git fetch origin main
+              fi
+            done
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Batch Commercial Research Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-pending-review.json ]; then
+            node -e "
+              const pending = require('./data/commercial-pending-review.json');
+              const shows = Object.entries(pending.shows || {});
+              console.log('- **Shows researched:** ' + shows.length);
+              const high = shows.filter(([,s]) => s.confidence === 'high').length;
+              const med = shows.filter(([,s]) => s.confidence === 'medium').length;
+              const low = shows.filter(([,s]) => s.confidence === 'low').length;
+              console.log('- **Confidence:** ' + high + ' high, ' + med + ' medium, ' + low + ' low');
+              console.log('');
+              console.log('### Results');
+              console.log('| Show | Designation | Cap | Recouped | Confidence |');
+              console.log('|------|------------|-----|----------|-----------|');
+              for (const [id, s] of shows) {
+                const cap = s.capitalization ? '\$' + (s.capitalization/1e6).toFixed(1) + 'M' : '?';
+                const rec = s.recouped != null ? (s.recouped ? 'Yes' : 'No') : '?';
+                console.log('| ' + (s.title || id) + ' | ' + (s.designation || 'TBD') + ' | ' + cap + ' | ' + rec + ' | ' + (s.confidence || '?') + ' |');
+              }
+              console.log('');
+              console.log('> Review the pending file, then apply with: node scripts/apply-commercial-pending.js --all');
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not generate summary" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No pending results file generated." >> $GITHUB_STEP_SUMMARY
+          fi
