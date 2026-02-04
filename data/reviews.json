@@ -4,10 +4,10 @@
     "lastUpdated": "2026-02-04",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 5542,
-      "skippedNoScore": 5743,
+      "totalReviews": 5541,
+      "skippedNoScore": 5742,
       "skippedDuplicate": 3,
-      "skippedDuplicateUrl": 11,
+      "skippedDuplicateUrl": 13,
       "skippedWrongProduction": 118,
       "recoveredFromGarbage": 82,
       "scoreSources": {
@@ -16,10 +16,10 @@
         "explicit-slash": 5,
         "explicit-letterGrade": 2,
         "human-review": 60,
-        "originalScore-priority0": 883,
-        "llmScore": 3062,
+        "originalScore-priority0": 884,
+        "llmScore": 3065,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1519,
+        "llmScore-lowconf": 1514,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -4913,7 +4913,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 73,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Pete Hempstead",
@@ -4923,24 +4923,7 @@
       "pullQuote": "One of the things that impressed me about the play this time around - was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
-    },
-    {
-      "showId": "aint-no-mo-2022",
-      "outletId": "thewrap",
-      "outlet": "TheWrap",
-      "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Steve Pond",
-      "url": "https://www.thewrap.com/aint-no-mo-broadway-review/",
-      "publishDate": "December 8, 2022",
-      "originalRating": null,
-      "pullQuote": "Jordan E. Cooper's raucous, provocative and deeply funny play is a wild ride that careens between comedy and tragedy, satire and sincerity.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "aint-no-mo-2022",
@@ -6053,18 +6036,18 @@
       "showId": "all-in-comedy-about-love-2024",
       "outletId": "nypost",
       "outlet": "New York Post",
-      "assignedScore": 41,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Negative",
-      "thumb": "Down",
+      "assignedScore": 80,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Positive",
+      "thumb": "Up",
       "criticName": "Johnny Oleksinski",
       "url": "https://nypost.com/2024/12/22/entertainment/all-in-comedy-about-love-review-starry-broadway-shows-a-big-waste-of-money/",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "4 stars",
       "pullQuote": "The entire night has the low boil of a long-winded intro that builds to nothing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "all-in-comedy-about-love-2024",
@@ -15853,13 +15836,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
-      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-nina-arianda-review.html",
+      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-belushi-robert-sean-leonard-review.html",
       "publishDate": "April 24, 2011",
       "originalRating": null,
       "pullQuote": "Ms. Arianda's performance is a tour de force of physical comedy and emotional authenticity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "born-yesterday-2011",
@@ -74366,7 +74349,7 @@
       "url": "https://nystagereview.com/2023/04/04/shucked-salty-corn-on-the-musical-cob/",
       "publishDate": "2023-04-04T20:53:15",
       "originalRating": "4/5 stars",
-      "pullQuote": "More than once, he delivers a blue stand-up routine. For instance, he gets to say seemingly innocent remarks such as recalling an incident when putting a Christmas tree up himself. Being exposed to Horn’s masterful pun demonstration comes close to equaling the price of Shucked admission, but what about the rest of it?",
+      "pullQuote": "Being exposed to Horn’s masterful pun demonstration comes close to equaling the price of Shucked admission, but what about the rest of it? Slightly less of a recommendation – with a caveat: Jack O’Brien’s direction.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -80619,17 +80602,17 @@
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
-      "url": "https://www.nytimes.com/2024/11/15/theater/tammy-faye-review.html",
+      "url": "https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html",
       "publishDate": "November 15, 2024",
       "originalRating": null,
       "pullQuote": "The musical, starring Katie Brayben as the televangelist, is as generous and nonjudgmental as its subject, though it sometimes seems to mistake kindness for depth.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "tammy-faye-2024",
@@ -84465,13 +84448,13 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Frank Rizzo",
-      "url": "https://variety.com/2022/legit/reviews/the-kite-runner-review-broadway-1235324624/",
+      "url": "https://variety.com/2022/legit/reviews/kite-runner-review-broadway-play-amir-arison-1235322248/",
       "publishDate": "July 22, 2022",
       "originalRating": null,
       "pullQuote": "This stage adaptation of Khaled Hosseini's bestselling novel about friendship, betrayal and redemption in Afghanistan is beautifully designed and sensitively performed, but it struggles to capture the epic sweep of its source material.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-kite-runner-2022",
@@ -88303,17 +88286,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Rooney",
-      "url": "https://variety.com/2009/legit/reviews/the-royal-family-1200476227/",
+      "url": "https://variety.com/2009/legit/reviews/the-royal-family-2-1200476930/",
       "publishDate": "October 19, 2009",
       "originalRating": null,
       "pullQuote": "This handsome Broadway revival of Edna Ferber and George S. Kaufman's 1927 backstage comedy about a theatrical dynasty gets by on old-fashioned star power and polished craft, even if the material shows its age.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-scottsboro-boys-2010",
@@ -93392,13 +93375,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "David Rooney",
-      "url": "https://www.hollywoodreporter.com/news/what-constitution-means-me-theater-review-1197315/",
+      "url": "https://www.hollywoodreporter.com/news/general-news/what-constitution-means-to-me-theater-1198404/",
       "publishDate": "March 31, 2019",
       "originalRating": null,
       "pullQuote": "Schreck has crafted a work of uncommon intelligence and emotional power that manages to be both deeply personal and bracingly political without ever feeling preachy.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "what-the-constitution-means-to-me-2019",
