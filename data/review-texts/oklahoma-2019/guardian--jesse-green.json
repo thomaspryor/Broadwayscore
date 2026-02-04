@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2019/apr/08/oklahoma-review-broadway-revival-daniel-fish",
+  "url": "https://www.theguardian.com/stage/2019/jul/24/oklahoma-review-chichester-festival-theatre-josie-lawrence-rodgers-and-hammerstein",
   "publishDate": "April 8, 2019",
-  "fullText": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
-  "isFullReview": false,
+  "fullText": "Hyoie O’Grady, Amara Okereke and Josie Lawrence in Oklahoma! at Chichester Festival theatre. Photograph: Tristram Kenton/The GuardianView image in fullscreenHyoie O’Grady, Amara Okereke and Josie Lawrence in Oklahoma! at Chichester Festival theatre. Photograph: Tristram Kenton/The Guardian This article is more than 6 years oldReviewOklahoma! review – oh, what a beautifully dark eveningThis article is more than 6 years oldChichester Festival theatreJosie Lawrence stars in a revival that perfectly delivers both the jolly and sombre elements of the Rodgers and Hammerstein musical\n\nAlthough it begins with someone hymning a “beautiful mornin’”, Oklahoma! becomes a surprisingly dark evenin’ in the right hands – which it’s found in a revival by Jeremy Sams that perfectly executes its jolly and sombre elements.\n\nWhile containing the giggling flirt Ado Annie, the “girl who cain’t say no”, and including a lengthy interlude of line-dancing and rope-tricks, the Rodgers and Hammerstein show was premiered in the middle of the second world war, which may explain the striking conditionality of its plot, consisting less of events than expressions of future hope or fear. The big romantic number – People Will Say We’re in Love – proceeds, daringly, not through warmth but warning: “Don’t take my arm too much / Don’t keep your hand in mine.” Other songs include two fantasies, a Freudian sex-fear dream, and a template for tragedy: in the startling duet, Pore Jud Is Daid, cowboy Curly advises ranch hand Jud, his rival for farm girl Laurey, how he might end the romantic competition through suicide. That song – and Jud’s chilling inventory of his existence, Lonely Room – remind us that Hammerstein was the key mentor of Stephen Sondheim, who would complete his maturing of the Broadway libretto.\n\nConsistently more modernist than seems possible from a duo who wrote The Sound of Music, the show has also been less embarrassed than some pieces of its period by feminism. Laurey, to whom Amara Okereke brings an electrifying presence and soaring voice, is, in deliberate opposition to Ado Annie, the girl who really can say no, subjecting her suitors to interviews of Andrew Neil-like intensity. Hyoie O’Grady and Emmanuel Kojo sing characterfully, and respectively bring cocky likability and abused vulnerability to Curly and Jud, while Josie Lawrence engagingly makes the gun-toting matriarch Aunt Eller a woman who knows about life and, she hints, sex.\n\nEven as skilled a musical specialist as Sams can’t solve the problem that the second half becomes a play with only four songs, one a reprise. But this production impressively harvests all that Oklahoma! has to offer.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
   "originalScore": null,
   "assignedScore": 90,
@@ -73,5 +73,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Rave"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2019/apr/08/oklahoma-review-broadway-revival-daniel-fish",
+  "urlDiscoveredAt": "2026-02-04T03:44:06.996Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 90,
+  "textWordCount": 442,
+  "archivePath": "data/archives/reviews/oklahoma-2019/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:44:06.999Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 442,
+  "tierReason": "Missing proper ending or other signals"
 }
