@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, which premiered Off Broadway in 2017, is a tender meditation on love, loneliness and what it means to be human in an increasingly digital world.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, which premiered Off Broadway in 2017, is a tender meditation on love, loneliness and what it means to be human in an increasingly digital world.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a tender meditation on love, loneliness and what it means to be human in an increasingly digital world.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show positively as 'tender meditation' but lacks clear recommendation language or verdict. Given single excerpt warning and descriptive nature, scored at lower end of Positive range. | GPT-4o: The excerpt provides a positive view of the musical as a 'tender meditation,' suggesting a thoughtful and engaging production. However, due to the single excerpt warning, the confidence is low, and the score reflects a mildly positive sentiment. | Gemini: The single excerpt available describes the musical as a \"tender meditation,\" which suggests a positive but not overwhelmingly enthusiastic assessment. Given the limited information, a score on the lower end of the positive range is appropriate. | Kimi: The excerpt offers mild praise describing the show as a 'tender meditation' on meaningful themes, suggesting appreciation for its emotional depth. With only a single curated excerpt available, confidence is low and the score reflects the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:36:03.227Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

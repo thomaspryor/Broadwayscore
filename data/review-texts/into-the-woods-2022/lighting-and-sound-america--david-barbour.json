@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "To understand why this Into the Woods is so enchanting, you must first understand what it is not: Do not expect elaborate designs, magical special effects, or fancy directorial concepts. Unlike its many New York revivals -- on Broadway in 2002, in Central Park in 2012, and at Roundabout in 2015 -- this is a glorified concert staging, imported from Encores! at City Center. Lear deBessonet's direction is swift, businesslike, and highly presentational, treating the action as a series of musical turns. Everything is done simply and without fuss. And yet this minimalist approach results in the funniest, most ravishingly sung, and heartbreaking account of the James Lapine -- Stephen Sondheim musical since the legendary 1987 original.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this minimalist approach results in the funniest, most ravishingly sung, and heartbreaking account of the James Lapine -- Stephen Sondheim musical since the legendary 1987 original",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'enchanting' and comparing it favorably to the legendary original. The superlatives 'funniest, most ravishingly sung, and heartbreaking' indicate high enthusiasm despite the simple staging. | GPT-4o: The excerpt praises the production as the best since the original, highlighting its humor, singing, and emotional impact. Despite the minimalist approach, it is described as enchanting and highly effective. | Gemini: Despite the limited text, the review is overwhelmingly positive, calling it the funniest, most ravishingly sung, and heartbreaking account since the original. Given the single excerpt, I'm scoring on the higher end of positive. | Kimi: The excerpt offers enthusiastic praise, calling the production enchanting and comparing it favorably to the legendary original, despite its minimalist concert staging approach. With only one excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:19:18.044Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

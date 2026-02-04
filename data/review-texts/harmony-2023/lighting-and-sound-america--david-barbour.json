@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“It's a potent slice of twentieth-century history that, in its depiction of antisemitism and the fascist suppression of dissent, has disturbing resonances for today. If its reach occasionally exceeds its grasp, Warren Carlyle's dynamic production, which blends ugly historical incidents with assured showbiz pizzazz in an almost surreal rush of events, keeps it intensely watchable.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Warren Carlyle's dynamic production keeps it intensely watchable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges some flaws ('reach occasionally exceeds its grasp') but praises the production as 'dynamic' and 'intensely watchable' with 'assured showbiz pizzazz.' However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the production's dynamic and watchable nature, despite noting that its reach occasionally exceeds its grasp. The positive tone suggests a recommendation, but the single excerpt limits confidence. | Gemini: The review acknowledges flaws (\"reach occasionally exceeds its grasp\") but ultimately finds the production \"intensely watchable,\" indicating a positive recommendation with reservations. | Kimi: The excerpt offers strong praise for the director's 'dynamic' staging and 'assured showbiz pizzazz,' calling the show 'intensely watchable' with only a minor reservation that its reach occasionally exceeds its grasp. As a single clearly positive excerpt, it scores in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:06:55.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

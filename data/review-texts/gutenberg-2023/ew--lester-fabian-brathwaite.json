@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This is a two-man show that puts on full display just what makes Gad and Rannells such special performers. They're clearly having a great time and hope you are, too. Certainly, other performers could endeavor to make their marks on the roles — and have — but one of the major selling points of 'Gutenberg!' is the 'reunion' of Gad and Rannells. And, boy, do they sell it. Exclamation point.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They're clearly having a great time and hope you are, too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performers with enthusiastic language ('boy, do they sell it. Exclamation point'), but single excerpt limits confidence in full verdict assessment. | GPT-4o: The excerpt praises the performances of Gad and Rannells, highlighting their enjoyment and ability to sell the show. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review excerpt focuses on the strengths of the performers and their chemistry, suggesting a positive experience. The phrase \"boy, do they sell it. Exclamation point\" indicates enthusiasm. Given it's a single excerpt, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt enthusiastically praises the two leads as 'special performers' who effectively sell the show, indicating a strong positive recommendation based on their star power, chemistry, and evident enjoyment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:02:28.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

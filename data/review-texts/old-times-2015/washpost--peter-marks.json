@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Douglas Hodge, is performed with intelligence and precision by three accomplished actors who understand that in Pinter, less is invariably more.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (25 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "https://www.washingtonpost.com/entertainment/theater_dance/review-chilly-enigmatic-old-times-returns-to-broadway/2015/10/06/bb8ef962-6c97-11e5-91eb-27ad15c2b723_story.html",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T12:46:46.483Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment, not a complete review with sufficient evaluative content to determine a recommendation.; openai: The text is a brief comment on the performance quality without a clear evaluative verdict or recommendation about the show.",
+  "promptVersion": "5.2.0"
 }

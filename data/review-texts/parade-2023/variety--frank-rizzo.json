@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“This theatrically thrilling revival of ‘Parade’ teaches lessons that still need to be learned from a wicked past that haunts us still.”\n\nRead more"
+  "showScoreExcerpt": "“This theatrically thrilling revival of ‘Parade’ teaches lessons that still need to be learned from a wicked past that haunts us still.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This theatrically thrilling revival of 'Parade' teaches lessons that still need to be learned from a wicked past that haunts us still.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt uses strong positive language ('theatrically thrilling') and frames the show as important and relevant. However, confidence is low due to single excerpt limitation and potential cherry-picking. | GPT-4o: The excerpt describes the revival as 'theatrically thrilling' and emphasizes its importance, suggesting a strong recommendation. Despite the single excerpt warning, the language indicates a rave review. | Gemini: The review excerpt uses the phrase \"theatrically thrilling revival,\" which indicates a positive assessment. Given the single excerpt, I am scoring on the higher end of the positive range. | Kimi: The excerpt employs enthusiastic praise ('theatrically thrilling') and highlights the production's contemporary relevance, indicating a strong recommendation, though the single-excerpt format limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:59:54.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

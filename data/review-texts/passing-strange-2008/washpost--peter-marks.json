@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This autobiographical musical about a young black man's search for artistic authenticity is a rock concert, a coming-of-age story and a meditation on identity rolled into one electrifying package.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This autobiographical musical about a young black man's search for artistic authenticity is a rock concert, a coming-of-age story and a meditation on identity rolled into one electrifying package.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This autobiographical musical about a young black man's search for artistic authenticity is a rock concert, a coming-of-age story and a meditation on identity rolled into one electrifying package.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses strong positive language ('electrifying package') and describes the show as successfully combining multiple elements, indicating clear enthusiasm and recommendation. | GPT-4o: The review uses highly positive language, describing the show as 'electrifying' and combining multiple appealing elements, suggesting a strong recommendation. | Gemini: The review uses the word \"electrifying\" to describe the show, which indicates a positive recommendation. | Kimi: The critic employs the strong superlative 'electrifying' to characterize the production, indicating a highly enthusiastic response despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:02:17.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

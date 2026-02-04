@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"The play ends, at least, like a pulse-pounding thriller\"\n\nRead more"
+  "showScoreExcerpt": "\"The play ends, at least, like a pulse-pounding thriller\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play ends, at least, like a pulse-pounding thriller",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with qualified praise ('at least') suggests mixed overall experience that improves significantly at the end. Low confidence due to limited text. | GPT-4o: The excerpt suggests a positive note about the ending but lacks comprehensive evaluative content. The 'at least' implies the rest may not be as thrilling, indicating a mixed review. | Gemini: The single excerpt suggests a positive aspect of the play, specifically the ending. Given the limited information, I'm placing it in the positive bucket with low confidence. | Kimi: The excerpt offers qualified praise specifically for the show's ending ('at least'), implying the rest of the production may not sustain that excitement; with only one curated quote available, the overall verdict remains ambiguous but leans toward mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:00:44.314Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

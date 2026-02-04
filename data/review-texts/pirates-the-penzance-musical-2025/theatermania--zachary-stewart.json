@@ -14,5 +14,59 @@
   "nycTheatreExcerpt": "\"Rather than a slave of duty, Pirates! is the servant of too many masters: Gilbert & Sullivan, Dixieland jazz, milquetoast liberalism, and the tourism lobby New Orleans & Company, which \"kindly sponsored\" this production. The recipe is for a jambalaya of disparate flavors that come together in delicious harmony. The finished product is operetta as political compromise, in which everyone gets a little taste of what they want, but never enough to be truly satisfied.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"The finished product is operetta as political compromise, in which everyone gets a little taste of what they want, but never enough to be truly satisfied.\"\n\nRead more"
+  "showScoreExcerpt": "\"The finished product is operetta as political compromise, in which everyone gets a little taste of what they want, but never enough to be truly satisfied.\"\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The finished product is operetta as political compromise, in which everyone gets a little taste of what they want, but never enough to be truly satisfied.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests a mixed review, highlighting a lack of full satisfaction. The text is limited, so the confidence is low. | Gemini: The quote suggests a compromise and lack of satisfaction, indicating a mixed or neutral assessment. The truncated text and lack of a clear recommendation lead to a 'low' confidence score. | Kimi: The excerpt suggests the production attempts to accommodate diverse tastes but delivers only partial fulfillment, resulting in a middling experience that neither fully recommends nor completely rejects the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:13:45.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

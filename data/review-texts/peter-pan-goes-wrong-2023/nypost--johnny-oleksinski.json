@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"At two hours and five minutes over two acts, the effect of the wackiness wears off a tad toward the end — even though the final chase scene is brilliantly choreographed on Simon Scullion’s set of a million secrets.\"\n\nRead more"
+  "showScoreExcerpt": "\"At two hours and five minutes over two acts, the effect of the wackiness wears off a tad toward the end — even though the final chase scene is brilliantly choreographed on Simon Scullion’s set of a million secrets.\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At two hours and five minutes over two acts, the effect of the wackiness wears off a tad toward the end",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed signals - praises final choreography and set design but criticizes pacing issues and suggests the show loses momentum. With only one curated quote available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt praises the choreography and set design but notes that the effect wears off toward the end, suggesting a mildly positive review with some reservations. | Gemini: The review acknowledges the show's wackiness wearing off but praises the choreography and set design. Given the single excerpt and the mixed sentiment, a low positive score is appropriate. | Kimi: The excerpt offers mild praise ('brilliantly choreographed') tempered by a specific reservation about pacing ('wears off a tad'), placing it in the lower range of Positive. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:05:00.206Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

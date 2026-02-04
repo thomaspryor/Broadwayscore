@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald brings her own interpretation to the role, one that is more grounded and real, less of a caricature than we have seen before, and it works beautifully.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald brings her own interpretation to the role, one that is more grounded and real, less of a caricature than we have seen before, and it works beautifully.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald brings her own interpretation to the role, one that is more grounded and real, less of a caricature than we have seen before, and it works beautifully.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as working 'beautifully' with improved interpretation suggests positive recommendation, but limited text prevents full assessment of overall show verdict. | GPT-4o: The excerpt praises McDonald's performance as 'beautifully' executed, suggesting a strong positive impression. Given the single excerpt warning, the score is set at the upper end of the Positive bucket. | Gemini: The excerpt praises Audra McDonald's performance, suggesting a positive experience. Given the single excerpt, I'm placing it in the upper end of the positive range, but with low confidence. | Kimi: The excerpt provides enthusiastic praise for the performance using unequivocal positive language ('works beautifully'), warranting the upper end of the Positive bucket per the single-excerpt guidelines, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:02:57.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

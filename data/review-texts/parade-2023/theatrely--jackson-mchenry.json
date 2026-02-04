@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Jason Robert Brown and Alfred Uhry's musical about the Leo Frank case is a powerful and haunting production that feels urgently relevant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of Jason Robert Brown and Alfred Uhry's musical about the Leo Frank case is a powerful and haunting production that feels urgently relevant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong positive language ('powerful and haunting', 'urgently relevant') but confidence is low due to limited text available. | GPT-4o: The excerpt uses strong positive language ('powerful', 'haunting', 'urgently relevant'), suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low as the full review context is unavailable. | Gemini: The excerpt uses strong positive language like \"powerful and haunting\" and \"urgently relevant,\" indicating a positive recommendation. Due to the single excerpt, confidence is low, but the strength of the language pushes the score to the upper end of the positive range. | Kimi: The excerpt offers strong praise ('powerful,' 'haunting,' 'urgently relevant') indicating a clear recommendation, placing it in the upper Positive range (80-84). Confidence is low as this is a single curated excerpt that may not represent the full review's complexity or qualifications.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:58:42.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

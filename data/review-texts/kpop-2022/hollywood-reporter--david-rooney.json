@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's infectious energy and dazzling choreography compensate for a book that feels somewhat thin, though the cast's commitment and the production's technical wizardry make for an entertaining spectacle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical's infectious energy and dazzling choreography compensate for a book that feels somewhat thin, though the cast's commitment and the production's technical wizardry make for an entertaining spectacle.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast's commitment and the production's technical wizardry make for an entertaining spectacle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict ('entertaining spectacle') but acknowledges significant flaw ('book feels thin'). Single excerpt limits confidence in full review assessment. | GPT-4o: The excerpt praises the energy, choreography, and technical aspects, but notes the book is 'somewhat thin'. This suggests a positive recommendation with some reservations. | Gemini: The review acknowledges a weak book but praises the energy, choreography, cast commitment, and technical aspects, leading to an \"entertaining spectacle.\" Given it's a single excerpt, confidence is low, and the score reflects the mixed assessment. | Kimi: The critic acknowledges the book is somewhat thin but praises the infectious energy, dazzling choreography, and technical wizardry, ultimately judging that these elements compensate for the weakness and create an entertaining spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:26:56.162Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

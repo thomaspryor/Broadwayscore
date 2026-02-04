@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of Jason Robert Brown and Alfred Uhry's musical about the 1913 lynching of Leo Frank feels both urgent and dated, elevated by powerhouse performances from Ben Platt and Micaela Diamond.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The revival of Jason Robert Brown and Alfred Uhry's musical about the 1913 lynching of Leo Frank feels both urgent and dated, elevated by powerhouse performances from Ben Platt and Micaela Diamond.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival feels both urgent and dated, elevated by powerhouse performances from Ben Platt and Micaela Diamond.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The contradictory assessment 'urgent and dated' suggests ambivalence about the production itself, though the critic praises the lead performances as 'powerhouse.' This indicates a mixed reception where strong acting compensates for other issues. | GPT-4o: The review acknowledges that the revival feels both 'urgent and dated', indicating some reservations, but ultimately highlights the strong performances as elevating the production, suggesting a positive recommendation. | Gemini: The review highlights \"powerhouse performances\" but also notes the show feels \"dated,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Very short excerpt suggests the production has significant flaws ('dated') despite strong relevance ('urgent') and excellent performances ('powerhouse'). The text appears truncated, making the overall recommendation unclear, but the mix of praise and criticism places it in the Mixed bucket. | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:57:07.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

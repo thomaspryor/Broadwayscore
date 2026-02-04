@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘I Need That’ is not necessarily a bad play, but it is a lightweight, draggy one that relies heavily on a simple premise, sentimentality, nostalgia, and the warm, familiar presence of DeVito.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'I Need That' is not necessarily a bad play, but it is a lightweight, draggy one that relies heavily on a simple premise, sentimentality, nostalgia, and the warm, familiar presence of DeVito.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic explicitly states it's 'not necessarily a bad play' but calls it 'lightweight' and 'draggy' - classic mixed verdict language that neither recommends nor discourages. Single excerpt limits confidence. | GPT-4o: The review excerpt describes the play as 'lightweight' and 'draggy' with reliance on sentimentality and nostalgia, suggesting a lack of strong recommendation. The presence of DeVito is noted positively, but overall, the tone is mixed. | Gemini: The review excerpt states the play is \"lightweight, draggy\" and relies on simple elements. This suggests a negative assessment, despite the qualification that it's \"not necessarily a bad play.\" | Kimi: The critic offers faint praise ('not necessarily bad') while criticizing the play as 'lightweight' and 'draggy' with overreliance on sentimentality, suggesting a mediocre experience only partially redeemed by DeVito's performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:16:27.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 58,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

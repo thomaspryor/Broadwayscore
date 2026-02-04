@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jocelyn Bioh’s inviting workplace comedy…would be a shoo-in for two separate Tony Awards, if either existed – one for hair and wig design, the other for ensemble acting.\nThe cast of ten, most of them making their Broadway debuts, bring us into the swirling world of struggling West African immigrants, and their hairstyles…The darkness, while sudden, is not wrongheaded, and so much else about “Jaja’s African Hair Braiding” is so right. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "so much else about 'Jaja's African Hair Braiding' is so right",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('inviting', 'so right', Tony Award worthy) with praise for ensemble and design. Single excerpt warning and truncated text require low confidence, but positive tone is evident. | GPT-4o: The excerpt praises the ensemble acting and design, and concludes with a strong positive statement about the overall production. Despite the lack of full context, the tone suggests a solid recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the cast, the world-building, and overall quality of the show. The phrase \"so much else is so right\" indicates a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the ensemble and design as Tony-worthy, defending the show's tonal choices and calling the work 'so right,' indicating a clear recommendation despite being a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:21:42.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

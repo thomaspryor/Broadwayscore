@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Escola tears down the façade of legitimate theater to reveal that it’s all greasepaint underneath, or perhaps elevates it to the level of pure bedazzled sensation.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Escola tears down the façade of legitimate theater to reveal that it's all greasepaint underneath, or perhaps elevates it to the level of pure bedazzled sensation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses elevated language ('elevates it to the level of pure bedazzled sensation') suggesting artistic appreciation, but with only one curated quote available, confidence is low and this could be cherry-picked from a mixed review. | GPT-4o: The excerpt suggests a positive view of the show, highlighting Escola's ability to transform theater into a 'bedazzled sensation'. However, due to the single excerpt and the warning about potential cherry-picking, the confidence is low. | Gemini: The excerpt uses strong, positive language (\"tears down the facade,\" \"elevates it to the level of pure bedazzled sensation\") suggesting a positive assessment. Given that it is a single excerpt, I am scoring it at the higher end of the positive range with low confidence. | Kimi: The excerpt employs highly enthusiastic language ('pure bedazzled sensation', 'elevates') indicating a strong positive verdict, though confidence is reduced due to the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:44:58.842Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

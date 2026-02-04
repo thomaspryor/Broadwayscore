@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, inspired by Keys' life and featuring her songs, is a vibrant celebration of New York City that showcases tremendous talent, even if the book feels familiar.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, inspired by Keys' life and featuring her songs, is a vibrant celebration of New York City that showcases tremendous talent, even if the book feels familiar.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a vibrant celebration that showcases tremendous talent, even if the book feels familiar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('vibrant celebration', 'tremendous talent') but qualified by 'even if the book feels familiar', suggesting reservations. Single excerpt limits confidence. | GPT-4o: The excerpt praises the musical as a 'vibrant celebration' with 'tremendous talent', indicating a positive view. However, the mention of a 'familiar' book suggests some reservations. Due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is mostly positive, praising the musical as a vibrant celebration and showcasing talent, but notes the book feels familiar, indicating a reservation. Given it's a single excerpt, confidence is low. | Kimi: The critic offers strong praise for the production's energy and performances ('vibrant celebration', 'tremendous talent') but qualifies this with a reservation about the book being familiar, placing it in the solid positive range with caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:10:33.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

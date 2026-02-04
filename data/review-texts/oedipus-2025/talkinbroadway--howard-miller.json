@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 84,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Icke’s adaptation is an absolute model of Hitchcockian suspense, and the performances could not be better.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 84,
+    "confidence": "medium",
+    "range": {
+      "low": 79,
+      "high": 89
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Icke's adaptation is an absolute model of Hitchcockian suspense, and the performances could not be better.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The excerpt uses superlative language ('absolute model', 'could not be better') indicating strong praise. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise for the adaptation and performances, suggesting a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt contains very positive language, calling the adaptation an \"absolute model\" and praising the performances as the best possible. Given the single excerpt, I'm scoring it as positive with a high score, but with low confidence. | Kimi: The single available excerpt contains unqualified superlatives ('absolute model', 'could not be better') indicating strong enthusiasm for the adaptation and performances. However, given this is a solitary curated excerpt that may not represent the full review's balance, the score remains in the upper Positive range with low confidence rather than Rave. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:42:51.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 85,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }
