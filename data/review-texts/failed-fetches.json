@@ -8272,18 +8272,6 @@
     "timestamp": "2026-02-03T15:33:33.826Z"
   },
   {
-    "reviewId": "anything-goes-2011/variety--charles-isherwood.json",
-    "showId": "anything-goes-2011",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2011/legit/reviews/anything-goes-1117945052/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): appropriate, smash, sweat, evita, rain...",
-    "textLength": 4767,
-    "timestamp": "2026-02-03T15:52:10.552Z"
-  },
-  {
     "reviewId": "between-riverside-and-crazy-2022/hollywood-reporter--angie-han.json",
     "showId": "between-riverside-and-crazy-2022",
     "outlet": "The Hollywood Reporter",
@@ -8690,18 +8678,6 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the elephant man, hair, once, high...",
     "textLength": 4649,
     "timestamp": "2026-02-03T22:34:35.083Z"
-  },
-  {
-    "reviewId": "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
-    "showId": "appropriate-2023",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Lovia Gyarkye",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, the thanksgiving play, straight white men, the present, once...",
-    "textLength": 9621,
-    "timestamp": "2026-02-03T22:41:41.595Z"
   },
   {
     "reviewId": "birthday-candles-2022/nytimes--maya-phillips.json",
@@ -13046,5 +13022,53 @@
     "garbageReason": "Multiple shows mentioned (12): mamma mia!, home, tina, noises off, rocky...",
     "textLength": 8254,
     "timestamp": "2026-02-04T19:05:16.785Z"
+  },
+  {
+    "reviewId": "anything-goes-2011/variety--charles-isherwood.json",
+    "showId": "anything-goes-2011",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2011/legit/reviews/anything-goes-1117945052/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): appropriate, smash, sweat, evita, rain...",
+    "textLength": 4767,
+    "timestamp": "2026-02-04T19:08:10.834Z"
+  },
+  {
+    "reviewId": "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
+    "showId": "appropriate-2023",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Lovia Gyarkye",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/appropriate-theater-review-sarah-paulson-elle-fanning-1235765661/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): mamma mia!, home, the thanksgiving play, straight white men, the present...",
+    "textLength": 9237,
+    "timestamp": "2026-02-04T19:10:19.723Z"
+  },
+  {
+    "reviewId": "arcadia-2011/nytimes--ben-brantley.json",
+    "showId": "arcadia-2011",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2011/03/18/theater/reviews/arcadia-by-tom-stoppard-on-broadway-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): home, the elephant man, skylight, hair, once...",
+    "textLength": 8933,
+    "timestamp": "2026-02-04T19:14:38.103Z"
+  },
+  {
+    "reviewId": "arcadia-2011/variety--marilyn-stasio.json",
+    "showId": "arcadia-2011",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2011/legit/reviews/arcadia-1117944526/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, kpop, the audience, the performers, once...",
+    "textLength": 4602,
+    "timestamp": "2026-02-04T19:15:02.685Z"
   }
 ]
