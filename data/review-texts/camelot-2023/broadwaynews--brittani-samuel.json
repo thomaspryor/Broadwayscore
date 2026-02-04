@@ -11,8 +11,8 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"The riotous new work, with a book by Robert Horn, nabs acoustic inspiration from country music and tonal humor from shows like \"The Book of Mormon\" and \"Tootsie\" (the latter of which Horn adapted for stage) to form a delirious production that treats a seasonal crop  corn  more like the second coming.\"",
-  "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available",
+  "contentTier": "truncated",
+  "tierReason": "Short text (232 words)",
   "assignedScore": 81,
   "llmScore": {
     "score": 81,
@@ -67,5 +67,42 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "fullText": "Few would call the Middle Ages a period of thriving liberal democracy, but in Aaron Sorkin's modernized upgrade to Lerner & Loewe's 1960 classic \"Camelot,\" the quest for equality abounds. Few would call the Middle Ages a period of thriving liberal democracy, but in Aaron Sorkin’s modernized upgrade to Lerner & Loewe’s 1960 classic “Camelot,” the quest for equality abounds. Protagonist King Arthur is dead set on transforming his loyal but brutish legion of warriors from knights who “behave badly” to ones who use their “might for right.” That idealistic ethos is quintessential Sorkin (creator of “The West Wing,” adaptor of Broadway’s recent “To Kill a Mockingbird”), who — with “Camelot”’ — imbues another historical work with gregarious dialogue, broiling romance and boundless hope for a more just future. The result is an at times dramatically lagging, but consistently polished and warming tale playing out at Lincoln Center’s Vivian Beaumont Theater. Sorkin’s “Camelot” is my first theatrical encounter with the beloved legend King Arthur (Andrew Burnap), Arthur’s betrothed French Princess Guenevere (Phillipa Soo), his right-hand man Sir Lancelot (Jordan Donica), a roundtable of knights and the rest. Sorkin and director Bartlett Sher mercifully thwarted my preconceived notions of blinding chrome costumes and fog-clouded magic, opting for a more grounded fable — one rooted in current political debates about the ethics of national leaders — and executed by a skillful, ethnically diverse cast.",
+  "isFullReview": true,
+  "textWordCount": 232,
+  "archivePath": "data/archives/reviews/camelot-2023/broadwaynews--brittani-samuel_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:47:30.275Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 244 (min: 300)"
+  ],
+  "wordCount": 232
 }

@@ -5,8 +5,8 @@
   "criticName": "David Cote",
   "url": "https://www.timeout.com/newyork/theater/big-fish",
   "publishDate": "October 6, 2013",
-  "fullText": "Despite some clunky book scenes and overly busy staging, Big Fish succeeds as a heartfelt meditation on fathers, sons and the stories we tell to make sense of our lives.",
-  "isFullReview": false,
+  "fullText": "Big Fish. Neil Simon Theatre (see Broadway). Book by John August. Music and lyrics by Andrew Lippa. Directed by Susan Stroman. With Norbert Leo Butz, Kate Baldwin. Running time: 2hrs 35mins. One intermission.\n\nTim Burton's 2003 film—about fathers, sons and tall tales—gets a Broadway musical makeover from composer-lyricist Andrew Lippa (The Addams Family). Triple threat Norbert Leo Butz (Catch Me if You Can) stars as traveling salesman and larger-than-life raconteur Edward Bloom. Kate Baldwin and Bobby Steggert costar in a production directed by the formidable Susan Stroman.\n\nBig Fish: theater review by Adam Feldman\n\nBig Fish feels like the show that got away. Adapted by John August from his own 2003 screenplay, the musical is built around the tall—or at least well-stretched—tales of an Alabama-born traveling salesman, Edward Bloom (Butz), who has a penchant for embellishing his life. (By his account, his past acquaintances include a mermaid, a giant, a witch and a werewolf.) The story has built-in potential for magical showmanship, and director-choreographer Susan Stroman delivers it apace, with splendid support from scenic wizard Julian Crouch, costumer William Ivey Long and lighting designer Donald Holder. Add a bittersweet, touching framing device about Edward’s wife (a stalwart Baldwin) and adult son (Bobby Steggert), and top it all off with a nimble star turn by the omnitalented Butz, and you should have a hit on your hands.\n\nYet the show is hobbled by a major flaw: Andrew Lippa’s thoroughly mediocre score. The music suggests a cross between familiar, inflated Broadway pop and 1970s AM radio; the lyrics vacillate, sometimes line to line, between banal colloquialism and stiltedness. (“In time my boy is sure to see / Brighter days for Dad and me / And we can do things better than before / So that strangers we will be no more.”) The “real-world” songs are especially meh; one wishes that the creators had taken bolder advantage of their material’s structure by limiting the musical numbers to the fantastical flashbacks. Big Fish has lovely sequences, and earns some sniffles at the end. But it could have been a real catch.—Theater review by Adam Feldman\n\nTHE BOTTOM LINE A musical flight of imagination is grounded by generic songs.",
+  "isFullReview": true,
   "dtliExcerpt": "Despite some clunky book scenes and overly busy staging, Big Fish succeeds as a heartfelt meditation on fathers, sons and the stories we tell to make sense of our lives.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite some clunky book scenes and overly busy staging, Big Fish succeeds as a heartfelt meditation on fathers, sons and the stories we tell to make sense of our lives.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 61,
@@ -73,10 +73,37 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated",
+  "textQuality": "full",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/big-fish",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 364,
+  "archivePath": "data/archives/reviews/big-fish-2013/timeout--david-cote_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:42:37.663Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140216122526",
+  "archiveOrgUrl": "http://web.archive.org/web/20140216122526/http://www.timeout.com:80/newyork/theater/big-fish",
+  "wordCount": 364,
+  "tierReason": "Full review text"
 }
