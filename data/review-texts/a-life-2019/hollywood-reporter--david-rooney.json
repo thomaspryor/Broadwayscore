@@ -6,7 +6,7 @@
   "url": "https://www.hollywoodreporter.com/news/general-news/a-life-theater-review-1252089/",
   "publishDate": "October 13, 2019",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "The play's episodic structure and rambling pace work against it, even with committed performances from the ensemble cast led by Chuck Cooper.",
   "originalScore": null,
   "assignedScore": null,
@@ -17,5 +17,51 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's episodic structure and rambling pace work against it, even with committed performances from the ensemble cast led by Chuck Cooper.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 273,
+  "archivePath": "data/archives/reviews/a-life-2019/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T14:07:20.788Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 273 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Logo text\n \n\nCBS is going back to the reboot well with a new version of its 1980s series The Equalizer, with Queen Latifah set to play the title role.\n\nThe project, from former Castle creator Andrew Marlowe and executive producer Terri Miller, has a pilot production commitment at the network. Universal Television is producing in association with CBS Television Studios.\n\nThe Equalizer ran from 1985-89 and starred Edward Woodward as a retired intelligence operative who used his training to help people out of difficult situations. The show was also the basis for two feature films starring Denzel Washington.\n\nThe new series will stick close to the premise of the original, with Latifah playing an enigmatic woman who uses her extensive skills to help people who have nowhere else to turn.\n\nHusband-and-wife duo Marlowe and Miller most recently created Take Two for ABC. They will serve as showrunners on The Equalizer and executive produce with Latifah, John Davis and John Fox of Davis Entertainment, Debra Martin Chase of Martin Chase Productions, original series co-creator Richard Lindheim and Flavor Unit’s Shakim Compere.\n\nLatifah (née Dana Owens) is repped by UTA, Randi Michel at Flavor Unit and attorney Stu Levy.\n\nShould it go to series, The Equalizer would join reboots of Hawaii Five-0, MacGyver and Magnum P.I. on the CBS roster. The pilot is part of a development slate at the network that includes The Lincoln Lawyer from David E. Kelley; the drama The International starring Dolph Lundgren and executive produced by Sylvester Stallone; the crime drama Bent; and comedies from Chuck Lorre; Michael Patrick King; Seth Rogen and Evan Goldberg; Kaley Cuoco; and Corinne Kingsbury."
 }

@@ -1,15 +1,51 @@
 {
-  "updatedAt": "2026-02-04T04:50:38.809Z",
-  "processed": 183,
-  "failed": 392,
-  "successRate": "31.8%",
+  "updatedAt": "2026-02-04T14:12:07.666Z",
+  "processed": 4,
+  "failed": 21,
+  "successRate": "16.0%",
   "tierBreakdown": {
-    "playwright": 13,
-    "browserbase": 0,
-    "scrapingbee": 56,
-    "brightdata": 32,
-    "archive": 85
+    "playwright": 0,
+    "browserbase": 3,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-02-04T13:58:11.740Z",
+      "event": "bb-session",
+      "session": "7cdeaa9f",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+    },
+    {
+      "t": "2026-02-04T13:58:31.211Z",
+      "event": "bb-session",
+      "session": "cbbfe764",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+    },
+    {
+      "t": "2026-02-04T14:01:26.389Z",
+      "event": "bb-session",
+      "session": "62dabbb6",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-04T14:01:28.864Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-04T14:02:11.131Z",
+      "event": "bb-session",
+      "session": "9c020795",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+    },
+    {
+      "t": "2026-02-04T14:02:27.189Z",
+      "event": "bb-session",
+      "session": "fd4b350f",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
+    }
+  ]
 }
