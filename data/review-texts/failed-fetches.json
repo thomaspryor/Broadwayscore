@@ -8224,42 +8224,6 @@
     "timestamp": "2026-02-03T16:37:39.252Z"
   },
   {
-    "reviewId": "brighton-beach-memoirs-2009/nytimes--charles-isherwood.json",
-    "showId": "brighton-beach-memoirs-2009",
-    "outlet": "The New York Times",
-    "critic": "Charles Isherwood",
-    "url": "https://www.nytimes.com/2009/10/26/theater/reviews/26brighton.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, our town, harmony, home, cats...",
-    "textLength": 8305,
-    "timestamp": "2026-02-03T16:43:53.953Z"
-  },
-  {
-    "reviewId": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json",
-    "showId": "bring-it-on-the-musical-2012",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, summer, evita, high, race...",
-    "textLength": 6390,
-    "timestamp": "2026-02-03T16:45:11.461Z"
-  },
-  {
-    "reviewId": "bring-it-on-the-musical-2012/vulture--jesse-green.json",
-    "showId": "bring-it-on-the-musical-2012",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): home, summer, hair, lysistrata jones, high...",
-    "textLength": 6517,
-    "timestamp": "2026-02-03T16:49:10.781Z"
-  },
-  {
     "reviewId": "bullets-over-broadway-2014/vulture--jesse-green.json",
     "showId": "bullets-over-broadway-2014",
     "outlet": "Vulture",
@@ -8558,30 +8522,6 @@
     "garbageReason": "Multiple shows mentioned (10): chicago, home, company, what the constitution means to me, hair...",
     "textLength": 7543,
     "timestamp": "2026-02-03T23:06:44.926Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): illinoise, english, company, carousel, cats...",
-    "textLength": 8415,
-    "timestamp": "2026-02-03T23:08:03.231Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): appropriate, betrayal, the present, sweat, betrayal...",
-    "textLength": 6906,
-    "timestamp": "2026-02-03T23:09:37.410Z"
   },
   {
     "reviewId": "cabaret-2014/vulture--sara-holdren.json",
@@ -13382,5 +13322,65 @@
     "garbageReason": "Multiple shows mentioned (10): harmony, appropriate, home, the audience, hair...",
     "textLength": 7020,
     "timestamp": "2026-02-04T20:42:07.007Z"
+  },
+  {
+    "reviewId": "brighton-beach-memoirs-2009/nytimes--charles-isherwood.json",
+    "showId": "brighton-beach-memoirs-2009",
+    "outlet": "The New York Times",
+    "critic": "Charles Isherwood",
+    "url": "https://www.nytimes.com/2009/10/26/theater/reviews/26brighton.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): chicago, our town, harmony, home, cats...",
+    "textLength": 8305,
+    "timestamp": "2026-02-04T20:46:14.200Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (6): home, summer, high, next to normal, november...",
+    "textLength": 2787,
+    "timestamp": "2026-02-04T20:46:17.273Z"
+  },
+  {
+    "reviewId": "bring-it-on-the-musical-2012/vulture--jesse-green.json",
+    "showId": "bring-it-on-the-musical-2012",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, summer, hair, lysistrata jones, high...",
+    "textLength": 8612,
+    "timestamp": "2026-02-04T20:46:52.027Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nyt-theater--jonathan-mandell.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (21): the great gatsby, wicked, hamilton, chicago, aladdin...",
+    "textLength": 16842,
+    "timestamp": "2026-02-04T20:48:41.468Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/nytimes--jesse-green.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): the lion king, appropriate, company, betrayal, the present...",
+    "textLength": 7460,
+    "timestamp": "2026-02-04T20:48:45.560Z"
   }
 ]
