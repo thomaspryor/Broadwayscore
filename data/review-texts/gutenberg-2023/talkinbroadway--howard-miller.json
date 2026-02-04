@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“while ‘Gutenberg! The Musical!’ undoubtedly is a piece of fluff, it is delightful fluff nevertheless. What makes it worth the visit is the time we get to spend with Bud and Doug (and Gad and Rannells), not only as they amateurly perform their show, but as they face us directly and talk about their friendship, and about the love and joy and sweat and hopes and pride and fears that are reflected in everything they have done to make this evening happen.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "while 'Gutenberg! The Musical!' undoubtedly is a piece of fluff, it is delightful fluff nevertheless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges the show's lightweight nature but clearly recommends it as 'delightful' and 'worth the visit,' praising the performances and emotional connection. Single excerpt limits confidence. | GPT-4o: The excerpt describes the show as 'delightful fluff' and emphasizes the enjoyable experience with the characters, suggesting a positive but not overwhelmingly strong recommendation. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review calls the show \"delightful fluff\" and states that it is \"worth the visit,\" indicating a positive recommendation despite acknowledging its lightweight nature. | Kimi: The excerpt explicitly recommends the show as 'worth the visit,' describing it as 'delightful fluff' and praising the lead performances and emotional resonance, despite acknowledging its lightweight nature.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:28:10.491Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

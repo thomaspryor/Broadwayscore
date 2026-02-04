@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, about the Comedian Harmonists, a German vocal group that was broken up by the Nazis, is both deeply earnest and strangely lifeless.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, about the Comedian Harmonists, a German vocal group that was broken up by the Nazis, is both deeply earnest and strangely lifeless.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical, about the Comedian Harmonists, a German vocal group that was broken up by the Nazis, is both deeply earnest and strangely lifeless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Calling a show 'strangely lifeless' is clearly negative criticism. However, this is only one excerpt from a larger review, so confidence is low as the full verdict may contain more context or nuance. | GPT-4o: The excerpt describes the musical as 'deeply earnest' but also 'strangely lifeless,' suggesting a mix of positive intent and negative execution. With only one excerpt available, the confidence is low. | Gemini: The review excerpt presents a mixed assessment, describing the musical as \"deeply earnest and strangely lifeless,\" indicating neither a strong recommendation nor discouragement. Given the single excerpt, confidence is low. | Kimi: Single excerpt shows balanced assessment acknowledging sincere treatment of serious subject matter ('deeply earnest') while criticizing lack of energy or emotional impact ('strangely lifeless'). Limited confidence due to cherry-picking risk.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:35:35.478Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

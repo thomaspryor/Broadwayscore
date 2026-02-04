@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a love letter to African women's resilience and artistry, with Jocelyn Bioh's script capturing the rhythms of everyday conversation with remarkable precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is a love letter to African women's resilience and artistry, with Jocelyn Bioh's script capturing the rhythms of everyday conversation with remarkable precision.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a love letter to African women's resilience and artistry, with Jocelyn Bioh's script capturing the rhythms of everyday conversation with remarkable precision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('love letter', 'remarkable precision') suggests clear praise for both the play's content and craft. Single excerpt warning applies - this sounds clearly positive, so scoring in upper Positive range (80-84). Low confidence due to limited text. | GPT-4o: The excerpt provides a positive evaluation of the play, praising the script's precision and its thematic focus. Given the single excerpt warning, the score is placed on the upper end of the Positive range. | Gemini: The excerpt praises the script and its portrayal of African women, indicating a positive but limited view. Given it's a single excerpt, confidence is low. | Kimi: The excerpt uses strongly positive language ('love letter', 'remarkable precision') indicating clear approval of the script and subject matter, placing it in the upper Positive range despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:11:32.646Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

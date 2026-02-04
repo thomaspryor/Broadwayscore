@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The cast is uniformly excellent, with Anthony LaPaglia giving a particularly deft performance as the temperamental opera star Tito Merelli.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The cast is uniformly excellent, with Anthony LaPaglia giving a particularly deft performance as the temperamental opera star Tito Merelli.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast is uniformly excellent, with Anthony LaPaglia giving a particularly deft performance as the temperamental opera star Tito Merelli.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising cast performances suggests positive reception, but with only one quote available about acting quality, the overall verdict remains unclear. | GPT-4o: The excerpt praises the cast and highlights a standout performance, suggesting a positive view. However, due to the single excerpt warning, the overall sentiment is uncertain, warranting a lower score within the Positive range. | Gemini: The excerpt praises the cast, especially LaPaglia. Given it's a single excerpt, I'm scoring it as a low-end positive recommendation with low confidence. | Kimi: The excerpt contains strong praise for the cast ('uniformly excellent', 'particularly deft'), indicating a clearly positive assessment of the performances. Following the single-excerpt protocol for clearly positive quotes, this scores in the 80-84 range, though the limited context warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:30:05.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

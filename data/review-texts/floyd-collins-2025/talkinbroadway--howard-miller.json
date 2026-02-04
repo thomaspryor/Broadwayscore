@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"So, yes, there's a lot of cognitive dissonance we are asked to digest here. Yet, there is so much to both appreciate and enjoy...And Jeremy Jordan's performance alone is worth the price of admission.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jeremy Jordan's performance alone is worth the price of admission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging 'cognitive dissonance' issues, the critic finds 'so much to both appreciate and enjoy' and calls Jordan's performance worth the ticket price - a clear recommendation. Single excerpt limits confidence. | GPT-4o: The excerpt acknowledges cognitive dissonance but highlights appreciation and enjoyment, especially praising Jeremy Jordan's performance. The single excerpt suggests a positive lean, but the lack of full context warrants a lower confidence and score at the lower end of the Positive range. | Gemini: The review acknowledges \"cognitive dissonance\" but states there is \"so much to both appreciate and enjoy\", and that Jordan's performance is worth the price of admission. Given the single excerpt, I'm scoring it as positive with a higher score. | Kimi: Despite acknowledging 'cognitive dissonance' in the material, the critic delivers a clear recommendation, praising the lead performance as 'worth the price of admission' and noting 'so much to both appreciate and enjoy.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:18:56.088Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "the closest Broadway will probably ever get to immersive theater, … a combination dance party and ever-changing multimedia art installation,… Each of the three aspects of “Here Lies Love” – the historical narrative, the unconventional musical, the immersive dance party – offers its own pleasures, even as each has its own shortcomings, and together they sometimes work at cross purposes.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Each of the three aspects offers its own pleasures, even as each has its own shortcomings, and together they sometimes work at cross purposes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges pleasures in each aspect but emphasizes shortcomings and conflicts between elements. The balanced 'pleasures/shortcomings' language with 'cross purposes' suggests mixed reception rather than recommendation. | GPT-4o: The review acknowledges both pleasures and shortcomings, indicating a mixed experience. The text suggests that while there are enjoyable elements, they may not cohesively work together, leading to a mixed verdict. | Gemini: The review excerpt highlights both positive and negative aspects of the show, indicating a mixed reception. The phrase \"work at cross purposes\" suggests a lack of cohesion. | Kimi: The excerpt acknowledges unique theatrical achievements and 'pleasures' but explicitly cites 'shortcomings' and elements working 'at cross purposes,' indicating a neither-nor verdict without clear recommendation. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:46:18.489Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

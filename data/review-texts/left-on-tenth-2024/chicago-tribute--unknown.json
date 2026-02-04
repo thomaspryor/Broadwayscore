@@ -12,5 +12,60 @@
   ],
   "playbillVerdictUrl": "https://www.chicagotribune.com/2024/10/23/review-left-on-tenth-on-broadway-is-a-simple-story-about-late-in-life-romance/",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they are not delivering bravura stage performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('honest, vulnerable and appealing') but notes performances aren't exceptional. The material excuse suggests structural issues. Mixed verdict with low confidence due to limited text. | GPT-4o: The excerpt praises the actors as honest and appealing but notes the lack of 'bravura stage performances,' suggesting a mixed impression. With only a single excerpt, confidence is low. | Gemini: The review acknowledges positive qualities in the actors but notes the lack of \"bravura stage performances.\" The phrase \"no faint praise\" suggests some appreciation, but the overall sentiment is mixed, leaning slightly positive. Given that it is a single excerpt, confidence is low. | Kimi: The critic offers genuine praise for the actors being 'honest, vulnerable and appealing' (explicitly noting this is 'no faint praise'), though with reservations about the internal nature of the material preventing bravura performances. This represents a qualified but clear recommendation based on the acting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:26:56.456Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

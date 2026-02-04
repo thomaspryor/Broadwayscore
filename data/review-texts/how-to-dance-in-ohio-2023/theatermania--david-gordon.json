@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "How to Dance in Ohio is a musical that treats its characters with genuine care and respect, avoiding the pitfalls of inspiration porn while still managing to be genuinely moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "How to Dance in Ohio is a musical that treats its characters with genuine care and respect, avoiding the pitfalls of inspiration porn while still managing to be genuinely moving.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "How to Dance in Ohio is a musical that treats its characters with genuine care and respect, avoiding the pitfalls of inspiration porn while still managing to be genuinely moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the show's respectful approach and emotional impact. Single excerpt warning applied - using upper end of Positive range since the language is clearly appreciative. | GPT-4o: The excerpt praises the musical for its respectful and moving portrayal of characters, indicating a strong positive sentiment. However, with only one excerpt available, the confidence is low. | Gemini: The review excerpt expresses strong positive sentiment, praising the musical's respectful treatment of its characters and its ability to be genuinely moving. Given the single excerpt limitation, I'm placing the score on the higher end of the positive range. | Kimi: The excerpt offers strong praise for the show's sensitive portrayal and emotional resonance, indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:54:27.610Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

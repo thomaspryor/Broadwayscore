@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is at its best when it lets its characters be messy and human, rather than symbolic vessels for larger ideas about Black masculinity and family trauma.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is at its best when it lets its characters be messy and human, rather than symbolic vessels for larger ideas about Black masculinity and family trauma.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is at its best when it lets its characters be messy and human, rather than symbolic vessels for larger ideas about Black masculinity and family trauma.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This excerpt suggests the play has good moments but is hampered by heavy-handed symbolism. The phrase 'at its best when' implies inconsistency, and the criticism of characters as 'symbolic vessels' points to structural flaws. Single excerpt limits confidence. | GPT-4o: The excerpt suggests the play succeeds in certain aspects but implies limitations by contrasting 'messy and human' with 'symbolic vessels'. The single excerpt and lack of full context lead to a mixed classification with low confidence. | Gemini: The excerpt suggests the play has both strengths and weaknesses, indicating a mixed review. The phrase \"at its best when\" implies that there are also times when it is not at its best. | Kimi: The qualified praise ('at its best') implies the production succeeds only intermittently, with the critic suggesting it too often relies on heavy-handed symbolism rather than authentic character work, indicating an inconsistent overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:16:40.891Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

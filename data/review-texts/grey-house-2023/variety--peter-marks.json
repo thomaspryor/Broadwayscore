@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Duncan Sheik's new musical 'Grey House' is a haunting, atmospheric thriller that succeeds in creating genuine chills, even if its narrative occasionally loses its way in the fog of its own ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Duncan Sheik's new musical 'Grey House' is a haunting, atmospheric thriller that succeeds in creating genuine chills, even if its narrative occasionally loses its way in the fog of its own ambitions.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Duncan Sheik's new musical 'Grey House' is a haunting, atmospheric thriller that succeeds in creating genuine chills, even if its narrative occasionally loses its way in the fog of its own ambitions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - 'succeeds in creating genuine chills' but 'narrative occasionally loses its way.' With only one curated quote available, this appears mildly positive with clear reservations, placing it at the lower end of the Positive bucket. | GPT-4o: The excerpt praises the show's ability to create a chilling atmosphere but notes narrative issues. The positive elements are emphasized, suggesting a recommendation with some reservations. | Gemini: The review excerpt is generally positive, describing the show as a \"haunting, atmospheric thriller\" that creates \"genuine chills.\" However, it also notes that the narrative \"occasionally loses its way,\" indicating a reservation. Due to the single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the production's atmospheric effectiveness and ability to create 'genuine chills' while acknowledging narrative weaknesses, indicating a positive but qualified recommendation. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:27:44.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"The casting, as it is here, may be uneven, but the message is still billboard size\"\n\nRead more"
+  "showScoreExcerpt": "\"The casting, as it is here, may be uneven, but the message is still billboard size\"\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The casting, as it is here, may be uneven, but the message is still billboard size",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - acknowledges problems (uneven casting) while noting positive aspects (strong message). With only one curated quote available, the overall verdict is unclear. | GPT-4o: The excerpt indicates uneven casting, which suggests a mixed assessment. The mention of a strong message implies some positive elements, but without more context, it leans towards a mixed review. | Gemini: The review excerpt suggests mixed feelings about the casting but acknowledges the message's impact. Due to the limited text, confidence is low. | Kimi: The excerpt acknowledges significant flaws in casting but emphasizes that the show's message lands with clarity and impact ('billboard size'). As a single curated excerpt potentially cherry-picked from a larger review, this suggests a mildly positive, qualified recommendation warranting the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:21:00.361Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pierce manages to create a vivid sense of each character through vocal work alone, and his manic energy keeps the show moving at a breakneck pace.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce manages to create a vivid sense of each character through vocal work alone, and his manic energy keeps the show moving at a breakneck pace.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt praising lead performance and pacing, but critic's own 60 rating suggests significant reservations not captured in this quote. Lower end of Positive bucket. | GPT-4o: The original rating of 60 suggests a mixed review. The excerpt praises Pierce's performance but does not provide a clear overall recommendation for the show. Given the single excerpt and the critic's original score, a mixed classification is appropriate. | Gemini: The review excerpt focuses on the positive aspects of Pierce's performance and the show's pacing, but without more context, it's difficult to determine the overall recommendation. Given the limited text and the original rating of 60, I've placed it in the Mixed bucket. | Kimi: The critic's own rating of 60 places this firmly in the Mixed range. While the excerpt praises Pierce's energetic performance, the moderate score indicates the overall production has significant reservations or limitations not reflected in this single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:20:32.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

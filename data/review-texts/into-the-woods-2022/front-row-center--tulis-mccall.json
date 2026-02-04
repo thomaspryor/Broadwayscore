@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Into the Woods' is a story where nothing is at it seems. And THAT is just fine with me. From the moment the curtain rises and the love explodes into the audience, you know you have handed over the reins and all that is left is to sit back and enjoy the ride.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "From the moment the curtain rises and the love explodes into the audience, you know you have handed over the reins and all that is left is to sit back and enjoy the ride.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear enthusiasm with vivid, positive imagery ('love explodes into the audience') and recommendation language ('sit back and enjoy the ride'). However, confidence is low due to limited text and potential for cherry-picking. | GPT-4o: The excerpt expresses a clear positive sentiment, emphasizing enjoyment and enthusiasm for the production. The critic's use of phrases like 'love explodes into the audience' and 'enjoy the ride' suggests a strong recommendation. | Gemini: The excerpt is very positive, describing the show as enjoyable and immersive from the start. Given the single excerpt and lack of full context, confidence is low, but the positive language suggests a strong recommendation. | Kimi: The excerpt expresses enthusiastic praise with phrases like 'love explodes' and 'enjoy the ride,' indicating a clear recommendation to see the show. As a single curated excerpt, confidence is reduced per guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:01:34.334Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

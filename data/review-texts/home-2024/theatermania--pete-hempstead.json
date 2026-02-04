@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Under Kenny Leon’s direction, all three turn out rare tour-de-force performances\"\n\nRead more"
+  "showScoreExcerpt": "\"Under Kenny Leon’s direction, all three turn out rare tour-de-force performances\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Kenny Leon's direction, all three turn out rare tour-de-force performances",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising 'rare tour-de-force performances' indicates strong positive verdict for the acting, but with only one curated quote available, full review sentiment is unclear. | GPT-4o: The excerpt praises the performances as 'rare tour-de-force', indicating strong approval. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises the direction and performances as \"rare tour-de-force\", indicating a positive assessment. Given that this is the only excerpt, confidence is low. | Kimi: The single available excerpt offers strong praise ('tour-de-force') for the cast's performances, indicating a positive recommendation. Following guidance for clearly positive single excerpts, scoring at the upper end of the Positive bucket (80-84) with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:51:56.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The immersive staging of 'Here Lies Love' transforms the Broadway Theatre into a glittering nightclub where audiences dance alongside performers in this musical about Imelda Marcos.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The immersive staging of 'Here Lies Love' transforms the Broadway Theatre into a glittering nightclub where audiences dance alongside performers in this musical about Imelda Marcos.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The immersive staging of 'Here Lies Love' transforms the Broadway Theatre into a glittering nightclub where audiences dance alongside performers in this musical about Imelda Marcos.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: This excerpt is purely descriptive of the staging concept and format, with no evaluative language or recommendation. Given it's a single curated excerpt with no clear positive or negative assessment, and the warning about potential cherry-picking, I cannot determine the critic's actual verdict. | GPT-4o: The excerpt highlights the immersive and transformative staging, suggesting a positive experience. However, due to the single excerpt warning, the confidence is low, and the score is at the lower end of the Positive bucket. | Gemini: The excerpt describes the staging as \"immersive\" and transforming the theater into a \"glittering nightclub.\" While positive, it's a single excerpt, so confidence is low and the score is in the lower end of the positive range. | Kimi: The excerpt describes the production with mildly positive language ('glittering,' 'immersive'), suggesting the staging concept succeeds, but lacks explicit recommendation or broader evaluative context due to single-excerpt limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:49:13.728Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the hit 2001 comedy is a frothy pink confection that goes down easily enough, though it's more cotton candy than substantial fare.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of the hit 2001 comedy is a frothy pink confection that goes down easily enough, though it's more cotton candy than substantial fare.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of the hit 2001 comedy is a frothy pink confection that goes down easily enough, though it's more cotton candy than substantial fare.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes show as pleasant but insubstantial ('goes down easily' vs 'cotton candy'). The 'though' signals reservation about depth, suggesting mixed feelings rather than clear recommendation. | GPT-4o: The review describes the show as enjoyable but lacking substance, suggesting a mixed impression. The excerpt is limited, so the confidence is low. | Gemini: The review describes the show as \"frothy\" and \"goes down easily,\" but also notes it's \"more cotton candy than substantial fare,\" indicating a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, I'm scoring on the lower end of positive. | Kimi: The excerpt offers faint praise ('goes down easily enough') but emphasizes the show's lack of substance ('cotton candy,' 'not substantial fare'). Without a clear recommendation to see it and with the metaphor suggesting triviality, this reads as neither endorsement nor rejection, though the single-excerpt format limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:28:25.841Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

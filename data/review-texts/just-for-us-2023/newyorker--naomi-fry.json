@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blumenfeld's show is both deeply personal and bracingly political, a work that manages to be funny and unsettling in equal measure.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Blumenfeld's show is both deeply personal and bracingly political, a work that manages to be funny and unsettling in equal measure.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blumenfeld's show is both deeply personal and bracingly political, a work that manages to be funny and unsettling in equal measure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses clearly positive language ('bracingly political', 'manages to be') and praises the show's balance of humor and depth. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the show as both 'deeply personal' and 'bracingly political', highlighting its ability to be 'funny and unsettling in equal measure'. This suggests a strong positive assessment, but the single excerpt limits confidence. | Gemini: The excerpt describes the show as \"deeply personal and bracingly political\" and \"funny and unsettling\", which suggests a positive recommendation. Given that it is only one excerpt, I am scoring on the higher end of the bucket. | Kimi: The excerpt offers unambiguous praise, describing the show as 'deeply personal,' 'bracingly political,' and successfully balancing humor with unsettling themes. However, confidence is low given only a single curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:16:46.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

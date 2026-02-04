@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“...’Fat Ham’ keeps you cackling so consistently that the play’s sudden acts of cruelty land like punches in the gut.”\n\nRead more"
+  "showScoreExcerpt": "“...’Fat Ham’ keeps you cackling so consistently that the play’s sudden acts of cruelty land like punches in the gut.”\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Fat Ham' keeps you cackling so consistently that the play's sudden acts of cruelty land like punches in the gut.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the show's consistent comedy and effective dramatic impact. The phrase 'keeps you cackling so consistently' indicates strong entertainment value, and noting the emotional impact of dramatic moments suggests sophisticated theatrical craft. | GPT-4o: The excerpt suggests a strong positive reaction, highlighting consistent humor and impactful moments. However, due to the single excerpt warning, confidence is low. | Gemini: The quote indicates a generally positive experience with moments of impactful drama, suggesting a recommendation with some reservations. Given the single excerpt, I've placed it in the middle of the positive range. | Kimi: The excerpt offers strong praise for the show's consistent comedy and effective emotional gut-punches, indicating a clear recommendation in the upper Positive range. Confidence is reduced due to reliance on a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:18:03.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

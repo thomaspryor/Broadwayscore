@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hell's Kitchen succeeds as both a jukebox musical and a coming-of-age story, anchored by powerhouse performances that bring Alicia Keys' music to vivid life on stage.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hell's Kitchen succeeds as both a jukebox musical and a coming-of-age story, anchored by powerhouse performances that bring Alicia Keys' music to vivid life on stage.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hell's Kitchen succeeds as both a jukebox musical and a coming-of-age story, anchored by powerhouse performances that bring Alicia Keys' music to vivid life on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive verdict with 'succeeds' and praise for 'powerhouse performances.' Single excerpt warning noted, but combined with 87 original rating suggests strong positive assessment. | GPT-4o: The excerpt praises the show as a successful jukebox musical and coming-of-age story with strong performances, aligning with the original rating of 87, suggesting a strong positive review. | Gemini: The excerpt uses strong positive language such as \"succeeds\" and \"powerhouse performances\" indicating a positive review. Given the single excerpt warning, I am placing the score at the higher end of the positive range. | Kimi: The critic's own rating of 87/100 places this firmly in the Rave category (85-100), and the excerpt provides unqualified praise for the show's success and vivid performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:38:56.085Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 84,
+    "geminiScore": 82,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Barry Manilow and Bruce Sussman's musical about the Comedian Harmonists, a German sextet silenced by the Nazis, finally makes it to Broadway after decades of development.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T08:36:37.254Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a plot summary/factual description with no critical evaluation of the Broadway production's quality or merit.; openai: The text provided is a factual statement about the show's subject and history, not an evaluative review or opinion about the Broadway production.; gemini: This is just a factual statement about the show's history, not a review with any evaluative content.; kimi: The excerpt provides only factual context about the show's subject matter (the Comedian Harmonists) and development history ('finally makes it to Broadway after decades of development') without any critical evaluation of the production, performances, or recommendation to see the show.",
+  "promptVersion": "5.2.0"
 }

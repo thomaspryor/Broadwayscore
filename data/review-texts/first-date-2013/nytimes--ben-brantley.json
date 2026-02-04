@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This show about a blind date gone moderately right feels like a musical made by committee, and not a particularly inspired committee at that.",
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show feels like a musical made by committee, and not a particularly inspired committee at that.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the show as feeling like it was 'made by committee' and 'not a particularly inspired committee at that,' which is clearly negative language indicating lack of artistic vision and uninspired execution. | GPT-4o: The review describes the show as uninspired and made by committee, indicating a lack of recommendation. | Gemini: The review explicitly states the show feels like it was made by an uninspired committee, indicating a negative assessment. | Kimi: The review is brief but unambiguously negative. 'Made by committee' is a dismissive cliché for uninspired work, and 'not a particularly inspired committee at that' reinforces the lack of creative vision. 'Moderately right' damns with faint praise. No redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:18:22.214Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 45
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"'Hadestown' is a breathtaking journey, into a phantasmagorical world whose musical pageantry and flickering contrasts between revelatory light and atmospheric darkness vibrate to one’s core...As Hades, Patrick Page’s eminence is superbly realized in his demeanor, walk, voice and appearance...The music and lyrics are unparalleled, thrilling, coherent. Mitchell and Chavkin, the ensemble and creatives have wrought a divine work for the ages.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mitchell and Chavkin, the ensemble and creatives have wrought a divine work for the ages.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Extremely superlative language ('breathtaking', 'unparalleled', 'divine work for the ages') indicates a rave, but confidence is low due to single excerpt warning - this could be cherry-picked praise. | GPT-4o: The excerpt uses superlative language ('breathtaking', 'unparalleled', 'divine work for the ages') indicating a strong recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The review uses superlatives like \"breathtaking,\" \"superbly realized,\" \"unparalleled, thrilling, coherent,\" and \"divine work for the ages,\" indicating a rave review. Despite being a single excerpt, the language is overwhelmingly positive. | Kimi: The single excerpt contains effusive praise with superlatives like 'divine work for the ages,' 'unparalleled,' and 'breathtaking,' warranting the upper end of the Positive bucket. Confidence is low due to the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:33:37.004Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

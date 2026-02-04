@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Theresa Rebeck’s I Need That is a three-hander that you can imagine as an extended pilot for a CBS dramedy. Rebeck doesn’t dig too deep into the psychology of her characters, but the surface charms are more than enough to sustain a dramedy that runs about 100 minutes. After all, this is the kind of old-fashioned entertainment where it’s best not to question too deeply why these characters have waited so long to express themselves as openly as they do here. Ray \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the surface charms are more than enough to sustain a dramedy that runs about 100 minutes",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise ('surface charms are more than enough') but notes shallow character development and describes it as 'old-fashioned entertainment' with caveats about not questioning too deeply. The truncated nature and lukewarm tone suggest lower end of Positive range. | GPT-4o: The excerpt suggests a mildly positive view, noting 'surface charms' and 'old-fashioned entertainment' as positives, but also hints at a lack of depth. The single excerpt and text quality warning suggest caution, so a lower positive score is appropriate. | Gemini: The review suggests the play is charming and entertaining, but not particularly deep. Given the limited excerpt, I'm scoring it as a slightly positive review with reservations. | Kimi: The excerpt offers qualified praise acknowledging the show is shallow but charming, recommending it as pleasant 'old-fashioned entertainment' despite lack of psychological depth. Single-excerpt limitation and truncated text warrant low confidence and a lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:58:47.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 54,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite the brilliance of Danny DeVito and the cleverness of the concept of a story about hoarders who keep items for emotional significance, I had difficulty getting into this production. It felt to me like watching a sitcom being filmed. The emotional highs weren’t that high, the lows weren’t that low, and the character development was minimal. Had I watched this play in 20 minute increments once a week, I would have looked forward to each character’s lovable familiarity and role in the story.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I had difficulty getting into this production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Despite praising DeVito's performance and the concept, the critic finds fundamental flaws in execution, comparing it unfavorably to a sitcom and citing minimal character development and emotional impact. | GPT-4o: The review acknowledges positive elements like DeVito's performance and the concept but expresses difficulty engaging with the production. The comparison to a sitcom suggests a lack of depth, leading to a mixed verdict. | Gemini: The review expresses mixed feelings, praising the concept and Danny DeVito but criticizing the lack of emotional depth and character development. The sitcom comparison suggests a lack of theatrical impact. | Kimi: While praising Danny DeVito's brilliance and the clever concept, the critic ultimately rejects the production for lacking emotional depth and theatrical impact, comparing it unfavorably to a sitcom. Single excerpt limits confidence. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:56:19.353Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

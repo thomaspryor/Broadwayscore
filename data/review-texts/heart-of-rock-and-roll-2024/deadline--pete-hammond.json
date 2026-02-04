@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Heart of Rock and Roll is a jukebox musical that works, thanks to a solid book by Jonathan A. Abrams and the irresistible catalog of Huey Lewis and the News hits that power this feel-good show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Heart of Rock and Roll is a jukebox musical that works, thanks to a solid book by Jonathan A. Abrams and the irresistible catalog of Huey Lewis and the News hits that power this feel-good show.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Heart of Rock and Roll is a jukebox musical that works, thanks to a solid book by Jonathan A. Abrams and the irresistible catalog of Huey Lewis and the News hits that power this feel-good show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'a jukebox musical that works' with praise for the book and songs as 'feel-good.' Single excerpt limits full context but tone is unambiguously positive. | GPT-4o: The excerpt praises the show as a successful jukebox musical with a 'solid book' and 'irresistible' music, suggesting a strong positive recommendation. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review states that the jukebox musical 'works' and is a 'feel-good show', indicating a positive recommendation. The use of 'solid' and 'irresistible' further strengthens this assessment. | Kimi: The excerpt describes the show as a successful 'feel-good' production with a 'solid book' and 'irresistible' music, indicating a clear recommendation despite the limited single-excerpt context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:37:18.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
