@@ -117,8 +117,16 @@ data/review-texts/wicked
 # SQLite database (ephemeral query layer, rebuilt from JSON)
 data/broadway.db
 data/broadway.db.tmp
+data/broadway.db.tmp-shm
+data/broadway.db.tmp-wal
 data/broadway.db-shm
 data/broadway.db-wal
+
+# Image audit archive (21MB+ binary images, local recovery only)
+data/audit/deleted-images/
+
+# Playwright MCP screenshots
+.playwright-mcp/
 
 # agent output (run logs)
 /data/agent-output/

@@ -202,6 +202,56 @@ function isNotBroadway(title) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Cross-show URL validation
+// Prevents review links from being attributed to the wrong show
+// (e.g., Bug reviews getting saved as All Out reviews)
+// ---------------------------------------------------------------------------
+
+/**
+ * Check if a review URL clearly belongs to a different show.
+ * Returns the detected wrong show slug if found, or null if URL is ok.
+ */
+function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
+  if (!url) return null;
+
+  let urlPath;
+  try {
+    urlPath = new URL(url).pathname.toLowerCase();
+  } catch (e) {
+    return null;
+  }
+
+  // Strip common URL prefixes that aren't show-specific
+  const pathSlug = urlPath
+    .replace(/^\//, '')
+    .replace(/\.(html?|php|asp)$/i, '');
+
+  // Build a list of show slugs to check against (exclude the target show)
+  // Only check shows with slugs that are 4+ chars to avoid false positives
+  for (const show of shows) {
+    if (show.id === targetShowId) continue;
+    if (!show.slug || show.slug.length < 4) continue;
+
+    // Check if URL path contains another show's slug as a distinct segment
+    // Use word-boundary-like matching to avoid partial matches
+    // e.g., "bug-broadway-review" matches "bug" but "debugging" should not
+    const slug = show.slug.toLowerCase();
+    const slugPattern = new RegExp(`(?:^|[/-])${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:$|[/-])`, 'i');
+
+    if (slugPattern.test(pathSlug)) {
+      // Also verify the target show's slug is NOT in the URL
+      // (if both are present, it might be a legitimate comparison article)
+      const targetPattern = new RegExp(`(?:^|[/-])${targetSlug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:$|[/-])`, 'i');
+      if (!targetPattern.test(pathSlug)) {
+        return show.slug;
+      }
+    }
+  }
+
+  return null;
+}
+
 // Map domains to recognizable outlet names so normalizeOutlet() can match them
 const DOMAIN_TO_OUTLET = {
   'nytimes.com': 'New York Times',
@@ -534,6 +584,14 @@ async function processShowViaGoogle(show, showId, shows) {
         stats.reviewLinksExtracted += reviewLinks.length;
 
         for (const link of reviewLinks) {
+          // Cross-show URL validation: skip if URL clearly belongs to a different show
+          const wrongShow = urlBelongsToDifferentShow(link.url, showId, show.slug || '', shows);
+          if (wrongShow) {
+            console.log(`    [SKIP] ${link.outletDomain}: URL belongs to "${wrongShow}", not "${showId}"`);
+            stats.skippedOffBroadway++;
+            continue;
+          }
+
           // URL year validation
           if (showOpeningYear && showUpperBound && link.url) {
             const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
@@ -739,6 +797,14 @@ async function scrapePlaybillVerdict() {
     const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
     for (const link of reviewLinks) {
+      // Cross-show URL validation: skip if URL clearly belongs to a different show
+      const wrongShow = urlBelongsToDifferentShow(link.url, article.showId, showEntry?.slug || '', shows);
+      if (wrongShow) {
+        console.log(`    [SKIP] ${link.outletDomain}: URL belongs to "${wrongShow}", not "${article.showId}"`);
+        stats.skippedOffBroadway++;
+        continue;
+      }
+
       // Check for URL year mismatch (catches TV reviews, wrong productions)
       // Upper bound adapts to show run length (long-running shows get wider window)
       if (showOpeningYear && showUpperBound && link.url) {
