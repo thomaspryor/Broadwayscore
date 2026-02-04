@@ -8164,30 +8164,6 @@
     "timestamp": "2026-02-03T11:53:44.863Z"
   },
   {
-    "reviewId": "august-osage-county-2007/nytimes--ben-brantley.json",
-    "showId": "august-osage-county-2007",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2007/12/05/theater/reviews/05august.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, home, company, summer, violet...",
-    "textLength": 9817,
-    "timestamp": "2026-02-03T12:11:48.004Z"
-  },
-  {
-    "reviewId": "august-osage-county-2007/variety--david-rooney.json",
-    "showId": "august-osage-county-2007",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2007/legit/reviews/august-osage-county-1200558319/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, act one...",
-    "textLength": 8107,
-    "timestamp": "2026-02-03T12:12:26.143Z"
-  },
-  {
     "reviewId": "bad-cinderella-2023/variety--aramide-tinubu.json",
     "showId": "bad-cinderella-2023",
     "outlet": "Variety",
@@ -8558,18 +8534,6 @@
     "garbageReason": "Multiple shows mentioned (9): patriots, the audience, once, one man, two guvnors, rain...",
     "textLength": 5550,
     "timestamp": "2026-02-03T22:20:19.670Z"
-  },
-  {
-    "reviewId": "art-2025/vulture--sara-holdren.json",
-    "showId": "art-2025",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (16): giant, english, glengarry glen ross, company, betrayal...",
-    "textLength": 10998,
-    "timestamp": "2026-02-03T22:20:23.507Z"
   },
   {
     "reviewId": "art-2025/deadline--greg-evans.json",
@@ -13070,5 +13034,89 @@
     "garbageReason": "Multiple shows mentioned (9): wicked, kpop, the audience, the performers, once...",
     "textLength": 4602,
     "timestamp": "2026-02-04T19:15:02.685Z"
+  },
+  {
+    "reviewId": "art-2025/newyorker--helen-shaw.json",
+    "showId": "art-2025",
+    "outlet": "The New Yorker",
+    "critic": "Helen Shaw",
+    "url": "https://www.newyorker.com/magazine/2025/09/29/art-theatre-review-the-wild-duck",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): an enemy of the people, home, the price, the father, the audience...",
+    "textLength": 8676,
+    "timestamp": "2026-02-04T19:15:08.042Z"
+  },
+  {
+    "reviewId": "art-2025/variety--daniel-daddario.json",
+    "showId": "art-2025",
+    "outlet": "Variety",
+    "critic": "Daniel D'Addario",
+    "url": "https://variety.com/2025/legit/reviews/art-review-broadway-play-james-corden-1236519571/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): patriots, the audience, once, one man, two guvnors, rain...",
+    "textLength": 6048,
+    "timestamp": "2026-02-04T19:16:20.011Z"
+  },
+  {
+    "reviewId": "art-2025/vulture--sara-holdren.json",
+    "showId": "art-2025",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): giant, english, glengarry glen ross, company, betrayal...",
+    "textLength": 10998,
+    "timestamp": "2026-02-04T19:16:27.594Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/hollywood-reporter--unknown.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/movie/august-osage-county/review/624967",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): appropriate, home, violet, harvey, elling...",
+    "textLength": 8077,
+    "timestamp": "2026-02-04T19:17:12.488Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/nytimes--ben-brantley.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/12/05/theater/reviews/05august.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, violet...",
+    "textLength": 9817,
+    "timestamp": "2026-02-04T19:20:20.338Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/variety--charles-isherwood.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2007/legit/reviews/august-osage-county-1117956336/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, act one...",
+    "textLength": 7258,
+    "timestamp": "2026-02-04T19:20:50.773Z"
+  },
+  {
+    "reviewId": "august-osage-county-2007/variety--david-rooney.json",
+    "showId": "august-osage-county-2007",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2007/legit/reviews/august-osage-county-1200558319/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, home, company, summer, act one...",
+    "textLength": 8034,
+    "timestamp": "2026-02-04T19:21:43.134Z"
   }
 ]
