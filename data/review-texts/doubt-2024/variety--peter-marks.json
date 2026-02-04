@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under Scott Ellis's direction, this revival of John Patrick Shanley's Pulitzer Prize-winning drama feels both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Scott Ellis's direction, this revival of John Patrick Shanley's Pulitzer Prize-winning drama feels both timeless and urgently contemporary.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Scott Ellis's direction, this revival of John Patrick Shanley's Pulitzer Prize-winning drama feels both timeless and urgently contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the direction and production, describing it as both 'timeless and urgently contemporary' which is positive evaluative language. However, confidence is low due to limited text from a single curated quote. | GPT-4o: The excerpt praises the direction and the production's ability to feel both timeless and contemporary, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the direction and describes the play as \"timeless and urgently contemporary,\" indicating a positive assessment. However, with only one excerpt available, the confidence is low. | Kimi: The excerpt contains clearly positive evaluative language ('timeless', 'urgently contemporary') praising the direction and relevance of the revival, warranting a score in the upper Positive range. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:51:45.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

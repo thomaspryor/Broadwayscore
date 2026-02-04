@@ -36,5 +36,11 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 603,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T10:24:47.407Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the world premiere at Berkeley Repertory Theatre, not the current Broadway run.; kimi: This review covers the world premiere production at Berkeley Repertory Theatre, not the Broadway production. The text explicitly states the show is 'making its world premiere at Berkeley Repertory Theatre with its eyes on Broadway.'",
+  "promptVersion": "5.2.0"
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Fully competent and coherent, 'Almost Famous' has a lively book, a rich score, many skilled and engaging performers and a nicely droll visual pallet from the designers.\"\n\nRead more"
+  "showScoreExcerpt": "\"Fully competent and coherent, 'Almost Famous' has a lively book, a rich score, many skilled and engaging performers and a nicely droll visual pallet from the designers.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fully competent and coherent, 'Almost Famous' has a lively book, a rich score, many skilled and engaging performers and a nicely droll visual pallet from the designers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows measured praise for multiple elements (book, score, performers, design) but uses restrained language like 'competent' rather than enthusiastic terms. With only one curated quote available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises the book, score, performers, and design, indicating a positive view. However, the lack of a full review and only one excerpt limits confidence, suggesting a mild positive score. | Gemini: The review excerpt is overwhelmingly positive, praising the book, score, performers, and design. Given the limited text, I've placed it at the higher end of the Positive bucket. | Kimi: The review praises multiple production elements—book, score, performances, and design—with positive descriptors like 'lively,' 'rich,' and 'engaging,' indicating a clear recommendation despite the faintly praising 'competent' framing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:27:41.411Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 73,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

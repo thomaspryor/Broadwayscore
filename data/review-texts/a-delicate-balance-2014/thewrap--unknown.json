@@ -38,5 +38,61 @@
   ],
   "contentTier": "truncated",
   "wordCount": 54,
-  "tierReason": "Short text (54 words)"
+  "tierReason": "Short text (54 words)",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "low",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At least Glenn Close is entertaining and fun to watch in the new, blunt revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | GPT-4o: The review acknowledges Glenn Close's performance as entertaining but does not provide a strong recommendation for the overall production. The tone suggests a neutral stance, focusing on revisiting classic plays rather than endorsing this specific revival. | Gemini: The review states that Glenn Close is entertaining and fun to watch, suggesting a positive aspect of the production. The phrase \"at least\" implies some reservations, but overall the review leans towards a positive, albeit qualified, recommendation. | Kimi: The critic uses faint praise ('at least') for Glenn Close's performance while criticizing the revival as 'blunt'—a significant flaw for Albee's subtle material—suggesting the production fails to capture the play's necessary nuance despite the star's efforts. | Buckets: openai=Mixed, gemini=Positive, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:21:37.564Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 72,
+    "kimiScore": 48,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "3-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

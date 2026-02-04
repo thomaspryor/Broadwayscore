@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220523060825/https://www.nydailynews.com/entertainment/music-arts/holler-ya-hear-theater-review-article-1.1836510",
   "contentTier": "complete",
   "wordCount": 525,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is vibrant, raw and rousing, but it self-sabotages with predictability and unintelligibility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Classic mixed review that praises production values, performances, and energy while citing significant flaws in clarity and story. The critic appreciates elements but identifies major problems that prevent a recommendation. | GPT-4o: The review acknowledges vibrant and rousing production elements but highlights significant issues with predictability and clarity, leading to a mixed overall impression. | Gemini: The review highlights both positive aspects (vibrant production, solid performances) and negative aspects (predictability, unintelligibility), resulting in a mixed assessment. The final line suggests a mixed experience of appreciation and frustration. | Kimi: The review praises the direction, choreography, and performances as magnetic and solid, but identifies significant flaws including a thin story and sound mixing issues that act as a 'wrecking ball' to the lyrics. The final verdict emphasizes equal measures of appreciation and frustration without issuing a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:43:59.637Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

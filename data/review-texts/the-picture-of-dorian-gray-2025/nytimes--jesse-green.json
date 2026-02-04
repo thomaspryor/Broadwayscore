@@ -30,8 +30,13 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20250516140848",
   "archiveOrgUrl": "http://web.archive.org/web/20250516140848/https://www.nytimes.com/2025/03/27/theater/picture-of-dorian-gray-review-snook.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 341,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"It’s that the technology dominates all other values, including Wilde’s, often denying the human contact, and contract, that are at the heart of theater’s effectiveness.”\n\nRead more"
+  "showScoreExcerpt": "\"It’s that the technology dominates all other values, including Wilde’s, often denying the human contact, and contract, that are at the heart of theater’s effectiveness.”\n\nRead more",
+  "rejectedAt": "2026-02-04T11:10:39.867Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The review text cuts off mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript, making it incomplete and unscoreable.; openai: The text is interrupted by a technical error message, indicating that the full review content is not available.; gemini: The review is incomplete, cutting off before a clear verdict can be determined.",
+  "promptVersion": "5.2.0"
 }

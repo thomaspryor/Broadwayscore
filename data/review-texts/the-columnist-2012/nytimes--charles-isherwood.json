@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Lithgow gives a performance of such complexity and nuance that he makes you believe completely in this contradiction of a man, a liberal crusader who was also a red-baiting bully.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,59 @@
   "archiveOrgTimestamp": "20250801011406",
   "archiveOrgUrl": "http://web.archive.org/web/20250801011406/https://www.nytimes.com/2012/04/26/theater/reviews/john-lithgow-in-the-columnist-at-friedman-theater.html",
   "wordCount": 1039,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "more informative than illuminating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic praises the performances, especially Lithgow's, and acknowledges the production's craftsmanship, but finds the play itself dramatically inert - 'essentially an annotated outline' that feels more like homework than lived-in theater. The mixed verdict balances technical competence against dramatic shortcomings. | Gemini: The review acknowledges the play's informative nature and the quality of acting, but ultimately finds it more of an annotated outline than a truly engaging experience. The critic praises Lithgow's performance but notes the play's lack of emotional depth. | Kimi: While Isherwood praises John Lithgow's committed performance and the elegant production design, he finds David Auburn's script emotionally inert and 'more informative than illuminating,' comparing it to a dry, annotated outline that never fully comes to life beyond its opening scene.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:06:16.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

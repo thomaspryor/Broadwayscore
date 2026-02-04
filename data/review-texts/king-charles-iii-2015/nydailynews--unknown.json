@@ -34,5 +34,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 297,
-  "tierReason": "Short text (297 words)"
+  "tierReason": "Short text (297 words)",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pigott-Smith's vivid star turn anchors the production as the monarch-in-waiting who goes from nervous indecision to majestic might.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review consistently praises the direction as 'tight and zestily acted,' calls Pigott-Smith's performance 'vivid' and 'the real deal,' and describes it as a 'royal showcase.' Despite noting the plot is 'farfetched,' the overall tone is appreciative of the theatrical craft. | GPT-4o: The review praises the staging and performances, particularly Tim Pigott-Smith's role, while acknowledging the play's farfetched premise. The overall tone is positive, recommending the show for its engaging production and acting. | Gemini: The review is generally positive, highlighting the acting, direction, and writing, while acknowledging the farfetched nature of the plot. It's a recommendation with some reservations. | Kimi: The review praises the tight direction, zestful ensemble acting, and particularly Tim Pigott-Smith's vivid star turn, while noting the plot is somewhat farfetched and some characterizations obvious. The final verdict clearly endorses the production despite minor script reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:49:54.076Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

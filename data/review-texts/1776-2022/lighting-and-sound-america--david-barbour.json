@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This high-concept revival is not an act of vandalism, as some would have you believe. Nor are its detractors secret MAGA agents, as its proponents insist. In any case, the show has bigger problems, namely its astonishing literal-mindedness: Directors Jeffrey L. Page (who also choreographed) and Diane Paulus, apparently convinced that everyone in the audience napped through American history class, are determined to spoon-feed the show's ideas, with plenty of graphic illustrations. They haven't engaged with 1776 so much as they have marked it up with a highlighter, garishly underlining points that are obvious in the original text.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They haven't engaged with 1776 so much as they have marked it up with a highlighter, garishly underlining points that are obvious in the original text.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the directorial approach heavy-handed and literal-minded, describing it as 'marked up with a highlighter' and having 'bigger problems.' However, this is only an excerpt so confidence is low - the full review might contain more positive elements. | GPT-4o: The excerpt criticizes the revival for being overly literal and lacking engagement with the material, suggesting a negative view. However, the single excerpt warning and lack of full context reduce confidence in the final verdict. | Gemini: The review excerpt is negative, criticizing the direction for being too literal and spoon-feeding the audience. Given that this is a single excerpt, the confidence is low. | Kimi: While defending the revival against charges of vandalism, the reviewer identifies 'bigger problems' with the directors' 'astonishing literal-mindedness,' accusing them of spoon-feeding obvious ideas rather than trusting the material, indicating a flawed production approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:16:42.646Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

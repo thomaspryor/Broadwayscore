@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"What McDonald pulls off so magically is bringing up all this emotion in dribs and drabs...The audience gasps and tears that accompany the performance are honestly earned and, I expect, unforgettable.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/12/08/ohio-state-murders-grabbed-by-the-throat-by-racism-and-memory/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/12/08/ohio-state-murders-grabbed-by-the-throat-by-racism-and-memory/",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The audience gasps and tears that accompany the performance are honestly earned and, I expect, unforgettable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: 5/5 stars with language describing magical performance that earns genuine emotional response from audiences. 'Unforgettable' combined with perfect rating indicates strong rave territory. | GPT-4o: The excerpt provides strong praise for the performance, describing it as 'unforgettable' and emotionally impactful. Combined with the 5/5 star rating, this suggests a highly positive review. | Gemini: The review excerpt uses strong positive language, highlighting the emotional impact and unforgettable nature of the performance. Given the 5/5 star rating and the enthusiastic tone, a score in the upper end of the Positive bucket is appropriate. | Kimi: While the 5/5 star rating and enthusiastic language ('magically', 'unforgettable') indicate strong praise, the single-excerpt format requires conservative scoring per guidelines for potentially cherry-picked quotes. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:55:27.493Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

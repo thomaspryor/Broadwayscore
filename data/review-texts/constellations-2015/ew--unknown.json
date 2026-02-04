@@ -45,5 +45,62 @@
   ],
   "contentTier": "truncated",
   "wordCount": 247,
-  "tierReason": "Short text (247 words)"
+  "tierReason": "Short text (247 words)",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wilson is brilliant, dramatically altering key moments with the tiniest of inflections, and Gyllenhaal brings psychological depth to Roland.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The D rating appears inconsistent with the text, which praises both lead performances as 'brilliant' with 'psychological depth' and calls the play 'thought-provoking.' Despite criticisms of structure and heavy-handedness, the overall tone suggests qualified recommendation. Given truncated text warning, scoring conservatively in lower Positive range. | GPT-4o: The review is critical of the play's structure and execution, despite praising the performances. The original rating of 'D' suggests a negative overall impression, but the text is truncated, so the final verdict might be missing. | Gemini: The review is mostly negative, pointing out flaws and comparing it unfavorably to other works. The B- grade and the concluding sentence suggest a negative assessment, despite praise for the actors. | Kimi: The review carries a D rating and describes the play as 'flawed' with a 'heavy-handed finale' and 'philosophical trickery,' despite praising the lead performances. Given the truncation warning, confidence is reduced, but the explicit rating and predominantly critical tone place this in the Negative bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:33:37.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 30,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "Outlier claude chose Positive, 2+ buckets from majority"
+    ],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

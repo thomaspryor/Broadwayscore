@@ -34,5 +34,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 250,
-  "tierReason": "Short text (250 words)"
+  "tierReason": "Short text (250 words)",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a run-of-the-mill big Broadway extravaganza that knows where, but not when, it is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic calls it 'run-of-the-mill' twice, criticizes the book for 'hastily stuffing in contemporary ideals,' and finds the themes 'lag.' While acknowledging Stroman's staging, the overall assessment is clearly negative. | GPT-4o: The review describes the show as 'run-of-the-mill' and highlights issues with the script's handling of contemporary themes, suggesting a lack of strong recommendation. However, it does not completely discourage attendance, indicating a mixed verdict. | Gemini: The review highlights both positive and negative aspects, describing it as a \"run-of-the-mill\" show that struggles to balance its historical setting with contemporary themes. It neither strongly recommends nor discourages seeing it. | Kimi: The critic delivers a dismissive verdict upfront, describing the show as mediocre and tonally confused. While acknowledging the pedigree of the creators, the review criticizes the book for clumsily inserting contemporary themes that lag, resulting in a production that fails to marry spectacle with substance. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:54:46.863Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

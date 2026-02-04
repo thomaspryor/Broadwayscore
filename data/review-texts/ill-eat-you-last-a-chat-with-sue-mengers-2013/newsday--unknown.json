@@ -51,5 +51,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200302170713/https://www.newsday.com/entertainment/theater/i-ll-eat-you-last-review-bette-midler-is-back-1.5127889",
   "contentTier": "complete",
   "wordCount": 508,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So much fun that, even when the script doesn't scintillate as much as it intends to, a happy contentment seems to permeate the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review clearly recommends the show for Midler's delightful performance, despite acknowledging the script's limitations. The 'BOTTOM LINE' summary confirms this positive-with-reservations stance. | GPT-4o: The review praises Bette Midler's performance and the overall experience, despite noting that the play itself doesn't always scintillate. The text is truncated, so the final verdict may be missing, but the provided key quote suggests a positive recommendation with some reservations. | Gemini: The review is generally positive, highlighting Midler's performance and the overall enjoyable atmosphere, despite some reservations about the script. However, the truncated text and smaller outlet reduce confidence. | Kimi: The review praises Midler's performance as 'delightful' and Mantello's direction as 'terrific,' but criticizes the script as dated and 'not always scintillating.' The bottom line indicates a qualified recommendation based on the star's appeal rather than the play itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:46:35.202Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "dtliExcerpt": "Here, the lyrical opening passages of Home intended to evoke the long ago rural South are nearly lost in the breakneck speed they are spoken. Other poetic sections tend to rush by, too, suggesting that Leon doesn’t trust the audience to appreciate their beauty.",
-  "dtliThumb": "MEH"
+  "dtliThumb": "MEH",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Let's hope most of the incoming shows of the new season look nearly as good as Home.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars with consistent praise throughout. Calls it a 'genuine charmer,' 'satisfyingly rendered,' and 'an enjoyable place to spend 90 minutes.' The critic clearly recommends it despite no extreme superlatives. | GPT-4o: The review describes the production as 'a genuine charmer' and praises the storytelling and performances, indicating a positive recommendation. The original 3/5 stars suggests some reservations, aligning with a lower end of the Positive bucket. | Gemini: The review is generally positive, calling the show a \"genuine charmer\" and \"enjoyable.\" The 3/5 star rating also indicates a positive but not rave review. | Kimi: The 3/5 star rating and warm but qualified praise ('charming,' 'enjoyable,' 'capable' rather than 'triumph' or 'essential') indicate a mixed reception—pleased by the performances and writing but viewing the show as slight rather than significant.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:44:43.098Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 66,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

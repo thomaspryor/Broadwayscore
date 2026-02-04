@@ -38,5 +38,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 53,
-  "tierReason": "Short text (53 words)"
+  "tierReason": "Short text (53 words)",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T11:09:40.340Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This text is reviewing Rob Marshall's live-action film adaptation of 'The Little Mermaid', not a Broadway theatrical production.; openai: The text is about the live-action adaptation of 'The Little Mermaid' by Rob Marshall, not a Broadway show.; kimi: This text reviews Rob Marshall's 2023 live-action film adaptation of 'The Little Mermaid,' not a Broadway theatrical production. Rob Marshall directed the Disney movie, not a Broadway stage production, making this a film review rather than a theater review.",
+  "promptVersion": "5.2.0"
 }

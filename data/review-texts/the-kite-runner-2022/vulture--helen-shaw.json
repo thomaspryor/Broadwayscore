@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Kite Runner is an undeniably moving story, but this Broadway adaptation feels more like an expensive audiobook than a fully realized piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20230609154004",
   "archiveOrgUrl": "http://web.archive.org/web/20230609154004/https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html",
   "wordCount": 1224,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Kite Runner is more of a vivid recitation than fully realized drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental problems with the adaptation - it doesn't work theatrically, relies too heavily on narration, and fails to overcome its 'foundational shortfall.' Despite acknowledging the actor's commitment and simple staging, the overall assessment is that the production doesn't justify itself as theater. | GPT-4o: The review criticizes the adaptation for not translating well to the stage, describing it as an 'expensive audiobook' and lacking theatrical impact. While the text is truncated, the available content suggests a negative view of the production's ability to engage as theater. | Gemini: The review highlights the adaptation's failure to translate effectively to the stage, describing it as more of a recitation than a fully realized drama. Despite acknowledging some positive elements, the overall assessment is negative due to the play's theatrical shortcomings. | Kimi: While acknowledging the source material's power and the lead actor's commitment, the critic finds the adaptation relies too heavily on narration, resulting in a 'vivid recitation' rather than fully realized theatrical drama. The review suggests the staging offers less than reading the book oneself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:09:24.480Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

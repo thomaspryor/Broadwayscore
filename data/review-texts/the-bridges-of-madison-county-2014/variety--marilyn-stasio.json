@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a show that knows how to break your heart without making you feel manipulated or cheated. It earns its tears the hard way, through honest storytelling and emotional truth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -58,5 +58,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1061,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a show that knows how to break your heart without making you feel manipulated or cheated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the show's emotional authenticity and storytelling integrity. The phrase 'earns its tears the hard way' suggests high-quality craft, warranting upper Positive range despite single excerpt limitation. | GPT-4o: The excerpt praises the show for its honest storytelling and emotional truth, indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt expresses strong positive sentiment, praising the show's honest storytelling and emotional impact. Given the single excerpt, confidence is low, but the positive language warrants a high score within the 'Positive' bucket. | Kimi: The excerpt offers strong praise for the show's emotional authenticity and storytelling sophistication, indicating a clear recommendation despite the limited context available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:05:21.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

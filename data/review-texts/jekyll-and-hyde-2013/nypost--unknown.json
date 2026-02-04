@@ -47,5 +47,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 476,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the overall production is a cheap mess of bare-bones set and clueless staging that defeats the show's bombastic allure",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling it a 'dispiriting slog' and 'cheap mess' with multiple criticisms of direction, staging, and lead performance, ending with a joke about bored theatergoers. | GPT-4o: The review is overwhelmingly negative, criticizing the production as a 'cheap mess' and a 'dispiriting slog.' Despite some praise for individual performers, the overall verdict is clearly against seeing the show. | Gemini: The review is largely negative, criticizing the production's cheapness and staging. While acknowledging some talent in the cast, the overall experience is described as a \"dispiriting slog.\" | Kimi: While acknowledging the vocal abilities of the supporting cast, the critic describes the production as a 'cheap mess' with 'clueless staging,' finds the lead performer 'out of his depth,' and calls the evening a 'dispiriting slog' that leaves audiences bored.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:48:57.274Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

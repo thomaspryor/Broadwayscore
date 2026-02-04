@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220812062755/https://www.nydailynews.com/entertainment/theater-arts/disgraced-theater-review-article-1.1984842",
   "contentTier": "complete",
   "wordCount": 408,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even with flaws, 'Disgraced' is observant and smart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges significant flaws (contrivances, hoary devices) but concludes the play is 'observant and smart' with strong performances and direction. The critic finds it worth seeing despite reservations. | GPT-4o: The review acknowledges both strengths and weaknesses, praising the play's timeliness and performances while noting contrivances. The overall tone suggests a positive recommendation with some reservations. | Gemini: The review acknowledges flaws and contrivances, but ultimately finds the play \"observant and smart\" and praises the acting and direction, indicating a positive but not rave recommendation. | Kimi: While criticizing plot contrivances and hoary devices, the reviewer praises the timely themes, handsome direction, and excellent performances, delivering a clear but qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:35:49.573Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 74,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

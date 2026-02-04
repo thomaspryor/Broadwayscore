@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“When the show really starts to plumb the depths of the characters' gut-level sorrows, which it does in the show's final third, it's because of Lucas' trenchant book scenes…This is the point where one begins to wonder why 'Days of Wine and Roses' needs to be a musical at all. The authors often seem to be searching for places to put songs, many of which are tentative, glancing off the characters without fully engaging with them.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the point where one begins to wonder why 'Days of Wine and Roses' needs to be a musical at all.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises the book scenes but fundamentally questions the show's existence as a musical, calling many songs 'tentative' and poorly integrated. This suggests significant structural problems despite some strengths. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt highlights a significant issue with the integration of songs into the narrative, suggesting a lack of full engagement. However, it also notes the strength of the book scenes, indicating a mixed review. Given the single excerpt warning, confidence is low. | Gemini: The review excerpt highlights both positive aspects (Lucas' book scenes) and negative aspects (tentative songs), suggesting a mixed experience. Given the limited text, confidence is low. | Kimi: The excerpt offers genuine praise for the book scenes as 'trenchant' when plumbing emotional depths, but levels fundamental criticism at the show's core concept, questioning why it needs to be a musical at all and describing the songs as 'tentative' and failing to fully engage with the characters.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:46:00.812Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

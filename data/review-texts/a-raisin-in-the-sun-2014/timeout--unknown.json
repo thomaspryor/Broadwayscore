@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140408013919/http://www.timeout.com:80/newyork/theater/a-raisin-in-the-sun-1",
   "contentTier": "complete",
   "wordCount": 393,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A credible, realistically scaled account of a still-vital classic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation calling it 'credible' with strong praise for performances, though notes it 'doesn't quite explode' and lacks the enthusiasm of a higher score. | GPT-4o: The review praises the production's performances and direction, noting it as a 'credible, realistically scaled account' of a classic. While it doesn't 'quite explode,' the overall tone is positive, highlighting strong performances and the play's enduring relevance. | Gemini: The review is generally positive, highlighting strong performances and the play's enduring relevance, but it stops short of being a rave, indicating a solid but not exceptional production. The phrase \"credible, realistically scaled account\" suggests competence but not transcendence. | Kimi: The review offers solid praise for the performances (Washington's magnetism, Okonedo's nuance) and calls the drama 'still-vital' and 'juicy,' but qualifies enthusiasm by noting the production 'doesn't quite explode,' suggesting a worthy but not transcendent revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:24:08.888Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

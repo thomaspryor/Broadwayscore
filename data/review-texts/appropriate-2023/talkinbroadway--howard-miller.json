@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Appropriate’ frequently stretches the limits of what it means to be ‘over the top,’ but the portrait it paints of human frailty and corruption is as ancient and complex as they come.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Appropriate' frequently stretches the limits of what it means to be 'over the top,' but the portrait it paints of human frailty and corruption is as ancient and complex as they come.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows measured praise for the play's thematic depth despite acknowledging it goes 'over the top.' The positive assessment of the 'portrait it paints' suggests recommendation, but with only one excerpt available, confidence is low. | GPT-4o: The excerpt suggests a mixed view, acknowledging the complexity of the show's themes but also noting it may be excessive ('over the top'). With only one excerpt, confidence is low. | Gemini: The quote suggests a positive assessment of the play's depth and complexity, despite acknowledging that it can be \"over the top.\" Given the single excerpt and the phrase \"human frailty and corruption is as ancient and complex as they come\", I am scoring it as positive with reservations. | Kimi: While the critic notes the production is excessive ('over the top'), the final assessment praises the show's thematic depth and dramatic complexity, indicating a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:31:44.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 67,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

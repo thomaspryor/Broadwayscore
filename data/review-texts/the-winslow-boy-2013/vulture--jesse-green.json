@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140122214017/http://www.vulture.com/2013/10/theater-review-the-winslow-boy.html",
   "contentTier": "complete",
   "wordCount": 1183,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is great pleasure in being handled with authority by a playwright who knows what he's doing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Green praises the 'excellent revival' with 'suave direction' and highlights multiple strong performances, particularly Nivola's 'thrilling' work. Despite acknowledging the play's mechanical nature, he finds 'great pleasure' in the craftsmanship and argues for appreciating this type of dramaturgy. | GPT-4o: The review praises the production as 'excellent' and highlights strong performances, particularly by Alessandro Nivola. While it acknowledges some traditional elements of the play, it ultimately appreciates the revival's quality and the playwright's technique. | Gemini: The review acknowledges flaws (expositional maids, etc.) but ultimately praises the playwright's skill and the quality of the Roundabout's production, making it a positive but not rave review. | Kimi: The critic consistently praises the 'excellent revival,' suave direction, and strong ensemble performances, finding genuine pleasure in the playwright's craftsmanship while appreciating how the production balances the play's antique structure with modern resonance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:13:18.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

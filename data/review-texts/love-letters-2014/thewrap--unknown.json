@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 74 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 68,
-  "tierReason": "Short text (68 words)"
+  "tierReason": "Short text (68 words)",
+  "rejectedAt": "2026-02-04T10:51:45.457Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text only provides background context about the play's history and communication themes, with no critical evaluation or recommendation about the current Broadway production.; openai: The text provided is a plot summary and historical context with no evaluative content or critique of the current production.; gemini: This is a plot summary with no evaluation or recommendation.; kimi: Text contains only plot summary and historical context about the play's premise (characters reading letters aloud), with no evaluation of performances, direction, production quality, or recommendation to see the show. Appears to be an excerpt lacking critical assessment.",
+  "promptVersion": "5.2.0"
 }

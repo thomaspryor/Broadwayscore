@@ -42,7 +42,12 @@
   "textIssues": [
     "Show title not found in text"
   ],
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 978,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T11:11:02.498Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "openai: The text appears to be a mix of review content and unrelated article snippets, making it difficult to discern a coherent review or final verdict.; kimi: The review explicitly states this is 'The New Group at Signature' production. Signature Theatre is an Off-Broadway venue, not a Broadway house, making this an Off-Broadway review rather than a Broadway review.",
+  "promptVersion": "5.2.0"
 }

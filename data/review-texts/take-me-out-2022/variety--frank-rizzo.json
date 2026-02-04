@@ -43,5 +43,60 @@
   "contentTier": "complete",
   "wordCount": 631,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Directed by Scott Ellis, this revival, too, is a solid hit, despite a few grounding errors...Despite some new tweaks, Greenberg’s ambitious script still has a pile-on of themes, dealing with gender, race, sexuality, celebrity and spirituality, not to mention major league sports. But the playwright and this production still manage to bring it home in the play’s ninth inning with a graceful, bittersweet denouement that leaves characters still searching, still discovering and still in play for another season.\"\n\nRead more"
+  "showScoreExcerpt": "\"Directed by Scott Ellis, this revival, too, is a solid hit, despite a few grounding errors...Despite some new tweaks, Greenberg’s ambitious script still has a pile-on of themes, dealing with gender, race, sexuality, celebrity and spirituality, not to mention major league sports. But the playwright and this production still manage to bring it home in the play’s ninth inning with a graceful, bittersweet denouement that leaves characters still searching, still discovering and still in play for another season.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival, too, is a solid hit, despite a few grounding errors",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'solid hit' with strong praise for performances, particularly Ferguson's 'profound' work, while acknowledging minor issues with 'grounding errors.' | GPT-4o: The review praises the revival as 'starry and satisfying' and describes it as a 'solid hit,' indicating a strong recommendation despite minor reservations. | Gemini: The review is positive, calling the revival a \"solid hit\" despite minor flaws. It praises the performances and the play's themes. | Kimi: The critic delivers a clear recommendation calling the production a 'solid hit' and 'satisfying,' with strong praise for the cast (particularly Jesse Tyler Ferguson's 'profound' performance) while acknowledging only minor quibbles.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:04:51.962Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

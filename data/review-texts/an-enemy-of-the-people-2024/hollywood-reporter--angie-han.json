@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's performance is commanding and charismatic, even when his character is at his most insufferable. He captures both Stockmann's genuine idealism and his stubborn self-righteousness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Strong's performance is commanding and charismatic, even when his character is at his most insufferable. He captures both Stockmann's genuine idealism and his stubborn self-righteousness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong's performance is commanding and charismatic, even when his character is at his most insufferable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising the lead performance with balanced assessment of the character. Given the excerpt-only warning and moderate praise language, scoring at lower end of Positive bucket with low confidence due to incomplete review text. | GPT-4o: The excerpt praises Strong's performance, indicating a positive view of his role. However, the single excerpt and lack of full context limit confidence in the overall verdict. | Gemini: The excerpt focuses on a strong performance, but the mention of the character being \"insufferable\" suggests reservations. Given the single excerpt, I'm scoring it as a positive but with lower confidence. | Kimi: The excerpt provides strong praise for Jeremy Strong's performance as commanding and charismatic. Per the single excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84), though confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:28:48.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 599,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birbiglia is totally on brand in his largely delightful solo show",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic consistently praises Birbiglia's performance and storytelling, calling it 'largely delightful' and 'a blast,' while noting only minor flaws like 'a few shallow dips' and 'loose ends.' | GPT-4o: The review is filled with praise for Birbiglia's performance, describing the show as 'largely delightful' and highlighting its humor and depth. The tone is enthusiastic and positive, with no significant reservations. | Gemini: The review is mostly positive, calling the show \"largely delightful\" and highlighting Birbiglia's humor and reflections. However, it also notes some \"shallow dips\" and unresolved detours, indicating reservations. | Kimi: The critic delivers strong praise, describing the show as 'largely delightful' with 'waves of laughs' and 'deep reflections,' recommending it enthusiastically despite minor quibbles about loose narrative ends.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:53:59.794Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

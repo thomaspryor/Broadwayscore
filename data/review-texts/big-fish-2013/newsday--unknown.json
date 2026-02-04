@@ -51,5 +51,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150327023222/http://www.newsday.com:80/entertainment/theater/big-fish-review-ambitious-musical-not-exciting-1.6198496",
   "contentTier": "complete",
   "wordCount": 448,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So it's crushing to realize, early on, that this gentle, sincere, beautiful-looking show is deadly dull.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Butz's performance, Stroman's direction, and technical elements, the critic finds the show 'deadly dull' with 'hackneyed' writing and calls it 'disappointing.' The mixed elements don't overcome the fundamental flaws identified. | GPT-4o: The review praises individual elements like the cast and direction but ultimately finds the show 'deadly dull' and lacking tension. The text is truncated, so the final verdict might be missing, but the overall tone suggests a negative impression. | Gemini: Despite praising the cast, direction, and design, the critic ultimately finds the show \"deadly dull\" due to a weak book and score. The truncated text makes the confidence medium. | Kimi: While the critic praises Norbert Leo Butz's performance, Susan Stroman's direction, and the visual design as 'astonishing magic,' the verdict is clearly negative with phrases like 'deadly dull,' 'disappointing,' and 'too toothless for grown-ups.' The positive elements are not enough to overcome the criticism of the book and score as hackneyed and obvious.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:29:22.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

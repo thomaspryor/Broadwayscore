@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Metcalf delivers a performance of such emotional intensity and intellectual rigor that it seems to emerge from some deep, private place of understanding about the mysteries of consciousness and identity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,60 @@
   "archiveOrgTimestamp": "20251031083939",
   "archiveOrgUrl": "http://web.archive.org/web/20251031083939/https://www.hollywoodreporter.com/movies/movie-reviews/place-theater-review-410891/",
   "wordCount": 833,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Metcalf delivers a performance of such emotional intensity and intellectual rigor that it seems to emerge from some deep, private place of understanding about the mysteries of consciousness and identity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Exceptionally high praise for Metcalf's performance with superlative language ('such emotional intensity', 'intellectual rigor', 'deep, private place'). However, confidence is low due to single excerpt limitation - this could be cherry-picked praise from a mixed review that criticizes other elements. | GPT-4o: The excerpt praises Metcalf's performance with strong language, suggesting a positive view. Due to the single excerpt warning, confidence is low, but the tone indicates a strong recommendation. | Gemini: The excerpt focuses on a very strong performance by Metcalf. Given the single excerpt and positive tone, I'm placing it in the positive range, erring on the higher end due to the strength of the praise, but with low confidence due to the limited text. | Kimi: Single available excerpt contains strong praise for the lead performance using superlatives, indicating a positive review, though the limited context prevents higher confidence or a definitive rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:09:58.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

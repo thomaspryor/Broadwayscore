@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"The playwright could indeed have arranged matters so that all familial relations are reinforced; but that would come at the expense of the swift pace.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/10/02/leopoldstadt-stoppard-examines-his-roots-in-extraordinary-fashion/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/10/02/leopoldstadt-stoppard-examines-his-roots-in-extraordinary-fashion/",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like The Ferryman and The Inheritance, Leopoldstadt is brilliant, memorable, and dynamic, warranting an immediate visit to the Longacre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlative praise throughout: 'exceptional play,' 'brilliant, memorable, and dynamic,' 'warranting an immediate visit,' plus sustained praise for performances, direction, and production values. Despite the truncation warning, the complete final verdict is present. | GPT-4o: The review is filled with superlatives and high praise for the play's writing, performances, and production. The critic's original 5/5 star rating and the language used suggest a strong recommendation, despite the truncated text warning. | Gemini: Despite the truncated text warning, the review is overwhelmingly positive, calling the play \"exceptional\" and comparing it favorably to other acclaimed productions. The critic strongly recommends seeing it immediately. | Kimi: The critic awards the show 5/5 stars and delivers unqualified praise, calling it 'brilliant,' 'exceptional,' and 'stunning' with an explicit directive for 'immediate' attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:50:21.147Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 603,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moore fires up the faithful to revolt against Trumpland and other indignities of our mad, mad world with surprising sweetness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review praises Moore's charm and effectiveness, highlights strong production values and design team, but treats it more as political rally than traditional theater criticism. Positive overall but measured. | GPT-4o: The review describes the show as engaging and entertaining, with Moore delivering his political message with 'surprising sweetness' and humor. The critic highlights the effectiveness of the design and Moore's ability to connect with the audience, suggesting a positive experience. | Gemini: The review is generally positive, highlighting Moore's comedic approach and the production's design. While it's not a rave, it's a recommendation with some reservations about its revolutionary impact. | Kimi: The critic praises Moore's charming delivery, the wise production choices at the Belasco, and superior design elements, clearly recommending the show as an effective and entertaining piece of political theater despite noting some personal anecdotes verge on puffery.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:11:35.009Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

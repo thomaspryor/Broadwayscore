@@ -18,59 +18,7 @@
   "showScoreExcerpt": "The best thing about Miranda Cromwell's sometimes uncertain production is the opportunity it gives four lead actors to do strong, stunning, and, in some cases, highly original work.\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 72,
-    "confidence": "medium",
-    "range": {
-      "low": 67,
-      "high": 77
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The best thing about Miranda Cromwell's sometimes uncertain production is the opportunity it gives four lead actors to do strong, stunning work.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises performances as 'strong, stunning' but criticizes the production as 'sometimes uncertain.' Single excerpt from larger review limits confidence in overall verdict. | GPT-4o: The excerpt praises the lead actors' performances but describes the production as 'sometimes uncertain,' indicating a mixed assessment. The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review excerpt praises the actors' performances but notes uncertainty in the production, suggesting a positive but not rave recommendation. Given the limited text, confidence is low. | Kimi: While the critic criticizes the production as 'uncertain,' the enthusiastic praise for the lead actors ('strong, stunning, highly original') indicates a recommendation based on the performances. The single excerpt limits certainty about the overall verdict. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T11:24:15.779Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 68,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 14,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }
