@@ -61,7 +61,7 @@ export default function TheatersMapPage() {
             <li>
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
             </li>
-            <li className="text-gray-600">/</li>
+            <li className="text-gray-500">/</li>
             <li className="text-gray-300">Broadway Theaters</li>
           </ol>
         </nav>
@@ -179,7 +179,7 @@ export default function TheatersMapPage() {
 
         {/* Related Links */}
         <div className="mt-8 pt-6 border-t border-white/5">
-          <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">Explore More</h3>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Explore More</h3>
           <div className="flex flex-wrap gap-2">
             <Link href="/browse/broadway-shows-for-tourists" className="px-4 py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors">
               Shows for Tourists

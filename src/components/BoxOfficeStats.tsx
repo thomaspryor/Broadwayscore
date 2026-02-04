@@ -82,7 +82,7 @@ function ChangeIndicator({ change, label }: ChangeIndicatorProps) {
       <span className={isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-gray-500'}>
         {formattedChange}%
       </span>
-      <span className="text-gray-600 ml-0.5">{label}</span>
+      <span className="text-gray-500 ml-0.5">{label}</span>
     </div>
   );
 }
@@ -98,7 +98,7 @@ function StatCard({ value, label, wowChange, yoyChange }: StatCardProps) {
   const hasChanges = wowChange !== undefined || yoyChange !== undefined;
 
   return (
-    <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+    <div className="flex-1 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5 hover:bg-white/5 transition-colors">
       <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
         {value}
       </div>
@@ -141,7 +141,7 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
       {hasThisWeek && grosses.thisWeek && (
         <div className="mb-4">
           <div className="text-xs text-gray-500 mb-2 font-medium">
-            This Week <span className="text-gray-600">({weekEnding})</span>
+            This Week <span className="text-gray-500">({weekEnding})</span>
           </div>
           <div className="flex gap-2 sm:gap-3">
             <StatCard

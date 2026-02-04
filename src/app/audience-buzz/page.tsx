@@ -149,7 +149,7 @@ export default function AudienceBuzzPage() {
                 <span className="text-sm font-bold" style={{ color: g.color }}>{g.grade}</span>
                 <span className="text-xs text-gray-500">{g.range}</span>
                 {byGrade[g.grade] && (
-                  <span className="text-xs text-gray-600">({byGrade[g.grade].length})</span>
+                  <span className="text-xs text-gray-500">({byGrade[g.grade].length})</span>
                 )}
               </div>
             ))}

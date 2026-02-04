@@ -223,7 +223,7 @@ export default function RootLayout({
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
                 <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
-                <span className="text-gray-600 hidden sm:inline">|</span>
+                <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>
               </div>
             </div>

@@ -223,7 +223,7 @@ export default function BizDashboard() {
 
         {/* Season Stats Row */}
         <section className="mb-8">
-          <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
             By Season
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

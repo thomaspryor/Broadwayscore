@@ -44,7 +44,7 @@ function formatDate(dateStr: string): string {
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );

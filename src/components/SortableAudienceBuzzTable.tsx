@@ -48,7 +48,7 @@ function getGradeFromScore(score: number): { grade: string; color: string } {
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );

@@ -55,13 +55,13 @@ export default function SeasonStatsCard({
         </div>
       </div>
       {recoupedShows.length > 0 && (
-        <div className="mt-2 text-xs text-gray-600">
+        <div className="mt-2 text-xs text-gray-500">
           {recoupedShows.slice(0, 3).join(', ')}
           {recoupedShows.length > 3 && ` +${recoupedShows.length - 3} more`}
         </div>
       )}
       {totalShows === 0 && (
-        <div className="mt-2 text-xs text-gray-600">
+        <div className="mt-2 text-xs text-gray-500">
           No commercial shows this season
         </div>
       )}

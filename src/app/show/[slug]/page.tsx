@@ -19,7 +19,6 @@ import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
-import ScoreTooltip from '@/components/ScoreTooltip';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export function generateStaticParams() {
@@ -431,7 +430,7 @@ function CriticScoreSection({ score, reviewCount, reviews, status }: { score: nu
 
         {/* Critic Score Label and Sentiment */}
         <div className="flex-1 pt-1">
-          <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Critic Score</h2>
+          <h2 id="critic-score-heading" className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Critic Score</h2>
           {showTBD ? (
             <div className="text-lg sm:text-xl font-bold text-gray-400">Awaiting Reviews</div>
           ) : (
@@ -503,7 +502,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         ]} />
 
         {/* Metacritic-style Header: Poster + Title/Score integrated */}
-        <div className="card p-4 sm:p-6 mb-6">
+        <div className="card p-5 sm:p-6 mb-6">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card - fetchpriority high for LCP optimization */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40">
@@ -522,7 +521,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   className="w-full h-full object-cover"
                   fallback={
                     <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                      <span className="text-4xl text-gray-600">🎭</span>
+                      <span className="text-4xl text-gray-500">🎭</span>
                     </div>
                   }
                 />
@@ -549,17 +548,17 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                 <span className="text-gray-300">{show.venue}</span>
                 {show.runtime && (
                   <>
-                    <span className="text-gray-600">•</span>
+                    <span className="text-gray-500">•</span>
                     <span>{show.runtime}</span>
                   </>
                 )}
-                <span className="text-gray-600">•</span>
+                <span className="text-gray-500">•</span>
                 {show.status === 'previews' ? (
                   <span>Opens {formatDate(show.openingDate)}</span>
                 ) : show.closingDate ? (
                   <>
                     <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatDate(show.closingDate)}</span>
-                    <span className="text-gray-600">•</span>
+                    <span className="text-gray-500">•</span>
                     <span>Opened {formatDate(show.openingDate)}</span>
                   </>
                 ) : (
@@ -610,21 +609,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                   <div className="space-y-3">
                     {/* Score row */}
                     <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Score box with tooltip */}
-                      {!showTBD && roundedScore !== null && sentiment ? (
-                        <ScoreTooltip
-                          score={roundedScore}
-                          label={sentiment.label}
-                          tier1Count={tier1Count}
-                          tier2Count={tier2Count}
-                          tier3Count={tier3Count}
-                          totalReviews={reviewCount}
-                        >
-                          {scoreBox}
-                        </ScoreTooltip>
-                      ) : (
-                        scoreBox
-                      )}
+                      {scoreBox}
                       {/* Sentiment and review count */}
                       <div>
                         {showTBD ? (
@@ -680,7 +665,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
           {/* Critics' Take - inline below the poster/score row */}
           {consensus ? (
             <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Critics&apos; Take</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Critics&apos; Take</p>
               <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
             </div>
           ) : show.synopsis ? (
@@ -876,7 +861,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         {/* Creative Team */}
         {show.creativeTeam && show.creativeTeam.length > 0 && (
           <div className="mb-8">
-            <div className="card p-4 sm:p-5">
+            <div className="card p-5 sm:p-6">
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
               <ul className="space-y-2.5 sm:space-y-2">
                 {show.creativeTeam.map((member, i) => (

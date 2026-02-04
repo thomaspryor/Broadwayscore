@@ -49,7 +49,7 @@ export default function ShowDataPage({ params }: { params: { slug: string } }) {
           <Link href="/data" className="text-green-400 hover:text-green-300">
             ← Back to data explorer
           </Link>
-          <span className="text-gray-600">|</span>
+          <span className="text-gray-500">|</span>
           <Link href={`/show/${metadata.slug}`} className="text-green-400 hover:text-green-300">
             View show page →
           </Link>

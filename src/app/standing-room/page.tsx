@@ -89,7 +89,7 @@ function SROShowCard({ show, sroData, index }: SROShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-600">
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
             <div className="text-3xl">🎭</div>
           </div>
         )}
