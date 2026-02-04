@@ -162,7 +162,7 @@ jobs:
   collect:
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 355
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false
