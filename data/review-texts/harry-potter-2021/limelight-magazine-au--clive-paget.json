@@ -104,5 +104,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a website's navigation/promotional content and subscription prompts rather than a complete review text. The actual review content is cut off mid-sentence and followed by website boilerplate.; openai: The text is a mixture of navigation menus, promotional content, and incomplete review snippets, not a coherent review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "show-score",
+    "show-score-playwright"
+  ]
 }
