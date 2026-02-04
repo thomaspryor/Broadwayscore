@@ -248,6 +248,7 @@ const DOMAIN_TO_OUTLET = {
   'talkinbroadway.com': 'Talkin Broadway',
   'dctheaterarts.org': 'DC Theater Arts',
   'thefrontrowcenter.com': 'Front Row Center',
+  'newyorker.com': 'The New Yorker',
 };
 
 // Known NYSR critics — when Playbill lists just the critic name as the "outlet",

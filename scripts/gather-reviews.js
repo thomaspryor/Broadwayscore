@@ -573,20 +573,20 @@ async function scrapeShowScoreWithPlaywright(url) {
           return;
         }
 
-        // Find the parent card to extract outlet and critic info
-        const card = link.closest('div[class]');
+        // Find the parent review card to extract outlet and critic info
+        // Must use .review-tile-v2 to reach the full card root (not just the excerpt div)
+        const card = link.closest('.review-tile-v2') || link.closest('div[class]');
         if (!card) return;
 
-        // Look for outlet image alt text
+        // Look for outlet image alt text (in the header section)
         const outletImg = card.querySelector('img[alt]');
         const outlet = outletImg?.getAttribute('alt') || '';
 
-        // Look for critic name link
+        // Look for critic name link (in the header section)
         const criticLink = card.querySelector('a[href*="/member/"]');
         const critic = criticLink?.textContent?.trim() || '';
 
         // Look for date
-        const dateEl = card.querySelector('div');
         let date = '';
         card.querySelectorAll('div').forEach(div => {
           const text = div.textContent;
@@ -753,7 +753,8 @@ async function scrapeShowScoreWithPlaywright(url) {
             return;
           }
 
-          const card = link.closest('div[class]');
+          // Must use .review-tile-v2 to reach the full card root (not just the excerpt div)
+          const card = link.closest('.review-tile-v2') || link.closest('div[class]');
           if (!card) return;
 
           const outletImg = card.querySelector('img[alt]');
@@ -905,8 +906,8 @@ function extractShowScoreReviews(html, showId) {
     let matched = false;
     for (const { pattern, outlet, outletId } of outletPatterns) {
       if (pattern.test(context) || pattern.test(url)) {
-        // Check if we already have this outlet
-        if (!reviews.some(r => r.outletId === outletId)) {
+        // Check if we already have this review (by URL, not just outlet — same outlet may have multiple critics)
+        if (!reviews.some(r => r.url === url)) {
           // Try to extract critic name from context
           // Show Score has links like: <a href="/member/jonathan-mandell">Jonathan Mandell</a>
           let criticName = 'Unknown';
@@ -1101,6 +1102,19 @@ async function searchBWWRoundup(show, year) {
     searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
   }
 
+  // Try Playwright first — BWW loads review content via JavaScript on many pages
+  if (chromium) {
+    for (const url of searchUrls) {
+      const result = await scrapeBWWRoundupWithPlaywright(url);
+      if (result) {
+        console.log(`    ✓ Found at: ${url} (Playwright)`);
+        return { url, html: result.html };
+      }
+      await sleep(300);
+    }
+  }
+
+  // Fall back to HTTP fetch (works for older BWW pages with static content)
   for (const url of searchUrls) {
     const result = await searchAggregator('BWW', url);
     if (result.found && result.html && result.html.includes('Review Roundup')) {
@@ -1112,6 +1126,56 @@ async function searchBWWRoundup(show, year) {
 
   console.log('    ✗ Not found on BWW');
   return null;
+}
+
+/**
+ * Scrape BWW roundup page using Playwright to get JS-rendered content.
+ * BWW loads review quotes dynamically on many roundup pages.
+ */
+async function scrapeBWWRoundupWithPlaywright(url) {
+  let browser = null;
+  try {
+    browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    });
+    const page = await context.newPage();
+
+    // Use domcontentloaded instead of networkidle — BWW has constant ad/tracking
+    // requests that prevent networkidle from ever resolving
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+    // Check we're on a real roundup page, not a 404 or homepage
+    const title = await page.title();
+    if (!title || !title.includes('Review Roundup')) {
+      await browser.close();
+      return null;
+    }
+
+    // Wait for article content to render (BWW loads review quotes dynamically)
+    await page.waitForSelector('article, .article-body, [class*="article"], script[type="application/ld+json"]', { timeout: 10000 }).catch(() => null);
+    await sleep(3000); // Extra wait for dynamic content to fully render
+
+    const html = await page.content();
+
+    await browser.close();
+
+    // Verify we actually got review content (not just the page shell)
+    if (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:')) {
+      return { html };
+    }
+
+    // Also check for common BWW review patterns in HTML body
+    if (html.includes('critics had to say') || html.includes('review-roundup')) {
+      return { html };
+    }
+
+    return null;
+  } catch (error) {
+    console.log(`    BWW Playwright error: ${error.message}`);
+    if (browser) await browser.close();
+    return null;
+  }
 }
 
 /**
@@ -1180,7 +1244,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl) {
         const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
 
         // Pattern: "Critic Name, Outlet:" followed by review text
-        const pattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
+        // Name pattern supports apostrophes (D'Addario, O'Brien) and hyphens (Jean-Paul)
+        const pattern = /([A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
 
         let match;
         const seen = new Set();
