@@ -286,7 +286,7 @@ jobs:
   gather-gaps:
     name: Gather missing reviews
     needs: [audit]
-    if: ${{ needs.audit.outputs.gap_count > 0 && inputs.dry_run != true }}
+    if: ${{ always() && needs.audit.result == 'success' && needs.audit.outputs.gap_count != '0' && needs.audit.outputs.gap_count != '' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
