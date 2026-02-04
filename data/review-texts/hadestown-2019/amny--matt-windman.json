@@ -3,72 +3,21 @@
   "outletId": "amny",
   "outlet": "amNewYork",
   "criticName": "Matt Windman",
-  "url": null,
+  "url": "https://www.amny.com/entertainment/hadestown-review-1.29924932",
   "publishDate": "2019-04-17T20:11:26-04:00",
   "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": null,
   "bwwExcerpt": "Directed by Rachel Chavkin (\"Natasha, Pierre & The Great Comet of 1812\"), \"Hadestown\" contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld, complemented by the motion of turntables, a rollicking band, bold performances and expressive dance...",
-  "showScoreExcerpt": null,
-  "assignedScore": 82,
+  "showScoreExcerpt": "“The Act One finale of the stunning musical romance contains the most memorable, eerie and politically relevant moment of the entire Broadway season...A stunning visual design...Bold performances and expressive choreography...Many of the songs are reflective in nature, which leads to some slow points...But, more often than not, ‘Hadestown' is exciting, compelling and beautiful...’Hadestown’ may very well become the next risk-taking, genre-defying new musical.”\n\nRead more",
+  "assignedScore": null,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
   "tierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "contains a stunning visual design evoking both a New Orleans barroom scene and a smoldering mechanical underworld",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for visual design, direction, performances and production elements. However, as only one curated quote, confidence is low and may not represent full verdict. | GPT-4o: The excerpt praises the visual design, band, performances, and dance, indicating a strong recommendation. However, given the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the direction, visual design, music, performances, and dance. Given the single excerpt and positive tone, I'm placing it in the upper end of the 'Positive' bucket with low confidence. | Kimi: The excerpt offers enthusiastic praise for the production's visual design, performances, and staging with words like 'stunning' and 'rollicking,' indicating a strong recommendation. As a single curated excerpt, confidence is reduced.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:09:32.539Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
-    "geminiScore": 81,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 3,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "bww-roundup",
+    "show-score-playwright"
+  ]
 }
