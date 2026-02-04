@@ -109,24 +109,11 @@ function verifyProduction({ showId, url, publishDate, text, showData }) {
   // Get show-specific indicators
   const indicators = KNOWN_WRONG_INDICATORS[showId];
 
-  // 1. Check URL for wrong year
-  if (url && expectedYear) {
-    const urlYearMatch = url.match(/\/(\d{4})\//);
-    if (urlYearMatch) {
-      const urlYear = parseInt(urlYearMatch[1]);
-      // Allow 1 year before expected (for previews)
-      if (urlYear < expectedYear - 1 && urlYear >= 2000) {
-        issues.push({
-          type: 'url_year_mismatch',
-          message: `URL year ${urlYear} doesn't match expected ${expectedYear}`,
-          severity: 'high'
-        });
-        confidence = 'high';
-      }
-    }
-  }
+  // NOTE: Do NOT extract years from URLs. URL patterns are inconsistent across outlets
+  // (republished content, migrated URLs, article IDs that look like years, etc.).
+  // Use publish date and review text content for production verification instead.
 
-  // 2. Check publish date for wrong year
+  // 1. Check publish date for wrong year
   if (publishDate && expectedYear) {
     const dateYearMatch = publishDate.match(/\b(20\d{2})\b/);
     if (dateYearMatch) {
@@ -251,16 +238,7 @@ function quickDateCheck(showId, url, publishDate) {
 
   const expectedYear = parseInt(yearMatch[1]);
 
-  // Check URL year
-  if (url) {
-    const urlYearMatch = url.match(/\/(\d{4})\//);
-    if (urlYearMatch) {
-      const urlYear = parseInt(urlYearMatch[1]);
-      if (urlYear < expectedYear - 1 && urlYear >= 2000) {
-        return false;
-      }
-    }
-  }
+  // NOTE: Do NOT check URL patterns for year. URL structure is unreliable.
 
   // Check publish date year
   if (publishDate) {
