@@ -3,10 +3,10 @@
   "outletId": "variety",
   "outlet": "Variety",
   "criticName": "Marilyn Stasio",
-  "url": "https://variety.com/2018/legit/reviews/lobby-hero-review-brian-cranston-1202734063/",
+  "url": "https://variety.com/2018/legit/reviews/lobby-hero-review-chris-evans-michael-cera-1202736620/",
   "publishDate": "March 26, 2018",
-  "fullText": "Under Trip Cullman's patient direction, all four actors turn in superb performances that honor both the complexity of their characters and the nuanced writing that defines them.",
-  "isFullReview": false,
+  "fullText": "Second Stage christens the Hayes Theater, its new Broadway digs, with an affectionate revival of this 2001 play by Kenneth Lonergan.\n\n\"Manchester By the Sea\" didn't come out of nowhere. The aching compassion for humanity in that 2016 Oscar winner is second nature to Kenneth Lonergan, going back at least to 2001, when Playwrights Horizons commissioned this bittersweet, people-friendly play. Set in the lobby of a generic Manhattan apartment building, the play looks both kindly and critically upon the kind of characters Lonergan loves to write: working-class stiffs, generally decent people who are unexpectedly challenged by issues of ethics.\n\nJeff (Michael Cera, a perfect Mr. Sensitive) is the night security guard – and absolutely not, as we are frequently reminded, the doorman. After all, he wears a uniform, doesn't he? And doesn't he have a desk? That's a point of pride with this lovable loser, who wants to grow up to be as strong and sure of himself as the \"captain\" he deeply admires. That would be William (Brian Tyree Henry, made for this role), the senior security guard, who likes Jeff, but despairs of his ever manning up and keeps giving him self-help books to motivate him and improve his mind.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Channing Tatum Cried 'Five, Six, Seven Times’ at 'Josephine' Premiere as Film Becomes First Sundance 2026 Sensation \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Neon Buying Sundance Conversion Therapy Horror Film 'Leviticus'\n\nJeff tries to convince himself that the job itself has made him \"a reformed character,\" which makes you shudder to imagine what he was like when he was unemployed. One of life's innocents, he doesn't help himself by wearing his feelings on his sleeve – and especially not his hopeless crush on a half-pint rookie cop named Dawn.\n\nAs played by Bel Powley, Dawn is indeed endearing; but she's so besotted with her big, strong, handsome partner that she wouldn't notice Jeff's devotion if he dropped to his knees and wept bitter tears all over her shoes. Dawn's swaggering partner, Bill (Chris Evans, channeling his inner macho heel), is well aware of Dawn's crush on him. That makes it easy for him to keep her cooling her heels in the lobby while he goes upstairs to apartment 221 to visit what he claims is an old friend but is actually a prostitute.\n\nJeff knows what's going on, but he's too kind (and maybe too scared of Bill) to break Dawn's heart – until he has to; if, indeed, he really has to. Jeff goes through such contorted soul-searching that he ties himself up in knots, a state of mind reflected in the uncertain (and often very funny) speech patterns that Lonergan writes with such panache.\n\nWilliams' ethical crisis is far more serious. His brother has been arrested for murder, and because William honestly can't believe his brother capable of doing such a thing, he decides to provide him with a phony alibi. That, in turn, leads to even more complications, when Bill unexpectedly backs up Williams' invented alibi. The irony is that everyone compromises their moral principles not out of evil motives, but out of love, generosity, and loyalty.\n\nHelmer Trip Cullman does his best work with small, tight ensembles like this one, so there's no slack in the emotional tension and no escape from the sticky web that even nice people get tangled up in when they tell lies – especially the lies they tell themselves.",
+  "isFullReview": true,
   "dtliExcerpt": "Under Trip Cullman's patient direction, all four actors turn in superb performances that honor both the complexity of their characters and the nuanced writing that defines them.",
   "originalScore": null,
   "assignedScore": 82,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under Trip Cullman's patient direction, all four actors turn in superb performances that honor both the complexity of their characters and the nuanced writing that defines them.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 82,
@@ -76,5 +76,53 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://variety.com/2018/legit/reviews/lobby-hero-review-brian-cranston-1202734063/",
+  "urlDiscoveredAt": "2026-02-04T16:22:27.389Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 566,
+  "archivePath": "data/archives/reviews/lobby-hero-2018/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T16:22:27.399Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 566,
+  "tierReason": "Full review text"
 }
