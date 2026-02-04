@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mary-Louise Parker gives a performance of extraordinary subtlety and power as a creative writing professor who forms an intense bond with a brilliant but troubled student.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mary-Louise Parker gives a performance of extraordinary subtlety and power as a creative writing professor who forms an intense bond with a brilliant but troubled student.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mary-Louise Parker gives a performance of extraordinary subtlety and power",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The 80/100 rating and strong praise for the lead performance ('extraordinary subtlety and power') indicates a positive recommendation, though the very brief excerpt limits confidence in the full verdict. | Gemini: Extracted from malformed response | Kimi: The excerpt offers strong praise for the lead performance ('extraordinary subtlety and power') and the critic's original rating of 80 confirms a solid positive recommendation, though the single-sentence excerpt limits confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:23:37.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

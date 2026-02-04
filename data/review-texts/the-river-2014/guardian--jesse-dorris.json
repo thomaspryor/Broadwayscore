@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hugh Jackman gives a committed performance in Jez Butterworth's mysterious new play, but the drama itself remains frustratingly opaque.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hugh Jackman gives a committed performance in Jez Butterworth's mysterious new play, but the drama itself remains frustratingly opaque.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises lead performance but finds the drama 'frustratingly opaque,' indicating neither clear recommendation nor discouragement - a classic mixed review with reservations outweighing positives. | GPT-4o: The review acknowledges Hugh Jackman's performance but criticizes the play as 'frustratingly opaque,' indicating a negative overall assessment. | Gemini: The review praises Jackman's performance but finds the play itself \"frustratingly opaque,\" indicating a mixed assessment. | Kimi: The critic praises the lead actor's commitment but explicitly criticizes the play as 'frustratingly opaque,' indicating the show itself is not recommended. The brevity of the text suggests this may be a truncated excerpt. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:17:09.361Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

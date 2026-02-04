@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Ian Rickson's production is polished to a high shine. The emotional arcs, the richness of the performances, the lucidity of the adaptation, the sumptuous design: everything about it gleams. There are no rough edges. It's almost too controlled, too clean. Its most charged moments are some of its smal...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's almost too controlled, too clean.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises technical excellence but criticizes the production as overly polished and lacking edge. Single excerpt warning applies - text cuts off mid-sentence at 'smal...' suggesting positive moments may follow. | GPT-4o: The excerpt provides strong praise for the production's polish, performances, and design. Despite the caution about control, the overall tone is highly positive. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review excerpt is overwhelmingly positive, praising the production's polish, performances, adaptation, and design. However, the truncated nature and the caveat about it being 'almost too controlled' suggest a reservation, placing it in the upper range of the Positive bucket. | Kimi: The excerpt offers extensive praise for the production's polish, performances, and design, though it notes the staging is 'almost too controlled, too clean,' which keeps it from rave territory. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:50:57.870Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

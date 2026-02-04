@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "War Paint is a serviceable musical that benefits from two powerhouse performances by Patti LuPone and Christine Ebersole, even if the book and score don't quite live up to their talents.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "War Paint is a serviceable musical that benefits from two powerhouse performances by Patti LuPone and Christine Ebersole, even if the book and score don't quite live up to their talents.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "War Paint is a serviceable musical that benefits from two powerhouse performances by Patti LuPone and Christine Ebersole, even if the book and score don't quite live up to their talents.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review praises the lead performances as 'powerhouse' but finds the musical itself merely 'serviceable' with book and score that 'don't quite live up' to the performers' talents. This is classic mixed territory - acknowledging strengths while highlighting significant weaknesses. | GPT-4o: The review acknowledges strong performances but notes that the book and score fall short, resulting in a mixed recommendation. | Gemini: The review praises the performances but notes the book and score don't quite live up to the talents, indicating a positive but qualified recommendation. | Kimi: The critic uses lukewarm language ('serviceable') to describe the show while praising the lead performances, explicitly noting that the material fails to match the stars' talents. This creates a balanced mixed verdict without a clear recommendation to see or skip the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:57:36.116Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

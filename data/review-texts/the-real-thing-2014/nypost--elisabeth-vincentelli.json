@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tom Stoppard's 1982 play about love, marriage and the nature of art gets a handsome but lifeless revival that squanders a terrific cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gets a handsome but lifeless revival that squanders a terrific cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the revival 'lifeless' and criticizing it for 'squandering' good actors. Despite praising the cast and calling it 'handsome,' the overall assessment is disappointment. | GPT-4o: The review describes the revival as 'lifeless' despite having a 'terrific cast,' indicating a negative overall assessment of the production. | Gemini: The review explicitly states the revival is \"lifeless\" and \"squanders a terrific cast,\" indicating a negative assessment despite acknowledging positive aspects like the cast. | Kimi: The critic delivers a clear negative verdict, describing the revival as 'lifeless' and stating it 'squanders' its talented cast, indicating the production fails despite handsome staging and strong actors.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:16:21.901Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

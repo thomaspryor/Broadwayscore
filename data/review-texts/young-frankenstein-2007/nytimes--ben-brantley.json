@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Brooks has created a show that feels both overstuffed and undercooked, a spangled vaudeville revue that keeps stopping dead in its tracks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Mr. Brooks has created a show that feels both overstuffed and undercooked, a spangled vaudeville revue that keeps stopping dead in its tracks.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Brooks has created a show that feels both overstuffed and undercooked, a spangled vaudeville revue that keeps stopping dead in its tracks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative assessment describing the show as fundamentally flawed ('overstuffed and undercooked') and dramatically ineffective ('keeps stopping dead in its tracks'). | GPT-4o: The review describes the show as 'overstuffed and undercooked' and criticizes its pacing, indicating a negative assessment without redeeming qualities. | Gemini: The review uses contradictory terms like \"overstuffed and undercooked\" and \"stopping dead in its tracks,\" indicating a mixed or ambivalent opinion. | Kimi: The critic employs strongly negative descriptors ('overstuffed,' 'undercooked,' 'stopping dead') to criticize the show's structure and pacing, indicating a clear lack of recommendation. Confidence is low due to the extreme brevity of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:08:22.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

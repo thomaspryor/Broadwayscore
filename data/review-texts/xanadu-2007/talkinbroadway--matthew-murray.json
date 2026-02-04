@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Xanadu is a show that knows exactly what it is and revels in every cheesy, glittery moment of its existence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Xanadu is a show that knows exactly what it is and revels in every cheesy, glittery moment of its existence.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Xanadu is a show that knows exactly what it is and revels in every cheesy, glittery moment of its existence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear appreciation for the show's self-aware, celebratory approach to its campy nature. 'Revels in' suggests joy and recommendation, but low confidence due to limited text. | GPT-4o: The excerpt suggests a positive tone, highlighting the show's self-awareness and enjoyment of its own style. Given the single excerpt warning, the score is placed at the higher end of the Positive range. | Gemini: The quote indicates enjoyment and appreciation for the show's campy nature, suggesting a positive, albeit potentially qualified, recommendation. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt expresses clear enthusiasm for the production's confident commitment to its camp aesthetic ('revels in every... moment'), indicating a solid recommendation. Confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:05:26.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

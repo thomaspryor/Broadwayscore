@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads. Reeves and Winter are old friends playing old friends and their dynamic oozes fondness and longfelt frustration. The love and safety that Didi and Gogo find in one another is so endearing.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed opening ('isn't exactly cracking the material open') followed by praise for specific aspect that 'soars' - the lead performances and their chemistry. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the chemistry between the leads, but notes that the production doesn't offer new insights into the material. The single excerpt and lack of a full review text suggest a mild positive impression. | Gemini: The review praises the leads' dynamic and the endearing nature of their friendship, but notes the production doesn't break new ground. Given the single excerpt and lack of overall verdict, a cautious positive score is appropriate. | Kimi: Single excerpt indicates the production lacks innovation ('isn't exactly cracking the material open') but strongly praises the lead chemistry as 'soaring' and 'endearing', suggesting a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:54:20.513Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

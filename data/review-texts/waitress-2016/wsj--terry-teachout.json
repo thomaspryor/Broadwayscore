@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Bareilles has written a tuneful, emotionally honest score that captures both the day-to-day tedium and the unspoken dreams of small-town life.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T04:55:47.702Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to score; openai: The text is a single sentence providing a brief evaluation of the score, not a full review of the show.",
+  "promptVersion": "5.2.0"
 }

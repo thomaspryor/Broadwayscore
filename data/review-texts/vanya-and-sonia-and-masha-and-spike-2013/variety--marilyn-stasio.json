@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Christopher Durang's comic riff on Chekhov is a bittersweet meditation on family dynamics that manages to be both deeply silly and surprisingly moving.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Christopher Durang's comic riff on Chekhov is a bittersweet meditation on family dynamics that manages to be both deeply silly and surprisingly moving.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to be both deeply silly and surprisingly moving",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('surprisingly moving') but very brief excerpt limits confidence in full critical assessment. | GPT-4o: The review describes the show as both 'deeply silly' and 'surprisingly moving', indicating a positive recommendation with appreciation for its emotional and comedic elements. | Gemini: The review describes the play as \"bittersweet\" and \"surprisingly moving\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises the show's successful tonal balance and emotional impact, calling it 'surprisingly moving' and appreciating how it manages to be both 'deeply silly' and meaningful. The brief excerpt indicates clear approval without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:51:21.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

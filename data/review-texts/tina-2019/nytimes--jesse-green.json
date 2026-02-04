@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "But whatever the show's problems with history and psychology, it succeeds brilliantly as a platform for its sensational star, Adrienne Warren, and for Turner's equally sensational songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "But whatever the show's problems with history and psychology, it succeeds brilliantly as a platform for its sensational star, Adrienne Warren, and for Turner's equally sensational songs.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it succeeds brilliantly as a platform for its sensational star",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging problems with history and psychology, the critic emphasizes the show 'succeeds brilliantly' with strong praise for both the star performance and songs, indicating a positive recommendation with reservations. | GPT-4o: The review highlights strong praise for the star and songs, indicating a positive recommendation despite noting some issues with history and psychology. | Gemini: The review acknowledges problems with the show's history and psychology, but ultimately recommends it for the star and songs, making it a positive but qualified recommendation. | Kimi: Despite acknowledging problems with the show's historical accuracy and psychology, the critic emphasizes that it succeeds brilliantly as a vehicle for its star and songs, delivering a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:40:20.026Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

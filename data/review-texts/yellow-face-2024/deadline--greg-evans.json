@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"With its minimalist sets by David Korins; era-appropriate costumes by Myung Hee Cho; and dreamy lighting (Donald Holder) and sound (Darron L. West) hinting at the time-hopping requirements of a memory play, Silverman's smoothly directed production is likely the final say on this long-in-coming play and a decades-old theater world brouhaha. David Henry Hwang and Yellow Face get the well-deserved last laughs.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Silverman's smoothly directed production is likely the final say on this long-in-coming play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the production elements and direction, concluding that Hwang 'gets the well-deserved last laughs.' However, single excerpt limits full assessment of verdict strength. | GPT-4o: The excerpt praises the production's direction and design elements, suggesting it is a definitive and successful staging. The positive tone and the mention of 'well-deserved last laughs' imply a strong recommendation. | Gemini: The review excerpt praises the direction and suggests the production is definitive, indicating a positive assessment. However, due to the limited text, confidence is low. | Kimi: The excerpt offers clear praise for the direction and design, calling the production the 'final say' on the play and noting the creators earn 'well-deserved last laughs.' As a single curated excerpt, it suggests a positive verdict but warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:06:04.856Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

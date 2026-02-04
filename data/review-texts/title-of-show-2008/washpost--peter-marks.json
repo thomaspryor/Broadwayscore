@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It's an endearing, if unpolished, valentine to the creative process and to the bonds forged by people united in the quixotic pursuit of getting a show on Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "It's an endearing, if unpolished, valentine to the creative process and to the bonds forged by people united in the quixotic pursuit of getting a show on Broadway.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an endearing, if unpolished, valentine to the creative process and to the bonds forged by people united in the quixotic pursuit of getting a show on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show 'endearing' and appreciates its theme, but the qualifier 'if unpolished' indicates notable flaws that prevent stronger enthusiasm. | GPT-4o: The review describes the show as 'endearing' and acknowledges its charm, but also notes it is 'unpolished'. This suggests a positive recommendation, albeit with some reservations. | Gemini: The review uses the word \"endearing\" which is positive, but also notes that it is \"unpolished\", indicating a recommendation with reservations. | Kimi: The critic offers a qualified recommendation, using warm terms like 'endearing' and 'valentine' while explicitly noting the production is 'unpolished,' suggesting solid merit despite noticeable flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:41:12.514Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

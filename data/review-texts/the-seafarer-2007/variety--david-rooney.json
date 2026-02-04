@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McPherson has crafted a haunting, darkly funny work that finds the mystical in the mundane, threading supernatural elements through a naturalistic slice of working-class Irish life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McPherson has crafted a haunting, darkly funny work that finds the mystical in the mundane",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the playwright's craft with positive descriptors like 'haunting' and 'darkly funny,' but this appears to be an excerpt with very limited text to assess the full recommendation. | GPT-4o: The review uses strong positive language like 'haunting' and 'darkly funny,' indicating a highly favorable impression of the show. | Gemini: The review uses positive language such as \"haunting\" and \"darkly funny\" and describes the work as finding \"the mystical in the mundane.\" This suggests a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt offers strong praise for the play's craft and tone, describing it as 'haunting' and 'darkly funny' with skillful thematic elements, indicating a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:20:29.529Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

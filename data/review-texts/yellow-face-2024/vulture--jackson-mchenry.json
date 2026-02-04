@@ -3,20 +3,20 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
-  "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
+  "url": "https://www.vulture.com/article/yellow-face-broadway-review.html",
   "publishDate": "October 2, 2024",
-  "fullText": null,
+  "fullText": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
   "isFullReview": false,
   "dtliExcerpt": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
   "nycTheatreExcerpt": "\"Seventeen years is an eon in theater time, enough to make some plays feel as dated as fondue and Fawlty Towers, but David Henry Hwang's Yellow Face has aged well. Currently receiving its belated Broadway premiere in a swift, tangy production by Leigh Silverman  who also directed its first New York run in 2007  the play retains its bite in part because its essential subject, like that of many a good comedy, is human folly.\"",
   "sources": [
@@ -24,43 +24,59 @@
     "nyc-theatre"
   ],
   "textQuality": "truncated",
-  "previousUrl": "https://www.vulture.com/article/yellow-face-broadway-review.html",
-  "urlDiscoveredAt": "2026-02-04T02:13:29.694Z",
-  "urlDiscoveryMethod": "google-serp",
-  "textWordCount": 118,
-  "archivePath": "data/archives/reviews/yellow-face-2024/vulture--jackson-mchenry_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T02:13:29.704Z",
-  "fetchMethod": "playwright",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise with 'spectacular effect' and 'bracingly universal' indicates a rave, but this appears to be an excerpt with very limited text available for assessment. | GPT-4o: The review uses strong positive language ('spectacular effect') indicating a high level of praise and a strong recommendation. | Gemini: The review uses strong positive language such as \"deeply personal and bracingly universal\" and \"spectacular effect,\" indicating a positive recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 1,
-  "truncationSignals": [
-    "has_paywall_text",
-    "has_footer_text"
-  ],
-  "textStatus": "truncated",
-  "sourceMethod": "playwright",
-  "textIssues": [
-    "Word count too low: 118 (min: 300)",
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:07:49.868Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production succeeds largely because of the ferocious commitment of its two leads, Ethan Hawke and Paul Dano, who alternate nightly in the roles of the brothers.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The production succeeds largely because of the ferocious commitment of its two leads, Ethan Hawke and Paul Dano, who alternate nightly in the roles of the brothers.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production succeeds largely because of the ferocious commitment of its two leads.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The original rating of 80 places it in the Positive bucket. The review highlights strong performances as a key success factor, aligning with a positive recommendation. | Gemini: The review highlights the strong performances of the leads as the main reason for the production's success. Given the original rating of 80, this indicates a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review explicitly states the production 'succeeds' and praises the 'ferocious commitment' of the lead actors, indicating a clear positive recommendation. The original rating of 80 supports this classification in the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:48:40.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

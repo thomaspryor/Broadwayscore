@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Hathaway brings a fierce intelligence and a welcome lack of vanity to Viola, the young woman who disguises herself as a man after being shipwrecked on the coast of Illyria.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Hathaway brings a fierce intelligence and a welcome lack of vanity to Viola",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Hathaway's performance with 'fierce intelligence' and 'welcome lack of vanity' suggests positive assessment, but limited text and single excerpt warning requires conservative scoring within Positive range. | GPT-4o: The excerpt praises Anne Hathaway's performance, indicating a positive view of her role. However, without more context or a clear overall verdict, the confidence is low and the score reflects a mildly positive impression. | Gemini: The excerpt praises Hathaway's performance, suggesting a positive but limited assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performance with phrases like 'fierce intelligence' and 'welcome lack of vanity,' indicating a clear positive recommendation. Score placed at the upper end of the Positive bucket per instructions for clearly positive single excerpts, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:49:08.006Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

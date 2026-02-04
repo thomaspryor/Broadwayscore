@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Chita Rivera, at 82, remains a force of nature, bringing both vulnerability and steely determination to her role as Claire Zachanassian in this musical adaptation of Friedrich Dürrenmatt's dark play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chita Rivera, at 82, remains a force of nature, bringing both vulnerability and steely determination to her role",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Rivera's powerful performance with vivid language ('force of nature'). Given single excerpt warning and clearly positive tone about the lead performance, scoring in upper Positive range, but low confidence due to limited text. | GPT-4o: The excerpt praises Chita Rivera's performance, suggesting a positive view of the production. However, the single excerpt and lack of full context limit confidence. | Gemini: The excerpt praises Chita Rivera's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've placed it in the lower end of the Positive bucket. | Kimi: The single available excerpt offers strong praise for the lead performance ('force of nature'), suggesting a positive view, though the limited context prevents a definitive assessment of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:28:20.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

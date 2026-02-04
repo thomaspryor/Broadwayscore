@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Matthew Broderick stars in this revival of Christopher Hampton's 1970 play about a well-meaning but emotionally detached academic whose good intentions often lead to unfortunate consequences.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T04:05:05.772Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is a brief plot summary with cast information, containing no critical evaluation or opinion about the production's quality.; openai: This text is a plot summary with no evaluation or opinion on the production.; gemini: This is a plot summary with no evaluative content or recommendation.; kimi: This text contains only a plot summary and cast information ('well-meaning but emotionally detached academic whose good intentions often lead to unfortunate consequences') with no critical evaluation, opinion on quality, or recommendation to see the show.",
+  "promptVersion": "5.2.0"
 }

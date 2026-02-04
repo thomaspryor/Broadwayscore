@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production benefits immeasurably from two superb performances by Corey Hawkins and Yahya Abdul-Mateen II, who bring both brotherly chemistry and individual charisma to these complex roles.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "https://www.wsj.com/articles/topdog-underdog-review-suzan-lori-parks-corey-hawkins-yahya-abdul-mateen-ii-kenny-leon-arnulfo-maldonado-11666302909",
@@ -24,5 +24,10 @@
     "web-search",
     "show-score-playwright",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T04:44:49.438Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a fragment or excerpt focusing only on cast praise without any overall evaluation or recommendation of the show; openai: This text is a brief excerpt focusing on performances without a clear overall evaluation of the show.",
+  "promptVersion": "5.2.0"
 }

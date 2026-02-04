@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This bloated new musical about Grace O'Malley, a 16th-century Irish warrior, is so benumbed by its own earnestness that it makes 'Man of La Mancha' look like a laff riot.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 22,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This bloated new musical about Grace O'Malley, a 16th-century Irish warrior, is so benumbed by its own earnestness that it makes 'Man of La Mancha' look like a laff riot.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 22,
+    "confidence": "high",
+    "range": {
+      "low": 17,
+      "high": 27
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This bloated new musical is so benumbed by its own earnestness that it makes 'Man of La Mancha' look like a laff riot.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Brantley uses harsh language ('bloated', 'benumbed') and a cutting comparison that condemns the show's fundamental tone and execution. Clear pan with no redeeming qualities mentioned. | GPT-4o: The review uses strongly negative language, comparing the musical unfavorably to another show and describing it as 'bloated' and 'benumbed.' There are no redeeming qualities mentioned. | Gemini: The review uses strong negative language, comparing the show unfavorably to 'Man of La Mancha' and describing it as 'bloated' and 'benumbed'. | Kimi: The critic deploys devastating imagery ('bloated,' 'benumbed') and an unfavorable comparison to characterize the show as dull, overly serious, and lacking vitality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:06:32.165Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 22,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'The Velocity of Autumn' from terminal cuteness is the unforced naturalness of the relationship between Estelle Parsons and Stephen Spinella, who play Alexandra and her son Chris with a mixture of irritation and affection that rings completely true.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What saves 'The Velocity of Autumn' from terminal cuteness is the unforced naturalness of the relationship between Estelle Parsons and Stephen Spinella",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this quote suggests the show has flaws ('terminal cuteness') but is saved by strong performances. The phrase 'what saves' implies problems that need saving from, making this a qualified positive recommendation. | GPT-4o: The excerpt highlights the genuine chemistry between the lead actors as a saving grace, suggesting a positive view of their performances. However, the mention of 'terminal cuteness' implies some reservations about the show overall. Given the single excerpt and potential cherry-picking, a lower-end Positive score is appropriate. | Gemini: The review excerpt highlights the positive performances and relationship between the actors, suggesting a worthwhile aspect of the play, but the limited text and warning about excerpts reduce confidence. | Kimi: The excerpt offers qualified praise, noting that the lead performances redeem an otherwise overly cute or sentimental show. While the acting is praised as 'unforced' and authentic, the reference to 'terminal cuteness' suggests significant reservations about the material itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:27:54.955Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
