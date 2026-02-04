@@ -22,6 +22,7 @@ const {
   scrapeCurrentRuntimes,
   scrapeShowRuntime,
   matchRuntimesToShows,
+  batchScrapeAgeRecommendations,
   parseRuntimeText,
 } = require('./lib/broadway-com-runtimes');
 const { cleanup } = require('./lib/scraper');
@@ -124,6 +125,19 @@ async function main() {
 
     console.log(`  Phase 1: ${changes.length} shows to update, ${skipped} skipped (already have runtime)`);
 
+    // --- Phase 1.5: Age recommendations from individual pages ---
+    const showsMissingAge = shows.filter(s => !s.ageRecommendation && (s.status === 'open' || s.status === 'previews'));
+    if (showsMissingAge.length > 0 && currentEntries.length > 0) {
+      console.log(`\n--- Phase 1.5: Age recommendations (${showsMissingAge.length} open/preview shows missing) ---`);
+      await batchScrapeAgeRecommendations(currentEntries, shows, enrichments);
+      // Apply any age recommendations found
+      for (const show of shows) {
+        if (enrichments[show.id] && enrichments[show.id].ageRecommendation && !show.ageRecommendation) {
+          show.ageRecommendation = enrichments[show.id].ageRecommendation;
+        }
+      }
+    }
+
     // --- Phase 2: Individual pages (closed/missing shows) ---
     if (!CURRENT_ONLY) {
       console.log('\n--- Phase 2: Individual show pages ---');
@@ -199,11 +213,12 @@ async function main() {
  * Apply runtime changes to the shows array.
  */
 function applyChanges(shows, changes) {
-  for (const { show, runtime, intermissions } of changes) {
-    const s = shows.find(x => x.id === show.id);
+  for (const change of changes) {
+    const s = shows.find(x => x.id === change.show.id);
     if (!s) continue;
-    if (runtime) s.runtime = runtime;
-    if (intermissions != null) s.intermissions = intermissions;
+    if (change.runtime) s.runtime = change.runtime;
+    if (change.intermissions != null) s.intermissions = change.intermissions;
+    if (change.ageRecommendation && !s.ageRecommendation) s.ageRecommendation = change.ageRecommendation;
   }
 }
 

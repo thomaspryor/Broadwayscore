@@ -557,7 +557,7 @@ async function discoverHistoricalShows() {
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
         synopsis: '',
-        ageRecommendation: null,
+        ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
         previewsStartDate: show.previewsStartDate || null,
         tags,
         ticketLinks: [],
