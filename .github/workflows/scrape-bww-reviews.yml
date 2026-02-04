@@ -1,0 +1,167 @@
+name: Scrape BWW Reviews
+
+on:
+  schedule:
+    - cron: '0 13 * * 0'  # Weekly Sundays 1 PM UTC (after existing scrapers)
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Page type to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - reviews
+          - roundup
+        default: all
+      shows:
+        description: 'Comma-separated show IDs (empty = all shows)'
+        required: false
+        type: string
+      limit:
+        description: 'Max shows to process'
+        required: false
+        type: string
+        default: '200'
+      force:
+        description: 'Override cache freshness check'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git for checkpointing
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Scrape BWW reviews
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          FLAGS="--type=${{ inputs.type || 'all' }}"
+          if [ -n "${{ inputs.shows }}" ]; then
+            FLAGS="$FLAGS --shows=${{ inputs.shows }}"
+          fi
+          if [ -n "${{ inputs.limit }}" ]; then
+            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+          echo "Running: node scripts/scrape-bww-reviews.js $FLAGS"
+          node scripts/scrape-bww-reviews.js $FLAGS
+
+      - name: Final commit and push
+        run: |
+          git add data/review-texts/ data/aggregator-archive/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "data: BWW reviews scrape ($(date -u +%Y-%m-%d))"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  rebuild:
+    needs: [scrape]
+    if: always() && needs.scrape.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit and push rebuilt reviews.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/reviews.json data/critic-registry.json data/audit/
+          git diff --staged --quiet || git commit -m "data: Auto-rebuild reviews.json after BWW scrape"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
