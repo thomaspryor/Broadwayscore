@@ -32,6 +32,27 @@ const IBDB_IMAGE_CACHE_PATH = path.join(__dirname, '..', 'data', 'ibdb-image-cac
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 
+// ============================================================
+// PINNED IMAGES — Manually curated thumbnails, NEVER overwrite
+// These were hand-selected or restored by human review.
+// To add: append the show ID here and commit.
+// To override: remove from this list first, then re-fetch.
+// ============================================================
+const PINNED_IMAGES = new Set([
+  'sunset-boulevard-2024',        // Nicole Scherzinger Tony Award promo art
+  'an-enemy-of-the-people-2024',  // Jeremy Strong underwater poster art
+  'waiting-for-godot-2025',       // Reeves & Winter blue promo poster
+  'good-night-and-good-luck-2025',// George Clooney B&W full title poster
+  'parade-2023',                  // Ben Platt & Micaela Diamond promo art
+  'redwood-2025',                 // Idina Menzel "Returns to Broadway" poster
+  'smash-2025',                   // Red marquee light-bulb logo
+  'once-upon-a-mattress-2024',    // Sutton Foster promo art
+  'maybe-happy-ending-2024',      // Square key art (protected from poster crop)
+  'romeo-juliet-2024',            // Manually uploaded promotional art
+  'art-2025',                     // Manually sourced thumbnail
+  'operation-mincemeat-2025',     // Native 1080x1080 square asset
+]);
+
 // Broadway.org CDN image transforms
 const BROADWAY_ORG_TRANSFORMS = {
   square:    '?width=1080&height=1080&fit=cover&quality=85',
@@ -984,6 +1005,12 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
 // Process a single show: discover TodayTix ID, fetch images, update show object.
 // Returns { show, images, apiSourced } or null on failure.
 async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx) {
+  // Skip pinned images — these were manually curated and must not be overwritten
+  if (PINNED_IMAGES.has(show.id) && show.images?.thumbnail) {
+    console.log(`   PINNED — skipping ${show.id} (manually curated thumbnail)`);
+    return null;
+  }
+
   // Try matching against TodayTix API data (instant, no HTTP call)
   const apiData = matchTodayTixShow(show.title, apiLookup);
 

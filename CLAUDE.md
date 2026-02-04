@@ -153,7 +153,8 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 - `scripts/scrape-grosses.ts` — BroadwayWorld weekly grosses + history enrichment
 - `scripts/update-commercial-data.js` — Weekly commercial automation
 - `scripts/generate-critic-consensus.js` — LLM editorial summaries
-- `scripts/fetch-show-images-auto.js` — Image fetcher: TodayTix → page scrape → Playbill fallback
+- `scripts/fetch-show-images-auto.js` — Image fetcher: TodayTix → page scrape → Playbill fallback. **Has `PINNED_IMAGES` set — NEVER overwrite these thumbnails** (manually curated promotional art). To update a pinned image: remove from the set first, then re-fetch.
+- `scripts/lib/verify-image.js` — Gemini 2.0 Flash vision gate for image verification (used by fetch pipeline with `--verify`)
 
 **Libraries:** `scripts/lib/` — `deduplication.js` (9-check show dedup), `review-normalization.js` (outlet/critic normalization), `text-cleaning.js` (HTML entities, junk stripping), `content-quality.js` (content tier classification + garbage detection), `ibdb-dates.js` (IBDB date/creative team lookup), `show-matching.js` (title→show matching), `scraper.js` (Bright Data → ScrapingBee → Playwright fallback), `deep-research-guardian.js`, `source-validator.js`, `parse-grosses.js`
 
