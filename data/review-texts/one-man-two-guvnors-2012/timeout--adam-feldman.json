@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Corden is a whirling dervish of comic energy in this knockabout British farce, which transfers to Broadway with most of its National Theatre cast intact.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "James Corden is a whirling dervish of comic energy in this knockabout British farce, which transfers to Broadway with most of its National Theatre cast intact.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Corden is a whirling dervish of comic energy in this knockabout British farce",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The original 80 rating indicates positive recommendation, and the description of Corden as 'whirling dervish of comic energy' is clearly praise. However, confidence is low due to the extremely brief excerpt providing limited evaluative content. | GPT-4o: The critic's original rating of 80 aligns with a positive review. The key quote highlights the energetic performance of James Corden, suggesting a solid recommendation. | Gemini: The review praises James Corden's performance and describes the show as a \"knockabout British farce,\" indicating a positive, though possibly not rave, recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic delivers enthusiastic praise for Corden's performance ('whirling dervish of comic energy') and notes the successful transfer of the production to Broadway. The explicit rating of 80 confirms a solid positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:08:35.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

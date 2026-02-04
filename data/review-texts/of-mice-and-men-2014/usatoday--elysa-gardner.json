@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Franco and Chris O'Dowd bring a touching chemistry to their portrayal of the unlikely friendship between George and Lennie in this faithful adaptation of Steinbeck's classic.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.usatoday.com/story/life/theater/2014/04/16/broadway-review-of-mice-and-men/7711475/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T09:55:00.958Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief promotional blurb or plot summary describing the actors and story, but contains no critical evaluation or recommendation about the production quality.; openai: The review text refers to a previous production featuring James Franco and Chris O'Dowd, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

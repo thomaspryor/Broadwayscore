@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Director Maria Friedman doesn’t eliminate what’s off-putting about “Merrily We Roll Along”; instead she directs our attention to what’s best about it. She does this primarily by casting the main characters with three talented and appealing performers… Sondheim saw the primary themes of the musical as “the souring of ideals and the erosion of friendship,” and he expresses these musically again and again in novel, clever and yes tuneful ways\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She does this primarily by casting the main characters with three talented and appealing performers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the director's approach and casting choices, with positive language about Sondheim's musical expression being 'novel, clever and yes tuneful.' Single excerpt from curated source warrants upper-positive range but medium confidence due to limited text. | GPT-4o: The excerpt highlights the director's successful focus on the positive aspects of the show, supported by talented performers. The tone suggests a positive recommendation, though the single excerpt limits confidence. | Gemini: The excerpt focuses on the director highlighting the best aspects of the show and praises the performers and Sondheim's music, indicating a positive recommendation. Given the single excerpt, confidence is low, but the positive tone suggests the upper end of the bucket. | Kimi: The critic praises Friedman's directional approach of highlighting the show's strengths rather than fixing its weaknesses, and commends the talented cast and Sondheim's 'tuneful' score. While acknowledging inherent 'off-putting' elements, the overall assessment is clearly appreciative and recommendatory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:48:04.203Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

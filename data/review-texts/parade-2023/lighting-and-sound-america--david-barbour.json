@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“It has always been one of the two or three best musicals of the last quarter century, foregrounding a wrenching personal drama against a teeming canvas of prejudice, media manipulation, and political chicanery. Unlike most musicals, it minces no words, building its case unsentimentally and climaxing in an absolute haymaker of an eleven o'clock number. If the current production is not ideal, the show remains a stunner with much to say about today's poisoned political discourse. It's an exhilarating demonstration of what musical theatre can achieve.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If the current production is not ideal, the show remains a stunner with much to say about today's poisoned political discourse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the musical itself ('one of the two or three best musicals of the last quarter century', 'stunner', 'exhilarating') with only minor reservation about this specific production. Single excerpt warning applied - clearly positive tone warrants upper Positive range. | GPT-4o: The excerpt describes the show as a 'stunner' and 'exhilarating,' with high praise for its thematic depth and impact, despite noting that the current production is 'not ideal.' The language suggests a strong recommendation. | Gemini: The review states the show \"remains a stunner\" and is an \"exhilarating demonstration of what musical theatre can achieve,\" indicating a positive recommendation despite reservations about the current production. Given it is a single excerpt, I am scoring on the higher end of positive. | Kimi: While acknowledging the production isn't perfect ('not ideal'), the critic calls it a 'stunner' and 'exhilarating,' praising the material as one of the best musicals of the last quarter century.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:17:20.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

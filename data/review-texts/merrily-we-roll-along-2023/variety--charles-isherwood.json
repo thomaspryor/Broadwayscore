@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The word 'ravishing' is strong praise, and calling it the 'perfect moment' for the show suggests high enthusiasm. However, single excerpt warning applies - this could be cherry-picked from a longer review with more reservations. | GPT-4o: The excerpt uses highly positive language ('ravishing revival') and suggests the show has reached its 'perfect moment', indicating a strong recommendation. However, due to the single excerpt warning, confidence is set to low. | Gemini: The excerpt uses the word \"ravishing\" to describe the revival, which indicates a strong positive sentiment. Given the single excerpt warning, I am placing the score towards the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise using words like 'ravishing' and 'perfect moment,' suggesting a strong endorsement of this revival, though as a single curated quote, the full context of the review remains unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:48:34.497Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

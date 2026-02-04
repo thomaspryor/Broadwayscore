@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jim Parsons brings a gentle, contemplative presence to the Stage Manager role, while Katie Holmes delivers a touching performance as Mrs. Webb in this affecting revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jim Parsons brings a gentle, contemplative presence to the Stage Manager role, while Katie Holmes delivers a touching performance as Mrs. Webb in this affecting revival.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jim Parsons brings a gentle, contemplative presence to the Stage Manager role, while Katie Holmes delivers a touching performance as Mrs. Webb in this affecting revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances and calling it an 'affecting revival,' but limited text makes full verdict assessment difficult. | GPT-4o: The excerpt praises the performances of Jim Parsons and Katie Holmes, describing the revival as 'affecting'. However, due to the single excerpt warning, the overall sentiment is unclear, leading to a cautious, mildly positive score. | Gemini: The excerpt praises the performances of Jim Parsons and Katie Holmes, suggesting a positive experience, but without more context, it's difficult to gauge the overall strength of the recommendation. I'm placing it in the positive bucket with a low confidence due to the limited text. | Kimi: The excerpt describes the revival as 'affecting' and praises the lead performances with warm adjectives ('gentle,' 'contemplative,' 'touching'), indicating a clear positive recommendation despite the gentle rather than exuberant tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:14:17.194Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

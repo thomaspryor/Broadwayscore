@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"After several postponements in both Chicago and New York, MJ the Musical has finally arrived with a jolt of throbbing energy at the Neil Simon Theatre. It’s an evening of extraordinary performances and stunning choreography, as much a live concert of Michael Jackson’s greatest hits as a biographical or jukebox musical. Skirting controversy and prurience, it seeks to solidify Michael Jackson’s musical legacy, but raises the question for audiences of whether we can separate the art from the artist.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an evening of extraordinary performances and stunning choreography, as much a live concert of Michael Jackson's greatest hits as a biographical or jukebox musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for performances and choreography as 'extraordinary' and 'stunning', with energetic language like 'jolt of throbbing energy'. However, this is only an excerpt so confidence is medium. | GPT-4o: The excerpt praises the performances and choreography, suggesting a strong positive impression. However, the single excerpt warning indicates potential cherry-picking, so confidence is low. | Gemini: The review excerpt highlights \"extraordinary performances and stunning choreography\", suggesting a positive experience. The mention of \"skirting controversy\" indicates a reservation, but the overall tone leans positive. | Kimi: The excerpt offers enthusiastic praise for the performances and choreography ('extraordinary', 'stunning', 'jolt of throbbing energy'), placing it in the upper range of Positive despite caveats about the show skirting controversy. Single-excerpt limitation necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:49:11.192Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

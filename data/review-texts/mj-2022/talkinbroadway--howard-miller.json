@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Lynn Nottage has curated Jackson's story as much as she has written it for stage. MJ, which is being presented \"by special arrangements with the estate of Michael Jackson,\" is \"all about the music,\" as the character states on more than one occasion. Nottage has provided a frame of sorts, a reporter, Rachel (Whitney Bashor), and a cameraman, Alejandro (Gabriel Ruiz), follow Jackson around as they are working on a documentary about the preparations leading up to the Dangerous tour. \"You've grown up in the public eye, you're the subject of a lot of speculation, is it really possible to separate your life from your music?\" asks Rachel. And, except for the occasional sideswipe at such \"speculation,\" the answer is \"yes.\" Does it matter? Up to you to decide, of course, but taken on its own merits, MJ is spectacularly entertaining, and in that realm, it comes damn close to being perfect.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MJ is spectacularly entertaining, and in that realm, it comes damn close to being perfect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being a single excerpt, the critic's final assessment is unambiguously positive with strong language ('spectacularly entertaining', 'damn close to being perfect'). This warrants the upper end of the Positive range. | GPT-4o: The excerpt offers high praise, calling the show 'spectacularly entertaining' and 'damn close to being perfect.' Despite the single excerpt warning, the language used suggests a strong recommendation. | Gemini: The review states that the show is \"spectacularly entertaining\" and \"comes damn close to being perfect.\" This indicates a strong positive recommendation, despite acknowledging the curated nature of the story. | Kimi: Single excerpt contains effusive praise calling the production 'spectacularly entertaining' and 'damn close to being perfect,' though with noted reservations about its avoidance of biographical controversy. Following single-excerpt guidelines, scored at upper end of Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:49:53.513Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

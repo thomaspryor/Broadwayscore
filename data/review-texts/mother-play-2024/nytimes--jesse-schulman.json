@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel's 'Mother Play' is a memory play that feels both deeply personal and universally resonant, anchored by Jessica Lange's commanding performance as a mother grappling with her own mortality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's 'Mother Play' is a memory play that feels both deeply personal and universally resonant, anchored by Jessica Lange's commanding performance as a mother grappling with her own mortality.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paula Vogel's 'Mother Play' is a memory play that feels both deeply personal and universally resonant, anchored by Jessica Lange's commanding performance as a mother grappling with her own mortality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive descriptors ('deeply personal and universally resonant', 'commanding performance') suggests recommendation, but limited text prevents assessment of full verdict. Single excerpt warning applies - cautious scoring in lower Positive range. | GPT-4o: The excerpt praises the play as 'deeply personal and universally resonant' and highlights Jessica Lange's 'commanding performance', suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt highlights the play's resonance and Lange's performance, suggesting a positive experience, but the lack of a definitive recommendation and the single excerpt warrants a score on the lower end of the positive range with low confidence. | Kimi: The excerpt offers strong praise for the play's emotional resonance and uses the superlative 'commanding' for Lange's performance, indicating a clear recommendation. However, as a single curated excerpt, it may not capture the full nuance of the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:51:43.073Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

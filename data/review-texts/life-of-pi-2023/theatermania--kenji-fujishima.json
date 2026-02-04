@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“It’s an accomplishment for any performer to stand out amid a special-effects-heavy show such as this, but Abeysekera turns out to be just as good a reason to see the visually enchanting ’Life of Pi ’as the puppets.”\n\nRead more"
+  "showScoreExcerpt": "“It’s an accomplishment for any performer to stand out amid a special-effects-heavy show such as this, but Abeysekera turns out to be just as good a reason to see the visually enchanting ’Life of Pi ’as the puppets.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an accomplishment for any performer to stand out amid a special-effects-heavy show such as this, but Abeysekera turns out to be just as good a reason to see the visually enchanting 'Life of Pi' as the puppets.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises both lead performance and calls show 'visually enchanting,' suggesting positive recommendation, but limited text requires low confidence. | GPT-4o: The excerpt praises both the performance of Abeysekera and the visual elements of the show, suggesting a strong recommendation. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises the lead performer as a major reason to see the show, alongside the visually enchanting puppets, indicating a strong positive recommendation. Given that it is a single excerpt, I am placing the score at the higher end of the positive range. | Kimi: The critic explicitly identifies the performer as a 'reason to see' the show alongside its famous puppets, and describes the production as 'visually enchanting,' indicating a clear recommendation despite the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:39:04.912Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

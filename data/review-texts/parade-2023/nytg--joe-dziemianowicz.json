@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“It’s a rare and thrilling gift when a musical presents a song that stirs up a legitimate lump in your throat. ’Parade,’ back in a banner revival, sees its stars Ben Platt and Micaela Diamond work that special magic twice with a pair of duets, one hopeful and one crushing. Memo: Bring tissues.”\n\nRead more"
+  "showScoreExcerpt": "“It’s a rare and thrilling gift when a musical presents a song that stirs up a legitimate lump in your throat. ’Parade,’ back in a banner revival, sees its stars Ben Platt and Micaela Diamond work that special magic twice with a pair of duets, one hopeful and one crushing. Memo: Bring tissues.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a rare and thrilling gift when a musical presents a song that stirs up a legitimate lump in your throat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it a 'rare and thrilling gift' and 'banner revival' with specific praise for stars' 'special magic.' However, only one excerpt available so confidence is low. | GPT-4o: The excerpt uses strong positive language ('rare and thrilling gift', 'special magic') and highlights emotional impact, suggesting a highly enthusiastic recommendation. However, given the single excerpt, confidence is low. | Gemini: The review excerpt praises the musical's ability to evoke strong emotions and highlights the performances of the stars, suggesting a positive experience. Given the single excerpt, I am scoring on the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:18:43.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
