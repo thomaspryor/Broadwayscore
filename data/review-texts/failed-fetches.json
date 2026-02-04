@@ -11284,18 +11284,6 @@
     "timestamp": "2026-02-04T14:20:22.239Z"
   },
   {
-    "reviewId": "bernhardthamlet-2018/variety--marilyn-stasio.json",
-    "showId": "bernhardthamlet-2018",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-broadway-1202964943/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"bernhardthamlet\" not mentioned in text; No theater-related keywords in short text",
-    "textLength": 1508,
-    "timestamp": "2026-02-04T14:33:39.251Z"
-  },
-  {
     "reviewId": "betrayal-2013/hollywood-reporter--david-rooney.json",
     "showId": "betrayal-2013",
     "outlet": "The Hollywood Reporter",
@@ -11306,30 +11294,6 @@
     "garbageReason": "Multiple shows mentioned (7): mamma mia!, english, rain, high, race...",
     "textLength": 8451,
     "timestamp": "2026-02-04T14:34:14.289Z"
-  },
-  {
-    "reviewId": "between-riverside-and-crazy-2022/variety--aramide-tinubu.json",
-    "showId": "between-riverside-and-crazy-2022",
-    "outlet": "Variety",
-    "critic": "Aramide Tinubu",
-    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
-    "textLength": 5763,
-    "timestamp": "2026-02-04T14:37:25.343Z"
-  },
-  {
-    "reviewId": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
-    "showId": "between-riverside-and-crazy-2022",
-    "outlet": "Variety",
-    "critic": "Naveen Kumar",
-    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
-    "textLength": 5819,
-    "timestamp": "2026-02-04T14:37:44.486Z"
   },
   {
     "reviewId": "bronx-bombers-2014/hollywood-reporter--unknown.json",
@@ -13274,5 +13238,41 @@
     "garbageReason": "Multiple shows mentioned (9): wicked, company, bernhardt/hamlet, cyrano de bergerac, once...",
     "textLength": 6159,
     "timestamp": "2026-02-04T19:52:02.694Z"
+  },
+  {
+    "reviewId": "bernhardthamlet-2018/variety--marilyn-stasio.json",
+    "showId": "bernhardthamlet-2018",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-broadway-1202964943/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"bernhardthamlet\" not mentioned in text; Contains non-theater content: \"Breaking News\"",
+    "textLength": 2011,
+    "timestamp": "2026-02-04T19:52:34.326Z"
+  },
+  {
+    "reviewId": "between-riverside-and-crazy-2022/variety--aramide-tinubu.json",
+    "showId": "between-riverside-and-crazy-2022",
+    "outlet": "Variety",
+    "critic": "Aramide Tinubu",
+    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, hair, once, rain, high...",
+    "textLength": 5819,
+    "timestamp": "2026-02-04T20:05:31.856Z"
+  },
+  {
+    "reviewId": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+    "showId": "between-riverside-and-crazy-2022",
+    "outlet": "Variety",
+    "critic": "Naveen Kumar",
+    "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, company, hair, once, rain...",
+    "textLength": 5529,
+    "timestamp": "2026-02-04T20:06:06.958Z"
   }
 ]
