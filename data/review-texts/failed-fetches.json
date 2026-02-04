@@ -5728,30 +5728,6 @@
     "timestamp": "2026-02-02T15:41:08.595Z"
   },
   {
-    "reviewId": "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "Broadway News",
-    "critic": "Brittani Samuel",
-    "url": "https://www.broadwaynews.com/the-broadway-review-buena-vista-social-club-brings-ebullient-trova-music-to-broadway-but-leaves-history-behind/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (27): maybe happy ending, the outsiders, hell's kitchen, oh, mary!, the great gatsby...",
-    "textLength": 35119,
-    "timestamp": "2026-02-02T15:42:51.368Z"
-  },
-  {
-    "reviewId": "buena-vista-social-club-2025/timeout--adam-feldman.json",
-    "showId": "buena-vista-social-club-2025",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6333,
-    "timestamp": "2026-02-02T15:43:01.807Z"
-  },
-  {
     "reviewId": "bug/timeout--adam-feldman.json",
     "showId": "bug",
     "outlet": "Time Out New York",
@@ -10514,5 +10490,101 @@
     "garbageReason": "Multiple shows mentioned (7): home, company, once, rain, high...",
     "textLength": 6906,
     "timestamp": "2026-02-04T01:40:09.875Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "Broadway News",
+    "critic": "Brittani Samuel",
+    "url": "https://www.broadwaynews.com/the-broadway-review-buena-vista-social-club-brings-ebullient-trova-music-to-broadway-but-leaves-history-behind/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (49): maybe happy ending, the outsiders, hell's kitchen, oh, mary!, the great gatsby...",
+    "textLength": 35119,
+    "timestamp": "2026-02-04T01:47:57.599Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/new-york-sun--elysa-gardner.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "New York Sun",
+    "critic": "Elysa Gardner",
+    "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, west side story, carousel, hair, once...",
+    "textLength": 5203,
+    "timestamp": "2026-02-04T01:48:18.858Z"
+  },
+  {
+    "reviewId": "buena-vista-social-club-2025/timeout--adam-feldman.json",
+    "showId": "buena-vista-social-club-2025",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 6591,
+    "timestamp": "2026-02-04T01:49:02.799Z"
+  },
+  {
+    "reviewId": "burn-this-2019/deadline--greg-evans.json",
+    "showId": "burn-this-2019",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2019/04/burn-this-review-adam-driver-keri-russell-broadway-lanford-wilson-1202595894/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): harry potter and the cursed child, mamma mia!, liberation, the roommate, dog day afternoon...",
+    "textLength": 7647,
+    "timestamp": "2026-02-04T01:50:03.034Z"
+  },
+  {
+    "reviewId": "burn-this-2019/observer--rex-reed.json",
+    "showId": "burn-this-2019",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2019/04/burn-this-broadway-review-adam-driver-keri-russell/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-04T01:51:29.629Z"
+  },
+  {
+    "reviewId": "burn-this-2019/theatermania--jesse-green.json",
+    "showId": "burn-this-2019",
+    "outlet": "TheaterMania",
+    "critic": "Jesse Green",
+    "url": "https://www.theatermania.com/broadway/reviews/burn-this_86851.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): sweeney todd, company, king lear, hair, race...",
+    "textLength": 4786,
+    "timestamp": "2026-02-04T01:51:43.208Z"
+  },
+  {
+    "reviewId": "burn-this-2019/timeout--adam-feldman.json",
+    "showId": "burn-this-2019",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/burn-this",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 4672,
+    "timestamp": "2026-02-04T01:52:24.610Z"
+  },
+  {
+    "reviewId": "cabaret-2014/theatermania--zachary-stewart.json",
+    "showId": "cabaret-2014",
+    "outlet": "TheaterMania",
+    "critic": "Zachary Stewart",
+    "url": "https://www.theatermania.com/news/review-cabaret-returns-to-broadway-in-an-incoherent-revival_1737827/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): english, sweeney todd, king lear, sweat, the audience...",
+    "textLength": 14432,
+    "timestamp": "2026-02-04T01:53:23.382Z"
   }
 ]
