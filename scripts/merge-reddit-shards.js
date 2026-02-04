@@ -33,6 +33,14 @@ function calculateCombinedScore(sources) {
     return { score: null, weights: null };
   }
 
+  // When only Reddit exists, give it 100% weight (not 20%)
+  if (!hasShowScore && !hasMezzanine && hasReddit) {
+    return {
+      score: Math.round(sources.reddit.score),
+      weights: { showScore: 0, mezzanine: 0, reddit: 100 }
+    };
+  }
+
   const redditWeight = hasReddit ? 0.20 : 0;
   const remainingWeight = 1 - redditWeight;
 

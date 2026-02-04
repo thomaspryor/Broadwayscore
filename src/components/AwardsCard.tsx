@@ -12,6 +12,7 @@ import {
 interface AwardsCardProps {
   showId: string;
   awards: ShowAwards | undefined;
+  openingDate?: string;
 }
 
 // Trophy icon for wins
@@ -342,7 +343,7 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
   );
 }
 
-export default function AwardsCard({ showId, awards }: AwardsCardProps) {
+export default function AwardsCard({ showId, awards, openingDate }: AwardsCardProps) {
   const designation = getAwardsDesignation(showId);
   const tonyWins = getTonyWinCount(showId);
   const tonyNoms = getTonyNominationCount(showId);
@@ -357,6 +358,17 @@ export default function AwardsCard({ showId, awards }: AwardsCardProps) {
 
   // Don't show card if pre-season with no data
   if (designation === 'pre-season' && !awards?.tony?.note) {
+    // Check if the show is genuinely pre-season or just missing data
+    // Tony ceremonies are in June; shows opening 14+ months ago have been through at least one season
+    const isPastEligibility = openingDate && (
+      new Date().getTime() - new Date(openingDate).getTime() > 14 * 30 * 24 * 60 * 60 * 1000
+    );
+
+    if (isPastEligibility) {
+      // Historical show without awards data — hide the card entirely
+      return null;
+    }
+
     return (
       <section className="card p-5 sm:p-6 mb-6">
         <h2 className="text-lg font-bold text-white mb-3">Awards Scorecard</h2>
