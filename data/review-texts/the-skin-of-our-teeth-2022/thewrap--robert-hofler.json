@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The current Broadway season has offered a few good revivals of plays and a couple of great revivals: Paul Vogel’s “How I Learned to Drive” and Ruben Santiago-Hudson’s “Lackawanna Blues.” That winning streak ended on Monday with the opening of “The Skin of Our Teeth” at Lincoln Center Theater’s Vivian Beaumont.",
+  "isFullReview": false,
+  "textWordCount": 51,
+  "archivePath": "data/archives/reviews/the-skin-of-our-teeth-2022/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:45:15.804Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 57 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 51,
+  "tierReason": "Short text (51 words)"
 }
