@@ -67,7 +67,8 @@
   "sources": [
     "bww-roundup",
     "show-score-playwright",
-    "dtli"
+    "dtli",
+    "bww-reviews"
   ],
   "rescoreReason": "low-conf: prompt=3.0.0, delta=35, upgrading to V5 + 3 models",
   "previousLlmScore": 63,
@@ -100,5 +101,6 @@
     "bwwThumb": "Up"
   },
   "isFullReview": false,
-  "textQuality": "full"
+  "textQuality": "full",
+  "bwwScore": 8
 }
