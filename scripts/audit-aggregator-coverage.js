@@ -247,6 +247,7 @@ function main() {
   const showFilter = args.show || null;
   const statusFilter = args.status || null;
   const verbose = args.verbose || false;
+  const outputGaps = args['output-gaps'] || false;
 
   console.log('=== Aggregator Coverage Audit ===\n');
 
@@ -280,6 +281,7 @@ function main() {
   const neverSearched = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
   let showsWithGaps = 0;
   let totalMissingReviews = 0;
+  let totalTrulyMissing = 0;
 
   const allShowData = {};
 
@@ -358,12 +360,18 @@ function main() {
       ...sources.map(s => s.data.reviewCount || 0)
     );
 
+    // trulyMissing = reviews we likely DON'T have from ANY source
+    // (vs totalGap which counts per-aggregator source-attribution gaps)
+    const trulyMissing = Math.max(0, maxAggregatorCount - local.total);
+    totalTrulyMissing += trulyMissing;
+
     allShowData[showId] = {
       title: show.title,
       status: show.status,
       totalLocal: local.total,
       hasGap,
       totalGap,
+      trulyMissing,
       aggregators,
       maxAggregatorCount,
       flags,
@@ -398,6 +406,7 @@ function main() {
       totalShows: shows.length,
       showsWithGaps,
       totalMissingReviews,
+      totalTrulyMissing,
       ...(showFilter && { showFilter }),
       ...(statusFilter && { statusFilter }),
     },
@@ -424,12 +433,27 @@ function main() {
   console.log(`Shows audited: ${shows.length}`);
   console.log(`Archives: DTLI=${archiveStats.dtli}, SS=${archiveStats.showScore}, BWW=${archiveStats.bww}, PV=${archiveStats.playbillVerdict}, NYC=${archiveStats.nycTheatre}`);
   console.log(`Shows with gaps: ${showsWithGaps}`);
-  console.log(`Total missing reviews: ${totalMissingReviews}`);
+  console.log(`Total missing reviews: ${totalMissingReviews} (per-aggregator), ${totalTrulyMissing} truly missing (local < max aggregator)`);
 
   console.log('\nPer-aggregator:');
   for (const key of ['dtli', 'showScore', 'bww', 'playbillVerdict', 'nycTheatre']) {
     const label = { dtli: 'DTLI', showScore: 'Show Score', bww: 'BWW', playbillVerdict: 'Playbill Verdict', nycTheatre: 'NYC Theatre' }[key];
     console.log(`  ${label.padEnd(17)} ${gapStats[key]} under-extracted (${missingStats[key]} missing), ${overStats[key]} over-extracted, ${neverSearched[key]} never searched`);
+  }
+
+  // --output-gaps mode: print just show IDs with trulyMissing > 0 (for piping to gather-reviews)
+  if (outputGaps) {
+    const gapShows = Object.entries(allShowData)
+      .filter(([, d]) => d.trulyMissing > 0)
+      .sort((a, b) => b[1].trulyMissing - a[1].trulyMissing);
+    console.log(`\nShows with truly missing reviews (${gapShows.length}):`);
+    for (const [id, data] of gapShows) {
+      console.log(`${id}  (local=${data.totalLocal}, max=${data.maxAggregatorCount}, missing=${data.trulyMissing})`);
+    }
+    if (gapShows.length > 0) {
+      console.log(`\nComma-separated for gather-reviews:`);
+      console.log(gapShows.map(([id]) => id).join(','));
+    }
   }
 
   // Top gaps (open shows first, then by totalGap descending)

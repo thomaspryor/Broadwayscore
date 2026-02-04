@@ -1,0 +1,415 @@
+# Close aggregator coverage gaps — fetch missing archives, re-audit, gather missing reviews
+# Era-prioritized: most recent shows first
+name: Close Coverage Gaps
+
+on:
+  workflow_dispatch:
+    inputs:
+      era:
+        description: 'Era to process (by show opening year)'
+        required: true
+        default: '2021-2026'
+        type: choice
+        options:
+          - '2021-2026'
+          - '2016-2020'
+          - '2011-2015'
+          - 'pre-2011'
+          - 'all'
+      skip_fetch:
+        description: 'Skip archive fetching (just re-audit and gather gaps)'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Dry run (audit only, no gathering)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  # Job 1: Prepare show list for the selected era
+  prepare:
+    name: Prepare show list
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      show_ids: ${{ steps.filter.outputs.show_ids }}
+      show_count: ${{ steps.filter.outputs.show_count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Filter shows by era
+        id: filter
+        run: |
+          ERA="${{ inputs.era }}"
+          node -e "
+            const shows = require('./data/shows.json').shows;
+            function getYear(s) {
+              if (s.openingDate) return parseInt(s.openingDate.split('-')[0]);
+              const m = s.id.match(/(\d{4})$/);
+              if (m) return parseInt(m[1]);
+              if (s.previewsStartDate) return parseInt(s.previewsStartDate.split('-')[0]);
+              return 0;
+            }
+            const era = '$ERA';
+            let filtered;
+            if (era === 'all') {
+              filtered = shows;
+            } else if (era === 'pre-2011') {
+              filtered = shows.filter(s => getYear(s) < 2011);
+            } else {
+              const [start, end] = era.split('-').map(Number);
+              filtered = shows.filter(s => { const y = getYear(s); return y >= start && y <= end; });
+            }
+            const ids = filtered.map(s => s.id);
+            console.log(ids.join(','));
+          " > /tmp/show_ids.txt
+
+          SHOW_IDS=$(cat /tmp/show_ids.txt)
+          SHOW_COUNT=$(echo "$SHOW_IDS" | tr ',' '\n' | wc -l | tr -d ' ')
+          echo "show_ids=$SHOW_IDS" >> $GITHUB_OUTPUT
+          echo "show_count=$SHOW_COUNT" >> $GITHUB_OUTPUT
+          echo "Era: $ERA — $SHOW_COUNT shows"
+
+  # Job 2: Fetch missing DTLI/SS/BWW archives
+  fetch-archives:
+    name: Fetch DTLI/SS/BWW archives
+    needs: prepare
+    if: ${{ inputs.skip_fetch != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Fetch missing aggregator pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          SHOWS="${{ needs.prepare.outputs.show_ids }}"
+          echo "Fetching archives for ${{ needs.prepare.outputs.show_count }} shows..."
+
+          # Fetch each aggregator (skip existing archives)
+          npx tsx scripts/fetch-aggregator-pages.ts --aggregator all --shows "$SHOWS" || true
+
+      - name: Commit archives
+        run: |
+          if git diff --quiet data/aggregator-archive/; then
+            echo "No new archives"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/aggregator-archive/
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+          git commit -m "data: Fetch $CHANGED aggregator archives (${{ inputs.era }})
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), rebasing..."
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+  # Job 3: Scrape Playbill Verdict + NYC Theatre
+  scrape-pv-nyc:
+    name: Scrape PV + NYC Theatre
+    needs: [prepare, fetch-archives]
+    if: ${{ always() && needs.prepare.result == 'success' && inputs.skip_fetch != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest (after archive fetch)
+        run: git pull --rebase origin main || true
+
+      - name: Scrape Playbill Verdict
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          SHOWS="${{ needs.prepare.outputs.show_ids }}"
+          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true
+
+      - name: Scrape NYC Theatre
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          SHOWS="${{ needs.prepare.outputs.show_ids }}"
+          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
+
+      - name: Commit PV + NYC results
+        run: |
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
+            echo "No new data"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/review-texts/ data/aggregator-archive/playbill-verdict/ data/aggregator-archive/nyc-theatre/
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+
+          if [ "$CHANGED" = "0" ]; then
+            echo "Nothing staged"
+            exit 0
+          fi
+
+          git commit -m "data: Scrape PV + NYC Theatre for ${{ inputs.era }} ($CHANGED files)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then break; fi
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+  # Job 4: Re-audit to find genuine gaps
+  audit:
+    name: Re-audit coverage
+    needs: [prepare, fetch-archives, scrape-pv-nyc]
+    if: ${{ always() && needs.prepare.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      gap_shows: ${{ steps.audit.outputs.gap_shows }}
+      gap_count: ${{ steps.audit.outputs.gap_count }}
+      truly_missing: ${{ steps.audit.outputs.truly_missing }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest
+        run: git pull --rebase origin main || true
+
+      - name: Run coverage audit
+        id: audit
+        run: |
+          # Run audit and capture output
+          node scripts/audit-aggregator-coverage.js --output-gaps 2>&1 | tee /tmp/audit-output.txt
+
+          # Extract truly missing count
+          TRULY_MISSING=$(node -e "const d=require('./data/audit/aggregator-coverage.json'); console.log(d._meta.totalTrulyMissing)")
+          echo "truly_missing=$TRULY_MISSING" >> $GITHUB_OUTPUT
+
+          # Extract gap show IDs from audit output
+          GAP_SHOWS=$(grep "^Comma-separated" -A1 /tmp/audit-output.txt | tail -1 || echo "")
+          GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+          echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
+          echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
+          echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows"
+
+      - name: Commit audit results
+        run: |
+          if git diff --quiet data/audit/; then
+            echo "No audit changes"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/aggregator-coverage.json
+
+          TRULY_MISSING="${{ steps.audit.outputs.truly_missing }}"
+          git commit -m "audit: Coverage re-audit after ${{ inputs.era }} gap closure ($TRULY_MISSING truly missing)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then break; fi
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+  # Job 5: Gather reviews for shows with genuine gaps
+  gather-gaps:
+    name: Gather missing reviews
+    needs: [audit]
+    if: ${{ needs.audit.outputs.gap_count > 0 && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Pull latest
+        run: git pull --rebase origin main || true
+
+      - name: Gather reviews for gapped shows
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          GAP_SHOWS="${{ needs.audit.outputs.gap_shows }}"
+          echo "Gathering reviews for ${{ needs.audit.outputs.gap_count }} shows with genuine gaps..."
+          echo "Shows: $GAP_SHOWS"
+
+          # Run gather-reviews for each show
+          IFS=',' read -ra SHOWS <<< "$GAP_SHOWS"
+          for show in "${SHOWS[@]}"; do
+            echo ""
+            echo "=== Gathering: $show ==="
+            node scripts/gather-reviews.js --show="$show" || true
+          done
+
+      - name: Commit gathered reviews
+        run: |
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
+            echo "No new reviews"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/review-texts/ data/aggregator-archive/
+          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+
+          if [ "$CHANGED" = "0" ]; then
+            echo "Nothing staged"
+            exit 0
+          fi
+
+          git commit -m "data: Gather $CHANGED review files for coverage gaps (${{ inputs.era }})
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then break; fi
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+  # Job 6: Rebuild reviews.json
+  rebuild:
+    name: Rebuild reviews.json
+    needs: [gather-gaps, audit]
+    if: ${{ always() && (needs.gather-gaps.result == 'success' || needs.gather-gaps.result == 'skipped') && needs.audit.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest
+        run: git pull --rebase origin main || true
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Commit rebuild
+        run: |
+          if git diff --quiet data/reviews.json; then
+            echo "No changes to reviews.json"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/reviews.json
+          git commit -m "data: Rebuild reviews.json after ${{ inputs.era }} coverage gap closure
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then break; fi
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+            sleep $((RANDOM % 21 + 10))
+          done
+
+      - name: Summary
+        run: |
+          echo "## Coverage Gap Closure: ${{ inputs.era }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows in era:** ${{ needs.prepare.outputs.show_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Truly missing reviews found:** ${{ needs.audit.outputs.truly_missing }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows with gaps:** ${{ needs.audit.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
