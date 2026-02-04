@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getBrowseList, getAllBrowseSlugs, getShowGrosses } from '@/lib/data';
+import { getBrowseList, getAllBrowseSlugs } from '@/lib/data-core';
+import { getShowGrosses } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig, BROWSE_PAGES } from '@/config/browse-pages';

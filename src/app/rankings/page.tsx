@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getAllBrowseSlugs, getBrowseList } from '@/lib/data';
+import { getAllShows, getAllBrowseSlugs, getBrowseList } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { BROWSE_PAGES } from '@/config/browse-pages';
 

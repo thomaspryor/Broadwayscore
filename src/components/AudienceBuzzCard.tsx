@@ -1,10 +1,10 @@
 'use client';
 
 import {
-  AudienceBuzzData,
   getAudienceGrade,
   getAudienceGradeClasses,
-} from '@/lib/data';
+} from '@/lib/data-audience';
+import type { AudienceBuzzData } from '@/lib/data-types';
 
 interface AudienceBuzzCardProps {
   buzz: AudienceBuzzData;
