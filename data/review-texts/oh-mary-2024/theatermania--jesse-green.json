@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Cole Escola's deliriously funny farce about Mary Todd Lincoln is exactly the kind of unhinged comedy Broadway needs right now.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cole Escola's deliriously funny farce about Mary Todd Lincoln is exactly the kind of unhinged comedy Broadway needs right now.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cole Escola's deliriously funny farce about Mary Todd Lincoln is exactly the kind of unhinged comedy Broadway needs right now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with strong positive language ('deliriously funny', 'exactly what Broadway needs') suggests enthusiastic recommendation, but limited text requires caution. | GPT-4o: The excerpt uses strong positive language ('deliriously funny', 'exactly the kind of unhinged comedy Broadway needs'), suggesting an enthusiastic recommendation. However, with only one excerpt available, confidence is low. | Gemini: The excerpt is strongly positive, calling the show \"deliriously funny\" and stating that it's exactly what Broadway needs. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt provides strong unqualified praise ('deliriously funny,' 'exactly what Broadway needs'), indicating a clear recommendation, though confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:36:52.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

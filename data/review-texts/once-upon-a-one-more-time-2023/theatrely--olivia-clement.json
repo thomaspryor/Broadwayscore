@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Once Upon a One More Time is a jukebox musical that takes fairy tale princesses and gives them a feminist awakening through the pop hits of Britney Spears. The result is a show that's earnest in its messaging but uneven in its execution.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Once Upon a One More Time is a jukebox musical that takes fairy tale princesses and gives them a feminist awakening through the pop hits of Britney Spears. The result is a show that's earnest in its messaging but uneven in its execution.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a show that's earnest in its messaging but uneven in its execution.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the show as 'earnest' (positive) but 'uneven in its execution' (negative), indicating a mixed assessment with no clear recommendation either way. | GPT-4o: The excerpt describes the show as 'earnest' but 'uneven,' indicating a mixed review. The lack of full context and single excerpt warning suggest caution, leading to a low confidence score. | Gemini: The review excerpt describes the show as \"earnest\" but \"uneven,\" indicating a mixed assessment. Due to the limited text, confidence is low. | Kimi: The excerpt presents a balanced but lukewarm assessment: praising the show's earnest feminist messaging while criticizing its inconsistent execution. The single-excerpt limitation prevents determining if the critic ultimately recommends the show or advises skipping it, but the explicit 'uneven' criticism places this firmly in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:50:38.570Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

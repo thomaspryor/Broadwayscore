@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“I'm afraid that, this time, Cinderella has stayed too late at the ball. That's my takeaway from this strenuously gyrating romp through fairytale land, which applies a not terribly fresh feminist twist -- and a batch of Britney Spears standards -- to a gaggle of storybook characters, most of whom already have musicals of their own, if not a Disney picture or two. Timing counts for a lot in the theatre, and despite a talented company dedicated to ramming home their production numbers, Once Upon a One More Time often feels sadly passé. It suffers from princess fatigue.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once Upon a One More Time often feels sadly passé.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the show 'sadly passé' and suffering from 'princess fatigue', but single excerpt warning requires caution about incomplete assessment. | GPT-4o: The excerpt describes the show as 'sadly passé' and suffering from 'princess fatigue', indicating a negative impression. However, due to the single excerpt warning, the confidence is low. | Gemini: The review uses negative language such as \"stayed too late at the ball\", \"not terribly fresh\", and \"sadly passé\", indicating a negative overall assessment despite acknowledging the talent of the company. | Kimi: The critic describes the show as 'passé' and suffering from 'princess fatigue,' finding the concept stale despite a talented cast. The 'despite' construction signals that the negative assessment overrides the performer praise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:49:44.538Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

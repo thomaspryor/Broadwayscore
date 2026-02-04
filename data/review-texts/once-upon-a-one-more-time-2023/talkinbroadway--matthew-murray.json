@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's greatest strength is its unabashed commitment to its own silliness, refusing to apologize for being a jukebox musical built around Britney Spears songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's greatest strength is its unabashed commitment to its own silliness, refusing to apologize for being a jukebox musical built around Britney Spears songs.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's greatest strength is its unabashed commitment to its own silliness, refusing to apologize for being a jukebox musical built around Britney Spears songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show's 'greatest strength' positively, but the phrasing ('silliness', 'refusing to apologize') suggests qualified praise. With only one curated quote available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt highlights the show's commitment to its fun and silly nature, which is presented as a strength. However, without more context, it's unclear if this is a strong recommendation or a mild one, leading to a low confidence score. | Gemini: The excerpt highlights a key strength, suggesting a positive but potentially qualified recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt identifies a 'greatest strength' and praises the show's unapologetic embrace of its concept, indicating clear approval despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:50:03.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

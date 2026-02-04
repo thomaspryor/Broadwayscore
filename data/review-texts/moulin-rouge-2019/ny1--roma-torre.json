@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"With tongue in cheek and heart in hand, not to mention assorted other body parts splitting, contorting and can-canning up a storm, 'Moulin Rouge' is a jukebox musical on steroids. And thanks to a very savvy adaptation from book writer John Logan and director Alex Timbers, it’s paced for maximum pleasure.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Moulin Rouge' is a jukebox musical on steroids.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('maximum pleasure', 'very savvy') with enthusiastic tone about performances and direction. Single excerpt limits confidence but clearly positive verdict. | GPT-4o: The excerpt praises the adaptation and direction, describing the show as 'paced for maximum pleasure.' The tone is enthusiastic, suggesting a strong positive recommendation. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt uses very enthusiastic language ('maximum pleasure', 'jukebox musical on steroids') suggesting a strong positive recommendation. However, because it is a single excerpt, the confidence is low. | Kimi: The excerpt describes the show as 'paced for maximum pleasure' with a 'very savvy adaptation,' indicating strong approval. However, confidence is low as only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:29:34.511Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

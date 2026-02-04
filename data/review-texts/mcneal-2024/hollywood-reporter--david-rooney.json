@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's examination of artificial intelligence and creativity feels both timely and timeless, anchored by a commanding performance from Robert Downey Jr. in his Broadway debut.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's examination of artificial intelligence and creativity feels both timely and timeless, anchored by a commanding performance from Robert Downey Jr. in his Broadway debut.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's examination of artificial intelligence and creativity feels both timely and timeless, anchored by a commanding performance from Robert Downey Jr.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the play as 'timely and timeless' with a 'commanding performance' suggests positive recommendation, but limited text requires low confidence and upper-positive scoring per guidelines. | GPT-4o: The excerpt praises the play's themes as both 'timely and timeless' and highlights a 'commanding performance' by Robert Downey Jr., suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review excerpt highlights the play's relevant themes and a \"commanding\" performance by Downey Jr., suggesting a strong positive impression. Given it's a single excerpt, I'm scoring on the higher end of the positive range. | Kimi: The excerpt offers strong praise for the play's thematic content ('timely and timeless') and the lead's 'commanding performance,' indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:19:24.473Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

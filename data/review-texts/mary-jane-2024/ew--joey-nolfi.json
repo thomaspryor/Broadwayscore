@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams delivers a powerhouse performance that anchors Amy Herzog's intimate family drama with raw emotional authenticity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McAdams delivers a powerhouse performance that anchors Amy Herzog's intimate family drama with raw emotional authenticity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McAdams delivers a powerhouse performance that anchors Amy Herzog's intimate family drama with raw emotional authenticity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'powerhouse' with 'raw emotional authenticity' suggests positive recommendation, but limited text prevents full assessment of overall show verdict. | GPT-4o: The excerpt praises McAdams' performance with strong language, indicating a positive view. However, with only one curated excerpt available, the overall sentiment of the review is uncertain, leading to a lower confidence score. | Gemini: The excerpt praises McAdams' performance as a \"powerhouse\" and describes it as anchoring the drama with \"raw emotional authenticity,\" indicating a strong positive assessment. Given it is a single excerpt, I am placing it at the higher end of the positive range. | Kimi: The single excerpt offers strong praise ('powerhouse performance') for the lead and the drama's emotional authenticity, indicating a clear positive recommendation. However, as a lone curated quote, it may not represent the full review's balance or final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:14:08.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

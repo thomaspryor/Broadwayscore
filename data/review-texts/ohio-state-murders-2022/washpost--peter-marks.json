@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What Kenny Leon's production delivers most potently is Morrison in full command of her towering gifts, spinning out her story with the mesmerizing authority of a master storyteller.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "What Kenny Leon's production delivers most potently is Morrison in full command of her towering gifts, spinning out her story with the mesmerizing authority of a master storyteller.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Kenny Leon's production delivers most potently is Morrison in full command of her towering gifts, spinning out her story with the mesmerizing authority of a master storyteller.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Morrison's performance with superlative language ('towering gifts', 'mesmerizing authority', 'master storyteller'), but only one excerpt available makes full verdict unclear. | GPT-4o: The excerpt praises the production for showcasing Morrison's mastery, indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the production and Morrison's storytelling, suggesting a positive experience. Given the single excerpt, confidence is low, but the strong language suggests a score on the higher end of the positive range. | Kimi: The excerpt offers glowing praise for Morrison's performance, describing her as a 'master storyteller' with 'towering gifts,' though as a single curated quote it may not represent the full review's assessment of the entire production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:44:00.890Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

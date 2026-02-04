@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“With a cast as fine as it is large, led by Ben Platt and Micaela Diamond...’Parade’ is as commanding as any musical revival to hit Broadway in years.”\n\nRead more"
+  "showScoreExcerpt": "“With a cast as fine as it is large, led by Ben Platt and Micaela Diamond...’Parade’ is as commanding as any musical revival to hit Broadway in years.”\n\nRead more",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Parade' is as commanding as any musical revival to hit Broadway in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlative praise calling it 'commanding' and comparing it favorably to other Broadway revivals 'in years' suggests high-end positive recommendation, but single excerpt limits confidence. | GPT-4o: The excerpt provides strong praise, describing the show as 'commanding' and comparing it favorably to other Broadway revivals. The lack of a full review and single excerpt warning suggests caution, but the language indicates a strong recommendation. | Gemini: The excerpt praises the cast and calls the revival \"commanding,\" suggesting a strong positive recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt offers strong praise comparing the show to the best Broadway revivals in recent years, placing it in the upper range of Positive. Confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:57:50.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
