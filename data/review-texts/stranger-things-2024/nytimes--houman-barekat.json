@@ -15,5 +15,11 @@
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T14:25:22.522Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about the London production at the Phoenix Theater, not a Broadway show; openai: The review is about a production running at the Phoenix Theater in London, not the current Broadway run.; gemini: This review is for the London production of Stranger Things, not the Broadway production.; kimi: This review covers the London/West End production at the Phoenix Theater running through Aug. 25, 2024, not a Broadway production.",
+  "promptVersion": "5.2.0"
 }

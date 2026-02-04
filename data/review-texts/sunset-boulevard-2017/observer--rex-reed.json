@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Glenn Close is back on Broadway in Sunset Boulevard, and she's better than ever—a force of nature that dominates the stage with volcanic intensity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,7 +19,58 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
-  "sources": [
-    "web-search"
-  ]
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Glenn Close is back on Broadway in Sunset Boulevard, and she's better than ever—a force of nature that dominates the stage with volcanic intensity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified praise for the star performance with superlative language ('better than ever', 'force of nature', 'volcanic intensity'), but text appears truncated so confidence is reduced. | Gemini: The review is highly positive, praising Glenn Close's performance as a 'force of nature' and stating she is 'better than ever'. | Kimi: The critic employs superlatives like 'force of nature' and 'volcanic intensity' to ecstatically praise Close's performance without reservation, indicating an unqualified recommendation despite the text's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:30:03.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

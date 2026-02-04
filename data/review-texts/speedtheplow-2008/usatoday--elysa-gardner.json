@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Madonna brings a surprising vulnerability to her role as Karen, the temp who becomes a pawn in the power games of two Hollywood producers.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T14:17:08.468Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence fragment describing a performance, not a complete review with critical evaluation or recommendation.; openai: This text is a brief comment on Madonna's performance without any evaluative content about the overall show.; gemini: This is a single sentence that reads like a promotional blurb or cast description, not a full review with an overall evaluation.; kimi: This text reviews the 1988 Broadway production of 'Speed-the-Plow' starring Madonna, which is a previous production, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

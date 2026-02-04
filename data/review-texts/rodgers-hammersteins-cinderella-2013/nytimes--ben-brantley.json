@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new version of the musical, which opened Sunday night at the Broadway Theater, turns out to be a satisfying piece of old-fashioned musical theater that has been given just enough contemporary touches to feel fresh without losing its essential sweetness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new version of the musical, which opened Sunday night at the Broadway Theater, turns out to be a satisfying piece of old-fashioned musical theater that has been given just enough contemporary touches to feel fresh without losing its essential sweetness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "turns out to be a satisfying piece of old-fashioned musical theater that has been given just enough contemporary touches to feel fresh",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'satisfying' with praise for feeling 'fresh' while maintaining 'essential sweetness'. Single excerpt warning noted - this sounds genuinely positive rather than cherry-picked, warranting upper-positive range. | GPT-4o: The excerpt describes the musical as 'satisfying' and 'fresh,' indicating a positive recommendation. The lack of full context and single excerpt warning suggest a cautious approach, but the language is clearly positive. | Gemini: The review excerpt indicates a positive experience, describing the show as \"satisfying\" and \"fresh.\" The phrase \"old-fashioned musical theater\" suggests a traditional approach, which might not appeal to everyone, hence the \"with reservations\" verdict. | Kimi: The excerpt uses unambiguously positive evaluative language ('satisfying,' 'fresh,' 'sweetness') to endorse the show as a successful blend of traditional and contemporary elements. As a single curated excerpt, confidence is reduced per guidelines, but the clearly positive tone warrants the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:33:59.075Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

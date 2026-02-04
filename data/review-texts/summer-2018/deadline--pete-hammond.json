@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Summer: The Donna Summer Musical is a joyous celebration of the life and music of the disco queen that manages to avoid most of the pitfalls that befall jukebox musicals.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Summer: The Donna Summer Musical is a joyous celebration of the life and music of the disco queen that manages to avoid most of the pitfalls that befall jukebox musicals.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Summer: The Donna Summer Musical is a joyous celebration of the life and music of the disco queen that manages to avoid most of the pitfalls that befall jukebox musicals.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'joyous celebration' and praise for avoiding typical jukebox musical problems, though brief text limits confidence in full assessment. | GPT-4o: The review describes the musical as a 'joyous celebration' and notes it 'avoids most of the pitfalls' common to its genre, indicating a strong recommendation. | Gemini: The review describes the show as a \"joyous celebration\" and states that it avoids the pitfalls of jukebox musicals, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic offers enthusiastic praise, calling the show a 'joyous celebration' and commending it for successfully avoiding common jukebox musical flaws, indicating a strong recommendation despite minor implied reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:27:50.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

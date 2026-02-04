@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "After all this wait, it is undeniably thrilling and deeply enjoyable to experience these beloved songs on stage, and to get some more time with this dramatic band of thespians. So for those fans dying for more Smash content, this musical will absolutely scratch that (more than seven-year) itch; for those uninitiated, this production offers a high-energy, fun musical comedy with a phenomenal score. Either way, it is, in fact, what you've been needing.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\" 'Smash' is wholeheartedly a comedy, something that Nielson and Ashmanskas understand best.\"\n\nRead more"
+  "showScoreExcerpt": "\" 'Smash' is wholeheartedly a comedy, something that Nielson and Ashmanskas understand best.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Either way, it is, in fact, what you've been needing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout with 'undeniably thrilling,' 'deeply enjoyable,' 'phenomenal score,' and definitive recommendation. Medium confidence due to excerpt-only nature. | GPT-4o: The review uses strong positive language such as 'thrilling', 'deeply enjoyable', and 'phenomenal score', indicating a solid recommendation. The critic suggests it will satisfy both fans and newcomers, which supports a high score within the Positive range. | Gemini: The review uses phrases like \"undeniably thrilling and deeply enjoyable\" and states that the musical \"will absolutely scratch that itch\" and is \"what you've been needing,\" indicating a strong positive recommendation. | Kimi: The critic offers strong praise describing the show as 'undeniably thrilling,' 'deeply enjoyable,' and having a 'phenomenal score,' recommending it highly for both fans and newcomers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:01:27.047Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Shaina Taub's musical about the women's suffrage movement is an earnest, educational enterprise that occasionally transcends its own worthiness.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Shaina Taub's musical about the women's suffrage movement is an earnest, educational enterprise that occasionally transcends its own worthiness.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaina Taub's musical about the women's suffrage movement is an earnest, educational enterprise that occasionally transcends its own worthiness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The phrase 'occasionally transcends its own worthiness' suggests the show is generally worthy but earnest in a pedestrian way, with only moments of elevation. This indicates mixed feelings rather than clear recommendation. | GPT-4o: The excerpt suggests the show is earnest and educational, but only occasionally transcends its worthiness, indicating a mixed reception. The single excerpt and lack of full context lower confidence. | Gemini: The review acknowledges the show's earnestness and educational value, but also suggests it only occasionally rises above its own limitations. This indicates a mixed assessment. | Kimi: The excerpt offers qualified praise using faintly positive language ('earnest,' 'educational') and notes the show only occasionally transcends its inherent worthiness, suggesting a reserved, mildly positive recommendation rather than enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:26:24.955Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Avett Brothers musical Swept Away is a gorgeous, haunting work that finds profound meaning in a simple story of survival at sea.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Avett Brothers musical Swept Away is a gorgeous, haunting work that finds profound meaning in a simple story of survival at sea.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Avett Brothers musical Swept Away is a gorgeous, haunting work that finds profound meaning in a simple story of survival at sea.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('gorgeous, haunting work', 'profound meaning') suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language ('gorgeous', 'haunting', 'profound meaning'), suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"gorgeous\" and \"haunting\", indicating a positive review. Given it's a single excerpt, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers strong aesthetic praise ('gorgeous,' 'haunting,' 'profound meaning') indicating a clear recommendation in the upper range of Positive, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:42:46.479Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 85,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

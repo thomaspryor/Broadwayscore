@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a remarkable achievement in musical theater, a completely absorbing and authentic look at the creative process that feels both intimate and epic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is a remarkable achievement in musical theater, a completely absorbing and authentic look at the creative process that feels both intimate and epic.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a remarkable achievement in musical theater, a completely absorbing and authentic look at the creative process that feels both intimate and epic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlatives like 'remarkable achievement' and 'completely absorbing' indicate enthusiastic praise typical of Rave bucket. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong praise ('remarkable achievement', 'completely absorbing') suggesting a highly positive verdict. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, calling the show a \"remarkable achievement\" and \"completely absorbing.\" Given the single excerpt, I'm scoring at the higher end of the positive range. | Kimi: Single excerpt contains superlative praise ('remarkable achievement', 'completely absorbing'), but per guidelines for lone curated quotes, scores in upper Positive range rather than Rave due to cherry-picking risk. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:21:53.203Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

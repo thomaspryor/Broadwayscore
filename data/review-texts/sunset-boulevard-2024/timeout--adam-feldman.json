@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "\"Part of what makes this revival so absorbing is that you don't always know where to lookat the actor on stage or the same actor live on screen. The giant images tug at your eye; you sometimes can't help choosing them over the small, real person who is actually there. In this revival, itself a kind of re-production, that doesn't feel like a gimmick or a trick. It's a new way to see an old dream.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "“Scherzinger commands the stage with electrifying confidence. Her singing is gorgeously fluid and controlled, and she knows how to work her songs for drama\"\n\nRead more"
+  "showScoreExcerpt": "“Scherzinger commands the stage with electrifying confidence. Her singing is gorgeously fluid and controlled, and she knows how to work her songs for drama\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scherzinger commands the stage with electrifying confidence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with words like 'electrifying confidence' and 'gorgeously fluid' suggests a positive recommendation, but the excerpt is too brief to determine the full verdict or overall show assessment. | GPT-4o: The excerpt praises Scherzinger's performance with strong positive language ('electrifying confidence', 'gorgeously fluid'). However, due to the limited text, the overall verdict is unclear, leading to a low confidence score. | Gemini: The review excerpt praises Scherzinger's performance, indicating a positive, though incomplete, assessment. Given the limited text, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performer's stage presence and vocal ability, indicating positive elements, but as a curated excerpt without the full verdict or broader production assessment, confidence must remain low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:32:40.291Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

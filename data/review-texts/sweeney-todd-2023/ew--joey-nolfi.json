@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Groban's vocal prowess is undeniable, but it's his surprisingly effective dramatic range that makes this Sweeney such a compelling watch.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Groban's vocal prowess is undeniable, but it's his surprisingly effective dramatic range that makes this Sweeney such a compelling watch.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groban's vocal prowess is undeniable, but it's his surprisingly effective dramatic range that makes this Sweeney such a compelling watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic's original rating of 87 combined with praise for both Groban's vocals and 'surprisingly effective dramatic range' making the show 'compelling' indicates strong positive reception, placing this in the Rave bucket at the critic's exact score. | GPT-4o: The excerpt highlights strong praise for Groban's performance, suggesting a compelling production. The original rating of 87 supports a high Positive score, but the single excerpt limits confidence. | Gemini: The excerpt praises Groban's performance, calling it a \"compelling watch.\" Given the single excerpt and lack of full context, confidence is low, but the positive language suggests a strong recommendation. | Kimi: Single excerpt offers strong praise for the lead performance, calling it 'compelling,' but limited context requires conservative placement in the Positive bucket per excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:37:10.012Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 87,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

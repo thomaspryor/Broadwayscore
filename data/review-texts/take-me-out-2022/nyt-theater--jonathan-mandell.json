@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "Take Me Out” demonstrates Richard Greenberg’s skills both as a dramatist and a humorist, and especially as a master of repartee and wordplay. He is such an adept wordsmith that the title “Take Me Out” has four or five different meanings, each of which describes a different layer of the play…. The ensemble conveys persuasively the individual lives and underlying tensions of a professional sports team in ways that have not changed.\n\nRead more"
+  "showScoreExcerpt": "Take Me Out” demonstrates Richard Greenberg’s skills both as a dramatist and a humorist, and especially as a master of repartee and wordplay. He is such an adept wordsmith that the title “Take Me Out” has four or five different meanings, each of which describes a different layer of the play…. The ensemble conveys persuasively the individual lives and underlying tensions of a professional sports team in ways that have not changed.\n\nRead more",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The ensemble conveys persuasively the individual lives and underlying tensions of a professional sports team.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises Greenberg's dramatic skills and wordplay mastery, plus ensemble performance quality. However, with only one curated quote available, this may not represent the full review verdict. | GPT-4o: The excerpt praises the playwright's skills and the ensemble's performance, indicating a positive view of the production. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt praises the playwright's skills and the ensemble's performance, suggesting a positive experience overall. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers clear, strong praise for Greenberg's craftsmanship ('master of repartee,' 'adept wordsmith') and the ensemble's persuasive performances, indicating a solid recommendation despite the limitations of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:52:23.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

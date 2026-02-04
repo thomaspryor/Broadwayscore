@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stereophonic is a play about the making of an album, but it's really about the unmaking of relationships, the slow dissolution of a band and the people in it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stereophonic is a play about the making of an album, but it's really about the unmaking of relationships.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt suggests a focus on the negative aspects of the play's themes, hinting at a potentially mixed or nuanced view. However, without more context, it's difficult to determine the overall sentiment, leading to a low confidence mixed score. | Gemini: The excerpt describes the play's themes but doesn't offer a clear recommendation or judgment on its quality. It's difficult to determine the overall sentiment with only this excerpt, suggesting a mixed or neutral assessment. | Kimi: Single curated excerpt implies appreciative analysis by highlighting the play's deeper thematic focus on relationship dissolution, but lacks explicit evaluative language about execution or quality. Scored at the lower end of Positive (70-74) per instructions for mildly positive single excerpts, with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:23:16.662Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 55,
+    "kimiScore": 72,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Director Lear deBessonet understands, and respects, that the writing must be central to this production’s success. Too many revivals become opportunities for revisions, permitting the writers to tinker with things that don’t need adjusting. Thankfully, Ahrens, Flaherty, and McNally’s estate have lef...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Lear deBessonet understands, and respects, that the writing must be central to this production's success.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the director's approach and respect for the source material, but as a single curated quote from a truncated review, the full verdict is unclear. Scored at lower end of Positive bucket due to uncertainty. | GPT-4o: The excerpt praises the director's understanding and respect for the original writing, suggesting a positive view of the production's approach. However, with only one excerpt available, the confidence is low, and the score is set at the lower end of the Positive bucket. | Gemini: The excerpt praises the director's understanding and respect for the writing, suggesting a positive view of the production. However, due to the limited text, confidence is low. | Kimi: The excerpt offers clear praise for the director's respectful approach to the source material and avoidance of unnecessary revisions, indicating a favorable assessment of this revival, though the single curated quote limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:28:13.256Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical is sweet as pie but corn-pone to its core, a throwback to an earlier, less sophisticated era of Broadway entertainment that some will find charming and others will find insufferable.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -26,5 +26,60 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "Let's start with Camelot. A classic musical from 1960 that last saw a revival on Broadway in 1980, many were anticipating good things from the Lincoln Center's newest re-imagining, following director Bartlet Sherr's successes with The King and I and My Fair Lady. However it looks like the legend of King Arthur's court may have been too much.  led the charge with their less-than-positive review, asking:",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "some will find charming and others will find insufferable",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review explicitly states the show will divide audiences - 'some will find charming and others will find insufferable' - which is the definition of a mixed reception with no clear recommendation either way. | GPT-4o: The review presents a balanced view, noting that some will find the musical charming while others will find it insufferable, indicating a mixed reception. | Gemini: The review presents a mixed assessment, describing the musical as \"sweet as pie\" but also \"corn-pone to its core,\" suggesting it may appeal to some but not others. | Kimi: The critic offers a balanced but lukewarm assessment, noting the show will appeal to some while others will find it 'insufferable,' and characterizes it as unsophisticated nostalgia without issuing a clear recommendation to see or skip it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:46:46.507Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

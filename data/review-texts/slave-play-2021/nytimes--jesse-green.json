@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's bold confrontation with the legacy of slavery and its impact on contemporary relationships remains as provocative and essential as ever, even if some of its theatrical strategies feel less shocking in revival.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's bold confrontation with the legacy of slavery and its impact on contemporary relationships remains as provocative and essential as ever, even if some of its theatrical strategies feel less shocking in revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows measured praise calling the play 'provocative and essential' but notes diminished impact in revival. Limited text requires low confidence and conservative positive score. | GPT-4o: The excerpt praises the play's provocative and essential themes, suggesting a positive view. However, it notes that some theatrical strategies feel less shocking, indicating some reservations. Given the single excerpt warning, the score is placed at the lower end of the Positive range. | Gemini: The review excerpt indicates that the play is \"provocative and essential\" which is a positive assessment, but also notes that some elements feel less shocking in revival, suggesting reservations. | Kimi: The critic praises the play as 'essential' and 'provocative' but qualifies this with a note that some theatrical strategies feel 'less shocking' in revival, indicating a strong but not unreserved recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:57:02.894Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

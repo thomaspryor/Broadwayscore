@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“It’s classic comedy – bait and switch, slave out-smarting his master, disguises, romantic intrigue, spies, sex and triumph over evil...The wisdom is that humanity triumphs through comedy delivered with love which builds community and heals the tremendous pain of oppression.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The wisdom is that humanity triumphs through comedy delivered with love which builds community and heals the tremendous pain of oppression.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the show's deeper meaning and themes, but limited text makes full assessment difficult. Positive language about triumph and healing suggests recommendation. | GPT-4o: The excerpt highlights a positive evaluation of the show's themes and execution, emphasizing comedy's power to build community and heal. The tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The excerpt describes the show as classic comedy with triumph over evil and healing through love, indicating a positive recommendation. Given the single excerpt, I've opted for a score on the higher end of the positive range. | Kimi: The excerpt enthusiastically praises the show's comedic craft and thematic resonance regarding humanity's triumph over oppression, using strongly affirmative language ('heals,' 'triumph') that indicates a clear positive verdict, though the limited excerpt warrants reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:22:40.430Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Connor and Zegler prove to be well-matched leads, both bringing genuine emotion and chemistry to their star-crossed lovers, making this revival feel fresh and immediate.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Connor and Zegler prove to be well-matched leads, both bringing genuine emotion and chemistry to their star-crossed lovers, making this revival feel fresh and immediate.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Connor and Zegler prove to be well-matched leads, both bringing genuine emotion and chemistry to their star-crossed lovers, making this revival feel fresh and immediate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on strong lead performances and describes the revival as 'fresh and immediate,' indicating positive assessment. However, confidence is low due to limited text from what may be a longer review. | GPT-4o: The excerpt praises the leads for their chemistry and emotional performance, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on the positive performances of the leads and the freshness of the revival. Due to the single excerpt, confidence is low, but the content is clearly positive. | Kimi: The excerpt offers clear praise for the lead performances and the revival's freshness, indicating a solid recommendation. Per the single-excerpt warning, the clearly positive tone places this in the upper range of the Positive bucket, though limited context prevents higher confidence or Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:35:08.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

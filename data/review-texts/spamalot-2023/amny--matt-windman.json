@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“I must confess that I had a wonderful time at the revival and left feeling rejuvenated, with its burlesque spirit serving as medicine...But more than that, given the state of the world today, with people still recovering from the effects of the pandemic and ever intensifying political tensions, we need the cathartic release of pure Broadway musical comedy...In short, we need ‘Spamalot’.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I must confess that I had a wonderful time at the revival and left feeling rejuvenated.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('wonderful time', 'rejuvenated', 'we need') with personal endorsement and broader cultural recommendation. Single excerpt warning suggests this represents a clearly positive stance, scoring in upper Positive range. | GPT-4o: The critic expresses strong enthusiasm and personal enjoyment, describing the show as a needed cathartic release. The language suggests a highly positive experience, fitting a Rave classification. | Gemini: The critic states they had a wonderful time and felt rejuvenated, indicating a strong positive experience and recommendation. Given it's a single excerpt, I've leaned towards the higher end of the positive range. | Kimi: The excerpt expresses clear enthusiasm ('wonderful time', 'rejuvenated') and explicitly states 'we need Spamalot', indicating a strong recommendation. Single excerpt limitations require low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:12:46.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical about the evangelist Aimee Semple McPherson is less a coherent biographical portrait than a grab bag of flashy moments that don't quite add up to a satisfying whole.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The new musical about the evangelist Aimee Semple McPherson is less a coherent biographical portrait than a grab bag of flashy moments that don't quite add up to a satisfying whole.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical about the evangelist Aimee Semple McPherson is less a coherent biographical portrait than a grab bag of flashy moments that don't quite add up to a satisfying whole.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Critical assessment finds the show lacking coherence and failing to create a satisfying experience, despite acknowledging some flashy individual moments. No recommendation implied. | GPT-4o: The review criticizes the show for lacking coherence and not being satisfying, indicating a negative recommendation. | Gemini: The review states that the show doesn't add up to a satisfying whole, but it also mentions flashy moments, indicating a mixed experience. | Kimi: The critic describes the show as incoherent and unsatisfying, comparing it to a 'grab bag' of disconnected flashy moments. Given this appears to be a truncated excerpt, confidence is low. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:40:40.067Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

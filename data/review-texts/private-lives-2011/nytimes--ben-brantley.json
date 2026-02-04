@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Coward's 1930 comedy of sexual manners proves that even the most scintillating dialogue can't save a show when its stars seem to be performing in different plays.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This production of Coward's 1930 comedy of sexual manners proves that even the most scintillating dialogue can't save a show when its stars seem to be performing in different plays.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "even the most scintillating dialogue can't save a show when its stars seem to be performing in different plays",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict stating the production fails despite quality source material, with specific criticism of the lead performances lacking unity. | GPT-4o: The review criticizes the production for a lack of cohesion among the performers, suggesting that despite the quality of the dialogue, the show fails to deliver a unified performance. This indicates a negative verdict. | Gemini: The review explicitly states that even good dialogue can't save the show due to the actors' performances, indicating a negative overall assessment. | Kimi: While the critic praises the 'scintillating dialogue,' the verdict that it 'can't save' the show and the criticism that the stars seem to be 'performing in different plays' indicates a clear recommendation against seeing this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:22:02.727Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

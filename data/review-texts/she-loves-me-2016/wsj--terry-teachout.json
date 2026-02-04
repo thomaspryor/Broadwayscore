@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of 'She Loves Me' is as close to perfect as musical theater gets, a production so enchanting that it makes you fall in love with the very idea of falling in love.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 96,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 96,
+    "confidence": "high",
+    "range": {
+      "low": 91,
+      "high": 101
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival of 'She Loves Me' is as close to perfect as musical theater gets, a production so enchanting that it makes you fall in love with the very idea of falling in love.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise using superlative language ('as close to perfect as musical theater gets', 'so enchanting') with deeply emotional impact described. No reservations or caveats expressed. | GPT-4o: The review uses superlative language ('as close to perfect as musical theater gets') and describes the production as 'enchanting', indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"perfect\" and \"enchanting,\" indicating a rave review. | Kimi: The critic deploys unqualified superlatives ('as close to perfect as musical theater gets', 'enchanting') with no reservations or caveats, delivering an unequivocal recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:44:19.237Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 98,
+    "geminiScore": 95,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“There’s no doubt that Lloyd’s Sunset dazzles in the beholding, though the farther you walk away from it, the more you may find yourself feeling like poor Joe Gillis — remembering the thrill but no longer able to feel it, somehow both stirred and empty.”\n\nRead more"
+  "showScoreExcerpt": "“There’s no doubt that Lloyd’s Sunset dazzles in the beholding, though the farther you walk away from it, the more you may find yourself feeling like poor Joe Gillis — remembering the thrill but no longer able to feel it, somehow both stirred and empty.”\n\nRead more",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no doubt that Lloyd's Sunset dazzles in the beholding, though the farther you walk away from it, the more you may find yourself feeling like poor Joe Gillis — remembering the thrill but no longer able to feel it, somehow both stirred and empty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show 'dazzles' but emphasizes that the effect doesn't last, leaving audiences 'stirred and empty.' This is a classic mixed verdict - acknowledging spectacle while questioning lasting impact. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review acknowledges the show's dazzling quality but suggests a lack of lasting impact, leaving the audience feeling 'stirred and empty'. This indicates a mixed reception with both positive and negative elements. | Gemini: The review acknowledges the dazzling spectacle but suggests a lack of lasting emotional impact, leading to a mixed assessment. The truncated text lowers confidence. | Kimi: The review acknowledges the production's visual dazzle and immediate impact but emphasizes a lasting sense of emptiness and lack of emotional resonance, using the metaphor of Joe Gillis (the dead protagonist) to suggest the experience doesn't sustain beyond the theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:33:20.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

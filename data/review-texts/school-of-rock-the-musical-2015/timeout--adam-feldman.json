@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "School of Rock is a blast of pure theatrical joy, a show that rocks the Winter Garden Theatre with infectious energy and genuine heart.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "School of Rock is a blast of pure theatrical joy, a show that rocks the Winter Garden Theatre with infectious energy and genuine heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic's 80 rating plus enthusiastic language ('blast of pure theatrical joy', 'infectious energy', 'genuine heart') indicates strong positive recommendation in the 80+ range. | GPT-4o: The review uses enthusiastic language ('blast of pure theatrical joy', 'infectious energy', 'genuine heart') and aligns with the critic's original rating of 80, indicating a strong positive recommendation. | Gemini: The review uses very positive language such as \"pure theatrical joy\" and \"infectious energy\", indicating a strong positive recommendation. The critic's rating of 80 also supports this. | Kimi: The review delivers enthusiastic praise with phrases like 'blast of pure theatrical joy' and 'infectious energy,' and the critic's explicit 80 rating confirms a strong positive recommendation within the 70-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:41:12.950Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

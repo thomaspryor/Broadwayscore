@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Connor and Zegler are both appealing performers with good chemistry, and they bring a youthful energy to the roles that feels authentic.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T13:37:21.324Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt praising performers, lacking any overall evaluation or recommendation about the show itself.; openai: The text is a brief comment on the performers' chemistry and energy, but lacks evaluative content about the overall production.",
+  "promptVersion": "5.2.0"
 }

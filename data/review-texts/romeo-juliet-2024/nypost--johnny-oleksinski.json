@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Connor and Zegler are both talented performers, but their Romeo and Juliet feels more like a high school production than a Broadway revival worthy of the Circle in the Square Theatre.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -26,5 +26,60 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Once the audience has become accustomed to the playful, cool mood that extends into the chic lobby, they await the, er, tragedy to unfold. On that end, \"Romeo + Juliet\" is a let-down. During the dark final moments in the crypt, or wherever the heck they are, the play peters out. The best bits are specks in the rearview; the sadness, less powerful than the booming tunes from two hours earlier.\"",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "their Romeo and Juliet feels more like a high school production than a Broadway revival worthy of the Circle in the Square Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the leads as 'talented performers,' the critic delivers a clear negative verdict by comparing the production unfavorably to amateur theater and stating it's unworthy of its Broadway venue. | GPT-4o: The review criticizes the production quality, comparing it unfavorably to a high school production, indicating a negative overall assessment despite acknowledging the performers' talent. | Gemini: The review explicitly compares the production to a 'high school production,' indicating a negative assessment. Despite acknowledging the performers' talent, the overall impression is unfavorable. | Kimi: While acknowledging the performers' talent, the critic dismisses the production as amateurish and unworthy of its Broadway venue, offering a clear recommendation against seeing this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:35:55.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

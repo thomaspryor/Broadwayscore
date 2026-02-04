@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"He occasionally achieves something gorgeous and intimate, thanks in large part to the white-hot chemistry of his two leads. But for slightly older audiences, now nursing heartburn more often than heartbreak, you'll likely just feel exhausted.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He occasionally achieves something gorgeous and intimate, thanks in large part to the white-hot chemistry of his two leads.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges some beautiful moments and strong lead chemistry, but concludes audiences will 'likely just feel exhausted.' Mixed signals with no clear recommendation either way. | GPT-4o: The excerpt praises the chemistry of the leads but suggests the show may be exhausting for some audiences. The lack of a clear recommendation and the mixed signals in the excerpt lead to a mixed classification. | Gemini: The review acknowledges moments of beauty and strong chemistry between the leads, but also suggests exhaustion for older audiences, indicating a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt praises the lead chemistry and occasional beauty but ultimately warns audiences will feel 'exhausted,' creating a balanced mixed verdict without clear recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:38:30.486Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

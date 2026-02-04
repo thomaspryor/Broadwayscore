@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of Billy Wilder's beloved 1959 comedy is a fizzy delight that captures the spirit of the original while finding its own theatrical voice.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical adaptation of Billy Wilder's beloved 1959 comedy is a fizzy delight that captures the spirit of the original while finding its own theatrical voice.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of Billy Wilder's beloved 1959 comedy is a fizzy delight that captures the spirit of the original while finding its own theatrical voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language with 'fizzy delight' and praise for capturing the original's spirit while finding theatrical voice. Single excerpt warning requires caution, but the enthusiasm suggests upper Positive range. | GPT-4o: The excerpt describes the show as a 'fizzy delight' and praises its ability to capture the spirit of the original while establishing its own voice, indicating a strong positive recommendation. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt uses strong positive language like \"fizzy delight\" and \"captures the spirit,\" indicating a positive review. Given it's a single excerpt, I'm scoring towards the higher end of the positive bucket. | Kimi: The single excerpt uses enthusiastic language ('fizzy delight') and praises the adaptation for capturing the original's spirit while finding its own voice, indicating a clear recommendation. Scored at the upper end of the Positive bucket per instructions for clearly positive single excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:03:58.555Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

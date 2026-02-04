@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"“Purpose” doesn’t sustain the same level of excitement in its longer second act\"\n\nRead more"
+  "showScoreExcerpt": "\"“Purpose” doesn’t sustain the same level of excitement in its longer second act\"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Purpose doesn't sustain the same level of excitement in its longer second act",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt suggests the show starts strong but loses momentum. The phrase 'doesn't sustain excitement' indicates structural problems, pointing to mixed reception rather than positive. | GPT-4o: The excerpt indicates a drop in excitement in the second act, suggesting a mixed review. However, due to the limited excerpt, the confidence is low. | Gemini: The excerpt indicates a decline in quality in the second act, suggesting a mixed experience overall. Given the limited text, confidence is low. | Kimi: The excerpt indicates the production initially generates excitement but falters in its longer second act, suggesting an uneven theatrical experience. With only a single curated excerpt available, confidence in the overall verdict is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:26:21.649Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
