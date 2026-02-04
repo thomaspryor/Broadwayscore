@@ -27,6 +27,7 @@ const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const PV_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
 const NYC_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
+const BWW_REVIEWS_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/bww-reviews');
 const OUTPUT_PATH = path.join(__dirname, '../data/audit/aggregator-coverage.json');
 
 // ============================================================
@@ -36,6 +37,7 @@ const OUTPUT_PATH = path.join(__dirname, '../data/audit/aggregator-coverage.json
 const SOURCE_TO_AGGREGATOR = {
   'dtli': 'dtli',
   'bww-roundup': 'bww',
+  'bww-reviews': 'bwwReviews',
   'show-score': 'showScore',
   'show-score-playwright': 'showScore',
   'playbill-verdict': 'playbillVerdict',
@@ -227,6 +229,33 @@ function extractNYCTheatreCount(showId) {
   }
 }
 
+/**
+ * Count reviews in a BWW /reviews/ page archived HTML.
+ * Counts div.one-feed blocks (each is one review with a 1-10 score).
+ */
+function extractBWWReviewsCount(showId) {
+  const archivePath = path.join(BWW_REVIEWS_ARCHIVE, `${showId}.html`);
+
+  if (!fs.existsSync(archivePath)) {
+    return { reviewCount: null, hasArchive: false };
+  }
+
+  try {
+    const stat = fs.statSync(archivePath);
+    if (stat.size < 1024) {
+      return { reviewCount: 0, hasArchive: true, method: 'too-small' };
+    }
+
+    const html = fs.readFileSync(archivePath, 'utf8');
+    const $ = cheerio.load(html);
+
+    const count = $('div.one-feed').length;
+    return { reviewCount: count, hasArchive: true, method: 'one-feed-blocks' };
+  } catch (error) {
+    return { reviewCount: null, hasArchive: true, error: error.message };
+  }
+}
+
 // ============================================================
 // Step 3: Gap Detection + Report
 // ============================================================
@@ -274,11 +303,11 @@ function main() {
   const allUnknownSources = new Set();
 
   // Stats
-  const archiveStats = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
-  const gapStats = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
-  const missingStats = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
-  const overStats = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
-  const neverSearched = { dtli: 0, showScore: 0, bww: 0, playbillVerdict: 0, nycTheatre: 0 };
+  const archiveStats = { dtli: 0, showScore: 0, bww: 0, bwwReviews: 0, playbillVerdict: 0, nycTheatre: 0 };
+  const gapStats = { dtli: 0, showScore: 0, bww: 0, bwwReviews: 0, playbillVerdict: 0, nycTheatre: 0 };
+  const missingStats = { dtli: 0, showScore: 0, bww: 0, bwwReviews: 0, playbillVerdict: 0, nycTheatre: 0 };
+  const overStats = { dtli: 0, showScore: 0, bww: 0, bwwReviews: 0, playbillVerdict: 0, nycTheatre: 0 };
+  const neverSearched = { dtli: 0, showScore: 0, bww: 0, bwwReviews: 0, playbillVerdict: 0, nycTheatre: 0 };
   let showsWithGaps = 0;
   let totalMissingReviews = 0;
   let totalTrulyMissing = 0;
@@ -298,6 +327,7 @@ function main() {
     const dtli = extractDTLICount(showId);
     const showScore = extractShowScoreCount(showId);
     const bww = extractBWWCount(showId);
+    const bwwReviews = extractBWWReviewsCount(showId);
     const playbillVerdict = extractPlaybillVerdictCount(showId);
     const nycTheatre = extractNYCTheatreCount(showId);
 
@@ -311,6 +341,7 @@ function main() {
       { key: 'dtli', data: dtli },
       { key: 'showScore', data: showScore },
       { key: 'bww', data: bww },
+      { key: 'bwwReviews', data: bwwReviews },
       { key: 'playbillVerdict', data: playbillVerdict },
       { key: 'nycTheatre', data: nycTheatre },
     ];
@@ -431,13 +462,13 @@ function main() {
   console.log('Summary');
   console.log('========================================');
   console.log(`Shows audited: ${shows.length}`);
-  console.log(`Archives: DTLI=${archiveStats.dtli}, SS=${archiveStats.showScore}, BWW=${archiveStats.bww}, PV=${archiveStats.playbillVerdict}, NYC=${archiveStats.nycTheatre}`);
+  console.log(`Archives: DTLI=${archiveStats.dtli}, SS=${archiveStats.showScore}, BWW=${archiveStats.bww}, BWW-R=${archiveStats.bwwReviews}, PV=${archiveStats.playbillVerdict}, NYC=${archiveStats.nycTheatre}`);
   console.log(`Shows with gaps: ${showsWithGaps}`);
   console.log(`Total missing reviews: ${totalMissingReviews} (per-aggregator), ${totalTrulyMissing} truly missing (local < max aggregator)`);
 
   console.log('\nPer-aggregator:');
-  for (const key of ['dtli', 'showScore', 'bww', 'playbillVerdict', 'nycTheatre']) {
-    const label = { dtli: 'DTLI', showScore: 'Show Score', bww: 'BWW', playbillVerdict: 'Playbill Verdict', nycTheatre: 'NYC Theatre' }[key];
+  for (const key of ['dtli', 'showScore', 'bww', 'bwwReviews', 'playbillVerdict', 'nycTheatre']) {
+    const label = { dtli: 'DTLI', showScore: 'Show Score', bww: 'BWW Roundups', bwwReviews: 'BWW Reviews', playbillVerdict: 'Playbill Verdict', nycTheatre: 'NYC Theatre' }[key];
     console.log(`  ${label.padEnd(17)} ${gapStats[key]} under-extracted (${missingStats[key]} missing), ${overStats[key]} over-extracted, ${neverSearched[key]} never searched`);
   }
 
