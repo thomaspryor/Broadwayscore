@@ -5,8 +5,8 @@
   "criticName": "Joe Dziemianowicz",
   "url": "https://www.newyorktheatreguide.com/reviews/kpop-broadway-review",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "KPOP definitely pops off the stage. No one could accuse this show celebrating Korean pop music of skimping when it comes to fervent flash and electrifying oomph. The production makes amazing use of Circle in the Square’s thrust stage and boasts enough dazzle and energy to power up two Broadway shows. On the other hand, KPOP, written by Jason Kim and directed by Teddy Bergman, has scarcely enough compelling substance to sustain its own first act. The plot retraces numerous behind-the-scenes tales about the perils, prices, and (good luck!) payoffs of showbiz. Repetition would be an issue for any musical, but in this instance it’s stickier. K-pop is all about supertight harmonies and ultraprecise dance moves, so we’re told in the show. No extraneous beats of any kind are allowed. But KPOP’s story actually plays out in triplicate as we follow RTMIS, a five-member girl group; F8, an eight-member boy group; and MwE, a solo supernova. We meet the three acts and discover their conflicts and personal dramas on the eve of a landmark New York concert debut. The conceit is that the run-through is being taped, and an opportunistic director decides to boost his cred by covertly digging around for gossip. This narrative stroke is a solid idea. It adds another texture as the camera captures what’s going on backstage. (It recalls a technique from the playbook of Tony-winning director Ivo van Hove.) The roaming camera also works as a nod to KPOP’s immersive 2017 presentation that took audiences into various rooms in a music factory. In the Broadway version, the phenom MwE (Luna, a South Korean K-pop star) has an emotional collapse that puts the concert in jeopardy for everybody. Flashbacks tie her breakdown to her mother’s long-ago abandonment and a toxic relationship with her Mama Rose-like mentor, Ruby (Jully Lee), a music titan who “built” her from a near-lost cause to a superstar. Exactly how MwE’s breakthrough came is murky. After years of struggling and sacrificing everything — like boyfriends — for their shot, the girls of RTMIS panic. They’ll give MwE anything to help. “A pep talk. A drink. An organ. Anything,” one girl assures. The boys of F8, meanwhile, resent that Brad (Zachary Noah Piser), an Asian American guy, has replaced an original Korean-born band member for the American tour. Beyond the echo-chamber narrative, there’s much to like. There’s an irresistible cast of performers — 18 of them are making Broadway debuts — and attention-getting work by the design team that delivers the goods and then some. Songs by Helen Park and Max Vernon, who each wrote music and lyrics, are a catchy batch of K-pop pastiche ear ticklers. As with the dialogue, songs are performed in Korean and English for authenticity’s sake. Choreographer Jennifer Weber’s invaluable, crisp dance moves slice the air like razors. Song themes don’t typically run too deep. That’s fitting for an artform in which Luna admits she’s become a “hit machine” warbling about happy things: “clouds and parties and marshmallows.” Some tracks dig a bit deeper, like “Perfect,” about unobtainable quests, “Wind Up Doll,” about being under one’s thumb, and “Halfway,” about searching for one’s place in the world. In the end, of course, storylines get resolved and each group shines in the spotlight. The delightful final blowout number, “Blast Off,” brings everyone together and lives up to the song title. The closing tableau finds everyone wearing head-to-toe white. The inspiration? Clouds and marshmallows, perhaps. KPOP is at Circle in the Square Theatre. Get KPOP tickets on New York Theatre Guide. Top image credit: Luna (center) and the cast of KPOP on Broadway. (Photo by Matthew Murphy) Originally published on Nov 27, 202218:00",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Beyond the echo-chamber narrative, there’s much to like. There’s an irresistible cast of performers — 18 of them are making Broadway debuts — and attention-getting work by the design team that delivers the goods and then some.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/kpop-broadway-review",
   "sources": [
@@ -77,5 +77,28 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 613,
+  "archivePath": "data/archives/reviews/kpop-2022/nytg--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T16:42:50.940Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
+  "wordCount": 613,
+  "tierReason": "Full review text"
 }

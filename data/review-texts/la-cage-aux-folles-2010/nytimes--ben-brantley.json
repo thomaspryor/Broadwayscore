@@ -5,8 +5,8 @@
   "criticName": "Ben Brantley",
   "url": "https://www.nytimes.com/2010/04/19/theater/reviews/19cage.html",
   "publishDate": "April 19, 2010",
-  "fullText": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
-  "isFullReview": false,
+  "fullText": "Douglas Hodge, here with the Cagelles, plays the star of a transvestite revue in the Broadway revival of “La Cage aux Folles.”\n\nTheir plumage is wilting, their wigs are askew, and their bustiers keep slipping south to reveal unmistakably masculine chests. Yet the ladies of the chorus from “La Cage aux Folles” have never looked more appealing than they do in the warm, winning production that opened Sunday night at the Longacre Theater.\n\nKelsey Grammer as Georges in the musical “La Cage Aux Folles” at the Longacre Theater in New York.\n\nTerry Johnson’s inspired revival of Jerry Herman and Harvey Fierstein’s musical, starring a happily mismatched Kelsey Grammer and Douglas Hodge (in a bravura Broadway debut), delivers the unexpected lesson that in theater, shabby can be not just chic but redemptive. This deliberately disheveled show, incubated at the tiny hit-spawning Menier Chocolate Factory in London, is a far cry from the high-gloss original production of 1983 or the glamorous, soulless revival that opened less than six years ago.\n\nThe Riviera nightclub of the title  run by Georges (Mr. Grammer) and the setting for a popular racy transvestite revue starring his partner, Albin (Mr. Hodge)  looks as if it could do with a coat of paint and perhaps a delousing. Georges, whose dapper evening jacket is definitely not bespoke, has a worn-down, worn-out appearance. And no matter how much rouge and mascara Albin applies, the dumpy, jowly chanteuse he becomes onstage will never resemble the screen siren of his mind’s eye.\n\nAs for the Cagelles, the revue’s scrappy six-member corps de ballet (pared down by half from their last Broadway incarnation), let’s just say that even the most myopic club patron isn’t going to mistake them for real live girls. “We are what we are, and what we are is an illusion,” they sing in gravelly chorus in their opening number. But the deception being peddled so adroitly here isn’t one of mistaken sexual identity.\n\nWhat makes this version work  transforming a less-than-great musical into greatly affecting entertainment  is its insistence on the saving graces of the characters’ illusions about themselves and, by extension, the illusions of the production in which they appear. As presented here “La Cage” is (you should pardon the expression) a fairy tale, a sweet, corny story that asks us to take people (the good-hearted ones, anyway) at their own valuation.\n\nThat plot, described baldly, is still hard to swallow without gagging, as are some of Mr. Herman’s saccharine-crusted numbers. Adapted from Jean Poiret’s play, the basis for the popular 1978 French film (which Mike Nichols successfully remade in English as “The Birdcage” in 1996), “La Cage” could easily be titled “Jean-Michel Has Two Daddies.”\n\nThe sitcom setup is that the rather priggish Jean-Michel (A. J. Shively), sired by Georges (via a one-night stand with a chorus girl) and brought up by Georges and Albin, does not want to bring his fiancée home to mother. Anne (Elena Shaddow), his betrothed, is the daughter of M. Dindon (Fred Applegate), an ultra-right-wing politician who espouses, above all, traditional family values. The anxious Jean-Michel demands that Albin disappear on the night that the Dindons (rounded out by Veanne Cox as the repressed mother) come to dinner.\n\nThe ensuing turmoil and resolution can be summed up in the declaration: “Family values? I’ll show you family values!” (You’ve heard that before, right? You certainly have if you’ve been to the new “Addams Family” musical, which lamentably recycles the same idea.) The sentiments are laudable, but the expression of them (despite the French setting) is as apple-pie-sticky as those of an Andy Hardy movie.\n\nI can’t say that Mr. Fierstein’s by-the-numbers book goes out of its way to make this medicinal sugar go down more easily. As written, the characters are either adorably cute or abrasively cartoonish, and often both. The show still takes at least 10 minutes too many to arrive at its predetermined conclusion. Yet I don’t think you’ll become restless at this production.\n\nRoom for Debate asks whether shorefront homeowners should have to open their land to all comers.\n\nNew York City's top public schools must become more diverse.",
+  "isFullReview": true,
   "dtliExcerpt": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
   "originalScore": null,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of 'La Cage aux Folles' that opened on Sunday night at the Longacre Theater proves that some shows just get better with age, like a fine wine or a well-seasoned drag queen.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
     "score": 79,
@@ -72,5 +72,34 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 693,
+  "archivePath": "data/archives/reviews/la-cage-aux-folles-2010/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T16:48:12.349Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20141115003541",
+  "archiveOrgUrl": "http://web.archive.org/web/20141115003541/http://www.nytimes.com/2010/04/19/theater/reviews/19cage.html",
+  "wordCount": 693,
+  "tierReason": "Full review text"
 }
