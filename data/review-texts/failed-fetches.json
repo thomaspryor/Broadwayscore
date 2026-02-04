@@ -8176,18 +8176,6 @@
     "timestamp": "2026-02-03T12:15:35.017Z"
   },
   {
-    "reviewId": "big-fish-2013/hollywood-reporter--david-rooney.json",
-    "showId": "big-fish-2013",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/big-fish-theater-review-634505/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): chicago, giant, rocky, harvey, rain...",
-    "textLength": 8194,
-    "timestamp": "2026-02-03T12:51:34.661Z"
-  },
-  {
     "reviewId": "almost-famous-2022/hollywood-reporter--angie-han.json",
     "showId": "almost-famous-2022",
     "outlet": "The Hollywood Reporter",
@@ -8222,18 +8210,6 @@
     "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"between riverside and crazy\" not mentioned in text; No theater-related keywords in short text",
     "textLength": 1137,
     "timestamp": "2026-02-03T16:08:11.796Z"
-  },
-  {
-    "reviewId": "billy-elliot-the-musical-2008/variety--david-rooney.json",
-    "showId": "billy-elliot-the-musical-2008",
-    "outlet": "Variety",
-    "critic": "David Rooney",
-    "url": "https://variety.com/2008/legit/reviews/billy-elliot-the-musical-1200470924/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): chicago, giant, appropriate, smash, 1984...",
-    "textLength": 8030,
-    "timestamp": "2026-02-03T16:15:54.045Z"
   },
   {
     "reviewId": "blithe-spirit-2009/nytimes--ben-brantley.json",
@@ -13274,5 +13250,41 @@
     "garbageReason": "Multiple shows mentioned (10): chicago, company, hair, once, rain...",
     "textLength": 5529,
     "timestamp": "2026-02-04T20:06:06.958Z"
+  },
+  {
+    "reviewId": "big-fish-2013/hollywood-reporter--david-rooney.json",
+    "showId": "big-fish-2013",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/big-fish-theater-review-634505/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chicago, giant, harvey, rain, the scottsboro boys...",
+    "textLength": 7994,
+    "timestamp": "2026-02-04T20:06:56.015Z"
+  },
+  {
+    "reviewId": "billy-elliot-the-musical-2008/variety--david-rooney.json",
+    "showId": "billy-elliot-the-musical-2008",
+    "outlet": "Variety",
+    "critic": "David Rooney",
+    "url": "https://variety.com/2008/legit/reviews/billy-elliot-the-musical-1200470924/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, giant, appropriate, smash, 1984...",
+    "textLength": 7481,
+    "timestamp": "2026-02-04T20:13:06.342Z"
+  },
+  {
+    "reviewId": "birthday-candles-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "birthday-candles-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/04/10/birthday-candles-review-debra-messing-ages-from-17-to-107/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): our town, appropriate, take me out, the skin of our teeth, betrayal...",
+    "textLength": 6808,
+    "timestamp": "2026-02-04T20:13:55.134Z"
   }
 ]
