@@ -8,6 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "went neutral, summing up the views of most the rest of the press:",
@@ -17,5 +18,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a fragment describing aggregator methodology rather than actual review content from the critic.; openai: The provided text is not an evaluative review but a summary of other press opinions.; gemini: The provided text is not a review, but rather a note that the outlet went neutral and summarized other reviews.; kimi: The provided text is a fragment describing the review's general stance ('went neutral') rather than containing actual evaluative content about the show itself. It lacks a complete sentence with critical assessment of the production, performances, or direction.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "“Excellently performed by the entire cast...Ijames’ play resolves on an exhilarating, life-affirming note. Or, to be more precise, notes, as in song, and dance, and enough good-time gender-bending disco sparkle to win over all but the grumpiest of spirits.”\n\nRead more"
 }

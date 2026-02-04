@@ -76,41 +76,7 @@
   "playbillVerdictUrl": "https://nypost.com/2023/04/12/fat-ham-broadway-review-bbq-hamlet-needs-more-meat/",
   "sources": [
     "web-search",
+    "show-score-playwright",
     "playbill-verdict"
-  ],
-  "previousUrl": "https://nypost.com/2023/04/13/fat-ham-broadway-review-a-hamlet-remix-thats-worth-the-weight/",
-  "urlDiscoveredAt": "2026-02-04T02:20:16.724Z",
-  "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 86,
-  "textWordCount": 756,
-  "archivePath": "data/archives/reviews/fat-ham-2023/nypost--johnny-oleksinski_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T02:20:16.728Z",
-  "fetchMethod": "archive",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "connect ECONNREFUSED 207.241.237.3:80"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": true
-    }
-  ],
-  "fetchTier": 4,
-  "textQuality": "full",
-  "truncationSignals": [],
-  "textStatus": "complete",
-  "sourceMethod": "archive",
-  "archiveOrgTimestamp": "20230413010232",
-  "archiveOrgUrl": "http://web.archive.org/web/20230413010232/https://nypost.com/2023/04/12/fat-ham-broadway-review-bbq-hamlet-needs-more-meat/",
-  "textIssues": [
-    "Show title not found in text"
-  ],
-  "wordCount": 756,
-  "tierReason": "Full review text"
+  ]
 }
