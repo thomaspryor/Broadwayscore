@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "I could be jaded about John Proctor is the Villain and nitpick how some major developments get revealed abruptly for plot's sake, how the male characters are broadly drawn archetypes known all too well in both fiction and reality: the charming predator, the obvious creep, the well-meaning dolt. But John Proctor seems to know that. It also knows it's a reclamation of age-old stories by intelligent, thoughtful young women whose views of themselves and others are nonetheless a work in progress.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It also knows it's a reclamation of age-old stories by intelligent, thoughtful young women whose views of themselves and others are nonetheless a work in progress.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges potential flaws but ultimately gives the show credit for self-awareness and intelligent handling of its subject matter. However, with only one excerpt available and no clear enthusiastic language, this appears to be a qualified positive recommendation. | GPT-4o: The review acknowledges flaws such as abrupt plot developments and broadly drawn male characters but ultimately appreciates the show's self-awareness and thematic focus. The excerpt suggests a positive view with reservations, but due to the single excerpt warning, confidence is low. | Gemini: The review acknowledges flaws but ultimately suggests the play is aware of them and offers a valuable perspective. Given the limited excerpt, a score in the lower-middle of the positive range seems appropriate. | Kimi: The reviewer acknowledges potential flaws (abrupt plot developments, broad archetypes) but dismisses them as intentional choices, praising the show's intelligence and self-awareness. The 'I could be jaded... But' structure signals a qualified recommendation rather than enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:33:16.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -47,5 +47,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1032,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm glad it's here. Not everything perfect is true, and not everything messy isn't.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green appreciates the ambition and design but finds significant flaws in execution - performances push too hard, arguments wander, not as funny as hoped. His final sentiment expresses qualified appreciation rather than recommendation. | GPT-4o: The review acknowledges the play's messiness and flaws but expresses appreciation for its presence on Broadway. The critic finds moments of power and conviction but notes the play isn't as funny as hoped and struggles with its contradictions. | Gemini: The review is mixed, praising aspects like design and individual moments but also noting that the argument wanders and the play isn't as funny as hoped. The final sentiment is positive ('I'm glad it's here') but qualified. | Kimi: The critic acknowledges significant flaws—the play is messy, the argument wanders, and it isn't as funny as hoped—but ultimately appreciates its ambition and unique vision, explicitly stating gratitude for its presence on Broadway.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:07:44.997Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

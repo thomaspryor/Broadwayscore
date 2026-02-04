@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Is that a reasonable response to aim for when staging the world's most famous weepie? For me, seeing so many young people engaged, it is. Perhaps, as Shakespeare commands in the play's closing speech, they will \"Go hence, to have more talk of these sad things.\" And so what if the production achieves that goal by protecting them from too much unruly feeling, just as the Capulets aimed to protect Juliet? Probably, the Capulets were right.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For me, seeing so many young people engaged, it is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt suggests approval of the production's approach to engaging young audiences, with the critic finding merit in the staging choices despite calling it protective from 'unruly feeling.' However, with only one excerpt available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt suggests a positive view of the production's ability to engage young audiences, despite some reservations about its emotional impact. Due to the single excerpt and lack of a clear rating, the confidence is low. | Gemini: The critic seems to be saying that the production is successful in engaging young people, even if it does so by protecting them from too much unruly feeling. This suggests a positive, but qualified, recommendation. | Kimi: The critic acknowledges the production succeeds in engaging young audiences but suggests it achieves this by 'protecting them from too much unruly feeling,' implying a sanitized, emotionally muted approach to the tragedy. The single excerpt and qualified endorsement ('reasonable response') with irony regarding the Capulets points to a mixed verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:20:34.670Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

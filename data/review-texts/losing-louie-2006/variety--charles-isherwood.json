@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Simon Neil's dramedy about a middle-aged man's midlife crisis feels overly familiar and schematic, despite some winning performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows fundamental criticism of the material as 'overly familiar and schematic' while acknowledging 'winning performances.' The structure suggests overall disappointment despite positive elements. | GPT-4o: The excerpt indicates a mixed review, highlighting the play's familiarity and schematic nature while acknowledging some positive aspects in the performances. The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review notes that the show feels \"overly familiar and schematic\" but acknowledges \"some winning performances,\" indicating a mixed assessment. Due to the limited text, confidence is low. | Kimi: The critic finds the play itself 'overly familiar and schematic' (clear criticisms) while acknowledging 'winning performances' as the only redeeming quality. This follows the classic pattern of performer-praise-not-redeeming-pan, indicating a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:38:20.458Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

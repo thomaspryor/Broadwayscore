@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While Lloyd Webber's music lacks the distinctive melodic stamp of his finest work, it's tuneful and energetic, blending satisfying classic rock elements with more traditional Broadway sounds.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/school-rock-theater-review-846244",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T02:22:53.946Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt about the music, not a complete review with an evaluative verdict about the show; openai: The text is an excerpt focusing on the music, lacking a comprehensive evaluation or recommendation for the show.",
+  "promptVersion": "5.2.0"
 }

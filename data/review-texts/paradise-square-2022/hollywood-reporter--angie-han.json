@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paradise Square is an ambitious musical that tackles weighty themes of race, class and immigration in Civil War-era New York, but its sprawling scope sometimes works against it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Paradise Square is an ambitious musical that tackles weighty themes of race, class and immigration in Civil War-era New York, but its sprawling scope sometimes works against it.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paradise Square is an ambitious musical that tackles weighty themes of race, class and immigration in Civil War-era New York, but its sprawling scope sometimes works against it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges ambition and important themes but clearly states the scope 'works against it,' indicating significant structural problems that undermine the production. | GPT-4o: The review acknowledges the ambition and thematic depth of the musical but notes that its 'sprawling scope sometimes works against it,' indicating a mixed assessment. | Gemini: The review acknowledges ambition but suggests the scope is a detriment, indicating a mixed assessment. | Kimi: The single-sentence review praises the show's ambition and thematic depth while criticizing its execution due to sprawling scope, presenting a balanced assessment without a clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:53:14.178Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

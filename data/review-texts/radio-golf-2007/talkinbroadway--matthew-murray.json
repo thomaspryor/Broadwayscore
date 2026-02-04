@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Radio Golf is a fitting capstone to Wilson's cycle, a play that looks both backward and forward while standing confidently in its own present.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Radio Golf is a fitting capstone to Wilson's cycle, a play that looks both backward and forward while standing confidently in its own present.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Radio Golf is a fitting capstone to Wilson's cycle, a play that looks both backward and forward while standing confidently in its own present.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play as a 'fitting capstone' that 'stands confidently' - clearly positive language, but limited text prevents full assessment of recommendation strength. | GPT-4o: The excerpt provides a positive evaluation of the play as a 'fitting capstone' that stands 'confidently,' suggesting a strong recommendation. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The excerpt is positive, calling the play a 'fitting capstone' and noting its confident stance. Due to the limited text, confidence is low, but the positive language suggests a recommendation. | Kimi: The excerpt offers unqualified praise, calling the play a 'fitting capstone' that 'stands confidently,' indicating a clear recommendation. Per instructions for clearly positive single excerpts, score placed in the 80-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:08:52.902Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

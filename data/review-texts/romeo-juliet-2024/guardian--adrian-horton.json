@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"More often than not, it irks, like an overly enthusiastic theater teacher straining to get equally enthusiastic kids interested in the classics via whatever means necessary, be it overt eroticism, Doc Martens, a couple of mid original pop songs by Antonoff, or the jarring presence of the TikTok binge drinking phenomenon known as a Borg (Blackout Rage Gallon).\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More often than not, it irks, like an overly enthusiastic theater teacher straining to get equally enthusiastic kids interested in the classics via whatever means necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show 'irks more often than not' and compares it to a straining theater teacher using desperate tactics. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt suggests a negative view, describing the show as irksome and trying too hard with various elements. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt uses negative language such as \"irks\" and compares the show to an overly enthusiastic teacher, suggesting a negative experience. Given the single excerpt, confidence is low. | Kimi: The critic describes the show as irritating and overly reliant on gimmicks like TikTok references and pop songs, comparing it to a teacher straining too hard to engage students.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:19:44.698Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

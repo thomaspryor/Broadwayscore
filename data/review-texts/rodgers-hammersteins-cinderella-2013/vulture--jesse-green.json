@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows the production prioritizes contemporary relevance over theatrical magic, suggesting a trade-off that diminishes the experience. The phrase 'forgets to be magical' indicates significant disappointment with a core expectation for this material. | GPT-4o: The excerpt suggests a mixed impression, highlighting a lack of magic due to its focus on being contemporary. Without more context, it's unclear if the overall experience is positive or negative. | Gemini: The excerpt suggests a trade-off between contemporary relevance and magical charm, indicating a mixed reception. The phrase \"sometimes forgets to be magical\" implies a notable flaw. | Kimi: The single excerpt indicates the production's modern approach undermines its essential magical quality, suggesting an inconsistent experience. With only one curated quote available, the overall verdict could range from mixed to negative, but 'sometimes' implies occasional success rather than total failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:17:56.525Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

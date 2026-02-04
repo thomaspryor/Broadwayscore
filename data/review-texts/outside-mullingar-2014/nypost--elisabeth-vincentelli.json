@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Debra Messing and Brian F. O'Byrne are perfectly matched in John Patrick Shanley's tender, funny tale of middle-aged romance in rural Ireland.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Debra Messing and Brian F. O'Byrne are perfectly matched in John Patrick Shanley's tender, funny tale of middle-aged romance in rural Ireland.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('perfectly matched', 'tender, funny') but very brief excerpt makes it difficult to assess the full critical stance with confidence. | GPT-4o: The review highlights the strong performances and describes the play as 'tender' and 'funny', indicating a positive reception. However, the brief length of the text limits the depth of evaluation, resulting in medium confidence. | Gemini: The review uses positive language such as 'perfectly matched,' 'tender,' and 'funny,' indicating a positive assessment of the play. | Kimi: The critic praises the lead performances as 'perfectly matched' and the play as both 'tender' and 'funny,' indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:51:59.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

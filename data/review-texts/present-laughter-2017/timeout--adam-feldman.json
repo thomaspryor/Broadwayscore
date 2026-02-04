@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kline's performance is a master class in comic timing and theatrical charisma, bringing Coward's self-absorbed actor to vivid, entertaining life.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Kline's performance is a master class in comic timing and theatrical charisma, bringing Coward's self-absorbed actor to vivid, entertaining life.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kline's performance is a master class in comic timing and theatrical charisma, bringing Coward's self-absorbed actor to vivid, entertaining life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the lead performance with superlative language ('master class'), but this appears to be a truncated excerpt focusing only on one element. The 80 rating confirms positive territory. | GPT-4o: The review praises Kline's performance as a 'master class' and 'entertaining', aligning with the original rating of 80, indicating a solid recommendation. | Gemini: The review praises Kline's performance as a \"master class\" and describes it as \"vivid, entertaining life,\" indicating a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The excerpt offers unqualified praise for the lead performance ('master class', 'theatrical charisma'), and the original rating of 80 confirms a strong positive recommendation in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:00:16.414Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

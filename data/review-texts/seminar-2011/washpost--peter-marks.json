@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's saving grace is that it knows how to make us laugh, even as it depicts the sometimes brutal process by which artistic dreams are either nurtured or crushed.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The play's saving grace is that it knows how to make us laugh, even as it depicts the sometimes brutal process by which artistic dreams are either nurtured or crushed.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's saving grace is that it knows how to make us laugh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The review acknowledges humor as a positive aspect but implies a mixed experience by mentioning the 'brutal process' of artistic dreams being 'nurtured or crushed'. | Gemini: The review highlights the play's ability to make the audience laugh, which is a positive aspect. However, it also mentions the \"sometimes brutal process,\" indicating a reservation. Thus, it is a positive review with reservations. | Kimi: The phrase 'saving grace' implies the production has significant weaknesses, but the critic acknowledges it succeeds in generating humor despite depicting difficult thematic material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:26:31.969Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

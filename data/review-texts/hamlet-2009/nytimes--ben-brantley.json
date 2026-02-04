@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Law brings a refreshing sanity to a role that is often treated as a tour de force for neurotic exhibitionism. His Hamlet is tortured, yes, but he's not a show-off about it.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (33 words)",
   "textQuality": "full",
   "sources": [
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20250326015118",
   "archiveOrgUrl": "http://web.archive.org/web/20250326015118/https://www.nytimes.com/2009/10/07/theater/reviews/07hamlet.html",
   "wordCount": 397,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T01:09:30.474Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an incomplete excerpt that cuts off mid-review and ends with a technical error message about retrieving content, making it impossible to determine the critic's overall verdict.; openai: The review is about a 2009 production of Hamlet, not a current Broadway run.",
+  "promptVersion": "5.2.0"
 }

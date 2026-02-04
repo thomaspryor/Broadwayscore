@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production is lively and colorful, with a witty translation by Richard Wilbur that preserves the spirit of Molière's rhyming couplets while making the text accessible to modern audiences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production is lively and colorful, with a witty translation by Richard Wilbur that preserves the spirit of Molière's rhyming couplets while making the text accessible to modern audiences.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is lively and colorful, with a witty translation by Richard Wilbur that preserves the spirit of Molière's rhyming couplets while making the text accessible to modern audiences.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive descriptors ('lively and colorful', 'witty translation') but lacks strong recommendation language or superlatives. Given single excerpt warning and moderate praise, scored at lower end of Positive bucket with low confidence due to potential cherry-picking. | GPT-4o: The excerpt praises the production as 'lively and colorful' and highlights the 'witty translation' that maintains the original's spirit. This suggests a strong positive impression, but the single excerpt limits confidence. | Gemini: The excerpt describes the production as \"lively and colorful\" with a \"witty translation.\" Given this positive description, I am placing it in the positive bucket. However, since it is only one excerpt, the confidence is low. | Kimi: The excerpt provides unqualified praise for the production values ('lively and colorful') and the translation ('witty'), indicating a clear positive recommendation. However, as a single curated excerpt, the confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:36:18.649Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

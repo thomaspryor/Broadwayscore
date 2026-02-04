@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"Culkin, Odenkirk, Burr and castmates Michael McKean, Donald Webber, Jr., Howard W. Overshown and John Pirruccello are so immersed and, yes, expert, in that sleazy, duplicitous and forever captivating world of '80s Mametian that their combined talents turn the latest revival of Glengarry Glen Ross, opening tonight at the gorgeously renovated The Palace Theatre into something thrilling.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "their combined talents turn the latest revival of Glengarry Glen Ross into something thrilling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the cast as 'expert' and 'immersed' with the verdict that their talents make the revival 'thrilling.' However, single excerpt limits full context. | GPT-4o: The excerpt praises the cast's performance and describes the production as 'thrilling,' indicating a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"expert,\" \"captivating,\" and \"thrilling,\" indicating a positive review. Given the single excerpt, confidence is low, but the strength of the language pushes the score towards the higher end of the positive range. | Kimi: The excerpt describes the cast as 'expert' and the production as 'thrilling,' indicating a clear positive recommendation. As only one excerpt is available, confidence is set to low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:28:28.527Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

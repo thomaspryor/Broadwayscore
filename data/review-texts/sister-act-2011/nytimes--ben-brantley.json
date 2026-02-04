@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical, based on the 1992 movie that starred Whoopi Goldberg, is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "This musical, based on the 1992 movie that starred Whoopi Goldberg, is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The phrase 'determinedly old-fashioned' suggests dated approaches, while 'wears its good intentions on its sequined sleeves' implies the show is overly earnest or heavy-handed. However, this appears to be a brief excerpt with no clear recommendation either way. | Gemini: The review describes the show as \"old-fashioned entertainment\" with \"good intentions,\" which suggests a mixed assessment. It doesn't explicitly recommend or discourage seeing the show. | Kimi: The description 'determinedly old-fashioned' suggests a dated, unoriginal approach, while 'wears its good intentions on its sequined sleeves' implies the messaging is unsubtle and heavy-handed. These are lukewarm descriptors indicating a show that functions as entertainment but lacks freshness or sophistication.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:37:30.134Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

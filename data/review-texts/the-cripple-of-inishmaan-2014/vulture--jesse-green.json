@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniel Radcliffe gives a performance of such startling maturity and skill that you forget he was ever Harry Potter — and even that he's acting at all.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.vulture.com/2014/04/theater-review-the-cripple-of-inishmaan.html",
@@ -64,5 +64,10 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1004,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T01:19:36.382Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is primarily plot summary and character descriptions with no critical evaluation or verdict about the production's quality or whether it's worth seeing; openai: The text provided is a plot summary of 'The Cripple of Inishmaan' with no evaluative content or critical assessment of the production.",
+  "promptVersion": "5.2.0"
 }

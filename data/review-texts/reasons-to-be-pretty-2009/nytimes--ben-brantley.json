@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. LaBute has created his most sympathetic and least manipulative work for the theater, a portrait of ordinary people stumbling toward self-awareness that manages to be both painful and affirming.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. LaBute has created his most sympathetic and least manipulative work for the theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise calling it LaBute's best work with positive descriptors like 'sympathetic' and 'affirming', indicating a solid recommendation despite the brief excerpt. | GPT-4o: The review praises the work as LaBute's most sympathetic and least manipulative, indicating a positive reception. The tone is affirming, suggesting a solid recommendation. | Gemini: The review praises the work as LaBute's most sympathetic and least manipulative, highlighting its painful yet affirming nature, indicating a positive recommendation with some reservations. | Kimi: The critic identifies this as LaBute's most sympathetic and least manipulative theatrical work, praising its emotional complexity as both painful and affirming, indicating a strong recommendation for this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:10:37.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

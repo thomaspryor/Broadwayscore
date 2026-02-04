@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Taylor brings a luminous integrity to Bessie that makes you believe in the existence of people who are motivated by love instead of self-interest.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Taylor brings a luminous integrity to Bessie that makes you believe in the existence of people who are motivated by love instead of self-interest.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Taylor brings a luminous integrity to Bessie that makes you believe in the existence of people who are motivated by love instead of self-interest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for lead performance with emotional impact ('luminous integrity', 'makes you believe'). However, confidence is low due to limited text - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt praises Ms. Taylor's performance with strong positive language ('luminous integrity'). Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt praises the performance of Ms. Taylor, suggesting a positive aspect of the show. However, with only one excerpt available, the overall recommendation is uncertain, leading to a lower confidence and a score on the lower end of the positive range. | Kimi: Single excerpt offers strong praise for the lead performance using superlatives ('luminous integrity'), indicating a clearly positive recommendation for this aspect of the production. Following the single-excerpt guidance for strongly positive quotes, this falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:39:12.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

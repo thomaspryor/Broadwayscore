@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "George C. Wolfe has constructed an evening that's part history lesson, part backstage musical, and part meditation on the nature of entertainment itself, but the constituent parts don't always mesh as smoothly as they should.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "George C. Wolfe has constructed an evening that's part history lesson, part backstage musical, and part meditation on the nature of entertainment itself, but the constituent parts don't always mesh as smoothly as they should.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the constituent parts don't always mesh as smoothly as they should",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production's ambitions and structure but identifies a fundamental flaw in execution. The phrase 'don't always mesh as smoothly as they should' indicates problems with the show's cohesion. With only one excerpt available, this suggests mixed reception rather than clear recommendation or rejection. | GPT-4o: The excerpt suggests a mixed review, noting that while the show has interesting elements, they don't integrate well. Given the single excerpt warning, confidence is low. | Gemini: The excerpt indicates that the show has good elements but they don't fully come together, suggesting a mixed or lukewarm reception. Confidence is low due to the single excerpt. | Kimi: The excerpt acknowledges the show's ambitious multi-layered structure but identifies significant execution problems with how these elements cohere. Given this is a single cherry-picked excerpt that highlights a flaw without indicating overall verdict, it suggests a mixed assessment with structural reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:35:03.406Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

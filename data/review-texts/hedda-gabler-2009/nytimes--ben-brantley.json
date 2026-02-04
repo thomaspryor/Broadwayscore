@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Parker brings a sensual restlessness to Hedda that makes her destruction seem both inevitable and tragic. She moves through the role with a feline grace that suggests a creature born to hunt but trapped in a drawing room.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Parker brings a sensual restlessness to Hedda that makes her destruction seem both inevitable and tragic. She moves through the role with a feline grace that suggests a creature born to hunt but trapped in a drawing room.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Parker brings a sensual restlessness to Hedda that makes her destruction seem both inevitable and tragic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Parker's performance with sophisticated analysis ('feline grace', 'inevitable and tragic'). However, this is only one excerpt focusing on the lead - the full review verdict is unknown, so confidence is low. | GPT-4o: The excerpt praises Parker's performance, suggesting a strong portrayal of the character. However, without the full context of the review, it's unclear if the production as a whole is recommended. Given the single excerpt warning, a cautious score at the lower end of Positive is appropriate. | Gemini: The excerpt focuses on a positive assessment of the lead actress's performance, suggesting a recommendation, but the limited text and lack of broader context warrant a lower confidence and a score on the lower end of the positive range. | Kimi: The single excerpt offers strong praise for Sarah Jessica Parker's performance using evocative language ('feline grace', 'sensual restlessness'), but provides no assessment of the overall production, direction, or script, warranting low confidence and a score at the upper end of the Positive range per instructions for clearly positive isolated quotes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:30:33.768Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

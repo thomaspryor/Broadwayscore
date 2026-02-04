@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a crowd-pleaser that knows how to work an audience, with enough heart to make you forgive its calculated moments.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show is a crowd-pleaser that knows how to work an audience, with enough heart to make you forgive its calculated moments.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a crowd-pleaser that knows how to work an audience, with enough heart to make you forgive its calculated moments.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowd-pleaser' with 'heart,' though acknowledges some calculated manipulation. The 'forgive its calculated moments' suggests minor reservations but overall endorsement. | GPT-4o: The review describes the show as a 'crowd-pleaser' and acknowledges its ability to engage the audience, indicating a positive recommendation. However, the mention of 'calculated moments' suggests some reservations, placing it in the positive range with a moderate score. | Gemini: The review calls the show a 'crowd-pleaser' and says it has enough heart to forgive its flaws, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic clearly recommends the show as a 'crowd-pleaser' with 'heart,' while acknowledging some 'calculated moments' that require forgiveness—indicating a solid but qualified endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:03:48.841Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

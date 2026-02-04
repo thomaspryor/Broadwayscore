@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap, especially when filtered through America's racial history.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap, especially when filtered through America's racial history.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the work as 'unprecedented' and praises the playwright's achievement in using theater to examine complex themes. However, confidence is low due to limited text from a single curated quote that may not represent the full review verdict. | GPT-4o: The excerpt praises the play as 'unprecedented' and highlights its thematic depth, suggesting a positive view. However, with only one excerpt, confidence is low. | Gemini: The excerpt suggests a positive assessment of the play's ambition and thematic exploration, but without more context, it's difficult to gauge the overall strength of the recommendation. I am scoring it as positive but with low confidence due to the limited text. | Kimi: The single excerpt offers strong praise ('unprecedented') for the play's artistic ambition and thematic depth, indicating a clearly positive verdict. Per instructions for clearly positive single excerpts, scoring at the upper end of the Positive bucket (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:40:37.058Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

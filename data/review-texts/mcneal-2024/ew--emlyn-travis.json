@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "The actor, whose company (Team Downey) is also attached to the project, is a commanding presence onstage, relishing in McNeal's smarminess and imbuing his quips with viper-like precision when anyone dares stand between him and success.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The actor is a commanding presence onstage, relishing in McNeal's smarminess and imbuing his quips with viper-like precision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance as 'commanding' with 'viper-like precision.' However, this only evaluates one actor's performance, not the overall show, and appears cherry-picked from a longer review. | GPT-4o: The excerpt praises the actor's performance, highlighting a 'commanding presence' and 'viper-like precision.' However, without more context, it's unclear if the overall production is similarly praised. Given the single excerpt warning, a lower positive score is appropriate. | Gemini: The excerpt praises the actor's performance, indicating a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I'm scoring it as a positive with reservations. | Kimi: Single excerpt provides strong praise for the lead performance using vivid, enthusiastic language ('commanding presence,' 'viper-like precision'), suggesting a recommendation based on the star turn. However, limited to one curated quote focusing only on the actor, preventing higher confidence or Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:39:49.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

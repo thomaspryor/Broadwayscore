@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical's ambitions are admirable, but 'Paradise Square' is a show that never quite finds its footing, despite a talented cast and moments of genuine power.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The musical's ambitions are admirable, but 'Paradise Square' is a show that never quite finds its footing, despite a talented cast and moments of genuine power.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical's ambitions are admirable, but 'Paradise Square' is a show that never quite finds its footing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges admirable ambitions and talented cast with genuine powerful moments, but states the show 'never quite finds its footing', indicating neither recommendation nor discouragement. | GPT-4o: The review acknowledges the show's ambitions and some powerful moments, but ultimately concludes that it 'never quite finds its footing', indicating a negative overall assessment. | Gemini: The review acknowledges positive aspects like a talented cast and powerful moments, but ultimately states that the show 'never quite finds its footing,' indicating a mixed or neutral recommendation. | Kimi: The critic offers a balanced assessment, praising the ambitions and cast while noting the production fails to cohere, resulting in a neither-here-nor-there verdict typical of mixed reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:53:43.033Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

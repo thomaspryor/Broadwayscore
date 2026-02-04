@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 773,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In spite of unevenness, the scope and score of Floyd Collins give meaning to the title character's journey.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'uneven but ambitious' and acknowledges significant flaws (first act frustration, visual silliness, sound issues) while praising the score as 'remarkable' and finding ultimate meaning in the production despite its problems. | GPT-4o: The review acknowledges the musical's ambition and meaningful score but highlights significant issues like visual silliness and a frustrating first act. The overall tone is mixed, with both positive and negative elements. | Gemini: The review acknowledges flaws (\"uneven\", \"lagginess\") but also praises the score and ambition. The overall tone is mixed, leaning slightly positive due to the final statement. | Kimi: The critic explicitly recommends attending ('shouldn't dissuade you') and praises the remarkable score and ambitious scope, but balances this with significant criticism of the pacing, staging, and sound mixing, calling the production 'uneven' throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:07:26.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

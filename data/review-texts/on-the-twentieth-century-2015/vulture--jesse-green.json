@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "What we get instead is a production that feels both overstuffed and undernourished, packed with gags but missing the motor that might make them matter.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1169,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She is a comic genius in a role ideally suited to her gifts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic acknowledges significant flaws (budget constraints, weak supporting performances, orchestral limitations) but enthusiastically recommends seeing it for Chenoweth's 'irreplaceable' star turn, calling her a 'comic genius' and urging audiences to 'catch her' while they can. | Gemini: The review highlights Chenoweth's exceptional performance as the main reason to see the show, while acknowledging some shortcomings in other aspects of the production. It's a positive recommendation, but with reservations. | Kimi: While the critic notes significant problems with the orchestration, supporting cast, and budget constraints, he ultimately calls the revival 'delicious' and urges readers to 'catch her,' deeming Chenoweth 'irreplaceable' and the sole reason the production works.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:18:46.890Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

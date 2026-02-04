@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Spacey's Richard is a compelling study in controlled malevolence, a smooth-talking psychopath who makes evil look easy.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T02:12:44.829Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to determine a recommendation.; openai: The review text refers to Kevin Spacey's performance, which is not part of the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

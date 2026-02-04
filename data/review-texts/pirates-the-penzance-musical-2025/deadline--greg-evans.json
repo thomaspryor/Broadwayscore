@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"If the cast seems instructed to play just a tad broadly, and hit the jokes a touch to hard, and the second act runs a bit too long, well, the overzealousness does little to dampen the overall joyous vibe. And just when things might start to lag, Pierce arrives, nailing every pun, every aside to the audience, every double-take and every droll observation. He's a treasure.\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the overzealousness does little to dampen the overall joyous vibe",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting some flaws (broad performances, second act length), the critic emphasizes the 'overall joyous vibe' and praises Pierce as 'a treasure.' Single excerpt warning requires caution - this sounds clearly positive so upper Positive range is appropriate. | GPT-4o: The review acknowledges some flaws, such as broad acting and a long second act, but ultimately describes the show as having a 'joyous vibe.' The praise for Pierce's performance suggests a positive recommendation despite reservations. | Gemini: The review acknowledges some flaws (broad acting, long second act) but concludes that the \"overzealousness does little to dampen the overall joyous vibe.\" This suggests a positive but not rave recommendation. The single excerpt and lack of a clear overall verdict lowers confidence. | Kimi: While the critic notes issues with broad acting and a lengthy second act, they emphasize the 'overall joyous vibe' and single out Pierce's performance as 'a treasure,' indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:56:54.236Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

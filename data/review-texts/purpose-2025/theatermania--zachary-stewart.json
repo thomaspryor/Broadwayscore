@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Purpose has arrived as Americans contemplate the dissolution of all things that once seemed permanent. Timely though it may be, it also seems destined to take its place among the greatest American dramas of all time.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it also seems destined to take its place among the greatest American dramas of all time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Declaring a show destined to be 'among the greatest American dramas of all time' is extraordinary praise that clearly places this in Rave territory, despite being a single excerpt. | GPT-4o: The excerpt provides strong praise, suggesting the show is destined to be one of the greatest American dramas, indicating a highly positive assessment. However, due to the single excerpt warning, confidence is medium. | Gemini: The review excerpt expresses a very positive sentiment, suggesting the play is destined to be among the greatest American dramas. Given the single excerpt, the score is placed at the higher end of the positive range. | Kimi: The excerpt contains superlative praise ranking the show among the greatest American dramas of all time, indicating an unqualified, enthusiastic recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:05:27.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

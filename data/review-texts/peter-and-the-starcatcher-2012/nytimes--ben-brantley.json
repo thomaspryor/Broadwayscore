@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This enchanting production transforms the Brooks Atkinson Theater into a sandbox of wonders, where grown-ups get to play with the same unfettered joy as children building castles in the air.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This enchanting production transforms the Brooks Atkinson Theater into a sandbox of wonders, where grown-ups get to play with the same unfettered joy as children building castles in the air.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This enchanting production transforms the Brooks Atkinson Theater into a sandbox of wonders, where grown-ups get to play with the same unfettered joy as children building castles in the air.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses strong praise language like 'enchanting' and 'wonders' with vivid positive imagery of joyful transformation. The metaphor of adults rediscovering childlike wonder suggests a deeply moving theatrical experience. | GPT-4o: The review uses highly positive language ('enchanting', 'sandbox of wonders') suggesting a must-see experience with no reservations. | Gemini: The review uses words like \"enchanting\" and describes the production as a \"sandbox of wonders\" suggesting a very positive experience and strong recommendation. | Kimi: The critic uses superlatives like 'enchanting' and 'sandbox of wonders' with no reservations, praising the production's magical atmosphere and emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:55:12.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

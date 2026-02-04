@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kevin Kline's Gary is more selfish than charming, more irritating than endearing — and that's a problem when he's onstage for nearly the entire show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear criticism of the lead performance that dominates the show, calling the protagonist irritating rather than endearing, which indicates a negative assessment of the production overall. | GPT-4o: The review criticizes the lead performance as more negative than positive, which is problematic given the character's prominence in the show. This suggests a negative overall impression. | Gemini: The review focuses on a negative aspect of the lead performance, which is a major problem for the show's overall appeal. | Kimi: The critic identifies the central performance as irritating and problematic, particularly given the actor's constant presence. While the critique is specific to the lead rather than the entire production, the language ('problem') indicates a clear lack of recommendation, though the truncated nature of the text limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:59:47.637Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
