@@ -263,7 +263,9 @@ Sources 1-3 inline in `gather-reviews.js`. Sources 4-5 run non-blocking after ga
 WordPress API. Star ratings in `excerpt.rendered`. Cross-reference lines stripped at 3 levels.
 
 ### Aggregator Coverage Audit
-`scripts/audit-aggregator-coverage.js` compares archive vs local counts. `trulyMissing = max(0, maxAggregatorCount - totalLocal)`. ~97% of per-aggregator gaps are attribution differences. Coverage gap closure: `.github/workflows/close-coverage-gaps.yml`.
+`scripts/audit-aggregator-coverage.js` compares archive vs local counts. `trulyMissing = max(0, maxAggregatorCount - totalLocal)`. ~97% of per-aggregator gaps are attribution differences. Coverage gap closure: `.github/workflows/close-coverage-gaps.yml` (with per-show checkpointing every 5 shows to prevent data loss on timeout).
+
+**Feb 2026 gap closure results:** 4-era batch run gathered 2,016+ new review files. Remaining: 496 truly missing across 275 shows (mostly BWW/PV attribution differences on long-running open shows like Hamilton, Moulin Rouge, Oh Mary!).
 
 ## Review Data Schema
 
