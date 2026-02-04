@@ -18,7 +18,8 @@
   "tierReason": "Only aggregator excerpts available",
   "sources": [
     "bww-roundup",
-    "show-score-playwright"
+    "show-score-playwright",
+    "bww-reviews"
   ],
   "llmScore": {
     "score": 75,
@@ -73,5 +74,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "2/3 models agree: Positive"
-  }
+  },
+  "bwwScore": 8
 }
