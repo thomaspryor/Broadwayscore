@@ -18,7 +18,7 @@ const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
-const { scrapeCurrentRuntimes, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
+const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -303,15 +303,18 @@ async function discoverShows() {
   }
   console.log('');
 
-  // --- Runtime enrichment from Broadway.com ---
+  // --- Runtime + age enrichment from Broadway.com ---
   let runtimeEnrichments = {};
   if (!dryRun && newShows.length > 0) {
     try {
-      console.log('⏱️  Looking up runtimes from Broadway.com...');
+      console.log('⏱️  Looking up runtimes + age recommendations from Broadway.com...');
       const runtimeEntries = await scrapeCurrentRuntimes();
-      runtimeEnrichments = matchRuntimesToShows(runtimeEntries, [...data.shows, ...newShows]);
+      const allShows = [...data.shows, ...newShows];
+      runtimeEnrichments = matchRuntimesToShows(runtimeEntries, allShows);
+      // Also scrape individual pages for age recommendations
+      await batchScrapeAgeRecommendations(runtimeEntries, allShows, runtimeEnrichments);
     } catch (e) {
-      console.log(`⚠️  Runtime lookup failed (continuing without): ${e.message}`);
+      console.log(`⚠️  Runtime/age lookup failed (continuing without): ${e.message}`);
     }
     console.log('');
   }
@@ -367,7 +370,7 @@ async function discoverShows() {
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
         synopsis: '',
-        ageRecommendation: null,
+        ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
         previewsStartDate: show.previewsStartDate || null,
         tags: tags,
         theaterAddress: getTheaterAddress(show.venue) || null,

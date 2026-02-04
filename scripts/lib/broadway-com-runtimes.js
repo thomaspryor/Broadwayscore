@@ -124,6 +124,87 @@ function parseIntermissionText(text) {
   return null;
 }
 
+/**
+ * Parse age recommendation text from Broadway.com into our "Ages X+" format.
+ *
+ * Input examples:
+ *   "Children under the age of 4 are not permitted."          → "Ages 4+"
+ *   "Recommended for ages 6 and up."                          → "Ages 6+"
+ *   "Appropriate for all ages."                               → "All ages"
+ *   "Recommended for ages 10+"                                → "Ages 10+"
+ *   "Best suited for ages 12 and older."                      → "Ages 12+"
+ *   "Not recommended for children under 13."                  → "Ages 13+"
+ *   "Ages 8+"                                                 → "Ages 8+"
+ *
+ * @param {string} text - Age/audience text from Broadway.com
+ * @returns {string|null} Formatted age recommendation or null
+ */
+function parseAgeRecommendation(text) {
+  if (!text) return null;
+  const t = text.trim();
+  if (!t) return null;
+
+  // Already in our format
+  const already = t.match(/^Ages?\s+(\d+)\+$/i);
+  if (already) return `Ages ${already[1]}+`;
+
+  // "all ages" / "appropriate for all ages"
+  if (/all\s+ages/i.test(t) || /appropriate\s+for\s+all/i.test(t)) return 'All ages';
+
+  // "children under the age of X are not permitted/admitted"
+  const underAge = t.match(/under\s+(?:the\s+age\s+of\s+)?(\d+)/i);
+  if (underAge) return `Ages ${underAge[1]}+`;
+
+  // "recommended for ages X and up/older" or "best suited for ages X"
+  const recAge = t.match(/(?:recommended|suited|appropriate)\s+(?:for\s+)?(?:ages?\s+)?(\d+)/i);
+  if (recAge) return `Ages ${recAge[1]}+`;
+
+  // "ages X and up/older" or "ages X+"
+  const agesUp = t.match(/ages?\s+(\d+)\s*(?:and\s+(?:up|older)|\+)/i);
+  if (agesUp) return `Ages ${agesUp[1]}+`;
+
+  // "not recommended for children under X"
+  const notRec = t.match(/not\s+recommended\s+.*?(?:under|below)\s+(\d+)/i);
+  if (notRec) return `Ages ${notRec[1]}+`;
+
+  // Bare number like "ages: 10"
+  const bareAge = t.match(/ages?\s*:?\s*(\d+)/i);
+  if (bareAge) return `Ages ${bareAge[1]}+`;
+
+  return null;
+}
+
+/**
+ * Parse age recommendation from a Broadway.com show page.
+ *
+ * Looks for "Audience" section with age-related text.
+ *
+ * @param {string} content - Page content (markdown or HTML)
+ * @param {string} format - 'markdown' or 'html'
+ * @returns {string|null} Age recommendation like "Ages 10+"
+ */
+function parseShowPageAge(content, format) {
+  let text = content;
+  if (format === 'html') {
+    text = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  }
+
+  // Look for "Audience" section — Broadway.com uses "### Audience" in markdown
+  const audienceSection = text.match(/(?:audience|age\s+(?:recommendation|requirement))[:\s]*([^#\n]{5,200})/i);
+  if (audienceSection) {
+    const parsed = parseAgeRecommendation(audienceSection[1].trim());
+    if (parsed) return parsed;
+  }
+
+  // Fallback: look for age patterns anywhere in the text
+  const agePhrases = text.match(/(?:children\s+under\s+(?:the\s+age\s+of\s+)?\d+|recommended\s+for\s+ages?\s+\d+|not\s+recommended\s+for\s+(?:children|anyone)\s+under\s+\d+)/i);
+  if (agePhrases) {
+    return parseAgeRecommendation(agePhrases[0]);
+  }
+
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Scraping: Centralized run-times table
 // ---------------------------------------------------------------------------
@@ -261,7 +342,7 @@ async function scrapeCurrentRuntimes() {
  *
  * @param {string} content - Page content (markdown or HTML)
  * @param {string} format - 'markdown' or 'html'
- * @returns {{runtime: string|null, intermissions: number|null}}
+ * @returns {{runtime: string|null, intermissions: number|null, ageRecommendation: string|null}}
  */
 function parseShowPageRuntime(content, format) {
   let text = content;
@@ -274,36 +355,36 @@ function parseShowPageRuntime(content, format) {
   // Look for runtime patterns in the page text
   // Pattern: "Run Time: 2 hours and 30 minutes" or "Running Time: ..."
   const runtimeSection = text.match(/(?:run(?:ning)?\s*time)[:\s]*([^.\n]+)/i);
-  if (!runtimeSection) {
-    return { runtime: null, intermissions: null };
-  }
 
-  const section = runtimeSection[1].trim();
-
-  // Check if intermission info is in the same line
   let runtime = null;
   let intermissions = null;
 
-  // "2 hours and 30 minutes with one intermission"
-  const combinedMatch = section.match(/(.+?)\s+with\s+(.*intermission.*)/i);
-  if (combinedMatch) {
-    runtime = parseRuntimeText(combinedMatch[1]);
-    intermissions = parseIntermissionText(combinedMatch[2]);
-  } else if (section.match(/intermission/i)) {
-    // "No intermission" might appear in the runtime section
-    const parts = section.split(/,\s*/);
-    if (parts.length >= 2) {
-      runtime = parseRuntimeText(parts[0]);
-      intermissions = parseIntermissionText(parts[1]);
+  if (runtimeSection) {
+    const section = runtimeSection[1].trim();
+
+    // "2 hours and 30 minutes with one intermission"
+    const combinedMatch = section.match(/(.+?)\s+with\s+(.*intermission.*)/i);
+    if (combinedMatch) {
+      runtime = parseRuntimeText(combinedMatch[1]);
+      intermissions = parseIntermissionText(combinedMatch[2]);
+    } else if (section.match(/intermission/i)) {
+      const parts = section.split(/,\s*/);
+      if (parts.length >= 2) {
+        runtime = parseRuntimeText(parts[0]);
+        intermissions = parseIntermissionText(parts[1]);
+      } else {
+        runtime = parseRuntimeText(section.replace(/\s*(?:with\s+)?(?:no|one|two|three)\s+intermissions?/i, ''));
+        intermissions = parseIntermissionText(section);
+      }
     } else {
-      runtime = parseRuntimeText(section.replace(/\s*(?:with\s+)?(?:no|one|two|three)\s+intermissions?/i, ''));
-      intermissions = parseIntermissionText(section);
+      runtime = parseRuntimeText(section);
     }
-  } else {
-    runtime = parseRuntimeText(section);
   }
 
-  return { runtime, intermissions };
+  // Also parse age recommendation from the same page
+  const ageRecommendation = parseShowPageAge(content, format);
+
+  return { runtime, intermissions, ageRecommendation };
 }
 
 /**
@@ -312,7 +393,7 @@ function parseShowPageRuntime(content, format) {
  *
  * @param {string} showTitle - The show title to search for
  * @param {string} [broadwayComUrl] - Direct URL if known
- * @returns {Promise<{runtime: string|null, intermissions: number|null}>}
+ * @returns {Promise<{runtime: string|null, intermissions: number|null, ageRecommendation: string|null}>}
  */
 async function scrapeShowRuntime(showTitle, broadwayComUrl) {
   let url = broadwayComUrl;
@@ -332,7 +413,7 @@ async function scrapeShowRuntime(showTitle, broadwayComUrl) {
     return parseShowPageRuntime(result.content, result.format);
   } catch (error) {
     console.warn(`  ⚠️  Failed to scrape runtime for "${showTitle}": ${error.message}`);
-    return { runtime: null, intermissions: null };
+    return { runtime: null, intermissions: null, ageRecommendation: null };
   }
 }
 
@@ -368,14 +449,61 @@ function matchRuntimesToShows(runtimeEntries, shows) {
   return enrichments;
 }
 
+/**
+ * Batch-scrape individual Broadway.com show pages for age recommendations.
+ * Uses the broadwayComUrl from centralized table entries when available.
+ *
+ * @param {Array} runtimeEntries - From scrapeCurrentRuntimes() (with broadwayComUrl)
+ * @param {Object[]} shows - Shows array from shows.json
+ * @param {Object} enrichments - Existing enrichment map to augment
+ * @returns {Promise<Object>} Updated enrichments map with ageRecommendation added
+ */
+async function batchScrapeAgeRecommendations(runtimeEntries, shows, enrichments) {
+  console.log('🎂 Scraping age recommendations from individual show pages...');
+  let found = 0;
+
+  for (const entry of runtimeEntries) {
+    if (!entry.broadwayComUrl) continue;
+
+    const match = matchTitleToShow(entry.title, shows);
+    if (!match) continue;
+
+    const showId = match.show.id;
+    // Skip if show already has an age recommendation
+    if (match.show.ageRecommendation) continue;
+
+    try {
+      const result = await fetchPage(entry.broadwayComUrl);
+      const age = parseShowPageAge(result.content, result.format);
+      if (age) {
+        if (!enrichments[showId]) enrichments[showId] = {};
+        enrichments[showId].ageRecommendation = age;
+        console.log(`  ✅ ${match.show.title}: ${age}`);
+        found++;
+      }
+    } catch (e) {
+      // Non-fatal
+    }
+
+    // Rate limit
+    await new Promise(r => setTimeout(r, 1500));
+  }
+
+  console.log(`  Found age recommendations for ${found} shows`);
+  return enrichments;
+}
+
 module.exports = {
   parseRuntimeText,
   parseIntermissionText,
+  parseAgeRecommendation,
+  parseShowPageAge,
   parseRuntimesTable,
   parseRuntimesTableHTML,
   parseShowPageRuntime,
   scrapeCurrentRuntimes,
   scrapeShowRuntime,
   matchRuntimesToShows,
+  batchScrapeAgeRecommendations,
   RUNTIMES_URL,
 };
