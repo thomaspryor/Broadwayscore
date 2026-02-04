@@ -63,5 +63,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a website navigation menu or feed with repeated content about various entertainment topics, not a coherent theater review; openai: The text provided is a collection of unrelated headlines and snippets, not a coherent review of a Broadway show.; gemini: This is a list of headlines and links to other articles on Variety's website, not a review of a specific play.; kimi: This text appears to be a jumbled collection of multiple Variety article headlines, snippets, and navigation content rather than a single coherent Broadway review. It contains references to the Super Bowl, Grammys, multiple films, and brief mentions of various stage productions, but no singular review of a target show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "https://variety.com/2018/legit/reviews/american-son-review-kerry-washington-broadway-1203017628/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

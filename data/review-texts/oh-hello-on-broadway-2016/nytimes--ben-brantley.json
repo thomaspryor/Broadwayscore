@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly scored; openai: The text is about a performance by Mr. Mulaney and Mr. Kroll, not a Broadway show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.nytimes.com/2016/10/11/theater/oh-hello-review-broadway.html",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }
