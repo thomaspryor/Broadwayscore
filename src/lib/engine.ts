@@ -581,7 +581,7 @@ export function computeShowData(
     const openYear = new Date(show.openingDate).getFullYear();
     const yearsOld = new Date().getFullYear() - openYear;
     if (yearsOld >= 15 && showReviews.length >= 5) {
-      reviewYearNote = `Reviews from ${openYear}`;
+      reviewYearNote = `Most reviews from ${openYear}`;
     }
   }
 
