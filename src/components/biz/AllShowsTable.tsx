@@ -13,7 +13,7 @@ import {
   getTrendColor,
   getTrendIcon,
 } from '@/config/commercial';
-import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data';
+import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data-types';
 
 interface ShowData {
   slug: string;

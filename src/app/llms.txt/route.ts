@@ -2,7 +2,7 @@
 // This file helps AI systems understand our site structure
 // See: https://llmstxt.org/
 
-import { getAllShows, getAllBrowseSlugs } from '@/lib/data';
+import { getAllShows, getAllBrowseSlugs } from '@/lib/data-core';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
