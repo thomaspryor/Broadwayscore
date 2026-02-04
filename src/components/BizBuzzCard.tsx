@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ShowCommercial, RecoupmentTrend } from '@/lib/data';
+import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
@@ -13,8 +13,8 @@ interface BizBuzzCardProps {
   showStatus?: 'open' | 'closed' | 'previews';
 }
 
-function formatCurrency(value: number | null): string {
-  if (value === null) return '—';
+function formatCurrency(value: number | null | undefined): string {
+  if (value == null) return '—';
   if (value >= 1_000_000) {
     return `$${(value / 1_000_000).toFixed(1)}M`;
   }

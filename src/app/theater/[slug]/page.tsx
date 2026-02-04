@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data';
+import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
 import { generateBreadcrumbSchema, generateTheaterSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 

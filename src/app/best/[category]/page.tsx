@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getBestOfList, getAllBestOfCategories, BestOfCategory } from '@/lib/data';
+import { getBestOfList, getAllBestOfCategories } from '@/lib/data-core';
+import type { BestOfCategory } from '@/lib/data-types';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import Breadcrumb from '@/components/Breadcrumb';
