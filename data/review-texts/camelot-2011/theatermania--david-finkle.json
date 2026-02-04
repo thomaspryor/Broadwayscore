@@ -6,7 +6,7 @@
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/camelot_35063.html",
   "publishDate": "November 13, 2011",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "The current Lincoln Center Theater revival of Camelot is handsome to look at but dramatically inert, weighed down by a book that feels creaky and songs that often stop the action cold.",
   "originalScore": null,
   "assignedScore": 44,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 226,
+  "archivePath": "data/archives/reviews/camelot-2011/theatermania--david-finkle_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:56:22.219Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 226 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Stars Nick Adams, Tony Sheldon, and Will Swenson, along with fellow members of the Broadway cast of Priscilla Queen of the Desert the Musical, will appear on NBC’s The Today Show on Friday, March 18 during the 8:30am (ET) segment of the show. Bette Midler, one of the producers of the musical, will introduce the performance.\n\nStephan Elliott and Allan Scott have adapted the show from the Academy Award-winning film about three friends searching for love and friendship in the middle of the Australian outback. The score is made up of well-known dance-floor songs. Simon Phillips has direction the production, playing Broadway’s Palace Theatre, that will officially open on March 20.\n\nFor tickets and more information on Priscilla Queen of the Desert the Musical, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
