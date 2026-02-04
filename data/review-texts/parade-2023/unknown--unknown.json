@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What struck me even more vividly in this well-judged and timely revival is the quick path hysteria has always burned through the American spirit if fanned by media, politicians and prejudice of any kind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: CRITIC'S PICK designation combined with praise for 'well-judged and timely revival' indicates strong positive recommendation. Single excerpt warning means using upper end of Positive bucket. | GPT-4o: The excerpt describes the revival as 'well-judged and timely' and is labeled as a 'CRITIC'S PICK', indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt includes \"Critic's Pick\" and describes the revival as \"well-judged and timely,\" indicating a positive recommendation. Due to the single excerpt, confidence is low, but the positive language suggests a score in the upper end of the Positive range. | Kimi: The excerpt carries a 'CRITIC'S PICK' designation and describes the revival as 'well-judged and timely' with vivid impact, indicating a clear recommendation. Following the single-excerpt protocol for clearly positive quotes, this scores in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:43:22.359Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

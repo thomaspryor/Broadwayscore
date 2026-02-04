@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - critic finds value in the spectacle and performances but the phrase 'works best when' implies limitations. With only one curated quote available, confidence is low and score reflects cautious positive recommendation. | GPT-4o: The excerpt highlights the show's strengths in spectacle and choreography, suggesting a positive experience. However, the single excerpt and lack of full context limit confidence in the overall verdict. | Gemini: The excerpt suggests a positive experience focused on spectacle and choreography, but it's a single excerpt, so confidence is low. The phrase \"works best\" implies some limitations. | Kimi: The excerpt offers qualified praise ('works best when') for the visual and choreographic elements, implying limitations elsewhere but still identifying genuine entertainment value. Single excerpt limitation requires low confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges the show 'works' in spectacle moments but implies limitations elsewhere. Given single excerpt warning and conditional language, scored at lower end of Positive range. | GPT-4o: The excerpt suggests a positive view of the show's spectacle and choreography, but the single quote and lack of full context limits confidence. The positive tone is mild, indicating a lower score within the Positive range. | Gemini: The excerpt suggests a positive experience when the show focuses on spectacle and choreography, but it's a single excerpt, so confidence is low. The phrase \"works best\" implies that other parts of the show may not be as strong. | Kimi: The excerpt offers qualified praise for the production's spectacle and choreography, suggesting entertainment value despite implying other elements are less successful. As a single curated excerpt, the sentiment appears mildly positive rather than enthusiastically so.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:51:19.532Z",
+    "scoredAt": "2026-02-04T12:17:49.023Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,7 +58,7 @@
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 74,
+    "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 72,
     "claudeBucket": "Positive",

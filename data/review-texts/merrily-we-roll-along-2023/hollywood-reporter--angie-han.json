@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Merrily We Roll Along feels like a revelation, transforming what was once considered one of Sondheim's greatest failures into something that sparkles with possibility.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Merrily We Roll Along feels like a revelation, transforming what was once considered one of Sondheim's greatest failures into something that sparkles with possibility.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of Merrily We Roll Along feels like a revelation, transforming what was once considered one of Sondheim's greatest failures into something that sparkles with possibility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('revelation', 'sparkles with possibility') suggests enthusiastic recommendation, but confidence is low due to single excerpt warning - full review verdict unknown. | GPT-4o: The excerpt uses strong positive language ('revelation', 'sparkles with possibility') indicating a transformative and highly successful production. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt is overwhelmingly positive, calling the production a \"revelation\" and saying it \"sparkles with possibility.\" Given the single excerpt, confidence is low, but the language suggests a strong positive recommendation. | Kimi: The critic uses superlative language ('revelation,' 'sparkles with possibility') to praise the production's transformation of a previously failed work, indicating strong enthusiasm. However, as a single curated excerpt, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:14:58.402Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This ravishing revival of Stephen Sondheim and George Furth's 1981 musical proves that sometimes it takes decades for a show to find its perfect moment.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 82,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The word 'ravishing' is strong praise, and calling it the 'perfect moment' for the show suggests high enthusiasm. However, single excerpt warning applies - this could be cherry-picked from a longer review with more reservations. | GPT-4o: The excerpt uses highly positive language ('ravishing revival') and suggests the show has reached its 'perfect moment', indicating a strong recommendation. However, due to the single excerpt warning, confidence is set to low. | Gemini: The excerpt uses the word \"ravishing\" to describe the revival, which indicates a strong positive sentiment. Given the single excerpt warning, I am placing the score towards the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise using words like 'ravishing' and 'perfect moment,' suggesting a strong endorsement of this revival, though as a single curated quote, the full context of the review remains unknown.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt uses superlative praise ('ravishing') and suggests this is the ideal production ('perfect moment'). However, confidence is low due to limited text - this could be cherry-picked from a more qualified review. | GPT-4o: The excerpt uses strong positive language ('ravishing revival') and suggests the show has reached its 'perfect moment,' indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses the word \"ravishing\" to describe the revival, indicating a strong positive sentiment. Given the limited text, I'm placing it in the upper end of the positive bucket. | Kimi: The excerpt offers enthusiastic, unqualified praise ('ravishing,' 'perfect moment'), but as a single curated quote that may be cherry-picked, the score is capped at the upper end of the Positive range per guidelines.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,17 +50,17 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:48:34.497Z",
+    "scoredAt": "2026-02-04T12:15:49.505Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 83,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

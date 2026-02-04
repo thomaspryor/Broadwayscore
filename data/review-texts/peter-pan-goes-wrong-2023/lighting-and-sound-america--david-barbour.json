@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Clearly, these productions have such a fan base -- the audience at the performance I attended was in a panic state throughout -- that the Mischief people can seemingly keep monetizing their formula until doomsday. All I can tell you is that I -- a lover of British comedy down to the Carry On films -- was stirred to laughter only occasionally.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was stirred to laughter only occasionally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic, self-described as a lover of British comedy, found the show rarely funny despite acknowledging its fan base. Single excerpt limits confidence in full verdict assessment. | GPT-4o: The review suggests the show has a strong fan base, but the critic personally found it only occasionally funny. This indicates a mixed reception, with some positive elements but not enough to fully recommend. | Gemini: The critic acknowledges the show's fan base and potential for monetization but admits to only occasional laughter, suggesting a mixed experience. The single excerpt and lack of a clear recommendation lead to a 'low' confidence score. | Kimi: While acknowledging the show's dedicated fan base, the critic's personal verdict is clearly negative, stating that even as a lover of the genre, they were stirred to laughter only occasionally. With no positive qualities cited about the production itself and the excerpt representing the critic's direct recommendation, this falls in the Negative bucket despite the show's popularity with its existing audience. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:48:18.185Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

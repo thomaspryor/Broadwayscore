@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "John Proctor Is the Villain\" is the best play of the season, but even more significantly, it is a feminist masterpiece sure to become one of the defining works of art from and about the #MeToo era.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"The play has several reveals which raise the stakes and maintain the play’s lightning speed, but they all are well earned.\"\n\nRead more"
+  "showScoreExcerpt": "\"The play has several reveals which raise the stakes and maintain the play’s lightning speed, but they all are well earned.\"\n\nRead more",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "John Proctor Is the Villain is the best play of the season, but even more significantly, it is a feminist masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Declares it 'best play of the season' and 'feminist masterpiece' with historical significance. However, confidence is low due to excerpt-only format where full verdict may be missing. | GPT-4o: The excerpt uses strong superlatives like 'best play of the season' and 'feminist masterpiece,' indicating a highly enthusiastic recommendation. However, the confidence is low due to the lack of full review text. | Gemini: The review excerpt uses superlatives like \"best play of the season\" and \"feminist masterpiece,\" indicating a rave review. | Kimi: The excerpt contains unqualified superlatives ('best play of the season', 'masterpiece', 'defining works of art') indicating the highest level of enthusiasm and recommendation, placing it at the top of the Rave bucket despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:51:58.915Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

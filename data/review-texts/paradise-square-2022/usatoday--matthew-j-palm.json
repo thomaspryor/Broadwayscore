@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Paradise Square is a musical with big ambitions and a bigger heart, but it struggles under the weight of its own earnestness and a sprawling story that never quite finds its focus.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Paradise Square is a musical with big ambitions and a bigger heart, but it struggles under the weight of its own earnestness and a sprawling story that never quite finds its focus.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paradise Square is a musical with big ambitions and a bigger heart, but it struggles under the weight of its own earnestness and a sprawling story that never quite finds its focus.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positive qualities (big ambitions, bigger heart) but emphasizes significant structural problems (struggles with earnestness, sprawling unfocused story). The 'but' construction clearly signals mixed-to-negative assessment without a recommendation. | GPT-4o: The review acknowledges the show's ambitions and heart but criticizes its lack of focus and struggles with earnestness, indicating a mixed assessment without a clear recommendation. | Gemini: The review acknowledges positive aspects like ambition and heart, but criticizes the lack of focus and the weight of earnestness, resulting in a mixed assessment. | Kimi: The critic acknowledges the show's ambition and emotional core but emphasizes significant structural flaws and a lack of narrative focus, resulting in a balanced, non-committal assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:44:23.395Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

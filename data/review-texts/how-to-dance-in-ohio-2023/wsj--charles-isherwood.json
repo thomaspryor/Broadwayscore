@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on a 2014 documentary, follows a group of young people with autism as they prepare for a spring formal dance, and it treats its subject with sensitivity and warmth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, based on a 2014 documentary, follows a group of young people with autism as they prepare for a spring formal dance, and it treats its subject with sensitivity and warmth.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it treats its subject with sensitivity and warmth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive evaluation ('sensitivity and warmth'), but limited text prevents assessment of full recommendation strength. Lower end of Positive range due to excerpt limitation and measured tone. | GPT-4o: The excerpt provides a positive evaluation, highlighting the show's sensitivity and warmth. However, the single excerpt warning suggests caution, indicating the possibility of cherry-picking. Thus, the score reflects a mildly positive sentiment with low confidence. | Gemini: The excerpt indicates a positive portrayal of the subject matter, suggesting a generally positive review. However, due to the limited text, the score is placed at the lower end of the 'Positive' bucket with low confidence. | Kimi: Single excerpt offers mild, unqualified praise for the show's handling of its subject matter, suggesting a gentle positive recommendation, though the limited context prevents a more definitive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:45:36.392Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

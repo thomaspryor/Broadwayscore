@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language using the show's own superlative ('Spectacular, Spectacular') and praising it as setting 'a high bar for showmanship.' However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt uses superlatives like 'Spectacular, Spectacular' and praises the show's high bar for showmanship, indicating a strong recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The title itself is very positive, and the excerpt states that it sets a high bar for showmanship. | Kimi: The single excerpt features enthusiastic praise ('spectacular,' 'sets a high bar') indicating a strong recommendation for the production's showmanship, though the limited context requires low confidence.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The critic uses 'Spectacular, Spectacular' (repeating the show's signature phrase) and says it 'sets a high bar for showmanship.' However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses superlatives like 'Spectacular, Spectacular' and mentions setting a 'high bar for showmanship,' indicating strong praise. However, with only a single excerpt available, the confidence is low. | Gemini: The title and excerpt are extremely positive, indicating a strong recommendation. Given it's the only excerpt, I'm placing it at the higher end of the positive range. | Kimi: Single excerpt offers enthusiastic praise using superlatives ('Spectacular, Spectacular') and commends the production's showmanship, indicating a strong recommendation in the 80-84 range per excerpt guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,18 +50,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T09:53:45.646Z",
+    "scoredAt": "2026-02-04T12:20:42.930Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 82,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
@@ -70,7 +70,7 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
   }
 }

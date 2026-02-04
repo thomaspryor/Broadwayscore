@@ -20,7 +20,7 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 73,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 68,
       "high": 78
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review offers a qualified recommendation ('more entertaining than you'd expect') but includes significant caveats ('if you give it a chance', 'works better if you are already a fan'). Single excerpt with conditional praise suggests lower end of Positive range. | GPT-4o: The excerpt suggests the show is entertaining but implies it may not appeal to everyone, particularly those who are not fans of Spears. The recommendation is conditional, indicating a mixed verdict. | Gemini: The review excerpt suggests a positive but qualified recommendation, indicating it's more entertaining than expected, especially for fans. Due to the single excerpt, confidence is low. | Kimi: The critic offers a qualified recommendation that the show exceeds expectations but notes it works best for existing Britney Spears fans, suggesting limited universal appeal.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this is a qualified positive with conditions ('if you give it a chance', 'if you are already a fan'), suggesting lukewarm recommendation. Lower end of Positive bucket due to conditional nature and single excerpt limitation. | GPT-4o: The excerpt suggests the show is entertaining, especially for fans of Spears, but implies it may not appeal to everyone. The recommendation is mild and conditional, fitting the lower end of the Positive range. | Gemini: The review states the show is \"more entertaining than you'd expect,\" which is a positive sentiment, but the caveat \"if you give it a chance\" and the conditional \"works better if you are already a fan\" indicate reservations. Given the single excerpt, confidence is low. | Kimi: The single available excerpt offers a mildly positive, conditional recommendation that the show exceeds expectations but works best for existing Britney Spears fans, warranting a lower-end Positive score with low confidence due to the limited excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T10:07:48.530Z",
+    "scoredAt": "2026-02-04T12:32:19.976Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,19 @@
   },
   "ensembleData": {
     "claudeScore": 72,
-    "openaiScore": 65,
+    "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 72,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

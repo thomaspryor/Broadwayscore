@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"It is well designed and full of fine actors doing their jobs. Its subject is timely and its message is on point, and there’s no good reason to see it\"\n\nRead more"
+  "showScoreExcerpt": "\"It is well designed and full of fine actors doing their jobs. Its subject is timely and its message is on point, and there’s no good reason to see it\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's no good reason to see it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging technical merits (design, acting, timely subject), the critic's verdict is explicitly negative with 'no good reason to see it' - a clear recommendation against seeing the show. | GPT-4o: Despite acknowledging good design and acting, the critic concludes with 'there’s no good reason to see it', indicating a negative recommendation. | Gemini: The review explicitly states that there is \"no good reason to see it\" despite acknowledging positive qualities. This indicates a negative recommendation. | Kimi: While the critic concedes the production is competent with fine actors and timely subject matter, the definitive conclusion that there is 'no good reason to see it' constitutes a clear recommendation against attending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:32:43.528Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

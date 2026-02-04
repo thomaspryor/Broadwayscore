@@ -20,7 +20,7 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 82,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 77,
       "high": 87
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the musical itself ('one of the two or three best musicals of the last quarter century', 'stunner', 'exhilarating') with only minor reservation about this specific production. Single excerpt warning applied - clearly positive tone warrants upper Positive range. | GPT-4o: The excerpt describes the show as a 'stunner' and 'exhilarating,' with high praise for its thematic depth and impact, despite noting that the current production is 'not ideal.' The language suggests a strong recommendation. | Gemini: The review states the show \"remains a stunner\" and is an \"exhilarating demonstration of what musical theatre can achieve,\" indicating a positive recommendation despite reservations about the current production. Given it is a single excerpt, I am scoring on the higher end of positive. | Kimi: While acknowledging the production isn't perfect ('not ideal'), the critic calls it a 'stunner' and 'exhilarating,' praising the material as one of the best musicals of the last quarter century.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the show itself ('one of the two or three best musicals of the last quarter century', 'stunner', 'exhilarating') with only one caveat about the current production not being ideal. Single excerpt warning noted - this positive language suggests upper Positive range. | GPT-4o: The excerpt praises the show as a 'stunner' and 'exhilarating,' despite noting the current production is not ideal. The positive language suggests a strong recommendation, but the excerpt's limited nature reduces confidence. | Gemini: Despite the caveat that the current production is \"not ideal,\" the excerpt strongly praises the show as a whole, calling it a \"stunner\" and an \"exhilarating demonstration of what musical theatre can achieve.\" | Kimi: The excerpt offers strong praise for the musical material ('one of the two or three best musicals,' 'exhilarating demonstration') but explicitly notes the current production is 'not ideal,' placing it in the Positive bucket rather than a Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T10:17:20.258Z",
+    "scoredAt": "2026-02-04T12:39:10.796Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,19 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 90,
+    "openaiScore": 83,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

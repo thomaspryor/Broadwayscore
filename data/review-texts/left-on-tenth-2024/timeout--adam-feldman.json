@@ -12,5 +12,60 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"Left in Tenth has the energy and the color scheme of a drugstore greeting card\"\n\nRead more",
-  "publishDate": "October 24, 2024"
+  "publishDate": "October 24, 2024",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Left in Tenth has the energy and the color scheme of a drugstore greeting card",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The comparison to a 'drugstore greeting card' is clearly pejorative, suggesting the show is cheap, artificial, and lacking substance. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt suggests a lack of depth or originality, akin to a 'drugstore greeting card', which implies a mixed sentiment. However, with only one excerpt, the overall tone is unclear, leading to a low confidence score. | Gemini: The single excerpt available is clearly negative, comparing the show's energy and color scheme to a drugstore greeting card. Given the limited text, the confidence is low, but the negative sentiment is clear. | Kimi: The excerpt offers a mixed assessment praising the show's energy while comparing its visual style to cheap, mass-produced sentimentality. With only one curated quote available per the warning, the overall verdict is unclear but suggests shallow or tacky production values tempering the show's vitality. | Buckets: claude=Negative, openai=Mixed, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:01:58.300Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

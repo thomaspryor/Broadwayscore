@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Going to hell has never been as much fun as seeing a performance of Anaïs Mitchell’s musical 'Hadestown'...Michael Krass’ costumes for the Chorus in the underworld are outstanding, as is the visually stunning dance number choreographed by David Neumann done with headlamps and swinging lights. And if the love story between Orpheus and Eurydice didn’t smolder, Patrick Page and Amber Gray set the house on fire as Orpheus and Persephone.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Going to hell has never been as much fun as seeing a performance of Anaïs Mitchell's musical 'Hadestown'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opening line is enthusiastically positive ('never been as much fun'), praises multiple production elements as 'outstanding' and 'visually stunning', and uses vivid positive imagery ('set the house on fire'). However, confidence is low due to single excerpt warning - this may be cherry-picked positive content. | GPT-4o: The excerpt provides strong praise for the production, highlighting fun and outstanding elements. Despite the single excerpt warning, the positive language suggests a strong recommendation. | Gemini: The excerpt is overwhelmingly positive, praising the costumes, choreography, and performances. Given the single excerpt warning, I'm scoring it as a strong positive, but with low confidence. | Kimi: The excerpt features enthusiastic praise with superlatives ('outstanding', 'visually stunning', 'set the house on fire') and promises a highly entertaining experience, indicating a strong recommendation at the high end of the Positive range despite the limitation of available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:35:56.907Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

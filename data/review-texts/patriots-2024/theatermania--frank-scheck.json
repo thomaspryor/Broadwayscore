@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as the Russian oligarch Boris Berezovsky in this gripping political drama that chronicles the rise of Vladimir Putin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michael Stuhlbarg delivers a powerhouse performance as the Russian oligarch Boris Berezovsky in this gripping political drama that chronicles the rise of Vladimir Putin.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Michael Stuhlbarg delivers a powerhouse performance as the Russian oligarch Boris Berezovsky in this gripping political drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote highlights strong performance praise and calls the drama 'gripping', suggesting positive reception. However, with only one excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises Michael Stuhlbarg's performance and describes the drama as 'gripping,' indicating a positive view. However, due to the single excerpt warning, the full sentiment of the review is unclear, leading to a low confidence score. | Gemini: The excerpt focuses on a \"powerhouse performance\" and \"gripping political drama\", which suggests a positive, though limited, assessment. Given the single excerpt, confidence is low, but the positive language warrants a score in the upper end of the positive range. | Kimi: The excerpt offers strong praise ('powerhouse', 'gripping') indicating an enthusiastic recommendation for both the lead performance and the production itself. However, confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:46:29.003Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

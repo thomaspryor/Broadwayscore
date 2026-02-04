@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "entertaining, yes,  bawdy, queer,  tasteless – i.e. camp –  but like an overlong sketch.\n\nRead more"
+  "showScoreExcerpt": "entertaining, yes,  bawdy, queer,  tasteless – i.e. camp –  but like an overlong sketch.\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "entertaining, yes, bawdy, queer, tasteless – i.e. camp – but like an overlong sketch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show is entertaining and camp, but the 'but like an overlong sketch' qualifier suggests significant reservations about its substance and length, placing it in mixed territory. | GPT-4o: The excerpt describes the show as entertaining but also criticizes it as being like an 'overlong sketch,' suggesting a mixed review. The single excerpt and lack of full context lower confidence. | Gemini: The review describes the show as entertaining but also criticizes it as being like an overlong sketch, suggesting a mixed reaction. The single excerpt and truncated nature of the text lowers the confidence. | Kimi: The excerpt offers a qualified recommendation: while explicitly calling the show 'entertaining' and appreciating its camp qualities, the critic undercuts this with the criticism that it feels like an 'overlong sketch,' suggesting it overstays its welcome.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:23:23.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

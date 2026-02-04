@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production has some genuinely effective scary moments, but it's hard to maintain dread when the metaphors are this muddled and the characters this thin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production has some genuinely effective scary moments, but it's hard to maintain dread when the metaphors are this muddled and the characters this thin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows balanced assessment - acknowledges effective elements but criticizes fundamental flaws in metaphors and character development. Mixed verdict with no clear recommendation either way. | GPT-4o: The excerpt highlights both positive elements (effective scary moments) and significant criticisms (muddled metaphors, thin characters), indicating a mixed review. The single excerpt and lack of full context reduce confidence. | Gemini: The review acknowledges effective moments but criticizes the metaphors and characters, indicating a mixed reaction. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt acknowledges 'genuinely effective scary moments' but emphasizes structural problems (muddled metaphors, thin characters) that prevent sustained dread, suggesting a mixed reception that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:34:05.132Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

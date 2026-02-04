@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tom Stoppard's latest, and possibly last, drama is a monumental work, a threnody for a family, a way of life, and an idea of civilization. It begins in 1899 with a large, wealthy, and well-connected Austrian Jewish clan making merry and ends, half a century later, with a trio of survivors, everyone else having been crushed by history's march. It is a vivid historical canvas that will send shivers through anyone worried about the rise of fascism. It's a terrible and gripping story and don't think it can't happen here.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a vivid historical canvas that will send shivers through anyone worried about the rise of fascism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'monumental work' and 'vivid historical canvas' with emotional impact ('terrible and gripping story'), but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt describes the play as a 'monumental work' and 'a vivid historical canvas,' indicating high praise. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong language like \"monumental work\", \"gripping story\", and \"vivid historical canvas\", indicating a positive recommendation. Given that it is only one excerpt, I am scoring it with low confidence. | Kimi: Single excerpt contains strongly positive evaluative language ('monumental work', 'vivid historical canvas', 'gripping story') but limited context and truncation warrant conservative placement at the high end of the Positive bucket per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:03:44.573Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
