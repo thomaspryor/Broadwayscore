@@ -196,7 +196,7 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
               showTooltip={true}
             />
             {show.reviewYearNote && (
-              <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight">
+              <span className="text-[10px] text-gray-400 whitespace-nowrap leading-tight mt-1">
                 {show.reviewYearNote}
               </span>
             )}
