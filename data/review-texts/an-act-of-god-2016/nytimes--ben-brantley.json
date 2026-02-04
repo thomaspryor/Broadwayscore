@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2016/05/29/theater/review-an-act-of-god-with-jim-parsons-as-the-almighty.html",
+  "url": "https://www.nytimes.com/2016/06/07/theater/review-an-act-of-god-is-back-with-sean-hayes.html",
   "publishDate": "May 28, 2016",
-  "fullText": "Mr. Parsons brings a welcome specificity to what could have been a one-joke premise, finding different shadings of petulance, irritation and wounded vanity in God's voice.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Mr. Parsons brings a welcome specificity to what could have been a one-joke premise, finding different shadings of petulance, irritation and wounded vanity in God's voice.",
   "originalScore": null,
@@ -16,17 +16,56 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Parsons brings a welcome specificity to what could have been a one-joke premise, finding different shadings of petulance, irritation and wounded vanity in God's voice.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "rejectedAt": "2026-02-03T13:36:07.546Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence fragment or excerpt, not a complete review that provides enough context to determine the critic's overall recommendation; openai: The text is a single sentence focusing on a specific performance, not a full review of the show.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.nytimes.com/2015/05/29/theater/review-an-act-of-god-with-jim-parsons-as-an-almighty-comedian.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2016/05/29/theater/review-an-act-of-god-with-jim-parsons-as-the-almighty.html",
+  "urlDiscoveredAt": "2026-02-04T14:25:51.485Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/an-act-of-god-2016/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T14:25:51.491Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is exuberantly silly, and if you're in the mood for that brand of theatrical comfort food — a helping of song, dance and snark — 'Something Rotten!' delivers.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show is exuberantly silly, and if you're in the mood for that brand of theatrical comfort food — a helping of song, dance and snark — 'Something Rotten!' delivers.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "if you're in the mood for that brand of theatrical comfort food — a helping of song, dance and snark — 'Something Rotten!' delivers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with the definitive statement that the show 'delivers' on its promise of entertainment, though positioned as comfort food rather than high art. | GPT-4o: The review describes the show as 'exuberantly silly' and suggests it delivers on its promise of entertainment, recommending it for those in the mood for light-hearted theater. | Gemini: The review recommends the show as \"theatrical comfort food\" if you're in the mood for it, indicating a positive but conditional recommendation. | Kimi: The critic offers a qualified but clear recommendation, praising the show as 'exuberantly silly' and noting it 'delivers' on its promise of entertaining comfort food for audiences in the mood for that style.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:11:04.110Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

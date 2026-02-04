@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Playwright Branden Jacobs-Jenkins' latest is a feast of the good stuff - crackling dialogue, powerhouse ensemble acting and weighty themes delivered with biting naturalism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for dialogue, acting, and thematic content with vivid positive language ('feast of the good stuff', 'crackling', 'powerhouse'). Single excerpt warning applied - sounds clearly positive so scored in upper Positive range. | GPT-4o: The excerpt provides strong praise for the dialogue, acting, and themes, indicating a positive review. Given the single excerpt warning, the score is set at the upper end of the Positive range. | Gemini: The excerpt uses very positive language like \"feast,\" \"crackling dialogue,\" and \"powerhouse ensemble acting,\" suggesting a strong recommendation. Given it's a single excerpt, I'm scoring it at the higher end of the positive range but with low confidence. | Kimi: The excerpt provides enthusiastic praise for the play's dialogue, ensemble, and themes using strong descriptors like 'feast,' 'crackling,' and 'powerhouse,' warranting a high Positive score, though confidence is reduced given the limited context of a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:23:59.732Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

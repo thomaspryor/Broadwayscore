@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Old Friends offers a respectable and professional introduction to the late master’s voice\"\n\nRead more"
+  "showScoreExcerpt": "\"Old Friends offers a respectable and professional introduction to the late master’s voice\"\n\nRead more",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Old Friends offers a respectable and professional introduction to the late master's voice",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as 'respectable and professional' which indicates a qualified positive recommendation, but the language is measured rather than enthusiastic. Low confidence due to limited text. | GPT-4o: The excerpt describes the show as 'respectable and professional', which suggests a positive but not enthusiastic recommendation. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The single excerpt is mildly positive, calling the show a \"respectable and professional introduction.\" Given the limited text, I'm scoring it as a barely positive review. | Kimi: The language is mildly positive but restrained ('respectable', 'professional' are faint praise), suggesting a qualified recommendation rather than enthusiasm. Confidence is low due to the availability of only a single curated excerpt that may not represent the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:20:45.966Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

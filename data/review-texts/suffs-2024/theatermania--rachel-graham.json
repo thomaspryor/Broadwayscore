@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Suffs aims to encourage women to keep going, which is an admirable goal\"\n\nRead more"
+  "showScoreExcerpt": "\"Suffs aims to encourage women to keep going, which is an admirable goal\"\n\nRead more",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suffs aims to encourage women to keep going, which is an admirable goal",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with faint praise ('admirable goal') suggests polite but unenthusiastic assessment. The qualifier 'aims to' implies the show tries but may not fully succeed. | GPT-4o: The excerpt suggests a positive sentiment by highlighting an 'admirable goal'. However, the lack of detailed evaluative content and the single excerpt warning necessitate a low confidence and a lower score within the Positive bucket. | Gemini: The single excerpt is mildly positive, but the lack of full text and a clear recommendation necessitates a low confidence score and placement at the lower end of the 'Positive' bucket. | Kimi: Single curated excerpt offers only mild praise for the show's intentions rather than its execution; limited context and cherry-picking risk warrant a conservative lower-positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:27:07.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

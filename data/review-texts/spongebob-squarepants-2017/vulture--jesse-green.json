@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a sugar rush of color, music, and movement that somehow manages to be both completely faithful to the source material and surprisingly sophisticated in its theatrical ambitions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show is a sugar rush of color, music, and movement that somehow manages to be both completely faithful to the source material and surprisingly sophisticated in its theatrical ambitions.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is a sugar rush of color, music, and movement that somehow manages to be both completely faithful to the source material and surprisingly sophisticated in its theatrical ambitions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('sugar rush', 'surprisingly sophisticated') praising multiple elements, though brief excerpt limits confidence in full verdict. | GPT-4o: The review praises the show for being faithful and sophisticated, suggesting a strong positive recommendation. The tone is enthusiastic, indicating a high score within the Positive range. | Gemini: The review describes the show as a \"sugar rush\" and \"surprisingly sophisticated\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers enthusiastic praise for the production's visual appeal, faithfulness to source material, and artistic sophistication, clearly recommending the show as a satisfying theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:17:42.420Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

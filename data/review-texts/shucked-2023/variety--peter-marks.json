@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cornpone musical about small-town values and big-city dreams is so determinedly wholesome and eager to please that it's hard to dislike, even when the material feels thin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This cornpone musical about small-town values and big-city dreams is so determinedly wholesome and eager to please that it's hard to dislike, even when the material feels thin.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cornpone musical about small-town values and big-city dreams is so determinedly wholesome and eager to please that it's hard to dislike, even when the material feels thin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show is 'hard to dislike' but qualifies this with 'even when the material feels thin.' This suggests tolerance rather than recommendation. Single excerpt limits full context assessment. | GPT-4o: The excerpt suggests a mildly positive sentiment, acknowledging the musical's appeal despite its thin material. The single excerpt warning and lack of full context necessitate a lower score within the Positive range. | Gemini: The review excerpt indicates a generally positive sentiment, describing the musical as \"hard to dislike\" despite acknowledging that the material \"feels thin.\" Given the single excerpt and its mildly positive tone, I've assigned a score at the lower end of the Positive bucket. | Kimi: The critic offers faint but genuine praise, finding the show 'hard to dislike' and 'eager to please,' though the qualification about 'thin' material indicates a reserved, barely-positive recommendation rather than an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:50:53.562Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

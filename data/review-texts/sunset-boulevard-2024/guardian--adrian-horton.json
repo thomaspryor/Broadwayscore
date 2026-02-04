@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Scherzinger's Norma is magnetic and tragic, a woman whose delusions are both pitiable and terrifying. Her voice soars through Lloyd Webber's swooping melodies with remarkable power and control.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Scherzinger's Norma is magnetic and tragic, a woman whose delusions are both pitiable and terrifying. Her voice soars through Lloyd Webber's swooping melodies with remarkable power and control.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scherzinger's Norma is magnetic and tragic, a woman whose delusions are both pitiable and terrifying.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for lead performance with vivid descriptors ('magnetic', 'tragic', 'remarkable power'). Given original 80 rating and single excerpt warning, scoring at upper end of Positive range. Confidence medium due to limited text. | GPT-4o: The excerpt praises Scherzinger's performance as 'magnetic and tragic' with 'remarkable power and control.' The original rating of 80 suggests a solid positive review. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt praises Scherzinger's performance as \"magnetic and tragic\" and her voice as soaring with \"remarkable power and control.\" Given the limited text, I'm placing it in the positive bucket with a score of 81, leaning towards the higher end due to the enthusiastic tone, but with low confidence due to the single excerpt. | Kimi: The excerpt offers unqualified praise for Scherzinger's performance using superlatives like 'magnetic' and 'remarkable power', consistent with the provided 80/100 rating. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:31:09.852Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

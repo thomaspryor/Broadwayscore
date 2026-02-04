@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of 'She Loves Me' is so thoroughly, intelligently and lovingly considered that it should be bottled as the antidote to Broadway superficiality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production of 'She Loves Me' is so thoroughly, intelligently and lovingly considered that it should be bottled as the antidote to Broadway superficiality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives ('thoroughly, intelligently and lovingly considered') and metaphor suggesting this is an essential remedy for Broadway's problems. Clear rave recommendation. | GPT-4o: The review uses superlative language ('thoroughly, intelligently and lovingly considered') and suggests the production is a standout against typical Broadway fare, indicating a strong recommendation. | Gemini: The review expresses extremely high praise, calling the production an 'antidote to Broadway superficiality,' indicating a must-see level of quality. | Kimi: The critic declares the production an 'antidote to Broadway superficiality,' using superlative language that elevates it as a masterwork of intelligence and care, warranting a top-tier score despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:43:45.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

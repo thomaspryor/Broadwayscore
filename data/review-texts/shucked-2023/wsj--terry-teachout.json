@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is unabashedly corny, but it's also genuinely funny and surprisingly well-crafted, with a book by Robert Horn that is both witty and structurally sound.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is unabashedly corny, but it's also genuinely funny and surprisingly well-crafted, with a book by Robert Horn that is both witty and structurally sound.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is unabashedly corny, but it's also genuinely funny and surprisingly well-crafted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict praising the show as 'genuinely funny and surprisingly well-crafted' with 'witty and structurally sound' book. However, confidence is low due to single excerpt warning - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt praises the show for being funny, well-crafted, and having a witty and structurally sound book. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt acknowledges corniness but praises the humor and craftsmanship, suggesting a positive but not rave recommendation. Given the single excerpt, confidence is medium. | Kimi: While the critic acknowledges the show is 'corny,' the praise for it being 'genuinely funny,' 'surprisingly well-crafted,' and having a 'witty and structurally sound' book indicates a clear recommendation. However, as this is a single curated excerpt, confidence is low regarding the full review's sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:51:23.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

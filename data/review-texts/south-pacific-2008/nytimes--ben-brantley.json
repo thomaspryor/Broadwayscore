@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This glorious revival of Rodgers and Hammerstein's 'South Pacific' washes over you like a warm wave, dissolving cynicism and resistance with a mastery that defines the term 'musical theater magic.'",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This glorious revival of Rodgers and Hammerstein's 'South Pacific' washes over you like a warm wave, dissolving cynicism and resistance with a mastery that defines the term 'musical theater magic.'",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This glorious revival washes over you like a warm wave, dissolving cynicism and resistance with mastery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives ('glorious', 'mastery') and evocative language about the show's transformative power, defining it as the essence of 'musical theater magic.' | GPT-4o: The review uses superlative language ('glorious revival', 'musical theater magic') indicating an enthusiastic, must-see recommendation with no reservations. | Gemini: The review uses extremely positive language like \"glorious\" and \"musical theater magic\", indicating a rave review. | Kimi: The review employs unqualified superlatives ('glorious', 'musical theater magic') and describes the production as transcendent ('dissolving cynicism'), indicating an enthusiastic, must-see recommendation in the highest tier.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:11:52.030Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

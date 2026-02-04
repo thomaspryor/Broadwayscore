@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "\"Scherzinger, in bare feet and a black slip, could use a shade more vulnerability as past-her-prime Norma. But she shows off powerhouse pipes in the show's best songs, her crowd-rousing solos \"With One Look\" and \"As If We Never Said Goodbye.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "“Lloyd’s Sunset Boulevard pulls you into a theatrical universe all its own. Because of his no-scenery aesthetic, it’s not always clear where moments are happening… The story gets deathly serious, but this production is spiked with humor.”\n\nRead more"
+  "showScoreExcerpt": "“Lloyd’s Sunset Boulevard pulls you into a theatrical universe all its own. Because of his no-scenery aesthetic, it’s not always clear where moments are happening… The story gets deathly serious, but this production is spiked with humor.”\n\nRead more",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd's Sunset Boulevard pulls you into a theatrical universe all its own.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows positive language ('pulls you into a theatrical universe all its own', 'spiked with humor') but acknowledges staging issues ('not always clear where moments are happening'). However, this is a very limited excerpt making confident assessment difficult. | GPT-4o: The review highlights a unique theatrical approach but notes confusion due to the no-scenery aesthetic. The mix of serious story and humor suggests a mixed verdict. The lack of full text and curated excerpts lead to low confidence. | Gemini: The excerpt suggests a positive experience, highlighting the unique theatrical universe created by the production and noting the presence of humor despite the serious nature of the story. However, the lack of full text and the mention of a 'no-scenery aesthetic' potentially causing confusion introduces some reservations, lowering the confidence. | Kimi: The critic praises Jamie Lloyd's immersive direction and the production's effective use of humor, though notes the minimal scenery occasionally obscures the setting. Overall tone is appreciative but the excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:31:41.321Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This valentine to the great producer-director Harold Prince is so packed with goodies that it feels more like a variety show than a legitimate revue.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This valentine to the great producer-director Harold Prince is so packed with goodies that it feels more like a variety show than a legitimate revue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Calling it a 'valentine' and noting it's 'packed with goodies' suggests affection and appreciation, but comparing it to a variety show rather than a legitimate revue implies some structural concerns about the format. | GPT-4o: The review describes the show as 'packed with goodies,' suggesting a positive experience, but the comparison to a 'variety show' rather than a 'legitimate revue' implies some reservations about its format or cohesion. | Gemini: The review describes the show as being \"packed with goodies\" but also states that it feels more like a variety show than a legitimate revue, suggesting a mixed assessment. | Kimi: Single-sentence excerpt uses affectionate language ('valentine,' 'goodies') indicating enjoyment, though brevity and ambiguous 'variety show' comparison prevent higher confidence in recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:21:17.664Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

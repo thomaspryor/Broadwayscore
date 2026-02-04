@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Thanks to Sarah Jessica Parker's winning performance as a possessive pooch, this revival of A.R. Gurney's 1995 comedy about a dog who comes between a married couple is a real treat.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this revival of A.R. Gurney's 1995 comedy about a dog who comes between a married couple is a real treat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it 'a real treat' with praise for Parker's 'winning performance', though brief excerpt limits full assessment. | GPT-4o: The review praises Sarah Jessica Parker's performance and describes the revival as 'a real treat', indicating a strong recommendation. | Gemini: The review explicitly states the show is \"a real treat\" due to Sarah Jessica Parker's performance, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic delivers an unambiguous recommendation, praising Sarah Jessica Parker's 'winning performance' and explicitly calling the revival 'a real treat,' indicating strong approval of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:45:18.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Russell's performance is so commanding that you forget you're watching theater at all; she becomes the lawyer, the victim, the system and its failures.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "https://www.nytimes.com/2023/04/23/theater/prima-facie-review-jodie-comer.html",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T13:20:54.048Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single quote or excerpt praising a performance, not a complete review with an overall verdict or recommendation about the show.; openai: The text is a single sentence focusing on a performance without providing a broader evaluation of the show.",
+  "promptVersion": "5.2.0"
 }

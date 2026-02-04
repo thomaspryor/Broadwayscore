@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival of Noël Coward's 1939 comedy about an aging matinee idol's romantic entanglements is a perfectly pleasant evening, but it's also a perfectly safe one.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This revival of Noël Coward's 1939 comedy about an aging matinee idol's romantic entanglements is a perfectly pleasant evening, but it's also a perfectly safe one.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival is a perfectly pleasant evening, but it's also a perfectly safe one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic describes the production as 'perfectly pleasant' but emphasizes it's 'perfectly safe,' suggesting competent but unremarkable work that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the show as 'perfectly pleasant' but also 'perfectly safe,' indicating a lack of strong recommendation or discouragement. The tone suggests a middle-of-the-road experience. | Gemini: The review describes the show as \"perfectly pleasant\" but also \"perfectly safe,\" indicating a positive but not enthusiastic recommendation. | Kimi: The critic offers faint praise ('pleasant') immediately undercut by criticism ('safe'), suggesting the production lacks excitement or ambition without being actively bad, resulting in a tepid, non-committal assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:18:01.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

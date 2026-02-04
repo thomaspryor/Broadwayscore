@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The first revival in 20 years of Richard Greenberg’s 2003 Tony Award winning play Take Me Out could not be timelier. This comedy drama about the fallout when a major baseball star for the fictional New York Empires comes out as gay reappears on Broadway when Florida, the state where 15 MLB teams conduct winter training, had just passed a law banning classroom discussion of sexual orientation or gender identity and to date no baseball player has come out as gay during the time he was still playing on a team. While the play with its two notorious shower scenes is not as startling as it was when it premiered at The Public Theater in 2003, Scott Ellis’ fine production demonstrates that this exciting theatrical experience is still stage worthy and relevant. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scott Ellis' fine production demonstrates that this exciting theatrical experience is still stage worthy and relevant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'fine production' and 'exciting theatrical experience' that is 'stage worthy and relevant'. The positive language and description of timeliness suggests a solid recommendation, though this is only an excerpt. | GPT-4o: The excerpt praises the production as 'fine' and 'exciting,' indicating a positive recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt indicates a positive assessment of the production, calling it \"fine\" and \"stage worthy and relevant.\" However, due to the limited text available, the confidence is low. | Kimi: The excerpt offers clear praise for the production as 'fine' and 'exciting,' explicitly calling it 'stage worthy and relevant.' While noting the material is less startling than in 2003, the overall verdict is a solid recommendation for this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:53:17.814Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

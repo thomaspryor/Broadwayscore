@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This jukebox musical built around '80s rock anthems is a goofy, good-natured crowd-pleaser that knows exactly what it is and never pretends to be anything more.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This jukebox musical built around '80s rock anthems is a goofy, good-natured crowd-pleaser that knows exactly what it is and never pretends to be anything more.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical built around '80s rock anthems is a goofy, good-natured crowd-pleaser",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'crowd-pleaser' with affectionate tone ('goofy, good-natured'), though the phrase 'never pretends to be anything more' suggests modest expectations rather than high art. | GPT-4o: The review describes the show as a 'good-natured crowd-pleaser' and acknowledges its self-awareness, indicating a positive recommendation without reservations. | Gemini: The review calls the show a \"goofy, good-natured crowd-pleaser\" which is a positive assessment, but the phrase \"never pretends to be anything more\" suggests it's not high art, so a mid-range positive score is appropriate. | Kimi: The critic delivers a clear endorsement calling the show a 'crowd-pleaser' that succeeds at its modest ambitions, while qualifiers like 'goofy' and 'never pretends to be anything more' suggest solid rather than ecstatic enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:32:25.144Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

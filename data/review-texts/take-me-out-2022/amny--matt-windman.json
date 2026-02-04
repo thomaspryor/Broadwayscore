@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"A lot has changed in the world in the 20 years since the Off-Broadway premiere and subsequent Broadway transfer of “Take Me Out,” Richard Greenberg’s all-male drama about the epic consequences of a Derek Jeter-like professional baseball player coming out as gay. Notwithstanding, “Take Me Out” remains the same play, somewhat overlong and sensationalistic but absorbing and heartfelt, especially as demonstrated by the excellent Broadway revival produced by Second Stage.\"\n\nRead more"
+  "showScoreExcerpt": "\"A lot has changed in the world in the 20 years since the Off-Broadway premiere and subsequent Broadway transfer of “Take Me Out,” Richard Greenberg’s all-male drama about the epic consequences of a Derek Jeter-like professional baseball player coming out as gay. Notwithstanding, “Take Me Out” remains the same play, somewhat overlong and sensationalistic but absorbing and heartfelt, especially as demonstrated by the excellent Broadway revival produced by Second Stage.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "absorbing and heartfelt, especially as demonstrated by the excellent Broadway revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting the play is 'overlong and sensationalistic,' the critic calls it 'absorbing and heartfelt' with an 'excellent Broadway revival.' This is positive but qualified. Single excerpt warning and 'Read more' truncation require low confidence. | GPT-4o: The review excerpt praises the production as 'absorbing and heartfelt' and 'excellent,' indicating a positive recommendation despite noting it is 'somewhat overlong and sensationalistic.' The single excerpt warning suggests using the lower end of the Positive range. | Gemini: The review calls the revival \"excellent\" and the play \"absorbing and heartfelt,\" but also notes it is \"somewhat overlong and sensationalistic,\" indicating a positive but not rave review. | Kimi: The critic calls the revival 'excellent' and the play 'absorbing and heartfelt,' indicating a clear recommendation, though significant reservations about it being 'overlong and sensationalistic' prevent a higher score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:47:12.869Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

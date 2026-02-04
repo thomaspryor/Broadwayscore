@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "\"The riotous new work, with a book by Robert Horn, nabs acoustic inspiration from country music and tonal humor from shows like \"The Book of Mormon\" and \"Tootsie\" (the latter of which Horn adapted for stage) to form a delirious production that treats a seasonal crop  corn  more like the second coming.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "“...‘Shucked’ is most fun when everyone — principals, ensemblists and audience members — stoops to its level. Embrace each grain of fun and you’ll have an amazing night on Broadway. Don’t, and you’ll experience corn-clad hell on Earth.”\n\nRead more"
+  "showScoreExcerpt": "“...‘Shucked’ is most fun when everyone — principals, ensemblists and audience members — stoops to its level. Embrace each grain of fun and you’ll have an amazing night on Broadway. Don’t, and you’ll experience corn-clad hell on Earth.”\n\nRead more",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Embrace each grain of fun and you'll have an amazing night on Broadway. Don't, and you'll experience corn-clad hell on Earth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic presents a stark binary: audiences who embrace the show's silly tone will have 'an amazing night' while those who don't will experience 'hell on Earth.' This creates a conditional, neither-nor recommendation typical of mixed reviews. Low confidence due to excerpt-only text. | GPT-4o: The review suggests that enjoyment of the show depends heavily on the audience's willingness to embrace its humor. This indicates a mixed experience, as it could be enjoyable for some but not for others. | Gemini: The review suggests that the show is enjoyable if the audience embraces its humor, but warns of a negative experience if they don't, indicating a conditional recommendation. | Kimi: The critic offers a qualified recommendation that the show delivers an 'amazing night' for audiences willing to embrace its silly, lowbrow humor, though warns it can be painful for those who don't buy in. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:44:46.027Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

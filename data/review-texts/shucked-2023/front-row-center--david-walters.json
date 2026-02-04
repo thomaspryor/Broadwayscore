@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Go see ‘Shucked,’ you’ll laugh, a lot, at the wonderful wit, you’ll join in the jubilation as the whole audience elatedly exclaims together as the corn visibly comes back to life, and you’ll maybe even shed a tear.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Go see 'Shucked,' you'll laugh, a lot, at the wonderful wit, you'll join in the jubilation as the whole audience elatedly exclaims together",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Direct 'Go see' recommendation with enthusiastic praise for wit and audience experience. Single excerpt limits confidence, but the imperative recommendation and vivid positive language suggests strong positive verdict. | GPT-4o: The excerpt strongly recommends the show, highlighting laughter, jubilation, and emotional impact. The directive 'Go see' suggests a must-see recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The excerpt is very positive, mentioning laughter, jubilation, and even the possibility of shedding a tear. Given the single excerpt warning, I'm scoring it on the higher end of the positive range. | Kimi: Single excerpt contains explicit recommendation ('Go see') and enthusiastic praise for the show's humor and emotional resonance, warranting upper Positive range per single-excerpt scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:46:06.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 85,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
