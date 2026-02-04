@@ -8,64 +8,11 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"The continental leap dusts off the 145-year-old operetta and gives it an energetic oomph of swing and ragtime music, and the stage is brightened up by hot-sauce pops of purple, yellow and fiery red. Director Scott Ellis' boisterous romp is not groundbreaking in the way the Joseph Papp-produced 1980 revival was, but it has the same irreverent spirit  and perpetually ridiculous tale.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 78,
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Director Scott Ellis' boisterous romp is not groundbreaking in the way the Joseph Papp-produced 1980 revival was, but it has the same irreverent spirit.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the production's energy and spirit while acknowledging it's not groundbreaking. The positive descriptors ('energetic oomph,' 'boisterous romp,' 'same irreverent spirit') suggest a recommendation, but with qualified expectations. Single excerpt limits confidence. | GPT-4o: The excerpt praises the energetic and colorful production, noting its irreverent spirit. While not groundbreaking, the positive tone suggests a recommendation. Given the single excerpt warning, the score is on the lower end of the positive range. | Gemini: The review describes the production as an \"energetic oomph\" with bright colors and an \"irreverent spirit,\" indicating a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and lack of a clear verdict, confidence is low. | Kimi: The excerpt offers clear praise for the production's energy, music, staging, and irreverent spirit, favorably comparing it to the famous 1980 revival despite noting it is not as groundbreaking.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:13:26.409Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"a musical that’s otherwise effervescent, gorgeously sung, hysterical and frivolous\"\n\nRead more"
 }

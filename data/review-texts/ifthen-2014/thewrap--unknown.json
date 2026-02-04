@@ -3,10 +3,44 @@
   "outletId": "thewrap",
   "outlet": "The Wrap",
   "criticName": "Unknown",
-  "url": "http://www.thewrap.com/if-then-theater-review",
+  "url": "https://www.thewrap.com/ifthen-theater-review/",
   "playbillVerdictUrl": "http://www.thewrap.com/if-then-theater-review",
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "http://www.thewrap.com/if-then-theater-review",
+  "urlDiscoveredAt": "2026-02-04T03:29:05.952Z",
+  "urlDiscoveryMethod": "google-serp",
+  "fullText": "Nearly 45 years ago, I saw a performance of Stephen Sondheim and George Furth’s musical “Company.” The show had just opened and the theatergoers at my particular performance were more than a little confused and exasperated at this tendency the characters had for repeatedly showing up at the same birthday party.",
+  "isFullReview": false,
+  "textWordCount": 51,
+  "archivePath": "data/archives/reviews/ifthen-2014/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:29:05.957Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 57 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 51,
+  "tierReason": "Short text (51 words)"
 }

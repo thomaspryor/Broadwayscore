@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Despite being a musical-opera aficionado, I had seen “Funny Girl” performed on stage only once. The experience was half-memorable, half-forgettable. On Sept. 23, 2002, the Actors’ Fund of America presented a benefit performance of the 1964 musical that had made Barbra Streisand a star. At the one-night-only benefit, Peter Gallagher played Nick Arnstein and Kaye Ballard, a performer who lobbied hard to be the original Fanny Brice, played Mrs.",
+  "isFullReview": false,
+  "textWordCount": 69,
+  "archivePath": "data/archives/reviews/funny-girl-2022/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:43:48.643Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 75 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 69,
+  "tierReason": "Short text (69 words)"
 }

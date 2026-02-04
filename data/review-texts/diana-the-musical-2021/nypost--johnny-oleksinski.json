@@ -3,10 +3,10 @@
   "outletId": "nypost",
   "outlet": "New York Post",
   "criticName": "Johnny Oleksinski",
-  "url": "https://nypost.com/2021/11/18/diana-the-musical-on-broadway-is-saved-by-its-leading-lady/",
+  "url": "https://nypost.com/2021/11/03/inside-the-wild-first-preview-of-diana-the-musical-on-broadway/",
   "publishDate": "November 18, 2021",
-  "fullText": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
-  "isFullReview": false,
+  "fullText": "\"How’s the show?” the bartender asked two Playbill-clutching men. “Fantastic!” replied one, before downing a shot of tequila.\n\nThanks for contacting us. We've received your submission.\n\nJeanna de Waal takes a bow after the first preview of \"Diana: The Musical\" on Broadway. \n Emilio Madrid \n \n \n \n \n \n \n\n \n \n\nCould “Diana” turn out to be the People’s Musical after all?\n\n“Diana: The Musical” was ruthlessly savaged by critics when it first debuted, unorthodoxly, on Netflix in October well before its official Broadway opening night of Nov. 17.\n\nThe American media were baffled. The British press were offended. The music, lyrics and book — written by Joe DiPietro and David Bryan of New Jersey — got a drubbing not witnessed in Times Square since Guy Fieri tried to serve New Yorkers “Sangria Glazed Shrimp.”\n\nBut at Tuesday night’s first preview at the Longacre Theatre on 48th Street, audience members in the balcony were whooping it up every time Jeanna de Waal’s princess donned another one of William Ivey Long’s detailed costumes or said something kinda feminist.\n\nAside from the usual supporters, friends and family who got comp tickets, most of this paying crowd wasn’t the typical Broadway set. One was dressed up as Queen Elizabeth II (well, let’s hope she was) in a frumpy light pink coat. The rest would probably get kicked out of the Metropolitan Opera for being too rowdy at a Wagner.\n\nA pack of ticket-buyers poured into Hurley’s Saloon next door at intermission, because the Longacre isn’t serving drinks yet (fix that, Shuberts).\n\n“How’s the show?” the bartender asked two Playbill-clutching men.\n\n“Fantastic!” replied one, before downing a shot of tequila.\n\nAnother woman told me she was excited to read up on “the real history” when she got home. I didn’t have the heart to tell her what happens at the end of Act 2.\n\n“Diana” plays at the Longacre Theatre next door to Hurley’s Saloon, where audience members are flocking at intermission.Emilio Madrid\n\nThe producers of “Diana” clearly don’t give a fig about those snarky reviews — including, ahem, mine — of the compulsively watchable but dotty Netflix special.\n\nThey’ve changed almost nothing noticeable in the show.\n\nFunny, because last summer when they filmed it in the empty theater, Act 2 was being frantically revised in a hotel in New Jersey ’til the very last minute, sources said. In order to be taken seriously, it could’ve used a few more tweaks and trims and, well, a whole new score and book.\n\nOne particularly laughable line that every publication mocked to high heaven has been axed.\n\nPrince Charles (Roe Hartrampf) used to sing, “Darling, I’m holding our son. So, let me just say, jolly well done!” Now he croons the far less ridiculous “Darling, I’m holding our son. Suddenly our lives have begun.” (The hilarious version is immortalized on Netflix.)\n\nJeanna de Waal plays Princess Diana.Emilio Madrid\n\nHowever, the much-maligned scene in which Di visits an AIDS ward in 1987 — it includes the woah-Nelly lyric “I may be unwell, but I’m handsome as hell” — has stuck around … for now.\n\n“Diana” might, too, for a while. Many have said that the funny critical pans aren’t the sort that make you cancel your tickets. On the contrary: It’s so campy you circle the date on your calendar in glitter pen.\n\nWhat Broadway wags are asking, though, is without robust tourism, how will a big show with so little goodwill make it much longer?\n\n“They have enough SVOG [Shuttered Venue Operators Grant] money to get through the holidays,” said one, adding that after Jan. 2, “that show’s done.”\n\nBut show spokesman Rick Miramontez said, “Sales are brisk, and we are encouraged.”\n\nFrom the looks of it on Tuesday, a lot of folks are coming to satisfy their Di craving, were pleased as punch with what they saw and haven’t read a single negative review. That realization saddened me.\n\nLike the Queen says of Di in the show: “In the old days, we used to just chop off their heads. I miss the old days.”",
+  "isFullReview": true,
   "dtliExcerpt": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
     "score": 63,
@@ -75,10 +75,37 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "No bucket consensus - using median score"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "https://nypost.com/2021/11/17/diana-review-a-lifetime-original-broadway-show/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://nypost.com/2021/11/18/diana-the-musical-on-broadway-is-saved-by-its-leading-lady/",
+  "urlDiscoveredAt": "2026-02-04T03:27:07.525Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 672,
+  "archivePath": "data/archives/reviews/diana-the-musical-2021/nypost--johnny-oleksinski_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:27:07.529Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20230203105154",
+  "archiveOrgUrl": "http://web.archive.org/web/20230203105154/https://nypost.com/2021/11/03/inside-the-wild-first-preview-of-diana-the-musical-on-broadway/",
+  "wordCount": 672,
+  "tierReason": "Full review text"
 }

@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "I admit it. I saw Jackie Mason in his “Much Ado About Everything.” The lead theater critic lied and said he was sick, so I was given the assignment to review the 2000 one-man show on Broadway. I can write this with confidence because Mason is no longer with us, but I’d sit through “Jackie Mason: Much Ado About Everything” before doing the same with “Mr.",
+  "isFullReview": false,
+  "textWordCount": 66,
+  "archivePath": "data/archives/reviews/mr-saturday-night-2022/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:55:15.139Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 72 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 66,
+  "tierReason": "Short text (66 words)"
 }

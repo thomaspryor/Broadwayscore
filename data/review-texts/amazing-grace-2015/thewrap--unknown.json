@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "In Hollywood parlance, they call it “medicine”: a movie or TV show that’s good for you, that teaches you something, that hopefully leaves you inspired.\n\n“Amazing Grace,” which opened Thursday at the Nederlander Theatre, is definitely medicine — and it will teach you something about abolitionist history in 18th-century England, which makes it much more educational than any other musical now on Broadway with the possible exception of the soon-to-open “Hamilton.”",
+  "isFullReview": false,
+  "textWordCount": 71,
+  "archivePath": "data/archives/reviews/amazing-grace-2015/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:44:14.451Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 77 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 71,
+  "tierReason": "Short text (71 words)"
 }

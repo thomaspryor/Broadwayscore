@@ -8,5 +8,41 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "To answer the question that absolutely no one with a Netflix account and an interest in Broadway musicals is asking: Why, yes, “Diana, The Musical” is every bit as abysmal as rumored. To answer the question that absolutely no one with a Netflix account and an interest in Broadway musicals is asking: Why, yes, “Diana, The Musical” is every bit as abysmal as rumored. Social media was briefly aflame with withering descriptions when the show first began streaming in October, so the Broadway opening — long delayed by the pandemic — almost feels like a pointless afterthought. The wedding cake that was flavorless to begin with is now both flavorless and stale. The question more pertinent to those who treasure fond memories of the worst musicals they have seen: Is “Diana” so bad that it simply must be seen, the Playbill kept pristine for future display? Is “Diana” the “Carrie” de nos jours? The answer to both is a qualified yes.",
+  "isFullReview": false,
+  "textWordCount": 161,
+  "archivePath": "data/archives/reviews/diana-the-musical-2021/broadwaynews--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:25:34.944Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 173 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 161,
+  "tierReason": "Short text (161 words)"
 }

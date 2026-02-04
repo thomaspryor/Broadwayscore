@@ -8,64 +8,11 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Sumptuously desolate yet charged with enough emotion to reach the heavens, Landau's crystal-clear revival allows us to see the show for what it truly is: an elegy for a carefree way of life, and a searing indictment of the way technology allows us to commodify tragedy.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "medium",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Sumptuously desolate yet charged with enough emotion to reach the heavens, Landau's crystal-clear revival allows us to see the show for what it truly is",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being a single excerpt, this contains exceptionally strong praise with vivid, poetic language ('reach the heavens', 'crystal-clear', 'sumptuously') and positions the production as revelatory. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt provides strong praise for the production's emotional impact and clarity. The language suggests a highly positive view, though the single excerpt limits confidence. | Gemini: The excerpt is highly positive, using phrases like \"sumptuously desolate,\" \"charged with enough emotion to reach the heavens,\" and \"crystal-clear revival.\" Given the single excerpt warning, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt offers strong praise for the revival's emotional impact and clarity, using superlatives like 'reach the heavens' and 'crystal-clear,' indicating a strong recommendation despite the limited available text.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T01:24:38.324Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 82,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Floyd Collins is not a show for everyone—many will mistake its stillness for inertia, the use of negative space for emptiness—but if you surrender to the journey, you will feel everything.\"\n\nRead more"
 }

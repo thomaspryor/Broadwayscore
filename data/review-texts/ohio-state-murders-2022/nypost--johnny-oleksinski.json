@@ -23,5 +23,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a single sentence excerpt praising a performer, not a complete review with an overall verdict or recommendation about the show.; openai: This is a single sentence praising a performance, not a full review of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "show-score-playwright"
+  ]
 }

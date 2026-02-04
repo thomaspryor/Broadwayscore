@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2014/oct/24/disgraced-review-ayad-akhtar-broadway",
+  "url": "https://www.theguardian.com/stage/2014/oct/24/disgraced-review-broadway-greek-tragedy",
   "publishDate": "October 24, 2014",
-  "fullText": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
-  "isFullReview": false,
+  "fullText": "Knives out: Gretchen Moll, Hari Dhillon, Karen Pittman and Josh Radnor in Disgraced. Photograph: Joan Marcus/Public domainKnives out: Gretchen Moll, Hari Dhillon, Karen Pittman and Josh Radnor in Disgraced. Photograph: Joan Marcus/Public domain This article is more than 11 years oldReviewDisgraced review: a stirring Greek tragedy that'll put you off dinner parties for lifeThis article is more than 11 years oldLyceum theatre, New YorkA posse of TV talent tackles a Pulitzer prize-winning drama that asks difficult questions of religion, assimilation and individuality\n\nDoes Ayad Akhtar sleep with a copy of Aristotle’s Poetics clutched tight to his chest?\n\nHis Pulitzer prize-winning Disgraced, now making its Broadway debut, is a Greek tragedy transplanted to present-day Manhattan and starring Holby City heartthrob Hari Dhillon. Dhillon plays Amir, a Pakistani American corporate lawyer who has changed his name from Abdullah to Kapoor and let his bosses assume his Hinduism. Raised Muslim, Amir has rejected his faith, which he sees as a “a backward way of thinking” and the Qur’an, which he calls, “one very long hate mail letter to humanity.”\n\nAmir wants to make partner. He wants to drink wine and eat chorizo and embody the western world’s vision of success. As Isaac, an art dealer with an interest in Amir’s wife says, rather patronisingly: “You have the same idea of the good life as I do.”\n\nBut Amir’s Chravet shorts barely conceal self-doubt and self-loathing and startling rage. As those Greeks knew, you can never outrun your past. In believing he’s fleet enough, Amir invites tragic consequences. The play reaches its catastrophic climax in a dinner party scene that might put you off evening meals forever. The guests haven’t even swallowed their starters before Akhtar explodes any notion of a post-racial, post-ethnic, or even vaguely harmonious society.\n\nDisgraced had a successful run off-Broadway in 2012. Now it’s back with a bevy of television stars. You might reasonably worry that this larger, showier space and production would rob the show, again directed by Jennifer Senior, of some of its tautness. Happily, the structure, as precisely crafted as the kind of Swiss watch Amir might sport, mostly survives translation. Perhaps that aborted dinner feels slightly less dangerous, but the act of violence that concludes it still feels shocking, if inevitable.\n\nHowever, some actorly weaknesses have slightly unbalanced the script, showing up a few of its contrivances and rendering Amir an even more contentious figure. Dhillon is initially charming and perhaps a little lightweight, unlike the role’s originator Aasif Mandvi, who had a wonderful, weighty take on the part. But in later scenes Dhillon’s performance deepens. His tumble into the tragic is affecting and precisely calibrated.\n\nAside from the fierce and forthright Karen Pittman, the sole holdover from the original cast as Amir’s colleague Jory, the rest of the acting doesn’t reach that mark. We are meant to accept Gretchen Mol’s Emily as a serious painter. Mol (best known for Boardwalk Empire) is sweet and very pretty and conveys a real love for her husband, but it’s easier to accept her as an airhead, which reveals a weakness in Akhtar’s writing. Josh Radnor (Of How I Met Your Mother fame) has fine rhythms and great comic instincts, he seems less confident when the play takes its dramatic turn. This means that Dhillon lacks credible opposition. He seems a mere hothead rather than a man forcibly torn from his self-created identity.\n\nStill, the play asks difficult questions about religion, assimilation, and individuality. Perhaps it asks them less effectively than in its premiere, but it’s tough to imagine anyone emerging from the Lyceum unstirred, unprovoked, still hungry for dessert.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
   "originalScore": null,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (36 words)",
   "llmScore": {
     "score": 79,
@@ -73,5 +73,47 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.theguardian.com/stage/2014/oct/24/disgraced-review-ayad-akhtar-broadway",
+  "urlDiscoveredAt": "2026-02-04T02:33:16.267Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 619,
+  "archivePath": "data/archives/reviews/disgraced-2014/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:33:16.271Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 619,
+  "tierReason": "Full review text"
 }

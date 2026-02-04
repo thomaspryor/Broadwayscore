@@ -5,8 +5,8 @@
   "criticName": "David Gordon",
   "url": "https://www.theatermania.com/broadway/reviews/hughie_73891.html",
   "publishDate": "February 26, 2016",
-  "fullText": "Forest Whitaker gives a deeply felt performance as Erie Smith, the small-time hustler who needs to tell his story to someone, anyone who will listen.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Forest Whitaker gives a deeply felt performance as Erie Smith, the small-time hustler who needs to tell his story to someone, anyone who will listen.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,11 +16,52 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Forest Whitaker gives a deeply felt performance as Erie Smith, the small-time hustler who needs to tell his story to someone, anyone who will listen.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "rejectedAt": "2026-02-03T17:24:45.381Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a single sentence describing a performance with no critical evaluation or recommendation - appears to be an excerpt or promotional blurb rather than a complete review.; openai: The text is a single sentence focusing on Forest Whitaker's performance, lacking a broader evaluation of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 369,
+  "archivePath": "data/archives/reviews/hughie-2016/theatermania--david-gordon_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:28:19.427Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The musical, based on Green Day’s album of the same name, begins tonight at the Den Theatre.\n\nPerformances of the Tony-nominated and Grammy-winning musical American Idiot start this evening at the Den Theatre's Heath Main Stage.\n\nPresenting popular songs from the punk rock band Green Day, the show takes place in a post 9/11 world. Three lifelong friends living in the suburbs are at a crossroads. They can remain in the safety of suburbia, or they can pursue their dreams. The hits featured in the show include \"Boulevard of Broken Dreams,\" \"21 Guns,\" \"Wake Me Up When September Ends,\" \"Holiday,\" and the hit title song, \"American Idiot.\"\n\nUsing the music of Green Day and the lyrics of Billie Joe Armstrong, the play features a book by Armstrong and Michael Mayer. Under the direction of Steven Wilson, the cast consists of Luke Linsteadt as Johnny, Jay Cullen as Will, Steven Perkins as Tunny, Alex Madda as Heather, Becca Brown as Extraordinary Girl, Krystal Worrell as Whatsername, Brian Keys as Favorite Son, and Malic White as St. Jimmy.\n\n\"I am thrilled to program Green Day's American Idiot in The Hypocrites' 19th season as among the first in the nation to regionally produce this musical which perfectly encompasses the energetic spirit of a generation,\" said the Hypocrites artistic director Sean Graney in a statement.\n\nThe creative team includes Andra Velis Simon (music direction), Katie Spelman (choreography), Joe Schermoly (set design), Mieka van der Ploeg (costume design), Heather Gilbert (lighting design), Rick Sims (sound design), and Gabby Welsh (stage manager).\n\nPerformances will run through October 25.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

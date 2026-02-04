@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/it-shoulda-been-you",
   "publishDate": "April 14, 2015",
-  "fullText": "The show is formulaic but warm-hearted, with a few genuine laughs and some pleasant if unmemorable songs.",
-  "isFullReview": false,
+  "fullText": "It Shoulda Been You: Theater review by Adam Feldman\n\nThe best way to enjoy the madcap, madly old-hat It Shoulda Been You is to pretend it’s a lost TV relic from the 1970s. The shortcomings of Brian Hargrove and Barbara Anselmi’s mossy new show, about an interfaith wedding gone awry, are easier to forgive through a lens of affectionate camp: the dated stereotypes of pushy Jews and boozy WASPs, the creaky farcical contrivances, the hokey-schmaltzy jokes. (The opening pages of the script provided to critics are printed in Comic Sans.) But while the antics are predictable—aside from one huge, implausible twist—they’re not unenjoyable, thanks to a seasoned and flavorful all-star ensemble. Remember the Broadway episodes of The Love Boat? This is the Love Boat version of Broadway.\n\nDavid Hyde Pierce’s direction is generous with the spotlight. Lisa Howard holds the plot together capably as Jenny, the long-suffering sister of the bride (a doll-like Sierra Boggess), and Josh Grisetti is great as an ardent ex-boyfriend. But it’s the veterans who keep the show afloat: Tyne Daly as the bride’s overbearing mother, Harriet Harris as the poisonous mother of the groom, Edward Hibbert as an omniscient wedding planner. Though the cake is stale, they decorate it well. It shoulda been better but it coulda been worse.—Adam Feldman\n\nBrooks Atkinson Theatre (Broadway). Book and lyrics by Brian Hargrove. Music by Barbara Anselmi. Directed by David Hyde Pierce. With Lisa Howard, Tyne Daly, Harriet Harris. Running time: 1hr 40mins. No intermission.",
+  "isFullReview": true,
   "dtliExcerpt": "The show is formulaic but warm-hearted, with a few genuine laughs and some pleasant if unmemorable songs.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is formulaic but warm-hearted, with a few genuine laughs and some pleasant if unmemorable songs.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (17 words)",
   "llmScore": {
     "score": 61,
@@ -77,5 +77,36 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 247,
+  "archivePath": "data/archives/reviews/it-shoulda-been-you-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:39:40.495Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150425130554",
+  "archiveOrgUrl": "http://web.archive.org/web/20150425130554/http://www.timeout.com:80/newyork/theater/it-shoulda-been-you",
+  "textIssues": [
+    "Word count too low: 253 (min: 300)"
+  ],
+  "wordCount": 247,
+  "tierReason": "Short but structurally complete review"
 }

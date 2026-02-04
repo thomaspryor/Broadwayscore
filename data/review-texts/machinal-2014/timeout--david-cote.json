@@ -3,9 +3,9 @@
   "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "David Cote",
-  "url": "https://www.timeout.com/newyork/theater/machinal",
+  "url": "https://www.timeout.com/newyork/theater/machinal-1",
   "publishDate": "January 16, 2014",
-  "fullText": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life, bringing both vulnerability and steel to this expressionist masterpiece.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life, bringing both vulnerability and steel to this expressionist masterpiece.",
   "originalScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rebecca Hall gives a mesmerizing performance as the Young Woman trapped in the mechanized routine of modern life, bringing both vulnerability and steel to this expressionist masterpiece.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 81,
@@ -77,5 +77,43 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.timeout.com/newyork/theater/machinal",
+  "urlDiscoveredAt": "2026-02-04T02:49:47.533Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 85,
+  "archivePath": "data/archives/reviews/machinal-2014/timeout--david-cote_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:49:47.535Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140114054940",
+  "archiveOrgUrl": "http://web.archive.org/web/20140114054940/http://www.timeout.com:80/newyork/theater/machinal-1",
+  "textIssues": [
+    "Word count too low: 85 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Stage and screen star Rebecca Hall stars in journalist-playwright Sophie Treadwell's 1928 classic about a woman whose attempts to escape society's gears result in madness and homicide. The revival of this rarely seen modern classic is staged by acclaimed British director Lyndsey Turner.\n\nAmerican Airlines Theatre\n \n 227 W 42nd St\n \n \n Midtown West\n \n New York\n\nbetween Seventh and Eighth Aves\n\nSubway: A, C, E to 42nd St–Port Authority; N, Q, R, 42nd St S, 1, 2, 3, 7 to 42nd St–Times Sq\n\nTheater. Experimental theater. Drama",
+  "misattributedFullText": true,
+  "extractedByline": "Times Sq",
+  "expectedCritic": "David Cote"
 }

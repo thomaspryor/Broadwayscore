@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2016/mar/07/eclipsed-review-lupita-nyongo-broadway",
+  "url": "https://www.theguardian.com/stage/2015/apr/29/eclipsed-gate-london-review-liberian-civil-war-drama",
   "publishDate": "March 7, 2016",
-  "fullText": "Eclipsed is a powerful drama that gives voice to women whose stories are rarely told, anchored by Lupita Nyong'o's compelling performance as a Liberian war captive.",
-  "isFullReview": false,
+  "fullText": "Complex and alive … Michelle Asante, T’nia Miller, Joan Iyiola and Letitia Wright in Eclipsed. Photograph: Tristram Kenton for the GuardianView image in fullscreenComplex and alive … Michelle Asante, T’nia Miller, Joan Iyiola and Letitia Wright in Eclipsed. Photograph: Tristram Kenton for the Guardian This article is more than 10 years oldReviewEclipsed review – sisterhood and survival in Liberian war dramaThis article is more than 10 years oldGate, LondonDanai Gurira’s exploration of four African women keeping body and soul together is a small, polished gem\n\nHelena (Michelle Asante), known as Number One, can’t remember how long she has been living in the compound of a commanding officer in the rebel forces fighting the Liberian president Charles Taylor. Pregnant Bessie (Joan Iyiola), Number Three, is worried that her position in the pecking order might be affected by the arrival of The Girl (Letitia Wright). The latter dreams of being a doctor or an MP, but she’s about to become Number Four, the CO’s latest plaything. We never see him, but his sinister presence is always apparent.\n\nIs there any alternative for these women who’ve been stripped of names, identities, families and dignity? Maima (Faith Alabi), Number Two, escaped sexual slavery by picking up a gun, but is that empowerment or simply victim turning oppressor?\n\nView image in fullscreenLetitia Wright as The Girl and Faith Alabi as Maima in Eclipsed. Photograph: Tristram Kenton for the GuardianThere are echoes here, inevitably, of Lynn Nottage’s mighty Ruined. But it’s not as if we hear so many stories of African women finding the means to keep body and soul together during war, and Danai Gurira’s vibrant, often funny and heartbreaking drama, exploring limited choices and multifaceted psychological and physical strategies for survival, does not seem over-familiar. It is, however, very traditionally put together and a little schematic, particularly in the introduction of Rita (T’nia Miller), an aid worker attempting to broker peace who has lost her daughter in the conflict.\n\nBut no matter. It’s smart, particularly in how it reminds us of the US’s shady dealings in Liberia, and adds a layer of sexual politics through the introduction of a biography of Bill Clinton. “This looks like his wife. I wonder if he needs another,” says Helena, looking at a picture of the Clintons. This small but polished gem is staged with swagger by Caroline Byrne, neatly designed by Chiara Stephenson, and acted with an appealing directness and exuberance by a cast who make every character distinctive, complex and fully alive.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Eclipsed is a powerful drama that gives voice to women whose stories are rarely told, anchored by Lupita Nyong'o's compelling performance as a Liberian war captive.",
   "originalScore": null,
   "assignedScore": 78,
@@ -73,5 +73,47 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.theguardian.com/stage/2016/mar/07/eclipsed-review-lupita-nyongo-broadway",
+  "urlDiscoveredAt": "2026-02-04T02:39:03.304Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 434,
+  "archivePath": "data/archives/reviews/eclipsed-2016/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:39:03.307Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 434,
+  "tierReason": "Missing proper ending or other signals"
 }

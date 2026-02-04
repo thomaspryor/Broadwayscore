@@ -7,37 +7,8 @@
   "playbillVerdictUrl": "https://www.thewrap.com/almost-famous-broadway-musical-review-cameron-crowe/",
   "source": "playbill-verdict",
   "sources": [
-    "playbill-verdict"
+    "playbill-verdict",
+    "show-score-playwright"
   ],
-  "fullText": "Some movies are great as much for the environments they create as the stories they tell. One such title that comes to mind is “Sweet Smell of Success.” Its black-and-white Times Square cityscape made it lush and engrossing on film – but was cause for a particularly challenging stage adaptation.",
-  "isFullReview": false,
-  "textWordCount": 50,
-  "archivePath": "data/archives/reviews/almost-famous-2022/thewrap--robert-hofler_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T02:40:00.121Z",
-  "fetchMethod": "scrapingbee",
-  "fetchAttempts": [
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
-    }
-  ],
-  "fetchTier": 2,
-  "textQuality": "excerpt",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "scrapingbee",
-  "textIssues": [
-    "Word count too low: 56 (min: 300)",
-    "Show title not found in text"
-  ],
-  "contentTier": "truncated",
-  "wordCount": 50,
-  "tierReason": "Short text (50 words)"
+  "showScoreExcerpt": "“'Almost Famous' pretends to say something about fame – it’s empty, it saps the soul – but what Crowe and Likes fail to tell us is anything about the naked ambition and drive that must have pushed an extraordinary 15-year-old into writing a cover story for Rolling Stone.\"\n\nRead more"
 }

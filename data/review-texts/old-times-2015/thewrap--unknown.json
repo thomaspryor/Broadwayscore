@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "I haven’t had this much fun in the theater since Ivo van Hove set “A Streetcar Named Desire” (1999) in a bathtub at the New York Theatre Workshop.\n\nHaving fun isn’t what you typically expect from watching a Harold Pinter play, much less one of his more indecipherable works.\n\nWhat’s the opposite of deconstruction in the theater? I’m not sure.",
+  "isFullReview": false,
+  "textWordCount": 60,
+  "archivePath": "data/archives/reviews/old-times-2015/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:02:40.307Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 66 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 60,
+  "tierReason": "Short text (60 words)"
 }

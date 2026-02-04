@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Frankly, I wouldn’t trust any veteran Broadway critic when it comes to a new musical that features the songs of Tupac Shakur. In this case, that musical is “Holler If Ya Hear Me,” which opened Thursday at the Palace Theater.\n\nAt the critics’ preview I attended, the show’s heartiest response came from the balcony and not those people seated in the orchestra of the Palace Theatre, which earlier this year housed a revival of “Annie” and before that, “Priscilla Queen of the Desert.”",
+  "isFullReview": false,
+  "textWordCount": 83,
+  "archivePath": "data/archives/reviews/holler-if-ya-hear-me-2014/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:35:28.766Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 89 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 83,
+  "tierReason": "Short text (83 words)"
 }

@@ -1,44 +1,34 @@
 {
   "showId": "prayer-for-the-french-republic-2024",
-  "outletId": "nysr",
+  "outletId": "nystagereview",
   "outlet": "New York Stage Review",
   "criticName": "Roma Torre",
-  "url": null,
-  "publishDate": "2024-01-09T21:08:22-05:00",
+  "url": "https://nystagereview.com/2024/01/09/prayer-for-the-french-republic-judaism-takes-centerstage-in-joshua-harmons-engrossing-drama/",
+  "publishDate": null,
   "fullText": null,
-  "isFullReview": false,
-  "dtliExcerpt": null,
   "bwwExcerpt": "The production is directed with great heart and welcome humor by David Cromer. It makes for powerful theater that’s as entertaining as it is enlightening. And it’s all terrifically enhanced by a sublime ensemble performing with absolute authenticity.",
-  "showScoreExcerpt": null,
-  "assignedScore": 83,
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-PRAYER-FOR-THE-FRENCH-REPUBLIC-Opens-on-Broadway-20240108",
+  "originalScore": null,
+  "assignedScore": 62,
   "source": "bww-roundup",
   "dtliThumb": null,
-  "contentTier": "excerpt",
-  "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 83,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
-    "keyPhrases": [
-      {
-        "quote": "It makes for powerful theater that's as entertaining as it is enlightening.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise with 'powerful theater,' 'sublime ensemble,' and 'absolute authenticity.' However, single excerpt warning means full verdict unclear, so medium confidence appropriate. | GPT-4o: The excerpt praises the direction and ensemble, describing the production as both entertaining and enlightening, indicating a strong positive recommendation. | Gemini: The review uses strong positive language such as \"great heart\", \"welcome humor\", \"powerful theater\", \"entertaining\", \"enlightening\", \"sublime ensemble\", and \"absolute authenticity\", indicating a strong positive recommendation. | Kimi: The excerpt contains enthusiastic praise for the direction and ensemble, describing the production as 'powerful,' 'sublime,' and 'terrifically enhanced.' However, as a single curated excerpt, it may be cherry-picked, warranting the upper end of the Positive bucket (80-84) with low confidence rather than a Rave classification.",
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The single excerpt describes the Broadway transfer as a 'counterproposal' to the Off Broadway version, which is neutral/comparative language without clear evaluative judgment. With only this fragment and a truncation warning, the critic's actual verdict is unclear. | GPT-4o: The excerpt suggests a comparison between the Broadway and Off Broadway versions, implying changes that may not fully capture the original's intimacy. The lack of a clear positive or negative recommendation leads to a mixed classification with low confidence due to the limited text. | Gemini: The review excerpt suggests a comparison to a previous production, implying that the current Broadway version might not be as successful. This indicates a mixed or neutral stance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,28 +37,37 @@
     }
   },
   "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T22:05:48.944Z",
-    "promptVersion": "5.2.0",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash",
+    "scoredAt": "2026-02-02T18:53:20.094Z",
+    "promptVersion": "5.1.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 60,
+    "previousVersion": "5.1.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 83,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+    "modelAgreement": "All 3 models agree: Mixed"
+  },
+  "dateUnknown": true,
+  "dateSource": "could-not-extract",
+  "showScoreExcerpt": "“Like any play transferring to Broadway from an Off Broadway success, this ‘Prayer’ is a counterproposal to its earlier, smaller, and more intimate iteration.”",
+  "contentTier": "excerpt",
+  "wordCount": 0,
+  "wrongAttribution": true,
+  "sources": [
+    "bww-roundup",
+    "show-score-playwright"
+  ]
 }

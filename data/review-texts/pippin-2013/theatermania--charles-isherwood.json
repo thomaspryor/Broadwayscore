@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.theatermania.com/broadway/reviews/pippin_65545.html",
   "publishDate": "April 25, 2013",
-  "fullText": "This reimagined Pippin is a theatrical experience that dazzles the senses while touching the heart, a rare combination that makes for truly memorable theater.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "This reimagined Pippin is a theatrical experience that dazzles the senses while touching the heart, a rare combination that makes for truly memorable theater.",
   "originalScore": null,
   "assignedScore": 91,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This reimagined Pippin is a theatrical experience that dazzles the senses while touching the heart, a rare combination that makes for truly memorable theater.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
@@ -73,5 +73,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Rave"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 91,
+  "textWordCount": 394,
+  "archivePath": "data/archives/reviews/pippin-2013/theatermania--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:45:58.313Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Bunheads star Bailey Bunton is among the Bucks County cast.\n\nAs previously announced, Tony Award nominee Hunter Foster (Hands on a Hardbody) is traveling to New Hope’s Bucks County Playhouse this summer to direct Summer of ’42, a 2002 off-Broadway musical for which he wrote the book. The production will run for 22 performances from July 25 through August 11.\n\nSummer of ‘42 is based on the coming-of-age memoir and 1971 screenplay written by Herman Raucher. It follows his 1942 summer vacation on Nantucket Island as a boy in his early teens where he develops a relationship with a woman named Dorothy whose husband has gone off to fight in World War II. In addition to Foster’s book, the musical includes a score by David Kirshenbaum (Vanities) with choreography by Lorin Latarro.\n\nThe cast will feature Bailey Buntain (who co-stars with Foster’s two-time Tony Award-winning sister, Sutton Foster, on the ABC Family series Bunheads) as Aggie; Joey Dippel as Benjie; Alyssa Gagarin as Miriam; F. Michael Haynie (Dogfight) as Oscy; Betsy Hogg (Peter and the Starcatcher) as Gloria; Ben Mayne as Pete; Chris McCarrell as Hermie; Chelsea Packard (Hands on a Hardbody) as Dorothy; and William Youmans (Hands on a Hardbody) as Mr. Sanders/Walter Winchel.\n\nThe creative team also includes Paul Masse (music director), Wilson Chin and David Arsenault (scenic designer), Nicole V. Moody (costume designer), Travis McHale (lighting designer) and Ed Chapman (sound designer).\n\nAt each of the 22 performances, the theater will honor a military veteran, nominated through an online submission form. The selected veterans will receive two complimentary tickets and will be offered a military discount code for their friends and family to join them at the performance.\n\nTo nominate a veteran, click here.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

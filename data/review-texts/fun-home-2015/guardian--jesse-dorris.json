@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Dorris",
-  "url": "https://www.theguardian.com/stage/2015/apr/20/fun-home-review-broadway-alison-bechdel",
+  "url": "https://www.theguardian.com/stage/2015/apr/20/fun-home-review-childhood-trauma-revisited-with-songs-alison-bechdel",
   "publishDate": "April 20, 2015",
-  "fullText": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
-  "isFullReview": false,
+  "fullText": "Fun Home: exploring childhood, sexuality and death Photograph: SuppliedView image in fullscreenFun Home: exploring childhood, sexuality and death Photograph: Supplied This article is more than 10 years oldReviewFun Home review – Alison Bechdel's childhood trauma revisited with songsThis article is more than 10 years oldCircle in the Square Theater, New YorkBased on a graphic novel memoir about growing up gay in a funeral home, this smart, sophisticated Broadway musical includes one astonishing performance\n\nFun Home, a resonant and sophisticated musical that includes a barbed paean to housecleaning, has been given a judicious shine and polish in its move from the Public Theater up to Broadway. It still has the same book and lyrics by Lisa Kron, the same songs by Jeanine Tesori and the same direction from Sam Gold. Much of the original cast has returned – and of course the same source material, the cartoonist Alison Bechdel’s graphic-novel memoir of coming out as a lesbian at the same time as her father stepped out in front of a truck.\n\nAs in Bechdel’s memoir, the show’s chronology is scrambled. It describes her childhood in small-town Pennsylvania with two younger brothers, a stifled mother, and a closeted father, an enthusiast of period décor, an English teacher, and a mortician at the family funeral home. (It’s that last métier that gives Bechdel’s book its title.) Scenes of Alison in college – falling for her first girlfriend – are also included as an adult Alison tries to contain her history in neat black borders and attempts to find captions for a past she still doesn’t fully understand. The Alisons – grown, Medium and Small – are played by three actors: Beth Malone, Emily Skeggs, and an utterly astonishing Sydney Lucas, who projects an emotional maturity way beyond her years. Or mine. (Once again, what are they feeding child actors these days?)\n\nWhen Fun Home debuted at the Public it held itself a little aloof and sometimes seemed lacking in intent and intensity. The Broadway version has alleviated these difficulties a little, though it hasn’t fully solved them. Kron’s book and lyrics are an efficient and sympathetic distillation of the memoir and Tesori’s score – which mixes yearning ballads with deliberately silly pop tunes – deserves to do very well come Tonys season. Ring of Keys, the song in which Small Alison begins to acknowledge her queerness, is a wonder, as is Days and Days in which Judy Kuhn, as Alison’s mother, sings her frustration to shivery, silvery effect.\n\nBut there’s still an occasional sense of remove (Gold is one of our smartest directors, but not our warmest) and too little suggestion of why Big Alison has thrown herself back through the years and what she hopes to find or learn or fathom. There’s only one lyric at the beginning to clue us in: “But now I’m the one who’s 43/ and stuck/ I can’t find my way through.” Was 43 the age of her father at his death? How is Alison stuck? And will the cartoon be her solvent? A couple of lines in the libretto would go a long way to making the piece feel more purposeful.\n\nWhat has altered is the staging, a necessity as Circle in the Square is a theater in the round (well, in this case it’s more of an oval). A bit of intimacy is sacrificed, but it’s already so intimate in content that a somewhat larger stage, a more presentational approach, and some flashier scene changes opens it out nicely. The small, fine orchestra is seated on the stage and plenty of traps raise and lower furniture meant to suggest the Bechdel family home and Medium Alison’s dorm room. When those traps yawn emptily, they offer a chilling analogue for the emotional deterioration of Alison’s father (Michael Cerveris, in fine voice).\n\nBoth Alison and her father sing, in heartfelt tones: “I want to know what’s true/ Dig deep into who/ And what and why and when.” The Broadway Fun Home still leaves a lot of those interrogatives unanswered, yet it’s remarkably gratifying, often heartrending, and fiercely humane.",
+  "isFullReview": true,
   "dtliExcerpt": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
   "originalScore": 80,
   "assignedScore": 81,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 81,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2015/apr/20/fun-home-review-broadway-alison-bechdel",
+  "urlDiscoveredAt": "2026-02-04T03:04:54.297Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "textWordCount": 681,
+  "archivePath": "data/archives/reviews/fun-home-2015/guardian--jesse-dorris_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:04:54.300Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 681,
+  "tierReason": "Full review text"
 }

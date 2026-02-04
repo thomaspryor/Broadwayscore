@@ -3,10 +3,10 @@
   "outletId": "nypost",
   "outlet": "New York Post",
   "criticName": "Johnny Oleksinski",
-  "url": "https://nypost.com/2022/10/21/cost-of-living-review-broadway-play-is-tender-and-honest/",
+  "url": "https://nypost.com/2022/10/03/cost-of-living-broadway-review-a-gripping-unexpected-drama/",
   "publishDate": "October 21, 2022",
-  "fullText": "The Broadway debut of Martyna Majok's Pulitzer Prize-winning play 'Cost of Living' is a tender, honest and surprisingly funny look at disability and caregiving.",
-  "isFullReview": false,
+  "fullText": "David Zayas (left) and Katy Sullivan star in \"Cost of Living\" on Broadway. \n Jeremy Daniel \n \n \n \n \n \n \n\nThe guts of Martyna Majok’s absorbing play “Cost of Living,” which opened on Broadway Monday night at the Samuel J. Friedman Theatre, come from how forcefully the show pushes back against our expectations for a story like this one.\n\nIt’s a drama, in part, about two Princeton, New Jersey residents with disabilities. One, Ani (Katy Sullivan), lost both her legs and had her spinal cord shattered in a car accident; the other, John (Gregg Mozgala), is a twenty-something with cerebral palsy. Lesser works would treat these characters as automatic saints and talk down to them. They’d go full-bore “Grey’s Anatomy.” Not Majok’s.\n\n1 hour and 40 minutes with no intermission. At the Samuel J. Friedman Theatre, 261 West 47th Street.\n\nJohn, who hires Jess (Kara Young) to be his new caretaker, for example, is kind of an ass. When he interviews her and she says she attended Princeton, he vocally doubts that she graduated or even really went to the school and then brags about himself having gone to Harvard. (It’s true. All Harvard grads do this constantly.)\n\nYou can tell Jess is bothered by her future boss’ superior tone, as are we, but she needs the job. She is the daughter of immigrants who already works as a bartender at night, and is struggling to get by on tips and shift pay alone.\n\nAs the days go by, the two develop a sweet rapport, even if his sometimes classist sense of humor sticks around. Jess, meanwhile, appears to like spending her time in this rich guy’s chic apartment — maybe she’s grown fond of him, or maybe it’s all an act.\n\nJohn (Gregg Mozgala) hires Jess (Kara Young) to be his caretaker in “Cost of Living.” Jeremy Daniel\n\nMozgala plays John, who’s never 100% a good guy, with a zest for conversation that keeps us on his side. He also experiences enormous pain in visceral moments.\n\nAni, meanwhile, is looked after by her soft-spoken husband she is separated from named Eddie (David Zayas), who is wracked with guilt for leaving her for another woman. Ani is foul-mouthed and brassy, and longs — with a gritted-teeth modern reservedness — for her old life.\n\nSullivan, especially, has a palpable understanding of working-class people outside of huge cities that’s deeply touching and lacks condescension. When Ani says, “I think I’m gonna go back to work. In a few months. See Janey. Everyone,” a once-simple task sounds like a faraway dream.\n\nEddie (David Zayas) reconnects with Ani (Katy Sullivan). Photo: Julieta Cervantes\n\nWhat do you think? Be the first to comment.\n\nShe starts to resent Eddie less, and the pair have the play’s most transcendent scene — as Ani bathes in the tub and Erik Satie’s “Gnossiennes No. 3” plays. It’s a haunting, enveloping tune, if you’ve never heard it before, and Majok and director Jo Bonney give us an unusually piercing sensory experience for the stuffy Friedman.\n\nIf most of “Cost of Living” is invigorating for not leaning on easy answers or stereotypical, Hallmark Channel characters, the ending aims to nourish audiences in a more traditional manner we’ve become accustomed to. And it does. Still, in zig-zagging away from well-tread paths, Majok arrives at a destination we hadn’t planned to visit, but are pleased to be at nonetheless.",
+  "isFullReview": true,
   "dtliExcerpt": "The Broadway debut of Martyna Majok's Pulitzer Prize-winning play 'Cost of Living' is a tender, honest and surprisingly funny look at disability and caregiving.",
   "originalScore": null,
   "assignedScore": 78,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The Broadway debut of Martyna Majok's Pulitzer Prize-winning play 'Cost of Living' is a tender, honest and surprisingly funny look at disability and caregiving.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
     "score": 78,
@@ -73,5 +73,50 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated"
+  "textQuality": "full",
+  "sources": [
+    "web-search",
+    "show-score-playwright"
+  ],
+  "previousUrl": "https://nypost.com/2022/10/21/cost-of-living-review-broadway-play-is-tender-and-honest/",
+  "urlDiscoveredAt": "2026-02-04T03:12:37.074Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 561,
+  "archivePath": "data/archives/reviews/cost-of-living-2022/nypost--johnny-oleksinski_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:12:37.079Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 561,
+  "tierReason": "Full review text"
 }

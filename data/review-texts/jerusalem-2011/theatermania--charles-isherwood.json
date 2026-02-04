@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.theatermania.com/broadway/reviews/jerusalem_31654.html",
   "publishDate": "April 22, 2011",
-  "fullText": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mark Rylance's towering performance as Johnny 'Rooster' Byron in Jez Butterworth's Jerusalem is a theatrical tour de force that transcends the sometimes meandering play itself.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 76,
@@ -72,5 +72,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 205,
+  "archivePath": "data/archives/reviews/jerusalem-2011/theatermania--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:40:57.250Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 205 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Emmy Award winner Holland Taylor will star as Ann Richards in the new solo show Ann, to debut at Paramount Theatre in Austin, May 4-7, 2011.\n\nThis bio-play about the former Texas governor, who died in 2006, is billed as “an affectionate portrait.”\n\nTaylor won an Emmy for her role as Judge Roberta Kittelson in ABC’s The Practice,and is also well known for her television roles on Bosom Buddies and Two and a Half Men, among others. Her stage credits include the Broadway productions of The Devils, Butley, and Moose Murders, and starred last year in the Off-Broadway play, Mother.\n\nFor more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

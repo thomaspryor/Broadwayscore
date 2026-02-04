@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2015/apr/08/hand-to-god-review-broadway-booth-theatre",
+  "url": "https://www.theguardian.com/stage/2016/feb/16/hand-to-god-review-vaudeville-london",
   "publishDate": "April 8, 2015",
-  "fullText": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
-  "isFullReview": false,
+  "fullText": "Shock puppet … Harry Melling as Jason in Robert Askins’s Hand to God. Photograph: Tristram Kenton for the GuardianView image in fullscreenShock puppet … Harry Melling as Jason in Robert Askins’s Hand to God. Photograph: Tristram Kenton for the Guardian This article is more than 9 years oldReviewHand to God review – satanic sock-puppet satire gives in to temptationThis article is more than 9 years oldVaudeville, LondonRobert Askins’s Broadway hit about a Bible belt teenager in thrall to a foul-mouthed puppet is merely crude\n\nAmerican religious fervour inevitably breeds a reaction. Although Robert Askins’s play has made a five-year journey from the theatrical margins to Broadway hit, it strikes me as a coarse, crude satire that – not unlike The Book of Mormon – greets one form of excess with another.\n\nRead moreThe play is set in a world Askins knows, as it were, at first hand: that of a Lutheran ministry in Texas, where sock puppets are used as a way of spreading the gospel.\n\nThe widowed Margery runs a Bible-promoting class while provoking something more than missionary zeal in the teenage Tim and the lonely hands-on pastor. But the real problem lies with her son, Jason, who becomes so wedded to his sock puppet, Tyrone, that it acquires a separate identity and becomes the foul-mouthed id to his nervous ego. Tyrone becomes so unruly that a case of split personality is treated as a form of diabolical possession demanding exorcism.\n\nAskins makes a valid point: that we should accept responsibility for our actions rather than attribute our darkest impulses to the devil. Along the way, there are a few good scenes, such as one in which the pious Margery shows a craving for rough sex. But Askins, while preaching an enlightened humanism, uses the same bludgeoning tactics as his opponents. If the idea of puppets singing pop hymns is absurd, the sight of Tyrone being enthusiastically fellated by a female equivalent is clearly designed as a shock (or possibly a sock) tactic. The idea of a boy in thrall to his puppet strikes me as tragic rather than comic; I was reminded of Alberto Cavalcanti’s vastly superior film, Dead of Night, in which a maddened Michael Redgrave destroys the ventriloquist dummy that embodies his dual personality.\n\nView image in fullscreenHand to God at the Vaudeville, London. Photograph: Tristram Kenton for the GuardianFor all its obviousness, Hand to God is decently directed by Moritz von Stuelpnagel and performed with a hectic energy. Harry Melling suggests that Jason is a strange solitary who finds an outlet for his rage and lust in Tyrone. Janie Dee lends his mother a comparable sense of a woman choked by her outward conformity, and Neil Pearson makes the much-mocked pastor a beacon of muddled decency. My objection to the play is that using violence and hysteria as a way of combating hard-sell religion and hypocrisy plays into the enemy’s hands. If one is seeking comedy about possession by an anarchic puppet, one might find more laughs in Rod Hull and Emu.\n\nAt Vaudeville, London, until 11 June. Buy tickets at theguardianboxoffice.com or call 0330-333 6906.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
   "originalScore": null,
   "assignedScore": 80,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hand to God is a hoot and a holler, a raunchy puppet comedy that somehow manages to be both deeply silly and surprisingly moving.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
     "score": 80,
@@ -72,5 +72,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2015/apr/08/hand-to-god-review-broadway-booth-theatre",
+  "urlDiscoveredAt": "2026-02-04T03:41:00.527Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 539,
+  "archivePath": "data/archives/reviews/hand-to-god-2015/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:41:00.530Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 539,
+  "tierReason": "Full review text"
 }

@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "When a gun is introduced in the first act, it better go off in the second or third.\n\nToday, few plays even have a second act, and at 80 minutes, Max Wolf Friedlich’s “Job” doesn’t just introduce a gun when the lights first go up on the stage at the Helen Hayes Theater.",
+  "isFullReview": false,
+  "textWordCount": 53,
+  "archivePath": "data/archives/reviews/job-2024/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:43:24.132Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 59 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 53,
+  "tierReason": "Short text (53 words)"
 }

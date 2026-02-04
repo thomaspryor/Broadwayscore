@@ -8,5 +8,50 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "http://online.wsj.com/articles/theater-review-holler-if-ya-hear-me-1403230337\n\nShareResizeSaul Williams and Saycon Sengbloh Joan MarcusNew York\n\nThirty-five years after the release of \"Rapper's Delight,\" the first full-fledged rap record, Broadway finally has its very own hip-hop jukebox musical. \"Holler If Ya Hear Me,\" whose score consists of 21 songs by Tupac Shakur, is (says the publicist) \"a non-biographical story about friendship, family, revenge, change and hope.\" The presumptive reason why it's \"non-biographical\" is because the producers don't own the rights to Mr. Shakur's life story. Whether they sought to acquire those rights isn't known, but \"Holler If Ya Hear Me\" would likely have been more interesting if they had.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nContinue reading your article witha WSJ subscription\n\nU.S.-Iranian Talks Are Still Expected After Gulf Flare-UpsU.S. Manufacturing Is in Retreat and Trump’s Tariffs Aren’t HelpingThreat of New AI Tools Wipes $300 Billion Off Software and Data StocksClassified Whistleblower Complaint About Tulsi Gabbard Stalls Within Her AgencyThe Crypto-Hoarding Strategy Is UnravelingMost PopularOPINIONThe ‘Deal’ in Iran Is Regime ChangeDon Lemon and the First AmendmentA U.S. Life Expectancy MilestoneThe Nuclear Threat After Tehran FallsPress Secretary? I’d Rather Do Root CanalsRecommended VideosAdvertisement",
+  "isFullReview": false,
+  "textWordCount": 190,
+  "archivePath": "data/archives/reviews/holler-if-ya-hear-me-2014/wsj--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:37:36.599Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "paywall_or_login_prompt",
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 190 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 190,
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
 }

@@ -8,5 +8,37 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The word “quaint” is not one you’d use to describe either John Grisham’s first novel or Joel Schumacher’s 1996 screen version of “A Time to Kill.” But quaint is very much what you get on the Broadway stage with Rupert Holmes’ adaptation, which opened Sunday at the Golden Theater.\n\nQuaint is not necessarily a bad thing, and the show’s producers promise as much with the subhead: “A new courtroom drama.”",
+  "isFullReview": false,
+  "textWordCount": 70,
+  "archivePath": "data/archives/reviews/a-time-to-kill-2013/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:40:14.309Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 76 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 70,
+  "tierReason": "Short text (70 words)"
 }
