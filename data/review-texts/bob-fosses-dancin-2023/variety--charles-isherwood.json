@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is essentially a jukebox musical built around Fosse's choreographic legacy, but it lacks the narrative drive or thematic coherence that might give it more lasting impact beyond the undeniable pleasure of watching skilled dancers execute Fosse's inimitable moves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is essentially a jukebox musical built around Fosse's choreographic legacy, but it lacks the narrative drive or thematic coherence that might give it more lasting impact beyond the undeniable pleasure of watching skilled dancers execute Fosse's inimitable moves.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it lacks the narrative drive or thematic coherence that might give it more lasting impact beyond the undeniable pleasure of watching skilled dancers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges 'undeniable pleasure' in the performances but criticizes fundamental structural problems (lack of narrative drive and thematic coherence). This suggests neither recommendation nor discouragement - a mixed verdict. Low confidence due to single excerpt warning. | GPT-4o: The review acknowledges the pleasure of watching skilled dancers but criticizes the show for lacking narrative drive and thematic coherence, leading to a mixed assessment. | Gemini: The review acknowledges the pleasure of watching the dancing but criticizes the lack of narrative drive and thematic coherence, suggesting a mixed experience. Given the single excerpt, confidence is low. | Kimi: While acknowledging the 'undeniable pleasure' of Fosse's choreography and skilled dancing, the critic finds the show lacks narrative drive and thematic coherence, limiting its lasting impact beyond the dance sequences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:43:54.500Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

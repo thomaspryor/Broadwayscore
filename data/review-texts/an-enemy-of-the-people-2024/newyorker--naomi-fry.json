@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Strong's performance is undeniably magnetic, but his interpretation of Stockmann as a kind of proto-populist hero feels somewhat at odds with Ibsen's more complex portrait of a man whose righteousness can shade into dangerous self-regard.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Strong's performance is undeniably magnetic, but his interpretation of Stockmann as a kind of proto-populist hero feels somewhat at odds with Ibsen's more complex portrait of a man whose righteousness can shade into dangerous self-regard.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong's performance is undeniably magnetic, but his interpretation of Stockmann as a kind of proto-populist hero feels somewhat at odds with Ibsen's more complex portrait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows praise for Strong's magnetic performance balanced against concern that his interpretation misses Ibsen's complexity. Mixed assessment with low confidence due to limited text. | GPT-4o: The excerpt praises Strong's performance but notes a significant misalignment with the character's intended complexity, suggesting a mixed reception. | Gemini: The review acknowledges a strong performance but also points out a problematic interpretation, suggesting a mixed assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the lead performance ('undeniably magnetic') but levels a significant criticism about the production's interpretation of the character being 'at odds with' Ibsen's complex original, suggesting the show simplifies the source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:30:13.752Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

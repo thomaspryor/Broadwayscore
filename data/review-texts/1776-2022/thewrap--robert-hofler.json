@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 30,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "at its core the show is terrible",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: Critic calls the show 'terrible' and criticizes the book as 'possibly the dullest, longest book scenes ever written for a musical.' However, confidence is low due to single excerpt warning - this may be cherry-picked negative content from a more balanced review. | GPT-4o: The excerpt is highly negative, calling the show 'terrible' and criticizing the book scenes as 'dull' and 'longest ever written for a musical.' The single excerpt warning suggests caution, but the language indicates a strong pan. | Gemini: The excerpt states that the show is \"terrible\" and the book is \"dullest, longest ever written.\" Given the negative language, I'm placing this in the negative bucket. Confidence is low due to the limited text. | Kimi: The excerpt delivers an unambiguously negative verdict using words like 'terrible' and 'dullest,' which would place it in the Negative bucket. However, given the warning that this is a single curated excerpt that may be cherry-picked, confidence is set to low. | Buckets: claude=Pan, openai=Pan, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:03:40.661Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
+  }
 }

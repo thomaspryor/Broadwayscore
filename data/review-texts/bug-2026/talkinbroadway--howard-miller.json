@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“As the world upends and utter madness engulfs, we truly don't know if we are witnessing Peter's implosion or Agnes's crack cocaine-fueled breakdown, or some combination of both.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As the world upends and utter madness engulfs, we truly don't know if we are witnessing Peter's implosion or Agnes's crack cocaine-fueled breakdown, or some combination of both.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes plot/dramatic tension without clear evaluative language. No recommendation signal present. With only one curated quote available, cannot determine critic's verdict. | GPT-4o: The excerpt suggests a chaotic and uncertain narrative, indicating a mixed experience. The lack of clarity in the plot's direction implies neither a strong recommendation nor a discouragement. | Gemini: The excerpt suggests a chaotic and ambiguous experience, implying a mixed or uncertain reaction to the show. Given the limited context, it's difficult to determine a definitive recommendation. | Kimi: Single excerpt describes effective theatrical intensity and ambiguity, suggesting the production successfully delivers the play's psychological horror, but limited context and lack of explicit evaluative superlatives warrant conservative scoring at the lower end of Positive with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:46:46.178Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

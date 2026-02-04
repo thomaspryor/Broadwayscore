@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Andrew Lloyd Webber's ’Bad Cinderella’ is not nearly as bad as it would like you to believe...However, even with its crystalline heels, the show certainly hasn't found its footing.”\n\nRead more"
+  "showScoreExcerpt": "“Andrew Lloyd Webber's ’Bad Cinderella’ is not nearly as bad as it would like you to believe...However, even with its crystalline heels, the show certainly hasn't found its footing.”\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show certainly hasn't found its footing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt presents a balanced view - defending against harsh criticism ('not nearly as bad as it would like you to believe') but concluding the show 'hasn't found its footing.' This suggests neither recommendation nor strong discouragement. However, confidence is low due to having only one curated excerpt that may not reflect the full review's verdict. | GPT-4o: The excerpt suggests a mixed review, acknowledging some redeeming qualities but ultimately indicating the show hasn't fully succeeded. The lack of a full review and single excerpt warning lowers confidence. | Gemini: The review states the show is \"not nearly as bad\" as expected, but also that it \"hasn't found its footing.\" This suggests a mixed or neutral stance. | Kimi: The excerpt offers faint praise that the show exceeds its terrible reputation, but the critic's concluding assessment that it 'certainly hasn't found its footing' indicates significant issues with cohesion and stability, suggesting a middling, non-committal verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:39:05.612Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

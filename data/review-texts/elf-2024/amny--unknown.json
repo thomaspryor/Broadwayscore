@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway production is, I must confess, a crowd-pleasing, feel-good delight that is presented with genuine showmanship.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('crowd-pleasing', 'feel-good delight', 'genuine showmanship') with specific praise for production elements. Single excerpt warning requires caution, but the enthusiasm suggests upper-positive range. | GPT-4o: The excerpt describes the production as a 'crowd-pleasing, feel-good delight' with 'genuine showmanship', indicating strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses very positive language such as \"crowd-pleasing, feel-good delight\" and \"genuine showmanship\", indicating a strong positive recommendation. Given the single excerpt warning, I'm placing it at the higher end of the positive bucket. | Kimi: The excerpt employs enthusiastic language ('delight', 'genuine showmanship') to praise the production's entertainment value and technical craft, indicating a clear recommendation. However, confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:08:52.594Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

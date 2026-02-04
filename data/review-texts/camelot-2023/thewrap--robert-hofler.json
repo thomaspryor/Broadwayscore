@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Sher’s direction is also a marvel when Sorkin’s book is at its messiest...Today, it is the last refuge of experiencing Broadway musicals as they were meant to be heard.”\n\nRead more"
+  "showScoreExcerpt": "“Sher’s direction is also a marvel when Sorkin’s book is at its messiest...Today, it is the last refuge of experiencing Broadway musicals as they were meant to be heard.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Today, it is the last refuge of experiencing Broadway musicals as they were meant to be heard.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise for direction as 'a marvel' and positions show as essential Broadway experience, but limited text prevents full assessment of overall verdict. | GPT-4o: The excerpt praises Sher's direction as a 'marvel' even when the book is messy, suggesting strong overall approval. The phrase 'last refuge of experiencing Broadway musicals as they were meant to be heard' implies a high recommendation. However, with only one excerpt available, confidence is low. | Gemini: The excerpt praises the direction as a marvel and suggests the show represents Broadway musicals as they should be experienced, indicating a positive recommendation. However, confidence is low due to the single excerpt. | Kimi: The excerpt offers effusive praise for Sher's direction as a 'marvel' and elevates the show as the 'last refuge' of authentic Broadway musicals, indicating a strong recommendation despite acknowledged messiness in Sorkin's book. Per the single-excerpt warning, confidence is low and the score is placed at the upper end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:51:24.286Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

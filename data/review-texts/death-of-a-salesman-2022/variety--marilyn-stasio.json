@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "\"There’s no doubt that casting a Black actor as Willy Loman (for the first time on Broadway, no less) adds a deeper dimension to this monumental role.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no doubt that casting a Black actor as Willy Loman adds a deeper dimension to this monumental role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises casting choice as adding 'deeper dimension' to 'monumental role' but insufficient text to determine full verdict. Scored in upper Positive range due to clear praise, but low confidence given limited excerpt. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the casting choice, which adds depth to the role. However, without more context, the overall sentiment is unclear, leading to a low confidence, mildly positive score. | Gemini: The excerpt highlights a positive aspect of the casting, suggesting a potentially interesting interpretation. However, without more context, it's difficult to gauge the overall recommendation strength. | Kimi: The excerpt offers unambiguous praise for the casting choice and its artistic impact on the role using words like 'no doubt' and 'monumental,' indicating a clearly positive assessment. However, confidence is reduced due to the single excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:05:08.669Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

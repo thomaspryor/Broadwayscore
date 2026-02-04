@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "It’s not dumb enough to be enjoyed as straight-out rock n roll — like, for example, the jukebox rock musical “Rock of Ages.”  But at the same time, although it has its pleasures, “Almost Famous” is not quite smart enough to have been fully satisfying to me as musical theater.\nI remember loving the movie.  I don’t feel as enthusiastic about the musical, even though the story is virtually identical\n\nRead more"
+  "showScoreExcerpt": "It’s not dumb enough to be enjoyed as straight-out rock n roll — like, for example, the jukebox rock musical “Rock of Ages.”  But at the same time, although it has its pleasures, “Almost Famous” is not quite smart enough to have been fully satisfying to me as musical theater.\nI remember loving the movie.  I don’t feel as enthusiastic about the musical, even though the story is virtually identical\n\nRead more",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Although it has its pleasures, 'Almost Famous' is not quite smart enough to have been fully satisfying to me as musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges some enjoyment ('has its pleasures') but expresses clear dissatisfaction ('not fully satisfying'). Compares unfavorably to both the source film and other musicals. Single excerpt with truncated text requires low confidence. | GPT-4o: The critic acknowledges some pleasures in the show but ultimately finds it lacking in satisfaction as musical theater. The single excerpt suggests a mixed sentiment, and the lack of a full review text lowers confidence. | Gemini: The critic states that the musical is not dumb enough to be enjoyed as rock n roll, but also not smart enough to be fully satisfying. They also state they don't feel as enthusiastic about the musical as they did about the movie. | Kimi: The critic finds the show fails to satisfy as either dumb fun or sophisticated theater, expressing disappointment compared to the film despite acknowledging some pleasures. As a single excerpt, the full verdict may vary but this suggests a lukewarm, qualified assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:26:53.871Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 62,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

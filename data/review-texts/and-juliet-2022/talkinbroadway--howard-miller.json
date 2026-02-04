@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\" '& Juliet' is less about the narrative contrivances than it is about the singing and dancing and every bit of staging that director Luke Sheppard has been able to muster.\"\n\nRead more"
+  "showScoreExcerpt": "\" '& Juliet' is less about the narrative contrivances than it is about the singing and dancing and every bit of staging that director Luke Sheppard has been able to muster.\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'& Juliet' is less about the narrative contrivances than it is about the singing and dancing and every bit of staging that director Luke Sheppard has been able to muster.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt suggests the show prioritizes spectacle over substantive storytelling ('less about narrative'). This reads as lukewarm - acknowledging production values but implying narrative weakness. With only one curated quote available, confidence is low. | GPT-4o: The excerpt suggests a focus on the production's strengths in singing, dancing, and staging, indicating a positive view despite narrative issues. However, with only one excerpt, confidence is low. | Gemini: The excerpt focuses on the singing, dancing, and staging, implying a positive experience despite narrative weaknesses. Given it's a single excerpt, confidence is low, and I'm placing it in the lower half of the positive range. | Kimi: The excerpt indicates the show transcends its narrative weaknesses through strong production values (singing, dancing, staging), suggesting a qualified recommendation typical of jukebox musical reviews. Single-excerpt limitation warrants conservative scoring and low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:31:51.357Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

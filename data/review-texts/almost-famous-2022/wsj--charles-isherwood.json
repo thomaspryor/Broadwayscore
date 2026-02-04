@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Although the musical has undoubtedly been crafted with care, Mr. Crowe’s unusually lovely and authentic movie here feels tamed and out-of-focus, becoming yet another blandly diminished stage version of material that was more fresh, trenchant and affecting on film.\"\n\nRead more"
+  "showScoreExcerpt": "\"Although the musical has undoubtedly been crafted with care, Mr. Crowe’s unusually lovely and authentic movie here feels tamed and out-of-focus, becoming yet another blandly diminished stage version of material that was more fresh, trenchant and affecting on film.\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "becoming yet another blandly diminished stage version of material that was more fresh, trenchant and affecting on film",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the musical was 'crafted with care,' the critic finds it 'tamed and out-of-focus' and 'blandly diminished' compared to the superior film version. This is a clear negative recommendation. | GPT-4o: The excerpt criticizes the stage adaptation as 'tamed and out-of-focus' and 'blandly diminished' compared to the film, indicating a negative view. However, the single excerpt limits confidence. | Gemini: The review excerpt clearly states that the stage version is a \"blandly diminished\" version of the film, indicating a negative assessment. Given it's a single excerpt, I'm scoring cautiously. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:29:26.294Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“As theatrical vehicles go, it has a DeLorean body with an Edsel motor; it takes the audience on a fast, fun ride -- but be ready for some metal fatigue…To be sure, the special effects deliver big-time thrills, beginning with the DeLorean appearing out of nowhere -- Chris Fisher is the illusion designer -- and including the thrilling speed sequences paced by Finn Ross' double-layered projection design….It's the odd case of a so-so show put over by sheer determination and technique.” \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the odd case of a so-so show put over by sheer determination and technique.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review explicitly calls it a 'so-so show' while praising technical elements like special effects and projections. The DeLorean/Edsel metaphor suggests fun but flawed. Single excerpt limits confidence. | GPT-4o: The review describes the show as having a 'DeLorean body with an Edsel motor,' indicating a mix of strengths and weaknesses. While special effects are praised, the overall show is described as 'so-so,' suggesting a mixed verdict. | Gemini: The review describes the show as \"so-so\" but praises the special effects and technical aspects, suggesting a positive but qualified recommendation. The single excerpt and \"read more\" truncation lowers confidence. | Kimi: While the critic calls the underlying material 'so-so' with an 'Edsel motor,' they emphasize the production delivers 'big-time thrills,' a 'fast, fun ride,' and spectacular technical effects that overcome the script's weaknesses—indicating a qualified but genuine recommendation to see the show. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:37:15.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

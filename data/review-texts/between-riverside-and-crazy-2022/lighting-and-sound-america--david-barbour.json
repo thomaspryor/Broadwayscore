@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Line by line, Between Riverside and Crazy delivers as much pleasure as any play in New York right now. Guirgis captures the ear (and mind and heart) of the city with uncanny accuracy in dialogue that is rich, rough, and vibrant. See it for that, the memorable supporting cast, and Henderson, a great actor, in the role of his career.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Line by line, Between Riverside and Crazy delivers as much pleasure as any play in New York right now.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with superlative language ('as much pleasure as any play in New York right now', 'great actor', 'role of his career') and clear recommendation to 'See it'. Single excerpt warning noted - this sounds like enthusiastic praise, so upper end of Positive bucket. | GPT-4o: The excerpt provides strong praise for the play's dialogue and performances, suggesting a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the dialogue, cast, and lead actor. The phrase \"as much pleasure as any play in New York right now\" indicates a strong recommendation. | Kimi: The excerpt offers superlative praise ('as much pleasure as any play in New York right now,' 'role of his career') and an explicit imperative to see the show, warranting a high Positive score, though the single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:41:38.888Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

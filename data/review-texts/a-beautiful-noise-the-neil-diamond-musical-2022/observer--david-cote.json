@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"This sloppy Broadway embrace of Neil Diamond is a jukebox musical in search of a plot.\"\n\nRead more"
+  "showScoreExcerpt": "\"This sloppy Broadway embrace of Neil Diamond is a jukebox musical in search of a plot.\"\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This sloppy Broadway embrace of Neil Diamond is a jukebox musical in search of a plot.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt calls the show 'sloppy' and criticizes it for lacking a coherent plot, indicating a negative assessment. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt criticizes the show as 'sloppy' and lacking a coherent plot, indicating a negative view. However, with only one excerpt, the overall sentiment might not be fully captured, leading to a low confidence in the score. | Gemini: The single excerpt available is negative, describing the show as \"sloppy\" and lacking a plot. Given the limited information, a negative score seems appropriate. | Kimi: The excerpt contains clear negative judgments ('sloppy,' 'in search of a plot') criticizing the show's construction and lack of coherent narrative. With only one excerpt available, confidence is low, but the language clearly indicates a thumbs-down review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:06:29.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

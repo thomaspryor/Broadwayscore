@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 1042,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Call this provocative yet mixed production wildly visceral, ultra gritty and at times frustratingly at odds with itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the production's bold vision and strong performances but criticizes the overwhelming video effects that compromise intimacy and distract from key moments. The critic finds it 'provocative yet mixed' and 'frustratingly at odds with itself,' indicating neither full endorsement nor dismissal. | GPT-4o: The review describes the production as 'provocative yet mixed' with both positive and negative elements. The truncated text warning suggests caution, but the overall tone indicates a mixed reception. | Gemini: The review uses mixed language, calling the production \"provocative yet mixed\" and \"frustratingly at odds with itself.\" While praising some aspects, it also notes issues with the video elements and their impact on intimacy. | Kimi: The critic praises the cast and some video sequences like 'Tonight' but criticizes the loss of intimacy and finds the video elements often distracting and 'at odds with itself.' While acknowledging the show's durable material, the review lacks a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:59:17.843Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

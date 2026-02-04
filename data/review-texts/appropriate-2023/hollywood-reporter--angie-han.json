@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's power lies not in its shocking revelations but in the familiar ways its characters justify their worst impulses to themselves and each other.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's power lies not in its shocking revelations but in the familiar ways its characters justify their worst impulses to themselves and each other.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's power lies not in its shocking revelations but in the familiar ways its characters justify their worst impulses to themselves and each other.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic identifies 'power' in the play's character work, suggesting appreciation for its psychological depth. However, with only one excerpt available, this could be from a mixed or negative review that acknowledges strengths while critiquing other elements. | GPT-4o: The excerpt suggests an interesting but not necessarily compelling play, focusing on character dynamics rather than impactful revelations. The lack of strong praise or critique indicates a mixed review. | Gemini: The single excerpt provided does not clearly recommend or discourage seeing the show, but suggests the play has some merit. The lack of a clear verdict and the single excerpt results in low confidence. | Kimi: The excerpt explicitly identifies 'power' in the play's character dynamics and psychological insight, representing a clear positive evaluation. However, given this is a single curated excerpt that may not capture the full verdict, confidence is reduced. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:33:08.738Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

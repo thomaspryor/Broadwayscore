@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The revival of 'Cabaret' at the Kit Kat Club transforms the August Wilson Theatre into an immersive experience that puts audiences right in the decadent heart of Weimar-era Berlin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The revival of 'Cabaret' at the Kit Kat Club transforms the August Wilson Theatre into an immersive experience that puts audiences right in the decadent heart of Weimar-era Berlin.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The revival of 'Cabaret' at the Kit Kat Club transforms the August Wilson Theatre into an immersive experience that puts audiences right in the decadent heart of Weimar-era Berlin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the production positively as 'transformative' and 'immersive,' but with only one curated quote available, this could be cherry-picked from a more mixed review. Scored at lower end of Positive bucket due to excerpt limitation. | GPT-4o: The excerpt describes the production as an 'immersive experience,' suggesting a strong positive impression. However, due to the limited context, confidence is low. | Gemini: The excerpt describes an immersive experience, which is positive, but without more text, it's hard to gauge the overall recommendation strength. Given the single excerpt, I'm scoring it as a barely positive review. | Kimi: The excerpt offers clear praise for the production's immersive staging and atmospheric transformation, warranting a Positive classification at the upper end of the range given the strongly favorable language, though confidence is low due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:48:56.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 82,
+    "geminiScore": 72,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

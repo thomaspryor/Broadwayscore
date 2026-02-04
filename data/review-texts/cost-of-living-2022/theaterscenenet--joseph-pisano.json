@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Perhaps because of its prestigious accolade, or just undeniable merit, \"Cost of Living\" is the first of Majok's heartfelt efforts to make the journey from off-Broadway to on-Broadway in the Manhattan Theatre Club’s production, a transition that, thanks to director Jo Bonney's returning and unflinching guidance, hasn't diminished any of the play's intimacy or daring. If anything, on Wilson Chin's Bergman-meets-Bayonne turntable set, gloomily lit in unrelenting twilight by Jeff Croiter, \"Cost of Living\" has become even more persuasive and poetic. Invaluably serving that dramatic growth are actors Gregg Mozgala and Katy Sullivan, repeating their roles from the play's 2017 New York City Center premiere by MTC.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cost of Living has become even more persuasive and poetic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the Broadway transfer ('hasn't diminished any of the play's intimacy or daring'), the direction, design, and returning performances. However, this is only a single curated excerpt so confidence is low. | GPT-4o: The excerpt praises the transition to Broadway as enhancing the play's qualities, with strong direction and performances. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, praising the direction, set design, lighting, and returning actors. Given the limited text, I'm placing it in the upper end of the Positive bucket with low confidence. | Kimi: The excerpt offers strong praise for the Broadway transfer, noting the production has become 'even more persuasive and poetic' with 'undeniable merit' and excellent performances, indicating an enthusiastic recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:55:21.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

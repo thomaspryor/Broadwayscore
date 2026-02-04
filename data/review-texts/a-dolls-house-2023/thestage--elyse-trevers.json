@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“I found ‘A Doll’s House’ slow and didactic. The ending felt more preachy. Although Herzog’s version is creative and modern, the pared-down play doesn’t do the subject matter justice. The actors work hard but they need more; unfortunately, here they got less.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pared-down play doesn't do the subject matter justice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the production 'slow and didactic' with an ending that 'felt more preachy.' Despite acknowledging creative elements and hard-working actors, the critic concludes it fails to serve the material adequately. | GPT-4o: The critic describes the play as 'slow and didactic' with a 'preachy' ending, indicating a negative view. The actors' efforts are noted but insufficient to overcome the play's shortcomings. The single excerpt limits confidence in the overall sentiment. | Gemini: The review uses negative language such as \"slow and didactic\", \"ending felt more preachy\", and \"doesn't do the subject matter justice\", indicating a negative assessment despite acknowledging some creativity. | Kimi: The single available excerpt offers significant criticism of the production as slow, didactic, and failing to serve the source material or actors, outweighing the sole positive note about the adaptation's creativity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:14:33.778Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

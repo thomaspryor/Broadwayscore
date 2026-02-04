@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“In scrubbing away virtually all action and much interaction from the play, Mr. Lloyd reduces its power to move us to reflection and feeling. We are left with a skeleton of this still-vital play, all bones, no flesh.”\n\nRead more"
+  "showScoreExcerpt": "“In scrubbing away virtually all action and much interaction from the play, Mr. Lloyd reduces its power to move us to reflection and feeling. We are left with a skeleton of this still-vital play, all bones, no flesh.”\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "We are left with a skeleton of this still-vital play, all bones, no flesh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic condemns the director's approach as reducing the play's power and leaving audiences with an unsatisfying 'skeleton' - clear negative verdict despite acknowledging the source material as 'still-vital.' | GPT-4o: The excerpt criticizes the production for removing action and interaction, reducing its emotional impact. The metaphor of 'all bones, no flesh' suggests a lack of substance, indicating a negative impression. | Gemini: The excerpt indicates that the production has been stripped of its power and leaves the audience with only the bare bones of the play, suggesting a negative experience. | Kimi: The critic condemns the director for scrubbing away action and interaction, reducing the play's power to move the audience and leaving it lifeless. As only a single excerpt is available, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:15:25.744Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

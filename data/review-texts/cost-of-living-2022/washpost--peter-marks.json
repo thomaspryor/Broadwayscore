@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Majok's beautiful play is an exploration of intimacy and interdependence, anchored by four exceptional performances that illuminate the complex dynamics between caregivers and those who need care.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Majok's beautiful play is an exploration of intimacy and interdependence, anchored by four exceptional performances that illuminate the complex dynamics between caregivers and those who need care.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Majok's beautiful play is an exploration of intimacy and interdependence, anchored by four exceptional performances that illuminate the complex dynamics between caregivers and those who need care.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling the play 'beautiful' and highlighting 'four exceptional performances.' Single excerpt warning suggests this could be cherry-picked positive content, but the language is genuinely enthusiastic without reservations. | GPT-4o: The excerpt praises the play as 'beautiful' and highlights 'exceptional performances', indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"beautiful play\" and \"exceptional performances\", indicating a positive review. Given the single excerpt warning, I've placed the score towards the higher end of the positive range. | Kimi: The excerpt features unambiguous praise ('beautiful', 'exceptional') for the play and performances, indicating a strong recommendation, though the single curated quote limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:55:53.852Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

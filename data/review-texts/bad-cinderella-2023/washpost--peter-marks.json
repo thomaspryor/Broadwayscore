@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘Bad Cinderella’ is the cheesiest and crudest of the lot...Even the musical’s supposed moral, that looks aren’t everything, makes no sense when the actress portraying Cinderella is unarguably lovely from the get-go.”\n\nRead more"
+  "showScoreExcerpt": "“ ‘Bad Cinderella’ is the cheesiest and crudest of the lot...Even the musical’s supposed moral, that looks aren’t everything, makes no sense when the actress portraying Cinderella is unarguably lovely from the get-go.”\n\nRead more",
+  "assignedScore": 30,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bad Cinderella' is the cheesiest and crudest of the lot",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic calls the show the 'cheesiest and crudest' and finds even its moral message nonsensical. However, this is only one excerpt from a longer review, so confidence is low as the full verdict may differ. | GPT-4o: The excerpt describes the show as 'cheesiest and crudest,' and criticizes the moral inconsistency, indicating a strongly negative review. However, with only a single excerpt, the confidence is low. | Gemini: The review excerpt is negative, calling the show \"cheesiest and crudest.\" Given the single excerpt, confidence is low, but the tone suggests a negative recommendation. | Kimi: The excerpt delivers harsh condemnation using superlatives like 'cheesiest and crudest' and attacks the show's fundamental logic, indicating a strong pan. However, confidence is low due to the single-excerpt limitation. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:41:06.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }
