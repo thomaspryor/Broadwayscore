@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "“McNeal,” directed by Lincoln Center Theater’s newly named executive producer Bartlett Sher, is itself a confused and discursive if thought-provoking drama that often seems a grab bag of ideas Mr. Akhtar delves into without finding much depth.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Downey brings his trademark sardonic wit to bear on Jacob McNeal, a novelist whose embrace of artificial intelligence as a writing tool threatens to upend his career and his relationship with his son.",
   "contentTier": "invalid",
@@ -22,12 +22,14 @@
   "sources": [
     "web-search",
     "show-score-playwright",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "textQuality": "truncated",
   "rejectedAt": "2026-02-03T18:29:10.174Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a brief plot summary or show description, not an evaluative review with critical assessment or recommendation; openai: The text is a description of a character and actor's performance, not an evaluative review of the show.; gemini: This is a plot summary with no evaluative content or recommendation.; kimi: The text provides only a plot summary describing the main character and premise without any evaluative content, critical opinion, or recommendation regarding the quality of the production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 5
 }

@@ -8,7 +8,8 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright"
+    "show-score-playwright",
+    "bww-reviews"
   ],
   "showScoreExcerpt": "\"...Sam Gold’s frenzied, youthful staging of the Shakespeare tragedy.\"\n\nRead more",
   "contentTier": "needs-rescrape",
@@ -16,5 +17,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated snippet with minimal content - just a partial quote about staging style followed by 'Read more', which is typical website navigation text rather than substantive review content.; openai: The provided text is too limited and lacks evaluative content to determine a verdict. It only mentions the director's staging style without any assessment of the production's quality or recommendation.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwExcerpt": "As the lovers hurtle toward their deaths, the already-speedy production gains more steam. (Romeo’s fatal encounter with Paris goes by the wayside.) As a result the ending feels abrupt—wait, the party’s over, and everyone’s dead? This may in part be why Mr. Gold doesn’t succeed in making us feel the awe and horror, the sense of waste, we should at the mischances that result in the deaths of the lovers. But at least it lets Mr. Connor and Ms. Zegler out at a reasonable hour to greet the hundreds of fans waiting for them after the performance. While this isn’t the most subtle or emotionally resonant “Romeo and Juliet,” it is unquestionably bringing enthusiastic younger audiences to the theater, in itself a worthy and impressive achievement.",
+  "bwwScore": 7
 }

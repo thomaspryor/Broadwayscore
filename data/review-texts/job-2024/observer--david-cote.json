@@ -9,7 +9,8 @@
   "sources": [
     "playbill-verdict",
     "show-score-playwright",
-    "nyc-theatre"
+    "nyc-theatre",
+    "bww-reviews"
   ],
   "nycTheatreExcerpt": "I cannot overpraise the talented cast and the snappy production, which moves like a bullet train and ends with a rebellious \"Presentation Day\" dance that sends shivers down your spine and tears down your cheeks.",
   "contentTier": "needs-rescrape",
@@ -19,5 +20,7 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated excerpt with incomplete sentences and no evaluative content - just a fragment describing runtime and staging approach without any critical assessment or verdict.; gemini: This is a single sentence excerpt that doesn't provide enough evaluative information to score. It's more of a descriptive statement than a review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwExcerpt": "In its slow-burning and fitfully engaging middle, Job ramps up from Boomer-versus-Millennial jousting to a rather contrived Big Twist, left unresolved by an ambivalent shrug of an ending. The rickety whole rests on a couple of prolonged teases. First: is Jane reliable or crazy? Can we trust anything she says; do periodic bursts of noise and light (designed by Cody Spencer and Mextly Couzin) suggest a mind fracturing under trauma? The second big mystery: does Loyd lead a horrific double life? Neither scenario is adequately deepened or resolved. She might be nuts; he might be a criminal. Unlike superior two-handers—like Oleanna or Blackbird—in which men and women square off over meaty dramatic issues, Friedlich coasts on withholding information and padding out back story (Jane’s sad childhood, sadder romantic life). As with many writers who grew up in the golden age of TV, his dialogue is slick, the humor glibly dark. Still, a content moderator deranged by work has been explored more deftly elsewhere, such as Anna Moench’s 2021 Sin Eaters, livestreamed by Theatre Exile during the pandemic.",
+  "bwwScore": 6
 }
