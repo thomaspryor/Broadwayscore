@@ -18,7 +18,8 @@
   "showScoreExcerpt": "\"The action unfolds in Shakespeare’s era, but its heart and head are all about today...As in any jukebox musical, some tunes are wedged in, but others fit surprisingly well...Theatregoers out for a silly good time likely won’t care as they hum along with '& Juliet'.\"\n\nRead more",
   "needsScoring": true,
   "sources": [
-    "show-score-playwright"
+    "show-score-playwright",
+    "playbill-verdict"
   ],
   "llmScore": {
     "score": 75,
@@ -100,5 +101,6 @@
   "sourceMethod": "playwright",
   "rescoreCompletedAt": "2026-02-02T14:21:50.950Z",
   "wordCount": 1039,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/and-juliet-broadway-review"
 }
