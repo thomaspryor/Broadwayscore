@@ -63,6 +63,31 @@ const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 
+// Global URL index for cross-production duplicate prevention
+// Maps URL → { showId, file } for all existing review files
+let _globalUrlIndex = null;
+function getGlobalUrlIndex() {
+  if (_globalUrlIndex) return _globalUrlIndex;
+  _globalUrlIndex = new Map();
+  try {
+    const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
+    });
+    for (const d of dirs) {
+      const showDir = path.join(REVIEW_TEXTS_DIR, d);
+      const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      for (const f of files) {
+        try {
+          const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+          if (r.url) _globalUrlIndex.set(r.url, { showId: d, file: f });
+        } catch {}
+      }
+    }
+    console.log(`  Built global URL index: ${_globalUrlIndex.size} URLs across ${dirs.length} shows`);
+  } catch {}
+  return _globalUrlIndex;
+}
+
 // Rate limiting
 const DELAY_MS = 2000;
 
@@ -1409,6 +1434,16 @@ function createReviewFile(showId, reviewData) {
     }
   }
 
+  // CROSS-PRODUCTION URL CHECK: prevent same URL in sibling production directories
+  if (reviewData.url) {
+    const urlIndex = getGlobalUrlIndex();
+    const existing = urlIndex.get(reviewData.url);
+    if (existing && existing.showId !== showId) {
+      console.log(`    ✗ Skipping ${filename}: URL already exists in ${existing.showId}/${existing.file}`);
+      return false;
+    }
+  }
+
   // Check for existing review with same normalized key
   if (fs.existsSync(showDir)) {
     const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -1532,6 +1567,12 @@ function createReviewFile(showId, reviewData) {
   }
 
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
+
+  // Register in global URL index so subsequent calls see it
+  if (review.url && _globalUrlIndex) {
+    _globalUrlIndex.set(review.url, { showId, file: path.basename(filepath) });
+  }
+
   console.log(`    ✓ Created ${filename}`);
   return true;
 }
