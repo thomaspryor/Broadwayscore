@@ -8176,30 +8176,6 @@
     "timestamp": "2026-02-03T12:15:35.017Z"
   },
   {
-    "reviewId": "beetlejuice-2019/hollywood-reporter--david-rooney.json",
-    "showId": "beetlejuice-2019",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/reviews/beetlejuice-theater-review-1203016/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (13): hamilton, giant, gutenberg! the musical!, home, company...",
-    "textLength": 12286,
-    "timestamp": "2026-02-03T12:27:06.665Z"
-  },
-  {
-    "reviewId": "beetlejuice-2019/variety--marilyn-stasio.json",
-    "showId": "beetlejuice-2019",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-1203186192/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): wicked, hadestown, home, parade, tina...",
-    "textLength": 5024,
-    "timestamp": "2026-02-03T12:28:54.717Z"
-  },
-  {
     "reviewId": "big-fish-2013/hollywood-reporter--david-rooney.json",
     "showId": "big-fish-2013",
     "outlet": "The Hollywood Reporter",
@@ -8690,18 +8666,6 @@
     "garbageReason": "Multiple shows mentioned (9): home, company, fun home, once, evita...",
     "textLength": 10181,
     "timestamp": "2026-02-03T22:51:12.956Z"
-  },
-  {
-    "reviewId": "beautiful-the-carole-king-musical-2014/vulture--unknown.json",
-    "showId": "beautiful-the-carole-king-musical-2014",
-    "outlet": "Vulture",
-    "critic": "Unknown",
-    "url": "http://www.vulture.com/2014/01/theater-review-beautiful-carole-king.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, funny girl, bandstand, once, evita...",
-    "textLength": 8856,
-    "timestamp": "2026-02-03T23:06:08.942Z"
   },
   {
     "reviewId": "between-riverside-and-crazy-2022/nytimes--jesse-green.json",
@@ -11320,18 +11284,6 @@
     "timestamp": "2026-02-04T14:20:22.239Z"
   },
   {
-    "reviewId": "bernhardthamlet-2018/nytimes--jesse-green.json",
-    "showId": "bernhardthamlet-2018",
-    "outlet": "New York Times",
-    "critic": "Jesse Green",
-    "url": "https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): wicked, company, bernhardt/hamlet, cyrano de bergerac, once...",
-    "textLength": 6007,
-    "timestamp": "2026-02-04T14:33:22.892Z"
-  },
-  {
     "reviewId": "bernhardthamlet-2018/variety--marilyn-stasio.json",
     "showId": "bernhardthamlet-2018",
     "outlet": "Variety",
@@ -13226,5 +13178,101 @@
     "garbageReason": "Multiple shows mentioned (8): mamma mia!, rocky, bullets over broadway, once, rain...",
     "textLength": 7739,
     "timestamp": "2026-02-04T19:38:48.378Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/vulture--unknown.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2014/01/theater-review-beautiful-carole-king.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, funny girl, bandstand, once, evita...",
+    "textLength": 8856,
+    "timestamp": "2026-02-04T19:40:12.409Z"
+  },
+  {
+    "reviewId": "beetlejuice-2019/hollywood-reporter--david-rooney.json",
+    "showId": "beetlejuice-2019",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/reviews/beetlejuice-theater-review-1203016/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): hamilton, giant, gutenberg! the musical!, home, company...",
+    "textLength": 12286,
+    "timestamp": "2026-02-04T19:40:43.799Z"
+  },
+  {
+    "reviewId": "beetlejuice-2019/variety--frank-rizzo.json",
+    "showId": "beetlejuice-2019",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, hadestown, home, parade, tina...",
+    "textLength": 5291,
+    "timestamp": "2026-02-04T19:44:11.541Z"
+  },
+  {
+    "reviewId": "beetlejuice-2019/variety--marilyn-stasio.json",
+    "showId": "beetlejuice-2019",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-1203186192/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, hadestown, home, parade, tina...",
+    "textLength": 5025,
+    "timestamp": "2026-02-04T19:44:55.991Z"
+  },
+  {
+    "reviewId": "beetlejuice-2022/hollywood-reporter--david-rooney.json",
+    "showId": "beetlejuice-2022",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): hamilton, giant, gutenberg! the musical!, home, company...",
+    "textLength": 12081,
+    "timestamp": "2026-02-04T19:48:13.201Z"
+  },
+  {
+    "reviewId": "beetlejuice-2022/nytg--mark-shenton.json",
+    "showId": "beetlejuice-2022",
+    "outlet": "New York Theatre Guide",
+    "critic": "Mark Shenton",
+    "url": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): wicked, the book of mormon, giant, home, parade...",
+    "textLength": 6933,
+    "timestamp": "2026-02-04T19:48:20.805Z"
+  },
+  {
+    "reviewId": "beetlejuice-2019/vulture--jesse-green.json",
+    "showId": "beetlejuice-2019",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, home, tina, king kong, once...",
+    "textLength": 7883,
+    "timestamp": "2026-02-04T19:48:30.587Z"
+  },
+  {
+    "reviewId": "bernhardthamlet-2018/nytimes--jesse-green.json",
+    "showId": "bernhardthamlet-2018",
+    "outlet": "New York Times",
+    "critic": "Jesse Green",
+    "url": "https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): wicked, company, bernhardt/hamlet, cyrano de bergerac, once...",
+    "textLength": 6159,
+    "timestamp": "2026-02-04T19:52:02.694Z"
   }
 ]
