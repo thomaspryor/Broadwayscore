@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly. Akhtar has crafted a drama that forces us to confront our own prejudices and assumptions.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (36 words)",
   "llmScore": {
-    "score": 79,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "in that it succeeds brilliantly",
+        "quote": "Disgraced is a play that seems to have been written specifically to make audiences uncomfortable, and in that it succeeds brilliantly.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for the play's success at its intended effect with 'succeeds brilliantly', but limited content makes assessment challenging. | GPT-4o: The review praises the play for its success in making audiences uncomfortable and confronting prejudices, indicating a strong recommendation. | Gemini: The review states the play \"succeeds brilliantly\" in making audiences uncomfortable and confronting prejudices, indicating a positive recommendation despite the potentially challenging subject matter. | Kimi: The critic uses the word 'brilliantly' to praise the play's effectiveness in achieving its artistic goals, indicating a strong appreciation for the writing, though the brief excerpt prevents a full assessment of whether this constitutes an unqualified rave.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the play's success at its intended provocative purpose, using 'brilliantly' and acknowledging Akhtar's craft. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed overall review. | GPT-4o: The excerpt praises the play's ability to provoke thought and discomfort, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the word \"brilliantly\" and indicates the play is successful in its goal, which suggests a positive recommendation. Given that this is a single excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers high praise for the playwright's craft and the play's effectiveness ('succeeds brilliantly'), indicating a clear recommendation to see the show, though the limited context of a single curated quote necessitates caution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:02:18.549Z",
+    "scoredAt": "2026-02-04T20:25:51.912Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "kimiScore": 83,
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2014/oct/24/disgraced-review-ayad-akhtar-broadway",
   "urlDiscoveredAt": "2026-02-04T02:33:16.267Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 619,
@@ -115,5 +115,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 619,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:25:51.912Z"
 }

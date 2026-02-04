@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,11 +23,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -39,12 +39,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "'A Wonderful World' is an absolute frenzy of dazzling musical numbers",
+        "quote": "A Wonderful World: The Louis Armstrong Musical is a majestic spectacle, paying homage to a towering figure and his distinctive legacy.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt uses strong positive language ('absolute frenzy of dazzling'), but limited text and potential for cherry-picking requires caution. Upper end of Positive bucket due to enthusiastic tone. | GPT-4o: The excerpt describes the show as an 'absolute frenzy of dazzling musical numbers,' indicating strong praise. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt is highly positive, using the words \"absolute frenzy\" and \"dazzling\". Given the limited text, I am scoring it as a strong positive with low confidence. | Kimi: The excerpt uses superlative praise ('absolute frenzy', 'dazzling') for the musical numbers, indicating strong enthusiasm for the production, though the single curated excerpt format necessitates low confidence in the overall verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review is consistently positive about the production values, performances, and musical numbers, calling it a 'majestic spectacle' with 'dazzling musical numbers' and praising the cast extensively. However, the critic notes that important thematic elements 'could have been more centralized,' creating a qualified recommendation rather than unrestrained praise. | GPT-4o: The review praises the production as a 'majestic spectacle' with 'dazzling musical numbers' and highlights the strong performances and production quality. While it notes some areas that could have been more centralized, the overall tone is highly positive. | Gemini: The review is overwhelmingly positive, using terms like \"majestic spectacle\" and praising the performances, music, and overall experience. While it notes some areas for potential improvement, the overall recommendation is strong. | Kimi: The review delivers consistent praise for Iglehart's mesmerizing performance, the dazzling musical numbers, and the rich production values, calling the show an 'extravaganza' with only a minor reservation about the handling of racial themes.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,22 +54,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T07:17:38.551Z",
+    "scoredAt": "2026-02-04T19:09:25.784Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 79,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
   "textWordCount": 749,
@@ -99,5 +99,6 @@
   "archiveOrgTimestamp": "20250711023106",
   "archiveOrgUrl": "http://web.archive.org/web/20250711023106/https://variety.com/2024/legit/reviews/a-wonderful-world-the-louis-armstrong-musical-review-broadway-1236206674/",
   "wordCount": 749,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:09:25.784Z"
 }

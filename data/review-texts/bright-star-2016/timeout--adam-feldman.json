@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This new musical by Steve Martin and Edie Brickell has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
+        "quote": "This new musical has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges positive elements (warm heart, fine score) but the 'but' signals disappointment with core storytelling. The 60 rating confirms mixed reception. | GPT-4o: The critic acknowledges positive elements like the warm heart and fine score but criticizes the conventional storytelling. The original rating of 60 aligns with a mixed review. | Gemini: The review acknowledges positive aspects (warm heart, fine score) but also points out a significant flaw (conventional storytelling), resulting in a mixed assessment. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The review praises the bluegrass score and warm tone but explicitly criticizes the storytelling as 'disappointingly conventional', resulting in an evenly mixed assessment that aligns with the 60/100 rating provided.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. While praising the music and lead performance, the critic finds the storytelling 'disappointingly conventional' and notes quality inconsistencies. | GPT-4o: The critic's original rating of 60 aligns with a mixed review. While there is praise for the music and performances, the storytelling is described as conventional, indicating a balance of positive and negative elements. | Gemini: The review is mixed, praising the music and Cusack's performance but noting the conventional storytelling and potential dislike for bluegrass music. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own rating of 60/100 places this firmly in the Mixed range, acknowledging the 'fine bluegrass score' and 'warm heart' while criticizing the 'disappointingly conventional' storytelling.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:54:59.190Z",
+    "scoredAt": "2026-02-04T19:55:03.211Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 60,
     "openaiScore": 60,
-    "geminiScore": 62,
+    "geminiScore": 65,
     "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +75,6 @@
     "modelAgreement": "All 4 models agree: Mixed"
   },
   "textQuality": "partial",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 208,
@@ -108,5 +108,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:55:03.211Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
   "originalScore": 80,
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 81,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Fun Home is a musical that manages to be both deeply personal and universally resonant, transforming Alison Bechdel's graphic memoir into something theatrically vital and emotionally devastating.",
+        "quote": "The Broadway Fun Home still leaves a lot of those interrogatives unanswered, yet it's remarkably gratifying, often heartrending, and fiercely humane.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling the show 'theatrically vital and emotionally devastating' with positive descriptors throughout. The 80 rating from the critic confirms positive recommendation territory. | GPT-4o: The review praises the show as 'theatrically vital and emotionally devastating,' aligning with the critic's original rating of 80, indicating a strong recommendation. | Gemini: The review uses positive language such as \"theatrically vital and emotionally devastating\" and the critic gave it an 80, indicating a positive recommendation. | Kimi: The critic's own 80/100 rating places this in the Positive range, and the review text offers strong praise calling the production 'theatrically vital' and 'emotionally devastating' without visible reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives consistent praise for performances, score, and overall impact while noting some structural issues. The final verdict is clearly positive despite reservations, matching the original 80 rating. | GPT-4o: The review praises the performances, music, and emotional impact of the show while noting some remaining issues with the narrative's clarity and purpose. The original rating of 80 aligns with a positive recommendation, albeit with some reservations. | Gemini: The critic's rating is 80. The review is mostly positive, praising the performances, music, and direction, while noting some lingering issues from the off-Broadway production. The overall tone is favorable, indicating a recommendation. | Kimi: The critic awards strong praise to the performances (particularly Sydney Lucas), score, and emotional impact while noting reservations about directorial distance and unresolved narrative questions, consistent with their 80/100 rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:13:40.272Z",
+    "scoredAt": "2026-02-04T20:47:57.027Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 79,
     "openaiScore": 80,
     "geminiScore": 80,
     "kimiScore": 80,
@@ -65,7 +66,7 @@
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2015/apr/20/fun-home-review-broadway-alison-bechdel",
   "urlDiscoveredAt": "2026-02-04T03:04:54.297Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 681,
@@ -114,5 +114,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 681,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:47:57.027Z"
 }

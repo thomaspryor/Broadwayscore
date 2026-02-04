@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "nyc-theatre"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 79,
     "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,12 +40,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "A Wonderful World refuses to look away from the racism that latched its claws into Armstrong's career... keeping A Wonderful World lively and interesting.",
+        "quote": "A Wonderful World exceeds expectations and, even within the confines of its genre, has enough pizzazz to be an exception to the rule.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt suggests the show is engaging and lively, indicating a positive reception. However, due to the limited text, the confidence is low. | Gemini: The quote indicates that the show is \"lively and interesting\" and that it confronts difficult topics. However, due to the limited text, confidence is low. | Kimi: The excerpt praises the production for engaging seriously with difficult subject matter while remaining dramatically lively, indicating a recommendation, though the mild descriptors ('interesting') and limited text suggest qualified enthusiasm rather than unreserved praise.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review clearly praises the show as exceeding expectations for bio-musicals, highlights strong performances and choreography, and appreciates its nuanced handling of difficult subject matter. While noting genre conventions, the overall assessment is positive recommendation. | GPT-4o: The review describes the show as having 'gleeful tap numbers' and 'superb musical sequences,' while also engaging with complex themes. The positive tone and the mention of a high audience approval rating suggest a positive verdict, but the text is truncated, so the final verdict may be missing. | Gemini: The review highlights both the positive aspects of the show, such as the music, dance numbers, and performances, and the more challenging aspects of Armstrong's life. The truncated text and reliance on aggregator excerpts lower the confidence. | Kimi: The reviewer praises the performances, choreography, and nuanced engagement with racial themes, calling the production an exception that exceeds genre expectations, though the truncated ending necessitates caution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,29 +55,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T06:50:22.230Z",
+    "scoredAt": "2026-02-04T19:08:34.470Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 75,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 76,
-    "geminiScore": 75,
-    "kimiScore": 75,
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 75,
   "textWordCount": 1030,
@@ -99,5 +100,6 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 1030,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:08:34.470Z"
 }

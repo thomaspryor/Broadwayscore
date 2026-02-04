@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The 90-minute drama, starring Kerry Washington and Steven Pasquale as estranged spouses meeting in a police station, is more like a very long short story than a play.",
   "originalScore": null,
-  "assignedScore": 59,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 59,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 54,
-      "high": 64
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "more like a very long short story than a play",
+        "quote": "This is the director Kenny Leon's best work to date: incisive and breakneck.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This appears to be a truncated excerpt that describes the show's structural weakness without a clear recommendation. The comparison to 'a very long short story' suggests the critic found it lacking as theatrical drama. | Gemini: The review offers a descriptive assessment without a clear recommendation, suggesting it's neither strongly positive nor negative. | Kimi: The excerpt offers a formal critique suggesting the work lacks theatricality, but appears truncated without a clear recommendation verdict.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Green praises Washington's 'great performance,' calls Leon's direction 'incisive and breakneck,' and describes the play as 'harrowing' in an impactful way. Despite minor staging quibbles, the overall assessment is positive with strong praise for performances and direction. | Gemini: The review highlights Kerry Washington's great performance and the play's harrowing exploration of parental terror. While noting some manipulative aspects and staging issues, the overall assessment is positive, recommending it for its emotional impact. | Kimi: While the critic finds the play's structure somewhat manipulative and the staging occasionally problematic, he offers strong praise for Kerry Washington's 'great performance' and declares this director Kenny Leon's best work to date, recommending the production on the strength of its acting and direction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T13:31:43.002Z",
+    "scoredAt": "2026-02-04T19:19:57.317Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 59,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 76,
     "openaiScore": null,
-    "geminiScore": 60,
-    "kimiScore": 60,
-    "claudeBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
     "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "textQuality": "full",
   "previousUrl": "https://www.nytimes.com/2018/11/05/theater/american-son-review.html",
   "urlDiscoveredAt": "2026-02-03T22:39:34.878Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 59,
   "textWordCount": 980,
@@ -102,5 +102,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:19:57.317Z"
 }

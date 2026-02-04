@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Pacino gives a performance of such intensity that it seems to scorch the air around him, turning Shelly Levene into a desperate man whose very desperation becomes a kind of poetry.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
     "score": 82,
@@ -122,5 +122,10 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T20:48:46.980Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: The text is truncated with a technical error message at the end ('We are having trouble retrieving the article content') and appears to cut off mid-review without providing the critic's final verdict or recommendation.; openai: The review is about a 2012 production of 'Glengarry Glen Ross', not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

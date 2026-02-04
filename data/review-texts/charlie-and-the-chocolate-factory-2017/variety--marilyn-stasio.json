@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This big, splashy musical has all the elements for a crowd-pleasing hit, but it never quite gels into the magical experience it should be.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This big, splashy musical has all the elements for a crowd-pleasing hit, but it never quite gels into the magical experience it should be.",
+        "quote": "That could explain (but won't forgive) the overwhelming emphasis on visual effects, which look like the refined-sugar nightmares of naughty children.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges positive elements ('crowd-pleasing hit' potential) but states it fails to achieve what it should be. Classic mixed review language. | GPT-4o: The review acknowledges potential and crowd-pleasing elements but ultimately expresses disappointment that it doesn't achieve its full potential, indicating a mixed verdict. | Gemini: The review acknowledges the potential for a hit but ultimately finds the show lacking, indicating a mixed assessment. | Kimi: The critic acknowledges the show's commercial spectacle and potential but emphasizes its failure to cohere into the satisfying, magical experience promised.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review is consistently critical of the production's approach, calling it 'mechanized,' criticizing the treatment of characters as caricatures, and condemning the overwhelming visual effects. While praising individual performances (Ryan Foust, acknowledging Christian Borle's talent), the overall verdict is negative about the show's execution and creative choices. | GPT-4o: The review criticizes the production for its emphasis on spectacle over substance, describing it as inflated and mechanized. While there is some praise for individual performances, the overall tone is negative, focusing on the mishandling of the source material and the distracting visual gimmicks. | Gemini: The review praises the actor playing Charlie and some aspects of the music, but criticizes the over-the-top spectacle, cartoonish characters, and lack of darkness from the original story. It's a mixed bag overall. | Kimi: The critic finds the production 'inflated' and 'mechanized,' criticizing the visual excess and 'repulsive' character treatments. Despite praising individual performances, the overall verdict discourages seeing this adaptation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:10:38.407Z",
+    "scoredAt": "2026-02-04T20:07:19.007Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 45,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/legit-review-charlie-and-the-chocolate-factory-1200501783/",
@@ -82,7 +83,6 @@
   "previousUrl": "https://variety.com/2017/legit/reviews/charlie-and-the-chocolate-factory-review-broadway-1202020397/",
   "urlDiscoveredAt": "2026-02-03T23:39:32.544Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 451,
@@ -103,5 +103,6 @@
   "archiveOrgTimestamp": "20240629023009",
   "archiveOrgUrl": "http://web.archive.org/web/20240629023009/https://variety.com/2017/legit/reviews/charlie-and-the-chocolate-factory-review-musical-broadway-1202392554/",
   "wordCount": 451,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:07:19.007Z"
 }

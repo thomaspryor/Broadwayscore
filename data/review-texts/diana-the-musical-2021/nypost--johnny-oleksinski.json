@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 63,
-    "confidence": "low",
+    "score": 61,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 56,
+      "high": 66
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,45 +35,43 @@
     },
     "keyPhrases": [
       {
-        "quote": "Diana, The Musical is saved by its leading lady Jeanna de Waal, who brings genuine emotion and regal bearing to the role of the People's Princess.",
+        "quote": "In order to be taken seriously, it could've used a few more tweaks and trims and, well, a whole new score and book.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The word 'saved' implies the show needed saving, suggesting problems with the overall production, but the lead performance is praised as redeeming. This indicates a mixed verdict leaning slightly positive due to one strong element. | GPT-4o: The review suggests the show is largely lacking, with only the lead performance being praised. This implies a negative overall impression, with the show needing 'saving'. | Gemini: The review states that the musical is \"saved\" by the leading lady, implying that without her, the show would not be good. This indicates a positive but qualified recommendation. | Kimi: The excerpt indicates the production is redeemed solely by its lead actress's performance, suggesting a qualified recommendation without broader enthusiasm for the show itself. | Buckets: claude=Mixed, openai=Negative, gemini=Positive, kimi=Mixed",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic acknowledges audience enthusiasm and the show's compulsive watchability while maintaining it needs fundamental improvements. The tone suggests neither strong recommendation nor discouragement, focusing on audience reception despite critical flaws. | Gemini: The review highlights the audience's enthusiastic reaction but also acknowledges the show's flaws and the negative reviews it received. It suggests the show might have some appeal despite its shortcomings, leading to a mixed classification. | Kimi: While acknowledging the show's 'compulsively watchable' camp appeal and enthusiastic audience reactions, the critic fundamentally pans the artistic quality, calling for a complete rewrite of the score and book and referencing his own previous savage review. The mocking tone and dismissal of the writing quality indicate a clear recommendation against seeing the show for its artistic merit.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": true
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:34:44.285Z",
+    "scoredAt": "2026-02-04T20:22:59.617Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 40,
-    "geminiScore": 72,
-    "kimiScore": 64,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 32,
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": true,
-    "needsReviewReasons": [
-      "4-way bucket disagreement (2 bucket gap)"
-    ],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "No bucket consensus - using median score"
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "https://nypost.com/2021/11/17/diana-review-a-lifetime-original-broadway-show/",
@@ -84,7 +82,6 @@
   "previousUrl": "https://nypost.com/2021/11/18/diana-the-musical-on-broadway-is-saved-by-its-leading-lady/",
   "urlDiscoveredAt": "2026-02-04T03:27:07.525Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 672,
@@ -107,5 +104,6 @@
   "archiveOrgTimestamp": "20230203105154",
   "archiveOrgUrl": "http://web.archive.org/web/20230203105154/https://nypost.com/2021/11/03/inside-the-wild-first-preview-of-diana-the-musical-on-broadway/",
   "wordCount": 672,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:22:59.617Z"
 }

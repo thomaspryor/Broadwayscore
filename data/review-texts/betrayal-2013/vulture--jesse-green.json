@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Mike Nichols, is almost perfectly cast and beautifully designed, but it feels oddly muffled, as if the emotional temperature had been turned down a few degrees.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 64,
@@ -119,5 +119,10 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T19:42:02.098Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated or corrupted text with mixed content including website navigation elements, product save notifications, and incomplete review fragments that don't provide a coherent critical assessment; openai: The text contains navigation menus, promotional content, and lacks evaluative content about the show.; gemini: This review is for the 2013 production of Betrayal, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

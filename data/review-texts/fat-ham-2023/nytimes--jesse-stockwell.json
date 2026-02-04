@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "James Ijames's Pulitzer Prize-winning play, a riff on 'Hamlet' set at a backyard barbecue, is funny and moving but feels undercooked in its Broadway debut.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 93,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Rave",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "funny and moving but feels undercooked in its Broadway debut",
+        "quote": "For me, seeing 'Fat Ham,' even multiple times, thus remains a revelation and a balm.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive qualities (funny and moving) but the verdict is that it 'feels undercooked' - a clear criticism of the Broadway production that prevents a positive recommendation. | GPT-4o: The review acknowledges positive aspects ('funny and moving') but ultimately suggests the production is lacking ('feels undercooked'), leading to a mixed verdict. | Gemini: The review acknowledges positive aspects (funny and moving) but ultimately finds the Broadway production lacking (undercooked), resulting in a mixed assessment. | Kimi: The review acknowledges positive qualities ('funny and moving') but the 'undercooked' verdict for a Broadway debut suggests significant reservations without a clear recommendation to see or skip it.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'revelation and a balm,' 'nonstop pleasure,' and 'beautifully.' The critic calls it one of theater's most important functions and recommends multiple viewings. | Gemini: The review is overwhelmingly positive, calling the play a \"revelation and a balm\" and praising the writing, cast, and staging. It clearly recommends seeing the show. | Kimi: The review offers unqualified praise for the Pulitzer-winning play's writing, direction, and performances, calling it a 'nonstop pleasure' and 'capacious and original' while emphasizing its emotional power and importance as theater that 'rehearses better ways to be.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:56:54.661Z",
+    "scoredAt": "2026-02-04T20:36:57.638Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "previousUrl": "https://www.nytimes.com/2023/04/13/theater/fat-ham-review.html",
   "urlDiscoveredAt": "2026-02-03T23:40:09.569Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 1089,
@@ -107,5 +106,6 @@
     "Show title not found in text"
   ],
   "wordCount": 1089,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:36:57.638Z"
 }

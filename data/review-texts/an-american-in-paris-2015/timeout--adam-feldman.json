@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "An American in Paris is a show that dances its way into your heart with gorgeous choreography and sumptuous design. Christopher Wheeldon's ballet-influenced staging transforms the Palace Theatre into a dreamscape of postwar Paris.",
   "originalScore": 80,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
   "llmScore": {
-    "score": 80,
-    "confidence": "high",
+    "score": 79,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "An American in Paris is a show that dances its way into your heart with gorgeous choreography and sumptuous design.",
+        "quote": "There's much gorgeous ballet to admire in choreographer Christopher Wheeldon's Broadway directorial debut, set against attractive, painterly backdrops by Bob Crowley, but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating places this in the Positive bucket (70-84). Warm praise for choreography and design with emotional impact ('dances its way into your heart'), though the excerpt is brief and may not capture the full review verdict. | GPT-4o: The review praises the choreography and design, indicating a strong positive recommendation. The original rating of 80 aligns with a solid recommendation within the Positive bucket. | Gemini: The review uses positive language such as \"dances its way into your heart\" and \"gorgeous choreography\", indicating a positive recommendation. The critic's rating of 80 also supports this classification. | Kimi: The critic offers unqualified praise for the choreography, design, and staging, describing the production as a 'dreamscape' that transforms the theatre. The enthusiastic tone and provided 80/100 rating indicate a strong recommendation without reservations.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The review praises individual elements (gorgeous ballet, attractive design, charming leads, divine score) but finds the overall production uneven and problematic in structure. The critic describes it as 'patchwork' with 'middling singing' and notes difficulty in translation from film, indicating mixed feelings without a clear recommendation either way. | Gemini: The review acknowledges flaws but ultimately leans positive, highlighting the choreography and backdrops. The critic's rating of 80 supports a positive classification. | Kimi: The critic's explicit 80/100 rating places this solidly in the Positive range, reflecting appreciation for the gorgeous ballet, lavish design, and divine Gershwin score despite reservations about the patchwork book and middling singing.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T13:44:25.979Z",
+    "scoredAt": "2026-02-04T19:20:38.435Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 80,
-    "geminiScore": 80,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 77,
     "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "claudeBucket": "Mixed",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/an-american-in-paris",
@@ -79,7 +79,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 237,
@@ -109,5 +108,6 @@
     "Word count too low: 243 (min: 300)"
   ],
   "wordCount": 237,
-  "tierReason": "Short text (237 words)"
+  "tierReason": "Short text (237 words)",
+  "rescoreCompletedAt": "2026-02-04T19:20:38.435Z"
 }

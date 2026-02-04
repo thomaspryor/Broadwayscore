@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Eclipsed is a powerful drama that gives voice to women whose stories are rarely told, anchored by Lupita Nyong'o's compelling performance as a Liberian war captive.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Eclipsed is a powerful drama that gives voice to women whose stories are rarely told, anchored by Lupita Nyong'o's compelling performance.",
+        "quote": "Eclipsed is a powerful drama that gives voice to women whose stories are rarely told, anchored by Lupita Nyong'o's compelling performance as a Liberian war captive.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('powerful drama', 'compelling performance') but brief excerpt lacks explicit recommendation language or depth of evaluation for higher confidence. | GPT-4o: The review uses strong positive language ('powerful', 'compelling') and highlights the significance of the drama and performance, indicating a strong recommendation. | Gemini: The review uses positive language such as \"powerful drama\" and \"compelling performance,\" indicating a recommendation, although brief. | Kimi: The critic employs strong positive descriptors ('powerful drama', 'compelling performance') indicating clear enthusiasm for the production, though the brevity of this excerpt limits certainty about the full scope of the recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('powerful drama', 'compelling performance') with meaningful thematic praise, but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt praises the drama as 'powerful' and highlights a 'compelling performance' by Lupita Nyong'o, indicating a strong recommendation. However, the single excerpt and lack of full context reduce confidence. | Gemini: The excerpt praises the drama as powerful and highlights Lupita Nyong'o's compelling performance, indicating a positive recommendation. Due to the limited text, confidence is low, but the positive language suggests a score on the higher end of the positive range. | Kimi: The excerpt uses strong positive language ('powerful drama,' 'compelling performance') indicating a clear recommendation, though the single curated quote format necessitates low confidence in the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,34 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:04:33.075Z",
+    "scoredAt": "2026-02-04T20:29:44.489Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
     "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textQuality": "truncated",
   "previousUrl": "https://www.theguardian.com/stage/2016/mar/07/eclipsed-review-lupita-nyongo-broadway",
   "urlDiscoveredAt": "2026-02-04T02:39:03.304Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 434,
@@ -115,5 +115,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 434,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "rescoreCompletedAt": "2026-02-04T20:29:44.489Z"
 }

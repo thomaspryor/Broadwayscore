@@ -87,7 +87,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it Sondheim's 'masterpiece' and a 'handsome revival' with Zeta-Jones making a 'commanding' debut, but qualifies her vocals as 'more stylish than stirring.' Single excerpt warning applies - this sounds mildly positive with reservations, so scored at lower end of Positive range. | GPT-4o: The excerpt praises Zeta-Jones' performance and describes the revival as 'handsome,' indicating a positive view. However, the mention of her vocals being 'more stylish than stirring' suggests some reservations. Given the single excerpt warning, a score at the lower end of the Positive range is appropriate. | Gemini: The review praises Zeta-Jones' performance and calls the revival 'handsome,' but notes her vocals are 'more stylish than stirring,' indicating a reservation. Given the limited excerpt, confidence is low. | Kimi: The excerpt offers strong praise for Zeta-Jones's commanding stage presence and the handsome production values, but includes a specific reservation about her vocal performance being more stylish than emotionally stirring, suggesting a qualified recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls it a 'handsome revival' of a 'masterpiece' with a 'commanding' lead performance, but qualifies praise with vocal concerns. Single excerpt limits confidence in full verdict. | GPT-4o: The excerpt praises Zeta-Jones' performance and the production's visual appeal, though it notes a reservation about her vocals. The single excerpt limits confidence in the overall sentiment. | Gemini: The review excerpt praises Zeta-Jones and calls the revival 'handsome' and the show a 'masterpiece,' but notes her vocals are 'more stylish than stirring,' suggesting a qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the lead performance ('commanding') and production values ('handsome revival'), indicating a solid recommendation despite the specific caveat about vocals being 'more stylish than stirring.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -97,22 +97,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:17:07.306Z",
+    "scoredAt": "2026-02-04T19:06:00.471Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 80,
+    "claudeScore": 72,
+    "openaiScore": 74,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -120,7 +121,7 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 76
+  "previousLlmScore": 76,
+  "rescoreCompletedAt": "2026-02-04T19:06:00.471Z"
 }

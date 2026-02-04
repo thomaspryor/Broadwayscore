@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 77,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performances as 'superb' and calls the theater 'compelling,' but confidence is low due to extremely brief excerpt that may not represent the full review's verdict. | GPT-4o: The review praises the performances as 'superb' and the theater as 'compelling,' indicating a positive recommendation despite the material being 'deeply uncomfortable.' | Gemini: The review praises the performances as \"superb\" and \"compelling\", but acknowledges the material is \"deeply uncomfortable\", indicating a recommendation with reservations. | Kimi: The critic praises the lead performances as 'superb' with 'raw intensity' and calls the result 'compelling,' though notes the material is 'deeply uncomfortable.' This is a clear recommendation based on performance quality, with the 'if' qualifying clause slightly tempering the enthusiasm. Limited confidence due to brevity and lack of broader production assessment.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong performer praise ('superb', 'compelling') but qualified by 'difficult' and 'deeply uncomfortable'. Limited text requires cautious scoring. | GPT-4o: The excerpt praises the performances as 'superb' and describes the theater as 'compelling,' suggesting a strong positive impression. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The excerpt praises the performances as \"superb\" and \"compelling\", but also notes that the material is \"deeply uncomfortable.\" Given the single excerpt, I'm placing it in the positive bucket with a slightly higher score due to the strong praise, but with low confidence due to the limited text. | Kimi: The excerpt provides strong praise for the performances ('superb', 'compelling'), clearly endorsing the production despite its challenging content. Score reflects the upper range of Positive per instructions for clearly positive single excerpts, though confidence is low due to limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:47:52.142Z",
+    "scoredAt": "2026-02-04T19:51:20.047Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 78,
-    "geminiScore": 75,
-    "kimiScore": 78,
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2016/mar/11/blackbird-review-jeff-daniels-michelle-williams-broadway",
   "urlDiscoveredAt": "2026-02-04T02:48:15.958Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 600,
@@ -121,5 +121,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 600,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:51:20.047Z"
 }

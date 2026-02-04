@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Big Fish succeeds as a heartfelt meditation on fathers, sons and the stories we tell to make sense of our lives.",
+        "quote": "Despite some clunky book scenes and overly busy staging, Big Fish succeeds as a heartfelt meditation on fathers, sons and the stories we tell to make sense of our lives.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. While acknowledging significant flaws ('clunky book scenes and overly busy staging'), the review concludes the show 'succeeds' in its core mission, indicating qualified approval rather than a clear recommendation. | GPT-4o: The review acknowledges flaws in the book and staging but ultimately finds the show successful in its emotional themes, aligning with the critic's original rating of 60. | Gemini: The review acknowledges both positive and negative aspects, with the critic finding it a 'heartfelt meditation' but also noting 'clunky book scenes and overly busy staging.' This indicates a mixed reaction. | Kimi: The critic's provided rating of 60/100 places this firmly in the Mixed range. While the review concludes the show ultimately 'succeeds' as an emotional meditation, substantive criticisms of 'clunky book scenes' and 'overly busy staging' prevent a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's 60/100 rating aligns with Mixed bucket. Review acknowledges significant flaws ('clunky book scenes', 'overly busy staging') but concludes the show 'succeeds' as meaningful theater, indicating qualified approval rather than disappointment. | GPT-4o: The review acknowledges both positive elements like the performances and production design, and negative aspects such as clunky book scenes and busy staging. The original rating of 60 aligns with a mixed review. | Gemini: The review acknowledges both positive and negative aspects, describing it as \"the show that got away\" but also as a \"heartfelt meditation.\" The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's explicit 60 rating places this firmly in the Mixed bucket, balancing praise for the performances and staging against criticism of clunky book scenes and overly busy direction, ultimately concluding the show succeeds on an emotional level.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:50:47.591Z",
+    "scoredAt": "2026-02-04T19:50:39.248Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
+    "claudeScore": 62,
     "openaiScore": 60,
     "geminiScore": 62,
     "kimiScore": 60,
@@ -79,7 +80,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 364,
@@ -105,5 +105,6 @@
   "archiveOrgTimestamp": "20140216122526",
   "archiveOrgUrl": "http://web.archive.org/web/20140216122526/http://www.timeout.com:80/newyork/theater/big-fish",
   "wordCount": 364,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:50:39.248Z"
 }

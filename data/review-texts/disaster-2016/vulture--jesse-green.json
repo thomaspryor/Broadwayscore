@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Disaster! is a jukebox musical that uses '70s hits to soundtrack a spoof of '70s disaster movies, and it's about as clever as that sounds.",
   "originalScore": null,
-  "assignedScore": 33,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
-    "score": 33,
-    "confidence": "low",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 28,
-      "high": 38
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "it's about as clever as that sounds",
+        "quote": "a tiny entertainment that should probably have been left in a basement rec room",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: openai=Pan, gemini=Negative | GPT-4o: The critic uses a dismissive tone, suggesting the show lacks cleverness and is not worth seeing. The brief review implies a negative assessment with no redeeming qualities mentioned. | Gemini: The critic uses a sarcastic tone to indicate the show is not clever, suggesting a negative review.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Green delivers a scathing pan of Disaster!, calling it 'foolhardy' with an 'ugly set' framing 'a tiny entertainment' that doesn't work in the Broadway space. While he acknowledges some performers' talents, the overall verdict is devastatingly negative. | Gemini: The review is largely negative, describing the show as a \"tiny entertainment that should probably have been left in a basement rec room\" and criticizing the humor and staging. | Kimi: The critic finds the production amateurishly staged and unsuited for Broadway's scale, dismissing the humor as outdated and the material as 'foolhardy,' despite acknowledging a few strong performances from the embarrassed cast.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:37:47.371Z",
+    "scoredAt": "2026-02-04T20:25:02.431Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 33,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 20,
+    "claudeScore": 25,
+    "openaiScore": null,
     "geminiScore": 45,
-    "kimiScore": null,
-    "openaiBucket": "Pan",
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
     "geminiBucket": "Negative",
-    "scoreDelta": 25,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: openai=Pan, gemini=Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "textQuality": "truncated",
   "previousUrl": "https://www.vulture.com/2016/02/theater-review-disaster.html",
   "urlDiscoveredAt": "2026-02-03T23:39:22.040Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 33,
   "textWordCount": 1391,
@@ -96,5 +97,6 @@
   "archiveOrgTimestamp": "20240824112952",
   "archiveOrgUrl": "http://web.archive.org/web/20240824112952/https://www.vulture.com/2016/03/theater-white-rabbit-red-rabbit.html",
   "wordCount": 1391,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:25:02.431Z"
 }

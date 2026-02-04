@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Cranston's LBJ is a marvel of physical and vocal transformation, capturing Johnson's legendary arm-twisting political style and crude charisma with astonishing authenticity.",
   "originalScore": 87,
-  "assignedScore": 87,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 87,
-    "confidence": "medium",
+    "score": 83,
+    "confidence": "high",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 78,
+      "high": 88
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic's own 87 rating places this firmly in Rave territory (85-100). Language like 'marvel' and 'astonishing authenticity' indicates strong enthusiasm for Cranston's performance. | GPT-4o: The review text praises Cranston's performance with superlatives like 'marvel' and 'astonishing authenticity', aligning with the original high rating of 87, indicating a strong recommendation. | Gemini: The review praises Cranston's performance as a 'marvel' and 'astonishing,' indicating a strong positive sentiment. Given the original rating of 87, a score in the high positive range is appropriate. | Kimi: The critic's original rating of 87 falls within the Rave range, supported by superlatives like 'marvel' and 'astonishing authenticity.' However, the provided text appears to be a brief excerpt, warranting low confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with highly enthusiastic praise for lead performance ('marvel', 'astonishing authenticity'). Given the 87 original rating and strongly positive language, this falls in upper Positive range, though confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt provides strong praise for Cranston's performance, describing it as a 'marvel' with 'astonishing authenticity.' Given the original rating of 87 and the positive tone of the excerpt, a score at the upper end of the Positive range is appropriate. However, the confidence is low due to the single excerpt limitation. | Gemini: The excerpt praises Cranston's performance as a \"marvel\" and \"astonishingly authentic.\" Given the single excerpt, I'm assuming a positive review and scoring it at the higher end of the positive range. | Kimi: The excerpt provides strong praise for the lead performance using superlatives like 'marvel' and 'astonishing authenticity,' indicating clear enthusiasm. However, as only one curated excerpt is available, the score is conservatively placed in the upper Positive range per the single-excerpt guidelines, despite the critic's original rating of 87 suggesting a Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,34 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T12:39:01.803Z",
+    "scoredAt": "2026-02-04T19:16:55.432Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 87,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 87,
+    "claudeScore": 82,
+    "openaiScore": 84,
     "geminiScore": 82,
-    "kimiScore": 87,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 5,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textQuality": "partial",
   "previousUrl": "https://ew.com/article/2014/03/07/all-the-way-broadway-review/",
   "urlDiscoveredAt": "2026-02-04T02:03:55.103Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 87,
   "textWordCount": 272,
@@ -114,5 +114,6 @@
     "Show title not found in text"
   ],
   "wordCount": 272,
-  "tierReason": "Short text (272 words)"
+  "tierReason": "Short text (272 words)",
+  "rescoreCompletedAt": "2026-02-04T19:16:55.432Z"
 }

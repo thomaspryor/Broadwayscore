@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. David has written a funny play, and he performs in it with an appealing, self-deprecating charm that makes his character's neuroses seem endearing rather than merely irritating.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 37,
+      "high": 47
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. David has written a funny play, and he performs in it with an appealing, self-deprecating charm",
+        "quote": "During 'Fish,' I laughed fully exactly once.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for both the writing ('funny play') and performance ('appealing, self-deprecating charm'), but this appears to be a brief excerpt with limited context for a fuller assessment. | GPT-4o: The review praises the play's humor and the lead performance, suggesting a positive experience. However, the lack of superlatives or broader context for the production tempers the enthusiasm. | Gemini: The review states the play is funny and the performance is appealing, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers unqualified praise for both the writing ('funny') and the performance ('appealing,' 'endearing'), clearly recommending the show, though the brief excerpt limits confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging David's celebrity appeal and box office success, the critic finds the show unfunny and formulaic, laughing only once during the entire performance. The review criticizes weak characters, tired situations, and poor execution compared to David's TV work. | GPT-4o: The review is critical of the play, noting it feels like a throwback and lacks credible characters. The critic only laughed once, suggesting the humor fell flat, and implies the show is not worth attending unless you're a fan of Larry David. | Gemini: The review is largely negative, criticizing the play's writing, characters, and humor. While acknowledging David's popularity and the audience's enjoyment, the critic ultimately finds the play lacking. | Kimi: The critic expresses profound disappointment in the play, noting he laughed only once despite being a fan of David's television work, finds the characters unbelievable, and explicitly suggests the show is not worth attending.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:08:45.782Z",
+    "scoredAt": "2026-02-04T20:43:21.346Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 76,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "playbillVerdictUrl": "http://www.nytimes.com/aponline/2015/03/05/arts/ap-us-theater-review-fish-in-the-dark.html",
   "sources": [
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.nytimes.com/2015/03/06/theater/review-in-fish-in-the-dark-larry-david-mines-mortality-for-laughs.html",
   "urlDiscoveredAt": "2026-02-03T23:50:38.791Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1161,
@@ -121,5 +121,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 1161,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:43:21.346Z"
 }

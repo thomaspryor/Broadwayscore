@@ -116,5 +116,11 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 670,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T20:13:12.824Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Gielgud Theatre in London, not the current Broadway run.; gemini: This review is of a London production of Company, not the recent Broadway production.; kimi: This review covers the West End production at the Gielgud Theatre in London starring Rosalie Craig, not the Broadway production. It explicitly references the London venue, London cast, and design elements specific to that production.",
+  "promptVersion": "5.2.0"
 }

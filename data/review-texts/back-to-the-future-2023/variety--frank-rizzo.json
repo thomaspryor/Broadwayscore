@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of the beloved 1985 film delivers a serviceable if not particularly inspired evening of theater that relies heavily on nostalgia and spectacle.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 45,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The musical adaptation of the beloved 1985 film delivers a serviceable if not particularly inspired evening of theater that relies heavily on nostalgia and spectacle.",
+        "quote": "All that dazzle might satisfy film fans looking to relive signature moments, but for others seeking re-imaginings more than repeats, 'Back to the Future' will seem more fitting for a theme park than Broadway.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: \"Serviceable if not particularly inspired\" suggests adequate but unremarkable quality. Single excerpt warning and damning with faint praise indicates mixed-to-lukewarm reception. | GPT-4o: The excerpt describes the show as 'serviceable' but 'not particularly inspired', indicating a middle-of-the-road experience. The reliance on nostalgia and spectacle suggests it may appeal to fans of the original film but lacks strong endorsement. | Gemini: The review uses the term \"serviceable\" which indicates a middle-of-the-road experience. The phrase \"not particularly inspired\" further reinforces a mixed assessment. | Kimi: The critic offers faint praise ('serviceable') while explicitly noting the production is 'not particularly inspired' and overly dependent on nostalgia, suggesting an average, unenthusiastic assessment rather than a clear recommendation.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges impressive technical elements and spectacle but finds the musical fundamentally lacking in theatrical substance, suggesting it's better suited for theme parks than Broadway. The review criticizes shallow characterization, conventional tropes, and missed opportunities for fresh theatrical storytelling. | GPT-4o: The review highlights the spectacle and technical achievements but criticizes the lack of originality and depth, suggesting it feels more like a theme park attraction than a Broadway show. The tone is mixed, with some praise for effects but significant reservations about the show's substance. | Gemini: The review acknowledges impressive special effects and moments of spectacle, but ultimately finds the production lacking in originality and depth, suggesting it's more suitable for a theme park than Broadway. The reviewer is neither strongly recommending nor discouraging seeing the show. | Kimi: While praising the technical effects and design, the critic fundamentally dismisses the show as an 'auto-pilot' imitation of the film with karaoke-style performances, deem it unsuitable for Broadway and better suited to theme parks or touring venues with 'less demanding audiences.' | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T07:37:44.874Z",
+    "scoredAt": "2026-02-04T19:38:51.149Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
+    "claudeScore": 42,
+    "openaiScore": 58,
     "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
   },
   "textWordCount": 896,
   "wordCount": 896,
@@ -85,6 +86,6 @@
     }
   ],
   "archivePath": "data/archives/reviews/back-to-the-future-2023/variety--aramide-tinubu_2026-02-02.html",
-  "needsRescore": true,
-  "rescoreReason": "fullText merged from misattributed duplicate"
+  "rescoreReason": "fullText merged from misattributed duplicate",
+  "rescoreCompletedAt": "2026-02-04T19:38:51.149Z"
 }

@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show has heart and good intentions, but the execution is uneven and the pacing drags in spots.",
+        "quote": "This earnest but plodding musical by Broadway newcomers needs lifelines of its own.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges positive elements (heart, good intentions) but significant execution problems (uneven, pacing drags). The critic's own 60 rating confirms this is squarely in Mixed territory. | GPT-4o: The critic's original rating of 60 aligns with a mixed review, and the text describes both positive elements (heart and good intentions) and negatives (uneven execution, pacing issues). | Gemini: The review indicates mixed feelings, noting both positive aspects (heart and good intentions) and negative aspects (uneven execution and pacing). This aligns with a 'Mixed' classification. | Kimi: The critic gives equal weight to the show's positive qualities (heart, intentions) and its flaws (uneven execution, pacing issues), resulting in a lukewarm assessment that aligns with the 60/100 rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with Mixed territory. Review acknowledges good intentions and story potential but finds significant execution flaws in songs, book, and tonal consistency. No clear recommendation either way. | GPT-4o: The review highlights a single standout moment but overall describes the musical as earnest yet plodding, with serviceable but unremarkable songs and a jumbled book. The critic's original rating of 60 aligns with a mixed assessment. | Gemini: The review acknowledges the story's potential and the show's sincere intent, but ultimately finds it plodding and lacking significance. The critic's own rating of 60 aligns with a mixed assessment. | Kimi: The critic's 60/100 rating places this in the Mixed bucket. While the production features one remarkable theatrical moment and fine performances, the review criticizes the boilerplate songs, jumbled book, and cartoonish characters, concluding the show 'still hasn't found its way' on Broadway.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,11 +50,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T12:58:27.519Z",
+    "scoredAt": "2026-02-04T19:17:55.836Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 60,
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.nydailynews.com/2015/07/17/amazing-grace-on-broadway-review-inspiring-musical-about-john-newton/",
   "urlDiscoveredAt": "2026-02-04T02:43:01.774Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 379,
@@ -125,5 +125,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 379,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:17:55.836Z"
 }

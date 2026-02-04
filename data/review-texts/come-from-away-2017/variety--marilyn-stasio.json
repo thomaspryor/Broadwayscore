@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (18 words)",
   "llmScore": {
     "score": 76,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 71,
       "high": 81
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This Canadian musical about 9/11 aftermath is a sweet-natured show that warms the heart without manipulating the emotions.",
+        "quote": "But the intentions of the show are so heartfelt — and so warmly received by the audience at one late preview — that you can sense the connections with the show being felt in the house, row by row.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the show as 'sweet-natured' that 'warms the heart' and specifically commends it for avoiding emotional manipulation, indicating a positive recommendation though without strong superlatives. | GPT-4o: The review describes the show as 'sweet-natured' and 'warms the heart,' indicating a positive tone. However, the lack of superlatives and the phrase 'without manipulating the emotions' suggests a more reserved recommendation. | Gemini: The review describes the show as \"sweet-natured\" and \"warms the heart,\" which indicates a positive recommendation, although not an enthusiastic one. | Kimi: The critic offers unambiguous praise for the show's emotional impact and tasteful handling of sensitive material, describing it as heartwarming and sincere, though the brief length suggests this may be an excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Stasio acknowledges the show's heartfelt intentions and audience connection, but criticizes underdeveloped characters, monotonous music, and songs that border on parody. The mixed verdict balances emotional impact against structural flaws. | GPT-4o: The review acknowledges some flaws, such as the characters lacking depth and the music being monotonous, but overall it praises the show's heartfelt intentions and its positive reception by the audience, indicating a recommendation with some reservations. | Gemini: The review is generally positive, highlighting the show's heartfelt intentions and audience reception, but also noting issues with character development and repetitive music. This makes it a positive recommendation with reservations. | Kimi: Despite criticisms of the repetitive score and thin characterizations, the critic praises the show's heartfelt intentions, strong ensemble, and emotional impact, positioning it as the 'feel-good' experience audiences seek.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,31 +50,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:11:04.127Z",
+    "scoredAt": "2026-02-04T20:12:53.601Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
+    "claudeScore": 62,
     "openaiScore": 78,
     "geminiScore": 75,
     "kimiScore": 76,
-    "claudeBucket": "Positive",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "textQuality": "full",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 579,
@@ -122,5 +122,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:12:53.601Z"
 }

@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 85,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "“Doubt: A Parable” sets up a fascinating power play between two very unequal forces, and it’s thrilling to watch Amy Ryan’s nun and Liev Schreiber’s priest duke it out for 90 minutes on stage. A feisty revival of John Patrick Shanley’s play opened Thursday at the Roundabout’s Todd Haimes Theatre.",
@@ -20,13 +20,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic calls the revival 'a real winner' and 'thrilling to watch' with consistent praise for the lead performances and direction. Strong recommendation despite comparison critiques of the film version. | GPT-4o: The review is filled with enthusiastic praise for the performances, direction, and humor of the production. The critic describes it as a 'real winner' and highlights the thrilling nature of the play, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, calling the production a \"real winner\" and praising the performances of the leads. The critic highlights the humor and power play aspects of the play, indicating a strong recommendation. | Kimi: The critic offers consistent praise for the performances, calling the lead actors 'thrilling' and the direction effective, while declaring the production a 'real winner' with no significant reservations.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The critic calls this production 'a real winner' and delivers consistent praise for the performances, direction, and overall execution. While comparing to previous versions, the verdict is clearly positive for this revival. | GPT-4o: The review is filled with praise for the performances, direction, and humor of the production, describing it as a 'real winner' and highlighting the thrilling dynamic between the lead actors. The tone is enthusiastic and positive throughout. | Gemini: The review is overwhelmingly positive, calling the production a \"real winner\" and praising the performances and direction. The critic clearly recommends seeing the show. | Kimi: The critic offers unqualified praise for the revival, calling it a 'real winner' and 'thrilling,' with particular acclaim for the performances of Amy Ryan and Liev Schreiber. No reservations or criticisms are expressed. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,38 +51,37 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T05:15:25.065Z",
+    "scoredAt": "2026-02-04T20:28:24.690Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 79,
-    "previousVersion": "5.1.0"
+    "previousScore": 82,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 92,
+    "openaiScore": 90,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 88,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 11,
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-29T01:49:38.440Z",
+  "rescoreCompletedAt": "2026-02-04T20:28:24.690Z",
   "contentTier": "complete",
   "wordCount": 544,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/"
 }

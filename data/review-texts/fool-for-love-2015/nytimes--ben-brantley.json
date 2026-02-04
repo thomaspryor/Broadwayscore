@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production succeeds in creating the claustrophobic intensity that makes 'Fool for Love' such a visceral experience, with Ms. Pill and Mr. Magnussen delivering performances that feel genuinely lived-in.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 93,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This production succeeds in creating the claustrophobic intensity that makes 'Fool for Love' such a visceral experience",
+        "quote": "Love as a battlefield on which nobody wins has seldom been mapped as thrillingly as it is in Daniel Aukin's definitive revival.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production's success in achieving the play's intended effect and for the lead performances feeling 'genuinely lived-in', indicating a solid recommendation despite the brief excerpt. | GPT-4o: The review praises the production for successfully creating intensity and highlights the strong performances, indicating a strong recommendation. | Gemini: The review praises the production for creating a visceral experience and highlights the strong performances of the leads, indicating a positive recommendation. | Kimi: The critic praises the production for successfully creating atmospheric intensity and commends the lead performances as 'genuinely lived-in,' indicating a clear recommendation to see the show.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Brantley uses superlative language throughout: 'breathtaking production,' 'definitive revival,' 'magnificent' performance, 'beautiful, taut production.' He calls it both exciting theater and 'world-class literature' with unqualified praise for all elements. | Gemini: The review is overwhelmingly positive, using words like \"breathtaking,\" \"definitive,\" and \"magnificent.\" The critic also praises the performances and direction, indicating a strong recommendation. | Kimi: Unreserved praise with superlatives ('breathtaking,' 'magnificent,' 'world-class') across direction, performances, and design; critic explicitly states the production surpasses earlier versions and never slackens its grip, offering a clear must-see recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:01:16.157Z",
+    "scoredAt": "2026-02-04T20:43:50.039Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 81,
-    "geminiScore": 75,
-    "kimiScore": 79,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Rave"
   },
   "playbillVerdictUrl": "http://www.nytimes.com/2015/10/09/theater/review-fool-for-love-a-kinship-that-breaks-hearts-and-knuckles.html",
   "sources": [
@@ -81,7 +81,6 @@
   "previousUrl": "https://www.nytimes.com/2015/10/09/theater/review-fool-for-love-brings-sam-shepards-risky-passion-to-broadway.html",
   "urlDiscoveredAt": "2026-02-03T23:46:00.165Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1192,
@@ -119,5 +118,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1192,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:43:50.039Z"
 }

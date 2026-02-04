@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 30,
+  "assignedScore": 41,
   "source": "bww-roundup",
   "dtliThumb": null,
   "sources": [
@@ -20,13 +20,13 @@
     "nyc-theatre"
   ],
   "llmScore": {
-    "score": 30,
+    "score": 41,
     "confidence": "medium",
     "range": {
-      "low": 25,
-      "high": 35
+      "low": 36,
+      "high": 46
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
       "book": null,
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Consistently negative throughout with harsh criticism of songs ('derivative'), performances ('switched it to autopilot'), direction ('vulgar', 'incomprehensible'), and book. Acknowledges some technical achievements but overall verdict is clearly against recommendation. | GPT-4o: The review is overwhelmingly negative, criticizing the music, performances, direction, and humor. The only praise is for the DeLorean car's effects, which is not enough to redeem the overall negative assessment. | Gemini: The review is largely negative, criticizing the score, jokes, direction, and some of the performances. While the DeLorean car is praised, the overall assessment is unfavorable. | Kimi: The reviewer delivers a thorough pan, criticizing the derivative score, dreary jokes, vulgar direction, and unamusing performances, with only the car staging receiving faint praise and the final line expressing relief at not sitting close to the stage. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Consistently negative throughout with criticism of songs ('so derivative'), book ('dreary'), direction ('vulgar', 'incomprehensible'), and performances. Praises only technical effects while dismissing the overall production. | GPT-4o: The review criticizes the music, lyrics, performances, and direction, with no redeeming qualities mentioned. The overall tone is strongly negative, focusing on the show's failures. | Gemini: The review is largely negative, criticizing the score, jokes, direction, and performances. While acknowledging the DeLorean's visual appeal, the overall assessment is unfavorable. | Kimi: The critic consistently pans the derivative score, vulgar direction, and unamusing performances, offering only faint praise for the special effects and lead actor's energy while ultimately expressing relief at not sitting close to the stage.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,29 +51,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T02:34:27.618Z",
+    "scoredAt": "2026-02-04T19:36:29.077Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 41,
-    "previousVersion": "5.1.0"
+    "previousScore": 30,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 38,
     "openaiScore": 20,
     "geminiScore": 45,
-    "kimiScore": 22,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Negative",
-    "kimiBucket": "Pan",
+    "kimiBucket": "Negative",
     "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,
@@ -93,8 +93,7 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250724220430/https://www.thewrap.com/back-to-the-future-broadway-review/",
   "contentTier": "complete",
   "wordCount": 590,
-  "rescoreCompletedAt": "2026-02-01T17:31:57.407Z",
-  "needsRescore": true,
+  "rescoreCompletedAt": "2026-02-04T19:36:29.077Z",
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/back-to-the-future-broadway-review/",
   "nycTheatreExcerpt": "As for the DeLorean car, it moves across the stage with real grace as Finn Ross's video designs give the impression that it's moving through space.",

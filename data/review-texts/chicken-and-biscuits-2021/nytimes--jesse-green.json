@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem with 'Chicken & Biscuits' is not that it's silly but that it's not silly enough — or rather, not silly in a way that serves its deeper purposes.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
-    "score": 61,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The problem with 'Chicken & Biscuits' is not that it's silly but that it's not silly enough — or rather, not silly in a way that serves its deeper purposes.",
+        "quote": "So if 'Chicken & Biscuits' isn't a profound work, that doesn't mean it's pointless.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: This excerpt suggests the show has unrealized potential but falls short of its goals. However, this appears to be only a fragment of a larger review, making a definitive assessment difficult. | GPT-4o: The review highlights a fundamental issue with the play's execution, suggesting it fails to meet its intended purpose. The lack of silliness is presented as a flaw, indicating a negative assessment. | Gemini: The review identifies a problem with the show, suggesting it doesn't fully succeed, but doesn't explicitly discourage seeing it. | Kimi: This brief excerpt identifies a specific tonal flaw—the comedy fails to serve the show's deeper purposes—but offers measured criticism rather than a blanket condemnation, suggesting unfulfilled potential rather than disaster.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green alternates between laughing and cringing, praises individual performances and design elements, but finds the play 'dramatically complacent and underdeveloped.' He acknowledges its value as representation while critiquing its reliance on stereotypes and lack of dramatic tension. | GPT-4o: The review describes 'Chicken & Biscuits' as a comedy that may appeal to those with a taste for older styles of Broadway comedies, suggesting a mixed reception. The text is truncated, and the verdict is not fully clear, leading to a low confidence score. | Gemini: The review acknowledges flaws and stereotypes but also appreciates the play's intention to offer lighthearted entertainment. The critic's mixed feelings and the lack of a strong recommendation place it in the Mixed category. | Kimi: While the critic criticizes the stale stereotypes and 'dramatically complacent' plotting, he ultimately defends the show's value as representation and 'sunniness' necessary for Broadway, acknowledging it offers 'an old-fashioned good one' despite its flaws.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:01:15.363Z",
+    "scoredAt": "2026-02-04T20:08:46.574Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 45,
+    "claudeScore": 62,
+    "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 73,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
+    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 17,
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
   "previousUrl": "https://www.nytimes.com/2021/10/11/theater/chicken-and-biscuits-review.html",
   "urlDiscoveredAt": "2026-02-03T23:37:56.721Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 1221,
@@ -121,5 +121,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:08:46.574Z"
 }

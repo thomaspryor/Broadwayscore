@@ -7,20 +7,20 @@
   "publishDate": "March 28, 2014",
   "showScoreExcerpt": "\"Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous! The costumes, the sets, the kitsch and comedic fun made me feel like a kid again.\"",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 92,
   "source": "show-score",
   "sourceUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "sourceMethod": "archive",
   "scoreSource": "sentiment-rave",
   "scoreConfidence": "medium",
   "llmScore": {
-    "score": 82,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -30,12 +30,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous!",
+        "quote": "Aladdin, Disney's latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous!",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear enthusiasm with superlatives ('maaaahvelous') and positive emotional impact ('made me feel like a kid again'). Single excerpt warning requires caution, but the tone is unambiguously positive. | GPT-4o: The excerpt uses enthusiastic language ('maaaahvelous!') and highlights multiple positive aspects (costumes, sets, comedic fun). However, only one excerpt is available, so confidence is low. | Gemini: The review excerpt uses enthusiastic language like \"maaaahvelous!\" and describes feeling like a kid again, indicating a strong positive sentiment. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The critic uses exuberant superlatives and praises the production design and emotional effect, warranting an upper-range Positive score despite the limitation of a single curated excerpt.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'maaaahvelous,' 'spectacular,' 'brilliant,' and 'exceptional.' The critic fell 'head over heels in love' and recommends it will leave audiences 'feeling happy.' | Gemini: The review is overwhelmingly positive, using superlatives like \"maaaahvelous!\" and praising various aspects of the production. Despite a minor reservation about the chemistry between Aladdin and Jasmine, the overall recommendation is strong. | Kimi: The reviewer expresses unqualified enthusiasm with superlatives throughout, praising the performances, design, and direction while declaring the production made her 'fall head over heals in love' and feel like a kid again.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -45,7 +45,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T01:19:20.749Z",
+    "scoredAt": "2026-02-04T19:11:00.883Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -53,21 +53,20 @@
     "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 86,
+    "claudeScore": 88,
+    "openaiScore": null,
     "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "archivePath": "data/archives/reviews/aladdin-2014/theater-pizzazz--sandi-durell_2026-02-03.html",
   "textFetchedAt": "2026-02-03T19:18:41.021Z",
@@ -90,13 +89,12 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210617181653/https://www.theaterpizzazz.com/aladdin-dreams-made/",
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 82,
-  "rescoreCompletedAt": "2026-01-28T23:26:07.850Z",
+  "rescoreCompletedAt": "2026-02-04T19:11:00.883Z",
   "garbageFullText": "From book to movie to stage – sometimes it works and other times it can be disaster.  I reluctantly attended this mega-musical thinking ‘if I only had a kid with me . . . ‘ to immediately fall head over heals in love with a Genie and his lamp.   “Aladdin,” Disney’s latest offering at the New Amsterdam Theatre, is simply . . .  maaaahvelous!\n\nThe costumes, the sets, the kitsch and comedic fun made me feel like a kid again.  I must first talk about James Monroe Iglehart – the Genie (Memphis, The 25th Annual…Spelling Bee, The Wiz) who steals the show in his billowy, brightly colored, flashy, ornate costumes  – who prances and dances and is as sharp a cool cat of a character as I’ve ever seen, in his Cab Calloway scat number “Dancing with the Scimitars.” And when an Act I showstopper, “Friend Like Me,” creates a standing ovation with thunderous applause, you know something special is going on.\n\nWe all know the story of Aladdin having basically grown up on the fairy tale romance about a Genie and a lamp that can grant you 3 wishes – anything you want, and a magic carpet that can swiftly fly you anywhere.\n\nIn the hands of book writer Chad Beguelin, Aladdin’s monkey has morphed into a Marx Bros. like trio (Brian Gonzales, Jonathan Schwartz, Brandon O’Neill) to add more shtick and clowning, as the magical music of composer Alan Menken and lyricist Howard Ashman effectively provides swing, jazz and pop to accentuate the positive throughout.\n\nWe even love the villain Jafar (Jonathan Freeman) who’s more of a caricature kook seeking power, alongside his mini henchman Iago – Don Darryl Rivera, (no longer a parrot) who reminded me of Bud Abbott.\n\nAladdin (Adam Jacobs), looking buff in his fez, mini vest and harem pants, is a spunky charmer of a street kid who gets by stealing what he needs in the market place where the multi-national cast comes to life in extravagant glitz in Gregg Barnes’ costumes.  Speaking of costumes there is everything from billowing silks, feathers, sequins, fans in a rainbow plethora of color.  As the Genie so aptly says “Even our poor people look faaabulous!”\n\nAs for his romantic counterpart, Jasmine (Courtney Reed), she is vocally lovely to listen to but somewhat lacking and that might have to do with the chemistry between she and Aladdin.  Their magic carpet ride into the heavens is wondrous to behold (“A Whole New World”) as they float away on what appears to be a carpet without any detectable wires (ah, technology), but where’s the real emotional love?  She is (as all the Disney girls) high-spirited with a mind of her own telling her father the Sultan (Clifton Davis) “why are you so determined to pawn me off to any Tom, Dick or Hassim . . .,” as he attempts to find her a suitable prince as a husband.\n\nThe scenic design by Bob Crowley is spectacular – the Cave of Wonders, mini towers of glitter – the marketplace – all inspired, and brought to life by Natasha Katz’ exceptional lighting.  Kudos to Casey Nicholaw (Book of Mormon) for his brilliant direction and choreography.\n\nSo it didn’t matter after all that I saw “Aladdin” without a kid in tow.  I was the kid!\n\nThis storybook musical will  leave you feeling happy.\n\n“Aladdin” – New Amsterdam Theatre, NYC – running . . . forever!\n\nYour donation will help us to bring you the latest in NYC theater and cabaret. DONATE TODAY!\n\nJoanne & Bernie Furshpan\nJane H. Goldman\nJamie deRoy & friends\nJudy Stewart\nJudy Davis\nCarol Ostrow\nAmerican Popular Song Society (APSS)\nJanet Fein\nAlyce Finell\n\nJoin our mailing list to receive the latest news and updates from Theater Pizzazz.\n\nJoin our mailing list to receive the latest Theater Pizzazz news.",
   "garbageReason": "Newsletter form: \"Join our mailing list\"",
   "garbageFixedAt": "2026-01-29T22:45:22.647Z",
   "contentTier": "complete",
   "wordCount": 665,
-  "needsRescore": true,
   "fullText": "Posted on Mar 28, 2014 in Theater Reviews\n\nFrom book to movie to stage – sometimes it works and other times it can be disaster. I reluctantly attended this mega-musical thinking ‘if I only had a kid with me . . . ‘ to immediately fall head over heals in love with a Genie and his lamp. “Aladdin,” Disney’s latest offering at the New Amsterdam Theatre, is simply . . . maaaahvelous!\n\nThe costumes, the sets, the kitsch and comedic fun made me feel like a kid again. I must first talk about James Monroe Iglehart – the Genie (Memphis, The 25th Annual…Spelling Bee, The Wiz) who steals the show in his billowy, brightly colored, flashy, ornate costumes – who prances and dances and is as sharp a cool cat of a character as I’ve ever seen, in his Cab Calloway scat number “Dancing with the Scimitars.” And when an Act I showstopper, “Friend Like Me,” creates a standing ovation with thunderous applause, you know something special is going on.\n\nWe all know the story of Aladdin having basically grown up on the fairy tale romance about a Genie and a lamp that can grant you 3 wishes – anything you want, and a magic carpet that can swiftly fly you anywhere.\n\nIn the hands of book writer Chad Beguelin, Aladdin’s monkey has morphed into a Marx Bros. like trio (Brian Gonzales, Jonathan Schwartz, Brandon O’Neill) to add more shtick and clowning, as the magical music of composer Alan Menken and lyricist Howard Ashman effectively provides swing, jazz and pop to accentuate the positive throughout.\n\nWe even love the villain Jafar (Jonathan Freeman) who’s more of a caricature kook seeking power, alongside his mini henchman Iago – Don Darryl Rivera, (no longer a parrot) who reminded me of Bud Abbott.\n\nAladdin (Adam Jacobs), looking buff in his fez, mini vest and harem pants, is a spunky charmer of a street kid who gets by stealing what he needs in the market place where the multi-national cast comes to life in extravagant glitz in Gregg Barnes’ costumes. Speaking of costumes there is everything from billowing silks, feathers, sequins, fans in a rainbow plethora of color. As the Genie so aptly says “Even our poor people look faaabulous!”\n\nAs for his romantic counterpart, Jasmine (Courtney Reed), she is vocally lovely to listen to but somewhat lacking and that might have to do with the chemistry between she and Aladdin. Their magic carpet ride into the heavens is wondrous to behold (“A Whole New World”) as they float away on what appears to be a carpet without any detectable wires (ah, technology), but where’s the real emotional love? She is (as all the Disney girls) high-spirited with a mind of her own telling her father the Sultan (Clifton Davis) “why are you so determined to pawn me off to any Tom, Dick or Hassim . . .,” as he attempts to find her a suitable prince as a husband.\n\nThe scenic design by Bob Crowley is spectacular – the Cave of Wonders, mini towers of glitter – the marketplace – all inspired, and brought to life by Natasha Katz’ exceptional lighting. Kudos to Casey Nicholaw (Book of Mormon) for his brilliant direction and choreography.\n\nSo it didn’t matter after all that I saw “Aladdin” without a kid in tow. I was the kid!\n\nThis storybook musical will leave you feeling happy.\n\n“Aladdin” – New Amsterdam Theatre, NYC – running . . . forever!\n\nYour email address will not be published. Required fields are marked *\n\nTO ADVERTISE ON THIS SITECONTACT US AT\nsandi@theaterpizzazz.comor sandi.durell@gmail.com\n\nTheater PizzazzDave Konig with Elliot Finkel“Inspired by Baroque” Presents My CyranoTomei, Channing, Cantone, StokesTheater HappeningsTheater NewsLove Stevie Loving Linda\n \n\n \n \n\n \n \n \n A Note From The Publisher Thank you for visiting this website. If you have questions, please feel free to contact me @ sandi@theaterpizzazz.com\n\nDesigned by Elegant Themes | Powered by Wordpress\n\nStay up-to-date with all the New York Theater, Cabaret and Music news and reviews.",
   "isFullReview": true,
   "textWordCount": 665,

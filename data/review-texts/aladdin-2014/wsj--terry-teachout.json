@@ -9,15 +9,15 @@
   "showScoreExcerpt": "\"It's not nearly as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score",
   "dtliThumb": null,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong production values and performance but explicitly states it's 'not nearly as good as the movie' and positions it as middling between Disney's best and worst shows. The praise is qualified and the overall assessment suggests disappointment despite technical merits. | GPT-4o: The review acknowledges strong elements like the star and production design but ultimately suggests the show is middling compared to the original movie, placing it between Disney's best and worst efforts. | Gemini: The review states that the show is not as good as the movie but praises the star, sets, and special effects, placing it in the mixed category. | Kimi: The critic positions the show as middle-of-the-road Disney ('halfway between' The Lion King and Tarzan), praising the spectacle and star performance while criticizing its inferiority to the source material and lack of artistic merit. The text is truncated mid-sentence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic places show 'roughly halfway between' Disney's best and worst, acknowledging positive elements (star, sets, effects) while clearly stating it's 'not nearly as good as the movie.' This balanced assessment with no clear recommendation suggests mixed reception. | GPT-4o: The review acknowledges strengths in the star and production design but notes that the show falls short of the movie, suggesting a mixed overall impression. | Gemini: The review states that the show is not as good as the movie, but it does have a terrific star, super-duper sets and sensational special effects, placing it in the mixed category. | Kimi: The review praises the production values, star performance, and special effects but explicitly states the show is artistically inferior to the film and falls in the middle of Disney's quality spectrum, offering a qualified rather than enthusiastic assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,23 +44,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T01:24:49.070Z",
+    "scoredAt": "2026-02-04T19:11:31.039Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 63,
+    "previousScore": 62,
     "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
     "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -116,7 +116,7 @@
   "textIssues": [
     "Word count too low: 162 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-02-02T03:21:51.259Z",
+  "rescoreCompletedAt": "2026-02-04T19:11:31.039Z",
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.152Z",
@@ -129,7 +129,6 @@
   "truncationSignals": [],
   "archiveOrgTimestamp": "20201123192001",
   "archiveOrgUrl": "http://web.archive.org/web/20201123192001/https://www.wsj.com/articles/SB10001424052702303802104579449142401496978",
-  "needsRescore": true,
   "playbillVerdictUrl": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303802104579449142401496978.html",
   "sources": [
     "show-score",

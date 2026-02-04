@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The problem isn't that American Psycho is offensive – it's that it's boring. The musical version of Bret Easton Ellis's novel feels like a very expensive student production.",
   "originalScore": 40,
-  "assignedScore": 40,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 40,
-    "confidence": "high",
+    "score": 41,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 36,
+      "high": 46
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the show boring and comparing it unfavorably to student theater. The original 40 rating aligns perfectly with the Negative bucket (35-54). | GPT-4o: The review describes the show as boring and likens it to a 'very expensive student production,' indicating a negative assessment. The original rating of 40 aligns with a negative bucket classification. | Gemini: The critic explicitly states the show is boring and compares it unfavorably to a student production, indicating a negative assessment. The original rating of 40 aligns with the Negative bucket. | Kimi: The critic's provided rating of 40/100 and dismissal of the show as boring and resembling an expensive student production indicate a clear negative recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic dismisses the show as 'boring' and compares it to 'a very expensive student production,' which are clearly negative assessments. However, with only one excerpt available, confidence is low as the full verdict may contain additional context. | GPT-4o: The critic describes the show as boring and compares it to a 'very expensive student production,' indicating a negative assessment. The original rating of 40 aligns with a negative verdict. | Gemini: The critic states the musical is boring and feels like an expensive student production, indicating a negative assessment. | Kimi: The critic explicitly calls the show 'boring' and likens it to an expensive student production, indicating a clear lack of recommendation. The provided rating of 40 falls within the Negative bucket (35-54), though confidence is reduced due to the availability of only a single excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T13:24:08.394Z",
+    "scoredAt": "2026-02-04T19:19:14.212Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 40,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
+    "claudeScore": 38,
     "openaiScore": 40,
-    "geminiScore": 40,
+    "geminiScore": 45,
     "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 0,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2016/apr/22/american-psycho-review-broadway-musical-bret-easton-ellis",
   "urlDiscoveredAt": "2026-02-04T01:35:53.047Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,
   "textWordCount": 857,
@@ -121,5 +121,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:19:14.212Z"
 }

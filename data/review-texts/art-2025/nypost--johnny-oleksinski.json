@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Every word and action is unnatural, like the actors have yardsticks down the backs of their shirts. Much of the stiffness is baked in, of course. Being that the script about snobs was originally French, and has been translated by British writer Christopher Hampton, even affectations have affectations.",
   "originalScore": null,
-  "assignedScore": 25,
+  "assignedScore": 40,
   "source": "dtli",
   "dtliThumb": "DOWN",
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
@@ -19,55 +19,44 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 25,
+    "score": 40,
     "confidence": "medium",
     "range": {
-      "low": 20,
-      "high": 35
+      "low": 35,
+      "high": 45
     },
-    "bucket": "Pan",
+    "bucket": "Negative",
     "thumb": "Down",
     "components": {
-      "book": 20,
+      "book": null,
       "music": null,
-      "performances": 25,
-      "direction": 30
+      "performances": null,
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "Every word and action is unnatural, like the actors have yardsticks down the backs of their shirts.",
-        "sentiment": "negative",
-        "strength": 4
-      },
-      {
-        "quote": "Much of the stiffness is baked in, of course.",
-        "sentiment": "negative",
+        "quote": "Reza's play of petty bickering makes my eyes glaze over.",
+        "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "The critic harshly criticizes the fundamental unnaturalness of the performances and writing, suggesting deep structural problems that make the production difficult to recommend.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the play 'slim, one-joke, pseudo-intellectual' that 'makes my eyes glaze over' and criticizes the direction as 'rigid' and 'unruly.' While acknowledging some performers are 'watchable,' the overall assessment is clearly negative despite not being a complete pan. | GPT-4o: The review is largely negative, describing the play as 'a slim, one-joke, pseudo-intellectual affair' and 'white noise of shapeless academic squawking.' Despite some audience applause and watchable performances, the overall tone is dismissive. The truncated nature of the text suggests caution, but the existing content leans negative. | Gemini: The review is mixed, with some praise for Harris's casting and Corden's watchability, but criticism for the script, direction, and chemistry between the performers. The truncated text and mixed signals lead to a lower confidence score. | Kimi: While the critic acknowledges Neil Patrick Harris is sensibly cast and there are some early giggles, he ultimately finds the revival tedious ('makes my eyes glaze over'), criticizes the direction as 'physically rigid and narratively unruly,' and finds two of the three stars unconvincing or disconnected. Given the text is truncated, the low confidence reflects that a final verdict may be missing, but the available text leans clearly negative.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-03T22:08:41.245Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T19:32:10.996Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 2714,
-    "outputTokens": 297,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 25,
+    "previousVersion": "5.2.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 25,
   "textWordCount": 545,
@@ -98,5 +87,23 @@
   "sources": [
     "dtli",
     "show-score-playwright"
-  ]
+  ],
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  },
+  "rescoreCompletedAt": "2026-02-04T19:32:10.996Z"
 }

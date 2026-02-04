@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This production doesn't reinvent the wheel, but it spins the familiar story with such warmth, sincerity and technical excellence that audiences will be charmed all over again by this tale of family, faith and the fragility of tradition.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (38 words)",
   "llmScore": {
-    "score": 79,
-    "confidence": "high",
+    "score": 77,
+    "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "audiences will be charmed all over again by this tale of family, faith and the fragility of tradition.",
+        "quote": "What's not to like? The personal intimacy of Tevye's casual conversations with God, not to mention the easy rapport Burstein has with the audience, only intensifies the humor and humanity of the classic material, and should prove an attractive draw for both first-timers and returning fans of the show.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the production's warmth, sincerity, and technical excellence, indicating a strong positive recommendation despite not being groundbreaking. | Gemini: The review indicates that the production is well-executed and charming, although not groundbreaking, leading to a positive but not rave recommendation. | Kimi: While acknowledging the show doesn't break new ground, the critic praises its warmth, sincerity, and technical excellence, clearly indicating audiences will be charmed by this production.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises Burstein's central performance enthusiastically and finds much to recommend, but notes the production is 'uneven' with several directorial choices that 'seem unfinished, unclear or labored.' The overall tone is positive recommendation despite reservations. | GPT-4o: The review praises Burstein's performance and highlights the production's strengths, though it notes some uneven elements. Overall, it recommends the show, especially for Burstein's portrayal. | Gemini: The review praises Burstein's performance and some aspects of the production, but also notes unevenness and unclear touches, resulting in a mixed assessment. | Kimi: While praising Danny Burstein's performance as 'an attractive draw' and admiring some bold staging choices, the critic consistently notes the production is 'uneven' with 'unfinished' and 'labored' touches, resulting in a qualified but firm recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:51:48.328Z",
+    "scoredAt": "2026-02-04T20:38:47.211Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 80,
-    "geminiScore": 77,
-    "kimiScore": 80,
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
     "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
+    "geminiBucket": "Mixed",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/fiddler-on-the-roof-review-broadway-1201665167/",
   "sources": [
@@ -80,7 +82,6 @@
   "previousUrl": "https://variety.com/2015/legit/reviews/fiddler-on-the-roof-review-broadway-revival-1201668356/",
   "urlDiscoveredAt": "2026-02-03T23:56:50.464Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 763,
@@ -102,5 +103,6 @@
   "archiveOrgTimestamp": "20241126213108",
   "archiveOrgUrl": "http://web.archive.org/web/20241126213108/https://variety.com/2015/legit/reviews/fiddler-on-the-roof-review-broadway-1201665167/",
   "wordCount": 763,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:38:47.211Z"
 }

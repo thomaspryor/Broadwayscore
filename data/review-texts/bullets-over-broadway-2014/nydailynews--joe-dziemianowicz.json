@@ -20,7 +20,7 @@
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 41,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 36,
       "high": 46
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show fires blanks when it should pack a punch.",
+        "quote": "It's too bad that the comedy about a playwriting hit man is a bit of a miss.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict with metaphor indicating the show fails to deliver impact, plus comparison to inferior 'cover band' rather than authentic experience. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket, and the review text indicates disappointment with the show's impact and authenticity. | Gemini: The critic's rating is 40, and the review uses negative language such as \"fires blanks\" and \"feels more like a cover band than the real deal.\" | Kimi: The critic's own rating of 40 aligns with the Negative bucket (35-54), and the brief evaluative text describes the show as failing to deliver impact and feeling inauthentic. However, confidence is low given the truncated nature of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic's original 40 rating aligns with negative territory. Despite praising Stroman's choreography and some performances, the overall verdict is clearly negative - calling it 'a bit of a miss,' criticizing the leads as shooting blanks, and concluding it doesn't reach great heights but lands in 'the middle of the road.' | GPT-4o: The review highlights significant flaws in the production, including mediocre acting, poor musical choices, and lack of nuance. The original rating of 40 aligns with a negative assessment. | Gemini: The review acknowledges some positive aspects like the dance numbers and production design, but criticizes the casting, song choices, and overall impact, resulting in a mixed assessment. | Kimi: The critic provides a 40/100 rating and delivers a clear negative verdict calling the show 'a bit of a miss,' criticizing the book adaptation, lead performances, and jukebox song choices as 'middle of the road' despite praising Susan Stroman's choreography and supporting turns by Marin Mazzie and Nick Cordero.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:07:16.051Z",
+    "scoredAt": "2026-02-04T20:02:15.597Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 41,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
+    "claudeScore": 42,
     "openaiScore": 40,
-    "geminiScore": 45,
+    "geminiScore": 62,
     "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
+    "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/bullets-broadway-theater-review-article-1.1752357",
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.nydailynews.com/2014/04/11/bullets-over-broadway-review-woody-allen-musical-fires-blanks/",
   "urlDiscoveredAt": "2026-02-04T03:03:21.764Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,
   "textWordCount": 629,
@@ -103,5 +103,6 @@
   "archiveOrgTimestamp": "20250427025330",
   "archiveOrgUrl": "http://web.archive.org/web/20250427025330/https://www.nydailynews.com/2014/04/10/bullets-over-broadway-theater-review/",
   "wordCount": 629,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:02:15.597Z"
 }

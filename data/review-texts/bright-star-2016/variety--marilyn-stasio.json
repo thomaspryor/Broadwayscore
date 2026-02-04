@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Steve Martin and Edie Brickell's folk-flavored musical about love and loss in the Blue Ridge Mountains is a sweet, old-fashioned entertainment that feels both timeless and slightly out of step with contemporary Broadway.",
   "originalScore": null,
-  "assignedScore": 73,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
   "llmScore": {
-    "score": 73,
-    "confidence": "medium",
+    "score": 63,
+    "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "a sweet, old-fashioned entertainment that feels both timeless and slightly out of step with contemporary Broadway",
+        "quote": "But the sheer scale of the package overwhelms this sweet but slender homespun material.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges positive qualities ('sweet', 'timeless') but emphasizes the show feels 'out of step' with modern theater, suggesting neither strong recommendation nor discouragement. | GPT-4o: The review describes the show as 'sweet' and 'old-fashioned,' suggesting a positive view, but notes it feels 'slightly out of step,' indicating some reservations. | Gemini: The review describes the show as a \"sweet, old-fashioned entertainment,\" which is a positive assessment, but the phrase \"slightly out of step with contemporary Broadway\" suggests some reservations. | Kimi: The critic offers a qualified recommendation, praising the show as 'sweet' and 'entertainment' while noting it feels 'slightly out of step with contemporary Broadway,' suggesting mild reservations. The extreme brevity suggests this may be an excerpt or truncated text.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong elements (Cusack's performance, authentic music, production values) but finds the Broadway treatment ill-suited to the material. Mixed praise and criticism with no clear recommendation either way. | GPT-4o: The review acknowledges appealing elements like the lead performance and authentic music but criticizes the overwhelming production scale and repetitive music. It neither strongly recommends nor discourages seeing the show. | Gemini: The review praises some aspects (Cusack's performance, music authenticity) but criticizes the book, repetitive music, and shallow characters. It's a mixed bag, not a clear recommendation. | Kimi: The critic praises the Broadway-slick production values, versatile set design, and Carmen Cusack's excellent lead performance, but finds the homespun material too slight for the treatment and criticizes the repetitive music and chatty, plot-driven lyrics that render characters dimwitted.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,34 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:50:16.788Z",
+    "scoredAt": "2026-02-04T19:55:57.391Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 73,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 72,
-    "geminiScore": 75,
-    "kimiScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 13,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "textQuality": "full",
   "previousUrl": "https://variety.com/2016/legit/reviews/bright-star-review-steve-martin-edie-brickell-broadway-1201738586/",
   "urlDiscoveredAt": "2026-02-03T23:13:20.219Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 73,
   "textWordCount": 657,
@@ -103,5 +103,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:55:57.391Z"
 }

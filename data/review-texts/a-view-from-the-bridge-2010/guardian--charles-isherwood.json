@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Liev Schreiber brings a compelling mixture of strength and vulnerability to Eddie Carbone, the Brooklyn longshoreman whose obsessive love for his niece leads to his destruction in Arthur Miller's 1955 drama.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 76,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'compelling' suggests positive view, but insufficient context for full verdict assessment. | GPT-4o: The excerpt praises Schreiber's performance as compelling, indicating a positive view of the production. However, due to the single excerpt warning and lack of full context, the confidence is low. | Gemini: The excerpt praises Liev Schreiber's performance, suggesting a positive aspect of the production. However, without more context, it's difficult to determine the overall recommendation strength. | Kimi: The excerpt offers strong praise for the lead performance using the word 'compelling,' indicating a clearly positive assessment. Per guidelines for single excerpts with clearly positive language, this scores in the 80-84 range, though confidence is low due to limited context.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance as 'compelling' suggests positive assessment, but limited text prevents full verdict evaluation. Upper end of Positive bucket given strong praise for star. | GPT-4o: The excerpt praises Liev Schreiber's performance as compelling, indicating a positive view of his role. However, without more context, the overall sentiment of the review is unclear, leading to a low confidence score in the lower end of the Positive range. | Gemini: The excerpt praises Liev Schreiber's performance, suggesting a positive aspect of the production. However, without more context, it's difficult to determine the overall recommendation strength, so I'm scoring it as a slightly positive review with low confidence. | Kimi: The excerpt offers clear praise for Schreiber's compelling performance, indicating a positive assessment of the production, though limited context from a single curated quote warrants low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,22 +55,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:39:20.896Z",
+    "scoredAt": "2026-02-04T19:07:36.432Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 82,
     "openaiScore": 72,
     "geminiScore": 75,
-    "kimiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2010/jan/25/a-view-from-the-bridge-review",
   "urlDiscoveredAt": "2026-02-04T02:41:53.103Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 303,
@@ -120,5 +120,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 303,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "rescoreCompletedAt": "2026-02-04T19:07:36.432Z"
 }

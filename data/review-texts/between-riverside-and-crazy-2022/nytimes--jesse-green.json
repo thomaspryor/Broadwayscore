@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play, which won the 2015 Pulitzer Prize for Drama, is a gripping family drama that balances social commentary with intimate character study, anchored by Stephen McKinley Henderson's powerhouse performance.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
-    "score": 78,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 87,
+      "high": 97
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "a gripping family drama that balances social commentary with intimate character study",
+        "quote": "Everyone should see it anyway, to experience the pleasure of a great cast making a shrimps-and-veal meal of the incredibly rich material.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive language ('gripping', 'powerhouse performance') but this appears to be a very brief excerpt with limited evaluative content, hence low confidence. | GPT-4o: The review uses strong positive language ('gripping', 'powerhouse performance') and highlights both the play's narrative and performance quality, indicating a strong recommendation. | Gemini: The review describes the play as a \"gripping family drama\" and highlights Stephen McKinley Henderson's \"powerhouse performance,\" indicating a positive recommendation. | Kimi: The critic praises the play as 'gripping' and highlights a 'powerhouse' lead performance, indicating a clear recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The critic calls it 'astonishing,' praises the 'great cast' and 'incredibly rich material,' and explicitly states 'Everyone should see it anyway.' Despite minor quibbles about pacing, this is an enthusiastic recommendation for a Pulitzer Prize-winning play. | Gemini: The review recommends seeing the show to experience the cast and material, but notes that the final scene doesn't quite digest all that came before, indicating a positive but not rave review. | Kimi: Jesse Green offers unqualified praise for the Broadway debut, calling the play astonishing and masterly with brilliant performances from the cast, and explicitly recommends that everyone see it despite minor reservations about the final scene.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:48:31.201Z",
+    "scoredAt": "2026-02-04T19:48:35.465Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 79,
+    "kimiScore": 91,
+    "claudeBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "previousUrl": "https://www.nytimes.com/2022/12/20/theater/between-riverside-and-crazy-review.html",
   "urlDiscoveredAt": "2026-02-03T16:33:03.047Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1066,
@@ -110,5 +109,6 @@
   ],
   "playbillVerdictUrl": "https://www.nytimes.com/2022/12/19/theater/between-riverside-and-crazy-review.html",
   "archiveOrgTimestamp": "20221220030709",
-  "archiveOrgUrl": "http://web.archive.org/web/20221220030709/https://www.nytimes.com/2022/12/19/theater/between-riverside-and-crazy-review.html"
+  "archiveOrgUrl": "http://web.archive.org/web/20221220030709/https://www.nytimes.com/2022/12/19/theater/between-riverside-and-crazy-review.html",
+  "rescoreCompletedAt": "2026-02-04T19:48:35.465Z"
 }

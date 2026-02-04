@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V, who finds solace in the sublime voice of the famous 18th-century castrato singer Carlo Broschi, known as Farinelli.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 74,
+    "score": 75,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mark Rylance gives a fascinatingly eccentric performance as the melancholy Spanish king Philip V.",
+        "quote": "There's not much to Claire van Kampen's simplistic script for 'Farinelli and the King,' the play now running on Broadway after premiering at Shakespeare's Globe in London. But with a lead performance by Oscar and Tony winner Mark Rylance in full sail, it's enough.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review highlights a 'fascinatingly eccentric performance' by Mark Rylance, suggesting a positive experience, even though it's brief. | Kimi: The critic offers clear praise for Rylance's 'fascinatingly eccentric' performance and describes the voice as 'sublime', indicating a positive assessment. However, the text appears to be a truncated excerpt or capsule review lacking a definitive verdict or full critical context.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite script weaknesses. Critic acknowledges the play's flaws but finds Rylance's 'tour de force' performance makes it worthwhile. Praises production values and music while noting limitations. | GPT-4o: The review praises Mark Rylance's performance as a highlight, describing it as a 'tour de force.' However, it notes limitations in the script and some anachronistic language, suggesting reservations. Overall, the performance is recommended, but with some caveats. | Gemini: The review praises Rylance's performance and the overall production, but notes weaknesses in the script and some anachronistic language. It's a positive recommendation with reservations. | Kimi: While criticizing the simplistic script and anachronistic language, Stasio finds Rylance's tour de force performance and the strong production values make the show worthwhile.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,35 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:47:00.161Z",
+    "scoredAt": "2026-02-04T20:36:31.213Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": null,
+    "claudeScore": 75,
+    "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 73,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "playbillVerdictUrl": "http://variety.com/2017/legit/reviews/farinelli-and-the-king-review-mark-rylance-1202643427/",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 556,
@@ -120,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 556,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:36:31.213Z"
 }

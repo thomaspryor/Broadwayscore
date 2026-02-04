@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "LuPone steals the show as Joanne, the bitter, boozy wife who delivers the musical's most famous number, 'The Ladies Who Lunch,' with a glass of liquor perpetually in hand.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
-    "score": 74,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "LuPone steals the show as Joanne, the bitter, boozy wife who delivers the musical's most famous number, 'The Ladies Who Lunch,' with a glass of liquor perpetually in hand.",
+        "quote": "The strengths of Elliott's revival are so undeniable that there are few better nights out on Broadway right now.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Both models agree: Positive | Gemini: The review focuses on Patti LuPone's performance, indicating a positive aspect of the show, but it's a short excerpt and doesn't provide a comprehensive assessment, so confidence is low. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong overall praise calling it 'smart, funny, human' with 'few better nights out on Broadway,' despite significant criticism of the lead performance. The positive verdict clearly outweighs reservations. | GPT-4o: The review is overwhelmingly positive, praising the revival's direction, ensemble cast, and Sondheim's work, despite noting a weak performance by Lenk. The critic strongly recommends the show as one of the best nights out on Broadway. | Gemini: The review is largely positive, praising the show's humor, direction, and ensemble cast, but it does express reservations about the lead actress's performance. Overall, it recommends seeing the show despite this weakness. | Kimi: The reviewer enthusiastically praises the direction, ensemble cast, and Sondheim's score as 'undeniable strengths' and declares there are 'few better nights out on Broadway right now,' despite criticizing Katrina Lenk's lead performance as the production's one weak link.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,26 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:39:09.516Z",
+    "scoredAt": "2026-02-04T20:14:16.813Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 74,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 73,
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Both models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://nypost.com/2014/10/14/random-notes-and-serendipity-inspired-charming-musical-found/",
@@ -80,7 +83,6 @@
   "previousUrl": "https://nypost.com/2021/12/09/company-on-broadway-review-patti-lupone-steals-the-show/",
   "urlDiscoveredAt": "2026-02-04T03:00:13.723Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 74,
   "textWordCount": 748,
@@ -101,5 +103,6 @@
   "archiveOrgTimestamp": "20250722233653",
   "archiveOrgUrl": "http://web.archive.org/web/20250722233653/https://nypost.com/2021/12/09/company-review-this-is-the-broadway-show-to-see-right-now/",
   "wordCount": 748,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:14:16.813Z"
 }

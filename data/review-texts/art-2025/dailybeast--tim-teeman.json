@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "It is Yvan’s revelation of one of his pre-nuptial conflicts that Corden serves with full comedic relish—around four minutes of recalled argument, deflated exhaustion, and exaggerated whimpering. It is glorious, and this Broadway season’s first showstopper.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 82,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
@@ -19,50 +19,44 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 85,
-    "confidence": "low",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 90
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 90,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
         "quote": "It is glorious, and this Broadway season's first showstopper.",
-        "sentiment": "positive",
-        "strength": 5
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "The critic uses superlative language ('glorious', 'showstopper') to describe a key performance moment, indicating strong enthusiasm despite the brief excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for performances, direction, and Reza's writing. Calls Corden's performance 'glorious' and a 'showstopper,' praises the cast chemistry as 'lovely,' and demonstrates deep appreciation for the play's craft and themes. | GPT-4o: The review is filled with praise for the performances, especially Corden's, and the play's cleverness and depth. The critic highlights the show's ability to provoke thought and laughter, indicating a strong recommendation. | Gemini: The review is positive, highlighting the performances of the three leads and the play's cleverness. The critic praises the chemistry and the ability to make the audience care about the characters and their friendship. | Kimi: The review delivers enthusiastic praise for the performances, particularly Corden's 'masterclass' and 'showstopper' moments, and finds the revival 'still-striking' and clever with expert direction, offering an unambiguous recommendation despite noting the play initially seems simple.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-03T22:08:22.485Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T19:29:51.800Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 2712,
-    "outputTokens": 248,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 85,
+    "previousVersion": "5.2.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 85,
   "textWordCount": 881,
@@ -100,5 +94,23 @@
   "tierReason": "Full review text",
   "sources": [
     "dtli"
-  ]
+  ],
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-04T19:29:51.800Z"
 }

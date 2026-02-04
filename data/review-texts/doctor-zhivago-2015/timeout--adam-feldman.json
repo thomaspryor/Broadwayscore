@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
   "originalScore": 40,
-  "assignedScore": 42,
+  "assignedScore": 40,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 40,
+    "confidence": "medium",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 35,
+      "high": 45
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show's creators have taken Pasternak's vast, complex novel and turned it into something that feels both rushed and sluggish—a peculiar achievement.",
+        "quote": "No amount of Lucy Simon's syrupy, portentous music can make us care for the synthetic, drably colored pageant.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the adaptation as a 'peculiar achievement' in a clearly sarcastic way, criticizing it as both 'rushed and sluggish.' The original 40 rating confirms this as a negative assessment. | GPT-4o: The critic's original rating of 40 aligns with the negative bucket, and the review text describes the adaptation as both 'rushed and sluggish,' indicating a lack of recommendation. | Gemini: The review explicitly states the show feels both rushed and sluggish, indicating a negative assessment. The critic's rating of 40 further confirms this. | Kimi: The critic's explicit 40/100 rating falls squarely in the Negative range, and the review text describes the adaptation as both rushed and sluggish with clear disappointment.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Devastating pan with harsh criticism throughout. The critic finds the music 'syrupy,' the staging 'ugly,' calls it a 'synthetic, drably colored pageant,' and concludes with 'To Siberia with it' - a clear dismissal. | GPT-4o: The review is clearly negative, criticizing the music, lyrics, and staging. The original rating of 40 aligns with a negative assessment, indicating the production is not recommended. | Gemini: The review is largely negative, criticizing the music, lyrics, staging, and overall impact of the show. The critic's own rating is 40, which aligns with the negative bucket. | Kimi: The critic assigns a low rating of 40 and pans the music, lyrics, and staging as ugly and ineffective, ending with the dismissive verdict 'To Siberia with it.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:03:55.351Z",
+    "scoredAt": "2026-02-04T20:27:27.324Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 42,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
+    "claudeScore": 18,
     "openaiScore": 40,
-    "geminiScore": 45,
+    "geminiScore": 40,
     "kimiScore": 40,
-    "claudeBucket": "Negative",
+    "claudeBucket": "Pan",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/doctor-zhivago",
@@ -79,7 +80,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,
   "textWordCount": 288,
@@ -108,5 +108,6 @@
     "Word count too low: 294 (min: 300)"
   ],
   "wordCount": 288,
-  "tierReason": "Short text (288 words)"
+  "tierReason": "Short text (288 words)",
+  "rescoreCompletedAt": "2026-02-04T20:27:27.324Z"
 }

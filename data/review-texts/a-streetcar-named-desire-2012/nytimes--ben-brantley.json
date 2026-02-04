@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival, starring Blair Underwood as Stanley and Nicole Ari Parker as Blanche, never finds the savage poetry that makes Tennessee Williams's 1947 masterpiece so devastating.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 44,
-    "confidence": "high",
+    "score": 42,
+    "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "never finds the savage poetry that makes Tennessee Williams's 1947 masterpiece so devastating",
+        "quote": "this 'Streetcar' is mostly an exquisite snooze",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment - the revival fails to capture the essential qualities that make the play work. The critic states it 'never finds' what makes the original devastating. | GPT-4o: The review indicates disappointment with the revival's failure to capture the essence of the original play, suggesting a negative assessment. | Gemini: The review explicitly states that the revival 'never finds the savage poetry' of the original, indicating a failure to capture the essence of the play and a negative assessment. | Kimi: The critic states the production fails to capture the essential 'savage poetry' that makes the play devastating, indicating a fundamental shortcoming without offering positive counterpoints in the provided excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Brantley finds the production 'torpid' with no spontaneity or urgency, calling it an 'exquisite snooze' where audience members nod off. Despite praising the design and noting the performers aren't daunted by past productions, the overall assessment is clearly negative with no recommendation to see it. | Gemini: The review is largely negative, describing the production as torpid and a snooze, despite acknowledging the attractiveness of the leads and the design elements. | Kimi: The critic describes the revival as \"torpid\" and lacking spontaneity or urgency, with the only sparks coming from an early poker game scene. Despite acknowledging handsome design and attractive performers, the overall verdict is that the production is boring enough to induce sleep.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:43:56.007Z",
+    "scoredAt": "2026-02-04T19:07:01.806Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 44,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
+    "claudeScore": 38,
+    "openaiScore": null,
     "geminiScore": 45,
     "kimiScore": 42,
     "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 3,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "modelAgreement": "All 3 models agree: Negative"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.nytimes.com/2016/05/02/theater/review-streetcar-named-desire-gillian-anderson-ben-foster.html?_r=0",
@@ -82,7 +82,6 @@
   "previousUrl": "https://www.nytimes.com/2012/04/23/theater/reviews/a-streetcar-named-desire-with-blair-underwood.html",
   "urlDiscoveredAt": "2026-02-04T14:04:18.343Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 44,
   "textWordCount": 763,
@@ -109,5 +108,6 @@
   "archiveOrgTimestamp": "20141106081402",
   "archiveOrgUrl": "http://web.archive.org/web/20141106081402/http://www.nytimes.com/2012/04/23/theater/reviews/a-streetcar-named-desire-at-the-broadhurst-theater.html",
   "wordCount": 763,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:07:01.806Z"
 }

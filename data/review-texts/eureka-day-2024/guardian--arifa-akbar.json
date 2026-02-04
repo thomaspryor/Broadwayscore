@@ -94,5 +94,11 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
-  "wordCount": 744
+  "wordCount": 744,
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T20:32:44.910Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at The Old Vic in London, not the current Broadway run.; kimi: This review covers the production at The Old Vic in London, not a Broadway production. The text explicitly states 'The Old Vic, London' and describes a West End production with British theater context.",
+  "promptVersion": "5.2.0"
 }

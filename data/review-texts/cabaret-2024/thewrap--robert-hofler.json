@@ -10,7 +10,7 @@
   "bwwRoundupUrl": null,
   "bwwThumb": "Meh",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 45,
   "source": "bww-roundup",
   "dtliThumb": "Down",
   "dtliExcerpt": "Near the end of “Cabaret,” Rankin sings the title song, and like so much of this production, she only plays the subtext — that life is anything but beautiful, despite what the Emcee has been telling us. Indeed, life can be hell. She’s a little late to that realization. Redmayne is the Devil, complete with red hair, from the moment he steps on stage.",
@@ -20,11 +20,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 44,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises the physical production and design but fundamentally rejects the directorial concept, stating it 'doesn't work' and criticizing the core interpretive choices as problematic and ineffective. | GPT-4o: The review praises the theater redesign and some aspects of the production, but criticizes the directorial choices and overall concept, leading to a mixed verdict. | Gemini: The review is largely negative, criticizing the direction and choices made in this revival, particularly the emphasis on gay subtext and the portrayal of the Emcee and Sally Bowles. | Kimi: While praising Tom Scutt's immersive theater redesign and Rebecca Frecknall's staging, the critic fundamentally rejects the production's concept of the Kit Kat Club as a gay bar, finding it morally confused and the central performances (except Rankin) mannered and abrasive.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises the technical elements (theater redesign, costumes, staging) but fundamentally rejects the show's core concept and directorial choices. The verdict is clearly negative despite acknowledging impressive production values. | GPT-4o: The review praises the theater's redesign and some production elements but criticizes the direction and thematic choices, indicating a mixed reception overall. | Gemini: The review is largely negative, criticizing the direction and interpretation of the material, especially the portrayal of the Kit Kat Club and the characters. While acknowledging some aspects of the production, the overall assessment is unfavorable. | Kimi: While praising the spectacular set and costume design, the critic fundamentally rejects the production concept and direction, finding the interpretation misguided and the lead performances mannered and excessive.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,23 +51,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T04:09:44.830Z",
+    "scoredAt": "2026-02-04T20:05:03.053Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 44,
-    "previousVersion": "5.1.0"
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 60,
+    "openaiScore": 58,
     "geminiScore": 45,
-    "kimiScore": 45,
+    "kimiScore": 48,
     "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 18,
+    "scoreDelta": 16,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,12 +77,11 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,
-  "rescoreCompletedAt": "2026-01-29T01:42:35.692Z",
+  "rescoreCompletedAt": "2026-02-04T20:05:03.054Z",
   "contentTier": "complete",
   "wordCount": 833,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-into-a-rancid-pretzel/"
 }

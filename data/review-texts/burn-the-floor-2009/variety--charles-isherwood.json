@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This assemblage of ballroom and Latin dance numbers, performed by a cast of champion dancers from around the world, is certainly a feast for the eyes, if not always for the mind.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This assemblage of ballroom and Latin dance numbers, performed by a cast of champion dancers from around the world, is certainly a feast for the eyes, if not always for the mind.",
+        "quote": "If you're going to invade the turf of Bob Fosse, Jerome Robbins and Michael Bennett, you need to bring something beyond adrenaline and aggressive sizzle.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges visual appeal ('feast for the eyes') but qualifies this with intellectual reservations ('if not always for the mind'), suggesting mixed feelings without a clear recommendation either way. | GPT-4o: The review praises the visual spectacle but implies a lack of intellectual engagement, suggesting a mixed reception. | Gemini: The review acknowledges the visual appeal but implies a lack of intellectual depth, resulting in a mixed assessment. | Kimi: The review offers qualified praise ('feast for the eyes') with a clear caveat ('not always for the mind'), suggesting appreciation for the spectacle without full endorsement of the show's substance. The 'if not always' construction indicates reservations that prevent a clear recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic acknowledges the performers' athleticism and notes some audience enthusiasm, but consistently criticizes the show as lacking grace, imagination, and artistry. The review describes it as 'effortful,' 'robotic,' and having 'about 15 ounces of imagination,' suggesting it's a disappointing spectacle that prioritizes flash over substance. | GPT-4o: The review criticizes the lack of grace, style, and imagination, describing the show as more athletic than expressive and comparing it to a tacky Vegas variety show. While there are some positive mentions of individual performers, the overall tone is negative. | Gemini: The review acknowledges the dancers' skill but criticizes the show's lack of finesse, subtlety, and originality, resulting in a mixed assessment. | Kimi: While acknowledging the athletic skill of the dancers, Isherwood finds the show vulgar and lacking in imagination, grace, or wit, ultimately suggesting only reality TV fans will appreciate its flash over finesse.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,31 +50,31 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:56:37.783Z",
+    "scoredAt": "2026-02-04T20:04:03.058Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
+    "claudeScore": 42,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   },
   "textQuality": "full",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 826,
@@ -117,5 +117,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 826,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:04:03.058Z"
 }

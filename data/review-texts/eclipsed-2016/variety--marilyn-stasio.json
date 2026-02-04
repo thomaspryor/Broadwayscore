@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Danai Gurira's drama about five Liberian women surviving civil war is a powerful piece of theater that gives voice to the voiceless.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 81,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Danai Gurira's drama about five Liberian women surviving civil war is a powerful piece of theater that gives voice to the voiceless.",
+        "quote": "Superbly directed by Liesl Tommy and powerfully acted by a strong ensemble led by the Oscar-winning star of '12 Years a Slave,' Lupita Nyong'o.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review uses strong, positive language ('powerful piece of theater') indicating a high level of recommendation without any reservations. | Gemini: The review uses the phrase \"powerful piece of theater\" which indicates a positive recommendation. | Kimi: The critic offers strong unqualified praise for the play's artistic power and social impact, though the excerpt's extreme brevity limits confidence in the full assessment.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Consistent praise throughout for direction, performances, and writing. Uses strong positive language like 'searing,' 'superbly directed,' 'powerfully acted,' and 'extraordinary visceral impact' with no significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the direction, acting, and design of the production. It highlights the play's impact and relevance, making it a must-see for serious theatergoers. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and design. The critic highlights the play's impact and importance, making it a strong recommendation. | Kimi: The review resolves initial concerns about the Broadway transfer with an unreserved endorsement, praising the direction as 'superb,' the acting as 'powerful,' and the design as 'meticulously detailed' while declaring the production hits the 'sweet spot' for serious theatergoers. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:43:29.787Z",
+    "scoredAt": "2026-02-04T20:30:49.362Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 90,
-    "geminiScore": 78,
-    "kimiScore": 83,
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   },
   "textQuality": "full",
   "previousUrl": "https://variety.com/2016/legit/reviews/eclipsed-review-broadway-lupita-nyongo-1201731449/",
   "urlDiscoveredAt": "2026-02-03T23:48:02.006Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 795,
@@ -102,5 +103,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:30:49.362Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Arthur Miller's 1947 drama feels both timely and timeless, anchored by sterling performances from Annette Bening and Tracy Letts.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 79,
-    "confidence": "medium",
+    "score": 78,
+    "confidence": "high",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival of Arthur Miller's 1947 drama feels both timely and timeless, anchored by sterling performances from Annette Bening and Tracy Letts.",
+        "quote": "Thrillingly acted – with performances that threaten, tantalizingly, to go over the top, but stop just short",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brief excerpt praising the revival as 'timely and timeless' with 'sterling performances' suggests positive recommendation, but extremely limited text requires low confidence. | GPT-4o: The review praises the production as 'timely and timeless' with 'sterling performances,' indicating a strong recommendation without reservations. | Gemini: The review highlights the play's relevance and praises the performances of the lead actors, indicating a positive overall assessment. | Kimi: The available text offers unambiguous praise ('sterling performances', 'timely and timeless'), though the review appears truncated after a single sentence, preventing confirmation of the final verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances (calling them 'thrilling', 'master class', 'gorgeously calibrated') and production values, but expresses reservations about the direction's lack of contemporary urgency and calls it 'slightly cynical'. The truncated text and mixed assessment warrant medium confidence in the positive range. | GPT-4o: The review praises the performances as 'thrilling' and 'note perfect,' and describes the production as 'sturdy,' indicating a positive reception. However, it also notes a lack of urgency and missed opportunities for contemporary resonance, suggesting some reservations. | Gemini: The review praises the performances as \"thrilling\" and a \"master class,\" but notes the production lacks urgency and connection to the present. The truncated text makes the final verdict less clear, but the overall tone is positive with reservations. | Kimi: Despite criticisms that the production lacks contemporary urgency and seals itself off in the period, the review consistently praises the cast as 'first-class' and 'superbly acted,' calling it an 'excellent production' overall. The truncated ending warrants caution, but the available text indicates a clear recommendation based on the acting.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T12:31:46.668Z",
+    "scoredAt": "2026-02-04T19:12:14.844Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 79,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 82,
-    "geminiScore": 78,
-    "kimiScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,7 +78,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2019/may/09/all-my-sons-review-arthur-miller-broadway-jeremy-herrin",
   "urlDiscoveredAt": "2026-02-04T02:43:03.764Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 79,
   "textWordCount": 717,
@@ -116,5 +116,6 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 717,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:12:14.844Z"
 }

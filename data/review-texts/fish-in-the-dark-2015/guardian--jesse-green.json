@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "David's first Broadway play is a painfully unfunny family comedy that wastes his considerable talents on tired jokes and sitcom situations.",
   "originalScore": 40,
-  "assignedScore": 40,
+  "assignedScore": 51,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
   "llmScore": {
-    "score": 40,
-    "confidence": "high",
+    "score": 51,
+    "confidence": "medium",
     "range": {
-      "low": 35,
-      "high": 45
+      "low": 46,
+      "high": 56
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "a painfully unfunny family comedy that wastes his considerable talents",
+        "quote": "By the admittedly exceptional comic standards David has laid down, this ranks alongside an average episode of Curb Your Enthusiasm.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the play 'painfully unfunny' and criticizing it for wasting the playwright's talents. The original rating of 40 confirms this falls in the Negative range. | GPT-4o: The review describes the play as 'painfully unfunny' and criticizes it for wasting talent on 'tired jokes and sitcom situations,' aligning with the original negative rating of 40. | Gemini: The review explicitly states the play is \"painfully unfunny\" and a waste of talent, indicating a negative assessment. The critic's rating of 40 confirms this. | Kimi: The critic delivers an unambiguously negative verdict with harsh language ('painfully unfunny', 'wastes', 'tired jokes') and no redeeming qualities mentioned. The provided 40/100 rating confirms the Negative classification.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review acknowledges hilarious moments and praises David's performance, but consistently expresses disappointment that it doesn't reach his usual standards. The critic finds it entertaining but not exceptional, with structural flaws and uneven execution. | GPT-4o: The review acknowledges some humorous moments but ultimately finds the play lacking compared to David's best work. The original rating of 40 aligns with a negative assessment, indicating disappointment. | Gemini: The review acknowledges funny moments and outstanding performances but ultimately finds the show falling short of David's best work, making it a mixed recommendation. | Kimi: While the review acknowledges 'great gags' and 'hilarious' moments, the overall verdict warns that fans will be disappointed by the linear structure and scenes that are 'cut off before they can really blossom,' concluding it is merely 'average' by David's standards and not worth the exorbitant ticket prices. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:08:17.949Z",
+    "scoredAt": "2026-02-04T20:41:22.960Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 40,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 40,
+    "claudeScore": 62,
     "openaiScore": 40,
-    "geminiScore": 40,
+    "geminiScore": 65,
     "kimiScore": 40,
-    "claudeBucket": "Negative",
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
+    "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 0,
+    "scoreDelta": 25,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "playbillVerdictUrl": "http://www.theguardian.com/stage/2015/mar/05/fish-in-the-dark-review-larry-david-broadway-death-etiquette",
   "sources": [
@@ -81,7 +82,6 @@
   "previousUrl": "https://www.theguardian.com/stage/2015/mar/06/fish-in-the-dark-review-larry-david-broadway",
   "urlDiscoveredAt": "2026-02-04T03:03:34.536Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 40,
   "textWordCount": 1238,
@@ -113,5 +113,6 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 1238,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:41:22.960Z"
 }

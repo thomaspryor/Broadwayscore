@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Deirdre O'Connell gives a performance unlike anything I've ever seen on Broadway, lip-syncing with uncanny precision to actual recordings of playwright Lucas Hnath's mother recounting her harrowing experience.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 83,
-    "confidence": "low",
+    "score": 82,
+    "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Deirdre O'Connell gives a performance unlike anything I've ever seen on Broadway, lip-syncing with uncanny precision to actual recordings of playwright Lucas Hnath's mother recounting her harrowing experience.",
+        "quote": "Consider it the towering achievement of Dana H. that by the end of this play, all but the thickest of listeners will no longer feel compelled to ask those questions.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[two-model-fallback] | Bucket disagreement: gemini=Positive, kimi=Rave | Gemini: The review focuses on the unique performance of Deirdre O'Connell, indicating a positive aspect of the show. However, the limited context makes it difficult to assess the overall quality, leading to a score in the lower end of the positive range. | Kimi: The critic employs superlative language ('unlike anything I've ever seen', 'uncanny precision') to praise the central performance of this one-woman show, indicating strong enthusiasm. Confidence is reduced due to the excerpt's brevity.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: The critic calls the show a 'towering achievement' and praises O'Connell's 'magnificent' performance extensively. While acknowledging the difficult subject matter, the review is filled with admiration for the artistry and effectiveness of the production. | Gemini: The review is overwhelmingly positive, praising the performance, direction, and overall impact of the play. The critic highlights the play's ability to convey the complexities of abuse and its lasting effects, making it a compelling and thought-provoking experience. | Kimi: The review offers unqualified praise for Deirdre O'Connell's 'magnificent' performance, Les Waters' direction, and the production's emotional impact, calling it a 'towering achievement' without any reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,26 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:50:18.292Z",
+    "scoredAt": "2026-02-04T20:17:54.221Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 83,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 82,
     "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 15,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "two-model-fallback",
-    "modelAgreement": "Bucket disagreement: gemini=Positive, kimi=Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "https://deadline.com/2021/10/dana-h-broadway-review-lucas-hnath-deirdre-oconnell-1234856998/",
@@ -80,7 +82,6 @@
   "previousUrl": "https://deadline.com/2021/10/dana-h-broadway-review-deirdre-oconnell-lucas-hnath-1234858426/",
   "urlDiscoveredAt": "2026-02-04T02:25:31.808Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 83,
   "textWordCount": 1092,
@@ -103,5 +104,6 @@
   "archiveOrgTimestamp": "20221129175148",
   "archiveOrgUrl": "http://web.archive.org/web/20221129175148/https://deadline.com/2021/10/dana-h-broadway-review-lucas-hnath-deirdre-oconnell-1234856998/",
   "wordCount": 1092,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:17:54.221Z"
 }

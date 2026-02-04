@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with terms like 'great family comedy,' 'totally riveting,' 'marvelous direction,' and 'extraordinary ensemble.' Despite noting one clichéd character, the overall assessment is highly positive with detailed praise for performances and direction. | GPT-4o: The review is filled with superlatives and strong praise for both the play and the performances, particularly highlighting the direction and the cast's execution. The critic uses terms like 'riveting' and 'extraordinary ensemble,' indicating a highly positive reception. | Gemini: The review is overwhelmingly positive, using terms like \"totally riveting\" and \"marvelous direction.\" The critic praises the performances and the play's relatability, indicating a strong recommendation. | Kimi: The critic lavishes praise on the playwright's 'genius,' the 'marvelous' direction, and the 'extraordinary' ensemble, comparing the work favorably to canonical American dramas by O'Neill and Letts while declaring the production 'totally riveting' throughout. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives like 'great family comedy,' 'totally riveting,' 'marvelous direction,' and 'extraordinary ensemble.' Detailed positive analysis of performances and direction with only minor criticism of one character being clichéd. | GPT-4o: The review is filled with superlatives and praise for the production, direction, and performances, particularly highlighting the riveting nature of the show and the extraordinary ensemble. | Gemini: The review is overwhelmingly positive, using terms like \"great family comedy\" and \"totally riveting.\" While there are some minor criticisms of a character, the overall assessment is highly favorable. | Kimi: The review offers unqualified praise for the play, direction, and performances, using words like 'great,' 'totally riveting,' 'marvelous,' and 'extraordinary' with no significant caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,23 +51,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T02:19:11.785Z",
+    "scoredAt": "2026-02-04T19:26:35.714Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 89,
-    "previousVersion": "5.1.0"
+    "previousScore": 87,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 92,
     "geminiScore": 81,
-    "kimiScore": 93,
+    "kimiScore": 91,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 12,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -77,12 +77,11 @@
   },
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 53,
-  "rescoreCompletedAt": "2026-01-28T23:31:13.396Z",
+  "rescoreCompletedAt": "2026-02-04T19:26:35.714Z",
   "contentTier": "complete",
   "wordCount": 757,
   "isFullReview": false,
   "showScoreExcerpt": null,
-  "needsRescore": true,
   "textQuality": "full",
   "playbillVerdictUrl": "https://www.thewrap.com/appropriate-broadway-review-sarah-paulson-elle-fanning/"
 }

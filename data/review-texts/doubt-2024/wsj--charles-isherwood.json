@@ -7,7 +7,7 @@
   "publishDate": "March 7, 2024",
   "dtliExcerpt": "The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it gives audiences a chance to consider them in an altered context.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 77,
   "humanReviewScore": 77,
   "humanReviewNote": "Excerpt says 'the excellent Broadway revival' — LLM misread 'without new slant' as criticism. Designation: Recommended. Both thumbs Up.",
   "dtliThumb": "Up",
@@ -16,14 +16,14 @@
   "bwwExcerpt": "In the two decades since John Patrick Shanley’s “Doubt” premiered—winning a best play Tony and a Pulitzer Prize—the mystery at its core, whether a priest has molested a child, has hardly grown less grave. But cultural changes now cast their own shadows over Mr. Shanley’s taut, gripping drama. The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it giv",
   "bwwThumb": "Up",
   "llmScore": {
-    "score": 60,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 72,
+      "high": 82
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
@@ -32,12 +32,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Ryan and Schreiber, presents the play without any intentional new slant on its ideas",
+        "quote": "The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests a lack of innovation or fresh perspective in the production. Without more context, it is difficult to determine a strong recommendation or discouragement, leading to a mixed classification. | Gemini: The excerpt suggests a neutral presentation, lacking strong positive or negative elements. Given the limited text, confidence is low, but the tone seems neither enthusiastic nor dismissive. | Kimi: The excerpt neutrally describes a faithful, traditional staging but provides no clear evaluative judgment on whether this approach succeeds. Without the surrounding context to indicate praise or criticism, the score reflects this ambiguity.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic calls this an 'excellent Broadway revival' and describes the original as 'taut, gripping drama.' While brief, the praise is clear and unqualified. | Gemini: The review calls the revival \"excellent\" and \"gripping\", indicating a positive experience. However, the phrase \"without any intentional new slant\" suggests it's a faithful but not groundbreaking production, justifying a score in the middle of the positive range. | Kimi: The critic explicitly calls the revival 'excellent' and describes the original play as 'taut' and 'gripping,' indicating a clear recommendation. However, the text appears truncated before the final verdict, and the note that the production offers 'no intentional new slant' suggests qualified rather than ecstatic enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,28 +47,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T05:18:39.738Z",
+    "scoredAt": "2026-02-04T20:29:19.245Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 61,
-    "previousVersion": "5.1.0"
+    "previousScore": 60,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 60,
-    "geminiScore": 60,
-    "kimiScore": 60,
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 0,
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Positive"
   },
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOUBT-Returns-To-Broadway-Starring-Liev-Schreiber-and-Amy-Ryan-20240307",
   "archivePath": "data/archives/reviews/doubt-2024/wsj--charles-isherwood_2026-02-04.html",
@@ -111,7 +111,7 @@
   "textIssues": [
     "Word count too low: 157 (min: 300)"
   ],
-  "rescoreCompletedAt": "2026-01-29T14:31:51.707Z",
+  "rescoreCompletedAt": "2026-02-04T20:29:19.245Z",
   "contentTier": "truncated",
   "wordCount": 100,
   "fullText": "https://www.wsj.com/articles/doubt-review-broadway-revivial-roundabout-amy-ryan-liev-schreiber-zoe-kazan-quincy-tyler-bernstine-ae927a88\n\nAmy Ryan and Zoe Kazan Joan MarcusNew York\n\nIn the two decades since John Patrick Shanley’s “Doubt” premiered—winning a best play Tony and a Pulitzer Prize—the mystery at its core, whether a priest has molested a child, has hardly grown less grave. But cultural changes now cast their own shadows over Mr. Shanley’s taut, gripping drama. The excellent Broadway revival, directed by Scott Ellis for the Roundabout Theatre Company, starring Amy Ryan and Liev Schreiber, presents the play without any intentional new slant on its ideas, but it gives audiences a chance to consider them in an altered context.",
@@ -132,7 +132,6 @@
   "garbageReason": "WSJ paywall stub: URL + photo caption only",
   "garbageFixedAt": "2026-02-02T19:53:54.559Z",
   "contentTierReason": "fullText was WSJ paywall stub",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "truncationSignals": [],

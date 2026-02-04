@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 77,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for energy and performances, but limited scope and focus on venue/atmosphere rather than show substance suggests measured positivity rather than strong enthusiasm. | GPT-4o: The excerpt highlights energetic and praiseworthy performances, suggesting a positive experience. However, the lack of a full review and the single excerpt warning necessitate a lower confidence and score at the lower end of the Positive range. | Gemini: The review excerpt praises the energy and performances, indicating a positive experience, but the lack of a strong concluding statement suggests a recommendation with reservations. | Kimi: The excerpt offers clear praise for the production's energy and performances, indicating a positive recommendation. However, confidence is low as only one curated excerpt is available, which may not represent the full review's verdict.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review consistently praises the production's spectacle elements (30-piece orchestra, costumes, fight choreography) and performances, calling it 'an impressive spectacle' and highlighting the 'energy' and 'praiseworthy performances.' While not using superlatives, the positive tone and recommendation for those interested in the genre places it solidly in positive territory. | GPT-4o: The review praises the production's energy, performances, and spectacle, highlighting the impressive orchestration and modern costume design. The critic's tone is enthusiastic and recommends the show as a must-see spectacle. | Gemini: The review is positive, highlighting the energy, performances, orchestra, and costumes, while also describing the plot. It's a clear recommendation, but not a rave. | Kimi: The review consistently praises the performances, lush orchestrations, costume design, and fight choreography with superlatives like 'thrilling,' 'spectacles,' and 'show-stopping,' offering an unreserved recommendation without significant criticism.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T11:41:26.546Z",
+    "scoredAt": "2026-02-04T20:05:46.320Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 77,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 75,
-    "openaiScore": 72,
+    "claudeScore": 76,
+    "openaiScore": 82,
     "geminiScore": 78,
-    "kimiScore": 81,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -73,7 +74,6 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 77,
   "textWordCount": 619,
@@ -95,5 +95,6 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 619,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:05:46.320Z"
 }

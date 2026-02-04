@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The production, starring Jeff Daniels and Michelle Williams, is a tense, claustrophobic two-hander that makes you squirm in your seat — which is exactly what it should do.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 76,
+    "score": 93,
     "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 88,
+      "high": 98
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "makes you squirm in your seat — which is exactly what it should do",
+        "quote": "The superb production that opens on Broadway tonight wastes no time in justifying it.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Critic affirms the production successfully achieves its artistic goals with strong lead performances, though the brief excerpt limits context for a higher score. | GPT-4o: The review praises the production for achieving its intended effect, indicating a strong recommendation with no reservations. | Gemini: The critic states the production achieves its intended effect, making it a positive review, but not overwhelmingly so. | Kimi: The critic validates the production's effectiveness, noting it successfully delivers the intended tense and uncomfortable experience. While clearly approving, the brief excerpt lacks the superlatives or detailed praise typical of higher scores.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Opens with 'superb production,' calls performances 'devastating' and 'stunning,' praises director's confident work, and concludes theater 'at its best.' Unqualified critical acclaim with superlative language throughout. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's complexity. The critic highlights the play's bravery and its ability to challenge conventional thinking. | Kimi: The review offers unqualified praise for the 'superb production,' 'devastating' performances by both leads, and 'brave' writing, with no significant reservations and enthusiastic endorsement throughout.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:52:07.433Z",
+    "scoredAt": "2026-02-04T19:52:44.503Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "kimiScore": 77,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "2/3 models agree: Rave"
   },
   "previousUrl": "https://www.vulture.com/2016/03/theater-review-blackbird.html",
   "urlDiscoveredAt": "2026-02-03T16:24:52.727Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 1037,
@@ -125,5 +124,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:52:44.503Z"
 }

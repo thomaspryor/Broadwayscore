@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Broadway debut of Martyna Majok's Pulitzer Prize-winning play 'Cost of Living' is a tender, honest and surprisingly funny look at disability and caregiving.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
-    "score": 78,
+    "score": 80,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The Broadway debut of Martyna Majok's Pulitzer Prize-winning play 'Cost of Living' is a tender, honest and surprisingly funny look at disability and caregiving.",
+        "quote": "If most of 'Cost of Living' is invigorating for not leaning on easy answers or stereotypical, Hallmark Channel characters, the ending aims to nourish audiences in a more traditional manner we've become accustomed to.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('tender, honest and surprisingly funny') but this appears to be just an excerpt or opening line rather than a full review, limiting confidence in the score. | GPT-4o: The review uses positive descriptors like 'tender', 'honest', and 'funny', indicating a positive recommendation. However, the brevity of the review limits the confidence level. | Gemini: The review uses positive language such as \"tender, honest, and surprisingly funny\" to describe the play, indicating a positive recommendation. | Kimi: Despite brevity, the review offers unambiguous praise with warm descriptors ('tender,' 'honest,' 'surprisingly funny') that clearly recommend the production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the play as 'absorbing' and 'invigorating,' commends the performances and direction, and concludes that audiences will be 'pleased' with the destination. Despite noting the ending becomes more traditional, the overall assessment is clearly positive. | GPT-4o: The review praises the play for its refreshing take on characters with disabilities and its ability to avoid clichés, while also delivering a satisfying conclusion. The tone is enthusiastic, with appreciation for the performances and direction. | Gemini: The review praises the play for pushing back against expectations and avoiding stereotypes, highlighting strong performances and a transcendent scene. While the ending is more traditional, the overall experience is deemed pleasing. | Kimi: The reviewer consistently praises the play's avoidance of stereotypes, calls it 'invigorating' and 'absorbing,' and highlights transcendent scenes and deeply touching performances from Sullivan and Mozgala, delivering a clear recommendation despite noting the ending becomes somewhat more traditional.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,17 +50,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:14:34.458Z",
+    "scoredAt": "2026-02-04T20:15:26.522Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 80,
-    "geminiScore": 78,
-    "kimiScore": 78,
+    "claudeScore": 79,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
@@ -81,7 +82,6 @@
   "previousUrl": "https://nypost.com/2022/10/21/cost-of-living-review-broadway-play-is-tender-and-honest/",
   "urlDiscoveredAt": "2026-02-04T03:12:37.074Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 561,
@@ -118,5 +118,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 561,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:15:26.522Z"
 }

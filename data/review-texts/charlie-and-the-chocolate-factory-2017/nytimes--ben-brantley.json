@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
   "llmScore": {
-    "score": 61,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 59,
+      "high": 69
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This sugar-rushed musical serves up more than enough razzle-dazzle to please the children in the audience, though it may leave some adults feeling as queasy as if they'd gorged on candy.",
+        "quote": "This big but tentative show doesn't burst with flavor of any kind, at least not during its exposition-crammed first act.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed assessment - acknowledges the show succeeds for its target audience (children) but warns adults may find it excessive and unpleasant. Neither recommends nor discourages overall. | GPT-4o: The review highlights the show's appeal to children but suggests it may not be as enjoyable for adults, indicating a mixed reception. | Gemini: The review acknowledges the show's appeal to children but suggests it may be overwhelming or unpleasant for adults, indicating a mixed reception. | Kimi: The critic acknowledges the show successfully entertains its target audience of children with spectacle, but delivers a strong warning that adults may find the experience overwhelming and unpleasant, creating a split verdict rather than a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Brantley criticizes the first act as bland and exposition-heavy, but finds the second half develops distinct character when Borle emerges as Wonka. He notes it's an improvement over London but still describes it as 'tentative' overall. | GPT-4o: The review describes the show as 'big but tentative' and 'doesn't burst with flavor' in the first act, but acknowledges improvement in the second half and over the London production. The tone is mixed with some positive elements, but not a strong recommendation. | Gemini: The review is mixed, praising the second half and Christian Borle's performance, but criticizing the first act and comparing it unfavorably to the London production. The overall tone suggests a qualified recommendation. | Kimi: While the critic praises Christian Borle's performance and notes the second half finally captures Dahl's darker tone, the first act is criticized as 'exposition-crammed' and 'tentative,' resulting in a qualified, mixed assessment without a clear recommendation to attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:05:01.035Z",
+    "scoredAt": "2026-02-04T20:06:31.549Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
-    "geminiScore": 62,
-    "kimiScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.nytimes.com/2017/04/24/theater/charlie-and-the-chocolate-factory-review.html",
   "urlDiscoveredAt": "2026-02-03T23:39:44.509Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 279,
@@ -122,5 +122,6 @@
     "Word count too low: 283 (min: 300)"
   ],
   "wordCount": 279,
-  "tierReason": "Short text (279 words)"
+  "tierReason": "Short text (279 words)",
+  "rescoreCompletedAt": "2026-02-04T20:06:31.549Z"
 }

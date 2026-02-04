@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Crystal's warmth and wit make '700 Sundays' a touching tribute to his father and a celebration of family bonds that resonates long after the final bow.",
+        "quote": "Crystal's big-hearted and seat-shakingly funny one-man memoir generates laughter and poignance that are the real deal.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating aligns with positive territory. Language is appreciative ('warmth and wit', 'touching tribute', 'resonates long after') but lacks superlatives for rave territory. | GPT-4o: The review praises the show for its emotional impact and the performance of Crystal, aligning with the critic's original rating of 80, indicating a solid recommendation. | Gemini: The review praises Crystal's performance and the show's emotional impact, indicating a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic gives the show an 80/100 rating and describes it as a touching, resonant celebration of family with praise for Crystal's performance, indicating a solid recommendation without reaching the highest ecstasy of a rave.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating combined with enthusiastic language like 'seat-shakingly funny,' 'ever-entertaining,' and 'perfect balance' indicates strong positive recommendation despite minor second act concerns. | GPT-4o: The review is largely positive, highlighting Crystal's energy, humor, and emotional depth. The critic mentions a slight drag in the second act but considers it nitpicking, aligning with the original rating of 80. | Gemini: The critic gives a positive review, highlighting Crystal's energy and the show's humor and poignance. The original rating of 80 aligns with a strong positive assessment. | Kimi: The reviewer delivers consistent praise for Crystal's energetic, humorous, and heartfelt performance, calling the show 'big-hearted' and 'ever-entertaining.' While noting the second act drags slightly, this is dismissed as 'nitpicking,' and the original 80/100 rating confirms a strong recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T10:24:40.540Z",
+    "scoredAt": "2026-02-04T19:03:08.375Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 81,
     "openaiScore": 80,
     "geminiScore": 80,
     "kimiScore": 80,
@@ -65,7 +66,7 @@
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.nydailynews.com/2013/11/14/billy-crystal-700-sundays-review-imperial-theatre/",
   "urlDiscoveredAt": "2026-02-04T02:27:41.954Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 420,
@@ -119,5 +119,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 420,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:03:08.375Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The new Broadway revival of Evita is like a beautiful vintage car that's been lovingly restored but whose engine still doesn't quite purr. Elena Roger, the Argentine actress who originated the role of Eva Perón in the London revival, brings authenticity and a gorgeous voice to the part, but the production feels oddly bloodless.",
   "originalScore": null,
-  "assignedScore": 63,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (54 words)",
   "llmScore": {
-    "score": 63,
-    "confidence": "high",
+    "score": 44,
+    "confidence": "medium",
     "range": {
-      "low": 58,
-      "high": 68
+      "low": 39,
+      "high": 49
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production feels oddly bloodless.",
+        "quote": "Personally, I am among the unmoved, if not the unimpressed.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review praises Elena Roger's performance but criticizes the production as 'oddly bloodless,' indicating a mixed reception with both positive and negative elements. | Gemini: The review praises the lead actress but finds the overall production \"oddly bloodless,\" indicating a mixed assessment. | Kimi: The review compliments the lead performance and visual restoration but delivers a fundamental criticism that the production lacks vitality and energy, resulting in an ambivalent assessment without a clear recommendation to attend.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic acknowledges impressive production elements (Grandage's direction, opening tableau) but finds fundamental problems with the lead performances and the show's emotional core. Despite praising some technical aspects, the overall assessment is clearly negative with phrases like 'unmoved,' problems with all three leads, and wandering attention. | Gemini: The review expresses mixed feelings, praising some aspects (imagery, Roger's unique interpretation) while criticizing others (Martin's performance, lack of emotion). The overall tone suggests a lukewarm reception. | Kimi: While praising some staging elements and choreography, the critic declares himself 'unmoved' and 'unimpressed' overall, finding Ricky Martin 'not distinctive,' Elena Roger 'irritating,' and the show 'devoid of emotion' with leads 'marooned in bright pools of focused self-regard.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:51:13.620Z",
+    "scoredAt": "2026-02-04T20:33:22.758Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 63,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 65,
+    "claudeScore": 45,
+    "openaiScore": null,
     "geminiScore": 62,
-    "kimiScore": 62,
-    "openaiBucket": "Mixed",
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
   },
   "previousUrl": "https://www.vulture.com/2012/04/theater-review-evita-revival.html",
   "urlDiscoveredAt": "2026-02-03T23:55:57.852Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 63,
   "textWordCount": 942,
@@ -97,5 +97,6 @@
   "archiveOrgTimestamp": "20250913003706",
   "archiveOrgUrl": "http://web.archive.org/web/20250913003706/https://www.vulture.com/2012/04/theater-review-throwing-up-my-hands-at-evita.html",
   "wordCount": 942,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:33:22.758Z"
 }

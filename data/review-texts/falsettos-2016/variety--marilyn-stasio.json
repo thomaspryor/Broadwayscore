@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This ebullient revival of William Finn and James Lapine's 'Falsettos' restores a beloved musical to Broadway with such irresistible energy and emotional authenticity that it feels like a brand-new show.",
   "originalScore": null,
-  "assignedScore": 92,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
-    "score": 92,
-    "confidence": "medium",
+    "score": 82,
+    "confidence": "high",
     "range": {
-      "low": 87,
-      "high": 97
+      "low": 77,
+      "high": 87
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This ebullient revival of William Finn and James Lapine's 'Falsettos' restores a beloved musical to Broadway with such irresistible energy and emotional authenticity.",
+        "quote": "this surprisingly fresh revival has been directed by original director Lapine, who plainly understands the bittersweet humor and provisional joy of that period",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses highly positive language such as 'ebullient', 'irresistible energy', and 'emotional authenticity', indicating a strong recommendation and enthusiasm for the revival. | Gemini: The review uses strong positive language such as \"ebullient,\" \"irresistible energy,\" and \"emotional authenticity,\" indicating a strong recommendation. | Kimi: The critic uses superlatives including 'ebullient,' 'irresistible,' and 'beloved' to deliver an unqualified enthusiastic endorsement, praising the revival's energy and emotional authenticity without reservation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive review with consistent praise for performances, direction, and material. Calls the revival 'surprisingly fresh' and praises the 'terrific cast' and 'warm performances.' Uses enthusiastic language like 'dynamite,' 'irresistible,' and 'charming' for the performers. | GPT-4o: The review praises the revival as 'surprisingly fresh' with 'warm performances' and highlights the director's understanding of the material. The tone is enthusiastic with no significant reservations. | Gemini: The review is overwhelmingly positive, using phrases like \"surprisingly fresh revival\", \"terrific cast\", \"endearing performance\", \"irresistible\", and highlighting the show's humor and emotional impact. The critic clearly recommends seeing the show. | Kimi: The review praises the revival as 'surprisingly fresh' with a 'terrific cast' delivering 'warm performances,' commends Lapine's direction, and highlights strong musical numbers, urging audiences to see it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,32 +50,33 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:45:24.504Z",
+    "scoredAt": "2026-02-04T20:34:46.703Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 92,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": null,
-    "openaiScore": 92,
+    "claudeScore": 81,
+    "openaiScore": 82,
     "geminiScore": 82,
-    "kimiScore": 92,
-    "openaiBucket": "Rave",
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 10,
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
   "previousUrl": "https://variety.com/2016/legit/reviews/falsettos-review-broadway-revival-1201918104/",
   "urlDiscoveredAt": "2026-02-03T23:41:46.345Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 92,
   "textWordCount": 426,
@@ -124,5 +125,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:34:46.703Z"
 }

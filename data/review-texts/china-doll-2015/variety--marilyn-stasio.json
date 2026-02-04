@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Al Pacino gives a bravura performance as a billionaire trapped in his penthouse apartment by legal troubles and personal demons in David Mamet's 'China Doll,' but even his magnetic stage presence can't overcome the playwright's static, repetitive script.",
   "originalScore": null,
-  "assignedScore": 54,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (38 words)",
   "llmScore": {
-    "score": 54,
-    "confidence": "medium",
+    "score": 44,
+    "confidence": "high",
     "range": {
-      "low": 49,
-      "high": 59
+      "low": 39,
+      "high": 49
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "even his magnetic stage presence can't overcome the playwright's static, repetitive script",
+        "quote": "There's material for maybe a one-act in this overblown character study.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Clear praise for Pacino's performance but decisive criticism of Mamet's script as 'static, repetitive.' The 'but even' construction indicates the performance doesn't redeem the material. | GPT-4o: The review acknowledges Al Pacino's performance but criticizes the script as static and repetitive, leading to a negative overall assessment. | Gemini: The review praises Pacino's performance but criticizes the script, resulting in a mixed assessment. | Kimi: While the critic praises Pacino's 'bravura' and 'magnetic' performance, the 'but' construction makes clear that the flawed script sinks the show, constituting a recommendation against seeing it. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: While praising Pacino's performance extensively, the critic calls it a 'non-play', criticizes Mamet for 'jerking us around' and 'phoning it in', and finds the structure fundamentally flawed with characters who 'aren't actually on stage.' The positive comments about Pacino don't overcome the harsh critique of the play itself. | GPT-4o: The review criticizes the play as an 'overblown character study' with insufficient material, despite praising Pacino's performance. The overall tone suggests disappointment with the play's structure and execution. | Gemini: The review acknowledges Pacino's performance but ultimately finds the play itself lacking, describing it as an \"overblown character study\" and suggesting it would be better as a one-act. The overall tone is negative, indicating a lack of recommendation. | Kimi: While the critic praises Al Pacino's committed performance as the ruthless capitalist, she condemns Mamet's script as a 'non-play' that is overblown, dramatically inert, and 'phoning it in,' ultimately finding the production fails as legitimate theater.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:04:01.500Z",
+    "scoredAt": "2026-02-04T20:10:50.599Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 54,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
+    "claudeScore": 45,
     "openaiScore": 45,
-    "geminiScore": 62,
+    "geminiScore": 45,
     "kimiScore": 42,
-    "claudeBucket": "Mixed",
+    "claudeBucket": "Negative",
     "openaiBucket": "Negative",
-    "geminiBucket": "Mixed",
+    "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 20,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/china-doll-review-al-pacino-1201653205/",
@@ -79,7 +80,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 54,
   "textWordCount": 565,
@@ -122,5 +122,6 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 565,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:10:50.599Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work, with familiar neuroses and complaints that don't quite translate to the stage.",
   "originalScore": 40,
-  "assignedScore": 42,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
-    "score": 42,
-    "confidence": "high",
+    "score": 63,
+    "confidence": "low",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 58,
+      "high": 68
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,43 +35,46 @@
     },
     "keyPhrases": [
       {
-        "quote": "David's play feels more like an extended 'Seinfeld' episode than a fully formed theatrical work.",
+        "quote": "David wrote and stars in the funny full-length sketch that aims for, but just misses, the lofty territory of great 1960s Broadway comedies.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the play unfavorably to TV and stating it's not 'fully formed theatrical work.' The 40 rating confirms this is a negative review. | GPT-4o: The review criticizes the play for lacking depth and not translating well to the stage, aligning with the original negative rating of 40. | Gemini: The review compares the play unfavorably to a 'Seinfeld' episode, suggesting it's not a fully realized theatrical work. Given the critic's rating of 40, this falls into the negative bucket. | Kimi: The critic unfavorably compares the play to a TV episode and states it doesn't work as theater, consistent with the provided 40-point rating which falls in the Negative range.",
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The critic finds the show 'chronically amusing' and praises performances, but explicitly states it 'just misses' greatness and offers 'only echoes' of David's prior work. The positive elements (solid production, good laughs) are balanced by reservations about the material's freshness and ambition. | GPT-4o: The review describes the show as amusing and funny but ultimately falling short of greatness. The critic acknowledges the humor and solid production but notes it doesn't reach the heights of classic comedies. | Gemini: The review is generally positive, calling the show \"chronically amusing\" and a \"must-see\" for fans. While it acknowledges some shortcomings, it ultimately recommends the show, especially for those familiar with David's previous work. | Kimi: Although the review cites funny moments and solid performances, the critic explicitly assigns a 40/100 rating, finding the comedy creakily old-school, reliant on self-plagiarism, and ultimately falling short of the great Broadway comedies it aspires to emulate. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
       "comparesToPrevious": false,
-      "mixedSignals": false
+      "mixedSignals": true
     }
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:56:19.495Z",
+    "scoredAt": "2026-02-04T20:42:32.938Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 42,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
+    "claudeScore": 65,
+    "openaiScore": 60,
+    "geminiScore": 75,
     "kimiScore": 40,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 35,
     "thumbsMatch": null,
     "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
   },
   "playbillVerdictUrl": "http://www.nydailynews.com/entertainment/theater-arts/fish-dark-review-larry-david-hooks-fun-comedy-article-1.2137659",
   "sources": [
@@ -81,7 +84,6 @@
   "previousUrl": "https://www.nydailynews.com/2015/03/06/fish-in-the-dark-review-larry-david-comedy-broadway/",
   "urlDiscoveredAt": "2026-02-04T03:06:06.887Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,
   "textWordCount": 482,
@@ -119,5 +121,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 482,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:42:32.938Z"
 }

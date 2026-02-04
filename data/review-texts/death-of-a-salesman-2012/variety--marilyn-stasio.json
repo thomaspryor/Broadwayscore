@@ -117,5 +117,11 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 920,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T20:22:02.476Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a review of Werner Herzog's documentary film 'Death Row', not a Broadway theater production; openai: The text is a review of Werner Herzog's documentary 'Death Row,' not a Broadway show.; gemini: This is a review of the documentary \"Death Row\", not a Broadway show.; kimi: This text is a review of Werner Herzog's documentary film 'Death Row,' not a Broadway theatrical production. It discusses a film premiere at Berlinale and broadcast television slots, making it irrelevant to Broadway theater scoring.",
+  "promptVersion": "5.2.0"
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production of Tom Stoppard's 1993 play about the nature of knowledge and the elusiveness of truth is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (35 words)",
   "llmScore": {
-    "score": 80,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This production is as entertaining as it is enlightening, a rare combination that justifies the revival's move to Broadway.",
+        "quote": "This is as entertaining as it is enlightening, a rare combination that justifies the recent revival's move to Broadway.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for both entertainment value and intellectual merit, explicitly justifying the Broadway production. | GPT-4o: The review praises the production as both entertaining and enlightening, justifying its Broadway revival, indicating a strong recommendation. | Gemini: The review explicitly states that the production is \"entertaining\" and \"enlightening\", justifying its move to Broadway, which indicates a positive recommendation, though not a rave. | Kimi: The critic offers clear praise without reservations, describing the production as both entertaining and enlightening while explicitly validating its worthiness for a Broadway transfer.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises both the play ('entirely terrific') and this specific production ('half-terrific revival'), calling it entertaining, enlightening, and justified for Broadway. The passionate defense of Stoppard and emphasis on the production's heat and genuine passion indicate strong enthusiasm. | GPT-4o: The review praises the production as 'entertaining' and 'enlightening,' highlighting its success in justifying the revival's Broadway move. The tone is enthusiastic with no significant reservations. | Gemini: The review is overwhelmingly positive, calling the play \"entirely terrific\" and the production \"half-terrific\". The critic emphasizes the play's genuine passion and the production's ability to be both entertaining and enlightening, justifying a strong positive score. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:15:58.938Z",
+    "scoredAt": "2026-02-04T19:28:18.743Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 79,
+    "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 79,
-    "kimiScore": 79,
+    "geminiScore": 81,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -76,7 +77,6 @@
   "previousUrl": "https://www.nytimes.com/2011/03/18/theater/reviews/arcadia-at-ethel-barrymore-theater-review.html",
   "urlDiscoveredAt": "2026-02-03T15:36:53.623Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 189,
@@ -117,5 +117,6 @@
     "Word count too low: 252 (min: 300)"
   ],
   "wordCount": 189,
-  "tierReason": "Short text (189 words)"
+  "tierReason": "Short text (189 words)",
+  "rescoreCompletedAt": "2026-02-04T19:28:18.743Z"
 }

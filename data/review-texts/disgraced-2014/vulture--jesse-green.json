@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Disgraced is a play that knows exactly what it's doing and does it with surgical precision. Amir's self-hatred and his wife's naiveté are painted in bold, clear strokes.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 78,
+    "score": 64,
     "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Disgraced is a play that knows exactly what it's doing and does it with surgical precision.",
+        "quote": "Its punches are shockingly believable. Its people, not so much.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Praise for the play's precision and craft, but excerpt is too brief to capture full critical assessment or recommendation strength. | Gemini: The review praises the play's precision and clarity, indicating a positive assessment. The language suggests a strong recommendation. | Kimi: The excerpt offers strong praise for the play's craft and characterizations, describing the work as bold and precise, though the text appears truncated without a full conclusion or explicit recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Green acknowledges the play's powerful impact and important themes worth exploring on Broadway, but consistently criticizes the plotting contrivances, unrealistic characterizations, and structural problems that undermine its credibility. | GPT-4o: The review acknowledges the play's intense and visceral impact but criticizes its plotting and character believability, leading to a mixed overall assessment. | Gemini: The review acknowledges important questions raised by the play, but criticizes the Broadway production's direction, pacing, and some casting choices, resulting in a mixed assessment. | Kimi: While praising the visceral fight choreography and some performances (particularly Karen Pittman), the critic finds the play's structure contrived and the Broadway transfer exposes 'faults and infelicities' with 'ludicrous behaviors' that undermine the central argument. The review acknowledges the importance of the questions raised but criticizes the plotting, direction, and character believability without issuing a clear recommendation to attend.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,27 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:02:53.410Z",
+    "scoredAt": "2026-02-04T20:26:28.599Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 78,
-    "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
+    "modelAgreement": "All 4 models agree: Mixed"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://www.vulture.com/2014/10/theater-review-disgraced.html?mid=imdb",
@@ -78,7 +80,6 @@
     "web-search",
     "playbill-verdict"
   ],
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 1110,
@@ -105,5 +106,6 @@
   "archiveOrgTimestamp": "20141024074734",
   "archiveOrgUrl": "http://web.archive.org/web/20141024074734/http://www.vulture.com/2014/10/theater-review-disgraced.html",
   "wordCount": 1110,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:26:28.599Z"
 }

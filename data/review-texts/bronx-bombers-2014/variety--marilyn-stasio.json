@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Eric Simonson's play about the New York Yankees is more like a museum exhibit than a living, breathing drama, with static scenes that feel more educational than entertaining.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
-    "score": 43,
+    "score": 61,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "more like a museum exhibit than a living, breathing drama, with static scenes that feel more educational than entertaining",
+        "quote": "These Olympian immortals don't actually say or do much of dramatic note in a play that's noticeably lacking in drama.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment comparing the play to a static museum exhibit rather than engaging drama, with criticism of pacing and entertainment value. | GPT-4o: The review criticizes the play for being static and more educational than entertaining, indicating a lack of recommendation. | Gemini: The review explicitly states that the play feels more educational than entertaining, indicating a negative assessment of its dramatic qualities. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges entertainment value for baseball fans and praises individual performances, but repeatedly notes the show is 'short on drama' and 'noticeably lacking in drama.' The assessment is balanced between positive elements (performances, concept) and significant dramatic shortcomings. | GPT-4o: The review highlights the lack of drama and questions the marketability of the play, but acknowledges the appeal of the cameos and the concept. This suggests a mixed reception, with interest for specific elements but overall reservations. | Gemini: The review highlights the lack of drama and potential marketing challenges, but also acknowledges the appeal of seeing Yankee legends. It's a mixed bag, not strongly recommending or discouraging.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,28 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:56:02.679Z",
+    "scoredAt": "2026-02-04T20:00:58.138Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 43,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 45,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "textQuality": "full",
   "playbillVerdictUrl": "http://variety.com/2014/legit/reviews/broadway-review-bronx-bombers-1201086604/",
@@ -82,7 +82,6 @@
   "previousUrl": "https://variety.com/2014/legit/reviews/bronx-bombers-theater-review-1201327673/",
   "urlDiscoveredAt": "2026-02-03T23:33:50.797Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 43,
   "textWordCount": 824,
@@ -103,5 +102,6 @@
   "archiveOrgTimestamp": "20250904232228",
   "archiveOrgUrl": "http://web.archive.org/web/20250904232228/https://variety.com/2014/legit/reviews/broadway-review-bronx-bombers-1201086604/",
   "wordCount": 824,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:00:58.139Z"
 }

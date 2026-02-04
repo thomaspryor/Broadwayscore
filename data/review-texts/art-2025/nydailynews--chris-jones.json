@@ -20,54 +20,43 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 78,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
     "components": {
-      "book": 40,
+      "book": null,
       "music": null,
       "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "This very fun revival at least makes the case that forgettability can be an asset.",
-        "sentiment": "positive",
-        "strength": 4
-      },
-      {
-        "quote": "There is no credible arguing with this level of audience-pleasing success.",
-        "sentiment": "positive",
-        "strength": 4
+        "quote": "This very fun revival at least makes the case that forgettability can be an asset and 'Art' enjoyed over and over again.",
+        "sentiment": "neutral",
+        "strength": 3
       }
     ],
-    "reasoning": "Despite calling the plot 'forgettable,' the critic frames this as an asset and emphasizes the production's 'audience-pleasing success' and 'very fun' qualities, indicating a clear positive recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with dismissive context about the play's ubiquity in the 1990s, the critic delivers a positive verdict praising Corden as 'fabulous,' calling it a 'very fun revival,' and noting there's 'no credible arguing with this level of audience-pleasing success.' The recommendation is clear despite some reservations. | GPT-4o: The review praises the performances, especially James Corden's, and finds the revival fun and enjoyable despite acknowledging the play's forgettable nature. The critic recommends seeing it, highlighting its entertainment value. | Gemini: The review is generally positive, highlighting Corden's performance and the clever casting. While noting some shortcomings, it concludes that the revival is \"very fun\" and enjoyable. | Kimi: The critic praises the performances, particularly Corden as 'fabulous,' and calls it a 'very fun revival' with 'audience-pleasing success,' despite noting the play itself is lightweight and 'forgettable.'",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
-      "comparesToPrevious": true,
-      "mixedSignals": true
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-03T22:08:36.619Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T19:30:24.260Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 2720,
-    "outputTokens": 305,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 612,
@@ -95,5 +84,23 @@
   "tierReason": "Full review text",
   "sources": [
     "dtli"
-  ]
+  ],
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-04T19:30:24.261Z"
 }

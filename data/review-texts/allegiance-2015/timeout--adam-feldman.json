@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "good intentions don't automatically make good theater",
+        "quote": "This well-intentioned but mawkish musical about a family interned after Pearl Harbor tries to balance romance, humor and tragedy, but crumples things badly.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict despite acknowledging good intentions. The critic's 40 rating confirms this is in the Negative range, and the dismissive conclusion places it in the lower portion of that bucket. | GPT-4o: The critic's original rating of 40 aligns with a negative review, and the text suggests that despite good intentions, the show does not succeed as theater. | Gemini: The review explicitly states that good intentions do not make good theater, indicating a negative assessment despite acknowledging the musical's good intentions. The critic's rating of 40 confirms this. | Kimi: The reviewer explicitly states that despite good intentions, the show fails to achieve 'good theater,' delivering a clear negative verdict confirmed by the 40-point rating.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic gives substantial praise to individual performers (Salonga's 'glorious singing', Leung's appeal) but finds the overall production 'mawkish' and says it 'crumples things badly'. The 40/100 rating confirms this is a negative review where performer praise doesn't redeem fundamental flaws. | GPT-4o: The review describes the musical as 'mawkish' and 'crumples things badly,' indicating a negative assessment. The original rating of 40 supports the negative classification. | Gemini: The review is mixed, praising the acting talent but criticizing the music, lyrics, and overall execution. The critic uses negative language like \"mawkish\" and \"crumples things badly,\" indicating a negative overall assessment. The critic's own rating is 40. | Kimi: While the review praises individual performers (Salonga's 'glorious singing,' Leung's appeal), the critic's own 40/100 rating and harsh criticism of the book ('mawkish,' 'cartoonish') and score ('generic, clunkily worded') indicate a clear negative verdict. The praise for acting does not redeem the overall pan of the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,11 +50,12 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T12:47:30.623Z",
+    "scoredAt": "2026-02-04T19:17:20.567Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 41,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
     "claudeScore": 42,
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.timeout.com/newyork/theater/allegiance-review",
   "urlDiscoveredAt": "2026-02-04T02:35:42.774Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 41,
   "textWordCount": 229,
@@ -108,5 +108,6 @@
   "archiveOrgTimestamp": "20151114070334",
   "archiveOrgUrl": "http://web.archive.org/web/20151114070334/http://www.timeout.com:80/newyork/theater/allegiance",
   "wordCount": 229,
-  "tierReason": "Short text (229 words)"
+  "tierReason": "Short text (229 words)",
+  "rescoreCompletedAt": "2026-02-04T19:17:20.567Z"
 }

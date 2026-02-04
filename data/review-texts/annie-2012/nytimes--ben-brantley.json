@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This 'Annie' doesn't make you want to bet your bottom dollar on much of anything. The production feels perfunctory, as if it were going through the motions of being a Broadway musical without quite believing in itself.",
   "originalScore": null,
-  "assignedScore": 42,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (37 words)",
   "llmScore": {
-    "score": 42,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 37,
-      "high": 47
+      "low": 57,
+      "high": 67
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This 'Annie' doesn't make you want to bet your bottom dollar on much of anything.",
+        "quote": "That's the challenge faced by Mr. Lapine and company, and it is met a tad uneasily.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the production 'perfunctory' and lacking belief in itself, with no redeeming qualities mentioned. | GPT-4o: The review criticizes the production for lacking conviction and feeling perfunctory, indicating a negative assessment without strong redeeming qualities. | Gemini: The review expresses disappointment and a lack of enthusiasm, indicating a negative assessment of the production. | Kimi: The critic describes the production as perfunctory and lacking conviction, suggesting it goes through the motions of being a Broadway musical without believing in itself, offering a clear recommendation against seeing it.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley acknowledges the show's emotional impact and good timing but criticizes the direction as 'tremulous' and 'unsteady', calling the production 'sketchy and unfocused' with performances that 'register only peripherally'. | Gemini: The review acknowledges the show's timely return and Finneran's performance, but also points out the production's shakiness and unfocused design. It's a mixed assessment, not strongly recommending or discouraging. | Kimi: Brantley praises the cast (particularly Lilla Crawford and Katie Finneran) and the timely post-Hurricane Sandy resonance, but finds James Lapine's direction tremulous and the production design sketchy and unfocused, ultimately deeming the revival merely serviceable rather than inspired.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T14:06:41.118Z",
+    "scoredAt": "2026-02-04T19:25:58.035Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 42,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 42,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 42,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
   "previousUrl": "https://www.nytimes.com/2012/11/09/theater/reviews/annie-revival-at-palace-theater.html",
   "urlDiscoveredAt": "2026-02-03T15:31:45.017Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 42,
   "textWordCount": 827,
@@ -104,5 +103,6 @@
   "archiveOrgTimestamp": "20140101005840",
   "archiveOrgUrl": "http://web.archive.org/web/20140101005840/http://www.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finneran-at-the-palace-theater.html",
   "wordCount": 827,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:25:58.035Z"
 }

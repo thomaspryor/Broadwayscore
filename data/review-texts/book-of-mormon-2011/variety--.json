@@ -85,9 +85,10 @@
   "contentTier": "complete",
   "wordCount": 683,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-03T02:47:53.103Z",
+  "rejectedAt": "2026-02-04T19:54:00.651Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a touring edition of 'The Book of Mormon' rather than the current Broadway production.; kimi: This review covers the touring production at the Pantages Theatre (Los Angeles), not the current Broadway run. It explicitly discusses the 'touring edition' and tour cast members performing at the Pantages venue.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about a touring production of 'The Book of Mormon', not the current Broadway run.; kimi: This review covers the touring production at the Pantages Theatre, not the current Broadway run. It explicitly discusses the 'touring edition' and compares it to the Broadway original.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

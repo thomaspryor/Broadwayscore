@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Metcalf gives a performance that is nothing short of magnificent.",
+        "quote": "Everything about the production works. It's a slam dunk.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls the play 'a worthy successor to Ibsen's masterpiece' and describes the lead performance as 'magnificent' with no qualifications. The 80/100 original rating confirms strong positive territory. | GPT-4o: The critic's original rating of 80 aligns with a positive review, and the text praises both the play and Metcalf's performance, indicating a strong recommendation. | Gemini: The review contains strong praise for both the play and the performance, indicating a positive recommendation. The phrase \"nothing short of magnificent\" suggests a high level of enthusiasm. | Kimi: The critic applies superlatives ('worthy successor', 'nothing short of magnificent') to both the play and lead performance, and the original rating of 80 confirms a strong positive recommendation in the upper range of the Positive bucket.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Unqualified praise throughout with superlatives like 'magnificent,' 'exemplary,' and 'slam dunk.' The critic's own 80 rating combined with language like 'goes out with a bang' and 'everything works' indicates a rave review. | GPT-4o: The critic's original rating of 80 aligns with a strong positive recommendation. The review praises the play's balance of ideas, direction, and performances, particularly Metcalf's, indicating a solid recommendation. | Gemini: The review is overwhelmingly positive, calling the play a \"worthy successor\" and Metcalf's performance \"nothing short of magnificent.\" The critic also uses phrases like \"lucid and absorbing\" and \"slam dunk,\" indicating a strong recommendation. | Kimi: The critic offers unreserved praise for the writing, direction, and performances—particularly Metcalf's 'magnificent' turn—calling the production a 'slam dunk' and 'worthy successor to Ibsen's masterpiece,' while the explicit 80 rating anchors it in the strong positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T11:08:30.699Z",
+    "scoredAt": "2026-02-04T19:04:27.168Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 81,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 80,
     "geminiScore": 82,
-    "kimiScore": 80,
+    "kimiScore": 82,
     "claudeBucket": "Rave",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -74,7 +75,6 @@
     "modelAgreement": "3/4 models agree: Positive"
   },
   "textQuality": "partial",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 226,
@@ -108,5 +108,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T19:04:27.168Z"
 }

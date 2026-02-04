@@ -10,7 +10,7 @@
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAYS-OF-WINE-AND-ROSES-Opens-on-Broadway-Updating-LIVE-20240127",
   "bwwThumb": "Up",
   "originalScore": null,
-  "assignedScore": 88,
+  "assignedScore": 87,
   "source": "bww-roundup",
   "dtliThumb": "Up",
   "dtliExcerpt": "The only major criticism to level at “Days of Wine and Roses” is that it took Guettel so long to write his third musical, which can easily take its place as one of the few great musicals of this century.",
@@ -21,11 +21,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 88,
+    "score": 87,
     "confidence": "medium",
     "range": {
-      "low": 83,
-      "high": 93
+      "low": 82,
+      "high": 92
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -42,7 +42,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with superlatives like 'truly awesome performances' and calling it 'one of the few great musicals of this century.' The only criticism is that it took too long to create, which is actually praise in disguise. | GPT-4o: The review is overwhelmingly positive, praising the music, performances, and direction. The critic considers it one of the great musicals of the century, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and adaptation. The critic calls it \"one of the few great musicals of this century.\" | Kimi: Unreserved praise across all elements—score, book, direction, and performances—culminating in the declaration that it 'can easily take its place as one of the few great musicals of this century.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with deep artistic appreciation. The critic's only complaint is that Guettel took too long to write it, calling it 'one of the few great musicals of this century' and praising the 'truly awesome performances' and innovative approach. | GPT-4o: The review is filled with high praise for the music, performances, and direction, culminating in a strong endorsement as one of the great musicals of the century. The critic's only complaint is about the time it took to create, not the show itself. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and adaptation. The critic concludes that it can \"easily take its place as one of the few great musicals of this century.\" | Kimi: The review offers unqualified praise for the score, performances, and direction, with the only 'criticism' being that the composer took too long to create it. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -52,23 +52,23 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T04:50:42.629Z",
+    "scoredAt": "2026-02-04T20:19:09.712Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": 91,
-    "previousVersion": "5.1.0"
+    "previousScore": 88,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 82,
     "openaiScore": 92,
     "geminiScore": 82,
-    "kimiScore": 94,
+    "kimiScore": 95,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 12,
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
@@ -78,7 +78,7 @@
   },
   "rescoreReason": "scored on brief excerpt, now has fullText",
   "previousLlmScore": 87,
-  "rescoreCompletedAt": "2026-01-29T01:46:11.276Z",
+  "rescoreCompletedAt": "2026-02-04T20:19:09.712Z",
   "contentTier": "complete",
   "wordCount": 927,
   "isFullReview": true,
@@ -111,6 +111,5 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "showScoreExcerpt": "\"Kelli O’Hara and Brian d’Arcy James fire up a truly great musical\"\n\nRead more",
-  "needsRescore": true,
   "playbillVerdictUrl": "https://www.thewrap.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brian-darcy-james/"
 }

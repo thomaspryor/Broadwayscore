@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Boyd Gaines gives a strong, steady performance as Dr. Stockmann, the idealistic physician who discovers that the town's profitable spa waters are contaminated and insists on going public with the news.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 76,
-    "confidence": "medium",
+    "score": 77,
+    "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Boyd Gaines gives a strong, steady performance as Dr. Stockmann, the idealistic physician who discovers that the town's profitable spa waters are contaminated and insists on going public with the news.",
+        "quote": "Clearly, MTC has lucked out with its timing of this classic drama, its Victorian-era polemics ordinarily a bit simplistic — but given the peculiar insanity of election politics, right on the money.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote praises the lead performance as 'strong, steady' but provides no overall verdict about the production. Given only one excerpt available, this appears mildly positive but insufficient to determine full recommendation. | GPT-4o: The excerpt praises Boyd Gaines' performance but does not provide an overall assessment of the production. With only one excerpt available, the overall sentiment is unclear, suggesting a mixed review. | Gemini: The excerpt focuses on a strong performance, suggesting a positive aspect of the production. Given it's a single excerpt, confidence is low and the score is at the lower end of the positive range. | Kimi: The excerpt offers clear praise for Boyd Gaines's lead performance ('strong, steady'), indicating a positive assessment. However, confidence is low due to the availability of only a single curated excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the lead performances (Gaines and Thomas), staging choices, and timing, while acknowledging some reservations about the adaptation's simplifications. The final verdict emphasizes the production's relevance and effectiveness. | GPT-4o: The review praises the performances, particularly of Boyd Gaines and Richard Thomas, and notes the smart staging by Doug Hughes. However, it also mentions some reservations about the adaptation's simplification and idiomatic language. Overall, the review leans positive with some caveats. | Gemini: The review is generally positive, highlighting the performances of Gaines and Thomas and the relevance of the play's themes. While noting some issues with the adaptation, the overall assessment is that the production is worthwhile, especially given the current political climate. | Kimi: While criticizing the bare-bones adaptation and confining set design, the review offers strong praise for the lead performances, smart direction, and timely political relevance, clearly recommending the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:40:16.212Z",
+    "scoredAt": "2026-02-04T19:21:12.264Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 76,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 65,
-    "geminiScore": 72,
-    "kimiScore": 82,
+    "claudeScore": 77,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 17,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 76,
   "textWordCount": 723,
@@ -100,5 +100,6 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2012/legit/reviews/an-enemy-of-the-people-1117948704/",
   "urlDiscoveredAt": "2026-02-03T23:20:30.889Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "rescoreCompletedAt": "2026-02-04T19:21:12.264Z"
 }

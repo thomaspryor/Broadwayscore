@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Clifford Odets's 1935 drama about a working-class Jewish family in the Bronx during the Depression has been assembled with obvious care and affection.",
   "originalScore": null,
-  "assignedScore": 72,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 72,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 67,
-      "high": 77
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This revival has been assembled with obvious care and affection.",
+        "quote": "The messy give and take between ideologies and realities, and between hard fact and exuberant feeling, still thrums in 'Awake and Sing!'",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes a production made with 'obvious care and affection' which suggests positive regard, but the measured tone and lack of stronger superlatives indicates mild rather than strong praise. Low confidence due to single excerpt limitation. | GPT-4o: The excerpt indicates a positive view of the production's assembly, suggesting a recommendation. However, without more context, it's unclear if there are significant reservations or if the praise is limited. The confidence is low due to the single excerpt warning. | Gemini: The excerpt indicates a positive sentiment, noting the production was assembled with \"care and affection.\" Given it's a single excerpt, the confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The excerpt offers warm but measured praise emphasizing craftsmanship and dedication rather than theatrical excitement, suggesting a qualified recommendation. Single excerpt limits confidence.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Brantley praises the performances, especially Ruffalo and Ambrose, and finds the dialogue 'a joy to hear,' but notes the staging 'occasionally falters' and 'focus blurs.' Overall positive with clear reservations. | Gemini: The review is generally positive, highlighting the performances and dialogue, but notes that the staging occasionally falters. This leads to a recommendation with reservations. | Kimi: While criticizing Bartlett Sher's occasionally faltering staging and blurry focus, Brantley ultimately recommends this revival as stirring and vigorous, praising the skilled performances (particularly Ruffalo and Ambrose) and the play's enduring emotional power.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,19 +50,19 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:44:21.901Z",
+    "scoredAt": "2026-02-04T19:35:35.755Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 72,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 72,
-    "geminiScore": 72,
-    "kimiScore": 72,
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
     "scoreDelta": 1,
@@ -71,9 +71,8 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "modelAgreement": "All 3 models agree: Positive"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 72,
   "textWordCount": 802,
@@ -101,5 +100,6 @@
   "archiveOrgTimestamp": "20150305010323",
   "archiveOrgUrl": "http://web.archive.org/web/20150305010323/http://www.nytimes.com/2006/04/18/theater/reviews/18awak.html",
   "wordCount": 802,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:35:35.755Z"
 }

@@ -20,10 +20,10 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 78,
-    "confidence": "low",
+    "confidence": "high",
     "range": {
-      "low": 70,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -31,21 +31,16 @@
       "book": null,
       "music": null,
       "performances": null,
-      "direction": 78
+      "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "A revival crisply directed by Scott Ellis.",
-        "sentiment": "positive",
+        "quote": "it already shows strong signs of eventual Tony noms when the time comes",
+        "sentiment": "neutral",
         "strength": 3
-      },
-      {
-        "quote": "It already shows strong signs of eventual Tony noms when the time comes.",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "The critic praises the direction as 'crisp' and predicts Tony nominations, suggesting a quality production worth seeing, though the brief excerpt limits confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for the direction ('crisply directed'), strong Tony predictions, and appreciation for the script's accomplishments. The lengthy plot summary is balanced by clear evaluative language indicating recommendation. | GPT-4o: The review provides a positive evaluation of the play's script and performances, noting its successful exploration of friendships. The 4/5 star rating aligns with a strong recommendation, albeit with some reservations about cultural nuances. | Gemini: While the review is mostly descriptive, the critic highlights the script's accomplishment and implies a positive experience, aligning with a \"worth seeing\" recommendation. The 4/5 star rating also supports this. | Kimi: The critic awards 4/5 stars and consistently praises the crisp direction, the talented cast, and the script's successful examination of male friendship, calling the revival welcome and predicting Tony nominations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,20 +49,14 @@
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-03T22:08:46.038Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T19:32:47.065Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 2730,
-    "outputTokens": 283,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 78,
+    "previousVersion": "5.2.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 78,
   "textWordCount": 911,
@@ -100,5 +89,23 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "ttps://nystagereview.com/2025/09/16/art-male-friends-argue-on-a-flashy-canvas/"
+  "playbillVerdictUrl": "ttps://nystagereview.com/2025/09/16/art-male-friends-argue-on-a-flashy-canvas/",
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-04T19:32:47.065Z"
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The stars are Amanda Peet and Patrick Wilson, both accomplished performers who work hard to breathe life into Neil Simon's 1963 romantic comedy about newlyweds adjusting to married life in a fifth-floor Greenwich Village walk-up.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 20,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 62,
+    "score": 20,
     "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 15,
+      "high": 25
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Pan",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "accomplished performers who work hard to breathe life into Neil Simon's 1963 romantic comedy",
+        "quote": "Certainly, theatergoers deserve some form of incidental relief from the parching desert of a production.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows performers 'working hard to breathe life' into the material, suggesting the play itself may be lifeless or challenging. This phrasing implies struggle rather than effortless success, pointing to mixed reception. | GPT-4o: The excerpt highlights the effort of the performers but lacks any clear recommendation or strong praise for the production itself. The context suggests a neutral stance, leading to a mixed classification. | Gemini: The excerpt focuses on the actors and the play's premise, but doesn't offer a clear recommendation or discouragement. The phrase \"work hard to breathe life into\" suggests the play itself might be lacking, leading to a mixed classification. | Kimi: While praising the stars as 'accomplished performers,' the critic suggests they struggle to enliven the dated material, indicating a qualified recommendation based on acting rather than the production as a whole.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Pan | Claude: Brantley delivers a scathing review with vivid negative imagery ('parching desert,' 'stiff-legged, robotic gait'), systematic criticism of all major performances, and suggests watching paint dry would be more entertaining. The only praise is for a minor character with 10 minutes of stage time. | Gemini: The review is largely negative, criticizing the miscasting and lack of spontaneity. While some performers are mentioned positively, the overall assessment is unfavorable. | Kimi: Brantley condemns the revival as 'torturous' and a 'parching desert,' criticizing the robotic direction and severely mismatched casting while noting that only one minor 10-minute performance offers any breath of life.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,33 +50,32 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:46:48.082Z",
+    "scoredAt": "2026-02-04T19:39:47.803Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": 60,
-    "kimiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "claudeScore": 20,
+    "openaiScore": null,
+    "geminiScore": 40,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "modelAgreement": "2/3 models agree: Pan"
   },
   "previousUrl": "https://www.nytimes.com/2006/02/17/theater/reviews/17bare.html",
   "urlDiscoveredAt": "2026-02-03T23:15:06.840Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 1293,
@@ -114,5 +113,6 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1293,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T19:39:47.803Z"
 }

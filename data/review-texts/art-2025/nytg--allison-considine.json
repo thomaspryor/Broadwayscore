@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The cast's comedic chops are on full display here. Their reactions to the painting earn plenty of laughs, from Harris’s head-shaking adoration to Cannavale’s up-close skepticism. The three display impeccable timing and physicality.",
   "originalScore": null,
-  "assignedScore": 50,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
@@ -19,55 +19,44 @@
   "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 50,
-    "confidence": "low",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 60
+      "low": 71,
+      "high": 81
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Positive",
+    "thumb": "Up",
     "components": {
       "book": null,
       "music": null,
-      "performances": 80,
+      "performances": null,
       "direction": null
     },
     "keyPhrases": [
       {
-        "quote": "The cast's comedic chops are on full display here.",
-        "sentiment": "positive",
+        "quote": "Art has humor, a wonderful cast, and the timeless clash of differing opinions.",
+        "sentiment": "neutral",
         "strength": 3
-      },
-      {
-        "quote": "The three display impeccable timing and physicality.",
-        "sentiment": "positive",
-        "strength": 4
       }
     ],
-    "reasoning": "This excerpt only praises the cast's comedic performances without any evaluation of the show's overall quality, script, direction, or whether it's worth seeing.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the cast's comedic performances and timing throughout, highlighting specific memorable moments. However, it identifies a significant flaw in the script's lack of depth regarding the friendship's foundation, preventing a higher score. | Gemini: The review praises the cast's comedic chops and the director's balancing of emotions, but notes a missing sense of place and purpose for the friendship, leading to a positive but not rave recommendation. | Kimi: The critic praises the cast's comedic timing and physicality as 'impeccable' and 'memorable,' and appreciates the direction, while offering only a minor reservation about the script's lack of depth regarding the friendship stakes.",
     "flags": {
       "hasExplicitRecommendation": false,
-      "focusedOnPerformances": true,
+      "focusedOnPerformances": false,
       "comparesToPrevious": false,
       "mixedSignals": false
     }
   },
   "llmMetadata": {
-    "model": "claude-sonnet-4-20250514",
-    "scoredAt": "2026-02-03T22:08:56.133Z",
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T19:34:46.097Z",
     "promptVersion": "5.2.0",
-    "inputTokens": 2703,
-    "outputTokens": 282,
-    "textSource": {
-      "type": "excerpt",
-      "status": "curated",
-      "field": "dtliExcerpt",
-      "confidence": "medium",
-      "reasoning": "Curated DTLI excerpt"
-    }
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 50,
+    "previousVersion": "5.2.0"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 50,
   "textWordCount": 808,
@@ -98,5 +87,22 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris"
+  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris",
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  },
+  "rescoreCompletedAt": "2026-02-04T19:34:46.097Z"
 }

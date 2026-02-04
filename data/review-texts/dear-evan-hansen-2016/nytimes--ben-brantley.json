@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This keenly observed musical about social anxiety and the lies we tell ourselves manages to be both deeply personal and universally resonant.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,13 +19,13 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
-    "score": 80,
+    "score": 94,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 89,
+      "high": 99
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This keenly observed musical manages to be both deeply personal and universally resonant.",
+        "quote": "Ben Platt is giving a performance that's not likely to be bettered on Broadway this season.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Positive assessment with praise for the show's observational qualities and emotional impact, but brief text limits confidence in scoring. | GPT-4o: The review uses strong positive language ('keenly observed', 'deeply personal', 'universally resonant') indicating a highly favorable assessment of the show. | Gemini: The review uses positive language such as \"keenly observed\", \"deeply personal\", and \"universally resonant\", indicating a strong recommendation. | Kimi: The critic praises the show as 'keenly observed' and 'universally resonant,' indicating a clear recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers unqualified praise throughout, calling it a 'gorgeous heartbreaker' that has 'grown in emotional potency' and praising the 'superb direction.' He emphasizes its emotional impact, originality, and universal appeal, with no meaningful reservations. | GPT-4o: The review is filled with superlatives and unqualified praise for the production, performances, and emotional impact, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, using phrases like \"marvelous,\" \"gorgeous heartbreaker,\" and praising the emotional potency and nuances of the production. The critic clearly recommends the show, especially for families seeking something complex. | Kimi: Brantley offers unqualified praise, calling the show a 'gorgeous heartbreaker' with the season's best performance, a haunting score, and superb direction, while explicitly recommending it for all audiences.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,34 +50,34 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T15:23:31.908Z",
+    "scoredAt": "2026-02-04T20:20:01.598Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 78,
-    "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 84,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Rave"
   },
   "textQuality": "full",
   "previousUrl": "https://www.nytimes.com/2016/12/05/theater/dear-evan-hansen-review.html",
   "urlDiscoveredAt": "2026-02-03T23:54:43.283Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 1140,
@@ -103,5 +103,6 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rescoreCompletedAt": "2026-02-04T20:20:01.598Z"
 }

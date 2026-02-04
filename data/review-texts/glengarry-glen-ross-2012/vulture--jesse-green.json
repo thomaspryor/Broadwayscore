@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The current Broadway revival of Glengarry Glen Ross is a monument to the idea that great acting can make even familiar material feel urgent and new.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 80,
+    "score": 64,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 59,
+      "high": 69
     },
-    "bucket": "Positive",
-    "thumb": "Up",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The current Broadway revival of Glengarry Glen Ross is a monument to the idea that great acting can make even familiar material feel urgent and new.",
+        "quote": "I say take your time. This product will doubtless come to market again, perhaps even inside the next decade, with new flavors of name-brand testosterone.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the production 'a monument' and emphasizing that great acting makes familiar material feel 'urgent and new' - clear positive recommendation. | GPT-4o: The review praises the production's ability to make familiar material feel fresh and urgent through great acting, indicating a strong recommendation. | Gemini: The review states that the acting makes the material feel urgent and new, which is a positive recommendation, but the material is also described as familiar, indicating a reservation. | Kimi: The critic uses superlative language ('monument to') to praise the acting as 'great' and capable of making familiar material feel 'urgent and new,' indicating a strong endorsement of the production's quality despite the brief excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges strong individual performances but finds the production lacks ensemble cohesion and feels more like a star vehicle than a unified theatrical experience. The final recommendation explicitly tells readers to 'take your time' rather than rush to see it, suggesting they can wait for a better production. | GPT-4o: The review praises individual performances but criticizes the lack of ensemble cohesion and suggests no urgency in seeing this production. The recommendation is mixed, acknowledging strengths but advising patience. | Gemini: The review acknowledges strong performances but questions the ensemble's cohesion and the overall impact, stopping short of a clear recommendation. | Kimi: The critic praises the individual performances extensively—particularly Pacino's restrained turn and Cannavale's complexity—while noting the production lacks ensemble cohesion. Despite reservations about the staging and a closing suggestion to 'take your time' rather than rush, the review clearly recommends the show for its acting merits.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,30 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T16:16:16.664Z",
+    "scoredAt": "2026-02-04T20:49:21.147Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 80,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 75,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
     "kimiBucket": "Positive",
-    "scoreDelta": 15,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "modelAgreement": "3/4 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 80,
   "textWordCount": 754,
@@ -95,5 +95,6 @@
   "archiveOrgTimestamp": "20250403203847",
   "archiveOrgUrl": "http://web.archive.org/web/20250403203847/https://www.vulture.com/2012/12/theater-review-glengarry-glen-ross.html",
   "wordCount": 754,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rescoreCompletedAt": "2026-02-04T20:49:21.147Z"
 }

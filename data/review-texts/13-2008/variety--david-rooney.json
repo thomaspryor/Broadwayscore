@@ -104,5 +104,11 @@
   "urlDiscoveryMethod": "show-not-mentioned-recovery",
   "archiveOrgTimestamp": "20240424001325",
   "archiveOrgUrl": "http://web.archive.org/web/20240424001325/https://variety.com/2022/film/reviews/13-the-musical-review-1235341664/",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2022 outside valid range 2005–2010 for show opening 2008"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2022 outside valid range 2005–2010 for show opening 2008",
+  "wrongShow": true,
+  "rejectedAt": "2026-02-04T18:59:38.732Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "openai: The text is a review of '13: The Musical' on Netflix, not a Broadway show.; kimi: This text reviews the Netflix film adaptation of '13: The Musical,' not the Broadway stage production. It explicitly references the 'movie version' directed by Tamra Davis and cinematic elements, while mentioning the 2008 Broadway production only as historical context.",
+  "promptVersion": "5.2.0"
 }

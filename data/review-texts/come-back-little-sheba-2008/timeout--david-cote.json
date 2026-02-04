@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Merkerson brings dignity and depth to Lola, avoiding the trap of playing her as a pathetic figure, while Anderson delivers a powerfully tortured performance as Doc.",
+        "quote": "Yesterday's play of the year has become a movie of the week.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises lead performances but represents only a fragment of the review. The critic's own 60 rating places this firmly in Mixed territory, suggesting the overall assessment was neither positive nor negative despite strong individual performances. | GPT-4o: The excerpt praises individual performances but lacks an overall positive or negative assessment of the show. The original rating of 60 suggests a mixed review, aligning with the excerpt's focus on specific elements rather than the production as a whole. | Gemini: The excerpt focuses solely on praising the performances of two actors. Without further context, it's difficult to determine an overall recommendation, but the positive comments suggest a mixed to positive leaning. | Kimi: The critic's original rating of 60 places this squarely in the Mixed range. While the excerpt praises the lead performances, the limited context and single-excerpt warning suggest the overall production received a lukewarm assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic's 60 rating aligns with Mixed. While praising the performances (Merkerson's 'dignity and depth,' Anderson's 'powerfully tortured performance') and calling it 'technically accomplished,' the overall verdict is that the material feels dated and mechanical, with visible dramatic machinery that doesn't translate to modern audiences. | Gemini: The review acknowledges the technical skill of the production and the actors' performances, but ultimately finds the play dated and not fully impactful. The critic's rating of 60 aligns with a mixed assessment. | Kimi: While the critic praises the technically accomplished direction and powerful performances from Merkerson and Anderson, they find Inge's writing mechanical and dated, assigning a 60 rating that reflects a genuinely mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,30 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:48:27.152Z",
+    "scoredAt": "2026-02-04T20:11:33.399Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 61,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 60,
+    "claudeScore": 58,
+    "openaiScore": null,
     "geminiScore": 62,
-    "kimiScore": 60,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "modelAgreement": "All 3 models agree: Mixed"
   },
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 61,
   "textWordCount": 179,
@@ -101,5 +100,6 @@
   "extractedByline": "Time Out",
   "expectedCritic": "David Cote",
   "wordCount": 179,
-  "tierReason": "Short text (179 words)"
+  "tierReason": "Short text (179 words)",
+  "rescoreCompletedAt": "2026-02-04T20:11:33.399Z"
 }

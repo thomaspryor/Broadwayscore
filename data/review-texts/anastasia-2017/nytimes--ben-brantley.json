@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This new musical, based on the 1997 animated movie, arrives on Broadway as a lavish, old-fashioned spectacle that's more concerned with surface beauty than emotional depth.",
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 50,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,14 +19,14 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "llmScore": {
-    "score": 62,
-    "confidence": "high",
+    "score": 50,
+    "confidence": "medium",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 45,
+      "high": 55
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -35,12 +35,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This new musical arrives on Broadway as a lavish, old-fashioned spectacle that's more concerned with surface beauty than emotional depth.",
+        "quote": "The show in which she appears trembles nonstop with internal conflicts during its drawn-out two-and-a-half hours.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the production's visual appeal ('lavish spectacle') but criticizes its lack of substance ('more concerned with surface beauty than emotional depth'), suggesting a balanced but ultimately lukewarm assessment. | GPT-4o: The review describes the musical as visually impressive but lacking in emotional depth, suggesting a mixed assessment without a clear recommendation. | Gemini: The review acknowledges the spectacle but criticizes the lack of emotional depth, indicating a mixed assessment. | Kimi: The review acknowledges the production's visual lavishness but explicitly criticizes its lack of emotional depth, suggesting a 'style over substance' verdict typical of mixed reviews. The text appears to be an excerpt or truncated, warranting low confidence.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Brantley diagnoses serious structural problems ('identity crisis,' 'multiple personality disorder,' 'internal conflicts') and criticizes the show's length as 'drawn-out,' indicating significant reservations without outright dismissal. | GPT-4o: The review highlights significant issues with the show's identity and coherence, describing it as suffering from 'multiple personality disorder' and 'internal conflicts'. The tone suggests disappointment with the production as a whole. | Gemini: The review points out the show's identity crisis and internal conflicts, suggesting an uneven experience. It doesn't strongly recommend or discourage seeing it. | Kimi: Despite acknowledging the lead actress's poise, the critic describes the show as suffering from 'internal conflicts,' a 'drawn-out' runtime, and a fundamental 'disconnect' between its dual inspirations, indicating a lack of coherent vision. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,28 +50,29 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T13:52:21.921Z",
+    "scoredAt": "2026-02-04T19:23:16.275Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
-    "previousScore": null
+    "previousScore": 62,
+    "previousVersion": "5.2.0"
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
+    "claudeScore": 58,
+    "openaiScore": 40,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 42,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   },
   "textQuality": "partial",
   "playbillVerdictUrl": "https://www.nytimes.com/2017/04/24/theater/anastasia-review-broadway.html?_r=0",
@@ -82,7 +83,6 @@
   "previousUrl": "https://www.nytimes.com/2017/04/25/theater/anastasia-review-broadhurst-theater.html",
   "urlDiscoveredAt": "2026-02-04T18:43:00.210Z",
   "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 62,
   "textWordCount": 273,
@@ -119,5 +119,6 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 273,
-  "tierReason": "Short text (273 words)"
+  "tierReason": "Short text (273 words)",
+  "rescoreCompletedAt": "2026-02-04T19:23:16.275Z"
 }
