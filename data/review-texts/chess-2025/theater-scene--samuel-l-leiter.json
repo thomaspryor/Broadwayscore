@@ -1,0 +1,76 @@
+{
+  "showId": "chess-2025",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 62,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"its stumbling book and cut-out characters keep it from delivering a real checkmate—leaving you admiring the music more than caring who captures the king\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its stumbling book and cut-out characters keep it from delivering a real checkmate—leaving you admiring the music more than caring who captures the king",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises the music but criticizes fundamental elements (book, characters). Chess metaphor suggests the show doesn't achieve its goals. Low confidence due to single excerpt limitation. | GPT-4o: The review excerpt highlights issues with the book and characters, but notes admiration for the music. The sentiment is mixed, with more focus on flaws than strengths. | Gemini: The review excerpt points out flaws in the book and characters, but acknowledges the music. This suggests a mixed assessment, leaning towards a conditional recommendation. | Kimi: The excerpt praises the music but heavily criticizes the book as 'stumbling' and characters as 'cut-out,' noting the show fails to achieve its potential ('delivering a real checkmate') or emotional engagement ('caring who captures the king'), indicating significant reservations despite musical strengths.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:52:48.235Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
+}

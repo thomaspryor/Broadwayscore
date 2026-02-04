@@ -1,0 +1,76 @@
+{
+  "showId": "almost-famous-2022",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Victor Gluck",
+  "url": "http://www.theaterscene.net/musicals/broadway/almost-famous/victor-gluck/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "What Crowe has done in writing his own book for the show is recreate almost exactly every scene in the movie starting from the time when 15-year-old protagonist William Miller meets rock critic Lester Bangs, including the bus and plane sequences. The best lines in the stage version are recognizable from the film and nothing of equal stature has been added to the version now on stage at the Bernard J. Jacobs Theatre. The new songs credited to composer Tom Kitt with lyrics by Crowe and Kitt add little to the work as they do not forward the story. A good many of the iconic songs from the film make their appearance but as staged by director Jeremy Herrin and choreographer Sarah O’Gleby they are the least effective numbers in the show. \n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new songs credited to composer Tom Kitt with lyrics by Crowe and Kitt add little to the work as they do not forward the story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes key elements: songs that 'add little,' iconic numbers that are 'least effective,' and implies the adaptation adds 'nothing of equal stature' to the original. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt criticizes the adaptation for not adding anything new of value to the original film, with new songs failing to advance the story and iconic songs being staged ineffectively. The overall tone suggests disappointment. | Gemini: The review excerpt is largely negative, criticizing the book, new songs, and staging. Given the truncated text, I'm scoring it as negative but with low confidence. | Kimi: The excerpt contains uniformly negative assessments of the book, new songs, and staging without any positive counterpoints, indicating the critic finds the Broadway production inferior to its source material and ineffective.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:27:24.598Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}

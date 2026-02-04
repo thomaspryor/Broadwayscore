@@ -1,0 +1,76 @@
+{
+  "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Joel Benjamin",
+  "url": "http://www.theaterscene.net/musicals/broadway/a-beautiful-noise-the-neil-diamond-musical/joel-benjamin/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 73,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Will Swenson, the charismatic star of \"A Beautiful Noise,\" is hampered by the full-steam-ahead pacing of the show, leaving little time for introspection. He is a powerhouse, molding his voice to sound like the actual Neil Diamond as best he can, often missing the mark. But that’s okay because the majority of the audience came to feast on the songbook of a favorite performer and they are rewarded handily.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the majority of the audience came to feast on the songbook of a favorite performer and they are rewarded handily",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite criticizing the pacing and lead's vocal impersonation, the critic concludes audiences are 'rewarded handily,' indicating a recommendation. Single excerpt with low confidence due to potential cherry-picking. | GPT-4o: The excerpt suggests that despite some issues with pacing and vocal performance, the audience's enjoyment of the songbook is a redeeming factor. The positive note about audience satisfaction indicates a mild recommendation. | Gemini: The review acknowledges flaws in the pacing and performance accuracy, but ultimately suggests the audience will be satisfied. Given the limited excerpt, confidence is low, and the score is at the lower end of the positive range. | Kimi: While criticizing the rushed pacing and noting Swenson's vocal imitation often misses the mark, the excerpt concludes that fans seeking Neil Diamond's songbook will be handily rewarded, indicating a qualified recommendation for target audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:07:06.793Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

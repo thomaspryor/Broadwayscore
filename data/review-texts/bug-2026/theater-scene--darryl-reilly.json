@@ -1,0 +1,76 @@
+{
+  "showId": "bug-2026",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Darryl Reilly",
+  "url": "https://theaterscene.org/2026/01/bug/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Carrie Coon and Namir Smallwood are awesome in this fierce revival of Tracy Letts’ underclass drama.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Carrie Coon and Namir Smallwood are awesome in this fierce revival of Tracy Letts' underclass drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise with 'awesome' and 'fierce revival' indicates positive recommendation, but single excerpt warning requires low confidence and upper-end scoring for clearly positive language. | GPT-4o: The excerpt provides strong praise for the performances and describes the revival as 'fierce', indicating a positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the performances of the leads and describes the revival as \"fierce,\" indicating a positive assessment. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The single available excerpt uses strong positive language ('awesome', 'fierce') to praise both the lead performances and the revival itself, indicating a clear recommendation at the higher end of the Positive range. However, with only one curated excerpt available, confidence must remain low due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:24:51.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

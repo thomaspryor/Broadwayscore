@@ -1,0 +1,76 @@
+{
+  "showId": "once-upon-a-one-more-time-2023",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Victor Gluck",
+  "url": "http://www.theaterscene.net/musicals/broadway/once-upon-a-one-more-time/victor-gluck/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 53,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "The only problem with Hartmere’s plot is that it remains undeveloped. None of the princesses get to read Friedan’s book (there is initially only one copy) and they take it on faith that it offers them alternatives. The story goes off on a series of tangents (Charming’s assistant Prince Erudite the Celibate reveals that he is gay when he meets Snow White’s assistant Clumsy; the Cinderella’s Stepmother attempts to get the Narrator to choose one of her daughters after Cinderella’s defection) but these narratives turn out as you would expect with no surprises.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only problem with Hartmere's plot is that it remains undeveloped.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt focuses on plot problems and lack of surprises, but calling it 'the only problem' suggests other elements work. Very limited text makes confidence low. | GPT-4o: The excerpt criticizes the plot for being undeveloped and predictable, indicating a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt points out issues with the plot being undeveloped and going off on tangents. While not explicitly negative, it indicates a lack of strong recommendation, placing it in the mixed category. | Kimi: The sole available excerpt offers specific criticism of the writing, describing the plot as undeveloped and narrative tangents as predictable. Given the single-excerpt warning and absence of any praised elements in the provided text, this scores as a qualified negative, though the full review may contain mitigating positives. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:52:13.716Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "showId": "romeo-juliet-2024",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Victor Gluck",
+  "url": "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Sam Gold's youth-oriented reworking will please Gen Z more than their parents\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sam Gold's youth-oriented reworking will please Gen Z more than their parents",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt suggests demographic split appeal rather than broad recommendation. 'Will please Gen Z more than their parents' implies limited appeal and generational divide, indicating mixed reception rather than enthusiastic endorsement. | GPT-4o: The excerpt suggests a generational divide in appeal, indicating that the production may not have broad appeal. The lack of a clear recommendation or discouragement places it in the Mixed bucket. Due to the single excerpt warning, confidence is low. | Gemini: The excerpt suggests a mixed reception, appealing more to a younger audience. This indicates a conditional recommendation, placing it in the Mixed bucket. | Kimi: Single curated excerpt indicates the production has demographic-specific appeal that will please younger viewers more than older ones; mildly positive tone warrants lower Positive range score per handling instructions for single excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:22:42.064Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
+}

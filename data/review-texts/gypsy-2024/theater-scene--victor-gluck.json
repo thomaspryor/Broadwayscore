@@ -1,0 +1,76 @@
+{
+  "showId": "gypsy-2024",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Victor Gluck",
+  "url": "https://www.theaterscene.net/musicals/broadway/gypsy-2/victor-gluck/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 80,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"In a role she was obviously born to play, McDonald devours the stage\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In a role she was obviously born to play, McDonald devours the stage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the lead performance using vivid language ('devours the stage', 'born to play'). However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The excerpt provides strong praise for McDonald's performance, suggesting a positive view of her role. However, without more context or a full review, the overall sentiment is unclear, leading to a lower confidence score. | Gemini: The single excerpt is overwhelmingly positive about Audra McDonald's performance, suggesting a strong recommendation. Given the limited context, confidence is low, but the strength of the quote warrants a high positive score. | Kimi: Single excerpt offers vivid, enthusiastic praise for the star's performance ('devours the stage'), indicating a strong recommendation, but limited text prevents assessment of overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:31:08.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

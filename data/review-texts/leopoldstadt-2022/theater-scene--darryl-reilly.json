@@ -1,0 +1,75 @@
+{
+  "showId": "leopoldstadt-2022",
+  "outletId": "theater-scene",
+  "outlet": "Theater Scene",
+  "criticName": "Darryl Reilly",
+  "url": "https://theaterscene.org/2022/10/leopoldstadt/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 77,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Tom Stoppard’s entrancing epic drama charts a Viennese Jewish family’s lives from 1899 to 1955 and is theatrically rendered by director Patrick Marber.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tom Stoppard’s entrancing epic drama charts a Viennese Jewish family’s lives from 1899 to 1955 and is theatrically rendered by director Patrick Marber.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt describes the drama as 'entrancing' and highlights the theatrical rendering by the director, suggesting a positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The phrase \"entrancing epic drama\" suggests a positive assessment, but the limited excerpt and lack of a clear recommendation necessitate a score on the lower end of the positive range with low confidence. | Kimi: The excerpt uses strongly positive evaluative language ('entrancing', 'theatrically rendered'), placing it in the upper Positive range. However, as a single curated excerpt, confidence is low regarding the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:04:42.636Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
+}

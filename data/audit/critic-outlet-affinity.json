@@ -3,11 +3,11 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-02-04",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 11539,
-    "skippedFiles": 136,
-    "totalCritics": 652,
-    "registryCritics": 211,
-    "flaggedReviews": 22
+    "totalFilesScanned": 11467,
+    "skippedFiles": 132,
+    "totalCritics": 649,
+    "registryCritics": 210,
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -19,7 +19,7 @@
       "outletShare": 0,
       "primaryOutlet": "nytimes",
       "primaryShare": 100,
-      "totalReviews": 402
+      "totalReviews": 395
     },
     {
       "critic": "Brittani Samuel",
@@ -110,6 +110,17 @@
       "totalReviews": 13
     },
     {
+      "critic": "Victor Gluck",
+      "criticSlug": "victor-gluck",
+      "outlet": "stageandcinema",
+      "showId": "picnic-2013",
+      "file": "stageandcinema--victor-gluck.json",
+      "outletShare": 2,
+      "primaryOutlet": "theater-scene",
+      "primaryShare": 98,
+      "totalReviews": 55
+    },
+    {
       "critic": "Gloria Oladipo",
       "criticSlug": "gloria-oladipo",
       "outlet": "washpost",
@@ -151,29 +162,7 @@
       "outletShare": 7,
       "primaryOutlet": "theatermania",
       "primaryShare": 93,
-      "totalReviews": 15
-    },
-    {
-      "critic": "Joseph Pisano",
-      "criticSlug": "joseph-pisano",
-      "outlet": "theater-scene",
-      "showId": "queen-versailles-2025",
-      "file": "theater-scene--joseph-pisano.json",
-      "outletShare": 6,
-      "primaryOutlet": "theaterscenenet",
-      "primaryShare": 94,
-      "totalReviews": 35
-    },
-    {
-      "critic": "Joseph Pisano",
-      "criticSlug": "joseph-pisano",
-      "outlet": "theater-scene",
-      "showId": "six-2021",
-      "file": "theater-scene--joseph-pisano.json",
-      "outletShare": 6,
-      "primaryOutlet": "theaterscenenet",
-      "primaryShare": 94,
-      "totalReviews": 35
+      "totalReviews": 14
     },
     {
       "critic": "David Roberts",
@@ -196,17 +185,6 @@
       "primaryOutlet": "theatre-reviews-limited",
       "primaryShare": 90,
       "totalReviews": 21
-    },
-    {
-      "critic": "Deirdre Donovan",
-      "criticSlug": "deirdre-donovan",
-      "outlet": "theater-scene",
-      "showId": "oh-mary-2024",
-      "file": "theaterscenecom--deirdre-donovan.json",
-      "outletShare": 8,
-      "primaryOutlet": "theaterscenecom",
-      "primaryShare": 92,
-      "totalReviews": 13
     },
     {
       "critic": "Mark Rifkin",
@@ -263,7 +241,7 @@
         "huffpost",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 121
+      "totalReviews": 118
     },
     {
       "critic": "Frank Scheck",
@@ -290,7 +268,7 @@
         "guardian",
         "financialtimes"
       ],
-      "totalReviews": 419
+      "totalReviews": 415
     },
     {
       "critic": "Elysa Gardner",
@@ -301,7 +279,7 @@
         "nysr",
         "ew"
       ],
-      "totalReviews": 201
+      "totalReviews": 199
     },
     {
       "critic": "David Rooney",
@@ -312,7 +290,7 @@
         "theatermania",
         "usatoday"
       ],
-      "totalReviews": 338
+      "totalReviews": 335
     },
     {
       "critic": "Unknown",
@@ -325,17 +303,17 @@
         "ap",
         "thewrap",
         "nbcny",
-        "timeout",
         "hollywood-reporter",
         "chicagotribune",
+        "timeout",
         "theatrely",
         "vulture",
         "deadline",
         "huffpost",
         "usatoday",
+        "nypost",
         "wsj",
         "nytimes",
-        "nypost",
         "latimes",
         "bloomberg-news",
         "washpost",
@@ -478,7 +456,7 @@
         "artsatl",
         "atlanta-intown"
       ],
-      "totalReviews": 1738
+      "totalReviews": 1731
     },
     {
       "critic": "Mark Kennedy",
@@ -546,7 +524,18 @@
         "rollingstone",
         "the-times-uk"
       ],
-      "totalReviews": 551
+      "totalReviews": 547
+    },
+    {
+      "critic": "Joel Benjamin",
+      "slug": "joel-benjamin",
+      "outlets": [
+        "theater-scene",
+        "talkinbroadway",
+        "nytg",
+        "stageandcinema"
+      ],
+      "totalReviews": 23
     },
     {
       "critic": "David Gordon",
@@ -560,18 +549,6 @@
       "totalReviews": 73
     },
     {
-      "critic": "Joel Benjamin",
-      "slug": "joel-benjamin",
-      "outlets": [
-        "theaterscenenet",
-        "theater-scene",
-        "talkinbroadway",
-        "nytg",
-        "stageandcinema"
-      ],
-      "totalReviews": 23
-    },
-    {
       "critic": "Adam Feldman",
       "slug": "adam-feldman",
       "outlets": [
@@ -579,7 +556,7 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 366
+      "totalReviews": 364
     },
     {
       "critic": "Peter Marks",
@@ -589,7 +566,7 @@
         "variety",
         "the-independent"
       ],
-      "totalReviews": 242
+      "totalReviews": 241
     },
     {
       "critic": "Matt Windman",
@@ -673,7 +650,7 @@
         "variety",
         "amny"
       ],
-      "totalReviews": 179
+      "totalReviews": 176
     },
     {
       "critic": "Thom Geier",
@@ -695,7 +672,7 @@
         "washpost",
         "newyorker"
       ],
-      "totalReviews": 154
+      "totalReviews": 151
     },
     {
       "critic": "Brian Scott Lipton",
@@ -707,7 +684,7 @@
         "nytg",
         "theater-news-online"
       ],
-      "totalReviews": 120
+      "totalReviews": 119
     },
     {
       "critic": "Dave Quinn",
@@ -736,7 +713,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 268
+      "totalReviews": 267
     },
     {
       "critic": "David Cote",
@@ -751,7 +728,7 @@
         "4columns",
         "4columns-david-cote"
       ],
-      "totalReviews": 152
+      "totalReviews": 151
     },
     {
       "critic": "Jackson McHenry",
@@ -782,16 +759,6 @@
         "new-jersey-newsroom"
       ],
       "totalReviews": 37
-    },
-    {
-      "critic": "Victor Gluck",
-      "slug": "victor-gluck",
-      "outlets": [
-        "theaterscenenet",
-        "theater-scene",
-        "stageandcinema"
-      ],
-      "totalReviews": 55
     },
     {
       "critic": "Lane Williamson",
@@ -877,7 +844,7 @@
       "outlets": [
         "theater-pizzazz",
         "theatres-leiter-side",
-        "theaterscenenet",
+        "theater-scene",
         "stageandcinema",
         "broadway-blog"
       ],
