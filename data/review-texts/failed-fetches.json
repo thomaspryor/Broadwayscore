@@ -8272,18 +8272,6 @@
     "timestamp": "2026-02-03T15:33:33.826Z"
   },
   {
-    "reviewId": "anastasia-2017/hollywood-reporter--david-rooney.json",
-    "showId": "anastasia-2017",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/news/general-news/anastasia-theater-review-1004647/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): ragtime, chess, home, the audience, once...",
-    "textLength": 9009,
-    "timestamp": "2026-02-03T15:34:14.192Z"
-  },
-  {
     "reviewId": "ann-2013/hollywood-reporter--david-rooney.json",
     "showId": "ann-2013",
     "outlet": "The Hollywood Reporter",
@@ -8726,18 +8714,6 @@
     "garbageReason": "Multiple shows mentioned (7): appropriate, the elephant man, hair, once, high...",
     "textLength": 4649,
     "timestamp": "2026-02-03T22:34:35.083Z"
-  },
-  {
-    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
-    "showId": "an-american-in-paris-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): proof, purpose, oklahoma!, hair, once...",
-    "textLength": 11433,
-    "timestamp": "2026-02-03T22:39:26.027Z"
   },
   {
     "reviewId": "appropriate-2023/hollywood-reporter--lovia-gyarkye.json",
@@ -11440,18 +11416,6 @@
     "timestamp": "2026-02-04T14:20:22.239Z"
   },
   {
-    "reviewId": "an-enemy-of-the-people-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "an-enemy-of-the-people-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): our town, home, english, hair, elling...",
-    "textLength": 9050,
-    "timestamp": "2026-02-04T14:29:48.552Z"
-  },
-  {
     "reviewId": "bernhardthamlet-2018/nytimes--jesse-green.json",
     "showId": "bernhardthamlet-2018",
     "outlet": "New York Times",
@@ -13022,5 +12986,41 @@
     "garbageReason": "Multiple shows mentioned (9): home, frozen, mean girls, the audience, rain...",
     "textLength": 18291,
     "timestamp": "2026-02-04T18:29:39.732Z"
+  },
+  {
+    "reviewId": "an-american-in-paris-2015/vulture--jesse-green.json",
+    "showId": "an-american-in-paris-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/04/theater-review-an-american-in-paris.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): proof, purpose, oklahoma!, hair, once...",
+    "textLength": 11433,
+    "timestamp": "2026-02-04T18:34:37.324Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "an-enemy-of-the-people-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): our town, home, english, hair, elling...",
+    "textLength": 9050,
+    "timestamp": "2026-02-04T18:39:39.209Z"
+  },
+  {
+    "reviewId": "anastasia-2017/hollywood-reporter--david-rooney.json",
+    "showId": "anastasia-2017",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/news/general-news/anastasia-theater-review-1004647/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): ragtime, chess, home, the audience, once...",
+    "textLength": 9009,
+    "timestamp": "2026-02-04T18:40:09.497Z"
   }
 ]

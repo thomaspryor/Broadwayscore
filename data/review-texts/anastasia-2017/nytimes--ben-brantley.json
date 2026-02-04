@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2017/04/25/theater/anastasia-review-broadhurst-theater.html",
+  "url": "https://www.nytimes.com/2017/04/24/theater/anastasia-review-broadway.html",
   "publishDate": "April 25, 2017",
-  "fullText": "This new musical, based on the 1997 animated movie, arrives on Broadway as a lavish, old-fashioned spectacle that's more concerned with surface beauty than emotional depth.",
-  "isFullReview": false,
+  "fullText": "The amnesiac title character of “Anastasia,” who may or may not be the long-lost daughter of the last Russian czar, isn’t alone in suffering a serious identity crisis. The postcard-scenic show that bears her name, which opened on Monday night at the Broadhurst Theater, has its own troubling case of multiple personality disorder.\n\nCome to think of it, Anastasia the person, played by Christy Altomare, has it easy compared with “Anastasia” the musical. She has to worry only about whether she’s really a princess. And judging by her instinctive poise, commanding condescension and cut-glass accent, she can’t be in that much doubt, though she does sometimes go all wobbly when ghosts of the Romanov Empire dance around her.\n\nThe show in which she appears trembles nonstop with internal conflicts during its drawn-out two-and-a-half hours. Part of the source of its malaise may be detected in a conspicuous credit below the title in the program that reads, “Inspired by the 20th Century Fox motion pictures.”\n\nThat’s pictures, plural, not picture, and they too were titled “Anastasia.” One of them, from 1997, was an animated spectacle with talking animals and a resurrected Rasputin; the other was the dignified, soapy costume drama from 1956 starring that most uncartoonish of actresses, Ingrid Bergman, who won a welcome-home Oscar for it after her exile from Hollywood.\n\n“Anastasia” the musical, which features a book by the acclaimed playwright Terrence McNally and songs by the Tony-winning team of Stephen Flaherty and Lynn Ahrens (who all collaborated on “Ragtime”), shifts between the worldviews of both inspirations, while pretending there’s no disconnect. In the process, it evokes another kind of show altogether.",
+  "isFullReview": true,
   "dtliExcerpt": "This new musical, based on the 1997 animated movie, arrives on Broadway as a lavish, old-fashioned spectacle that's more concerned with surface beauty than emotional depth.",
   "originalScore": null,
   "assignedScore": 62,
@@ -73,10 +73,51 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "https://www.nytimes.com/2017/04/24/theater/anastasia-review-broadway.html?_r=0",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nytimes.com/2017/04/25/theater/anastasia-review-broadhurst-theater.html",
+  "urlDiscoveredAt": "2026-02-04T18:43:00.210Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 273,
+  "archivePath": "data/archives/reviews/anastasia-2017/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T18:43:00.213Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 273,
+  "tierReason": "Short text (273 words)"
 }
