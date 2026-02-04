@@ -6,7 +6,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
-import { getAllShows } from '@/lib/data-core';
+import { getAllShows, getDataStats } from '@/lib/data-core';
 import { Analytics } from '@vercel/analytics/react';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 
@@ -76,6 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const searchShows = getSearchShows();
+  const { totalReviews } = getDataStats();
 
   return (
     <html lang="en">
@@ -226,6 +227,9 @@ export default function RootLayout({
                 <span className="text-gray-500 hidden sm:inline">|</span>
                 <span>Every show. Every review. One score.</span>
               </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Aggregating <span className="text-gray-400 font-medium">{totalReviews.toLocaleString()}</span> critic reviews and counting...
+              </p>
             </div>
             <p className="mt-4 pt-4 border-t border-white/5 text-center text-xs text-gray-500">
               All ratings and reviews belong to their respective sources.
