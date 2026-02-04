@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "To be clear, the casting isn't colorblind; it's just casting, with director Miranda Cromwell delicately drawing out a different set of lived experiences from Miller's almost untouched words. The play's West-End co-director Marianne Elliott has not made the journey across the pond with its ongoing contributors, all of whom deserve kudos for the revelatory production, especially Wendell Pierce (\"Broke-ology,\" \"The Wire,\" \"Treme\") as Willy and Sharon D. Clarke (\"Caroline, or Change\") as Linda, his long-suffering wife. Though Pierce devastatingly pulls Willy apart in front of our eyes until all that's left is his sense of failure, it's Clarke who gives Willy's downfall its saddest dimension, convincing the audience, beyond any doubt, that the very-flawed Willy is loved. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "all of whom deserve kudos for the revelatory production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the production as 'revelatory' and highlights strong lead performances. Single excerpt warning means limited view of full verdict, but language suggests strong positive assessment. | GPT-4o: The excerpt praises the casting and performances, particularly highlighting the 'revelatory production' and the impactful performances of the lead actors. Despite the text quality warning, the language indicates a strong positive sentiment. | Gemini: The review praises the direction and especially the performances of the leads, calling the production \"revelatory.\" Given the single excerpt, I am scoring it on the higher end of positive. | Kimi: Single excerpt contains strong praise for the 'revelatory production' and lauds both lead performances, particularly highlighting the emotional devastation and depth brought to the roles, though limited text necessitates conservative scoring at the upper end of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:41:58.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

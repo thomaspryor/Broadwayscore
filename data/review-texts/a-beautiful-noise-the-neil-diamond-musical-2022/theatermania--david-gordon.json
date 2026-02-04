@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Dobson isn't playing a character or anything, he's just sitting there singing...the simplicity of this small scene becomes the thing that everyone leaving the theater remembers... No bah, bah, bahs are necessary to convey what it means, and I wish the rest of the show behaved the same way.\"\n\nRead more"
+  "showScoreExcerpt": "\"Dobson isn't playing a character or anything, he's just sitting there singing...the simplicity of this small scene becomes the thing that everyone leaving the theater remembers... No bah, bah, bahs are necessary to convey what it means, and I wish the rest of the show behaved the same way.\"\n\nRead more",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wish the rest of the show behaved the same way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt praises one specific moment as memorable and simple, but the final line 'I wish the rest of the show behaved the same way' clearly indicates the critic found the remainder disappointing. Single excerpt with mixed signals requires low confidence. | GPT-4o: The excerpt praises a specific scene for its simplicity and memorability, but implies a wish for the rest of the show to match this quality, suggesting an uneven experience. | Gemini: The review praises a specific scene for its simplicity and impact, but expresses a wish that the rest of the show followed suit, indicating a mixed overall impression. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt praises a specific scene as the show's most memorable element while criticizing the remainder for lacking that same simplicity and effectiveness, suggesting a qualified recommendation based on isolated highlights.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:40:52.404Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

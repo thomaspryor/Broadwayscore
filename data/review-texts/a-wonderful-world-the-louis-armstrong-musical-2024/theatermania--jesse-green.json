@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Monroe Iglehart brings charisma and vocal power to the role of Satchmo, but the musical struggles to find its rhythm between biography and celebration.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Monroe Iglehart brings charisma and vocal power to the role of Satchmo, but the musical struggles to find its rhythm between biography and celebration.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Monroe Iglehart brings charisma and vocal power to the role of Satchmo, but the musical struggles to find its rhythm between biography and celebration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows praise for the lead performance but criticism of the musical's structural issues. 'Struggles to find its rhythm' suggests significant problems despite the strong lead. Low confidence due to limited text from single curated excerpt. | GPT-4o: The excerpt praises the lead performance but highlights a significant issue with the musical's structure, suggesting a mixed reception. The single excerpt warning and lack of full context lead to a low confidence level. | Gemini: The review praises Iglehart's performance but notes the musical's struggle to find its rhythm, indicating a mixed assessment. The single excerpt and smaller outlet reduce confidence. | Kimi: The excerpt offers specific praise for the lead performer's charisma and vocals but explicitly states the musical itself struggles with structural balance between biography and celebration, indicating significant reservations about the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:51:05.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

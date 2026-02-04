@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Working elliptically and with remarkable economy of means, the playwright creates a portrait in miniature of a society that, all too often, leaves the poor, disabled, and psychologically lost to fend for themselves. At the same time, her dialogue crackles with wit and understated feeling. It's a piece that needs extremely special handling, here provided by director Jo Bonney, recreating her 2017 MTC production with three members of the original cast. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "her dialogue crackles with wit and understated feeling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for playwright's economy and wit, plus endorsement of director's 'extremely special handling.' Single excerpt warning applies - this sounds clearly positive, so scored in upper Positive range, but low confidence due to limited text. | GPT-4o: The excerpt praises the playwright's skill and the director's handling, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the playwright's economy and wit, and the director's handling of the piece, suggesting a positive experience. Given the limited text, confidence is low, but the positive language suggests a strong recommendation. | Kimi: The excerpt offers strong praise for the playwright's craft ('remarkable economy of means,' 'crackles with wit') and the director's 'extremely special handling,' indicating a solid recommendation. However, as a single curated excerpt with truncation, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:30:49.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

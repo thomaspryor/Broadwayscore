@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Unfortunately, though Sorkin may have made this \"Camelot\" more politically correct, scientifically accurate and less supernatural, it is much less entertaining and magical than earlier productions and certainly much darker as well as less funny. Whereas the original 1960 Broadway production billed itself as “the most beautiful show in the world,” Bartlett Sher’s revival has a nearly empty grey stage most of the time (designed by Michael Yeargan) and drab costumes from Jennifer Moeller. Although the cast has 25 performers, the court scenes always look underpopulated as though not enough courtiers have shown up and there is almost no pageantry which one expects for a royal court of the Dark Ages or the Middle Ages.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is much less entertaining and magical than earlier productions and certainly much darker as well as less funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds this revival significantly inferior to previous productions, calling it less entertaining, magical, and funny, with complaints about staging and design. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt criticizes the production for being less entertaining, magical, and funny compared to earlier versions. The negative tone suggests a lack of recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt expresses disappointment, stating that the current production is \"less entertaining and magical\" than previous ones and describing the stage and costumes as \"drab.\" This indicates a negative assessment. | Kimi: The excerpt criticizes the revival for being less entertaining, less magical, darker, and less funny than previous productions, with specific complaints about the sparse, grey staging and drab costumes, indicating a recommendation against seeing this version.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:28:30.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

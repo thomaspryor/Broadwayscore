@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is both a pointed satire and a sincere lament, exploring what it means to be Black in America through a series of interconnected vignettes that are by turns hilarious and heartbreaking.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is both a pointed satire and a sincere lament, exploring what it means to be Black in America through a series of interconnected vignettes that are by turns hilarious and heartbreaking.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is both a pointed satire and a sincere lament, exploring what it means to be Black in America through a series of interconnected vignettes that are by turns hilarious and heartbreaking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear appreciation for the play's dual nature as satire and lament, praising its exploration of Black American experience and emotional range. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises the play for its dual nature as both satire and lament, highlighting its emotional range from hilarious to heartbreaking. This suggests a strong positive impression, though the single excerpt limits confidence. | Gemini: The excerpt describes the play as \"hilarious and heartbreaking,\" which suggests a positive experience, but the lack of full text and single excerpt lowers the confidence. | Kimi: The excerpt offers strong praise describing the show as 'hilarious and heartbreaking' with 'pointed' satire and 'sincere' lament, indicating solid artistic merit. However, confidence is low given this is a single curated excerpt that may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:53:41.011Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

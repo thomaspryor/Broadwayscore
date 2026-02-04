@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jessica Chastain’s awesome performance as Nora, director Jamie Lloyd’s vivid modern production, Amy Herzog’s pointed adaptation and a coup de théâtre finale, all make this stripped-down revival of Henrik Ibsen’s A Doll’s House a stimulating and memorable theatrical event.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "all make this stripped-down revival of Henrik Ibsen's A Doll's House a stimulating and memorable theatrical event",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language praising multiple elements (performance, direction, adaptation, finale) with clear recommendation language ('stimulating and memorable theatrical event'). Single excerpt warning suggests caution, but tone is clearly enthusiastic positive. | GPT-4o: The excerpt provides strong praise for the performance, direction, adaptation, and production, indicating a highly positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the performance, direction, adaptation, and finale. Given the single excerpt and positive tone, I'm scoring it high in the positive range. | Kimi: The excerpt offers enthusiastic praise for multiple production elements including an 'awesome' lead performance, 'vivid' direction, and 'memorable' overall experience. However, as only a single curated excerpt is available, the score reflects the upper range of Positive (80-84) per instructions, with confidence set to low due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:49:11.512Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

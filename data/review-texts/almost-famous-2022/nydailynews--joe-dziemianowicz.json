@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on Cameron Crowe's semi-autobiographical 2000 film, is a sweet, nostalgic trip that captures the magic of rock 'n' roll and the pain of growing up.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, based on Cameron Crowe's semi-autobiographical 2000 film, is a sweet, nostalgic trip that captures the magic of rock 'n' roll and the pain of growing up.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a sweet, nostalgic trip that captures the magic of rock 'n' roll and the pain of growing up.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses positive descriptors ('sweet', 'captures the magic') suggesting a favorable recommendation, but with only one curated quote available, confidence must be low and score conservative within Positive range. | GPT-4o: The excerpt describes the musical as a 'sweet, nostalgic trip' that effectively captures key themes, suggesting a positive view. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review excerpt describes the musical as \"sweet\" and \"nostalgic\" and states that it captures the magic of rock and roll. This suggests a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt uses warm, unreserved praise ('captures the magic,' 'sweet'), indicating a clear recommendation consistent with the upper Positive range, though the gentle 'nostalgic' tone stops short of Rave enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:58:54.894Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

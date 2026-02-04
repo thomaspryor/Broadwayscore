@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 14,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\" '& Juliet' is quite the most excruciating experience I’ve had on Broadway in decades.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 14,
+    "confidence": "medium",
+    "range": {
+      "low": 9,
+      "high": 19
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'& Juliet' is quite the most excruciating experience I've had on Broadway in decades.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Rex Reed calls the show 'excruciating' and the worst Broadway experience in 'decades' - this is devastating criticism that clearly places it in the deep pan range. | GPT-4o: The excerpt provides a strongly negative opinion, describing the show as 'excruciating.' Given the lack of full context, the score is placed in the deep Pan range, but confidence is low due to the single excerpt warning. | Gemini: The critic states it was the most excruciating experience he's had on Broadway in decades, indicating a strong pan. | Kimi: The sole available excerpt employs superlative condemnation ('most excruciating... in decades'), which would place this firmly in the Pan range (0-34). Confidence is low due to the single-excerpt limitation, but the language used is unambiguously hostile.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:05:04.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 12,
+    "openaiScore": 15,
+    "geminiScore": 10,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

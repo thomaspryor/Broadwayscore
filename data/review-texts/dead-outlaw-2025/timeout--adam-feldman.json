@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,5 +24,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "His mortal thread is cut, and Durand spends the rest of the musical being moved around inertly in what might be the most impressive deadpan performance in history. He's staggeringly still: You can't even catch him blink. That same level of commitment extends to all of Dead Outlaw. The writing is piquant and sly, the songs have verve and resonance, and every element of Cromer's production seems to fit exactly in place."
+  "nycTheatreExcerpt": "His mortal thread is cut, and Durand spends the rest of the musical being moved around inertly in what might be the most impressive deadpan performance in history. He's staggeringly still: You can't even catch him blink. That same level of commitment extends to all of Dead Outlaw. The writing is piquant and sly, the songs have verve and resonance, and every element of Cromer's production seems to fit exactly in place.",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The writing is piquant and sly, the songs have verve and resonance, and every element of Cromer's production seems to fit exactly in place.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for writing, songs, and production cohesion suggests positive recommendation, but confidence is low due to truncated excerpt that may not capture full verdict. | GPT-4o: The excerpt provides strong praise for the writing, songs, and production, suggesting a highly positive view. However, due to the text quality warning and lack of full context, confidence is low. | Gemini: The excerpt praises the writing, songs, and production, indicating a positive recommendation. Confidence is low due to the limited text. | Kimi: The excerpt offers strong specific praise for the writing, music, and staging, indicating clear enthusiasm for the production despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:37:41.352Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

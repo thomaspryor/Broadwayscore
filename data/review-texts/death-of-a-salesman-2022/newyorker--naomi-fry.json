@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pierce's Willy is a man whose dreams have curdled into delusion, but who retains a tragic dignity even as he spirals toward his doom.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Pierce's Willy is a man whose dreams have curdled into delusion, but who retains a tragic dignity even as he spirals toward his doom.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce's Willy is a man whose dreams have curdled into delusion, but who retains a tragic dignity even as he spirals toward his doom.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows sophisticated appreciation for Pierce's performance, praising his ability to capture the character's 'tragic dignity.' However, with only one curated quote available, this could be cherry-picked from a mixed or negative review. | GPT-4o: The excerpt praises Pierce's performance, highlighting a complex portrayal of Willy with 'tragic dignity.' The positive tone suggests a recommendation, but the single excerpt limits confidence. | Gemini: The excerpt describes the actor's portrayal of the character as retaining a tragic dignity. This suggests a positive assessment of the performance, but the limited text and excerpt-only warning lowers confidence. | Kimi: The excerpt offers clear praise for the lead actor's nuanced portrayal, describing the performance with admiring language ('tragic dignity') that suggests a positive assessment of the production, though the single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:39:24.431Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

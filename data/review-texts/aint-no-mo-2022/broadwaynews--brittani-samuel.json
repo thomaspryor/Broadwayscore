@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"A show this physically and emotionally layered could easily ruddy into confusion, but Walker-Webb keeps Cooper’s boundless imagination intact.\"\n\nRead more"
+  "showScoreExcerpt": "\"A show this physically and emotionally layered could easily ruddy into confusion, but Walker-Webb keeps Cooper’s boundless imagination intact.\"\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Walker-Webb keeps Cooper's boundless imagination intact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the director for successfully managing complex material without confusion, calling the imagination 'boundless' - clearly positive language. However, with only one curated excerpt available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt praises the show's complexity and the director's ability to maintain the playwright's vision, indicating a positive recommendation. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The excerpt praises the director for keeping the show's imagination intact, suggesting a positive experience. Given the single excerpt and lack of full context, confidence is low, but the positive sentiment warrants a score in the upper end of the positive range. | Kimi: The single available excerpt offers clear praise for the director's skill in managing complex material, highlighting the show's 'boundless imagination.' While distinctly positive, confidence is low due to the limited excerpt length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:53:03.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

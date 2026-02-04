@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"...this is less a play than a reading of whacky short stories\"\n\nRead more"
+  "showScoreExcerpt": "\"...this is less a play than a reading of whacky short stories\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is less a play than a reading of whacky short stories",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the work as not even qualifying as a proper play, suggesting fundamental structural problems. However, this is only one excerpt and may not reflect the full review sentiment. | GPT-4o: The excerpt suggests a negative view of the production, implying it lacks cohesion or depth expected of a play. However, the single excerpt may not fully represent the review, leading to low confidence. | Gemini: The single excerpt available is negative, suggesting the show is disjointed and not a cohesive play. Given the limited information, I'm placing it in the negative bucket with low confidence. | Kimi: The excerpt criticizes the show for lacking theatrical cohesion, describing it as more of a reading than a fully realized play. Given only one curated excerpt is available, the full review context is uncertain, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:56:40.204Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

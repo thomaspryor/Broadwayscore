@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The experience, and it is a theatrical experience more than a theater production, is a nostalgic trip even if you’ve never seen the 1985 first movie in the franchise”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The experience, and it is a theatrical experience more than a theater production, is a nostalgic trip even if you've never seen the 1985 first movie in the franchise",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes it as a worthwhile 'theatrical experience' and 'nostalgic trip' which suggests positive recommendation, but the distinction between 'experience' vs 'production' implies some reservation. Low confidence due to single cherry-picked excerpt. | GPT-4o: The excerpt describes the show as a 'theatrical experience' and 'nostalgic trip', which suggests some positive elements, but lacks strong recommendation language. The single excerpt warning and lack of clear positive or negative sentiment lead to a mixed classification. | Gemini: The review excerpt suggests a positive experience, describing it as a \"nostalgic trip.\" However, due to the limited text available, the confidence is low. | Kimi: The excerpt offers clear praise calling it a 'nostalgic trip' and effective 'theatrical experience,' indicating a recommendation. Per the single-excerpt warning, scoring at the upper end of the Positive bucket due to the unambiguously favorable tone, though confidence is low given limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:11:17.304Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

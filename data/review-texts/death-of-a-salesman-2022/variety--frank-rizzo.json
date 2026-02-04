@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pierce brings a welcome specificity to Willy, investing him with a warmth and humanity that makes his delusions all the more heartbreaking.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Pierce brings a welcome specificity to Willy, investing him with a warmth and humanity that makes his delusions all the more heartbreaking.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce brings a welcome specificity to Willy, investing him with a warmth and humanity that makes his delusions all the more heartbreaking.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with emotional impact ('heartbreaking'). However, confidence is low due to single excerpt warning - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt praises Pierce's performance, highlighting his ability to bring warmth and humanity to the character. However, the single excerpt warning suggests this may not fully represent the overall sentiment, leading to a cautious, lower-end Positive score. | Gemini: The excerpt praises the performance of Pierce as Willy, suggesting a positive aspect of the production. However, with only one excerpt, the overall verdict is uncertain, leading to a lower confidence and a score on the lower end of the positive range. | Kimi: The excerpt provides strong praise for the lead performance, citing emotional specificity and heartbreaking humanity, which indicates a positive verdict, though the limited single-excerpt context warrants lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:42:29.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Between singing and playing...the fissures in the fabric the Dahl family begin to appear.\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T07:35:26.229Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a truncated navigation snippet or teaser text ending with 'Read more' rather than actual review content with any evaluative assessment; openai: The provided text is too limited and lacks evaluative content, making it impossible to determine the critic's recommendation or sentiment about the show.; gemini: The provided text is too short and lacks any evaluative content to determine a score. It appears to be a fragment of a sentence describing a plot point, not a critical assessment.",
+  "promptVersion": "5.2.0"
 }

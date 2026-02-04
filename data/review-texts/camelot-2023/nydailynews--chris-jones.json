@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“At the end of the night, though, and notwithstanding whatever changes you might want to make to the 1960 world view, what really matters is that the audience believes in, and pulls for, the love of Arthur and Genny because it is a stand-in for American democratic values.”\n\nRead more"
+  "showScoreExcerpt": "“At the end of the night, though, and notwithstanding whatever changes you might want to make to the 1960 world view, what really matters is that the audience believes in, and pulls for, the love of Arthur and Genny because it is a stand-in for American democratic values.”\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what really matters is that the audience believes in, and pulls for, the love of Arthur and Genny because it is a stand-in for American democratic values",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt suggests the critic finds the show ultimately successful in its emotional core despite acknowledged flaws with the 1960s worldview. However, with only one curated quote available, confidence is low and score stays in lower Positive range. | GPT-4o: The excerpt suggests a positive view of the show's ability to engage the audience emotionally, but the lack of a full review and the single excerpt warning necessitate a cautious, low-confidence classification. | Gemini: The excerpt suggests a positive sentiment, focusing on the importance of the audience believing in the love story. However, the phrase \"whatever changes you might want to make to the 1960 world view\" indicates some reservations. Given that this is a single excerpt, confidence is low. | Kimi: Single excerpt indicates the show succeeds in making the audience emotionally invested in the central relationship despite reservations about its 1960s worldview, suggesting a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:26:51.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

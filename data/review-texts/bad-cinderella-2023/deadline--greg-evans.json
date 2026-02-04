@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“By the time it reaches its happily-ever-after ending – the musical doesn’t pretend for a moment it won’t get there – ’Bad Cinderella’ leaves us both more or less satisfied and more or less disappointed.”\n\nRead more"
+  "showScoreExcerpt": "“By the time it reaches its happily-ever-after ending – the musical doesn’t pretend for a moment it won’t get there – ’Bad Cinderella’ leaves us both more or less satisfied and more or less disappointed.”\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "leaves us both more or less satisfied and more or less disappointed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states the show leaves audiences both satisfied AND disappointed, which is the definition of a mixed review. However, with only one excerpt available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt indicates a mixed reaction, with both satisfaction and disappointment mentioned. The lack of a full review and single excerpt warning suggest caution in interpretation. | Gemini: The review excerpt indicates a mixed reaction, with the critic being both satisfied and disappointed. Due to the limited text, confidence is low. | Kimi: The critic explicitly balances positive and negative reactions, describing the show as leaving audiences simultaneously 'satisfied' and 'disappointed,' indicating a lukewarm, ambivalent verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:13:05.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

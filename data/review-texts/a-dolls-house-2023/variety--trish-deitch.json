@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"In this revival, what’s left is a beautiful, spacious clarity about what this oft-produced play is about, who these characters are, what they mean to one another and how they may (or may not) impact audiences of today.\n\nRead more"
+  "showScoreExcerpt": "\"In this revival, what’s left is a beautiful, spacious clarity about what this oft-produced play is about, who these characters are, what they mean to one another and how they may (or may not) impact audiences of today.\n\nRead more",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this revival, what's left is a beautiful, spacious clarity about what this oft-produced play is about.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the revival's 'beautiful, spacious clarity' which suggests appreciation and recommendation, but as a single curated quote it may not represent the full verdict, warranting lower confidence and mid-range Positive scoring. | GPT-4o: The excerpt highlights a positive assessment of the revival's clarity and impact, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses positive language like \"beautiful\" and \"clarity,\" suggesting a positive recommendation. Given the single excerpt, confidence is low, but the positive tone warrants a score on the higher end of the positive bucket. | Kimi: The excerpt offers unambiguous praise for the production's interpretive clarity and aesthetic qualities ('beautiful, spacious clarity'), warranting a score in the upper Positive range per instructions for clearly positive single excerpts. However, confidence is low due to the curated, truncated nature of the available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:49:45.973Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
