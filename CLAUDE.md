@@ -129,8 +129,9 @@ data/
   audit/                           # Audit reports (auto-generated)
     critic-outlet-affinity.json    # Flagged reviews + freelancer list
     validation-baseline.json       # Previous validation counts (auto-written by validate-data.js)
+    aggregator-coverage.json       # Per-show coverage gaps vs all 5 aggregators (weekly auto-generated)
   aggregator-archive/             # Archived HTML from aggregator sites
-    show-score/ | dtli/ | bww-roundups/
+    show-score/ | dtli/ | bww-roundups/ | playbill-verdict/ | nyc-theatre/
 ```
 
 ### Show Schema (shows.json)
@@ -263,6 +264,8 @@ data/
 - `scripts/scrape-nyc-theatre-roundups.js` - NYC Theatre excerpt extraction (2023+ shows)
 - `scripts/lib/show-matching.js` - Shared title→show matching utility
 - `scripts/audit-content-quality.js` - Deep content audit: fabricated URLs, wrong-production content, critic mismatches, domain mismatches, cross-show duplicate URLs, excerpt-as-fullText, generic URLs. Run manually after bulk data changes.
+- `scripts/audit-aggregator-coverage.js` - Aggregator coverage audit: compares archive-extracted counts vs local reviews across all 5 sources. Outputs `data/audit/aggregator-coverage.json` with per-show gaps and `trulyMissing` metric. CLI: `--output-gaps`, `--status=open`, `--show=SLUG`
+- `scripts/build-aggregator-truth.js` - Extracts expected review counts from archived HTML (Show Score, DTLI, BWW). Exports extraction functions for reuse.
 - `scripts/scrape-mezzanine-audience.js` - Mezzanine audience data via Parse Server API (automated weekly)
 - `scripts/build-sqlite.js` - Builds SQLite query database from JSON files (`npm run db:build`). Handles `contentTier` as either string or nested object.
 - `scripts/query.js` - Ad-hoc SQL queries against SQLite database (`npm run db:query`)
@@ -571,6 +574,57 @@ Use ALL FIVE for comprehensive review coverage - each has different historical c
 **Integration:** Sources 1-3 run inline during `gather-reviews.js` (immediate). Sources 4-5 run as a non-blocking `scrape-aggregators` job in `gather-reviews.yml` after gathering completes, and also weekly via `scrape-new-aggregators.yml` (Sundays 11 AM UTC) for catch-up.
 
 Archives stored in `data/aggregator-archive/`. Extraction scripts: `scripts/extract-show-score-reviews.js`, `scripts/extract-bww-reviews.js`.
+
+### Aggregator Coverage Audit System
+
+**Goal:** For every show, verify that every review listed on every aggregator is in our corpus. "Every show, every review, one score."
+
+**Key scripts:**
+- `scripts/audit-aggregator-coverage.js` — Main audit. Compares archive-extracted counts vs local review files across all 5 sources. Writes `data/audit/aggregator-coverage.json`.
+- `scripts/build-aggregator-truth.js` — Extracts review counts from archived HTML (Show Score, DTLI, BWW). Exports `extractShowScoreCount()`, `extractDTLICount()`, `extractBWWCount()` for reuse by the audit script.
+
+**Audit output (`data/audit/aggregator-coverage.json`):**
+```json
+{
+  "_meta": {
+    "totalShows": 734,
+    "showsWithGaps": 218,
+    "totalPerAggregatorMissing": 1009,
+    "totalTrulyMissing": 148,
+    "neverSearched": { "dtli": 658, "showScore": 657, "bww": 656, "playbillVerdict": 419, "nycTheatre": 693 }
+  },
+  "shows": {
+    "show-id": {
+      "totalLocal": 25,
+      "maxAggregatorCount": 30,
+      "trulyMissing": 5,
+      "aggregators": {
+        "showScore": { "archiveCount": 28, "extractedCount": 22, "gap": 6 },
+        "dtli": { "archiveCount": 26, "extractedCount": 24, "gap": 2 }
+      }
+    }
+  }
+}
+```
+
+**Key insight — per-aggregator gaps vs truly missing:** ~97% of per-aggregator "gaps" are source-attribution differences, not genuinely missing reviews. Example: Cabaret PV lists 20 reviews we don't attribute to PV, but 18 of those are already in our corpus from DTLI/SS/BWW. The `trulyMissing` metric (`max(0, maxAggregatorCount - totalLocal)`) shows the real gap.
+
+**Coverage gap closure workflow:** `.github/workflows/close-coverage-gaps.yml` orchestrates full closure for a given era:
+1. **Prepare** — Filters shows by opening year
+2. **Fetch archives** — Downloads HTML from DTLI/SS/BWW for never-searched shows (~$0.005/page)
+3. **Scrape PV/NYC** — Discovers review URLs from Playbill Verdict + NYC Theatre
+4. **Re-audit** — Identifies shows with `trulyMissing > 0` after new archives
+5. **Gather reviews** — Runs `gather-reviews.js` for gapped shows only
+6. **Rebuild** — Regenerates `reviews.json`
+
+**Era prioritization:** 2021-2026 first (most visible), then 2016-2020, 2011-2015, pre-2011. Total cost ~$26 for all 734 shows.
+
+**Source normalization:** The audit maps variant `source` field values to aggregator keys:
+- `show-score`, `show-score-playwright` → `showScore`
+- `dtli` → `dtli`
+- `bww-roundup` → `bww`
+- `playbill-verdict` → `playbillVerdict`
+- `nyc-theatre` → `nycTheatre`
 
 ### Outlet-Specific Scrapers
 
