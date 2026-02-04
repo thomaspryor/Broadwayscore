@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"This gigantic gift of a revival is scheduled through the end of August, but something tells me it will, magic beanstalk–like, extend. ... A Sondheim revival with vocally superior, perfectly cast performers, intelligent direction and design, and a sizable orchestra? Sometimes wishes do come true.\"\n\nRead more"
+  "showScoreExcerpt": "\"This gigantic gift of a revival is scheduled through the end of August, but something tells me it will, magic beanstalk–like, extend. ... A Sondheim revival with vocally superior, perfectly cast performers, intelligent direction and design, and a sizable orchestra? Sometimes wishes do come true.\"\n\nRead more",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gigantic gift of a revival is scheduled through the end of August, but something tells me it will, magic beanstalk–like, extend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls it a 'gigantic gift' and predicts extension due to quality, with unqualified praise for all elements. However, confidence is medium due to single excerpt warning - the full review context is unavailable. | GPT-4o: The excerpt uses highly positive language such as 'gigantic gift' and 'wishes do come true,' indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, praising the performers, direction, design, and orchestra. The phrase \"gigantic gift of a revival\" indicates a strong recommendation. | Kimi: The excerpt delivers unqualified praise for the casting, vocals, direction, and design, calling the production a 'gigantic gift' and declaring that 'wishes do come true'—language indicating strong endorsement. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:38:01.099Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

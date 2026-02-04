@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The comedy recedes to explore more serious issues about immigration, racism and the exploitation of women. The substitution of the stylist’s chair for a soapbox is rather abrupt, and not entirely convincing. But it helps that Bioh has weaved her big-hearted dramedy from such strong roots, with characters who seem like flesh and blood.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The substitution of the stylist's chair for a soapbox is rather abrupt, and not entirely convincing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows mixed assessment - praises character development and 'big-hearted dramedy' but criticizes abrupt tonal shifts as 'not entirely convincing.' Low confidence due to limited text. | GPT-4o: The excerpt highlights both positive elements (strong roots, flesh and blood characters) and criticisms (abrupt, not entirely convincing). The lack of a full review and potential cherry-picking of the quote suggest a mixed review with some positive aspects. | Gemini: The review acknowledges some issues but ultimately suggests the play is a \"big-hearted dramedy\" with strong characters, indicating a mildly positive recommendation. Confidence is low due to the limited excerpt. | Kimi: Single excerpt criticizes the abrupt tonal shift to serious themes as unconvincing, but praises the play as 'big-hearted' with realistic characters, indicating a qualified recommendation in the lower Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:42:48.777Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

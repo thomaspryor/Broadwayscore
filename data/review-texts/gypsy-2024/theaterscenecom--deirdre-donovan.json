@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Audra McDonald becomes the first black Mama Rose.\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T08:06:55.088Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a factual statement about casting with a 'Read more' prompt - no evaluative content or critical assessment is provided.; openai: The text is not evaluative and does not provide any assessment or opinion about the show.; gemini: This is not a review, it is just a short announcement.; kimi: The text consists solely of a factual statement about casting (Audra McDonald becoming the first Black Mama Rose) with no evaluative content regarding the performance, production quality, or overall show. It functions as a cast listing or historical note rather than a critical review.",
+  "promptVersion": "5.2.0"
 }

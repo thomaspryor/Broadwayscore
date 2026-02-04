@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Bergen and Cox bring decades of professional craft to their roles, but the play itself feels like a museum piece, preserved in amber from an earlier era of American theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bergen and Cox bring decades of professional craft to their roles, but the play itself feels like a museum piece, preserved in amber from an earlier era of American theater.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bergen and Cox bring decades of professional craft to their roles, but the play itself feels like a museum piece, preserved in amber from an earlier era of American theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the lead performances but criticizes the play as feeling outdated and preserved 'like a museum piece.' Single excerpt warning applies - this balanced but leaning negative assessment suggests mixed reception. | GPT-4o: The excerpt praises the performances but criticizes the play as outdated, suggesting a neutral stance. Only one excerpt is available, so confidence is low. | Gemini: The review praises the actors but criticizes the play itself, suggesting a mixed experience. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise for the performers' professional craft while criticizing the play itself as a dated 'museum piece' preserved from an earlier era, suggesting a divided assessment without clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:12:08.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

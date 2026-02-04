@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Working with a talented playwright but first-time librettist (Kristoffer Diaz) and a fabulously successful pop songwriter (Alicia Keys), director Michael Greif hasn't managed to bend their considerable skills to the specific storytelling needs of musical theatre. For all the busy coming and going onstage, it is a strangely low-energy affair that never catches the streetwise, multi-ethnic flavor of Manhattan's West Side before the fancy high-rises and cute restaurants moved in”.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all the busy coming and going onstage, it is a strangely low-energy affair that never catches the streetwise, multi-ethnic flavor of Manhattan's West Side before the fancy high-rises and cute restaurants moved in",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show 'strangely low-energy' and criticizes the director for failing to utilize the talented creative team effectively. However, this is only an excerpt, so confidence is low. | GPT-4o: The excerpt criticizes the show for failing to adapt the talents of its creators to musical theatre, describing it as 'low-energy' and lacking in capturing the intended flavor. The overall tone is negative, suggesting disappointment. | Gemini: The review excerpt indicates that the director failed to utilize the talents of the playwright and songwriter effectively, resulting in a low-energy and unconvincing production. Given the negative tone, I've classified it as negative. | Kimi: The excerpt criticizes the director's failure to shape the material into effective musical theatre, citing low energy and a lack of authentic atmosphere. Given this is a single curated excerpt, the sentiment appears negative but confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:17:45.566Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

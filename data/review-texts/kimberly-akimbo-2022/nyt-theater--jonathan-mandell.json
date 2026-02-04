@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "arrives on Broadway with its terrific cast and quirkiness intact. What’s best about this musical remains – above all, the slowly unfolding oddball relationship between two high school misfits, and the wonderful performances by the actors who portray them…the musical might have benefited from paring the various subplots…add up all these moments and they threaten to overwhelm or at least distract from the heart of “Kimberly Akimbo” — Kimberly and Seth.\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://newyorktheater.me/2022/11/10/kimberly-akimbo-broadway-review/",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "arrives on Broadway with its terrific cast and quirkiness intact",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the cast as 'terrific' and highlights 'wonderful performances,' but notes the show 'might have benefited from paring' subplots. Single excerpt limits full assessment. | GPT-4o: The review excerpt praises the cast and the central relationship, indicating a positive view. However, it notes that subplots may distract from the main story, suggesting some reservations. Given the single excerpt and text quality warning, the score is on the lower end of the Positive range. | Gemini: The review excerpt praises the cast and the central relationship, but also mentions that subplots might overwhelm the core story. This suggests a positive but not rave review, with some reservations. | Kimi: The excerpt offers enthusiastic praise for the cast ('terrific,' 'wonderful') and central relationship, affirming the show's quirkiness remains intact on Broadway, though it criticizes the subplots as potentially distracting.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:54:22.408Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

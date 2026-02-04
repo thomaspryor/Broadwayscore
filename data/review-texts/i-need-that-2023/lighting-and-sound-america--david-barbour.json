@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 67,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“If you want to experience the very definition of a star vehicle, Roundabout has a show for you. Before you bite, however, consider the star: It's unclear if Theresa Rebeck wrote I Need That for Danny DeVito or if she reworked it once he agreed to appear in it. In any case, the lead role fits him like a custom-made glove, giving the popular television and film star a prime opportunity to exercise his comic specialties. Indeed, it often seems to be the reason that I Need That exists.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 67,
+    "confidence": "medium",
+    "range": {
+      "low": 62,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's unclear if Theresa Rebeck wrote I Need That for Danny DeVito or if she reworked it once he agreed to appear in it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt focuses on DeVito's performance fitting well but questions the show's purpose and substance. The phrase 'Before you bite, however, consider' suggests caution, and questioning why the show exists indicates mixed-to-negative sentiment. | GPT-4o: The excerpt highlights the show as a star vehicle for Danny DeVito, suggesting it is worth seeing for his performance. However, the text also implies the show may primarily exist to showcase him, which suggests some reservations. | Gemini: The review highlights the play as a star vehicle for Danny DeVito, suggesting it's worth seeing for his performance, but also implies the play's primary purpose is to showcase him, which could be a reservation. | Kimi: While praising DeVito's perfect fit for the role, the excerpt questions whether the play exists for any reason beyond showcasing the star, calling it the 'very definition of a star vehicle' with a cautionary 'before you bite.' | Buckets: claude=Mixed, openai=Positive, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:32:04.770Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

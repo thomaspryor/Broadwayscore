@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McDonald brings her own distinctive gifts to the role, including a voice of crystalline beauty and an innate elegance that makes Rose's eventual breakdown all the more devastating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald brings her own distinctive gifts to the role, including a voice of crystalline beauty and an innate elegance that makes Rose's eventual breakdown all the more devastating.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McDonald brings her own distinctive gifts to the role, including a voice of crystalline beauty and an innate elegance that makes Rose's eventual breakdown all the more devastating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the lead performance ('crystalline beauty', 'distinctive gifts', 'innate elegance'). However, this is only one curated quote and may not represent the full review verdict, requiring low confidence. | GPT-4o: The excerpt praises McDonald's performance, highlighting her voice and elegance, suggesting a positive view of the show. However, with only one curated excerpt, the overall sentiment is uncertain, leading to a low confidence level. | Gemini: The excerpt praises Audra McDonald's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to gauge the overall recommendation strength, so I've assigned a score in the lower-middle of the Positive range with low confidence. | Kimi: The excerpt offers strong praise for McDonald's vocal performance and dramatic impact, using words like 'crystalline beauty' and 'devastating,' indicating a clearly positive assessment of this key element.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:08:29.179Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

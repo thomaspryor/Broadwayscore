@@ -14,5 +14,59 @@
   "nycTheatreExcerpt": "Forget the villain  Belflower's play hits as hard as it does because at its heart, fighting their way through one hell of a junior year, are the kind of heroes we actually need.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"Belflower’s play hits as hard as it does because at its heart, fighting their way through one hell of a junior year, are the kind of heroes we actually need.\"\n\nRead more"
+  "showScoreExcerpt": "\"Belflower’s play hits as hard as it does because at its heart, fighting their way through one hell of a junior year, are the kind of heroes we actually need.\"\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Belflower’s play hits as hard as it does because at its heart, fighting their way through one hell of a junior year, are the kind of heroes we actually need.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt provides strong praise for the play, emphasizing its impact and the importance of its characters. The language suggests a highly positive view, but the lack of full context requires a cautious approach. | Gemini: The quote suggests a positive view of the play, highlighting its impact and relatable characters. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers strong praise for the play's emotional impact and contemporary relevance, describing it as hitting hard and featuring necessary heroes, though the limited excerpt prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:48:46.346Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

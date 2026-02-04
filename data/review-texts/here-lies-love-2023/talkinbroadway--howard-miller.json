@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“By any measure, ‘Here Lies Love’ is a perfectly crafted, thrilling production that should make audiences very happy indeed.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By any measure, 'Here Lies Love' is a perfectly crafted, thrilling production that should make audiences very happy indeed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'perfectly crafted,' 'thrilling,' and promise of audience happiness. Single excerpt warning noted - this sounds clearly positive so using upper end of Positive bucket. | GPT-4o: The excerpt uses strong positive language ('perfectly crafted', 'thrilling', 'make audiences very happy'), indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, calling the production \"perfectly crafted\" and \"thrilling.\" Given the single excerpt, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers unqualified superlative praise ('perfectly crafted', 'thrilling'), indicating a strong recommendation. However, as only a single curated excerpt is available per the warning, the score is placed at the upper end of the Positive bucket (80-84) rather than the Rave range, with reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:22:56.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

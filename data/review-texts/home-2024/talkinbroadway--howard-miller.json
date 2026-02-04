@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"...is the most uplifting play to hit Broadway in a very long time.\"\n\nRead more"
+  "showScoreExcerpt": "\"...is the most uplifting play to hit Broadway in a very long time.\"\n\nRead more",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "...is the most uplifting play to hit Broadway in a very long time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The superlative language 'most uplifting...in a very long time' indicates strong enthusiasm and clear recommendation, placing this in Rave territory despite being only an excerpt. | GPT-4o: The excerpt uses strong positive language, calling the play 'the most uplifting' in a long time, which suggests a very strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt is extremely positive, indicating a strong recommendation. Given it's the only excerpt, confidence is low, but the strength of the quote suggests a score on the higher end of the positive range. | Kimi: The excerpt offers superlative praise ('most uplifting... in a very long time') indicating strong enthusiasm, but as only a single curated excerpt is available, the score is placed at the high end of the Positive range per scoring guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:26:12.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

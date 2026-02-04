@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,8 +20,61 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright",
-    "web-search",
-    "playbill-verdict"
+    "web-search"
   ],
-  "playbillVerdictUrl": "https://www.timeout.com/newyork/theater/kimberly-akimbo-musical-broadway-review-victoria-clark"
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It still feels intimate, but the larger audience lets the show land big laughs as well as moments of stung collective sympathy, and the performances pop with fresh energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clearly positive language - 'pop with fresh energy', 'big laughs', acknowledging both intimacy and broader appeal. Since only one curated quote is available and it's clearly positive, scoring in upper Positive range per instructions. | GPT-4o: The excerpt highlights positive aspects such as big laughs, collective sympathy, and energetic performances. Despite the limited context, the tone suggests a strong positive impression. | Gemini: The excerpt describes the show as having big laughs, moments of sympathy, and fresh performances, indicating a positive experience. Given it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise for the production's successful transition to a larger venue, citing strong comedic timing, emotional resonance, and vibrant performances. While limited to a single curated quote, the evaluative language ('big laughs', 'fresh energy') indicates a clear recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:55:44.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

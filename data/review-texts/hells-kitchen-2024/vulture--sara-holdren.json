@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Hell’s Kitchen’ is a mother-daughter story...They take Keys’s remarkable solo work and fill it out, expanding its feeling of context and community. A jukebox plays what you’ve heard before, and though ‘Hell’s Kitchen’ is unquestionably a slick commercial machine, it’s also, with admirable frequency, able to pull off the feat of making the musically familiar feel brand new.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "though 'Hell's Kitchen' is unquestionably a slick commercial machine, it's also, with admirable frequency, able to pull off the feat of making the musically familiar feel brand new.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show's commercial nature but praises its ability to make familiar music feel fresh. Single excerpt warning applies - this appears positive but confidence is low due to limited context. | GPT-4o: The excerpt praises the show for its ability to make familiar music feel new and highlights its commercial appeal. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt warning. | Gemini: The review acknowledges the show's commercial nature but praises its ability to make familiar music feel new. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt praises the show's ability to refresh familiar material despite its commercial nature, indicating clear approval, though the single curated quote warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:20:07.046Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

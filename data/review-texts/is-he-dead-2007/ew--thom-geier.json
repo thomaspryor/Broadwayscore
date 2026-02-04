@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Michael McGrath brings a boisterous energy to the lead role of Jean-François Millet, but Mark Twain's farce feels creaky and overstretched even at 90 minutes.",
   "originalScore": 72,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Michael McGrath brings a boisterous energy to the lead role of Jean-François Millet, but Mark Twain's farce feels creaky and overstretched even at 90 minutes.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mark Twain's farce feels creaky and overstretched even at 90 minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Praises lead performance but criticizes the material as 'creaky and overstretched.' Single excerpt warning applies - this could be cherry-picked negative from a more positive review, but the provided quote suggests mixed reception with significant flaws. | GPT-4o: The excerpt highlights a positive performance by Michael McGrath but criticizes the play as 'creaky and overstretched.' The original rating of 72 suggests a mixed to mildly positive review, but the excerpt's tone leans more mixed. | Gemini: The review acknowledges a strong performance but notes that the play feels \"creaky and overstretched.\" Given the single excerpt and the critic's own rating of 72, I'm placing this in the lower end of the Positive bucket. | Kimi: The critic praises the lead actor's energy but criticizes the material as creaky and overstretched. The original rating of 72/100 indicates a mildly positive verdict with significant reservations. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:40:31.305Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 68,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

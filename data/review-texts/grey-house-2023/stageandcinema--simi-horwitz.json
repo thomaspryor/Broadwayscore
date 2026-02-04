@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Grey House is a haunted house thriller that works best when it embraces its campiness and doesn't take itself too seriously.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Grey House is a haunted house thriller that works best when it embraces its campiness and doesn't take itself too seriously.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey House is a haunted house thriller that works best when it embraces its campiness and doesn't take itself too seriously.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt suggests the show has merit but only under specific conditions ('works best when'), implying inconsistent execution. Without more context, this reads as qualified praise rather than clear recommendation. | GPT-4o: The excerpt suggests a mixed review, highlighting that the show is most effective when it embraces campiness, implying it may not always succeed. The lack of a clear recommendation or discouragement places it in the Mixed bucket. | Gemini: The review suggests the show is enjoyable when it embraces its campiness, implying that it is not always successful. Given the single excerpt, I'm scoring it as a slightly positive review with reservations. | Kimi: The excerpt offers a qualified endorsement, noting the show works well under specific conditions (embracing camp), suggesting mild approval with caveats rather than unreserved enthusiasm. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:02:27.090Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

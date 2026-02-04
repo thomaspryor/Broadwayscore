@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,62 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It caused a feeling of loss so palpable that it was like all the oxygen had left the room...Running two hours and 10 minutes with no intermission, “Leopoldstadt” is a lot of play.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "low",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Running two hours and 10 minutes with no intermission, \"Leopoldstadt\" is a lot of play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Single excerpt shows powerful emotional impact but also concern about length. With only one curated quote available, this could be cherry-picked from either direction, requiring low confidence. | GPT-4o: The excerpt suggests a significant emotional impact but also hints at potential drawbacks with the length and pacing ('a lot of play'). The single excerpt and lack of full context lead to a mixed interpretation. | Gemini: The excerpt describes a negative emotional impact, suggesting the reviewer did not enjoy the show. Given the single excerpt and the warning, I am scoring this as negative with low confidence. | Kimi: The excerpt describes a visceral, overwhelming emotional impact ('oxygen had left the room'), indicating the production delivers a powerfully affecting experience appropriate to its serious subject matter. Scored at the upper end of Positive per single-excerpt guidelines, though confidence is low given limited text availability. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:02:55.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 82,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 37,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

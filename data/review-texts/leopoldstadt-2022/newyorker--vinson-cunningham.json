@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Stoppard has written a play that feels like a reckoning—with his own past, with the weight of history, and with the responsibilities of art in the face of catastrophe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stoppard has written a play that feels like a reckoning—with his own past, with the weight of history, and with the responsibilities of art in the face of catastrophe.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard has written a play that feels like a reckoning—with his own past, with the weight of history, and with the responsibilities of art in the face of catastrophe.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The language suggests serious artistic achievement ('reckoning') and weighty thematic substance, indicating critical respect and recommendation, though with only one excerpt available, confidence must remain low. | GPT-4o: The excerpt suggests a thoughtful and significant play, indicating a positive view. However, due to the single excerpt warning and lack of full context, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt suggests a thoughtful and significant work, but without more context, it's difficult to gauge the overall recommendation strength. I'm placing it in the positive bucket with low confidence due to the limited text. | Kimi: The excerpt offers substantial praise for the play's serious thematic weight and artistic ambition, describing it as a meaningful 'reckoning' with history. As a single curated quote, it indicates clear approval in the upper range of Positive, though the limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:03:29.374Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

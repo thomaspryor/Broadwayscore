@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Illinoise is a musical that feels like it's been waiting to exist for years, a perfect marriage of Sufjan Stevens's intricate indie-folk compositions and the movement-heavy storytelling that defines the best dance theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Illinoise is a musical that feels like it's been waiting to exist for years, a perfect marriage of Sufjan Stevens's intricate indie-folk compositions and the movement-heavy storytelling that defines the best dance theater.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Illinoise is a musical that feels like it's been waiting to exist for years, a perfect marriage of Sufjan Stevens's intricate indie-folk compositions and the movement-heavy storytelling that defines the best dance theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it a 'perfect marriage' and suggesting inevitability ('waiting to exist for years'). However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides strong praise for the musical, describing it as a 'perfect marriage' of music and storytelling. The tone suggests a high level of enthusiasm, placing it in the upper range of the Positive bucket. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is highly positive, describing the musical as a 'perfect marriage' and something 'waiting to exist for years.' Given the single excerpt and positive tone, I've scored it at the higher end of the 'Positive' bucket with low confidence. | Kimi: The excerpt provides strong praise, calling the show a 'perfect marriage' of music and movement and comparing it to the 'best dance theater,' indicating a clear recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:35:43.780Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "Whether or not his fantastical tale of sharing a lifeboat with a Bengal tiger for 227 days on the open seas will “make you believe in God,” as the 17-year-old shipwreck survivor named Pi Patel promises, the stage adaptation of Yann Martel’s best-selling novel “Life of Pi” will give you faith in the power of puppetry and in the magic of stagecraft….\n\nRead more"
+  "showScoreExcerpt": "Whether or not his fantastical tale of sharing a lifeboat with a Bengal tiger for 227 days on the open seas will “make you believe in God,” as the 17-year-old shipwreck survivor named Pi Patel promises, the stage adaptation of Yann Martel’s best-selling novel “Life of Pi” will give you faith in the power of puppetry and in the magic of stagecraft….\n\nRead more",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the stage adaptation of 'Life of Pi' will give you faith in the power of puppetry and in the magic of stagecraft",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the production's puppetry and stagecraft, using the strong phrase 'give you faith.' However, with only one curated excerpt available and 'Read more' indicating truncated text, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt praises the stage adaptation for its puppetry and stagecraft, suggesting a strong positive impression. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The review excerpt praises the stagecraft and puppetry, indicating a positive experience, but the truncated nature of the text and the lack of a clear overall recommendation lowers the confidence. | Kimi: The excerpt offers clear, enthusiastic praise for the production's puppetry and stagecraft, indicating a recommendation to see the show based on these technical achievements. Confidence is low due to the single excerpt warning and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:10:08.465Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

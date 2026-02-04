@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jesse Tyler Ferguson proves himself a master of quick-change artistry in this entertaining one-man show about a struggling actor working at a high-end restaurant's reservation line.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jesse Tyler Ferguson proves himself a master of quick-change artistry in this entertaining one-man show about a struggling actor working at a high-end restaurant's reservation line.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jesse Tyler Ferguson proves himself a master of quick-change artistry in this entertaining one-man show",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for Ferguson's performance and calls the show 'entertaining', indicating a positive recommendation. However, confidence is low due to limited text from one curated quote that may not represent the full review verdict. | GPT-4o: The excerpt praises Ferguson's performance and describes the show as 'entertaining'. Given the single excerpt warning, the score is placed in the upper end of the Positive range. | Gemini: The review excerpt calls the show \"entertaining\" and praises Jesse Tyler Ferguson's performance, indicating a positive recommendation. Given that it is a single excerpt, I am placing the score on the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise for both the lead performance ('master of quick-change artistry') and the overall production ('entertaining'), clearly recommending the show. However, confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:56:51.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

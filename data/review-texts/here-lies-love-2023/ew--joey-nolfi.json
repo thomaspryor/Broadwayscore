@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Here Lies Love succeeds as both a thrilling piece of immersive theater and a pointed political statement, even if its disco-ball dazzle occasionally threatens to overshadow its more serious intentions.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Here Lies Love succeeds as both a thrilling piece of immersive theater and a pointed political statement, even if its disco-ball dazzle occasionally threatens to overshadow its more serious intentions.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Here Lies Love succeeds as both a thrilling piece of immersive theater and a pointed political statement.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear success verdict with 'thrilling' and dual achievement noted. Minor caveat about dazzle vs. serious intentions doesn't undermine the positive recommendation. Single excerpt limits full assessment. | GPT-4o: The excerpt praises the show as 'thrilling' and 'a pointed political statement,' indicating a strong positive impression. The mention of 'disco-ball dazzle' overshadowing serious intentions suggests minor reservations, but the overall tone is highly positive. The original rating of 87 supports a high score within the Positive bucket. | Gemini: The review excerpt is positive, calling the show \"thrilling\" and a \"pointed political statement.\" The phrase \"even if\" suggests a minor reservation, but the overall tone is positive. | Kimi: The critic's explicit 87/100 rating and descriptors like 'thrilling' and 'succeeds' indicate strong enthusiasm despite a minor reservation about the production's dazzle. Single-excerpt limitation reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:21:19.571Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 81,
+    "kimiScore": 86,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

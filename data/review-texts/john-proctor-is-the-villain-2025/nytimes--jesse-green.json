@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "Taymor's production is entirely sympathetic - to the characters and to the text. Though thrilling in its refusal to tamp down the show's sometimes anarchic spirit, it does not ignore the dangers of abandon. Sink's Shelby is beautifully positioned just at the spot where you can't tell the difference between impulse and illness. The other girls stratify at in-between altitudes, from Scott's firmly grounded Nell to Strazza's high-pitched Beth."
+  "nycTheatreExcerpt": "Taymor's production is entirely sympathetic - to the characters and to the text. Though thrilling in its refusal to tamp down the show's sometimes anarchic spirit, it does not ignore the dangers of abandon. Sink's Shelby is beautifully positioned just at the spot where you can't tell the difference between impulse and illness. The other girls stratify at in-between altitudes, from Scott's firmly grounded Nell to Strazza's high-pitched Beth.",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taymor's production is entirely sympathetic - to the characters and to the text.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt consistently praises Taymor's direction as 'entirely sympathetic' and 'thrilling', while highlighting strong individual performances. However, with only one curated excerpt available, confidence is reduced despite the clearly positive assessment. | GPT-4o: The excerpt praises the production's sympathetic approach and thrilling execution, indicating a strong positive impression. However, the single excerpt warning suggests caution, thus a score at the upper end of the Positive range is appropriate. | Gemini: The review excerpt praises the production's sympathy and the performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt and lack of a clear overall verdict lower the confidence. | Kimi: The excerpt contains enthusiastic praise for the director's sympathetic approach and thrilling staging, alongside specific performance compliments ('beautifully positioned'), indicating a clear recommendation. However, confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:47:31.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
