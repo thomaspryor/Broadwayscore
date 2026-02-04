@@ -11464,42 +11464,6 @@
     "timestamp": "2026-02-04T14:12:19.204Z"
   },
   {
-    "reviewId": "almost-famous-2022/nyt-theater--jonathan-mandell.json",
-    "showId": "almost-famous-2022",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2022/11/03/almost-famous-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (17): illinoise, the heart of rock and roll, mary jane, mother play, patriots...",
-    "textLength": 10710,
-    "timestamp": "2026-02-04T14:16:59.252Z"
-  },
-  {
-    "reviewId": "almost-famous-2022/variety--frank-rizzo.json",
-    "showId": "almost-famous-2022",
-    "outlet": "Variety",
-    "critic": "Frank Rizzo",
-    "url": "https://variety.com/2022/legit/reviews/almost-famous-review-broadway-musical-1235420934/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, purpose, company, pippin, hair...",
-    "textLength": 6572,
-    "timestamp": "2026-02-04T14:18:32.155Z"
-  },
-  {
-    "reviewId": "amazing-grace-2015/vulture--jesse-green.json",
-    "showId": "amazing-grace-2015",
-    "outlet": "Vulture",
-    "critic": "Jesse Green",
-    "url": "https://www.vulture.com/2015/07/theater-review-amazing-grace.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): harmony, home, purpose, company, the father...",
-    "textLength": 8627,
-    "timestamp": "2026-02-04T14:18:44.408Z"
-  },
-  {
     "reviewId": "american-buffalo-2008/hollywood-reporter--lovia-gyarkye.json",
     "showId": "american-buffalo-2008",
     "outlet": "The Hollywood Reporter",
@@ -12962,5 +12926,41 @@
     "garbageReason": "Multiple shows mentioned (14): mamma mia!, home, jagged little pill, bandstand, the real thing...",
     "textLength": 10629,
     "timestamp": "2026-02-04T18:04:35.307Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/nyt-theater--jonathan-mandell.json",
+    "showId": "almost-famous-2022",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2022/11/03/almost-famous-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (17): illinoise, the heart of rock and roll, mary jane, mother play, patriots...",
+    "textLength": 10710,
+    "timestamp": "2026-02-04T18:07:10.869Z"
+  },
+  {
+    "reviewId": "almost-famous-2022/variety--frank-rizzo.json",
+    "showId": "almost-famous-2022",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2022/legit/reviews/almost-famous-review-broadway-musical-1235420934/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, purpose, company, pippin, company...",
+    "textLength": 5741,
+    "timestamp": "2026-02-04T18:10:28.940Z"
+  },
+  {
+    "reviewId": "amazing-grace-2015/vulture--jesse-green.json",
+    "showId": "amazing-grace-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "https://www.vulture.com/2015/07/theater-review-amazing-grace.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): harmony, home, purpose, company, the father...",
+    "textLength": 8627,
+    "timestamp": "2026-02-04T18:10:38.354Z"
   }
 ]
