@@ -1548,6 +1548,16 @@ function createReviewFile(showId, reviewData) {
     showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || reviewData.excerpt) || null
   };
 
+  // Auto-tag known roundup outlets whose URLs always cover multiple shows
+  const KNOWN_ROUNDUP_OUTLETS = new Set([
+    'interested-bystander',
+    'the-interested-bystander',
+    'the-clyde-fitch-report',
+  ]);
+  if (KNOWN_ROUNDUP_OUTLETS.has(normalizedOutletId)) {
+    review.isRoundupArticle = true;
+  }
+
   // Classify content quality so downstream scoring knows what it's working with
   const tier = classifyContentTier(review);
   review.contentTier = tier.contentTier;

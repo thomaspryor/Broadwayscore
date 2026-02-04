@@ -228,10 +228,11 @@ function urlBelongsToDifferentShow(url, targetShowId, targetSlug, shows) {
     .replace(/\.(html?|php|asp)$/i, '');
 
   // Build a list of show slugs to check against (exclude the target show)
-  // Only check shows with slugs that are 4+ chars to avoid false positives
+  // Only check shows with slugs that are 3+ chars to avoid false positives
+  // (2-char slugs like "mj" would match too broadly in URLs)
   for (const show of shows) {
     if (show.id === targetShowId) continue;
-    if (!show.slug || show.slug.length < 4) continue;
+    if (!show.slug || show.slug.length < 3) continue;
 
     // Check if URL path contains another show's slug as a distinct segment
     // Use word-boundary-like matching to avoid partial matches
