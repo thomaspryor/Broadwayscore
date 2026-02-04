@@ -26,7 +26,7 @@
   ],
   "llmScore": {
     "score": 91,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 86,
       "high": 96
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses the word 'triumph' which is a clear rave indicator, praising both faithfulness to source material and fresh innovation without any reservations. | GPT-4o: The review uses strong positive language, calling the production a 'triumph' and highlighting its fresh energy and insight, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word 'triumph' and praises the production for honoring the source material while adding fresh energy and insight, indicating a rave review. | Kimi: The critic unambiguously declares the production a 'triumph,' praising it for honoring the source material while bringing fresh energy and insight.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses the word 'triumph' which is a clear rave indicator, praising both faithfulness to source material and fresh creative energy without any reservations. | GPT-4o: The review uses strong, unqualified praise ('triumph') and highlights the production's ability to honor the source material while adding fresh elements, indicating a must-see recommendation. | Gemini: The review uses the word \"triumph\" and states that the production infuses the material with fresh energy and insight, indicating a very positive and enthusiastic recommendation. | Kimi: The critic unreservedly calls the production a 'triumph', praising it for honoring the original material while bringing fresh energy, with no caveats mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:22:59.248Z",
+    "scoredAt": "2026-02-04T03:44:38.117Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,12 +66,12 @@
     "claudeScore": 88,
     "openaiScore": 92,
     "geminiScore": 90,
-    "kimiScore": 95,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -18,6 +18,8 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 | `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
 | `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline after scrape |
+| `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
+| `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (fetch → scrape → audit → gather → rebuild) |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -262,6 +264,49 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Scripts:** `scripts/scrape-playbill-verdict.js` (`--shows=X,Y,Z`, `--no-date-filter`), `scripts/scrape-nyc-theatre-roundups.js` (`--shows=X,Y,Z`)
 - **NYC Theatre:** Only processes shows from 2023+, skip-if-exists caching via `data/aggregator-archive/nyc-theatre/`
 - **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
+
+## `audit-aggregator-coverage.yml`
+- **Runs:** Weekly on Mondays at 6 AM UTC, or manually
+- **Does:** Audits review coverage across all 5 aggregator sources (DTLI, Show Score, BWW, Playbill Verdict, NYC Theatre) for all shows. Compares archive-extracted counts against local review files to identify genuine coverage gaps.
+- **Options:** `status` (open/closed/all, default all), `show` (single show ID for targeted audit)
+- **Script:** `scripts/audit-aggregator-coverage.js`
+- **Output:** `data/audit/aggregator-coverage.json` — per-show gap analysis with `trulyMissing` metric
+- **Key metrics:**
+  - Per-aggregator gaps: how many reviews each aggregator lists that we don't have attributed to that source
+  - `trulyMissing = max(0, maxAggregatorCount - totalLocal)`: genuine missing reviews (not just source attribution differences)
+  - ~97% of per-aggregator gaps are source-attribution differences, not truly missing reviews
+- **No secrets needed** (reads local files only)
+- **Parallel-safe:** Only commits `data/audit/aggregator-coverage.json`
+- **CLI:** `node scripts/audit-aggregator-coverage.js --output-gaps` (prints show IDs with genuine gaps for piping to gather-reviews)
+
+## `close-coverage-gaps.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:** Orchestrates full coverage gap closure for a given era: fetches missing aggregator archives, scrapes PV/NYC Theatre, re-audits, gathers reviews for genuine gaps, rebuilds reviews.json
+- **Options:**
+  - `era`: `2021-2026` | `2016-2020` | `2011-2015` | `pre-2011` | `all`
+  - `skip_fetch`: Skip archive fetching (just re-audit and gather)
+  - `dry_run`: Audit only, no gathering
+- **Manual trigger:**
+  ```bash
+  gh workflow run "Close Coverage Gaps" --field era="2021-2026" --field skip_fetch=false --field dry_run=false
+  ```
+- **Job pipeline (6 jobs):**
+  1. `prepare` — Filters shows by opening year, outputs comma-separated IDs
+  2. `fetch-archives` — Runs `fetch-aggregator-pages.ts --aggregator all` for era shows (120 min timeout)
+  3. `scrape-pv-nyc` — Runs Playbill Verdict + NYC Theatre scrapers (120 min timeout, continue-on-error)
+  4. `audit` — Re-runs `audit-aggregator-coverage.js --output-gaps`, identifies truly missing reviews
+  5. `gather-gaps` — Runs `gather-reviews.js --show=X` for each gapped show (180 min timeout)
+  6. `rebuild` — Rebuilds reviews.json, writes step summary
+- **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN
+- **Era breakdown (as of Feb 2026):**
+  | Era | Shows | DTLI/SS/BWW never-searched | Estimated scrape cost |
+  |-----|-------|---------------------------|----------------------|
+  | 2021-2026 | 182 | ~115 | ~$3 |
+  | 2016-2020 | 141 | ~138 | ~$3 |
+  | 2011-2015 | 198 | ~195 | ~$4 |
+  | Pre-2011 | 213 | ~210 | ~$5 |
+- **Total cost for all eras:** ~$26 (one-time, covers all 734 shows)
+- **Parallel-safe:** All jobs use 5-retry push with random 10-30s backoff
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually

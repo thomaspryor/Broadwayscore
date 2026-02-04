@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment ('succeeds') with praise for the show's approach as a celebration. However, this appears to be a brief excerpt, limiting confidence in the full critical perspective. | GPT-4o: The review suggests that the show is successful in its limited scope, focusing on celebrating the music and the artist. This indicates a positive recommendation, though it implies some reservations about depth or ambition. | Gemini: The review states that the show \"succeeds\", which indicates a positive recommendation. The phrase \"in large part because it doesn't try to be more than it is\" suggests a reservation or qualification. | Kimi: The critic clearly recommends the show, praising it for succeeding as a celebration of Donna Summer's music, though the qualified phrasing ('in large part,' 'doesn't try to be more') suggests modest rather than ecstatic enthusiasm.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'succeeds' and praise for being an effective celebration, but this appears to be a brief excerpt lacking fuller context for higher confidence. | GPT-4o: The review suggests that the show achieves its goal as a celebration, implying a positive experience. However, the lack of superlative language or detailed praise indicates a solid but not enthusiastic recommendation. | Gemini: The review states that the show \"succeeds,\" indicating a positive recommendation. The phrase \"in large part because it doesn't try to be more than it is\" suggests a reservation or qualification, but the overall sentiment is positive. | Kimi: The critic clearly recommends the show, praising it for succeeding as a celebration of Donna Summer's music, though the qualified phrasing ('in large part') and lack of superlatives places it in the solid Positive range rather than Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:52:42.407Z",
+    "scoredAt": "2026-02-04T03:09:26.362Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
+    "openaiScore": 75,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

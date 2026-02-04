@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "It takes hard work, ruthless editing and a spark of genius to make a miracle on Broadway.",
+        "quote": "The current version is a slim, fleet-footed beauty.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses rave language throughout: 'glory to behold,' 'miracle on Broadway,' 'vitally reincarnated.' Despite being a single excerpt, the superlatives and 'miracle' language clearly indicate a rave review. | GPT-4o: The excerpt uses highly positive language such as 'glory to behold', 'slim, fleet-footed beauty', and 'spark of genius', indicating a strong recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt uses very positive language such as \"glory to behold\" and \"fleet-footed beauty\", indicating a strong positive review. Given the single excerpt warning, I am scoring at the higher end of the positive range. | Kimi: The excerpt contains highly enthusiastic praise ('glory to behold,' 'miracle on Broadway,' 'spark of genius'), indicating a strong recommendation, though the single-excerpt format limits confidence that this represents the full review's verdict. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extreme praise with words like 'glory', 'miracle', 'genius', and 'vitally reincarnated'. Despite being a single excerpt, the consistent superlatives indicate a strong rave review. | GPT-4o: The excerpt uses strong positive language such as 'glory to behold', 'beauty', and 'miracle on Broadway', indicating a highly enthusiastic recommendation. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt uses strong positive language like \"glory to behold\", \"deep wealth of power\", and \"miracle on Broadway\", indicating a positive review. Given that it's a single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt employs superlatives like 'glory,' 'genius,' and 'miracle,' indicating strong enthusiasm for the production. As a single curated excerpt, the score is capped at the upper end of the Positive range per scoring guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:22:08.182Z",
+    "scoredAt": "2026-02-04T03:42:17.561Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

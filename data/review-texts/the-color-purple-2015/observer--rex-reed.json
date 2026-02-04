@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of The Color Purple is a vastly improved, more focused and emotionally devastating experience than the original 2005 production.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (23 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 83,
+    "score": 84,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive assessment calling the revival 'vastly improved' and 'emotionally devastating' in a positive sense, but limited text makes full evaluation difficult. | GPT-4o: The review praises the revival as 'vastly improved' and 'emotionally devastating', indicating a strong recommendation. The lack of additional context or reservations suggests a high score within the Rave bucket. | Gemini: The review explicitly states that the revival is \"vastly improved\" and \"emotionally devastating,\" indicating a positive recommendation. | Kimi: The critic employs superlatives ('vastly improved', 'emotionally devastating') indicating strong enthusiasm for this revival, though the excerpt's brevity warrants lower confidence. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear positive language ('vastly improved', 'more focused', 'emotionally devastating' as praise) but extremely brief excerpt limits confidence in full assessment. | GPT-4o: The review uses strong positive language ('vastly improved', 'emotionally devastating') indicating a highly favorable view of the current production. | Gemini: The review explicitly states that the revival is \"vastly improved\" and \"emotionally devastating\", indicating a positive recommendation. | Kimi: The critic delivers unqualified praise for the revival, calling it 'vastly improved' and 'emotionally devastating' compared to the original production, indicating a must-see theatrical experience. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:22:35.701Z",
+    "scoredAt": "2026-02-04T03:43:36.439Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 78,
+    "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 78,
-    "kimiScore": 88,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

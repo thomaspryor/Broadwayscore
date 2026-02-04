@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What seemed revolutionary in 1968 now seems like archaeology. But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 75,
-    "confidence": "high",
+    "score": 76,
+    "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the material feels dated but clearly endorses this specific production as 'thrilling,' indicating a solid positive recommendation with some reservations about the source material's age. | GPT-4o: The review acknowledges that the material may seem outdated but praises the current production for making it thrilling, indicating a positive recommendation with some reservations about the source material. | Gemini: The critic acknowledges the dated nature of the play but states that the current production makes it thrilling, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic acknowledges the 1968 material feels dated like archaeology, but argues Mantello's production makes it thrilling, indicating a qualified but clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that the production successfully overcomes dated source material. 'Thrilling' is strong praise that outweighs the 'archaeology' concern. | GPT-4o: The review acknowledges the dated nature of the material but praises the current production for making it thrilling, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges that the play seems dated, but the production makes it thrilling, indicating a positive, but not enthusiastic, recommendation. | Kimi: While the critic finds the 1968 material dated, the praise for Mantello's direction as thrilling indicates a clear recommendation to see this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:17:45.685Z",
+    "scoredAt": "2026-02-04T03:31:52.653Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
+    "openaiScore": 78,
     "geminiScore": 72,
-    "kimiScore": 77,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

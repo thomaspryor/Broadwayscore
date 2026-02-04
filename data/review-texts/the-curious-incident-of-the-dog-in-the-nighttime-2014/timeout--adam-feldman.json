@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is a triumph of theatrical imagination, using ingenious staging to make us see the world through the eyes of its autistic protagonist.",
   "originalScore": 80,
-  "assignedScore": 85,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,13 +25,13 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 85,
+    "score": 84,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 79,
+      "high": 89
     },
-    "bucket": "Rave",
+    "bucket": "Positive",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls the show 'a triumph' with praise for 'ingenious staging' and theatrical innovation. The critic's own 80 rating supports high positive territory, and 'triumph' language indicates Rave bucket. | GPT-4o: The critic describes the show as a 'triumph of theatrical imagination' with 'ingenious staging', indicating a strong recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review uses the word \"triumph\" and praises the staging, indicating a strong positive recommendation. Given the original rating of 80, a score in the high end of the positive bucket is appropriate. | Kimi: The critic's original rating of 80 falls squarely within the Positive range (70-84), and the excerpt contains enthusiastic praise ('triumph', 'ingenious') indicating a strong recommendation, though the brevity of the text limits confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses the word 'triumph' which is a clear Rave indicator, praising both the theatrical imagination and staging as 'ingenious'. The 80/100 original rating confirms this is in the Rave bucket. | GPT-4o: The critic describes the show as a 'triumph' with 'ingenious staging', indicating a strong recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review uses the word \"triumph\" and praises the staging, indicating a strong positive recommendation. Given the original rating of 80, I've placed it in the upper range of the Positive bucket. | Kimi: The critic uses superlatives like 'triumph' and 'ingenious' to praise the staging and concept, indicating a strong recommendation. The provided numerical rating of 80 confirms classification in the Positive bucket. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,22 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:26:26.679Z",
+    "scoredAt": "2026-02-04T03:48:27.391Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 87,
-    "openaiScore": 90,
+    "claudeScore": 88,
+    "openaiScore": 85,
     "geminiScore": 82,
     "kimiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

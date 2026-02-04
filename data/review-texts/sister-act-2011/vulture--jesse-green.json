@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the show succeeds at entertainment but dismisses it as 'ultimately forgettable' and purely commercial. This represents a lukewarm assessment that neither strongly recommends nor discourages attendance. | GPT-4o: The review describes the show as 'cheerful' and 'efficient' but also 'ultimately forgettable', indicating a neutral stance that neither strongly recommends nor discourages seeing the show. | Gemini: The review describes the show as \"cheerful\" and \"efficient\" but also \"forgettable,\" indicating a mixed assessment. It fulfills its purpose but lacks lasting impact. | Kimi: The review acknowledges the show succeeds at its commercial goals (entertaining tourists) but damns it with faint praise, calling it 'forgettable' and implying it's purely a money-making vehicle rather than memorable art.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the show succeeds at its goals but dismisses it as 'ultimately forgettable' and designed primarily for tourists rather than serious theater-goers, indicating neither strong recommendation nor discouragement. | GPT-4o: The review describes the show as 'cheerful' and 'efficient' but also 'ultimately forgettable', indicating a neutral stance without strong recommendation or discouragement. | Gemini: The review describes the show as \"cheerful, efficient, and ultimately forgettable,\" indicating a mixed assessment. It acknowledges its ability to entertain but suggests it lacks lasting impact. | Kimi: The review acknowledges the show is competent and entertaining ('cheerful,' 'efficient') but dismisses it as artistically unmemorable ('forgettable') and commercially motivated rather than creatively substantial. This balanced but unenthusiastic assessment lands squarely in Mixed territory.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:38:09.229Z",
+    "scoredAt": "2026-02-04T02:53:07.087Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
+    "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

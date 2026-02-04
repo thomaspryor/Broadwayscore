@@ -16,7 +16,7 @@
   "assignedScore": 43,
   "llmScore": {
     "score": 43,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 38,
       "high": 48
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show 'irks more often than not' and compares it to a straining theater teacher using desperate tactics. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt suggests a negative view, describing the show as irksome and trying too hard with various elements. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt uses negative language such as \"irks\" and compares the show to an overly enthusiastic teacher, suggesting a negative experience. Given the single excerpt, confidence is low. | Kimi: The critic describes the show as irritating and overly reliant on gimmicks like TikTok references and pop songs, comparing it to a teacher straining too hard to engage students.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the production as something that 'irks' and compares it unfavorably to an overly enthusiastic teacher straining to engage students. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt describes the production as irksome and overly enthusiastic, suggesting a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes the show as \"irksome\" and compares it negatively to an overly enthusiastic teacher. This suggests a negative overall experience, despite the lack of full context. | Kimi: The excerpt describes the production as irritating ('irks') and criticizes its modern updates (Doc Martens, TikTok references, 'mid' pop songs) as forced and jarring gimmicks rather than organic choices. The comparison to a 'straining' teacher suggests the show tries too hard and fails to connect authentically. With no positive elements mentioned and single-excerpt limitations, this indicates a negative recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:19:44.698Z",
+    "scoredAt": "2026-02-04T02:38:29.823Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 42,
-    "openaiScore": 40,
+    "openaiScore": 45,
     "geminiScore": 45,
-    "kimiScore": 45,
+    "kimiScore": 38,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This production reminds us that 'Sunday in the Park With George' remains that rarest of creatures: a Broadway musical that is simultaneously avant-garde and deeply, mysteriously moving.",
   "originalScore": null,
-  "assignedScore": 86,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 86,
+    "score": 90,
     "confidence": "medium",
     "range": {
-      "low": 81,
-      "high": 91
+      "low": 85,
+      "high": 95
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls the show 'that rarest of creatures' and praises it as both avant-garde and deeply moving, indicating strong enthusiasm and recommendation. | GPT-4o: The review uses strong, positive language to describe the production as both avant-garde and deeply moving, indicating a high level of enthusiasm and recommendation. | Gemini: The review praises the production, calling it a rare and moving Broadway musical. This indicates a positive recommendation. | Kimi: The critic offers strong praise for the production's unique artistic achievement and emotional resonance, describing it as a rare Broadway work that succeeds both intellectually and emotionally, though the single-sentence excerpt limits full assessment of the complete verdict. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley calls the show 'that rarest of creatures' and describes it as both avant-garde and 'deeply, mysteriously moving' - high praise that positions it as exceptional and emotionally powerful. | GPT-4o: The review uses superlatives like 'rarest of creatures' and 'deeply, mysteriously moving', indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language, calling the musical \"rarest of creatures\" and \"deeply, mysteriously moving,\" indicating a strong recommendation. | Kimi: Brantley offers unqualified praise using superlatives ('rarest of creatures') and emphasizes the production's unique combination of artistic innovation and emotional resonance without any reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:54:49.494Z",
+    "scoredAt": "2026-02-04T03:11:07.437Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 89,
     "openaiScore": 90,
-    "geminiScore": 80,
-    "kimiScore": 83,
+    "geminiScore": 82,
+    "kimiScore": 90,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

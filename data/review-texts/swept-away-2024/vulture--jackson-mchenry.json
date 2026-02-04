@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on songs by the Avett Brothers, follows four sailors stranded at sea, but it never quite finds its emotional anchor.",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (23 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 52,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: This appears to be a truncated excerpt with a critical assessment that the show lacks emotional grounding, suggesting mixed-to-negative reception, but without more context the full verdict is unclear. | GPT-4o: The review suggests the show lacks emotional depth or connection, which is a significant criticism. However, the brevity of the review limits the confidence in the score. | Gemini: The critic states that the musical \"never quite finds its emotional anchor,\" indicating a negative assessment and a lack of recommendation. | Kimi: The critic identifies a fundamental flaw—the show's failure to find an emotional anchor—but the extremely brief text appears truncated or excerpted, warranting caution against a definitive negative score until the full verdict is visible. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review criticizes the show for lacking emotional grounding, suggesting it doesn't succeed dramatically. However, this appears to be a very brief excerpt, limiting confidence in the assessment. | GPT-4o: The review suggests a lack of emotional impact, implying the show does not succeed in engaging the audience as intended. | Gemini: The critic states that the musical \"never quite finds its emotional anchor,\" which is a negative assessment, placing it in the negative bucket. | Kimi: The critic identifies a fundamental flaw in the production, noting that despite its premise, the show fails to establish the emotional connection necessary for success. The measured but decisive criticism suggests the production doesn't work overall.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:03:06.584Z",
+    "scoredAt": "2026-02-04T03:20:12.686Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,17 +61,17 @@
     "claudeScore": 58,
     "openaiScore": 45,
     "geminiScore": 45,
-    "kimiScore": 62,
+    "kimiScore": 46,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 17,
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
   }
 }

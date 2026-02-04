@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'Summer' from complete mediocrity is the singing of LaChanze, Ariana DeBose and Storm Lever, the three actresses who portray Donna Summer at different stages of her life.",
   "originalScore": null,
-  "assignedScore": 46,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (29 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 46,
-    "confidence": "high",
+    "score": 52,
+    "confidence": "medium",
     "range": {
-      "low": 41,
-      "high": 51
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states the show would be 'complete mediocrity' without the lead performances, indicating a fundamentally flawed production rescued only by individual talent. | GPT-4o: The review suggests that the show is mediocre overall, with the singing performances being the only redeeming quality. This indicates a negative recommendation despite some praise for the performers. | Gemini: The review states that the singing saves the show from \"complete mediocrity,\" implying that the show is still mostly mediocre and not worth seeing overall. This indicates a negative recommendation. | Kimi: The critic explicitly labels the show as 'mediocre' and suggests it would be completely so without the performances, indicating a negative overall recommendation despite praise for the cast.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic implies the show would be 'complete mediocrity' without the lead performances, suggesting a barely-salvaged production that's mixed at best. | GPT-4o: The review suggests the show is mediocre overall, with the only redeeming aspect being the performances of the actresses. This indicates a negative view of the production as a whole. | Gemini: The review states the show is saved from \"complete mediocrity\" by the performances, implying the show is otherwise mediocre and not worth seeing. | Kimi: The excerpt indicates the show approaches complete mediocrity, with only the vocal performances preventing it from being a total failure, suggesting a lukewarm assessment with significant reservations about the production quality. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:53:38.586Z",
+    "scoredAt": "2026-02-04T03:10:39.708Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 45,
+    "claudeScore": 58,
+    "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 48,
-    "claudeBucket": "Negative",
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 3,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Negative"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   }
 }

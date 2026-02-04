@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('celebrates', 'intelligence and wit intact') indicates recommendation, but brief text lacks strong superlatives or detailed evaluation for higher confidence. | GPT-4o: The review praises the play for maintaining its intelligence and wit, indicating a positive reception. However, the lack of superlatives or detailed praise suggests a solid but not enthusiastic recommendation. | Gemini: The review explicitly states that the play is brought to Broadway with intelligence and wit intact, which is a positive recommendation. | Kimi: The critic praises both the play's thematic content and the Broadway production's execution, noting the 'intelligence and wit' remain intact, indicating a clear recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language about the Broadway production maintaining the play's strengths, though brief and lacking detailed evaluation of specific production elements. | GPT-4o: The review praises the play for maintaining its intelligence and wit, suggesting a positive reception. However, the lack of superlatives or detailed evaluation limits the strength of the recommendation. | Gemini: The review praises the play's intelligence and wit, indicating a positive experience, but it lacks the enthusiasm of a rave review. | Kimi: The review offers unambiguous praise for the production's preservation of the play's intelligence and wit, clearly recommending the show despite the brief length of the critique.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:41:22.232Z",
+    "scoredAt": "2026-02-04T04:03:35.105Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

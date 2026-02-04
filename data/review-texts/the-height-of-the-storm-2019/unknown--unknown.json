@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Florian Zeller’s tiresome new play features Jonathan Pryce and Eileen Atkins.",
+        "quote": "Florian Zeller’s tiresome new play features Jonathan Pryce and Eileen Atkins as a long-married couple, one of whom may be dead.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The excerpt describes the play as 'tiresome,' indicating a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt calls the play \"tiresome,\" which indicates a negative assessment. Given that it's a single excerpt, the confidence is low. | Kimi: The excerpt explicitly describes the play as 'tiresome,' indicating clear negative sentiment, though the single-curated-excerpt warning necessitates low confidence in the assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | GPT-4o: The excerpt describes the play as 'tiresome,' indicating a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt calls the play \"tiresome,\" which indicates a negative assessment. Given the limited text, confidence is low. | Kimi: The excerpt explicitly labels the play as 'tiresome,' indicating a negative critical assessment and lack of recommendation, though confidence is lowered due to the single-excerpt format.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:38:15.929Z",
+    "scoredAt": "2026-02-04T03:59:45.718Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

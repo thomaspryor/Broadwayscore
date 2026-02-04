@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Greenberg has created a work that feels both deeply personal and universal, a memory play that doesn't sentimentalize the past but finds the poetry in the everyday details of a family's life.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
   ],
   "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
   "llmScore": {
-    "score": 78,
-    "confidence": "medium",
+    "score": 76,
+    "confidence": "high",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Mr. Greenberg has created a work that feels both deeply personal and universal, a memory play that doesn't sentimentalize the past but finds the poetry in the everyday details of a family's life.",
+        "quote": "Mr. Greenberg has created a work that feels both deeply personal and universal",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Appreciative language about the work's artistry and emotional resonance, praising both personal and universal qualities, but lacks strong superlatives or explicit recommendation language. | Gemini: The review praises the work as deeply personal and universal, finding poetry in everyday details, indicating a positive, though not ecstatic, recommendation. | Kimi: The critic praises the play's emotional authenticity and poetic craft, appreciating how it balances personal specificity with universal themes without falling into sentimentality. While brief, the excerpt indicates strong appreciation for the work's artistic merits.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for the playwright's achievement with positive descriptors like 'deeply personal and universal' and 'finds the poetry,' but this appears to be an excerpt with limited evaluative content to assess full recommendation strength. | Gemini: The review praises the work as deeply personal and universal, finding poetry in everyday details, indicating a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: The critic offers strong praise for the play's emotional resonance and craftsmanship, describing it as both personal and universal with poetic qualities. However, as this appears to be a single-sentence excerpt without broader context or explicit recommendation language like 'must-see,' it falls in the solid positive range rather than a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:12:06.437Z",
+    "scoredAt": "2026-02-04T03:27:17.305Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,11 +66,11 @@
     "claudeScore": 76,
     "openaiScore": null,
     "geminiScore": 75,
-    "kimiScore": 82,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

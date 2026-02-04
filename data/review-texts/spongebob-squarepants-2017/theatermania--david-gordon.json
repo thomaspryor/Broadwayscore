@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('sweet', 'surprisingly sophisticated', 'genuinely theatrical') with praise for balancing source material and theatrical effectiveness, but brief excerpt limits confidence in full verdict. | GPT-4o: The review praises the show as 'sweet, silly, and surprisingly sophisticated,' indicating a strong positive recommendation with no reservations. | Gemini: The review uses positive language such as \"sweet\", \"silly\", and \"sophisticated\" to describe the show, indicating a positive recommendation. | Kimi: The critic offers consistent praise, calling the show surprisingly sophisticated and genuinely theatrical, indicating a solid recommendation without significant reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('sweet', 'surprisingly sophisticated') with praise for being 'genuinely theatrical', but brief excerpt limits confidence in full assessment. | GPT-4o: The review describes the show as 'sweet, silly, and surprisingly sophisticated,' indicating a positive assessment with strong praise for its faithfulness and theatricality. | Gemini: The review uses positive language such as \"sweet\", \"silly\", and \"sophisticated\", indicating a positive recommendation. The phrase \"genuinely theatrical\" further supports this classification. | Kimi: The critic offers unqualified praise, describing the show as 'surprisingly sophisticated' and 'genuinely theatrical,' indicating a clear recommendation despite the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:47:26.464Z",
+    "scoredAt": "2026-02-04T03:03:50.201Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 76,
     "openaiScore": 82,
     "geminiScore": 78,
-    "kimiScore": 79,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

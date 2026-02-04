@@ -8,7 +8,6 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Unfortunately, the production's rave-like, nihilistic drive does little to make up for its lack of clarity or a pulse.\"",
@@ -17,7 +16,7 @@
   "assignedScore": 42,
   "llmScore": {
     "score": 42,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 37,
       "high": 47
@@ -37,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt is clearly negative, criticizing the production for lacking 'clarity' and 'a pulse' despite its energy. However, with only one curated excerpt available, the full review verdict is uncertain. | GPT-4o: The excerpt criticizes the production for lacking clarity and a pulse, suggesting a negative impression. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The excerpt indicates a negative assessment due to a lack of clarity and pulse, despite the production's drive. | Kimi: While the critic acknowledges some energetic elements in the production, the verdict is explicitly negative, stating these qualities fail to compensate for fundamental deficiencies in clarity and dramatic life ('lack of a pulse').",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges the production has energy ('rave-like, nihilistic drive') but ultimately finds it lacking in fundamental ways ('lack of clarity or a pulse'). The word 'Unfortunately' signals disappointment. However, with only one excerpt available, confidence is low as this could be from a mixed review with more positive elements elsewhere. | GPT-4o: The excerpt criticizes the production's lack of clarity and energy, suggesting disappointment and a lack of recommendation. The tone is negative, indicating a recommendation to skip the show. | Gemini: The excerpt indicates a negative assessment due to a lack of clarity and pulse, despite the production's drive. Given the single excerpt and negative language, I've classified it as negative with low confidence. | Kimi: The critic acknowledges the production has some 'rave-like' drive but explicitly states this fails to compensate for fatal flaws including lack of clarity and vitality (pulse), indicating a clear recommendation against seeing the show.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,21 +46,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:21:55.049Z",
+    "scoredAt": "2026-02-04T02:41:27.547Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 38,
+    "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 45,
+    "kimiScore": 42,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 7,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

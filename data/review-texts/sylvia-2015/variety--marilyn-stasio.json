@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language throughout with 'delightful' and 'charming' describing both the leads and the play. However, 'lightweight' suggests minor reservations, placing it in solid positive range rather than rave territory. | GPT-4o: The review praises the performances and describes the play as 'charming,' indicating a positive recommendation despite acknowledging it as 'lightweight.' | Gemini: The review uses positive language like \"delightful\" and \"charming,\" indicating a recommendation, although it also notes the play is \"lightweight,\" suggesting some reservations. | Kimi: The critic offers warm praise for the performances ('delightful') and finds the play 'charming,' with only minor reservation about it being 'lightweight.' The tone is clearly recommendatory.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('delightful', 'charming') but brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review describes the play as 'lightweight but charming' and highlights the lead actors as a 'delightful comedy team,' indicating a positive recommendation with some reservations about the play's depth. | Gemini: The review uses positive language such as \"delightful\" and \"charming\" to describe the play and the actors' performances, indicating a positive recommendation. | Kimi: Critic offers warm praise for the performances ('delightful comedy team') and finds the play 'charming,' though the 'lightweight' qualifier suggests modest ambitions. A clear recommendation for an entertaining evening.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:04:05.840Z",
+    "scoredAt": "2026-02-04T03:21:25.442Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,12 +66,12 @@
     "claudeScore": 76,
     "openaiScore": 76,
     "geminiScore": 78,
-    "kimiScore": 79,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

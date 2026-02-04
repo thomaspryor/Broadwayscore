@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the cast and technical elements but finds a significant flaw in emotional connection, resulting in a qualified assessment that neither recommends nor discourages. | GPT-4o: The review praises the cast and technical aspects but criticizes the emotional impact, leading to a mixed verdict. | Gemini: The review acknowledges a strong cast and technical polish, but ultimately finds the production emotionally remote, suggesting a mixed experience. | Kimi: The critic acknowledges the handsome staging and sterling performances but finds the production emotionally remote, creating a balanced assessment that neither recommends nor discourages attendance.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the cast and technical elements but finds the production emotionally distant, indicating neither a clear recommendation nor discouragement. | GPT-4o: The review praises the cast and technical aspects but criticizes the production for feeling emotionally remote, leading to a mixed verdict. | Gemini: The review acknowledges a strong cast and technical polish but finds the production emotionally remote, indicating a mixed assessment. | Kimi: The review praises the cast and technical elements ('handsome', 'sterling', 'technical polish') but delivers a significant reservation about emotional impact ('emotionally remote'), creating a balanced mixed assessment without a clear recommendation to see or skip.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:20:27.039Z",
+    "scoredAt": "2026-02-04T03:34:51.253Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 64,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

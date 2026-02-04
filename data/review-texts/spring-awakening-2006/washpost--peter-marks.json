@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise using superlatives 'exceptional power and beauty' and emphasizing the show's success in feeling 'urgently contemporary.' However, this appears to be a brief excerpt, so confidence is medium due to limited text. | GPT-4o: The review uses strong positive language ('exceptional power and beauty') and indicates a successful contemporary relevance, suggesting a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"exceptional power and beauty\" and praises the show's ability to feel contemporary, indicating a strong recommendation. | Kimi: The critic deploys superlatives ('exceptional') and unqualified praise for the production's contemporary impact, indicating a must-see recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise with 'exceptional power and beauty' and 'succeeds' indicates enthusiastic recommendation, but brevity of excerpt limits confidence in full context. | GPT-4o: The review uses strong, positive language ('exceptional power and beauty') indicating a high level of praise and recommendation. | Gemini: The review uses strong positive language such as \"exceptional power and beauty\" and praises the show's ability to feel contemporary, indicating a strong recommendation. | Kimi: The critic employs superlative language ('exceptional power and beauty') and unqualified praise ('succeeds'), indicating an enthusiastic recommendation without reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:48:34.218Z",
+    "scoredAt": "2026-02-04T03:04:52.032Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,7 +66,7 @@
     "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 90,
+    "kimiScore": 89,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

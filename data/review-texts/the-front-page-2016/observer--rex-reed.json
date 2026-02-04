@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('perfectly cast', 'crackling revival') but very brief excerpt limits confidence in full assessment. | GPT-4o: The review praises the casting and describes the revival as 'crackling', indicating a strong positive recommendation. However, the brief text limits the depth of evaluation, leading to medium confidence. | Gemini: The review praises the casting and describes the revival as \"crackling,\" indicating a positive assessment. | Kimi: The critic offers unqualified praise for the lead performances ('perfectly cast') and describes the revival as 'crackling,' indicating strong approval of the production's energy and quality despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Uses positive descriptors like 'perfectly cast' and 'crackling revival' but this appears to be a brief excerpt or caption rather than a full review, limiting confidence in the score. | GPT-4o: The review uses strong positive language ('perfectly cast', 'crackling revival') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review praises the casting and calls the revival \"crackling,\" indicating a positive assessment. | Kimi: Strong praise for the lead performances ('perfectly cast') and production quality ('crackling revival') indicates a solid recommendation, though the extreme brevity suggests this may be an excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:32:41.767Z",
+    "scoredAt": "2026-02-04T03:53:17.364Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,19 +59,19 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 80,
+    "openaiScore": 90,
     "geminiScore": 78,
     "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 6,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

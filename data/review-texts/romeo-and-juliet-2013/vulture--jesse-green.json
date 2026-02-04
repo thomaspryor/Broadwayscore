@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though gorgeously designed and smartly cast, this Romeo and Juliet feels more like a museum piece than a living, breathing tragedy.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 61,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 55,
+      "high": 65
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Though gorgeously designed and smartly cast, this Romeo and Juliet feels more like a museum piece than a living, breathing tragedy.",
+        "quote": "feels more like a museum piece than a living, breathing tragedy",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges positive elements (design, casting) but the core criticism that it feels like a 'museum piece' rather than living theater suggests a disappointing experience that neither strongly recommends nor completely dismisses. | GPT-4o: The review acknowledges positive aspects like design and casting but ultimately suggests the production lacks vitality, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects (design, casting) but ultimately finds the production lacking in vitality, suggesting a mixed or neutral overall assessment. | Kimi: While the critic acknowledges strong production values and casting, the core verdict is that the show fails as a living tragedy, instead feeling static and inert—a clear recommendation against seeing it.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges production strengths (design, casting) but criticizes the core theatrical experience as static and uninvolving. Clear mixed verdict. | GPT-4o: The review acknowledges the design and casting but ultimately criticizes the production for lacking vitality, suggesting it is not recommended. | Gemini: The review acknowledges positive aspects (design, casting) but ultimately finds the production lacking in vitality, suggesting a mixed or neutral recommendation. | Kimi: The critic acknowledges strong production values and casting but ultimately finds the production emotionally lifeless, comparing it to a museum piece rather than a vital, breathing tragedy.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,22 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:18:42.306Z",
+    "scoredAt": "2026-02-04T02:37:40.259Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 60,
+    "claudeScore": 58,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 44,
+    "kimiScore": 61,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 18,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

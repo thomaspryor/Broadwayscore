@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Shucked is a musical that knows exactly what it is: a cornball comedy that revels in its own silliness, delivering puns and pratfalls with the confidence of a vaudeville act.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
   ],
   "textQuality": "truncated",
   "llmScore": {
-    "score": 76,
-    "confidence": "high",
+    "score": 75,
+    "confidence": "medium",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 70,
+      "high": 80
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic appreciates the show's self-awareness and confident execution of its comedic goals, praising it for successfully being what it sets out to be. | GPT-4o: The review suggests that the show is successful at achieving its comedic goals, with a confident and self-aware delivery, indicating a positive recommendation. | Gemini: The review describes the show as a \"cornball comedy\" that \"revels in its own silliness,\" which suggests an enjoyable, if not groundbreaking, experience. The comparison to a vaudeville act further reinforces the positive, albeit lighthearted, nature of the review. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic appreciates the show's self-awareness and confidence in its comedic approach, describing it positively as knowing 'exactly what it is' and executing with 'confidence.' However, the brief excerpt lacks explicit recommendation language or deeper praise that would push it higher in the Positive range. | GPT-4o: The review describes the show as confidently delivering its comedic style, which suggests a positive recommendation for those who appreciate its genre. However, the lack of detailed praise or critique keeps the score in the lower positive range. | Gemini: The review describes the show as a \"cornball comedy\" that \"revels in its own silliness,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. | Kimi: The brief excerpt offers descriptive analysis of the show's tone and style, noting its self-awareness and confidence, but provides no explicit recommendation to see or skip the production. Without a clear verdict or additional evaluative context, the sentiment remains ambiguous.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:31:15.390Z",
+    "scoredAt": "2026-02-04T02:49:30.118Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,19 +64,19 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
+    "openaiScore": 75,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 63,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

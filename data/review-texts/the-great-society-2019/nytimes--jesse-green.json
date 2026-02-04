@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "But if 'The Great Society' doesn't quite live up to its predecessor's promise, it's still a fascinating and often moving look",
+        "quote": "But if 'The Great Society' doesn't quite live up to its predecessor's promise, it's still a fascinating and often moving look at how even the most well-intentioned policies can go awry.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Review acknowledges the show falls short of expectations but finds it 'fascinating and often moving.' This balanced assessment with qualified praise fits the Mixed bucket. | GPT-4o: The review acknowledges that the show doesn't fully meet expectations but still finds it fascinating and moving, indicating a positive recommendation with some reservations. | Gemini: The review states that the show is \"fascinating and often moving\" despite not living up to its predecessor's promise, indicating a positive but qualified recommendation. | Kimi: While noting it falls short of its predecessor, the critic calls the show 'fascinating and often moving,' indicating a qualified recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges the show falls short of expectations ('doesn't quite live up to its predecessor's promise') but finds redeeming qualities ('fascinating and often moving'). This balanced assessment with qualified praise fits the Mixed category. | GPT-4o: The review acknowledges that the show doesn't fully meet expectations set by its predecessor but still finds it fascinating and often moving, indicating a positive recommendation with some reservations. | Gemini: The review states that the show is \"fascinating and often moving,\" which indicates a positive, but not overwhelmingly enthusiastic, recommendation. The phrase \"doesn't quite live up to its predecessor's promise\" suggests reservations. | Kimi: While noting the show doesn't match its predecessor's quality, the critic delivers a clear recommendation with strong praise ('fascinating and often moving'), placing it firmly in the positive range with moderate reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:35:53.170Z",
+    "scoredAt": "2026-02-04T03:57:35.524Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,12 +61,12 @@
     "claudeScore": 62,
     "openaiScore": 74,
     "geminiScore": 72,
-    "kimiScore": 76,
+    "kimiScore": 77,
     "claudeBucket": "Mixed",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 15,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

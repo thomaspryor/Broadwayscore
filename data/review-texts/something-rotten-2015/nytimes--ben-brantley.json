@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The language is warm and appreciative ('cheerfully', 'kaleidoscope') suggesting the critic enjoyed it, though the tone is more descriptive than effusively praising. The excerpt appears truncated which limits confidence in the full verdict. | Gemini: The review describes the show as \"cheerfully anachronistic\" and a \"kaleidoscope of inside jokes,\" indicating a positive, albeit potentially niche, experience. | Kimi: The critic employs positive descriptors ('cheerfully', 'kaleidoscope') to praise the show's meta-theatrical wit and entertainment value, indicating a solid recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'cheerfully' suggests positive sentiment, and describing it as a 'kaleidoscope' implies richness and entertainment value. However, this appears to be a truncated excerpt with limited evaluative content, so confidence is medium. | Gemini: The review describes the show as \"cheerfully anachronistic\" and a \"kaleidoscope of inside jokes,\" indicating a positive but potentially niche appeal. | Kimi: The critic employs distinctly positive descriptors ('cheerfully', 'kaleidoscope') to characterize the show's meta-theatrical conceit, suggesting appreciation for its playful cleverness. However, the text is extremely brief (under 50 words), lacking a definitive verdict or clear recommendation language, warranting low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:44:15.695Z",
+    "scoredAt": "2026-02-04T02:59:48.229Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Band's Visit is a small miracle of a musical, one that finds profound beauty in the most ordinary of human encounters.",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 93,
+    "score": 92,
     "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the show 'a small miracle' and finds 'profound beauty' in it - this is enthusiastic, unqualified praise that clearly places it in Rave territory. | GPT-4o: The review uses superlative language ('small miracle', 'profound beauty') indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses the phrase \"small miracle\" which indicates a very positive and enthusiastic recommendation. | Kimi: The critic employs superlatives ('miracle,' 'profound beauty') to describe the production, offering an unqualified, enthusiastic endorsement that characterizes the show as essential viewing.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the show 'a small miracle' and finds 'profound beauty' in it - clear superlative language indicating an enthusiastic recommendation without any reservations. | GPT-4o: The review uses superlative language, calling the musical a 'small miracle' and highlighting 'profound beauty,' which indicates a strong, enthusiastic recommendation. | Gemini: The review uses the language \"small miracle\" to describe the musical, indicating a rave review. | Kimi: The critic employs superlative language ('small miracle', 'profound beauty') without reservation, indicating an enthusiastic, must-see recommendation despite the excerpt's brevity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:15:35.989Z",
+    "scoredAt": "2026-02-04T03:30:02.317Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 92,
-    "openaiScore": 95,
+    "openaiScore": 92,
     "geminiScore": 90,
-    "kimiScore": 94,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 5,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

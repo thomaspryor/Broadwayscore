@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Souvenir is a show that succeeds because it doesn't try to explain the unexplainable, but rather celebrates it in all its glorious, tone-deaf wonder.",
   "originalScore": null,
-  "assignedScore": 77,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 77,
+    "score": 76,
     "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly states the show 'succeeds' and uses positive language like 'celebrates' and 'glorious wonder,' indicating recommendation despite the brief excerpt. | GPT-4o: The review expresses a positive view by stating the show 'succeeds' and 'celebrates' its unique qualities, indicating a recommendation despite acknowledging its 'tone-deaf wonder'. | Gemini: The review states the show \"succeeds\" and \"celebrates\" something. This is a positive review, but not a rave. | Kimi: The critic uses strongly positive language ('succeeds,' 'glorious,' 'celebrates') to praise the show's approach to its subject matter, indicating a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly states the show 'succeeds' and uses positive language like 'celebrates' and 'glorious,' though the brief excerpt limits fuller assessment of the recommendation strength. | GPT-4o: The review praises the show for its successful approach and celebration of its unique qualities, indicating a positive recommendation. The tone suggests enjoyment despite any unconventional elements. | Gemini: The review indicates the show 'succeeds' and 'celebrates' something, which suggests a positive, though perhaps quirky, experience. The phrase 'tone-deaf wonder' implies it's enjoyable despite its flaws. | Kimi: The critic explicitly states the show 'succeeds' and praises its 'glorious' celebration of its subject, indicating a clear recommendation despite the brief excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:46:17.999Z",
+    "scoredAt": "2026-02-04T03:02:35.548Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 76,
+    "openaiScore": 78,
     "geminiScore": 75,
-    "kimiScore": 80,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

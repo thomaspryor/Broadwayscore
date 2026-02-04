@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "LeVeaux has staged Stick Fly as though it were taking place in a museum, with every moment preserved under glass and thrust at you with the delicacy of a sledgehammer.",
   "originalScore": null,
-  "assignedScore": 44,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (30 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 44,
+    "score": 45,
     "confidence": "medium",
     "range": {
-      "low": 39,
-      "high": 49
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The museum metaphor and sledgehammer comparison clearly criticize the direction as lifeless and heavy-handed. However, this appears to be a truncated excerpt, so confidence is reduced. | GPT-4o: The review criticizes the staging as overly heavy-handed and lacking subtlety, suggesting a negative experience overall. However, without further context, the score is placed in the middle of the Negative range. | Gemini: The review uses negative imagery to describe the staging, suggesting a lack of subtlety and an overly forceful approach. This indicates a negative assessment of the production. | Kimi: The excerpt contains vivid negative criticism of the staging as museum-like and heavy-handed. However, with only one sentence provided and the overall verdict appearing truncated, the final recommendation remains unclear.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic uses harsh metaphors ('museum', 'sledgehammer') to criticize the director's heavy-handed approach, indicating clear disapproval of the staging despite limited text. | GPT-4o: The review criticizes the staging as heavy-handed and lacking subtlety, indicating a negative assessment of the production. | Gemini: The review uses negative imagery to describe the staging, suggesting a heavy-handed and unnatural approach. This indicates a negative assessment of the production. | Kimi: The critic employs negative metaphors comparing the staging to a sterile museum and criticizes the director's heavy-handed approach ('delicacy of a sledgehammer'), indicating dissatisfaction with the production's execution.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:50:30.168Z",
+    "scoredAt": "2026-02-04T03:06:47.713Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 38,
-    "openaiScore": 45,
+    "claudeScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
     "kimiScore": 48,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The result is a touching, funny, realistic slice of contemporary life that rings with authenticity and builds to a surprisingly moving climax.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 81,
-    "confidence": "high",
+    "score": 80,
+    "confidence": "medium",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('touching', 'funny', 'rings with authenticity', 'surprisingly moving') but extremely brief excerpt makes full assessment difficult. | GPT-4o: The review offers strong praise for the show's authenticity and emotional impact, indicating a solid recommendation. | Gemini: The review uses positive language such as \"touching\", \"funny\", \"realistic\", \"authenticity\", and \"moving climax\", indicating a strong positive recommendation. | Kimi: The critic delivers unqualified praise describing the production as touching, funny, and authentic with a moving climax, indicating a strong endorsement without reservations.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive language ('touching, funny, realistic', 'rings with authenticity', 'surprisingly moving') indicates recommendation. Low confidence due to extremely brief excerpt - full review context missing. | GPT-4o: The review uses strong positive language ('touching', 'funny', 'realistic', 'authenticity', 'moving climax') indicating a highly favorable opinion of the show. | Gemini: The review uses positive language such as \"touching\", \"funny\", \"realistic\", and \"surprisingly moving climax\", indicating a strong positive recommendation. | Kimi: The critic offers consistent praise for the show's authenticity, humor, and emotional impact, clearly recommending it as a realistic and moving theatrical experience.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:36:20.774Z",
+    "scoredAt": "2026-02-04T02:51:35.935Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 77,
-    "openaiScore": 82,
+    "claudeScore": 76,
+    "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

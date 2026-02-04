@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 87,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 87,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 82,
-      "high": 92
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Superlative language ('astonishing', 'nonpareil', 'no production...has ever') with vivid praise for sustained momentum and transformative audience experience. However, confidence is low due to single excerpt warning - this may be cherry-picked positive content. | GPT-4o: The excerpt uses superlative language ('astonishing', 'nonpareil') and describes a unique, immersive experience, indicating a strong recommendation. However, the single excerpt warning suggests caution in over-interpreting the sentiment. | Gemini: The excerpt uses strong positive language such as \"astonishing\", \"tensely and enjoyably\", and \"nonpareil\". Given the single excerpt warning, I'm scoring it as positive with a higher score. | Kimi: Extracted from malformed response | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Exceptional superlatives ('astonishing', 'nonpareil', 'never...as widely') and visceral praise for the experience. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong superlatives like 'astonishing' and 'nonpareil,' indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"astonishing\", \"tensely and enjoyably\", and \"nonpareil\". Given the single excerpt warning, I am scoring on the higher end of the positive range. | Kimi: Single excerpt contains superlative praise ('astonishing,' 'nonpareil') describing a transformative, invigorating experience. Following single-excerpt guidance, scored at upper end of Positive bucket (80-84) rather than Rave due to limited context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,22 +53,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:28:35.249Z",
+    "scoredAt": "2026-02-04T03:49:38.821Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "geminiScore": 82,
+    "claudeScore": 94,
+    "openaiScore": 92,
+    "geminiScore": 83,
     "kimiScore": 83,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 11,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

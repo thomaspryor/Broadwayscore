@@ -49,7 +49,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise for lead performance ('thrilling, unhinged') and declares the revival successfully realizes the musical's potential ('finally makes...work as intended'), indicating enthusiastic recommendation. | GPT-4o: The review praises the performance as 'thrilling' and states the revival 'finally makes' the musical work, indicating a strong recommendation. | Gemini: The review uses strong positive language, highlighting a 'thrilling' performance and stating that the revival 'finally makes' the musical work. This indicates a strong recommendation. | Kimi: The critic offers unqualified praise for the lead performance ('thrilling') and declares this revival finally fulfills the musical's potential, indicating strong enthusiasm for the production.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise for both lead performance ('thrilling, unhinged') and overall production ('finally makes...musical work as intended'), indicating enthusiastic recommendation despite brief excerpt. | GPT-4o: The review praises Scherzinger's performance as 'thrilling' and states the revival 'finally makes the musical work as intended', indicating strong enthusiasm and a must-see recommendation. | Gemini: The review uses strong positive language, highlighting a 'thrilling' performance and stating the revival 'finally makes' the musical work. This indicates a strong recommendation. | Kimi: The critic offers unqualified praise for both the lead performance ('thrilling') and the production itself ('finally makes... work as intended'), indicating this revival successfully realizes the show's potential with no reservations mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -59,7 +59,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:57:17.871Z",
+    "scoredAt": "2026-02-04T03:13:25.220Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -69,7 +69,7 @@
     "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 89,
+    "kimiScore": 88,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

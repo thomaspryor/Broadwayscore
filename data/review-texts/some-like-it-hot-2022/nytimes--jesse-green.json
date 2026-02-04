@@ -21,7 +21,7 @@
   "textQuality": "truncated",
   "llmScore": {
     "score": 63,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 58,
       "high": 68
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the star and production values but explicitly states these positives cannot overcome fundamental problems, indicating a mixed assessment that neither recommends nor discourages. | GPT-4o: The review acknowledges the show's style and a strong performance by Christian Borle but also notes significant problems that diminish the overall experience, leading to a mixed verdict. | Gemini: The review acknowledges strengths (style, Christian Borle's performance) but also mentions problems that the glitz can't solve, indicating a mixed assessment. | Kimi: The review offers strong praise for the production values and lead performance but emphasizes significant, unresolved problems with the material, ending on a cautionary note. The brief excerpt and ambiguous final verdict warrant low confidence.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges strong production values and star performance but explicitly states these positives cannot overcome fundamental problems. The 'but' structure signals mixed verdict. | GPT-4o: The review acknowledges the show's style and a strong performance by Christian Borle, but also notes significant problems that the production's glitz cannot solve, indicating a mixed review. | Gemini: The review acknowledges positive aspects like style, polish, and a strong performance by Christian Borle, but also mentions problems that the glitz can't overcome, resulting in a mixed assessment. | Kimi: While the critic praises the production values ('style and polish to burn') and gives strong commendation to Christian Borle's star performance, the significant caveats about the 'corniest material' and unsolvable problems place this in the qualified positive range rather than a rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:42:39.253Z",
+    "scoredAt": "2026-02-04T02:58:30.589Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,17 +61,17 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 76,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 3,
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

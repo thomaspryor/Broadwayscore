@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The third and final panel of Tom Stoppard's theatrical triptych, 'The Coast of Utopia,' achieves something close to the impossible: it makes you feel that you have lived through history.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,11 +23,11 @@
     "web-search"
   ],
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -44,7 +44,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review expresses a strong positive sentiment, suggesting the show achieves an extraordinary effect, indicative of a rave review. | Gemini: The review states that the play achieves something close to the impossible, which is a positive statement, but it is not a rave review. | Kimi: Superlative language ('close to the impossible') and praise for the show's profound emotional impact indicate an unqualified rave, though the brevity of the excerpt limits confidence.",
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong positive language, suggesting an exceptional theatrical experience that achieves 'something close to the impossible.' | Gemini: The review states that the show achieves something close to the impossible, which is a positive statement, indicating a recommendation. | Kimi: Despite the brevity of this excerpt, the critic employs superlatives ('close to the impossible') to praise the production's immersive power and historical impact, indicating an enthusiastic, must-see recommendation typical of a rave review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,7 +54,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:21:13.454Z",
+    "scoredAt": "2026-02-04T03:36:27.549Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,11 +64,11 @@
     "claudeScore": null,
     "openaiScore": 90,
     "geminiScore": 75,
-    "kimiScore": 92,
+    "kimiScore": 93,
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 17,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

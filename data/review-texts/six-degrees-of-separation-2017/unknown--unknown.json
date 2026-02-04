@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The deception of the Kittredges and their society pals always had its farcical elements. But they have been heightened here at the expense of poignancy.",
+        "quote": "It's a tone that screeches as the play becomes darker.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the lead performances (Hawkins, Janney) but criticizes the production's tonal choices that undermine the play's emotional impact. With only one excerpt available, this appears to be a qualified assessment with both positives and negatives. | GPT-4o: The review acknowledges strong performances but criticizes the production for losing poignancy and having a screeching tone. The mixed elements suggest a neither fully positive nor negative verdict. | Gemini: The review praises the performances of Mr. Hawkins and Ms. Janney, but criticizes the heightened farcical elements and screeching tone, suggesting a mixed overall experience. Due to the limited excerpt, confidence is low. | Kimi: The excerpt praises the lead performances (Hawkins as 'tragic hero,' Janney as 'highly credible') but criticizes the production as 'earthbound' with a tone that 'screeches' and heightened farcical elements that sacrifice poignancy. With only one excerpt available, the balanced mix of praise and reservation points to a middle-of-the-road assessment.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises lead performances ('tragic hero', 'highly credible') but criticizes the revival's tonal choices and direction. 'Earthbound' and tonal problems suggest significant reservations despite performance quality. | GPT-4o: The review praises individual performances but criticizes the overall tone and execution, suggesting a mixed reception. The excerpt's limited nature and lack of a full verdict lower confidence. | Gemini: The review praises the performances of Mr. Hawkins and Ms. Janney, but notes that the production has heightened the farcical elements at the expense of poignancy and that the tone screeches as the play becomes darker. Due to the limited excerpt, confidence is low. | Kimi: While the excerpt praises Corey Hawkins' performance as 'close to a tragic hero' and Allison Janney as 'highly credible,' it criticizes the revival as 'earthbound' with a tone that 'screeches' at the expense of poignancy. The significant criticism of the production's tonal handling alongside performance praise indicates a mixed assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:38:56.607Z",
+    "scoredAt": "2026-02-04T02:54:16.128Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,7 +63,7 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 62,
+    "kimiScore": 63,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

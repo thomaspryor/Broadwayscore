@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,13 +20,13 @@
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 82,
+    "score": 85,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 80,
+      "high": 90
     },
-    "bucket": "Positive",
+    "bucket": "Rave",
     "thumb": "Up",
     "components": {
       "book": null,
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('crackling revival', 'perfect pitch') indicates clear recommendation, though brief text limits confidence level. | GPT-4o: The review uses strong positive language ('crackling revival', 'perfect pitch') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"crackling revival\" and \"perfect pitch\", indicating a highly favorable opinion. | Kimi: The critic employs strongly approving language ('crackling', 'perfect pitch') to praise the revival's expert balance of comedy and emotion, indicating an enthusiastic recommendation without reservations.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with 'crackling revival' and 'perfect pitch' indicating high quality execution, though brief excerpt limits full assessment of critic's complete recommendation. | GPT-4o: The review uses strong positive language ('crackling revival', 'perfect pitch') indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"crackling\" and states that the revival finds the \"perfect pitch\" which indicates a strong positive recommendation. | Kimi: The critic employs enthusiastic superlatives ('crackling', 'perfect pitch') to praise the revival's tonal balance, indicating a strong recommendation despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:42:00.926Z",
+    "scoredAt": "2026-02-04T04:04:02.516Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,17 +61,17 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 88,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
+    "kimiBucket": "Rave",
     "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   }
 }

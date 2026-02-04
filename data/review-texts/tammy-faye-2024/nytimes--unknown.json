@@ -11,13 +11,13 @@
   ],
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 43,
+  "assignedScore": 46,
   "llmScore": {
-    "score": 43,
+    "score": 46,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 41,
+      "high": 51
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies fundamental narrative and emotional problems, describing the show as 'on shaky ground' and criticizing its inability to find focus, resulting in no impact. | GPT-4o: The excerpt criticizes the narrative and emotional coherence of the show, indicating it fails to effectively deliver on any of its themes. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt indicates that the show fails to deliver a cohesive narrative or emotional experience, suggesting a negative assessment. Given that it's a single excerpt, confidence is low. | Kimi: The single excerpt available offers decisive criticism of the show's identity crisis and failure to resonate emotionally, suggesting fundamental narrative flaws without mentioning redeeming qualities.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic identifies fundamental narrative and tonal problems, calling the show 'on shaky ground' and concluding that none of its attempted themes work. This is a clear negative assessment of the musical's core effectiveness. | GPT-4o: The excerpt criticizes the show for lacking narrative and emotional clarity, suggesting it fails to effectively deliver its themes. The tone is negative, indicating a lack of recommendation. | Gemini: The review excerpt indicates that the show fails to deliver a coherent narrative or emotional impact, suggesting a negative assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt delivers substantive criticism of the show's fundamental identity crisis, stating it fails to resonate emotionally or narratively by trying to be too many things at once. The opening 'But' suggests prior praise may exist, but the available text constitutes a clear negative verdict on the production's core effectiveness.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,7 +44,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:06:28.993Z",
+    "scoredAt": "2026-02-04T03:22:30.851Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -53,12 +53,12 @@
     "claudeScore": 42,
     "openaiScore": 45,
     "geminiScore": 45,
-    "kimiScore": 38,
+    "kimiScore": 50,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 7,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

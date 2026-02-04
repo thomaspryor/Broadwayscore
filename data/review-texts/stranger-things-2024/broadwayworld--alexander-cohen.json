@@ -38,7 +38,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows clear praise for the writing ('stands strongly on its own two feet') and describes it as an exciting spectacle. However, this is only one curated excerpt which may not represent the full review sentiment, so confidence is low. | GPT-4o: The excerpt praises the show as a 'standalone story' that is 'brimming with action and exploding with spectacle.' This suggests a strong positive recommendation, though the single excerpt limits confidence. | Gemini: The excerpt describes the show as an \"adventure romp\" that \"stands strongly on its own two feet,\" indicating a positive, but not overwhelmingly enthusiastic, review. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the writing and describes the production as 'brimming with action and exploding with spectacle,' indicating a clear recommendation. However, as a single curated excerpt, confidence is reduced.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the writing ('stands strongly on its own'), describes it as an engaging 'adventure romp' with positive descriptors like 'brimming' and 'exploding with spectacle.' However, confidence is low due to truncated single excerpt that cuts off mid-sentence. | GPT-4o: The excerpt praises the show as a standalone story that avoids pitfalls, highlighting its action and spectacle. The positive tone suggests a strong recommendation, placing it in the upper end of the Positive range. | Gemini: The excerpt describes the show as an \"adventure romp\" that \"stands strongly on its own two feet,\" indicating a positive, but not overwhelmingly enthusiastic, recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the writing and spectacle, using phrases like 'stands strongly on its own two feet' and 'exploding with spectacle,' indicating a clear recommendation despite the limited text available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,7 +48,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:51:47.451Z",
+    "scoredAt": "2026-02-04T03:08:18.182Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -56,7 +56,7 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 81,
+    "openaiScore": 82,
     "geminiScore": 78,
     "kimiScore": 82,
     "claudeBucket": "Positive",

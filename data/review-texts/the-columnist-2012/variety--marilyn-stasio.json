@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "John Lithgow gives a powerhouse performance as Joseph Alsop, the imperious Washington columnist whose arrogance and self-deception make him a fascinating character study.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 80,
+    "score": 78,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 73,
+      "high": 83
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance ('powerhouse') with compelling character analysis. Single excerpt limits confidence, but positive language suggests recommendation despite only having performer assessment. | GPT-4o: The excerpt praises John Lithgow's performance as a 'powerhouse' and describes the character as 'fascinating,' suggesting a positive view of the show. However, due to the single excerpt warning, the overall sentiment is uncertain, leading to a lower score within the Positive range. | Gemini: The excerpt focuses solely on Lithgow's performance, describing it as a \"powerhouse.\" While this is positive, it's difficult to gauge the overall recommendation without more context. Given the single excerpt, I'm placing it in the positive bucket, leaning towards the higher end due to the strong praise, but with low confidence. | Kimi: The excerpt offers clear, strong praise ('powerhouse performance', 'fascinating character study') indicating a solid recommendation, though as a single curated quote it may not represent the full review's reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises Lithgow's 'powerhouse performance' and finds the character 'fascinating,' indicating positive reception. However, confidence is low due to limited text from a curated excerpt that may not represent the full review verdict. | GPT-4o: The excerpt praises John Lithgow's performance, describing it as 'powerhouse' and the character as 'fascinating.' However, the single excerpt warning suggests this may not represent the full review sentiment, leading to a cautious, mildly positive score. | Gemini: The excerpt focuses on a strong performance by John Lithgow, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've placed it in the lower end of the positive range. | Kimi: Single excerpt contains clearly positive evaluative language ('powerhouse performance', 'fascinating character study'), warranting the upper end of the Positive bucket per guidance for cherry-picked excerpts.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,16 +50,16 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:23:18.457Z",
+    "scoredAt": "2026-02-04T03:45:37.864Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 74,
-    "geminiScore": 81,
+    "geminiScore": 75,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",

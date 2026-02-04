@@ -34,7 +34,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the playwright's 'expert hands' and describes the experience as rewarding ('our payoff'), suggesting strong recommendation despite the lengthy runtime. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt praises the playwright's skill and the play's rich texture, suggesting a strong positive recommendation. However, as only one excerpt is available, confidence is low. | Gemini: The excerpt praises the playwright's skill and the richness of the world-building, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt praises the playwright's 'expert hands' and describes the show as a rewarding 'payoff' with 'rich texture,' indicating a clear recommendation despite the nearly three-hour runtime. As a single clearly positive excerpt, it falls in the upper Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the playwright's skill and the rich world-building, with no reservations expressed. However, confidence is low due to having only one curated excerpt that may not represent the full review verdict. | GPT-4o: The excerpt praises the playwright's skill and the rich texture of the play, indicating a positive view. Given the single excerpt warning, the score is set towards the upper end of the Positive range. | Gemini: The excerpt praises the playwright's skill and the richness of the world-building, suggesting a positive experience. Given the single excerpt, I'm scoring on the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers clear praise for the playwright's expert craftsmanship and the rich texture of the production, indicating a solid recommendation despite the long runtime. As a single curated excerpt, the sentiment appears strongly favorable toward the show's construction.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,13 +44,13 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:38:54.275Z",
+    "scoredAt": "2026-02-04T04:00:44.188Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
     "geminiScore": 81,
     "kimiScore": 82,

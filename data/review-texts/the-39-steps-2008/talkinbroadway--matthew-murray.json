@@ -20,7 +20,7 @@
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('thrilling and hilarious') with praise for the show's approach to its source material. Single excerpt limits confidence but tone is clearly enthusiastic. | GPT-4o: The excerpt describes the show as 'thrilling and hilarious' and praises its approach to the source material, indicating a strong positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is strongly positive, calling the show \"thrilling and hilarious\" and praising its approach to the source material. Given the single excerpt, I'm placing the score at the higher end of the positive range. | Kimi: The excerpt provides strong praise describing the show as both 'thrilling and hilarious' with appreciation for its clever adaptation approach, indicating a clear recommendation despite limited available text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('thrilling and hilarious') with clear appreciation for the production's approach. Single excerpt warning suggests caution, but the tone is enthusiastic enough for upper Positive range. | GPT-4o: The excerpt describes the show as 'thrilling and hilarious,' suggesting high praise and a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is strongly positive, calling the show \"thrilling and hilarious\" and praising its approach to the source material. Given the single excerpt, I'm scoring it at the higher end of the Positive bucket. | Kimi: Single excerpt displays clear enthusiasm with praise like 'thrilling and hilarious' and 'lovingly send it up', warranting upper Positive range despite limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:08:42.148Z",
+    "scoredAt": "2026-02-04T03:24:22.669Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,19 +58,19 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
+    "openaiScore": 85,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 1,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

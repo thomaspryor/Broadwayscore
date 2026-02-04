@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt describes the production as having 'distortion and intensity' in a way that suggests intentional artistic vision rather than criticism. The 'fever dream' comparison implies heightened theatrical experience, which is typically positive for drama criticism. | GPT-4o: The excerpt suggests an intense and possibly unconventional take on the play, which could be interpreted as either a positive or negative depending on execution. Without more context, it seems to imply a mixed experience. | Gemini: The excerpt suggests an intense and distorted production, which leans towards a positive, albeit potentially unsettling, experience. Given the limited text, confidence is low. | Kimi: Single curated excerpt describes the production as a 'fever dream' with 'distortion and intensity'—language that suggests a bold, surreal approach but lacks clear evaluative markers of success or failure. Without additional context to determine if this transformation is praised or criticized, the verdict remains uncertain. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic describes the production as having 'distortion and intensity' in a fever dream comparison, which suggests a bold, impactful interpretation rather than criticism. However, with only one excerpt available, confidence is low as this could be setup rather than verdict. | GPT-4o: The excerpt suggests a unique interpretation of the play, described as a 'fever dream' with 'distortion and intensity.' This indicates a departure from the traditional, which could be seen as either a positive or negative, leading to a mixed verdict. The lack of additional context or clear recommendation results in a low confidence score. | Gemini: The excerpt uses evocative language (\"fever dream\", \"distortion\", \"intensity\") suggesting a positive, albeit potentially unsettling, experience. Given the limited text, I'm placing it in the lower end of the Positive range. | Kimi: The excerpt describes stylistic choices (fever dream aesthetic, distortion) that depart from the play's traditional form without clear evaluative language indicating approval or disapproval, making the overall verdict ambiguous given only this single curated quote. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,7 +55,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:35:09.987Z",
+    "scoredAt": "2026-02-04T03:57:08.401Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

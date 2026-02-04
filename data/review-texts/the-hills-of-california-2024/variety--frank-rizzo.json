@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jez Butterworth's sprawling family drama is a masterclass in storytelling, anchored by Laura Donnelly's powerhouse performance as the ambitious mother whose dreams of stardom haunt three generations.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 90,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses superlative language 'masterclass in storytelling' and 'powerhouse performance' with no qualifying criticism or reservations. | GPT-4o: The review uses strong positive language like 'masterclass in storytelling' and 'powerhouse performance', indicating an enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"masterclass\" and \"powerhouse performance,\" indicating a strong recommendation. | Kimi: Superlatives 'masterclass' and 'powerhouse' indicate the highest level of enthusiasm and an unqualified recommendation, though the brevity of the excerpt necessitates lower confidence.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Clear praise with 'masterclass' and 'powerhouse performance' indicates strong positive recommendation without reservations. | GPT-4o: The review uses strong, positive language ('masterclass in storytelling') and highlights a 'powerhouse performance', indicating an enthusiastic recommendation. | Gemini: The review uses strong positive language like \"masterclass\" and \"powerhouse performance\", indicating a positive recommendation. | Kimi: Superlatives like 'masterclass' and 'powerhouse' indicate unqualified enthusiasm with no reservations mentioned. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,18 +51,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:40:58.841Z",
+    "scoredAt": "2026-02-04T04:03:07.207Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 92,
-    "claudeBucket": "Rave",
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
@@ -71,7 +71,7 @@
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
   }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 78,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises 'moving performances' and offers thoughtful analysis of the play's themes. However, this is only one curated quote and confidence is low due to lack of full review context. | GPT-4o: The excerpt highlights the moving performances of the lead actors and presents a thoughtful reflection on the themes of the play, suggesting a positive view. However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The review praises the performances of the actors and suggests the play offers a clarifying portrait of loneliness and aging. Given the limited excerpt, a positive score with medium confidence is appropriate. | Kimi: The excerpt praises the production as a 'clarifying portrait' with 'moving performances,' indicating a solid recommendation, though confidence is limited by the single excerpt format.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the 'moving performances' and finds the play presents a 'clarifying portrait' of aging themes. Positive language but limited sample, so upper end of Positive bucket with low confidence due to single excerpt warning. | GPT-4o: The excerpt highlights the moving performances of the lead actors and provides a thoughtful reflection on the themes of the play. The tone suggests a positive view, but the single excerpt limits confidence in the overall sentiment. | Gemini: The review praises the performances and suggests the play offers a clarifying portrait of loneliness and aging. Due to the limited excerpt, confidence is low, but the tone is generally positive. | Kimi: The excerpt offers clear praise for the lead performances ('moving') and the production's thematic depth ('clarifying portrait'), with no visible caveats. Following the single-excerpt warning for clearly positive quotes, this falls in the upper Positive range (80-84).",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:34:18.485Z",
+    "scoredAt": "2026-02-04T03:55:58.230Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,14 +61,14 @@
   },
   "ensembleData": {
     "claudeScore": 81,
-    "openaiScore": 72,
+    "openaiScore": 74,
     "geminiScore": 78,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 10,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

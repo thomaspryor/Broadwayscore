@@ -37,7 +37,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses clear enthusiasm, saying they 'loved' the source material and that the show 'belongs on Broadway.' The phrase 'sing the praises' indicates strong appreciation for the production's merits. Single excerpt warning applies, but the tone is genuinely positive rather than mildly so. | GPT-4o: The excerpt is clearly positive, praising the talents involved and suggesting that Broadway is the right home for 'Smash'. However, due to the single excerpt warning, confidence is low. | Gemini: The critic clearly states that the show belongs on Broadway and references their love for the original show, indicating a positive sentiment. Given the single excerpt warning, I am scoring on the higher end of the positive range. | Kimi: The critic explicitly states they loved the original material and declares the show clearly belongs on Broadway, praising the talented cast and crew. However, as this is a single curated excerpt, the full context of the review is unknown.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation stating the show 'belonged on Broadway all along' and praising the talented people involved. Single excerpt limitation reduces confidence but sentiment is clearly enthusiastic. | GPT-4o: The excerpt is strongly positive, praising the talent involved and suggesting the show is well-suited to Broadway. However, with only one excerpt, confidence is low. | Gemini: The critic clearly states that the show belongs on Broadway and expresses love for it, indicating a positive recommendation. Due to the limited text, confidence is low. | Kimi: The critic expresses strong affection for the source material and clearly endorses the Broadway transfer, stating the show fulfills its destiny on stage.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -47,7 +47,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:41:20.627Z",
+    "scoredAt": "2026-02-04T02:57:05.282Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -55,13 +55,13 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 82,
+    "geminiScore": 81,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

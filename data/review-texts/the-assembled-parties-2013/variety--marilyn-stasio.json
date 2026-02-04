@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Richard Greenberg's ambitious new play about a Jewish family gathering for Christmas dinner in 1980 Manhattan is a frustrating mix of promising elements that never quite gel into a satisfying whole.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
   ],
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/legit-review-the-assembled-parties-1200383931/",
   "llmScore": {
-    "score": 60,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 47,
+      "high": 57
     },
-    "bucket": "Mixed",
-    "thumb": "Flat",
+    "bucket": "Negative",
+    "thumb": "Down",
     "components": {
       "book": null,
       "music": null,
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed verdict - acknowledges 'promising elements' but finds the overall result 'frustrating' and unsatisfying. Neither recommends nor discourages. | GPT-4o: The review describes the play as having 'promising elements' but ultimately being unsatisfying, indicating a mixed verdict without a clear recommendation. | Gemini: The review uses the phrase \"never quite gel into a satisfying whole,\" indicating a mixed or neutral assessment of the play. | Kimi: While the critic acknowledges the play's ambition and promising components, the final verdict is clearly negative: the elements fail to cohere into a satisfying theatrical experience.",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges promising elements but finds the overall execution frustrating and unsatisfying, indicating neither recommendation nor strong discouragement. | GPT-4o: The review describes the play as 'frustrating' and indicates that it 'never quite gel[s] into a satisfying whole,' suggesting a negative overall impression without recommending it. | Gemini: The review uses the phrase \"never quite gel into a satisfying whole,\" indicating a mixed or neutral assessment. | Kimi: The critic describes the play as a 'frustrating mix' that fails to cohere into a 'satisfying whole,' indicating disappointment and a recommendation against despite acknowledging some promising elements. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:13:28.289Z",
+    "scoredAt": "2026-02-04T03:27:49.986Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,19 +64,19 @@
   },
   "ensembleData": {
     "claudeScore": 58,
-    "openaiScore": 60,
+    "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 50,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
+    "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
     "kimiBucket": "Negative",
-    "scoreDelta": 12,
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
   }
 }

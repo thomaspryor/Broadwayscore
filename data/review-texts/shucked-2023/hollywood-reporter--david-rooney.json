@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict acknowledging flaws ('corny', 'groan-worthy puns') but emphasizing strengths ('genuinely funny', 'surprisingly sweet', 'infectious enthusiasm'). The 'but' structure shows the critic ultimately recommends despite reservations. | GPT-4o: The review acknowledges the show as 'corny' but ultimately praises its humor and sweetness, along with the cast's enthusiastic performance, indicating a positive recommendation despite some reservations. | Gemini: The review acknowledges the show's corniness but highlights its humor and sweetness, along with the cast's enthusiasm, suggesting a positive but not overwhelmingly enthusiastic experience. | Kimi: The critic acknowledges the show's corniness but ultimately praises its genuine humor, surprising sweetness, and the cast's infectious enthusiasm, delivering a solid recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that acknowledges flaws ('corny', 'groan-worthy puns') but ultimately recommends with praise for humor, sweetness, and cast enthusiasm. | GPT-4o: The review acknowledges the show's corniness but ultimately praises its humor and sweetness, recommending it for its enthusiastic cast. | Gemini: The review acknowledges the show's corniness but highlights its humor and sweetness, along with the cast's enthusiasm, indicating a positive overall experience. | Kimi: While the critic acknowledges the show's corniness and groan-worthy puns, they offer clear praise for its genuine humor, sweetness, and the cast's infectious enthusiasm, resulting in a qualified but positive recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:29:27.592Z",
+    "scoredAt": "2026-02-04T02:48:06.904Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,12 +61,12 @@
     "claudeScore": 76,
     "openaiScore": 76,
     "geminiScore": 75,
-    "kimiScore": 77,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

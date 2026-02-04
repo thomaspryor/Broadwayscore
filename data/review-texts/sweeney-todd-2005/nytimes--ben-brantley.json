@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This 'Sweeney Todd' has been boiled down to its bloody essence, and the result is a cleaner, more concentrated nightmare than the original production.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 79,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic uses positive language ('cleaner, more concentrated') and favorably compares it to the original, but the brevity of the text and focus on the show being a 'nightmare' suggests qualified praise rather than enthusiastic endorsement. | GPT-4o: The review praises the production as a more effective version of the original, using strong positive language like 'cleaner, more concentrated nightmare'. | Gemini: The review suggests a positive experience, highlighting the production as a 'cleaner, more concentrated nightmare' compared to the original. | Kimi: The critic favorably compares this production to the original, praising its focused intensity and describing it as a 'cleaner, more concentrated nightmare,' indicating strong approval despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic views this as an improvement over the original production, praising it as 'cleaner' and 'more concentrated,' though the brief excerpt limits full assessment of the recommendation strength. | GPT-4o: The review highlights a positive transformation of the production, suggesting it is more effective than the original. The tone is enthusiastic about the changes made. | Gemini: The review states that this production is a \"cleaner, more concentrated nightmare\" than the original, indicating a positive, albeit unsettling, experience. This suggests a recommendation with reservations, as it might not be for everyone. | Kimi: The critic favorably compares this production to the original, praising it as a more concentrated and effective realization of the show's horror elements, indicating strong approval despite the excerpt's brevity.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:00:37.007Z",
+    "scoredAt": "2026-02-04T03:17:17.815Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,19 +59,19 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 90,
+    "openaiScore": 82,
     "geminiScore": 78,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
+    "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

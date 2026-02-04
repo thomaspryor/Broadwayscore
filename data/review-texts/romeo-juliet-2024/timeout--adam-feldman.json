@@ -8,20 +8,18 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "web-search",
-    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"This production seems intent on appealing to TikTok audiences who don't know much about the play going in, which is a laudable goal, and I think it will succeed. But those newcomers may be surprised to find that what they thought was a tragedy about young people crushed by societal constraints is actually the sad tale of two nice kids who died from a lack of adult supervision.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 62,
+  "assignedScore": 63,
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -38,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production will succeed with its target audience (positive) but implies it misrepresents the play's essence for traditionalists (negative). Single excerpt limits full verdict assessment. | GPT-4o: The excerpt suggests the production may succeed with a specific audience but implies a disconnect with the play's traditional interpretation. The tone is mixed, acknowledging potential success but with reservations about its approach. | Gemini: The review excerpt suggests the production is geared towards a specific audience and may not fully capture the tragic essence of the play, indicating a mixed reception. | Kimi: While the critic acknowledges the production will successfully attract younger audiences, the core criticism that it reduces a societal tragedy to a simple story of bad parenting suggests significant artistic shortcomings. The faint praise ('laudable goal') is outweighed by the implication that the production fundamentally misunderstands its source material.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals - critic acknowledges the production will succeed at its goal of appealing to newcomers (positive), but frames this as dumbing down the material and missing the play's deeper meaning (negative undertone). With only one curated quote available, confidence is low. | GPT-4o: The excerpt suggests the production may succeed with a specific audience but implies a disconnect between expectations and the play's content. The tone is not clearly positive or negative, leading to a mixed classification. | Gemini: The review excerpt suggests the production is geared towards a specific audience and may not fully capture the depth of the play, resulting in a mixed assessment. | Kimi: The critic acknowledges the production will achieve its goal of attracting new audiences but criticizes its reductive interpretation of the source material, suggesting it transforms a profound tragedy into something trivial.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,7 +46,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T02:21:14.162Z",
+    "scoredAt": "2026-02-04T02:40:26.580Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
@@ -57,12 +55,12 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 60,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 45,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 45,
+    "score": 43,
     "confidence": "high",
     "range": {
-      "low": 40,
-      "high": 50
+      "low": 38,
+      "high": 48
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show conceptually promising but dramatically deficient, describing it as 'lacking a dramatic motor' and 'in search of a rationale.' However, confidence is low due to having only one excerpt that may not represent the full review verdict. | GPT-4o: The excerpt suggests the show lacks substance and fails to deliver on its premise, indicating a negative assessment. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The excerpt states that the show \"lacks a dramatic motor,\" indicating a negative assessment. Given the limited text, confidence is low. | Kimi: The excerpt offers fundamental criticism of the show's construction, stating it 'lacks a dramatic motor' and is a 'high-concept pitch in search of a rationale,' indicating the concept fails to translate into compelling drama. However, confidence is low due to the single excerpt and truncation warnings.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the show conceptually promising but dramatically deficient, calling it a 'pitch in search of a rationale' - clear disappointment with execution. Low confidence due to single excerpt and 'Read more' truncation. | GPT-4o: The excerpt suggests a lack of substance and direction in the show, indicating disappointment. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt indicates the show \"lacks a dramatic motor\" and is \"in search of a rationale,\" suggesting a negative assessment. Due to the limited text, confidence is low. | Kimi: The excerpt describes the show as lacking a 'dramatic motor' and calls it a 'high-concept pitch in search of a rationale,' indicating fundamental flaws in the writing and construction. Given this is a single curated excerpt with no mention of redeeming qualities, it suggests a negative verdict, though confidence is lowered due to potential truncation and lack of full context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:21:40.834Z",
+    "scoredAt": "2026-02-04T03:37:05.986Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,14 +61,14 @@
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 45,
+    "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 45,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 0,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
