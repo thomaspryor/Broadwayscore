@@ -827,7 +827,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
         })()}
 
         {/* Awards - above Box Office */}
-        <AwardsCard showId={show.id} awards={awards} />
+        <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />
 
         {/* Box Office Stats */}
         {grosses && (show.status !== 'previews' || grosses.thisWeek) ? (
