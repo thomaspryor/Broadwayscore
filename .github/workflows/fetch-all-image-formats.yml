@@ -26,6 +26,11 @@ on:
         description: 'Number of parallel image fetches (default 5)'
         required: false
         default: '5'
+      verify:
+        description: 'Verify fetched images using Gemini 2.0 Flash vision (LLM gate)'
+        required: false
+        default: true
+        type: boolean
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
 
@@ -35,7 +40,7 @@ permissions:
 jobs:
   fetch-images:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
         with:
@@ -54,6 +59,7 @@ jobs:
         id: fetch
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show_id }}" ]; then
@@ -64,7 +70,11 @@ jobs:
             ARGS="--missing"
           fi
           CONCURRENCY="${{ inputs.concurrency || '5' }}"
-          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY
+          VERIFY_FLAG=""
+          if [ "${{ inputs.verify }}" != "false" ]; then
+            VERIFY_FLAG="--verify"
+          fi
+          node scripts/fetch-show-images-auto.js $ARGS --concurrency=$CONCURRENCY $VERIFY_FLAG
 
       - name: Archive images locally
         run: |
@@ -128,3 +138,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Images fetched:** ${{ steps.fetch.outputs.images_fetched || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
           echo "**Failed:** ${{ steps.fetch.outputs.images_failed || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**LLM rejected:** ${{ steps.fetch.outputs.images_rejected || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Verification:** ${{ inputs.verify != 'false' && 'Enabled' || 'Disabled' }}" >> $GITHUB_STEP_SUMMARY

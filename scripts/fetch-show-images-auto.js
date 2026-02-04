@@ -830,10 +830,48 @@ async function fetchFromPlaybill(show) {
   return null;
 }
 
-async function fetchShowImages(show, todayTixInfo, apiData) {
+// Verify images from a non-trusted tier before accepting.
+// Returns images if verified (or verification disabled), null if rejected.
+async function verifyAndAccept(images, show, tierName, verifyCtx) {
+  if (!verifyCtx) return images;
+
+  const { verifyImage } = require('./lib/verify-image');
+
+  // Pick best image to verify: thumbnail > poster > hero
+  const urlToVerify = images.thumbnail || images.poster || images.hero;
+  if (!urlToVerify) return images;
+
+  const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
+  console.log(`   🔍 Verifying ${tierName} image...`);
+
+  const result = await verifyImage(urlToVerify, show.title, {
+    year,
+    openingDate: show.openingDate,
+    rateLimiter: verifyCtx.rateLimiter,
+  });
+
+  if (result.match === true) {
+    console.log(`   ✓ VERIFIED (${result.confidence}): ${result.description}`);
+    verifyCtx.verified = (verifyCtx.verified || 0) + 1;
+    return images;
+  } else if (result.match === false &&
+             (result.confidence === 'high' || result.confidence === 'medium')) {
+    console.log(`   ✗ REJECTED (${result.confidence}): ${result.description} [${result.issues.join(', ')}]`);
+    verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
+    return null;
+  } else {
+    // Low confidence rejection or API error → fail open
+    console.log(`   ⚠ UNCERTAIN (${result.confidence}): ${result.description} — accepting`);
+    verifyCtx.uncertain = (verifyCtx.uncertain || 0) + 1;
+    return images;
+  }
+}
+
+async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   console.log(`\n📽️  ${show.title}`);
 
   // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
+  // TRUSTED SOURCE — skip verification
   if (apiData) {
     console.log(`   Found in TodayTix API: "${apiData.displayName}" (ID: ${apiData.id})`);
 
@@ -865,6 +903,7 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
   }
 
   // Step 2: Try TodayTix page scrape if we have an ID
+  // NEEDS VERIFICATION — scraped images may be from wrong show/production
   if (todayTixInfo && todayTixInfo.id) {
     const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
@@ -897,14 +936,18 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
         }
 
         // Format for shows.json
-        return {
+        const formatted = {
           hero: images.landscape,
           thumbnail: images.square,
           poster: images.portrait,
         };
-      }
 
-      console.log(`   ✗ No images found in TodayTix page`);
+        const verified = await verifyAndAccept(formatted, show, 'TodayTix scrape', verifyCtx);
+        if (verified) return verified;
+        console.log(`   Falling through to IBDB...`);
+      } else {
+        console.log(`   ✗ No images found in TodayTix page`);
+      }
     } catch (err) {
       console.log(`   ✗ TodayTix error: ${err.message}`);
     }
@@ -913,18 +956,34 @@ async function fetchShowImages(show, todayTixInfo, apiData) {
   }
 
   // Step 3: Try IBDB → broadway.org images (poster + production photos)
+  // NEEDS VERIFICATION — IBDB neighbor shows cause cross-contamination
   const ibdbImages = await fetchFromIBDB(show);
   if (ibdbImages && (ibdbImages.thumbnail || ibdbImages.poster)) {
-    return ibdbImages;
+    const verified = await verifyAndAccept(ibdbImages, show, 'IBDB', verifyCtx);
+    if (verified) return verified;
+    console.log(`   Falling through to Playbill...`);
   }
 
   // Step 4: Playbill fallback (landscape OG image only)
-  return await fetchFromPlaybill(show);
+  // NEEDS VERIFICATION — last resort, accept with warning if verification fails
+  const playbillImages = await fetchFromPlaybill(show);
+  if (playbillImages) {
+    const verified = await verifyAndAccept(playbillImages, show, 'Playbill', verifyCtx);
+    if (verified) return verified;
+    console.log(`   ⚠ Playbill image failed verification but accepting as last resort`);
+    if (verifyCtx) {
+      verifyCtx.rejected = (verifyCtx.rejected || 0) - 1; // Don't count last-resort accepts as rejections
+      verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+    }
+    return playbillImages;
+  }
+
+  return null;
 }
 
 // Process a single show: discover TodayTix ID, fetch images, update show object.
 // Returns { show, images, apiSourced } or null on failure.
-async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly) {
+async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx) {
   // Try matching against TodayTix API data (instant, no HTTP call)
   const apiData = matchTodayTixShow(show.title, apiLookup);
 
@@ -949,14 +1008,14 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly) {
     }
   }
 
-  // Fetch images: API data → page scrape → Playbill fallback
-  const images = await fetchShowImages(show, todayTixInfo, apiData);
+  // Fetch images: API data → page scrape → Playbill fallback (with optional LLM verification)
+  const images = await fetchShowImages(show, todayTixInfo, apiData, verifyCtx);
   return { show, images, apiSourced: !!apiData };
 }
 
 // Process shows in batches with concurrency.
 // API-sourced shows (instant) are separated from scrape-needing shows.
-async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency) {
+async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx) {
   const results = { success: [], failed: [], skipped: [] };
 
   // Separate API-matched shows (instant, no rate limit needed) from scrape-needed shows
@@ -971,13 +1030,16 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
   }
 
+  // When verification is active, reduce scrape concurrency to avoid overwhelming Gemini rate limiter
+  const scrapeConcurrency = verifyCtx ? Math.min(concurrency, 2) : concurrency;
+
   console.log(`  API-matched (instant): ${apiShows.length} shows`);
   console.log(`  Need scraping: ${scrapeShows.length} shows`);
-  console.log(`  Concurrency: ${concurrency}\n`);
+  console.log(`  Concurrency: ${scrapeConcurrency}${verifyCtx ? ` (reduced from ${concurrency} for LLM verification)` : ''}\n`);
 
-  // Process API-matched shows first (fast, no rate limiting)
+  // Process API-matched shows first (fast, no rate limiting, no verification needed)
   for (const show of apiShows) {
-    const result = await processOneShow(show, apiLookup, todayTixIds, badImagesOnly);
+    const result = await processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx);
     if (result && result.images) {
       applyImages(result.show, result.images);
       results.success.push(show.title);
@@ -992,10 +1054,10 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
 
   // Process scrape-needed shows with concurrency
   let processed = 0;
-  for (let i = 0; i < scrapeShows.length; i += concurrency) {
-    const batch = scrapeShows.slice(i, i + concurrency);
+  for (let i = 0; i < scrapeShows.length; i += scrapeConcurrency) {
+    const batch = scrapeShows.slice(i, i + scrapeConcurrency);
     const batchResults = await Promise.allSettled(
-      batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly))
+      batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx))
     );
 
     for (const settled of batchResults) {
@@ -1009,12 +1071,12 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
 
     processed += batch.length;
-    if (scrapeShows.length > concurrency) {
+    if (scrapeShows.length > scrapeConcurrency) {
       console.log(`   [${processed}/${scrapeShows.length}] ${results.success.length} success, ${results.failed.length} failed`);
     }
 
     // Rate limit between batches (not between individual shows within a batch)
-    if (i + concurrency < scrapeShows.length) {
+    if (i + scrapeConcurrency < scrapeShows.length) {
       await sleep(2000);
     }
   }
@@ -1046,15 +1108,25 @@ async function main() {
   const onlyMissing = args.includes('--missing');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
+  const verifyEnabled = args.includes('--verify');
 
   if (!SCRAPINGBEE_API_KEY) {
     console.error('ERROR: Set SCRAPINGBEE_API_KEY environment variable');
     process.exit(1);
   }
 
+  // Initialize LLM verification gate
+  let verifyCtx = null;
+  if (verifyEnabled) {
+    const { createRateLimiter } = require('./lib/verify-image');
+    verifyCtx = { rateLimiter: createRateLimiter(15), verified: 0, rejected: 0, uncertain: 0, lastResort: 0 };
+    console.log('Image verification: ENABLED (Gemini 2.0 Flash)');
+  }
+
   console.log('='.repeat(60));
   console.log('AUTO-FETCH SHOW IMAGES');
   if (badImagesOnly) console.log('MODE: Re-sourcing shows with bad (identical Playbill) images');
+  if (verifyEnabled) console.log('MODE: LLM verification gate active');
   console.log('='.repeat(60));
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
@@ -1095,7 +1167,7 @@ async function main() {
   console.log(`\nProcessing ${shows.length} shows...\n`);
 
   // Use concurrent processing for large batches, sequential for small
-  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency);
+  const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx);
 
   // Save updated shows
   if (results.success.length > 0) {
@@ -1116,11 +1188,25 @@ async function main() {
     results.failed.forEach(s => console.log(`  - ${s}`));
   }
 
+  // Verification stats
+  if (verifyCtx) {
+    console.log(`\n🔍 Verification Stats:`);
+    console.log(`  Verified (accepted): ${verifyCtx.verified}`);
+    console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
+    console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
+    if (verifyCtx.lastResort > 0) {
+      console.log(`  Last resort (Playbill, accepted with warning): ${verifyCtx.lastResort}`);
+    }
+  }
+
   // GitHub Actions output
   const outputFile = process.env.GITHUB_OUTPUT;
   if (outputFile) {
     fs.appendFileSync(outputFile, `images_fetched=${results.success.length}\n`);
     fs.appendFileSync(outputFile, `images_failed=${results.failed.length}\n`);
+    if (verifyCtx) {
+      fs.appendFileSync(outputFile, `images_rejected=${verifyCtx.rejected}\n`);
+    }
   }
 }
 
