@@ -1,0 +1,76 @@
+{
+  "showId": "once-upon-a-one-more-time-2023",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/upon-one-time",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 73,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"If you give it a chance, 'Once Upon A One More Time' is more entertaining than you’d expect. It works better if you are already a fan of Spears.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you give it a chance, 'Once Upon A One More Time' is more entertaining than you'd expect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this is a qualified positive with conditions ('if you give it a chance', 'if you are already a fan'), suggesting lukewarm recommendation. Lower end of Positive bucket due to conditional nature and single excerpt limitation. | GPT-4o: The excerpt suggests the show is entertaining, especially for fans of Spears, but implies it may not appeal to everyone. The recommendation is mild and conditional, fitting the lower end of the Positive range. | Gemini: The review states the show is \"more entertaining than you'd expect,\" which is a positive sentiment, but the caveat \"if you give it a chance\" and the conditional \"works better if you are already a fan\" indicate reservations. Given the single excerpt, confidence is low. | Kimi: The single available excerpt offers a mildly positive, conditional recommendation that the show exceeds expectations but works best for existing Britney Spears fans, warranting a lower-end Positive score with low confidence due to the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:32:19.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

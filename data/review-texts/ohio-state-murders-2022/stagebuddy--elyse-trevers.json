@@ -1,0 +1,75 @@
+{
+  "showId": "ohio-state-murders-2022",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/ohio-state-murders",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 62,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\" 'Ohio State Murders' is not a mystery. The title is self-explanatory and the crime revealed almost immediately, but the playwright is more concerned with depicting the environment that allowed it to occur.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Ohio State Murders' is not a mystery. The title is self-explanatory and the crime revealed almost immediately, but the playwright is more concerned with depicting the environment that allowed it to occur.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: This single excerpt provides only plot/structural analysis without any evaluative language about quality or recommendation. With such limited text and no clear positive or negative judgment, this falls into Mixed territory with low confidence due to insufficient evaluative content. | GPT-4o: The excerpt does not provide a clear recommendation or discouragement. It describes the play's focus rather than evaluating its quality or impact, suggesting a mixed impression. | Gemini: The excerpt focuses on the playwright's intent rather than evaluating the show's success, suggesting a mixed or neutral stance. The truncated nature lowers confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:00:30.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
+}

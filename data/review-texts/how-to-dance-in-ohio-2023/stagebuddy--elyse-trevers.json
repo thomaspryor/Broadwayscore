@@ -1,0 +1,79 @@
+{
+  "showId": "how-to-dance-in-ohio-2023",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/how-to-dance-in-ohio",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 81,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“Sometimes to succeed, you need to take risks. The show advertises that it is authentic and actual autistic people star in a show about autistic people. I hope that will not turn some people off. A ticket to ‘How to Dance In Ohio’ is not a risk- it has enough feel-good moments for everyone.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A ticket to 'How to Dance In Ohio' is not a risk- it has enough feel-good moments for everyone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation despite single excerpt limitation. Critic explicitly states buying a ticket is 'not a risk' and promises 'feel-good moments for everyone,' indicating solid endorsement. Upper positive range due to unambiguous recommendation language, but low confidence due to single excerpt warning. | GPT-4o: The excerpt suggests a positive recommendation, highlighting the show's feel-good moments and the authentic representation of autistic people. The lack of full context and single excerpt warning necessitates a low confidence level, but the tone is clearly positive. | Gemini: The review excerpt indicates a positive recommendation, highlighting the show's feel-good moments and suggesting it's worth seeing. The phrase \"not a risk\" implies a safe and enjoyable experience. | Kimi: The excerpt explicitly recommends the show, stating it is 'not a risk' with 'enough feel-good moments for everyone,' while praising its authentic casting of autistic performers. Confidence is low due to single excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:15:59.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

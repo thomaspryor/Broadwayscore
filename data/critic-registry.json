@@ -3,19 +3,21 @@
     "description": "Auto-generated critic-outlet affinity registry",
     "lastUpdated": "2026-02-04",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalCritics": 218,
-    "totalReviews": 11243
+    "totalCritics": 213,
+    "totalReviews": 10676
   },
   "critics": {
     "ben-brantley": {
       "displayName": "Ben Brantley",
       "primaryOutlet": "nytimes",
       "knownOutlets": [
-        "nytimes"
+        "nytimes",
+        "guardian"
       ],
-      "totalReviews": 404,
+      "totalReviews": 403,
       "outletCounts": {
-        "nytimes": 404
+        "nytimes": 402,
+        "guardian": 1
       },
       "isFreelancer": false
     },
@@ -40,10 +42,10 @@
         "huffpost",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 125,
+      "totalReviews": 121,
       "outletCounts": {
-        "theatermania": 38,
-        "nysr": 75,
+        "theatermania": 37,
+        "nysr": 72,
         "huffpost": 11,
         "the-clyde-fitch-report": 1
       },
@@ -59,12 +61,12 @@
         "nytg",
         "theatermania"
       ],
-      "totalReviews": 112,
+      "totalReviews": 111,
       "outletCounts": {
         "nypost": 11,
         "nytg": 1,
         "nysr": 74,
-        "hollywood-reporter": 25,
+        "hollywood-reporter": 24,
         "theatermania": 1
       },
       "isFreelancer": true
@@ -75,19 +77,19 @@
       "knownOutlets": [
         "wsj",
         "variety",
-        "broadwaynews",
         "nytimes",
+        "broadwaynews",
         "theatermania",
         "usatoday",
         "guardian",
         "financialtimes"
       ],
-      "totalReviews": 427,
+      "totalReviews": 421,
       "outletCounts": {
         "nytimes": 56,
-        "variety": 108,
-        "wsj": 138,
-        "broadwaynews": 57,
+        "variety": 109,
+        "wsj": 132,
+        "broadwaynews": 56,
         "theatermania": 39,
         "guardian": 7,
         "usatoday": 21,
@@ -104,10 +106,10 @@
         "nysr",
         "ew"
       ],
-      "totalReviews": 213,
+      "totalReviews": 201,
       "outletCounts": {
         "usatoday": 96,
-        "new-york-sun": 81,
+        "new-york-sun": 69,
         "nysr": 35,
         "ew": 1
       },
@@ -122,10 +124,10 @@
         "theatermania",
         "usatoday"
       ],
-      "totalReviews": 344,
+      "totalReviews": 338,
       "outletCounts": {
         "variety": 70,
-        "hollywood-reporter": 253,
+        "hollywood-reporter": 247,
         "theatermania": 18,
         "usatoday": 3
       },
@@ -143,98 +145,80 @@
         "thewrap",
         "nbcny",
         "timeout",
-        "theatrely",
-        "chicagotribune",
         "hollywood-reporter",
-        "huffpost",
+        "chicagotribune",
+        "theatrely",
         "vulture",
         "deadline",
+        "huffpost",
         "usatoday",
-        "nytimes",
         "wsj",
+        "nytimes",
         "nypost",
         "latimes",
         "bloomberg-news",
         "washpost",
         "guardian",
-        "ny1",
-        "dctheatrescene",
-        "telegraph",
-        "njcom",
-        "financialtimes",
         "variety",
+        "dctheatrescene",
+        "njcom",
+        "ny1",
+        "telegraph",
+        "financialtimes",
         "dailybeast",
         "nysr",
         "nytg",
         "backstage",
         "theatermania",
-        "love-theatre-check-out-the-new-arrivals-at-the-playbill-store",
-        "buy-tickets",
         "broadwaynews",
-        "love-broadway-check-out-the-new-arrivals-at-the-playbill-store",
         "talkinbroadway",
         "thestage",
         "front-row-center",
-        "nbcnews",
+        "observer",
         "cititour",
-        "the-independent",
         "northjerseycom",
         "dcmetro",
         "showbiz411",
-        "click-here",
+        "nbcnews",
         "theater-pizzazz",
-        "observer",
+        "the-independent",
         "time",
         "boston-herald",
-        "the-los-angeles-times-charles-mcnulty",
-        "love-the-theatre-check-out-the-playbill-store-for-merchandise",
-        "the-la-times-charles-mcnulty",
+        "san-jose-mercury-news",
         "the-star-ledger",
+        "san-diego-union-tribune",
+        "the-globe-and-mail",
         "new-york-sun",
-        "village-voice",
         "abc-news",
         "culturesauce",
         "boston-globe",
         "perez-hilton",
         "washington-times",
-        "forward",
         "playbill",
-        "queerty",
         "broadway-blog",
+        "minneapolis-star-tribune",
         "sioux-city-journal",
-        "san-diego-union-tribune",
         "av-club",
-        "ct-now",
-        "hartford-courant",
-        "jeremy-gerard",
-        "joe-dziemianowicz",
-        "assocoiated-press",
-        "the-huffington-pos",
-        "new-york",
-        "the-detroit-news",
+        "village-voice",
         "nyt-theater",
-        "the-globe-and-mail-j-kelly-nestruck",
-        "laughteronbroadwaycomlottery",
-        "the-recs-randall-david-cook",
         "frontmezzjunkies",
-        "metro-tmichelle-murphy",
+        "metro-uk",
         "bloomberg",
         "the-albany-times-union",
-        "stannswarehouseorg",
-        "berkeleyside-emily-s-mendel",
-        "the-san-diego-union-tribune",
+        "berkeleyside",
         "contra-costa-times",
         "sfgate",
-        "americanpsychothemusicalcomlottery",
         "news-tribune",
+        "forward",
         "the-record",
         "thestarcom",
         "britishtheatrecom",
+        "fox-news",
         "npr",
         "rollingstone",
         "tap-into",
-        "los-angeles-time-charles-mcnulty",
         "new-york-1",
+        "queerty",
         "artsdesk",
         "the-express",
         "the-mirror",
@@ -242,15 +226,10 @@
         "the-times",
         "whatsonstage",
         "aroundthetownchicago",
-        "westfield-news-mark-g-auerbach",
+        "westfield-news",
         "newjerseycom",
-        "the-globe-and-mail",
-        "nycitycenterorg",
-        "minneapolis-star-tribune",
-        "great-performances-online",
         "culture-whisper-holly-omahony",
         "oldvictheatrecom",
-        "entries-are-now-being-accepted-online",
         "harvard-magazine",
         "wburboston-npr",
         "wghbmorning-edition",
@@ -258,52 +237,40 @@
         "the-inquirer",
         "stageandcinema",
         "burlington-free-press",
-        "with-a-comic",
         "cnn",
         "mashable",
         "tv-guide",
         "tv-line",
-        "laexcitescom",
-        "kennedycenterorg",
+        "ct-now",
+        "hartford-courant",
         "newday",
-        "on-disney-july-3",
         "shobwiz411",
         "wnyc",
-        "seattlereporg",
         "dc-theater-arts",
         "metro-source",
-        "parterre-box-david-fox-and-cameron-kelsall",
-        "new",
-        "sday",
-        "here",
-        "nysepost",
+        "parterre-box",
         "the-washington-times",
+        "3news",
         "aussie-theatre",
         "australian-stage",
         "canberra-times",
         "the-age",
         "the-australian",
         "the-herald-sun",
-        "the-musiccom",
+        "the-new-zealand-herald",
         "the-sydney-morning-herald",
         "chicago-tribute",
-        "the-berkshire-edge-j-peter-bergman",
+        "berkshire-edge",
         "oneminutecritic",
-        "mammamiabwaycom",
-        "fathomentertainmentcom",
-        "the-movie-cricket-sean-p-means",
-        "minnesota-star-tribune-jon-bream-and-rohan-preston",
-        "josh-at-the-movies-joshua-m-hayes",
-        "rex-reed",
-        "rnal",
-        "wall-street-jou",
-        "decider-meghan-okeefe",
-        "schoolofrockthemusicalcomtickets",
-        "by-clicking-here",
-        "theatre-talk-boston-lara-mccallister",
+        "assocoiated-press",
+        "the-huffington-pos",
+        "the-movie-cricket",
+        "the-detroit-news",
+        "the-los-angeles-times-charles-mcnulty",
+        "the-recs",
+        "theatre-talk-boston",
         "arenastageorg",
         "the-dc-line-dr-lewis",
-        "david-cote",
         "almeidacouk",
         "new-york-theatre",
         "ctv-canada-am",
@@ -314,8 +281,6 @@
         "reviews",
         "the-l-magazine",
         "the-national-post",
-        "message-boards",
-        "manhattantheatreclubcom",
         "edge",
         "herald-tribune",
         "hitfix",
@@ -323,92 +288,82 @@
         "rogerebertcom",
         "sacramento-bee",
         "sf-gate",
-        "third-coast-review-nancy-s-bishop",
-        "love-theatre-check-out-the-playbill-store-for-merchandise",
+        "third-coast-review",
         "america-magazine-rob-weinert-kendt",
         "bamorg",
-        "wwwtheoldglobeorg",
         "exeunt-nyc",
         "la-times",
-        "keencompanyorg",
         "british-theatre",
         "artsatl",
-        "atlanta-intown",
-        "909wbur"
+        "atlanta-intown"
       ],
-      "totalReviews": 1964,
+      "totalReviews": 1745,
       "outletCounts": {
-        "amny": 115,
-        "hollywood-reporter": 67,
-        "metro-tmichelle-murphy": 1,
-        "ap": 109,
-        "ew": 119,
-        "nbcny": 84,
-        "newsday": 138,
-        "timeout": 74,
-        "usatoday": 54,
-        "vulture": 60,
+        "amny": 101,
+        "hollywood-reporter": 61,
+        "nydailynews": 111,
+        "metro-uk": 1,
+        "ap": 97,
+        "ew": 109,
+        "nbcny": 75,
+        "newsday": 121,
+        "timeout": 62,
+        "usatoday": 52,
+        "vulture": 58,
         "bloomberg": 1,
-        "nydailynews": 121,
-        "nypost": 34,
-        "wsj": 39,
-        "nysr": 14,
+        "nypost": 35,
+        "wsj": 36,
+        "nysr": 13,
+        "variety": 20,
         "njcom": 17,
-        "nytimes": 40,
-        "nytg": 14,
-        "chicagotribune": 68,
-        "deadline": 58,
-        "latimes": 34,
+        "nytimes": 36,
+        "nytg": 13,
+        "chicagotribune": 60,
+        "deadline": 57,
+        "latimes": 33,
         "showbiz411": 4,
-        "thewrap": 88,
-        "theatrely": 70,
-        "love-theatre-check-out-the-new-arrivals-at-the-playbill-store": 7,
-        "love-the-theatre-check-out-the-playbill-store-for-merchandise": 3,
+        "thewrap": 82,
+        "theatrely": 59,
         "boston-globe": 2,
-        "click-here": 4,
         "the-albany-times-union": 1,
-        "bloomberg-news": 28,
-        "huffpost": 61,
-        "ny1": 19,
-        "telegraph": 18,
+        "bloomberg-news": 25,
+        "huffpost": 56,
+        "ny1": 17,
+        "telegraph": 16,
         "washpost": 25,
-        "the-la-times-charles-mcnulty": 3,
-        "stannswarehouseorg": 1,
-        "variety": 16,
-        "berkeleyside-emily-s-mendel": 1,
-        "dctheatrescene": 19,
+        "berkeleyside": 1,
+        "san-jose-mercury-news": 3,
+        "dctheatrescene": 18,
         "the-star-ledger": 3,
-        "buy-tickets": 7,
-        "nbcnews": 5,
-        "guardian": 22,
+        "nbcnews": 4,
+        "guardian": 23,
         "perez-hilton": 2,
-        "the-san-diego-union-tribune": 1,
+        "san-diego-union-tribune": 3,
         "theater-pizzazz": 4,
         "contra-costa-times": 1,
         "sfgate": 1,
-        "americanpsychothemusicalcomlottery": 1,
         "news-tribune": 1,
         "washington-times": 2,
-        "forward": 2,
+        "forward": 1,
         "the-record": 1,
         "thestarcom": 1,
         "britishtheatrecom": 1,
         "playbill": 2,
+        "fox-news": 1,
         "npr": 1,
-        "observer": 4,
+        "observer": 5,
         "rollingstone": 1,
         "cititour": 5,
         "theatermania": 9,
         "tap-into": 1,
-        "los-angeles-time-charles-mcnulty": 1,
-        "financialtimes": 17,
-        "the-independent": 5,
+        "financialtimes": 16,
+        "the-independent": 4,
         "broadwaynews": 7,
         "talkinbroadway": 6,
         "thestage": 6,
         "new-york-1": 1,
-        "dailybeast": 16,
-        "queerty": 2,
+        "dailybeast": 14,
+        "queerty": 1,
         "artsdesk": 1,
         "the-express": 1,
         "the-mirror": 1,
@@ -416,19 +371,15 @@
         "the-times": 1,
         "whatsonstage": 1,
         "aroundthetownchicago": 1,
-        "westfield-news-mark-g-auerbach": 1,
+        "westfield-news": 1,
         "newjerseycom": 1,
-        "the-globe-and-mail": 1,
-        "nycitycenterorg": 1,
+        "the-globe-and-mail": 3,
         "broadway-blog": 2,
-        "minneapolis-star-tribune": 1,
-        "great-performances-online": 1,
+        "minneapolis-star-tribune": 2,
         "new-york-sun": 3,
         "sioux-city-journal": 2,
-        "love-broadway-check-out-the-new-arrivals-at-the-playbill-store": 7,
         "culture-whisper-holly-omahony": 1,
         "oldvictheatrecom": 1,
-        "entries-are-now-being-accepted-online": 1,
         "northjerseycom": 5,
         "harvard-magazine": 1,
         "wburboston-npr": 1,
@@ -437,75 +388,50 @@
         "time": 4,
         "front-row-center": 6,
         "the-inquirer": 1,
-        "san-diego-union-tribune": 2,
         "stageandcinema": 1,
         "burlington-free-press": 1,
-        "with-a-comic": 1,
         "av-club": 2,
         "cnn": 1,
         "mashable": 1,
         "tv-guide": 1,
         "tv-line": 1,
-        "laexcitescom": 1,
-        "kennedycenterorg": 1,
-        "ct-now": 2,
-        "hartford-courant": 2,
+        "ct-now": 1,
+        "hartford-courant": 1,
         "newday": 1,
-        "on-disney-july-3": 1,
         "boston-herald": 4,
         "shobwiz411": 1,
         "wnyc": 1,
-        "seattlereporg": 1,
         "dc-theater-arts": 1,
         "metro-source": 1,
-        "parterre-box-david-fox-and-cameron-kelsall": 1,
-        "new": 1,
-        "sday": 1,
-        "backstage": 13,
-        "village-voice": 3,
+        "parterre-box": 1,
+        "backstage": 12,
+        "village-voice": 2,
         "dcmetro": 5,
-        "jeremy-gerard": 2,
-        "joe-dziemianowicz": 2,
-        "here": 1,
-        "nysepost": 1,
         "the-washington-times": 1,
+        "3news": 1,
         "aussie-theatre": 1,
         "australian-stage": 1,
         "canberra-times": 1,
         "the-age": 1,
         "the-australian": 1,
         "the-herald-sun": 1,
-        "the-musiccom": 1,
+        "the-new-zealand-herald": 1,
         "the-sydney-morning-herald": 1,
         "chicago-tribute": 1,
-        "the-berkshire-edge-j-peter-bergman": 1,
+        "berkshire-edge": 1,
         "oneminutecritic": 1,
-        "assocoiated-press": 2,
-        "the-huffington-pos": 2,
-        "mammamiabwaycom": 1,
-        "fathomentertainmentcom": 1,
-        "the-movie-cricket-sean-p-means": 1,
-        "new-york": 2,
-        "the-detroit-news": 2,
-        "the-los-angeles-times-charles-mcnulty": 4,
+        "assocoiated-press": 1,
+        "the-huffington-pos": 1,
+        "the-movie-cricket": 1,
+        "the-detroit-news": 1,
+        "the-los-angeles-times-charles-mcnulty": 1,
         "abc-news": 3,
         "nyt-theater": 2,
-        "the-globe-and-mail-j-kelly-nestruck": 2,
         "culturesauce": 3,
-        "laughteronbroadwaycomlottery": 2,
-        "the-recs-randall-david-cook": 2,
-        "minnesota-star-tribune-jon-bream-and-rohan-preston": 1,
-        "josh-at-the-movies-joshua-m-hayes": 1,
-        "rex-reed": 1,
-        "rnal": 1,
-        "wall-street-jou": 1,
-        "decider-meghan-okeefe": 1,
-        "schoolofrockthemusicalcomtickets": 1,
-        "by-clicking-here": 1,
-        "theatre-talk-boston-lara-mccallister": 1,
+        "the-recs": 1,
+        "theatre-talk-boston": 1,
         "arenastageorg": 1,
         "the-dc-line-dr-lewis": 1,
-        "david-cote": 1,
         "almeidacouk": 1,
         "new-york-theatre": 1,
         "ctv-canada-am": 1,
@@ -516,8 +442,6 @@
         "reviews": 1,
         "the-l-magazine": 1,
         "the-national-post": 1,
-        "message-boards": 1,
-        "manhattantheatreclubcom": 1,
         "edge": 1,
         "herald-tribune": 1,
         "hitfix": 1,
@@ -525,19 +449,15 @@
         "rogerebertcom": 1,
         "sacramento-bee": 1,
         "sf-gate": 1,
-        "third-coast-review-nancy-s-bishop": 1,
-        "love-theatre-check-out-the-playbill-store-for-merchandise": 1,
+        "third-coast-review": 1,
         "america-magazine-rob-weinert-kendt": 1,
         "bamorg": 1,
-        "wwwtheoldglobeorg": 1,
         "exeunt-nyc": 1,
         "la-times": 1,
-        "keencompanyorg": 1,
         "british-theatre": 1,
         "artsatl": 1,
         "atlanta-intown": 1,
-        "frontmezzjunkies": 2,
-        "909wbur": 1
+        "frontmezzjunkies": 2
       },
       "isFreelancer": true
     },
@@ -549,9 +469,9 @@
         "associated-press-mark-kennedy",
         "washpost"
       ],
-      "totalReviews": 34,
+      "totalReviews": 33,
       "outletCounts": {
-        "ap": 32,
+        "ap": 31,
         "associated-press-mark-kennedy": 1,
         "washpost": 1
       },
@@ -579,9 +499,9 @@
         "billboard",
         "variety"
       ],
-      "totalReviews": 179,
+      "totalReviews": 175,
       "outletCounts": {
-        "deadline": 174,
+        "deadline": 170,
         "billboard": 3,
         "variety": 2
       },
@@ -593,9 +513,9 @@
       "knownOutlets": [
         "deadline"
       ],
-      "totalReviews": 44,
+      "totalReviews": 45,
       "outletCounts": {
-        "deadline": 44
+        "deadline": 45
       },
       "isFreelancer": false
     },
@@ -603,13 +523,11 @@
       "displayName": "Leah Greenblatt",
       "primaryOutlet": "ew",
       "knownOutlets": [
-        "ew",
-        "deadline"
+        "ew"
       ],
-      "totalReviews": 20,
+      "totalReviews": 18,
       "outletCounts": {
-        "ew": 19,
-        "deadline": 1
+        "ew": 18
       },
       "isFreelancer": false
     },
@@ -633,9 +551,9 @@
       "knownOutlets": [
         "guardian"
       ],
-      "totalReviews": 54,
+      "totalReviews": 55,
       "outletCounts": {
-        "guardian": 54
+        "guardian": 55
       },
       "isFreelancer": false
     },
@@ -644,16 +562,14 @@
       "primaryOutlet": "lighting-and-sound-america",
       "knownOutlets": [
         "lighting-and-sound-america",
-        "lighting-and-sound-america-david-barbour",
         "theatermania"
       ],
-      "totalReviews": 103,
+      "totalReviews": 97,
       "outletCounts": {
-        "lighting-and-sound-america": 101,
-        "lighting-and-sound-america-david-barbour": 1,
+        "lighting-and-sound-america": 96,
         "theatermania": 1
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "helen-shaw": {
       "displayName": "Helen Shaw",
@@ -663,11 +579,11 @@
         "newyorker",
         "timeout"
       ],
-      "totalReviews": 98,
+      "totalReviews": 93,
       "outletCounts": {
-        "newyorker": 16,
-        "vulture": 77,
-        "timeout": 5
+        "newyorker": 15,
+        "vulture": 74,
+        "timeout": 4
       },
       "isFreelancer": true
     },
@@ -690,9 +606,9 @@
         "nypost",
         "rollingstone"
       ],
-      "totalReviews": 213,
+      "totalReviews": 212,
       "outletCounts": {
-        "nypost": 212,
+        "nypost": 211,
         "rollingstone": 1
       },
       "isFreelancer": false
@@ -702,16 +618,14 @@
       "primaryOutlet": "broadwayworld",
       "knownOutlets": [
         "broadwayworld",
-        "nysr",
-        "nytg"
+        "nysr"
       ],
       "totalReviews": 5,
       "outletCounts": {
         "nysr": 1,
-        "nytg": 1,
-        "broadwayworld": 3
+        "broadwayworld": 4
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "steven-suskin": {
       "displayName": "Steven Suskin",
@@ -721,10 +635,10 @@
         "huffpost",
         "variety"
       ],
-      "totalReviews": 72,
+      "totalReviews": 70,
       "outletCounts": {
         "nysr": 59,
-        "huffpost": 12,
+        "huffpost": 10,
         "variety": 1
       },
       "isFreelancer": true
@@ -738,9 +652,9 @@
         "newyorktheater",
         "new-york-theatre"
       ],
-      "totalReviews": 174,
+      "totalReviews": 169,
       "outletCounts": {
-        "nyt-theater": 156,
+        "nyt-theater": 151,
         "dctheatrescene": 16,
         "newyorktheater": 1,
         "new-york-theatre": 1
@@ -751,11 +665,13 @@
       "displayName": "Gillian Russo",
       "primaryOutlet": "nytg",
       "knownOutlets": [
-        "nytg"
+        "nytg",
+        "new-york-theatre-guide-gillian-russo"
       ],
-      "totalReviews": 27,
+      "totalReviews": 24,
       "outletCounts": {
-        "nytg": 27
+        "nytg": 23,
+        "new-york-theatre-guide-gillian-russo": 1
       },
       "isFreelancer": false
     },
@@ -774,12 +690,12 @@
         "rollingstone",
         "the-times-uk"
       ],
-      "totalReviews": 556,
+      "totalReviews": 554,
       "outletCounts": {
-        "nytimes": 188,
+        "nytimes": 184,
         "vulture": 200,
-        "theatermania": 99,
-        "guardian": 39,
+        "theatermania": 98,
+        "guardian": 42,
         "observer": 13,
         "nypost": 4,
         "variety": 5,
@@ -795,9 +711,9 @@
       "knownOutlets": [
         "talkinbroadway"
       ],
-      "totalReviews": 103,
+      "totalReviews": 97,
       "outletCounts": {
-        "talkinbroadway": 103
+        "talkinbroadway": 97
       },
       "isFreelancer": false
     },
@@ -810,9 +726,9 @@
         "theatrely",
         "whatsonstage"
       ],
-      "totalReviews": 81,
+      "totalReviews": 74,
       "outletCounts": {
-        "theatermania": 72,
+        "theatermania": 65,
         "nytg": 6,
         "theatrely": 2,
         "whatsonstage": 1
@@ -829,9 +745,9 @@
         "nytg",
         "stageandcinema"
       ],
-      "totalReviews": 24,
+      "totalReviews": 23,
       "outletCounts": {
-        "theaterscenenet": 19,
+        "theaterscenenet": 18,
         "theater-scene": 2,
         "talkinbroadway": 1,
         "nytg": 1,
@@ -857,9 +773,9 @@
       "knownOutlets": [
         "thewrap"
       ],
-      "totalReviews": 231,
+      "totalReviews": 210,
       "outletCounts": {
-        "thewrap": 231
+        "thewrap": 210
       },
       "isFreelancer": false
     },
@@ -871,10 +787,10 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 381,
+      "totalReviews": 372,
       "outletCounts": {
-        "timeout": 333,
-        "theatermania": 47,
+        "timeout": 323,
+        "theatermania": 48,
         "nyt-theater": 1
       },
       "isFreelancer": true
@@ -885,9 +801,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 54,
+      "totalReviews": 52,
       "outletCounts": {
-        "variety": 54
+        "variety": 52
       },
       "isFreelancer": false
     },
@@ -897,15 +813,13 @@
       "knownOutlets": [
         "washpost",
         "variety",
-        "broadwaynews",
-        "the-independent-uk"
+        "the-independent"
       ],
-      "totalReviews": 245,
+      "totalReviews": 243,
       "outletCounts": {
         "variety": 20,
         "washpost": 222,
-        "the-independent-uk": 1,
-        "broadwaynews": 2
+        "the-independent": 1
       },
       "isFreelancer": true
     },
@@ -919,10 +833,9 @@
         "dailybeast",
         "deadline",
         "nytimes",
-        "variety",
-        "amnew-york-matt-windman",
         "amny-matt-windman",
         "timeout",
+        "variety",
         "vulture",
         "broadwaynews",
         "ew",
@@ -933,20 +846,19 @@
         "nbcnews",
         "newsday",
         "nydailynews",
-        "reading-eagle-george-hatza",
+        "reading-eagle",
         "guardian",
         "nypost",
-        "theater-news-online-jeremy-gerard",
+        "theater-news-online",
         "thewrap",
-        "off-script-dan-dwyer",
-        "towleroad-naveen-kumar"
+        "off-script-with-dan-dwyer",
+        "towleroad"
       ],
-      "totalReviews": 224,
+      "totalReviews": 209,
       "outletCounts": {
-        "amny": 171,
-        "amnew-york-matt-windman": 2,
+        "amny": 161,
         "amny-matt-windman": 2,
-        "am-ny-matt-windman": 9,
+        "am-ny-matt-windman": 7,
         "theatermania": 1,
         "chicagotribune": 3,
         "dailybeast": 3,
@@ -955,9 +867,9 @@
         "newsday": 1,
         "nydailynews": 1,
         "nytimes": 3,
-        "reading-eagle-george-hatza": 1,
+        "reading-eagle": 1,
         "timeout": 2,
-        "variety": 3,
+        "variety": 2,
         "vulture": 2,
         "broadwaynews": 2,
         "ew": 2,
@@ -965,11 +877,11 @@
         "hollywood-reporter": 2,
         "nypost": 1,
         "nysr": 2,
-        "theater-news-online-jeremy-gerard": 1,
+        "theater-news-online": 1,
         "thewrap": 1,
         "wsj": 2,
-        "off-script-dan-dwyer": 1,
-        "towleroad-naveen-kumar": 1
+        "off-script-with-dan-dwyer": 1,
+        "towleroad": 1
       },
       "isFreelancer": true
     },
@@ -978,11 +890,11 @@
       "primaryOutlet": "nytimes",
       "knownOutlets": [
         "nytimes",
-        "bloomberg-jason-zinoman"
+        "bloomberg"
       ],
       "totalReviews": 5,
       "outletCounts": {
-        "bloomberg-jason-zinoman": 1,
+        "bloomberg": 1,
         "nytimes": 4
       },
       "isFreelancer": false
@@ -992,20 +904,16 @@
       "primaryOutlet": "deadline",
       "knownOutlets": [
         "deadline",
-        "theater-news-online-jeremy-gerard",
-        "theatre-news-online-jeremy-gerard",
+        "theater-news-online",
         "nypost",
-        "bloomberg",
-        "theater-news-online"
+        "bloomberg"
       ],
-      "totalReviews": 56,
+      "totalReviews": 55,
       "outletCounts": {
         "deadline": 38,
-        "theatre-news-online-jeremy-gerard": 7,
+        "theater-news-online": 15,
         "nypost": 1,
-        "bloomberg": 1,
-        "theater-news-online-jeremy-gerard": 8,
-        "theater-news-online": 1
+        "bloomberg": 1
       },
       "isFreelancer": true
     },
@@ -1028,10 +936,10 @@
         "nbcny",
         "nbcnews"
       ],
-      "totalReviews": 36,
+      "totalReviews": 32,
       "outletCounts": {
-        "nbcnews": 13,
-        "nbcny": 23
+        "nbcnews": 12,
+        "nbcny": 20
       },
       "isFreelancer": true
     },
@@ -1055,9 +963,9 @@
       "knownOutlets": [
         "njcom"
       ],
-      "totalReviews": 26,
+      "totalReviews": 25,
       "outletCounts": {
-        "njcom": 26
+        "njcom": 25
       },
       "isFreelancer": false
     },
@@ -1067,23 +975,19 @@
       "knownOutlets": [
         "nydailynews",
         "nytg",
+        "theater-news-online",
         "nypost",
-        "theater-news-online-joe-dziemianowicz",
         "variety",
-        "amny",
-        "theatre-news-online-joe-dziemianowicz",
-        "theaternewsonline-joe-dziemianowicz"
+        "amny"
       ],
-      "totalReviews": 189,
+      "totalReviews": 181,
       "outletCounts": {
-        "nydailynews": 102,
-        "nytg": 67,
+        "nydailynews": 101,
+        "nytg": 59,
         "amny": 1,
-        "theater-news-online-joe-dziemianowicz": 6,
-        "nypost": 9,
-        "variety": 2,
-        "theatre-news-online-joe-dziemianowicz": 1,
-        "theaternewsonline-joe-dziemianowicz": 1
+        "theater-news-online": 10,
+        "nypost": 8,
+        "variety": 2
       },
       "isFreelancer": true
     },
@@ -1095,11 +999,11 @@
         "thewrap",
         "ew"
       ],
-      "totalReviews": 77,
+      "totalReviews": 73,
       "outletCounts": {
-        "thewrap": 24,
+        "thewrap": 23,
         "ew": 15,
-        "culturesauce": 38
+        "culturesauce": 35
       },
       "isFreelancer": true
     },
@@ -1109,21 +1013,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 305,
+      "totalReviews": 307,
       "outletCounts": {
-        "variety": 305
-      },
-      "isFreelancer": false
-    },
-    "christopher-bonanos": {
-      "displayName": "Christopher Bonanos",
-      "primaryOutlet": "vulture",
-      "knownOutlets": [
-        "vulture"
-      ],
-      "totalReviews": 4,
-      "outletCounts": {
-        "vulture": 4
+        "variety": 307
       },
       "isFreelancer": false
     },
@@ -1133,9 +1025,9 @@
       "knownOutlets": [
         "wsj"
       ],
-      "totalReviews": 223,
+      "totalReviews": 224,
       "outletCounts": {
-        "wsj": 223
+        "wsj": 224
       },
       "isFreelancer": false
     },
@@ -1145,17 +1037,17 @@
       "knownOutlets": [
         "nypost",
         "nytimes",
-        "washpost",
         "newsday",
+        "washpost",
         "newyorker"
       ],
-      "totalReviews": 157,
+      "totalReviews": 154,
       "outletCounts": {
-        "nypost": 132,
-        "nytimes": 17,
+        "nypost": 133,
+        "nytimes": 14,
         "newsday": 3,
-        "washpost": 4,
-        "newyorker": 1
+        "newyorker": 1,
+        "washpost": 3
       },
       "isFreelancer": true
     },
@@ -1167,14 +1059,14 @@
         "theatermania",
         "theater-pizzazz",
         "nytg",
-        "theater-news-online-brian-scott-lipton"
+        "theater-news-online"
       ],
-      "totalReviews": 143,
+      "totalReviews": 125,
       "outletCounts": {
-        "cititour": 135,
+        "cititour": 117,
         "theatermania": 3,
         "theater-pizzazz": 2,
-        "theater-news-online-brian-scott-lipton": 1,
+        "theater-news-online": 1,
         "nytg": 2
       },
       "isFreelancer": true
@@ -1185,9 +1077,9 @@
       "knownOutlets": [
         "dailybeast"
       ],
-      "totalReviews": 210,
+      "totalReviews": 193,
       "outletCounts": {
-        "dailybeast": 210
+        "dailybeast": 193
       },
       "isFreelancer": false
     },
@@ -1200,10 +1092,10 @@
         "wnbc",
         "people"
       ],
-      "totalReviews": 10,
+      "totalReviews": 9,
       "outletCounts": {
         "ew": 5,
-        "nbcny": 3,
+        "nbcny": 2,
         "wnbc": 1,
         "people": 1
       },
@@ -1239,10 +1131,10 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 284,
+      "totalReviews": 272,
       "outletCounts": {
-        "nydailynews": 151,
-        "chicagotribune": 124,
+        "nydailynews": 141,
+        "chicagotribune": 122,
         "dailybeast": 1,
         "deadline": 1,
         "ew": 1,
@@ -1261,44 +1153,36 @@
       "knownOutlets": [
         "observer",
         "timeout",
+        "theater-news-online",
         "4-columns-david-cote",
-        "theater-news-online-david-cote",
-        "the-village-voice-david-cote",
-        "what-should-we-do-david-cote",
-        "theatre-news-online-david-cote",
+        "village-voice",
+        "observer-david-cote",
         "4columns",
-        "village-voice-david-cote",
-        "4columns-david-cote",
-        "david-cote",
-        "jeremy-gerard"
+        "4columns-david-cote"
       ],
-      "totalReviews": 157,
+      "totalReviews": 154,
       "outletCounts": {
-        "observer": 82,
-        "timeout": 54,
-        "4-columns-david-cote": 6,
-        "theater-news-online-david-cote": 5,
-        "theatre-news-online-david-cote": 1,
+        "observer": 83,
+        "timeout": 53,
+        "4-columns-david-cote": 5,
+        "theater-news-online": 7,
+        "observer-david-cote": 1,
         "4columns": 1,
-        "the-village-voice-david-cote": 2,
-        "village-voice-david-cote": 1,
-        "what-should-we-do-david-cote": 2,
-        "4columns-david-cote": 1,
-        "david-cote": 1,
-        "jeremy-gerard": 1
+        "village-voice": 3,
+        "4columns-david-cote": 1
       },
       "isFreelancer": true
     },
     "elyse-trevers": {
       "displayName": "Elyse Trevers",
-      "primaryOutlet": "thestage",
+      "primaryOutlet": "stagebuddy",
       "knownOutlets": [
-        "thestage",
+        "stagebuddy",
         "talkinbroadway"
       ],
-      "totalReviews": 31,
+      "totalReviews": 29,
       "outletCounts": {
-        "thestage": 30,
+        "stagebuddy": 28,
         "talkinbroadway": 1
       },
       "isFreelancer": false
@@ -1335,9 +1219,9 @@
         "theatrely",
         "culture-vulture"
       ],
-      "totalReviews": 59,
+      "totalReviews": 60,
       "outletCounts": {
-        "vulture": 57,
+        "vulture": 58,
         "theatrely": 1,
         "culture-vulture": 1
       },
@@ -1349,9 +1233,9 @@
       "knownOutlets": [
         "vulture"
       ],
-      "totalReviews": 102,
+      "totalReviews": 89,
       "outletCounts": {
-        "vulture": 102
+        "vulture": 89
       },
       "isFreelancer": false
     },
@@ -1371,45 +1255,17 @@
       },
       "isFreelancer": true
     },
-    "ruth-kinane": {
-      "displayName": "Ruth Kinane",
-      "primaryOutlet": "ew",
-      "knownOutlets": [
-        "ew"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "ew": 3
-      },
-      "isFreelancer": false
-    },
-    "alexis-soloski": {
-      "displayName": "Alexis Soloski",
-      "primaryOutlet": "guardian",
-      "knownOutlets": [
-        "guardian",
-        "nytimes",
-        "the-guardian-uk"
-      ],
-      "totalReviews": 49,
-      "outletCounts": {
-        "guardian": 39,
-        "nytimes": 8,
-        "the-guardian-uk": 2
-      },
-      "isFreelancer": true
-    },
     "jesse-hassenger": {
       "displayName": "Jesse Hassenger",
       "primaryOutlet": "guardian",
       "knownOutlets": [
         "guardian",
-        "av-club-jesse-hassenger"
+        "av-club"
       ],
-      "totalReviews": 16,
+      "totalReviews": 15,
       "outletCounts": {
-        "guardian": 15,
-        "av-club-jesse-hassenger": 1
+        "guardian": 14,
+        "av-club": 1
       },
       "isFreelancer": false
     },
@@ -1420,9 +1276,9 @@
         "nysr",
         "variety"
       ],
-      "totalReviews": 36,
+      "totalReviews": 33,
       "outletCounts": {
-        "nysr": 32,
+        "nysr": 29,
         "variety": 4
       },
       "isFreelancer": false
@@ -1435,9 +1291,9 @@
         "njcom",
         "new-jersey-newsroom"
       ],
-      "totalReviews": 38,
+      "totalReviews": 37,
       "outletCounts": {
-        "nysr": 35,
+        "nysr": 34,
         "new-jersey-newsroom": 1,
         "njcom": 2
       },
@@ -1447,13 +1303,11 @@
       "displayName": "Rex Reed",
       "primaryOutlet": "observer",
       "knownOutlets": [
-        "observer",
-        "deadline"
+        "observer"
       ],
-      "totalReviews": 93,
+      "totalReviews": 92,
       "outletCounts": {
-        "observer": 92,
-        "deadline": 1
+        "observer": 92
       },
       "isFreelancer": false
     },
@@ -1465,9 +1319,9 @@
         "theater-scene",
         "stageandcinema"
       ],
-      "totalReviews": 56,
+      "totalReviews": 55,
       "outletCounts": {
-        "theaterscenenet": 52,
+        "theaterscenenet": 51,
         "theater-scene": 3,
         "stageandcinema": 1
       },
@@ -1478,12 +1332,12 @@
       "primaryOutlet": "thestage",
       "knownOutlets": [
         "thestage",
-        "exeunt-magazine",
-        "exeunt-nyc"
+        "exeunt-nyc",
+        "exeunt-magazine"
       ],
-      "totalReviews": 25,
+      "totalReviews": 24,
       "outletCounts": {
-        "exeunt-magazine": 7,
+        "exeunt-magazine": 6,
         "exeunt-nyc": 7,
         "thestage": 11
       },
@@ -1496,9 +1350,9 @@
         "guardian",
         "washpost"
       ],
-      "totalReviews": 13,
+      "totalReviews": 12,
       "outletCounts": {
-        "guardian": 12,
+        "guardian": 11,
         "washpost": 1
       },
       "isFreelancer": false
@@ -1509,9 +1363,9 @@
       "knownOutlets": [
         "theater-pizzazz"
       ],
-      "totalReviews": 16,
+      "totalReviews": 13,
       "outletCounts": {
-        "theater-pizzazz": 16
+        "theater-pizzazz": 13
       },
       "isFreelancer": false
     },
@@ -1524,9 +1378,9 @@
         "theatrely",
         "nytg"
       ],
-      "totalReviews": 60,
+      "totalReviews": 56,
       "outletCounts": {
-        "theatermania": 57,
+        "theatermania": 53,
         "whatsonstage": 1,
         "theatrely": 1,
         "nytg": 1
@@ -1539,25 +1393,39 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 9,
+      "totalReviews": 7,
       "outletCounts": {
-        "variety": 9
+        "variety": 7
       },
       "isFreelancer": false
     },
+    "alexis-soloski": {
+      "displayName": "Alexis Soloski",
+      "primaryOutlet": "guardian",
+      "knownOutlets": [
+        "guardian",
+        "nytimes",
+        "the-guardian-uk"
+      ],
+      "totalReviews": 44,
+      "outletCounts": {
+        "guardian": 35,
+        "nytimes": 8,
+        "the-guardian-uk": 1
+      },
+      "isFreelancer": true
+    },
     "aileen-jacobson": {
       "displayName": "Aileen Jacobson",
-      "primaryOutlet": "lilith-aileen-jacobson",
+      "primaryOutlet": "lilith-magazine",
       "knownOutlets": [
-        "lilith-aileen-jacobson",
-        "lilith-magazine-aileen-jacobson"
+        "lilith-magazine"
       ],
       "totalReviews": 4,
       "outletCounts": {
-        "lilith-aileen-jacobson": 2,
-        "lilith-magazine-aileen-jacobson": 2
+        "lilith-magazine": 4
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "linda-winer": {
       "displayName": "Linda Winer",
@@ -1565,9 +1433,9 @@
       "knownOutlets": [
         "newsday"
       ],
-      "totalReviews": 19,
+      "totalReviews": 18,
       "outletCounts": {
-        "newsday": 19
+        "newsday": 18
       },
       "isFreelancer": false
     },
@@ -1577,19 +1445,17 @@
       "knownOutlets": [
         "variety",
         "theatermania",
-        "huffpost",
-        "medium-christian-lewis",
-        "queerty",
         "medium",
+        "huffpost",
+        "queerty",
         "into-christian-lewis"
       ],
-      "totalReviews": 31,
+      "totalReviews": 27,
       "outletCounts": {
-        "medium-christian-lewis": 2,
-        "variety": 15,
+        "medium": 4,
         "queerty": 2,
-        "medium": 2,
-        "theatermania": 6,
+        "variety": 12,
+        "theatermania": 5,
         "huffpost": 3,
         "into-christian-lewis": 1
       },
@@ -1597,17 +1463,15 @@
     },
     "kyle-smith": {
       "displayName": "Kyle Smith",
-      "primaryOutlet": "national-review-kyle-smith",
+      "primaryOutlet": "national-review",
       "knownOutlets": [
-        "national-review-kyle-smith",
         "national-review"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "national-review-kyle-smith": 2,
-        "national-review": 1
+        "national-review": 3
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "barbara-schuler": {
       "displayName": "Barbara Schuler",
@@ -1615,9 +1479,9 @@
       "knownOutlets": [
         "newsday"
       ],
-      "totalReviews": 35,
+      "totalReviews": 34,
       "outletCounts": {
-        "newsday": 35
+        "newsday": 34
       },
       "isFreelancer": false
     },
@@ -1661,19 +1525,17 @@
     },
     "ann-treneman": {
       "displayName": "Ann Treneman",
-      "primaryOutlet": "the-times-ann-treneman",
+      "primaryOutlet": "the-times",
       "knownOutlets": [
-        "the-times-ann-treneman",
         "the-times",
         "the-times-uk"
       ],
       "totalReviews": 5,
       "outletCounts": {
-        "the-times-ann-treneman": 3,
-        "the-times": 1,
+        "the-times": 4,
         "the-times-uk": 1
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "jesse-oxfeld": {
       "displayName": "Jesse Oxfeld",
@@ -1682,14 +1544,14 @@
         "nysr",
         "ew",
         "theatermania",
-        "the-times-uk-jesse-oxfeld"
+        "the-times"
       ],
-      "totalReviews": 35,
+      "totalReviews": 34,
       "outletCounts": {
         "nysr": 29,
         "ew": 2,
         "theatermania": 2,
-        "the-times-uk-jesse-oxfeld": 2
+        "the-times": 1
       },
       "isFreelancer": true
     },
@@ -1700,9 +1562,9 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 13,
+      "totalReviews": 12,
       "outletCounts": {
-        "nytimes": 9,
+        "nytimes": 8,
         "variety": 4
       },
       "isFreelancer": true
@@ -1718,10 +1580,10 @@
         "1-minute-critic-matthew-wexler",
         "broadway-blog"
       ],
-      "totalReviews": 53,
+      "totalReviews": 45,
       "outletCounts": {
-        "queerty": 34,
-        "oneminutecritic": 11,
+        "queerty": 30,
+        "oneminutecritic": 7,
         "1minutecritic": 1,
         "one-minute-critic": 5,
         "1-minute-critic-matthew-wexler": 1,
@@ -1736,9 +1598,9 @@
         "slantmagazine",
         "theatermania"
       ],
-      "totalReviews": 38,
+      "totalReviews": 34,
       "outletCounts": {
-        "slantmagazine": 37,
+        "slantmagazine": 33,
         "theatermania": 1
       },
       "isFreelancer": false
@@ -1750,9 +1612,9 @@
         "theatrely",
         "broadway-blog"
       ],
-      "totalReviews": 26,
+      "totalReviews": 25,
       "outletCounts": {
-        "theatrely": 25,
+        "theatrely": 24,
         "broadway-blog": 1
       },
       "isFreelancer": false
@@ -1762,23 +1624,21 @@
       "primaryOutlet": "washpost",
       "knownOutlets": [
         "washpost",
-        "towleroad-naveen-kumar",
+        "towleroad",
         "variety",
         "broadwaynews",
         "thestage",
-        "towleroad",
         "vulture",
         "nytg"
       ],
-      "totalReviews": 118,
+      "totalReviews": 107,
       "outletCounts": {
-        "variety": 28,
+        "variety": 23,
         "thestage": 3,
-        "washpost": 44,
-        "broadwaynews": 9,
-        "towleroad-naveen-kumar": 29,
-        "towleroad": 2,
-        "vulture": 2,
+        "washpost": 41,
+        "broadwaynews": 8,
+        "towleroad": 30,
+        "vulture": 1,
         "nytg": 1
       },
       "isFreelancer": true
@@ -1827,9 +1687,9 @@
       "knownOutlets": [
         "pages-on-stages"
       ],
-      "totalReviews": 77,
+      "totalReviews": 76,
       "outletCounts": {
-        "pages-on-stages": 77
+        "pages-on-stages": 76
       },
       "isFreelancer": false
     },
@@ -1852,9 +1712,9 @@
         "theaterscenenet",
         "theater-scene"
       ],
-      "totalReviews": 38,
+      "totalReviews": 35,
       "outletCounts": {
-        "theaterscenenet": 36,
+        "theaterscenenet": 33,
         "theater-scene": 2
       },
       "isFreelancer": false
@@ -1886,10 +1746,10 @@
         "theatre-reviews-limited",
         "nytg"
       ],
-      "totalReviews": 24,
+      "totalReviews": 21,
       "outletCounts": {
         "nytg": 2,
-        "theatre-reviews-limited": 22
+        "theatre-reviews-limited": 19
       },
       "isFreelancer": false
     },
@@ -1902,10 +1762,10 @@
         "exeunt-nyc",
         "variety"
       ],
-      "totalReviews": 16,
+      "totalReviews": 15,
       "outletCounts": {
         "exeunt-magazine": 3,
-        "thestage": 10,
+        "thestage": 9,
         "exeunt-nyc": 2,
         "variety": 1
       },
@@ -1929,9 +1789,9 @@
       "knownOutlets": [
         "theater-pizzazz"
       ],
-      "totalReviews": 8,
+      "totalReviews": 4,
       "outletCounts": {
-        "theater-pizzazz": 8
+        "theater-pizzazz": 4
       },
       "isFreelancer": false
     },
@@ -1941,9 +1801,9 @@
       "knownOutlets": [
         "theatermania"
       ],
-      "totalReviews": 18,
+      "totalReviews": 17,
       "outletCounts": {
-        "theatermania": 18
+        "theatermania": 17
       },
       "isFreelancer": false
     },
@@ -1965,15 +1825,13 @@
       "knownOutlets": [
         "nysr",
         "ew",
-        "timeout",
-        "washpost"
+        "timeout"
       ],
-      "totalReviews": 90,
+      "totalReviews": 88,
       "outletCounts": {
-        "nysr": 82,
+        "nysr": 81,
         "ew": 6,
-        "timeout": 1,
-        "washpost": 1
+        "timeout": 1
       },
       "isFreelancer": true
     },
@@ -1982,14 +1840,12 @@
       "primaryOutlet": "northjerseycom",
       "knownOutlets": [
         "northjerseycom",
-        "bergen-record",
-        "northjerseycom-robert-feldberg"
+        "bergen-record"
       ],
       "totalReviews": 7,
       "outletCounts": {
-        "northjerseycom": 3,
-        "bergen-record": 3,
-        "northjerseycom-robert-feldberg": 1
+        "northjerseycom": 4,
+        "bergen-record": 3
       },
       "isFreelancer": true
     },
@@ -2013,10 +1869,10 @@
         "nytg",
         "londontheatre"
       ],
-      "totalReviews": 11,
+      "totalReviews": 10,
       "outletCounts": {
         "thestage": 7,
-        "nytg": 3,
+        "nytg": 2,
         "londontheatre": 1
       },
       "isFreelancer": true
@@ -2055,9 +1911,9 @@
         "slash-film",
         "dread-central"
       ],
-      "totalReviews": 17,
+      "totalReviews": 16,
       "outletCounts": {
-        "nytg": 10,
+        "nytg": 9,
         "slash-film": 6,
         "dread-central": 1
       },
@@ -2093,9 +1949,9 @@
       "knownOutlets": [
         "ew"
       ],
-      "totalReviews": 20,
+      "totalReviews": 18,
       "outletCounts": {
-        "ew": 20
+        "ew": 18
       },
       "isFreelancer": false
     },
@@ -2105,9 +1961,9 @@
       "knownOutlets": [
         "nysr"
       ],
-      "totalReviews": 6,
+      "totalReviews": 5,
       "outletCounts": {
-        "nysr": 6
+        "nysr": 5
       },
       "isFreelancer": false
     },
@@ -2143,9 +1999,9 @@
       "knownOutlets": [
         "ew"
       ],
-      "totalReviews": 16,
+      "totalReviews": 14,
       "outletCounts": {
-        "ew": 16
+        "ew": 14
       },
       "isFreelancer": false
     },
@@ -2177,13 +2033,11 @@
       "displayName": "Josh Batchelder",
       "primaryOutlet": "josh-at-the-movies",
       "knownOutlets": [
-        "josh-at-the-movies",
-        "josh-at-the-movies-josh-batchelder"
+        "josh-at-the-movies"
       ],
       "totalReviews": 4,
       "outletCounts": {
-        "josh-at-the-movies": 3,
-        "josh-at-the-movies-josh-batchelder": 1
+        "josh-at-the-movies": 4
       },
       "isFreelancer": false
     },
@@ -2217,23 +2071,9 @@
       "knownOutlets": [
         "theatermania"
       ],
-      "totalReviews": 13,
-      "outletCounts": {
-        "theatermania": 13
-      },
-      "isFreelancer": false
-    },
-    "christian-holub": {
-      "displayName": "Christian Holub",
-      "primaryOutlet": "ew",
-      "knownOutlets": [
-        "ew",
-        "nysr"
-      ],
       "totalReviews": 12,
       "outletCounts": {
-        "ew": 11,
-        "nysr": 1
+        "theatermania": 12
       },
       "isFreelancer": false
     },
@@ -2257,21 +2097,21 @@
       "knownOutlets": [
         "hollywood-reporter"
       ],
-      "totalReviews": 12,
+      "totalReviews": 10,
       "outletCounts": {
-        "hollywood-reporter": 12
+        "hollywood-reporter": 10
       },
       "isFreelancer": false
     },
-    "daniel-d-addario": {
-      "displayName": "Daniel D'Addario",
-      "primaryOutlet": "variety",
+    "christian-holub": {
+      "displayName": "Christian Holub",
+      "primaryOutlet": "ew",
       "knownOutlets": [
-        "variety"
+        "ew"
       ],
-      "totalReviews": 12,
+      "totalReviews": 10,
       "outletCounts": {
-        "variety": 12
+        "ew": 10
       },
       "isFreelancer": false
     },
@@ -2293,9 +2133,9 @@
       "knownOutlets": [
         "nysr"
       ],
-      "totalReviews": 22,
+      "totalReviews": 21,
       "outletCounts": {
-        "nysr": 22
+        "nysr": 21
       },
       "isFreelancer": false
     },
@@ -2305,9 +2145,9 @@
       "knownOutlets": [
         "nytg"
       ],
-      "totalReviews": 16,
+      "totalReviews": 15,
       "outletCounts": {
-        "nytg": 16
+        "nytg": 15
       },
       "isFreelancer": false
     },
@@ -2318,22 +2158,10 @@
         "telegraph",
         "the-telegraph-uk"
       ],
-      "totalReviews": 12,
+      "totalReviews": 10,
       "outletCounts": {
-        "telegraph": 11,
+        "telegraph": 9,
         "the-telegraph-uk": 1
-      },
-      "isFreelancer": false
-    },
-    "howard-shapiro": {
-      "displayName": "Howard Shapiro",
-      "primaryOutlet": "philadelphia-inquirer",
-      "knownOutlets": [
-        "philadelphia-inquirer"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "philadelphia-inquirer": 3
       },
       "isFreelancer": false
     },
@@ -2344,9 +2172,9 @@
         "theaterscenecom",
         "theater-scene"
       ],
-      "totalReviews": 14,
+      "totalReviews": 13,
       "outletCounts": {
-        "theaterscenecom": 13,
+        "theaterscenecom": 12,
         "theater-scene": 1
       },
       "isFreelancer": false
@@ -2374,10 +2202,22 @@
         "this-week-in-new-york",
         "nysr"
       ],
-      "totalReviews": 17,
+      "totalReviews": 16,
       "outletCounts": {
-        "this-week-in-new-york": 16,
+        "this-week-in-new-york": 15,
         "nysr": 1
+      },
+      "isFreelancer": false
+    },
+    "daniel-d-addario": {
+      "displayName": "Daniel D'Addario",
+      "primaryOutlet": "variety",
+      "knownOutlets": [
+        "variety"
+      ],
+      "totalReviews": 9,
+      "outletCounts": {
+        "variety": 9
       },
       "isFreelancer": false
     },
@@ -2389,17 +2229,15 @@
         "chelsea-community-news",
         "the-village-voice-michael-musto",
         "chelsea-community-news-michael-musto",
-        "newnownextcom",
-        "village-voice-michael-musto"
+        "newnownextcom"
       ],
-      "totalReviews": 21,
+      "totalReviews": 18,
       "outletCounts": {
-        "village-voice": 9,
+        "village-voice": 7,
         "chelsea-community-news": 4,
         "chelsea-community-news-michael-musto": 2,
         "the-village-voice-michael-musto": 4,
-        "newnownextcom": 1,
-        "village-voice-michael-musto": 1
+        "newnownextcom": 1
       },
       "isFreelancer": true
     },
@@ -2475,10 +2313,10 @@
         "exeunt-nyc",
         "thestage"
       ],
-      "totalReviews": 11,
+      "totalReviews": 10,
       "outletCounts": {
         "exeunt-magazine": 6,
-        "exeunt-nyc": 4,
+        "exeunt-nyc": 3,
         "thestage": 1
       },
       "isFreelancer": true
@@ -2503,9 +2341,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 8,
+      "totalReviews": 7,
       "outletCounts": {
-        "variety": 8
+        "variety": 7
       },
       "isFreelancer": false
     },
@@ -2515,9 +2353,9 @@
       "knownOutlets": [
         "cititour"
       ],
-      "totalReviews": 20,
+      "totalReviews": 18,
       "outletCounts": {
-        "cititour": 20
+        "cititour": 18
       },
       "isFreelancer": false
     },
@@ -2537,13 +2375,11 @@
       "displayName": "Susie Goldsbrough",
       "primaryOutlet": "the-times",
       "knownOutlets": [
-        "the-times",
-        "thetimes"
+        "the-times"
       ],
-      "totalReviews": 5,
+      "totalReviews": 4,
       "outletCounts": {
-        "the-times": 4,
-        "thetimes": 1
+        "the-times": 4
       },
       "isFreelancer": false
     },
@@ -2564,12 +2400,12 @@
       "primaryOutlet": "theatrely",
       "knownOutlets": [
         "theatrely",
-        "theatre-talk-boston-kobi-kassal"
+        "theatre-talk-boston"
       ],
-      "totalReviews": 16,
+      "totalReviews": 15,
       "outletCounts": {
-        "theatrely": 15,
-        "theatre-talk-boston-kobi-kassal": 1
+        "theatrely": 14,
+        "theatre-talk-boston": 1
       },
       "isFreelancer": false
     },
@@ -2581,9 +2417,9 @@
         "amny",
         "thewrap"
       ],
-      "totalReviews": 35,
+      "totalReviews": 30,
       "outletCounts": {
-        "ew": 33,
+        "ew": 28,
         "amny": 1,
         "thewrap": 1
       },
@@ -2595,22 +2431,22 @@
       "knownOutlets": [
         "nytg"
       ],
-      "totalReviews": 13,
+      "totalReviews": 12,
       "outletCounts": {
-        "nytg": 13
+        "nytg": 12
       },
       "isFreelancer": false
     },
     "philip-boroff": {
       "displayName": "Philip Boroff",
-      "primaryOutlet": "broadway-journal-philip-boroff",
+      "primaryOutlet": "broadway-journal",
       "knownOutlets": [
-        "broadway-journal-philip-boroff",
+        "broadway-journal",
         "stageandcinema"
       ],
-      "totalReviews": 7,
+      "totalReviews": 6,
       "outletCounts": {
-        "broadway-journal-philip-boroff": 6,
+        "broadway-journal": 5,
         "stageandcinema": 1
       },
       "isFreelancer": false
@@ -2629,47 +2465,33 @@
     },
     "erin-strecker": {
       "displayName": "Erin Strecker",
-      "primaryOutlet": "mashable-erin-strecker",
+      "primaryOutlet": "mashable",
       "knownOutlets": [
-        "mashable-erin-strecker",
         "mashable",
         "culturesauce",
         "indiewire"
       ],
-      "totalReviews": 10,
+      "totalReviews": 9,
       "outletCounts": {
-        "mashable-erin-strecker": 5,
+        "mashable": 7,
         "culturesauce": 1,
-        "mashable": 3,
         "indiewire": 1
       },
       "isFreelancer": true
     },
     "michael-appler": {
       "displayName": "Michael Appler",
-      "primaryOutlet": "the-theatre-times-michael-appler",
+      "primaryOutlet": "theater-news-online",
       "knownOutlets": [
-        "the-theatre-times-michael-appler",
+        "theater-news-online",
         "fordham-observer"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "the-theatre-times-michael-appler": 2,
+        "theater-news-online": 2,
         "fordham-observer": 1
       },
       "isFreelancer": true
-    },
-    "nick-romano": {
-      "displayName": "Nick Romano",
-      "primaryOutlet": "ew",
-      "knownOutlets": [
-        "ew"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "ew": 3
-      },
-      "isFreelancer": false
     },
     "jesse-dorris": {
       "displayName": "Jesse Dorris",
@@ -2689,9 +2511,9 @@
       "knownOutlets": [
         "thestage"
       ],
-      "totalReviews": 4,
+      "totalReviews": 3,
       "outletCounts": {
-        "thestage": 4
+        "thestage": 3
       },
       "isFreelancer": false
     },
@@ -2716,9 +2538,9 @@
         "variety",
         "nytg"
       ],
-      "totalReviews": 9,
+      "totalReviews": 8,
       "outletCounts": {
-        "variety": 6,
+        "variety": 5,
         "nytg": 3
       },
       "isFreelancer": true
@@ -2734,18 +2556,6 @@
       "outletCounts": {
         "evening-standard": 5,
         "the-standard": 1
-      },
-      "isFreelancer": false
-    },
-    "claire-allfree": {
-      "displayName": "Claire Allfree",
-      "primaryOutlet": "telegraph",
-      "knownOutlets": [
-        "telegraph"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "telegraph": 3
       },
       "isFreelancer": false
     },
@@ -2768,10 +2578,10 @@
         "the-times-clive-davis",
         "the-times"
       ],
-      "totalReviews": 8,
+      "totalReviews": 7,
       "outletCounts": {
         "the-times-clive-davis": 6,
-        "the-times": 2
+        "the-times": 1
       },
       "isFreelancer": false
     },
@@ -2781,9 +2591,9 @@
       "knownOutlets": [
         "ew"
       ],
-      "totalReviews": 12,
+      "totalReviews": 9,
       "outletCounts": {
-        "ew": 12
+        "ew": 9
       },
       "isFreelancer": false
     },
@@ -2805,13 +2615,11 @@
       "displayName": "Peter Travers",
       "primaryOutlet": "rollingstone",
       "knownOutlets": [
-        "rollingstone",
-        "the-rolling-stone-peter-travers"
+        "rollingstone"
       ],
       "totalReviews": 7,
       "outletCounts": {
-        "rollingstone": 6,
-        "the-rolling-stone-peter-travers": 1
+        "rollingstone": 7
       },
       "isFreelancer": false
     },
@@ -2893,33 +2701,27 @@
     },
     "steve-barnes": {
       "displayName": "Steve Barnes",
-      "primaryOutlet": "albany-times-union-steve-barnes",
+      "primaryOutlet": "the-albany-times-union",
       "knownOutlets": [
-        "albany-times-union-steve-barnes",
-        "the-albany-times-union-steve-barnes",
-        "the-times-union-steve-barnes"
+        "the-albany-times-union"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "albany-times-union-steve-barnes": 1,
-        "the-albany-times-union-steve-barnes": 1,
-        "the-times-union-steve-barnes": 1
+        "the-albany-times-union": 3
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "toby-zinman": {
       "displayName": "Toby Zinman",
-      "primaryOutlet": "philadelphia-inquirer-toby-zinman",
+      "primaryOutlet": "philadelphia-inquirer",
       "knownOutlets": [
-        "philadelphia-inquirer-toby-zinman",
-        "the-inquirer",
-        "the-inquirer-toby-zinman"
+        "philadelphia-inquirer",
+        "the-inquirer"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "philadelphia-inquirer-toby-zinman": 1,
-        "the-inquirer": 1,
-        "the-inquirer-toby-zinman": 1
+        "philadelphia-inquirer": 2,
+        "the-inquirer": 1
       },
       "isFreelancer": true
     },
@@ -2953,9 +2755,9 @@
       "knownOutlets": [
         "timeout"
       ],
-      "totalReviews": 8,
+      "totalReviews": 7,
       "outletCounts": {
-        "timeout": 8
+        "timeout": 7
       },
       "isFreelancer": false
     },
@@ -2965,9 +2767,9 @@
       "knownOutlets": [
         "exeunt-magazine"
       ],
-      "totalReviews": 5,
+      "totalReviews": 4,
       "outletCounts": {
-        "exeunt-magazine": 5
+        "exeunt-magazine": 4
       },
       "isFreelancer": false
     },
@@ -2983,29 +2785,19 @@
       },
       "isFreelancer": false
     },
-    "john-soltes": {
-      "displayName": "John Soltes",
-      "primaryOutlet": "hollywood-soapbox-john-soltes",
+    "steven-oxman": {
+      "displayName": "Steven Oxman",
+      "primaryOutlet": "variety",
       "knownOutlets": [
-        "hollywood-soapbox-john-soltes"
+        "variety",
+        "chicago-sun-times"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "hollywood-soapbox-john-soltes": 3
+        "variety": 2,
+        "chicago-sun-times": 1
       },
-      "isFreelancer": false
-    },
-    "joe-westerfield": {
-      "displayName": "Joe Westerfield",
-      "primaryOutlet": "newsweek",
-      "knownOutlets": [
-        "newsweek"
-      ],
-      "totalReviews": 5,
-      "outletCounts": {
-        "newsweek": 5
-      },
-      "isFreelancer": false
+      "isFreelancer": true
     },
     "rob-weinert-kendt": {
       "displayName": "Rob Weinert- Kendt",
@@ -3021,15 +2813,27 @@
       },
       "isFreelancer": true
     },
+    "joe-westerfield": {
+      "displayName": "Joe Westerfield",
+      "primaryOutlet": "newsweek",
+      "knownOutlets": [
+        "newsweek"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "newsweek": 3
+      },
+      "isFreelancer": false
+    },
     "meg-masseron": {
       "displayName": "Meg Masseron",
       "primaryOutlet": "theatermania",
       "knownOutlets": [
         "theatermania"
       ],
-      "totalReviews": 4,
+      "totalReviews": 3,
       "outletCounts": {
-        "theatermania": 4
+        "theatermania": 3
       },
       "isFreelancer": false
     },
@@ -3039,9 +2843,9 @@
       "knownOutlets": [
         "digital-journal"
       ],
-      "totalReviews": 27,
+      "totalReviews": 24,
       "outletCounts": {
-        "digital-journal": 27
+        "digital-journal": 24
       },
       "isFreelancer": false
     },
@@ -3051,9 +2855,9 @@
       "knownOutlets": [
         "guardian"
       ],
-      "totalReviews": 4,
+      "totalReviews": 5,
       "outletCounts": {
-        "guardian": 4
+        "guardian": 5
       },
       "isFreelancer": false
     },
@@ -3135,9 +2939,9 @@
       "knownOutlets": [
         "guardian"
       ],
-      "totalReviews": 6,
+      "totalReviews": 8,
       "outletCounts": {
-        "guardian": 6
+        "guardian": 8
       },
       "isFreelancer": false
     },
@@ -3153,29 +2957,15 @@
       },
       "isFreelancer": false
     },
-    "tim-bano": {
-      "displayName": "Tim Bano",
-      "primaryOutlet": "evening-standard",
+    "fiona-mountford": {
+      "displayName": "Fiona Mountford",
+      "primaryOutlet": "inews",
       "knownOutlets": [
-        "evening-standard",
-        "thestage"
+        "inews"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "evening-standard": 2,
-        "thestage": 1
-      },
-      "isFreelancer": true
-    },
-    "julia-rank": {
-      "displayName": "Julia Rank",
-      "primaryOutlet": "londontheatre",
-      "knownOutlets": [
-        "londontheatre"
-      ],
-      "totalReviews": 3,
-      "outletCounts": {
-        "londontheatre": 3
+        "inews": 3
       },
       "isFreelancer": false
     },
@@ -3186,9 +2976,9 @@
         "the-independent",
         "timeout"
       ],
-      "totalReviews": 5,
+      "totalReviews": 4,
       "outletCounts": {
-        "the-independent": 4,
+        "the-independent": 3,
         "timeout": 1
       },
       "isFreelancer": false
@@ -3199,21 +2989,21 @@
       "knownOutlets": [
         "whatsonstage"
       ],
-      "totalReviews": 4,
+      "totalReviews": 3,
       "outletCounts": {
-        "whatsonstage": 4
+        "whatsonstage": 3
       },
       "isFreelancer": false
     },
-    "fiona-mountford": {
-      "displayName": "Fiona Mountford",
-      "primaryOutlet": "inews",
+    "matt-trueman": {
+      "displayName": "Matt Trueman",
+      "primaryOutlet": "variety",
       "knownOutlets": [
-        "inews"
+        "variety"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "inews": 3
+        "variety": 3
       },
       "isFreelancer": false
     },
@@ -3250,12 +3040,12 @@
       "primaryOutlet": "frontmezzjunkies",
       "knownOutlets": [
         "frontmezzjunkies",
-        "outbuzz-steven-ross"
+        "outbuzz"
       ],
       "totalReviews": 5,
       "outletCounts": {
         "frontmezzjunkies": 4,
-        "outbuzz-steven-ross": 1
+        "outbuzz": 1
       },
       "isFreelancer": false
     },
@@ -3279,9 +3069,9 @@
       "knownOutlets": [
         "variety"
       ],
-      "totalReviews": 6,
+      "totalReviews": 8,
       "outletCounts": {
-        "variety": 6
+        "variety": 8
       },
       "isFreelancer": false
     },
@@ -3289,15 +3079,13 @@
       "displayName": "Michael Feingold",
       "primaryOutlet": "village-voice",
       "knownOutlets": [
-        "village-voice",
-        "the-village-voice-michael-feingold"
+        "village-voice"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "village-voice": 2,
-        "the-village-voice-michael-feingold": 1
+        "village-voice": 3
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "joey-nolfi": {
       "displayName": "Joey Nolfi",
@@ -3316,16 +3104,14 @@
       "primaryOutlet": "showbiz411",
       "knownOutlets": [
         "showbiz411",
-        "showbiz411-roger-friedman",
         "showbiz-411-roger-friedman"
       ],
-      "totalReviews": 10,
+      "totalReviews": 8,
       "outletCounts": {
-        "showbiz411": 4,
-        "showbiz411-roger-friedman": 3,
-        "showbiz-411-roger-friedman": 3
+        "showbiz411": 6,
+        "showbiz-411-roger-friedman": 2
       },
-      "isFreelancer": true
+      "isFreelancer": false
     },
     "jk-clarke": {
       "displayName": "JK Clarke",
@@ -3333,9 +3119,9 @@
       "knownOutlets": [
         "theater-pizzazz"
       ],
-      "totalReviews": 5,
+      "totalReviews": 4,
       "outletCounts": {
-        "theater-pizzazz": 5
+        "theater-pizzazz": 4
       },
       "isFreelancer": false
     },
@@ -3346,22 +3132,22 @@
         "latimes",
         "the-los-angeles-times-charles-mcnulty"
       ],
-      "totalReviews": 16,
+      "totalReviews": 13,
       "outletCounts": {
-        "latimes": 13,
-        "the-los-angeles-times-charles-mcnulty": 3
+        "latimes": 11,
+        "the-los-angeles-times-charles-mcnulty": 2
       },
       "isFreelancer": false
     },
-    "jerry-portwood": {
-      "displayName": "Jerry Portwood",
-      "primaryOutlet": "rollingstone",
+    "christopher-bonanos": {
+      "displayName": "Christopher Bonanos",
+      "primaryOutlet": "vulture",
       "knownOutlets": [
-        "rollingstone"
+        "vulture"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "rollingstone": 3
+        "vulture": 3
       },
       "isFreelancer": false
     },
@@ -3400,6 +3186,20 @@
         "theatrely": 3
       },
       "isFreelancer": false
+    },
+    "gary-naylor": {
+      "displayName": "Gary Naylor",
+      "primaryOutlet": "artsdesk",
+      "knownOutlets": [
+        "artsdesk",
+        "broadwayworld"
+      ],
+      "totalReviews": 3,
+      "outletCounts": {
+        "artsdesk": 2,
+        "broadwayworld": 1
+      },
+      "isFreelancer": true
     },
     "ron-fassler-critic": {
       "displayName": "Ron Fassler (critic)",
@@ -3469,9 +3269,9 @@
       "knownOutlets": [
         "nytimes"
       ],
-      "totalReviews": 6,
+      "totalReviews": 5,
       "outletCounts": {
-        "nytimes": 6
+        "nytimes": 5
       },
       "isFreelancer": false
     },
@@ -3505,9 +3305,9 @@
       "knownOutlets": [
         "financialtimes"
       ],
-      "totalReviews": 6,
+      "totalReviews": 5,
       "outletCounts": {
-        "financialtimes": 6
+        "financialtimes": 5
       },
       "isFreelancer": false
     },
@@ -3525,17 +3325,15 @@
     },
     "kristy-puchko": {
       "displayName": "Kristy Puchko",
-      "primaryOutlet": "mashable-kristy-puchko",
+      "primaryOutlet": "mashable",
       "knownOutlets": [
-        "mashable-kristy-puchko",
         "mashable"
       ],
       "totalReviews": 3,
       "outletCounts": {
-        "mashable-kristy-puchko": 2,
-        "mashable": 1
+        "mashable": 3
       },
-      "isFreelancer": true
+      "isFreelancer": false
     }
   }
 }

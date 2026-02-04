@@ -1,0 +1,76 @@
+{
+  "showId": "some-like-it-hot-2022",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/some-like-it-hot",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 83,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The show is bright, colorful, glitzy...'Some Like It Hot' does not disappoint. It’s big, it’s lavish, it’s all anyone could want in a musical and more.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Some Like It Hot' does not disappoint. It's big, it's lavish, it's all anyone could want in a musical and more.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language with 'does not disappoint' and 'all anyone could want...and more' suggests enthusiastic recommendation. Single excerpt warning means using upper end of Positive range, but medium confidence due to limited text. | GPT-4o: The excerpt provides strong positive language, indicating an enthusiastic recommendation. The critic describes the show as meeting and exceeding expectations, which suggests a high level of satisfaction. | Gemini: The excerpt uses very positive language to describe the show, indicating a strong recommendation. However, as it is only one excerpt, the confidence is low. | Kimi: Single curated excerpt expresses strong enthusiasm for the production's spectacle and entertainment value ('does not disappoint', 'all anyone could want'), warranting a high-positive score, though confidence is reduced due to limited context from the single excerpt warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:48:00.984Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

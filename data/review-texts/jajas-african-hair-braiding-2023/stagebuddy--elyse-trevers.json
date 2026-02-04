@@ -1,0 +1,76 @@
+{
+  "showId": "jajas-african-hair-braiding-2023",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/jajas-african-hair-braiding",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Skillfully directed by Whitney White, the show is about celebrating African identity through hair and pursuing American dreams, but, more importantly, it reflects universal themes- the strength of women and the bonds of sisterhood.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Skillfully directed by Whitney White, the show is about celebrating African identity through hair and pursuing American dreams, but, more importantly, it reflects universal themes- the strength of women and the bonds of sisterhood.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises direction and thematic content, but limited text requires caution. Given the positive language ('skillfully directed', celebration of universal themes), placing in upper Positive range but with low confidence due to excerpt-only nature. | GPT-4o: The excerpt highlights skillful direction and universal themes, suggesting a positive reception. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises the direction and highlights the show's themes, suggesting a positive overall assessment. Given it's a single excerpt, I'm placing it on the higher end of the positive bucket. | Kimi: The excerpt offers unqualified praise for the direction ('skillfully directed') and strong appreciation for the show's universal themes, indicating a clear positive recommendation, though the limited single-excerpt format necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:10:53.999Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

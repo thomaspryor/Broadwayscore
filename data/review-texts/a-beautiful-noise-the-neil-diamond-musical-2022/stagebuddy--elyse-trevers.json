@@ -1,0 +1,76 @@
+{
+  "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Elyse Trevers",
+  "url": "https://stagebuddy.com/theater/theater-review/a-beautiful-noise",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“Although he can no longer perform himself, this musical is his way to continue to share his music with an audience. Maybe Neil Diamond isn’t there in person - but he is still present. And his many fans are grateful for that.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Maybe Neil Diamond isn't there in person - but he is still present. And his many fans are grateful for that.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the show's connection to Neil Diamond and acknowledges fan satisfaction, but the qualified language ('maybe...but') and focus on gratitude rather than artistic merit suggests modest positivity. Low confidence due to limited text. | GPT-4o: The excerpt suggests a positive sentiment towards the musical, emphasizing Neil Diamond's continued presence through his music, which is appreciated by fans. However, the lack of a full review and the single excerpt warning suggest a cautious approach, leading to a lower positive score. | Gemini: The review excerpt suggests a positive sentiment, indicating that the musical is a good way for Neil Diamond to share his music with an audience. However, due to the limited text available, the confidence is low. | Kimi: While limited to a single excerpt, the critic emphasizes that the musical successfully channels Diamond's presence and declares that 'his many fans are grateful,' indicating a clear recommendation despite the artist's physical absence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:52:16.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}
