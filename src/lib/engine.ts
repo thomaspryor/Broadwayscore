@@ -580,7 +580,7 @@ export function computeShowData(
   if (show.openingDate && showReviews.length >= 3) {
     const openYear = new Date(show.openingDate).getFullYear();
     const currentYear = new Date().getFullYear();
-    if (currentYear - openYear >= 2) {
+    if (currentYear - openYear >= 10) {
       reviewYearNote = `*Most reviews from ${openYear}`;
     }
   }
