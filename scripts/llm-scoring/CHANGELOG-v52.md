@@ -361,3 +361,41 @@ This means the few-shot examples are part of the system prompt itself, not separ
 
 ### GEMINI_CALIBRATION_OFFSET
 Gemini has a calibration offset applied in `gemini-scorer.ts` (defined in `config.ts`). This is NOT applied in the eval script since the eval uses raw parsed scores. The offset compensates for Gemini's tendency to score ~2-3 points higher than Claude/GPT-4o.
+
+---
+
+## Known Issue: Positive Bucket Score Clustering at 82 (February 2026)
+
+### Problem
+
+9.2% of all reviews (512/5,583) score exactly 82. For shows with many excerpt-only reviews, this reduces composite score granularity — shows with different critical reception converge to similar scores. The rebuild-consistency audit flags 9 shows where 35-56% of reviews score the same value.
+
+### Root Cause (Multiple Reinforcing Factors)
+
+1. **Prompt anchoring**: `config.ts` explicitly says "very strong positive should be 82-84" and the few-shot examples for Positive average to ~82 (two at 78, one at 87).
+2. **Bucket clamping**: Positive range is 70-84 (`BUCKET_RANGES`). Any score above 84 for a Positive review gets clamped down, creating a hard ceiling.
+3. **Ensemble convergence**: 3-4 models independently steered toward 82 produce an average that stays at 82.
+4. **Fallback mapping**: `BUCKET_SCORES` in `score-extractors.js` maps bare `Positive` bucket to exactly 82.
+5. **Excerpt-only reviews**: 299 of the 512 are excerpt-only — limited text gives the LLM less differentiation signal, so it defaults to the prompt's anchor.
+
+The separate cluster at 80 (611 reviews) is mostly legitimate: 355 are explicit 4/5 star ratings (4/5 = 80).
+
+### Data
+
+```
+Score 82: 512 reviews (328 low-conf LLM + 183 LLM + 1 human)
+Score 80: 611 reviews (355 from 4/5 stars + 256 LLM)
+Score 83:  58 reviews (sharp dropoff)
+Score 84:   6 reviews (Positive bucket ceiling)
+```
+
+### Suggested Fix (Not Yet Implemented)
+
+1. **Spread the Positive prompt guidance** — instead of "82-84 = strong praise", use language like "distribute across the full 70-84 range based on enthusiasm level"
+2. **Add more diverse Positive few-shot examples** — currently anchored at 78 and 87; add examples at 72, 75, 80 to break the clustering
+3. **Consider widening the Positive range** — 70-84 is only 15 points; Rave (85-100) is 16 points but Mixed (55-69) is also 15. The Positive ceiling at 84 concentrating scores is the main bottleneck.
+4. **Re-score the corpus** after prompt changes (~$80, 4-5 batch runs of 400 reviews each)
+
+### Priority: Low
+
+The current clustering doesn't produce incorrect scores — 82 is a reasonable "solidly positive" score. The issue is reduced differentiation between shows. This will naturally improve as the collector fetches real fullText for excerpt-only reviews (giving the LLM more signal to differentiate).
