@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2013/legit/reviews/the-nance-1200336271/",
   "publishDate": "April 15, 2013",
-  "fullText": "Nathan Lane gives a towering performance as Chauncey Miles, a gay burlesque comic who performs in drag as 'the nance' — the stereotypically effeminate homosexual character that was a staple of the genre.",
-  "isFullReview": false,
+  "fullText": "Selected milestones in Rome's cinematic history:\n\nAfter being nursed by a she-wolf, twins Romolus and Remus wander to the Palatine Hill and originate a city. Romolus calls it Roma.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Sunny Hostin's Amazon Series Adaptation of 'Summer on the Bluffs' Taps Norman Vance Jr. as Showrunner (EXCLUSIVE) \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n 'The Last of Us' Casts Jorge Lendeborg Jr. to Replace Danny Ramirez as Manny; Clea DuVall Also Joins Season 3\n\nBenito Mussolini inaugurates Cinecitta, which means city of cinema.\n\nThe studios, southwest of Rome, become known during the 1950s and ’60s as “Hollywood on the Tiber,” as U.S. majors, lured by low costs, arrive and begin an intense production activity. Sword and sandal epics such as “Quo Vadis” and “Ben Hur,” but also lighter fare like “Roman Holiday” and the first “Pink Panther,” are among classics made there during that period.\n\nRoberto Rossellini shoots his powerful portrayal of Rome under Nazi occupation “Roma Citta Aperta” (Open City), ushering in the neorealist style that makes Italian movies the international rage.\n\nPubcaster RAI starts broadcasting from its Rome headquarters and soon becomes a major industry force. It is Italy’s only web until 1980, when Silvio Berlusconi launches Milan-based Mediaset, now neck and neck with RAI in the ratings. The three-channel pubcaster currently has more than 11,000 employees.\n\nFederico Fellini’s “La Dolce Vita” captures the Via Veneto’s delicious movie-world decadence, makes “paparazzo” a worldwide word, and consolidates the standing of Italian cinema and its inextricable connection with Rome.\n\nPoet and pluri-prizewinning filmmaker Pier Paolo Pasolini, the first to really delve into the city’s proletarian underworld of pimps, prostitutes and thieves in his early works “Accattone” and “Mamma Roma” is mysteriously murdered, some think because of his subversiveness.\n\nProducer Vittorio Cecchi Gori begins working with his father Mario, a veteran of the same generation as giants Dino De Laurentiis and Carlo Ponti, who have both long left Italy for Hollywood. Cecchi Gori Group becomes increasingly active in producing a wide range of local fare and buying lots of U.S. product released via its exhibition chain. Group dominates until the mid-1990s,when a botched attempt to become a TV player brings it to the edge of bankruptcy.\n\nAfter a partnership with Cecchi Gori goes sour, Silvio Berlusconi starts Medusa Film in Rome as a film production, distribution and exhibition outfit. Medusa five years later becomes local market leader.\n\nRAI, which had long financed Italian cinema and been a prominent international buyer, sets up RAI Cinema, its production and theatrical distribution unit, which rapidly attains a big market share, boosting its role as a prime financing source for indie producers of auteur goods as well as more commercial fare.\n\nPre-production begins at Cinecitta on “Rome,” the first English-language TV series entirely shot in a non-English-speaking country.\n\nThe HBO/BBC skein occupies five acres and six soundstages at the studios, employing roughly 500 Romans in its technical crew.\n\nThe city of Rome launches the Cinema – Festa Internazionale di Roma (aka Rome Film Festival) that will debut Oct. 13-21 this year with big ambitions to boost the Italo industry both locally and internationally.",
+  "isFullReview": true,
   "dtliExcerpt": "Nathan Lane gives a towering performance as Chauncey Miles, a gay burlesque comic who performs in drag as 'the nance' — the stereotypically effeminate homosexual character that was a staple of the genre.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Nathan Lane gives a towering performance as Chauncey Miles, a gay burlesque comic who performs in drag as 'the nance' — the stereotypically effeminate homosexual character that was a staple of the genre.",
-  "contentTier": "invalid",
+  "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "sources": [
     "web-search",
     "playbill-verdict"
@@ -28,5 +28,46 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or caption describing a performance, not a complete review with critical evaluation or recommendation.; openai: This text is a brief description of Nathan Lane's role and performance, not a full review or evaluation of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "textWordCount": 512,
+  "archivePath": "data/archives/reviews/the-nance-2013/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:58:58.666Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 512,
+  "tierReason": "Full review text"
 }
