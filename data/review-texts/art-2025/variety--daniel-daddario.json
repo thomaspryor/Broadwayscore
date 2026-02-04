@@ -15,7 +15,7 @@
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": null,
+  "showScoreExcerpt": "\"The current Broadway climate has been thick on the ground with revivals of familiar titles anchored by big-name stars; the performances in 'Art”'..make the case for this as something more urgent than that.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
@@ -61,5 +61,9 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt with verdict"
     }
-  }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
 }

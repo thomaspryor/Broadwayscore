@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Though the material feels dated and the staging is static, stars Vanessa Redgrave and James Earl Jones bring enough gravitas and skill to make this Broadway revival a worthwhile trip.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 25,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,59 @@
     "Show title not found in text"
   ],
   "wordCount": 570,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 25,
+    "confidence": "high",
+    "range": {
+      "low": 20,
+      "high": 30
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": 20,
+      "music": null,
+      "performances": 45,
+      "direction": 25
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chen is unable to turn the proceedings into either a full-blown three-hankie weepie or a female empowerment pic.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Without a clear handle on the tone of the material, the film achieves only minor impact.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The uneven ensemble to pump some life into this moribund tale of late-in-the-game familial bonding.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic finds fundamental flaws in the script, direction, and tone, describing it as 'moribund' with only 'minor impact' and structural problems that feel like 'a rudimentary template.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:50.770Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3493,
+    "outputTokens": 376,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

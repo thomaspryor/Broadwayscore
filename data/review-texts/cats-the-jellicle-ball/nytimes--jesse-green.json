@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240902060252/https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html?searchResultPosition=1",
   "contentTier": "complete",
   "wordCount": 312,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 60,
+      "performances": null,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "It sets the joy free.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Camp, cleverly, is the new version's base line, neutralizing that criticism.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It turns out that the show works far better in a specific past.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic clearly praises this drag remake for fixing the original's problems, finding it liberating and clever in its approach, with positive language like 'sets the joy free' and appreciation for how it works 'far better' in this new context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:35.130Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3114,
+    "outputTokens": 344,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

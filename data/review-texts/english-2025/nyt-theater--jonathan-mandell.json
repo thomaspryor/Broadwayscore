@@ -29,5 +29,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 1273,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 52,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 78,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's still a lovely, low-key comedy about learning a second language.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "It just doesn't feel as deep as it did in 2022.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "There is too much left unexplained, too much unsaid.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic acknowledges the play's charms but clearly states it feels less impactful than before, with significant structural problems and unexplained elements that undermine its effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:03.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3772,
+    "outputTokens": 343,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

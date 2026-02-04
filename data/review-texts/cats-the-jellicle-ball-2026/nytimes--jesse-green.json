@@ -49,5 +49,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1217,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 68,
+      "performances": 82,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "It sets the joy free.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The right idea can transform the wrong material.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a lightning strike: not now and forever but now and once.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "Green clearly recommends this innovative drag remake despite disliking the original 'Cats,' praising the concept, performances, and design while acknowledging it transforms flawed source material into something compelling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:47.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4476,
+    "outputTokens": 327,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

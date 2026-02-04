@@ -42,5 +42,60 @@
   "duplicateTextOf": "variety--marilyn-stasio.json",
   "contentTier": "complete",
   "wordCount": 741,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": null,
+      "performances": 92,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two compelling star makes sparks in a passionate dance of denial and discovery.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's the two stars who give the production of this imperfect play its brilliance.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Driver is riveting here, and audiences will identify with Anna's dilemma.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic praises the production as 'finely-tuned' with 'incendiary performances' and calls it 'brilliant' despite acknowledging the play is 'imperfect' and 'overlong'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:01.689Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3716,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

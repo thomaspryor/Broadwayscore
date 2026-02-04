@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 937,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": 85,
+      "performances": 95,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cats: The Jellicle Ball is one of the best musicals, revival or otherwise, to be staged in New York.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It is raucous entertainment, simple yet so effective.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Expect energy, emotion, and one of the best displays of how to transform a concept dance musical into an expression of queer life.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic calls this 'one of the best musicals to be staged in New York' and praises its 'ingenuity, dramaturgical soundness, and pure joy' - clear rave territory with superlatives and unqualified enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:28.654Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3529,
+    "outputTokens": 379,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

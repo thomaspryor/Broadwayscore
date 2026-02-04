@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250123165447/https://www.vulture.com/2014/11/theater-review-a-delicate-balance.html",
   "contentTier": "complete",
   "wordCount": 1096,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 95,
+      "music": null,
+      "performances": 88,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a joy to report that the new Broadway revival, starring Glenn Close and John Lithgow as Agnes and Tobias, gets this laugh, and all the others.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Close, her eyes gleaming with Agnes's useless intelligence, is superb with this material, totally believable as a lockjawed suburban virago.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's enough to be in the presence of these words again.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic calls the play 'a masterpiece' and expresses clear joy about the revival, praising lead performances as 'superb' while acknowledging some production issues that don't undermine the overall strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:31.577Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4239,
+    "outputTokens": 382,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

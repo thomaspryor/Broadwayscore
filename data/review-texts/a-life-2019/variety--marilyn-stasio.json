@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 673,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "The writing in these separate monologues is excellent, as are the solo performances by Tom Sturridge and Jake Gyllenhaal.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "There's pleasure to be had at the sound of pretty prose, and it's a joy to watch two fine actors perform in flawless character.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "But this is no show to see on a first date.",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic consistently praises the excellent writing, outstanding performances by both actors, and finds joy in watching the production, despite acknowledging the heavy subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:46.600Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3591,
+    "outputTokens": 357,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

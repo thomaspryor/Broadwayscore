@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200303043150/https://www.vulture.com/2013/10/theater-review-a-time-to-kill.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fvulture+(The+Hollywood+Reporter+-+Vulture+Inbound)",
   "contentTier": "complete",
   "wordCount": 861,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 75,
+      "direction": 40
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a shame the play has so little interest in them.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "You'll be transported straight to half-off-riblets-night at Applebee's.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "With performers on the level of John Douglas Thompson and Page, you can be guaranteed a certain complement of gripping exchanges and stirring orations.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises individual performances but finds the adaptation intellectually shallow, the direction heavy-handed, and criticizes the play's failure to engage with its own meaningful questions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:13:11.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3572,
+    "outputTokens": 355,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

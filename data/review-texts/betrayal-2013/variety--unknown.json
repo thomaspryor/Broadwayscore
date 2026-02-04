@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 627,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 88
+    },
+    "keyPhrases": [
+      {
+        "quote": "They'll be getting a powerful performance from Daniel Craig, a movie star who still has his stage legs.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Nichols' sense of timing in these subdued moments is infallible, allowing his actors to speak volumes.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The construction of the play is brilliant, but in a perverse way.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The review is filled with superlative praise for all elements - calling performances 'superb,' 'powerful,' and 'a revelation,' direction 'pitch-perfect' and 'impeccable,' and the play itself 'brilliant' and 'endlessly fascinating.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:24.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3536,
+    "outputTokens": 375,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

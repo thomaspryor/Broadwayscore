@@ -42,5 +42,60 @@
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "contentTier": "complete",
   "wordCount": 659,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 88,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "a mesmerizing solo show of theatrical shamanism that is receiving its Broadway bow.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "O'Connell performance is a minimalist tour de force.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The show will have audiences leaning forward to hear each and every revelation.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses consistently enthusiastic language ('mesmerizing,' 'tour de force,' 'expertly crafted') with strong praise for the performances and concept, minor narrative quibbles don't diminish the overall positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:28.754Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3634,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

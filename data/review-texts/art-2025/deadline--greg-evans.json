@@ -15,7 +15,7 @@
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": null,
+  "showScoreExcerpt": "\"Art drags a bit at the beginning – always has – but goes into hyperdrive with Corden’s scene-stealing rant about the horrors of a day spent planning a possibly ill-begotten wedding. \"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
@@ -61,5 +61,9 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
 }

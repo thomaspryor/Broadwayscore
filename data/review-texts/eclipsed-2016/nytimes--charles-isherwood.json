@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Nyong'o brings a fierce dignity and emotional transparency to the role of the Girl, a young woman who has been kidnapped and forced into sexual slavery by rebels during Liberia's civil war.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "archiveOrgTimestamp": "20250927113939",
   "archiveOrgUrl": "http://web.archive.org/web/20250927113939/https://www.nytimes.com/2016/03/07/theater/review-in-eclipsed-a-captive-lupita-nyongo-is-captivating.html",
   "wordCount": 1028,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 90,
+      "music": null,
+      "performances": 92,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all its harrowing power, 'Eclipsed' shines with a compassion that makes us see beyond the suffering to the indomitable humanity of its characters.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Ms. Nyong'o, simply superb, illuminates her character's conflicted feelings with pinpoint clarity.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "Ms. Gurira's play, directed with clarity and force by Liesl Tommy, reminds us of something profoundly important.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic offers sustained praise for the play's powerful themes, exceptional performances (especially Nyong'o described as 'simply superb'), and strong direction, with no significant reservations about recommending the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:56.932Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4142,
+    "outputTokens": 392,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

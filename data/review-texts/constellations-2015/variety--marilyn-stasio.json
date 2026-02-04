@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jake Gyllenhaal and Ruth Wilson bring star power and serious acting chops to Nick Payne's romantic drama about parallel universes and the infinite possibilities of love.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,59 @@
   "archiveOrgTimestamp": "20240603212417",
   "archiveOrgUrl": "http://web.archive.org/web/20240603212417/https://variety.com/2015/legit/reviews/broadway-review-constellations-starring-jake-gyllenhaal-ruth-wilson-1201403797/",
   "wordCount": 839,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": null,
+      "performances": 90,
+      "direction": 82
+    },
+    "keyPhrases": [
+      {
+        "quote": "Short and sweet and strangely haunting.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "This baby bombshell by hot Brit scribe Nick Payne overflows with emotional highs and lows.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "With this oddball show safe in the hands of these thesps, we're fully invested in their lives.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses enthusiastic language throughout ('baby bombshell,' 'killer acting,' 'pretty amazing'), praises all elements especially the performances, and expresses full investment in the show despite minor concerns about future productions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:07.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3834,
+    "outputTokens": 359,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

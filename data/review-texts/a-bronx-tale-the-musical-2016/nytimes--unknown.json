@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250426203949/https://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets.html?partner=rss&emc=rss&_r=0",
   "contentTier": "complete",
   "wordCount": 429,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 82,
+      "performances": null,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The creative team is packed with veteran talent, resulting in an exceptionally slick and skillfully assembled musical.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "I found the score for 'A Bronx Tale' to be a welcome return.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "It's a winning musical mix with proven appeal on Broadway.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic consistently praises the musical elements, creative team, and production quality with terms like 'exceptionally slick,' 'skillfully assembled,' and 'winning musical mix,' indicating a clear positive recommendation despite some minor reservations about clichéd ballads.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:04.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3318,
+    "outputTokens": 365,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

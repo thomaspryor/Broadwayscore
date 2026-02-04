@@ -1,0 +1,68 @@
+{
+  "showId": "art-2025",
+  "outletId": "lighting-and-sound-america",
+  "outlet": "Lighting & Sound America",
+  "criticName": "David Barbour",
+  "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-AKHEZU",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 25,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"It makes the frothiest sex comedy from Broadway's postwar boom years look like Desire Under the Elms.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 25,
+    "confidence": "low",
+    "range": {
+      "low": 15,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It makes the frothiest sex comedy from Broadway's postwar boom years look like Desire Under the Elms.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic unfavorably compares this show to frivolous sex comedies, suggesting it's even more superficial and lowbrow than shows already considered lightweight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:17:23.629Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 2676,
+    "outputTokens": 257,
+    "textSource": {
+      "type": "excerpt",
+      "status": "curated",
+      "field": "showScoreExcerpt",
+      "confidence": "medium",
+      "reasoning": "Curated Show Score excerpt"
+    }
+  }
+}

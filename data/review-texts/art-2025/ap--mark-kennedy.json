@@ -15,7 +15,7 @@
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": null,
+  "showScoreExcerpt": "\"Under Scott Ellis’ tight and enthralling direction and with three perfectly cast actors...'Art' frequently erupts in laughter but still has plenty to say about friendship, power dynamics and how we get on each others’ nerves.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
@@ -61,5 +61,9 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
 }

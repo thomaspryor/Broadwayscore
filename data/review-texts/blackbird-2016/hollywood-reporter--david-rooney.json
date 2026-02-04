@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jeff Daniels and Michelle Williams bring formidable dramatic weight to David Harrower's challenging two-hander about a pedophile confronted by his victim 15 years later.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,59 @@
   "archiveOrgTimestamp": "20251119132230",
   "archiveOrgUrl": "http://web.archive.org/web/20251119132230/https://www.hollywoodreporter.com/news/general-news/jeff-daniels-michelle-williams-blackbird-873962/",
   "wordCount": 894,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "this riveting drama is a stark examination of love, pain and loss that's both compassionate and unforgiving",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Mantello and his remarkable actors give this slow-burning, real-time drama fluidity and searing emotional heat",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "the play packs a visceral punch",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic consistently praises the production with strong language like 'riveting,' 'remarkable actors,' and 'visceral punch,' while noting impressive direction and performances, with only minor reservations about the writing's studied aspects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:47.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4001,
+    "outputTokens": 368,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

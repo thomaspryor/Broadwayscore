@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Adam Driver brings his trademark intensity to the role of Pale, the volatile drug dealer who becomes obsessed with Anna, delivering a performance that crackles with dangerous magnetism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 68,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -52,5 +52,59 @@
   "archiveOrgTimestamp": "20250426031012",
   "archiveOrgUrl": "http://web.archive.org/web/20250426031012/https://www.hollywoodreporter.com/news/general-news/burn-theater-review-1201983/",
   "wordCount": 1193,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 68,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 72
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 88,
+      "direction": 65
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in choosing to dial up the humor, Mayer has undercut the anguish that is the drama's foundation, exposing Burn This as just a circuitous journey to an inevitable romantic conclusion.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Still, this is a dynamic production that, if nothing else, illustrates in every one of Pale's spiraling rants why it's long been such a bountiful source of muscular audition pieces for young male actors.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "But really it's Larry, the unattached, wryly humorous sideline commentator, whose selfless gesture ultimately facilitates their anxious union.",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic praises Driver's powerhouse performance and acknowledges the production's dynamic qualities, but finds significant flaws in the direction's tonal choices and the play's lack of thematic resonance, resulting in a qualified mixed recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:56.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4405,
+    "outputTokens": 428,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

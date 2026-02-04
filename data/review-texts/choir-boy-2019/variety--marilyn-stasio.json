@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jeremy Pope gives a powerhouse performance as Pharus, a talented but troubled teenager whose soaring soprano voice and flamboyant personality make him a target for bullying at his elite prep school.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -72,5 +72,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 638,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 78,
+      "music": 88,
+      "performances": 85,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play transfers nicely, under the surefooted direction of Trip Cullman.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Pharus is a strange and wonderful character with the courage to be his own exceptional self.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The music is as joyous to the audience as it is for Pharus.",
+        "sentiment": "positive",
+        "strength": 5
+      }
+    ],
+    "reasoning": "The critic consistently praises the performances, music, and direction with enthusiastic language like 'sensational,' 'joyous,' and 'wonderful,' while expressing only minor reservations about set design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:00.595Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3584,
+    "outputTokens": 356,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

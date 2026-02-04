@@ -34,5 +34,60 @@
   ],
   "contentTier": "complete",
   "wordCount": 634,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 88,
+      "direction": 80
+    },
+    "keyPhrases": [
+      {
+        "quote": "This play is fanged, ferocious, and funny as all get out.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Ain't No Mo', a badass sketch comedy about the Black experience in America and a mythical airline flight in response to it, is a theatrical excursion you don't want to miss.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "The ensemble – Cooper, Marchant Davis, Fedna Jacquet, Crystal Lucas-Perry, Ebony Marshall-Oliver, and Shannon Matesky – is a jumbo jet of talent.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic opens with strong endorsement ('don't want to miss'), praises the cast as 'a jumbo jet of talent,' and calls it 'fanged, ferocious, and funny' despite noting some sketches need pruning.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:13:17.563Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3520,
+    "outputTokens": 409,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

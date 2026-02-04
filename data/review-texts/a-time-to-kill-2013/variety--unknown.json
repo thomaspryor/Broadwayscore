@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 790,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 62
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 68,
+      "direction": 62
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a distinctly dated feeling to the material — not the topic of Southern racism, but the youthful idealism of its hero.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "Despite a sturdy ensemble production helmed by Ethan McSweeny, this courtroom drama feels as if it were made for an earlier, less cynical era.",
+        "sentiment": "negative",
+        "strength": 3
+      },
+      {
+        "quote": "The characters and thesps who fare best are those who seem comfortable living in this hot, dusty, nowhere town.",
+        "sentiment": "positive",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The critic acknowledges solid production values and some strong performances but finds the material fundamentally dated and the main character problematic, resulting in qualified mixed reception without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:13:06.242Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3783,
+    "outputTokens": 380,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

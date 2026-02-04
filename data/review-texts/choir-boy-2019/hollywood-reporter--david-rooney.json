@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1146,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": 85,
+      "performances": 82,
+      "direction": 78
+    },
+    "keyPhrases": [
+      {
+        "quote": "The specificity of a Black middle-class milieu, plus the writer's sharp ear for dialogue and his observations on class, race and sexuality, give McCraney's play distinctive qualities that outweigh its more conventional aspects.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Anyone who remains unmoved by the young male ensemble's plaintive delivery of 'Sometimes I Feel Like a Motherless Child' must be dead inside.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It has to be said that the additional 20 minutes in this expanded version brings few discernible benefits.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic offers substantial praise for the performances, music, and thematic depth while acknowledging the play's conventional elements and pacing issues, resulting in a clear positive recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:53.148Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4356,
+    "outputTokens": 396,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

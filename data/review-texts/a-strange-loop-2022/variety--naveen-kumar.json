@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 887,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 92
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 85,
+      "music": 78,
+      "performances": 90,
+      "direction": 85
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new musical by Michael R. Jackson performs a phenomenal feat — it is both a raw and unflinching interrogation of identity and the most furiously entertaining show on Broadway.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "A Strange Loop does not strike a single false note.",
+        "sentiment": "positive",
+        "strength": 5
+      },
+      {
+        "quote": "It's like stepping back to admire an extraordinary portrait of the artist as a tangle of contradictions, desires and painful memories.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic uses superlative language throughout ('phenomenal feat,' 'most furiously entertaining show on Broadway,' 'does not strike a single false note,' 'extraordinary portrait') with only minor reservations about some lyrics being lost in the larger space.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:52.860Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3956,
+    "outputTokens": 385,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

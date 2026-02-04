@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250406081034/https://www.vulture.com/2022/04/birthday-candles-with-debra-messing-is-not-much-of-a-party.html",
   "contentTier": "complete",
   "wordCount": 936,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 35,
+      "music": null,
+      "performances": 40,
+      "direction": 55
+    },
+    "keyPhrases": [
+      {
+        "quote": "But grace notes can't sustain a production.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Too much rests on Messing's shoulders, and it's simply the wrong play for her gifts.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "There's a sense of hours lost here, rather than a life counted up.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds fundamental flaws in both the writing (calling it derivative, saccharine, and scientifically/poetically cloying) and Messing's central performance (wrong play for her gifts, disconnected), with only minor praise for supporting actors and direction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:39.586Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4010,
+    "outputTokens": 363,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

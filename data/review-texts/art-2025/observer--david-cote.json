@@ -15,7 +15,7 @@
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": null,
+  "showScoreExcerpt": "\"Reza’s 1998 comedy abounds in witty chuckles and elegant structure, but it remains a slight boulevard comedy: three self-obsessed Frenchmen bickering over a pricey painting.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
@@ -61,5 +61,9 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
 }

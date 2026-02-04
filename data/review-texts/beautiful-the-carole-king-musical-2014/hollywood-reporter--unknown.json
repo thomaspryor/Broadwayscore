@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 1084,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 68,
+      "music": 85,
+      "performances": 82,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "Following in the footsteps of crowd-pleasers like Jersey Boys and Motown: The Musical, this is entertaining boomer bait that elevates its by-the-numbers narrative with great songs.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The ace up the show's sleeve, however, is Mueller's lovely performance as King, full of self-effacing humor, emotional depth and understated vulnerability.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "McGrath's book flirts openly (though not displeasingly) with sitcom dialogue, and by no means skirts the clichés and shortcuts of hackneyed behind-the-music chronicles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic clearly recommends the show as 'entertaining' with 'great songs' and 'lovely performances,' despite acknowledging formulaic elements and clichés in the book.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:18.939Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4438,
+    "outputTokens": 412,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

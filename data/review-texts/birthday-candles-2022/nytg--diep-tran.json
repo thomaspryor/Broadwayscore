@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 779,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 30,
+      "music": null,
+      "performances": 65,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like an overbeaten cake, the play inflates with potential before ultimately collapsing in on itself, being filled with nothing but air.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "The play fails to deliver anything of greater substance — it is just dessert, all sugar.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "Like sugar, it'll dissolve from your mind after you've seen it.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic fundamentally rejects the play as superficial and forgettable despite praising individual performances and production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:14:31.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3755,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

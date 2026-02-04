@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This ravishing new musical manages to honor the beloved 1951 MGM movie while carving out its own distinctive identity, weaving Gershwin songs into a rhapsodic love letter to the City of Light.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -49,5 +49,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230326232138/https://www.hollywoodreporter.com/lifestyle/lifestyle-news/an-american-in-paris-theater-988694/",
   "previousUrl": "https://www.hollywoodreporter.com/news/general-news/american-paris-theater-review-787479/",
   "urlDiscoveredAt": "2026-02-03T22:38:00.150Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": 55,
+      "music": 88,
+      "performances": 87,
+      "direction": 90
+    },
+    "keyPhrases": [
+      {
+        "quote": "The touring production now at the Pantages through April 9 continues the magic of its 18-month Broadway run.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "Barring a trip across the Atlantic, there's probably no better way to visit Paris this spring.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "These contrivances and other weaknesses in the book by Craig Lucas are forgiven, as the show adroitly depicts 1940s Paris.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "This is a clearly positive review that praises the performances, choreography, and production values while acknowledging minor book weaknesses, with strong recommendation language like 'continues the magic' and suggesting it's the best way to 'visit Paris this spring.'",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:13:45.634Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4254,
+    "outputTokens": 389,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }

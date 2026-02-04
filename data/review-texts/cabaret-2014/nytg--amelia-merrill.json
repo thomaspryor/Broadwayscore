@@ -31,5 +31,55 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 1020,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 75,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the stellar Gayle Rankin's best efforts to inject the latest revival with a sense of urgency as star performer Sally Bowles, director Rebecca Frecknall's production stays stagnant.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "To really know if this production hits the mark, you must visit the Kit Kat Club for yourself.",
+        "sentiment": "neutral",
+        "strength": 2
+      }
+    ],
+    "reasoning": "The review praises individual performances (particularly Rankin) and production design but criticizes the director's vision and conceptual disconnect, concluding with a non-committal suggestion that audiences judge for themselves.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:15:08.881Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3674,
+    "outputTokens": 335,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The show proves to be a reasonably faithful and affectionate adaptation of the beloved movie, capturing much of its wry humor and nostalgic warmth. But it also demonstrates the perils of translating a small, intimate story to the grand scale of Broadway.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is truncated and ends with a technical error message about JavaScript and access verification, making it impossible to determine the critic's final verdict.; openai: The review is about a production of 'A Christmas Story' from 2012, not the current Broadway run.; gemini: The text is truncated and includes an error message about retrieving article content, making it impossible to score the review accurately.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 60,
+      "music": null,
+      "performances": 85,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "You'd have to have a Grinch-size heart not to feel a smile spreading across your face when Luke Spring starts tapping his little heart out.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "A Christmas Story wins points for being less glitzy and more soft-spoken than the garish, overbearing musical versions of How the Grinch Stole Christmas and Elf.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "Not that there's much story to speak of.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic shows clear affection for the performances (especially the child performer) and production values while acknowledging significant story weaknesses, resulting in a qualified recommendation that's more positive than negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": true,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:22.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3308,
+    "outputTokens": 381,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

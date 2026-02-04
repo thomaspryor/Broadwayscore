@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240630184742/https://www.vulture.com/2015/01/theater-review-constellations.html",
   "contentTier": "complete",
   "wordCount": 1169,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "high",
+    "range": {
+      "low": 62,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": 45,
+      "music": null,
+      "performances": 88,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "This delightful, beautifully acted, and infuriating new drama is so much more, and less.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "The multiverse superstructure turns out to be inexpressive and so overbearing that it sucks the dramatic nutrition out of the play.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "That the stories remain quite engaging is a tribute to Payne's highly playable dialogue and the immense skill of both actors.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic praises the performances and dialogue while finding the central concept dramatically problematic, creating a mixed recommendation that acknowledges both strengths and significant flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:15.850Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4326,
+    "outputTokens": 370,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

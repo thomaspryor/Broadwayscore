@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Akhtar's smartly constructed drama builds to a dinner party that explodes into an evening of ugly revelations and bitter recriminations.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 72,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -56,5 +56,59 @@
   "archiveOrgTimestamp": "20141025181909",
   "archiveOrgUrl": "http://web.archive.org/web/20141025181909/http://variety.com:80/2014/legit/reviews/broadway-review-disgraced-josh-radnor-1201337499/",
   "wordCount": 524,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 75,
+      "music": null,
+      "performances": 78,
+      "direction": 70
+    },
+    "keyPhrases": [
+      {
+        "quote": "It always makes Broadway look good to have a Pulitzer Prize-winning drama on the boards.",
+        "sentiment": "positive",
+        "strength": 4
+      },
+      {
+        "quote": "The new cast, including Josh Radnor as the curator, is perfectly satisfactory, but so was the original one.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "It's a more classical approach, a study of a powerful man destroyed by hubris.",
+        "sentiment": "positive",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic appreciates the Pulitzer-winning material and praises the new lead performance's classical approach, while noting production elements are 'perfectly satisfactory' - indicating solid recommendation with some reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:16:42.068Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3390,
+    "outputTokens": 363,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

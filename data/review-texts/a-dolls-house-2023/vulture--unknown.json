@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250831151733/https://www.vulture.com/2023/03/theater-review-dolls-house-ibsen-herzog-chastain-broadway.html",
   "contentTier": "complete",
   "wordCount": 1098,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": 65,
+      "direction": 35
+    },
+    "keyPhrases": [
+      {
+        "quote": "If only the rest of the production lived up to — or, really, departed from — that first image.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "It all ends up making this production of A Doll's House feel like an exercise that acting students might do.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "But it's not to the benefit of the audience.",
+        "sentiment": "negative",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic finds Lloyd's direction conceptually flawed and tedious, comparing it to a student exercise rather than professional theater, though praising some individual performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:39.186Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 4172,
+    "outputTokens": 346,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

@@ -15,7 +15,7 @@
   "dtliUrl": "https://didtheylikeit.com/shows/art/",
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
-  "showScoreExcerpt": null,
+  "showScoreExcerpt": "\"For all the play’s bickering and bashing, the eventual trajectory of Art feels almost saccharine.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
@@ -66,5 +66,9 @@
       "confidence": "medium",
       "reasoning": "Curated DTLI excerpt"
     }
-  }
+  },
+  "sources": [
+    "dtli",
+    "show-score-playwright"
+  ]
 }

@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250427085807/https://www.nytimes.com/2013/10/21/theater/reviews/a-time-to-kill-opens-on-broadway.html",
   "contentTier": "complete",
   "wordCount": 379,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": 40,
+      "music": null,
+      "performances": 65,
+      "direction": 45
+    },
+    "keyPhrases": [
+      {
+        "quote": "This workmanlike version of Mr. Grisham's book never succeeds in generating much steam.",
+        "sentiment": "negative",
+        "strength": 4
+      },
+      {
+        "quote": "This efficient but hardly pulse-racing night at the theater features some terrific actors.",
+        "sentiment": "neutral",
+        "strength": 3
+      },
+      {
+        "quote": "This mechanical legal procedural cannot, I'm afraid, even outdo the competition in constant rotation on TV.",
+        "sentiment": "negative",
+        "strength": 4
+      }
+    ],
+    "reasoning": "The critic describes the show as 'workmanlike,' 'mechanical,' and unable to generate steam, with a sarcastic recommendation only for Grisham obsessives, clearly indicating it's not worth seeing despite praise for the actors.",
+    "flags": {
+      "hasExplicitRecommendation": true,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:12:58.901Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3181,
+    "outputTokens": 369,
+    "textSource": {
+      "type": "fullText",
+      "status": "complete",
+      "field": "fullText",
+      "confidence": "high",
+      "reasoning": "Complete review text with verdict"
+    }
+  }
 }

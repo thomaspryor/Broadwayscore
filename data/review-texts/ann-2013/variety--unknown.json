@@ -44,5 +44,60 @@
   ],
   "contentTier": "complete",
   "wordCount": 715,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 76
+    },
+    "bucket": "Mixed",
+    "thumb": "Up",
+    "components": {
+      "book": 70,
+      "music": null,
+      "performances": 78,
+      "direction": 75
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can put such thoughts out of your head, it's a perfectly charming show.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "As long as we can sit back and laugh at Sylvia's doggy antics while admiring Ashford's comic flair, 'Sylvia' is harmless fun.",
+        "sentiment": "positive",
+        "strength": 3
+      },
+      {
+        "quote": "In helmer Daniel Sullivan's super-slick production, everybody pitches in to sustain the illusion.",
+        "sentiment": "positive",
+        "strength": 3
+      }
+    ],
+    "reasoning": "The critic describes the show as 'perfectly charming' and 'harmless fun' with praise for performances and production values, but uses qualified language that suggests mild rather than strong enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": true,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "claude-sonnet-4-20250514",
+    "scoredAt": "2026-02-04T00:13:53.751Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 3706,
+    "outputTokens": 378,
+    "textSource": {
+      "type": "fullText",
+      "status": "truncated",
+      "field": "fullText",
+      "confidence": "low",
+      "reasoning": "Truncated text - may be missing final verdict"
+    }
+  }
 }
