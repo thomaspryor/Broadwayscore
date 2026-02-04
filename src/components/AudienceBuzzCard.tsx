@@ -106,8 +106,7 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
     <>
       <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">{name}</span>
-        {url && <ExternalLinkIcon className="text-gray-500 ml-auto" />}
+        <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide whitespace-nowrap">{name}</span>
       </div>
       {comingSoon ? (
         <div className="text-sm text-gray-500">Coming soon</div>
@@ -117,8 +116,9 @@ function SourceCard({ name, icon, score, reviewCount, starRating, url, comingSoo
             {starRating ? `${starRating}/5` : `${score}%`}
           </div>
           {reviewCount !== null && (
-            <div className="text-xs text-gray-500 mt-0.5">
+            <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
               {formatReviewCount(reviewCount)} reviews
+              {url && <ExternalLinkIcon className="text-gray-500" />}
             </div>
           )}
         </>
