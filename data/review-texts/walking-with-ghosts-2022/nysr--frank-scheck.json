@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"It would be churlish to say that listening to this sort of poetical description is a chore, especially when delivered in the actor’s mellifluous tones, but a little of it goes a long way. And 'Walking with Ghosts' clocks in at nearly two-and-a-half hours, making the evening feel very long indeed.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrne-goes-down-a-dark-memory-lane/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrne-goes-down-a-dark-memory-lane/",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It would be churlish to say that listening to this sort of poetical description is a chore, especially when delivered in the actor's mellifluous tones, but a little of it goes a long way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced assessment. Praises Byrne's performance and talent but criticizes length, mundane material, and overly theatrical staging. Shows respect for the performer while questioning the theatrical effectiveness. | GPT-4o: The review presents a mix of positive and negative elements, praising Byrne's performance but criticizing the length and mundane material. The original 3/5 stars and truncated text suggest caution, leading to a mixed score. | Gemini: The review is mixed, praising Byrne's performance but finding the material mundane and the staging self-conscious. The truncated text makes a final verdict unclear, but the overall tone is lukewarm. | Kimi: The 3/5 star rating and balanced critique place this in Mixed territory. While praising Byrne's talent and mimicry, the critic finds the show overlong, 'more literary than theatrical,' and ultimately distancing despite its sensitive subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:14:41.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

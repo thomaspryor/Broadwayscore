@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Director Lila Neugebauer orchestrates the scenes with clockwork precision, setting up the siblings’ individual speeches and breakdowns so that the nearly three-hour production seems to fly by...There’s no escaping our past, Jacobs-Jenkins suggests — and there’s no denying how powerful, and how powerfully entertaining, this play is. “\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no escaping our past, Jacobs-Jenkins suggests — and there's no denying how powerful, and how powerfully entertaining, this play is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('powerful', 'powerfully entertaining') with praise for direction making a 3-hour show 'fly by'. Single excerpt warning noted - this sounds clearly positive so scored in upper Positive range. | GPT-4o: The excerpt praises the direction and describes the play as 'powerful' and 'powerfully entertaining', suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt contains strong positive language, calling the play \"powerful\" and \"powerfully entertaining.\" The director is praised for orchestrating the scenes with \"clockwork precision.\" | Kimi: The excerpt delivers strong praise for both the direction ('clockwork precision') and overall experience ('powerfully entertaining'), warranting an upper-range Positive score. However, confidence is reduced given this is a single curated excerpt that may not represent the full review's balance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:32:43.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

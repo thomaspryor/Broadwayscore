@@ -34,5 +34,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 291,
-  "tierReason": "Short text (291 words)"
+  "tierReason": "Short text (291 words)",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He delivers the goods — and so does costar Nina Arianda — in Broadway's combustible revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for both lead performances and direction with phrases like 'delivers the goods,' 'juicy performances,' and 'well-paced production.' The critic recommends it as a showcase for the leads without significant reservations. | GPT-4o: The review praises the performances of the leads and the direction, describing the production as 'combustible' and highlighting the 'juicy performances.' The overall tone is enthusiastic and recommends seeing the show. | Gemini: The review praises the performances of the leads and the direction, indicating a positive experience despite the dark subject matter. It's a recommendation based on the quality of the production. | Kimi: The critic consistently praises the lead performances ('delivers the goods,' 'ever fascinating,' 'juicy performances'), commends the direction as 'well-paced,' and describes the production as 'combustible' and a 'showcase,' indicating a solid recommendation based on strong acting and staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:39:13.672Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

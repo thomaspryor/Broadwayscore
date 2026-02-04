@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230527060550/https://nypost.com/2022/04/21/hangmen-is-the-best-new-play-on-broadway/",
   "contentTier": "complete",
   "wordCount": 660,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That nonstop naughtiness is what makes Martin McDonagh's killer satire the best new play on Broadway by a green mile.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Clear rave with superlatives throughout: 'best new play on Broadway by a green mile,' 'Broadway's best of the year' (set), 'his finest play since' a previous work, ending with 'His Hangmen kills.' Consistent enthusiastic praise with no meaningful reservations. | GPT-4o: The review is filled with superlatives and strong praise, calling it the best new play on Broadway and highlighting the exceptional script, set, and performances. The critic's enthusiasm and lack of reservations place it firmly in the Rave category. | Gemini: The review is overwhelmingly positive, calling it the \"best new play on Broadway\" and praising the humor, set design, and performances. The critic clearly recommends seeing the show. | Kimi: The review offers unqualified superlatives, declaring it the best new play on Broadway by far, McDonagh’s finest work in 16 years, and praises the phenomenal set and brilliant performances without reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:41:53.335Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 83,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

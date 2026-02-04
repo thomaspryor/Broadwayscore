@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Nottage has created a work of panoramic breadth that captures the death throes of working-class America with uncommon sensitivity and intelligence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -48,5 +48,60 @@
   "archiveOrgTimestamp": "20170327060236",
   "archiveOrgUrl": "http://web.archive.org/web/20170327060236/https://www.nytimes.com/2017/03/26/theater/sweat-review-broadway.html",
   "wordCount": 1173,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Nottage has created a work of panoramic breadth that captures the death throes of working-class America with uncommon sensitivity and intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the playwright's achievement with superlative language ('uncommon sensitivity and intelligence', 'panoramic breadth'), but confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt praises the work's breadth, sensitivity, and intelligence, suggesting a strong positive impression. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the work's sensitivity and intelligence, suggesting a positive, though potentially qualified, recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the work's thematic scope and execution, using elevated language ('panoramic breadth,' 'uncommon sensitivity') that indicates a clear recommendation. However, as a single curated excerpt, the score is tempered to the upper end of the Positive bucket per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:03:21.891Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200929015507/https://www.nydailynews.com/entertainment/theater-arts/forest-whitaker-underwhelms-eugene-o-neill-hughie-article-1.2542759",
   "contentTier": "complete",
   "wordCount": 354,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 33,
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But Whitaker doesn't, so 'Hughie' craps out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict with strong criticism of Whitaker's performance ('not doing any discernible acting'), director's work ('comes up short'), and value proposition. The final line 'craps out' definitively discourages attendance. | GPT-4o: The review is strongly negative, criticizing Whitaker's performance as lacking depth and connection, and the production as failing to deliver value for its price. The overall tone is dismissive, with no redeeming qualities highlighted. | Gemini: The review is clearly negative, criticizing Whitaker's performance as disconnected and the production as lacking high points. The final line, \"But Whitaker doesn't, so 'Hughie' craps out,\" seals the negative verdict. | Kimi: The review delivers a scathing assessment of Whitaker's disconnected, one-note performance and the direction's lack of high points, concluding that the production fails to deliver on its Broadway ticket price despite impressive scenic design. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:45:30.152Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

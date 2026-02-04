@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 79 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 73,
-  "tierReason": "Short text (73 words)"
+  "tierReason": "Short text (73 words)",
+  "rejectedAt": "2026-02-04T10:47:33.445Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an introductory paragraph providing background context about the show's cultural impact, not an actual review with critical evaluation of a current production.; openai: The text provided is a contextual introduction to 'Into the Woods' rather than an evaluative review of the current Broadway production.; gemini: This is just background/context about the show, not a review of the current Broadway production.; kimi: The text provided contains only introductory background about the musical's cultural history and the 2014 film adaptation, with no evaluation of the current Broadway production's performances, direction, or overall quality. It appears to be a truncated opening paragraph without any critical verdict or recommendation.",
+  "promptVersion": "5.2.0"
 }

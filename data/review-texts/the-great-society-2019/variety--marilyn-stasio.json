@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Robert Schenkkan's sequel to 'All the Way' finds President Johnson caught between the war in Vietnam and the war on poverty at home, with Bryan Cranston again delivering a powerhouse performance as LBJ.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cox himself doesn't really claim the character of LBJ until the second act, when the president stands alone, exposed in all his frailties.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review criticizes the overwhelming number of characters, weak staging, and Cox's inconsistent performance in Act 1, but praises his powerful second act work and the play's tragic conclusion. Mixed signals with no clear recommendation. | GPT-4o: The review highlights issues with the production's sprawling nature and lack of character focus, but acknowledges Cox's strong performance in the second act. The overall tone is mixed, with both positive and negative elements. | Gemini: The review is mixed. It praises Cox's performance in the second act but criticizes the play's structure and the overwhelming number of characters. It doesn't offer a clear recommendation. | Kimi: While the critic extensively details structural problems—too many indistinguishable characters, rushed direction, and muddy design—the review ultimately lands on praise for Cox's second-act performance. However, the significant first-act criticisms and lack of explicit recommendation place this in Mixed territory rather than Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:07:03.851Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

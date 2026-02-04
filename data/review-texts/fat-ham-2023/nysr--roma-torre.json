@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“Consistent with his message – choose pleasure over harm – Ijames offers us a gloriously uplifting takeaway that might have given even Shakespeare pause. Maybe they didn’t have to die after all.”\n\nRead more"
+  "showScoreExcerpt": "“Consistent with his message – choose pleasure over harm – Ijames offers us a gloriously uplifting takeaway that might have given even Shakespeare pause. Maybe they didn’t have to die after all.”\n\nRead more",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Without apologies to the purists, it is a modern classic in its own right.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite truncation warning, the 5/5 rating and consistent superlative language throughout ('modern classic', 'masterfully', 'brilliant merging', 'gloriously uplifting') clearly indicate a rave review with enthusiastic recommendation. | GPT-4o: The review is overwhelmingly positive, praising the adaptation, performances, and direction. The critic's original 5/5 stars and the key quote indicate a strong recommendation. Despite the text being truncated, the available content suggests a rave review. | Gemini: The review is overwhelmingly positive, calling the play a \"modern classic\" and praising the direction, performances, and overall impact. The critic awards 5/5 stars and concludes with a \"gloriously uplifting takeaway.\" | Kimi: The critic awards 5/5 stars and unreservedly praises the production as a 'modern classic' with masterful direction and performances, delivering a 'gloriously uplifting' theatrical experience without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:37:29.842Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 98,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

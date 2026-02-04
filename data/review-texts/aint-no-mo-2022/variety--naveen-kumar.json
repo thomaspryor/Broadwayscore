@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ 'Ain’t No Mo’,' produced on Broadway by a team led by Lee Daniels, is a daring and uproarious feat of performance that is thrillingly alive to the moment.\"\n\nRead more"
+  "showScoreExcerpt": "“ 'Ain’t No Mo’,' produced on Broadway by a team led by Lee Daniels, is a daring and uproarious feat of performance that is thrillingly alive to the moment.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Ain't No Mo',' produced on Broadway by a team led by Lee Daniels, is a daring and uproarious feat of performance that is thrillingly alive to the moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('daring and uproarious feat', 'thrillingly alive') indicates enthusiastic recommendation. Single excerpt warning applied - using upper Positive range due to clearly positive tone, but medium confidence due to limited text. | GPT-4o: The excerpt describes the show as 'daring and uproarious,' and 'thrillingly alive,' indicating strong enthusiasm. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"daring and uproarious feat\" and \"thrillingly alive\", indicating a positive review. Given it's a single excerpt, confidence is low, but the strength of the language suggests a higher score within the positive bucket. | Kimi: The excerpt contains strong praise ('uproarious', 'thrillingly alive', 'daring'), indicating an enthusiastic recommendation for the current Broadway production. However, as only a single curated excerpt is available, confidence is reduced per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:24:53.350Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

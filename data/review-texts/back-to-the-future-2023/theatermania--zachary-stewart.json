@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“If any element can be said to steal the show, it’s the car, which gets a truly spectacular finale engineered by TwinsSFX. It’s the most innovative aspect of a musical that mostly wallows in the past.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the most innovative aspect of a musical that mostly wallows in the past.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises one spectacular element (the car finale) but dismisses the overall musical as 'mostly wallows in the past.' This suggests mixed feelings - appreciation for innovation but criticism of the show's general approach. Single excerpt warning requires caution, but the contrast between praise and criticism suggests genuinely mixed sentiment. | GPT-4o: The excerpt highlights a single innovative element (the car) but suggests the rest of the musical is unremarkable, 'wallowing in the past'. The lack of a clear recommendation and the single excerpt warning suggest a mixed review. | Gemini: The review praises the car's finale as innovative but criticizes the rest of the musical for being stuck in the past, indicating a mixed assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt praises the car's spectacular finale as the show's standout element but criticizes the musical itself for 'wallowing in the past,' indicating a divided verdict where technical innovation outshines dated, unoriginal material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:33:30.195Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

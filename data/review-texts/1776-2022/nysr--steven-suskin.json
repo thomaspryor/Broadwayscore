@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"This all-female, transgender, and nonbinary '1776' goes full-throttle, certainly, and more power to the performers who here receive opportunities (and jobs) for which they prove themselves thoroughly capable.\"\n\nRead more"
+  "showScoreExcerpt": "\"This all-female, transgender, and nonbinary '1776' goes full-throttle, certainly, and more power to the performers who here receive opportunities (and jobs) for which they prove themselves thoroughly capable.\"\n\nRead more",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This all-female, transgender, and nonbinary '1776' goes full-throttle, certainly, and more power to the performers who here receive opportunities (and jobs) for which they prove themselves thoroughly capable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars indicates positive territory. The excerpt praises the performers as 'thoroughly capable' and supports the casting choices, but the phrasing suggests measured approval rather than enthusiasm. Single excerpt warning requires caution - scoring at lower end of Positive range. | GPT-4o: The excerpt praises the performers' capabilities and the opportunity provided by the production. However, the original 3/5 stars rating suggests a mildly positive verdict, aligning with the lower end of the Positive bucket. | Gemini: The review excerpt expresses support for the performers and their capabilities, suggesting a positive sentiment. However, due to the limited text, the confidence is low. | Kimi: The 3/5 star rating suggests an average-to-mixed assessment. While the excerpt praises the performers as 'thoroughly capable' and supports the casting concept, the praise is measured rather than enthusiastic, and the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:21:16.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

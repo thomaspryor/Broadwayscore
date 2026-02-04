@@ -31,5 +31,59 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 780,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Glengarry Glen Ross has no sense of urgency, place, or purpose.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: The critic finds the production directionless and lacking urgency, questioning why it was revived. While praising some individual performances (McKean, Pirruccello), the overall assessment is clearly negative about the production's execution and purpose. Confidence is medium due to truncated text. | Gemini: The review expresses disappointment with the production, stating it feels like \"another day at the office\" and lacks urgency. While praising some performances, the overall assessment is negative, but the truncated text makes it difficult to be certain of the final verdict. | Kimi: The review criticizes the production as 'directionless' and questions the revival's purpose, but praises the performances of McKean and Pirruccello for giving the play 'heart and soul.' Given the text appears truncated and may be missing the final verdict, the score reflects the critic's ambivalence—acknowledging talent while finding the overall enterprise lacking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:40:37.204Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Redmayne's Emcee is a magnetic force of nature, equally seductive and sinister, while Rankin brings a raw vulnerability to Sally that makes her both heartbreaking and frustrating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Redmayne's Emcee is a magnetic force of nature, equally seductive and sinister, while Rankin brings a raw vulnerability to Sally that makes her both heartbreaking and frustrating.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Redmayne's Emcee is a magnetic force of nature, equally seductive and sinister, while Rankin brings a raw vulnerability to Sally that makes her both heartbreaking and frustrating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: High praise for lead performances using strong positive language ('magnetic force of nature', 'raw vulnerability'). However, this is only one curated excerpt, so confidence is low as the overall review verdict is unknown. | GPT-4o: The excerpt praises the performances of Redmayne and Rankin with strong language, indicating a positive view of the show. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the performances of the leads, suggesting a positive experience, but without more context, it's difficult to gauge the overall recommendation strength. | Kimi: The excerpt offers enthusiastic praise for both lead performances using superlatives like 'magnetic force of nature,' indicating a clear recommendation, though the limited context prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:40:53.605Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -19,5 +19,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“There’s simply not a more congenial spot for happily ever-aftering than here in ‘Camelot’; it’s just that this particular ‘Camelot’ spot isn’t that ‘Camelot’ spot.”\n\nRead more"
+  "showScoreExcerpt": "“There’s simply not a more congenial spot for happily ever-aftering than here in ‘Camelot’; it’s just that this particular ‘Camelot’ spot isn’t that ‘Camelot’ spot.”\n\nRead more",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His story lacks magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising individual elements like Lerner-Loewe's score and some performances, the critic finds fundamental flaws in Sorkin's adaptation that remove the magic and emotional core. The 2/5 star rating confirms this negative assessment. | GPT-4o: The review is largely critical of the production, noting a lack of magic and chemistry, and issues with the adaptation. The original 2/5 star rating suggests a negative verdict, but the text is truncated, so the confidence is medium. | Gemini: Despite praising some performances and the original score, the review is overall negative, criticizing Sorkin's revisions and the lack of chemistry. The 2/5 star rating confirms a negative assessment, even if the truncated text makes the final verdict slightly unclear. | Kimi: The critic awards 2/5 stars, finding Sorkin's book 'undernourished' and lacking magic, with emotion-deprived characters that undermine the classic Lerner and Loewe score. While praising some performances and the original material, the verdict clearly rejects this particular production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:31:42.726Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

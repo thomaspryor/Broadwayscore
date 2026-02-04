@@ -35,5 +35,53 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 888,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: The review is filled with superlative praise throughout - calling it a 'flawless original cast', describing performances as 'wonderfully moving' and 'beautifully' executed, praising the 'unfailing wit, grace and compassion', and calling the linguistic conceit 'near-genius'. The final line 'English is a wonder' serves as an unqualified endorsement. | Gemini: The review is overwhelmingly positive, praising the writing, direction, cast, and overall impact of the play. The critic highlights the play's wit, grace, compassion, and timeliness, making it a strong recommendation. | Kimi: The review overflows with superlatives including 'flawless,' 'wonderfully moving,' 'remarkably composed,' and 'near-genius,' concluding that 'English is a wonder.' Despite a minor quibble about one character's disappearance, the critic offers an enthusiastic, unqualified recommendation of this Pulitzer Prize-winning play.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:36:35.257Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

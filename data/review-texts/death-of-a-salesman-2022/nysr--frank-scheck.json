@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"In the hands of great lead actors, such as it is here, 'Death of a Salesman' still proves devastating with its Greek tragedy-like power.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/10/09/death-of-a-salesman-arthur-millers-classic-drama-needlessly-embellished/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/10/09/death-of-a-salesman-arthur-millers-classic-drama-needlessly-embellished/",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the hands of great lead actors, such as it is here, 'Death of a Salesman' still proves devastating with its Greek tragedy-like power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars with praise for 'great lead actors' and the play's 'devastating' power suggests solid positive recommendation, though single excerpt limits full assessment. | GPT-4o: The excerpt praises the lead actors and the enduring power of the play, suggesting a positive view. However, the 3/5 star rating and lack of full context indicate some reservations, leading to a lower positive score. | Gemini: The quote indicates that the production is powerful and devastating due to the lead actors, which is a positive assessment. Given the single excerpt and 3/5 stars, I'm scoring it as positive with reservations. | Kimi: The critic's 3/5 star rating places this firmly in Mixed territory (55-69), suggesting that while the lead performances and tragic impact are praiseworthy, significant reservations exist about other production elements not captured in this single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:35:06.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

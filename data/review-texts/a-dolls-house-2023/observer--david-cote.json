@@ -10,5 +10,11 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“If comedy is a play that ends in a wedding, then ‘A Doll’s House’ is a comedy that ends in divorce.”\n\nRead more"
+  "showScoreExcerpt": "“If comedy is a play that ends in a wedding, then ‘A Doll’s House’ is a comedy that ends in divorce.”\n\nRead more",
+  "contentTier": "invalid",
+  "rejectedAt": "2026-02-04T11:21:47.404Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a single sentence excerpt followed by 'Read more' - not enough evaluative content to determine a critical verdict or recommendation.; openai: The provided text is a single sentence that does not offer any evaluative content or opinion about the production. It appears to be a witty remark rather than a review.; gemini: This is just a single quote about the play, not a review with any evaluative content.",
+  "promptVersion": "5.2.0"
 }

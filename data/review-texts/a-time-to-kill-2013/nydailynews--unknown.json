@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200303044536/https://www.nydailynews.com/entertainment/music-arts/time-kill-theater-review-article-1.1489807",
   "contentTier": "complete",
   "wordCount": 397,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, there are plenty of moments to mull to-do lists during this paint-by-numbers dramatization.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict with strong criticism of the adaptation as 'paint-by-numbers,' lacking tension, depth, and dramatic impact. The final line 'Throw the book at it' confirms rejection. | GPT-4o: The review is overwhelmingly negative, criticizing the lack of tension, depth, and context in the production. The critic uses strong negative language and concludes with a damning verdict. | Gemini: The review is largely negative, citing a lack of depth, tension, and context. The critic uses phrases like \"paint-by-numbers dramatization\" and \"guilty\" to describe the production's shortcomings, leading to a negative recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:24:42.993Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

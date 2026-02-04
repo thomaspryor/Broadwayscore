@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241226060554/https://nypost.com/2015/04/14/it-shoulda-been-you-lacks-laughs-at-a-wedding-gone-wrong/",
   "contentTier": "complete",
   "wordCount": 440,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And so Broadway's new musical 'It Shoulda Been You' piles on the mishaps — only the show itself ends up quite the blunder.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'quite the blunder' with 'drecky writing' and 'disposable melodies,' while extensively praising the cast. This is a classic pattern where performer praise doesn't redeem an overall negative verdict. | GPT-4o: The review criticizes the show for its 'drecky writing' and 'disposable melodies,' despite praising the performances of the cast. The overall tone suggests the production is not worth seeing, aligning with a negative verdict. | Gemini: The review praises the cast but ultimately finds the writing and plot lacking, calling the show a \"blunder\" and the melodies \"disposable.\" | Kimi: While the critic praises the terrific ensemble cast as a joy to watch, they ultimately judge the show a failure due to drecky writing, disposable melodies, and an implausible plot, explicitly calling it a blunder that wastes its talented performers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:48:08.483Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

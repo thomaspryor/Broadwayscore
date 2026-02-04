@@ -29,5 +29,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 937,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is still a solid production of a worthwhile play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges it's a 'solid production of a worthwhile play' but expresses multiple reservations about timing, scale issues in the Broadway transfer, and compares it unfavorably to the original Off-Broadway production. The positive elements (performances, script quality) are balanced by significant concerns about the production's effectiveness. | GPT-4o: The review acknowledges the play's strengths and compassion but highlights issues with the production's scale and timing. The overall tone is mixed, with appreciation for the play's content but reservations about the current production. | Gemini: The critic acknowledges the play's worth and the production's solidity, but expresses reservations due to the timing and some perceived shortcomings compared to the original Off-Broadway production. The truncated text and mixed feelings lower the confidence. | Kimi: Extracted from malformed response | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:02:03.799Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

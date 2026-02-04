@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\" A last-minute harmonious quartet nearly makes for a happy ending.\"\n\nRead more"
+  "showScoreExcerpt": "\" A last-minute harmonious quartet nearly makes for a happy ending.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A last-minute harmonious quartet nearly makes for a happy ending.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('nearly makes for a happy ending') suggesting the show has positive elements but falls short of full satisfaction. The word 'nearly' indicates it doesn't quite achieve what it's reaching for. | GPT-4o: The excerpt suggests a mixed sentiment with 'nearly makes for a happy ending,' indicating some positive elements but not a strong recommendation. Given the limited context, the confidence is low. | Gemini: The single excerpt suggests a mixed reaction, with a positive element ('harmonious quartet') but not a fully positive conclusion ('nearly makes for a happy ending'). | Kimi: Single excerpt offers qualified praise for the show's finale; 'harmonious' and 'happy ending' indicate mild approval, while 'nearly' suggests reservations. Scored at lower end of Positive range per instructions for mildly positive isolated excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:44:27.807Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

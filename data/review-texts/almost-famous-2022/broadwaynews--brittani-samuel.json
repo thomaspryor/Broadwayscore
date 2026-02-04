@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ 'Almost Famous' — like the music it celebrates — defies critique...when an original musical doesn’t actually have anything original to say, every note falls flat.\"\n\nRead more"
+  "showScoreExcerpt": "“ 'Almost Famous' — like the music it celebrates — defies critique...when an original musical doesn’t actually have anything original to say, every note falls flat.\"\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "when an original musical doesn't actually have anything original to say, every note falls flat.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt warning acknowledged. The critic finds the musical fundamentally flawed - lacking originality and failing musically ('every note falls flat'). This is clearly negative, but with only one excerpt available, confidence is low. | GPT-4o: The excerpt suggests a negative view, criticizing the musical for lacking originality and effectiveness. However, with only one excerpt, the confidence is low due to potential cherry-picking. | Gemini: The excerpt states that the musical doesn't have anything original to say, and every note falls flat, indicating a negative assessment. Given that this is a single excerpt, confidence is low. | Kimi: The critic asserts the musical lacks originality and fails to resonate, declaring that 'every note falls flat' with no redeeming qualities mentioned in the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:26:39.796Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

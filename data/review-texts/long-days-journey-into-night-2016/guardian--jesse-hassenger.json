@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Jessica Lange gives a powerhouse performance as the morphine-addicted Mary Tyrone, while Gabriel Byrne brings gravitas to the role of her husband James.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 655,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jessica Lange gives a powerhouse performance as the morphine-addicted Mary Tyrone, while Gabriel Byrne brings gravitas to the role of her husband James.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80 rating indicates positive territory. Single excerpt praises lead performances as 'powerhouse' and bringing 'gravitas', suggesting strong recommendation despite limited text available. | GPT-4o: The excerpt highlights strong performances, particularly by Jessica Lange, which suggests a positive view. The original rating of 80 supports this classification. However, with only one excerpt, confidence is low. | Gemini: The excerpt praises the performances of the leads, indicating a positive aspect of the production. Given it's the only excerpt, and the critic gave it an 80, I'm scoring it as a positive review, but with low confidence due to the limited text. | Kimi: The excerpt offers unambiguous praise for the lead performances using strong evaluative language ('powerhouse', 'gravitas'), aligning with the provided 80 rating in the solid Positive range. Confidence is low due to the single-excerpt warning indicating potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:51:16.300Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

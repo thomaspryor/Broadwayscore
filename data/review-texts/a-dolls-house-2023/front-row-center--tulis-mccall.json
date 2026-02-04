@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“When Nora finally stands up on her own two feet, when she gives the final final, it feels as if we have all been given permission to breathe, and, if we choose, permission to walk out into the world by her side. Remarkable.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When Nora finally stands up on her own two feet, when she gives the final final, it feels as if we have all been given permission to breathe, and, if we choose, permission to walk out into the world by her side.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The excerpt describes a transformative, cathartic theatrical experience with the word 'Remarkable' as a one-word verdict. This suggests profound emotional impact and enthusiastic recommendation, placing it in Rave territory. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt uses strong positive language, describing the experience as 'remarkable' and suggesting a powerful emotional impact. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is strongly positive, describing the ending as \"remarkable\" and empowering. Given the single excerpt and the instruction to lean towards the higher end of the bucket for clearly positive excerpts, I scored it 82. | Kimi: The single excerpt provides strong praise for the production's emotional impact and finale, describing it as liberating and remarkable. However, confidence is low given only one curated quote is available, which may not represent the full review. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:21:27.391Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

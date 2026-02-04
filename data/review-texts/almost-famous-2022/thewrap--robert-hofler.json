@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“'Almost Famous' pretends to say something about fame – it’s empty, it saps the soul – but what Crowe and Likes fail to tell us is anything about the naked ambition and drive that must have pushed an extraordinary 15-year-old into writing a cover story for Rolling Stone.\"\n\nRead more"
+  "showScoreExcerpt": "“'Almost Famous' pretends to say something about fame – it’s empty, it saps the soul – but what Crowe and Likes fail to tell us is anything about the naked ambition and drive that must have pushed an extraordinary 15-year-old into writing a cover story for Rolling Stone.\"\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Almost Famous' pretends to say something about fame – it's empty, it saps the soul – but what Crowe and Likes fail to tell us is anything about the naked ambition and drive that must have pushed an extraordinary 15-year-old into writing a cover story for Rolling Stone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'empty' and criticizes fundamental storytelling failures. However, this is only one excerpt from a longer review, so confidence is low as the full verdict may be different. | GPT-4o: The excerpt criticizes the show for failing to provide depth or insight into its subject matter, suggesting a lack of substance. The tone is negative, but due to the limited excerpt, confidence is low. | Gemini: The excerpt criticizes the show for failing to say anything meaningful about fame and ambition. Given that this is the only excerpt, and it's negative, I'm scoring it as negative with low confidence. | Kimi: The critic condemns the show as 'empty' and criticizes the book for failing to explore the protagonist's motivations, indicating a substantial disappointment with the production's substance and writing despite this being a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:28:12.489Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Frankly put, the mess of the ‘Bad Cinderella’ writer credits extends to what transpires on stage. Fennell and Scheer have bought into the Disney princess formula, which dictates that the young heroine be spunky, strong and outspoken.”\n\nRead more"
+  "showScoreExcerpt": "“Frankly put, the mess of the ‘Bad Cinderella’ writer credits extends to what transpires on stage. Fennell and Scheer have bought into the Disney princess formula, which dictates that the young heroine be spunky, strong and outspoken.”\n\nRead more",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frankly put, the mess of the 'Bad Cinderella' writer credits extends to what transpires on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show a 'mess' and criticizes it for following a formulaic approach. However, with only one excerpt available, this could be cherry-picked negativity from a more balanced review. | GPT-4o: The excerpt criticizes the show as a 'mess' and implies a negative view of the writing and formulaic approach. However, without the full review, the confidence is low. | Gemini: The excerpt is negative, indicating issues with the writing and adherence to a formula. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: The critic explicitly calls the show a 'mess' and criticizes the writers for relying on formulaic Disney princess tropes, indicating a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:34:58.250Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Coming close to Christmas, 'Ain’t No Mo’ is a true gift for theatergoers up to the challenge of its undeniable power.\"\n\nRead more"
+  "showScoreExcerpt": "\"Coming close to Christmas, 'Ain’t No Mo’ is a true gift for theatergoers up to the challenge of its undeniable power.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Coming close to Christmas, 'Ain't No Mo' is a true gift for theatergoers up to the challenge of its undeniable power.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Calls the show 'a true gift' and emphasizes its 'undeniable power,' indicating strong recommendation. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt uses strong positive language ('true gift', 'undeniable power') indicating a highly enthusiastic recommendation. However, with only one excerpt, confidence is low. | Gemini: The single excerpt is strongly positive, calling the show a 'true gift' and highlighting its 'undeniable power.' Given the limited text, confidence is low, but the positive sentiment warrants a score in the upper end of the 'Positive' bucket. | Kimi: The excerpt uses strongly laudatory language ('true gift,' 'undeniable power') to clearly recommend the production, though the single-quote context limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:24:20.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

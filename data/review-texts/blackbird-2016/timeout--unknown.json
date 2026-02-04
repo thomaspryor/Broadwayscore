@@ -39,5 +39,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20160331091306/http://www.timeout.com:80/newyork/theater/blackbird",
   "contentTier": "complete",
   "wordCount": 399,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Time has been shattered for these walking ghosts, and we are transfixed watching them cut their hands, sifting through the shards.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with sustained praise for performances ('brilliantly rages'), direction ('exactingly sharp'), and overall impact. Critic emphasizes being 'transfixed' and 'craning forward' - strong endorsement of theatrical power. | GPT-4o: The review praises the performances and the production's ability to maintain tension and engagement, despite the heavy subject matter. The original 4/5 rating aligns with a strong positive recommendation, though not without acknowledging the discomforting nature of the play. | Gemini: The review is overwhelmingly positive, highlighting the compelling performances and staging, even with the difficult subject matter. The 4/5 rating supports a strong positive score. | Kimi: 4/5 star rating with consistent praise for the lead performances ('brilliantly rages,' 'transfixed'), direction ('exactingly sharp'), and design. The critic emphasizes the production's visceral power and enduring impact despite prior familiarity with the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:30:00.517Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

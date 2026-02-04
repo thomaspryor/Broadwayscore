@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“[It’s] like a hormonally confused teenager, riddled with conflicting impulses and given to impulsive lurching in different directions. Everyone involved seems convinced it is a dazzlingly original twist on a classic fairy tale: Cinderella is feisty! She has agency! She's no princessy pushover! It's a trope stated so regularly you can set your watch by it. But despite such gritted-teeth determination, Bad Cinderella is a strangely rudderless enterprise. This Cinderella is all dressed up with nowhere to go.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bad Cinderella is a strangely rudderless enterprise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt heavily criticizes the show as 'rudderless' with 'conflicting impulses' and dismisses its feminist angle as tired tropes. However, this is only one excerpt from a longer review, so the full verdict may be different. | GPT-4o: The review describes the show as 'rudderless' and 'riddled with conflicting impulses', suggesting a lack of coherent direction and execution. The critic implies the show fails to deliver on its intended originality, leading to a negative assessment. | Gemini: The review uses negative language such as \"hormonally confused teenager\", \"conflicting impulses\", \"impulsive lurching\", and \"strangely rudderless enterprise\", indicating a negative assessment. | Kimi: The single available excerpt condemns the show as directionless ('rudderless enterprise,' 'nowhere to go') and unoriginal, with no positive elements mentioned. Given this is a curated excerpt and clearly negative, it falls in the lower range of the Negative bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:34:23.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

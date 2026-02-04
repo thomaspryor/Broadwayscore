@@ -50,7 +50,12 @@
   "textIssues": [
     "Word count too low: 296 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 296,
-  "tierReason": "Short text (296 words)"
+  "tierReason": "Short text (296 words)",
+  "rejectedAt": "2026-02-04T10:39:39.427Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be website navigation, promotional copy, and footer content rather than an actual theater review; openai: The text provided is a mix of promotional content and site navigation, not a review of the show.; gemini: This is not a review, but rather website boilerplate and subscription prompts. There is a brief mention of 'Funny Girl' but no actual review content.; kimi: The text consists primarily of website boilerplate, navigation menus, login prompts ('Remember meForgot your password?Sign in'), copyright notices, and publication mission statements. Only one fragment of potential review content is present ('At a recent 'Funny Girl' preview...'), making this non-article content unsuitable for scoring.",
+  "promptVersion": "5.2.0"
 }

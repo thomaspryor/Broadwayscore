@@ -40,5 +40,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 64,
-  "tierReason": "Short text (64 words)"
+  "tierReason": "Short text (64 words)",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Second Stage has mounted Bess Wohl’s broadly entertaining “Grand Horizons.”",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review describes the show as 'broadly entertaining,' which suggests a positive assessment. However, due to the truncated nature of the text, the final verdict might be missing, leading to a low confidence score. | Gemini: The review calls the show \"broadly entertaining\" which indicates a positive, but not rave, review. The text is truncated, so confidence is low. | Kimi: The review describes the production as 'broadly entertaining' and favorably compares it to the theater's previous 'genial' hit, indicating a solid recommendation despite the truncated text cutting off the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:41:25.811Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

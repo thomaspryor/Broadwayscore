@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 720,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If that's the kind of thing that turns you on, then sure, sparks fly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review is clearly truncated but shows consistent mixed signals - high praise for Driver's 'standout' performance but criticism of the play as 'patchy,' 'mishmash of absurdities,' and problematic in its treatment of Anna's character. The conditional recommendation suggests neither strong endorsement nor dismissal. | GPT-4o: The review praises Adam Driver's performance but criticizes the play as a 'mishmash of absurdities' and 'twaddle'. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review praises Adam Driver's performance but finds the play itself to be a \"mishmash of absurdities, contrivances\". The truncated text makes the final verdict unclear, but the overall tone is mixed. | Kimi: While the critic praises Adam Driver's performance as 'beautiful' and 'unpredictable,' she describes the play itself as 'patchy,' 'contrived,' and 'twaddle,' offering only a conditional recommendation ('If that's the kind of thing that turns you on, then sure, sparks fly'). The truncated ending prevents certainty about the final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:30:41.749Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

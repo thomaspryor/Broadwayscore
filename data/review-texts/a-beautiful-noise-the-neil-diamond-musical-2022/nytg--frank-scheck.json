@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The real reason for a show like this, of course, is not to do a deep dive into its subject’s psyche but rather to deliver full-throttle versions of the hits that baby boomers, those theatergoers with the most disposable income, grew up hearing.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The real reason for a show like this, of course, is not to do a deep dive into its subject's psyche but rather to deliver full-throttle versions of the hits that baby boomers, those theatergoers with the most disposable income, grew up hearing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows cynicism about the show's commercial motivations rather than artistic merit, suggesting superficial treatment. However, this could be setup context rather than final verdict, so scored cautiously in Mixed range with low confidence. | GPT-4o: The excerpt suggests the show is more about nostalgia and entertainment than depth, hinting at a mixed reception. The lack of a full review and single excerpt warning reduce confidence. | Gemini: The excerpt suggests the show is primarily for a specific demographic seeking nostalgia, not necessarily a deep or innovative theatrical experience. This leans towards a mixed assessment, as it doesn't explicitly recommend or discourage, but implies limited appeal. | Kimi: Single excerpt presents a cynical view of the show's commercial motivations and lack of psychological depth, while acknowledging it delivers energetic performances of familiar hits. The dismissive tone toward the target demographic and framing suggests mixed feelings rather than enthusiasm, but without the full review or concluding verdict, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:18:22.216Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
