@@ -657,13 +657,6 @@ function HomePageInner() {
         </div>
       </div>
 
-      {/* Score Column Header */}
-      <div className="flex justify-end items-center pr-4 sm:pr-5 mb-2">
-        <span className="text-xs sm:text-sm font-semibold text-gray-400 tracking-wide">
-          {scoreMode === 'audience' ? 'Audience Grade' : "Critics\u2019 Score"}
-        </span>
-      </div>
-
       {/* Show List */}
       <h2 className="sr-only">Broadway Shows</h2>
       <div className="space-y-3" role="list" aria-label="Broadway shows">
