@@ -18,6 +18,7 @@ const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
+const { scrapeCurrentRuntimes, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -302,6 +303,19 @@ async function discoverShows() {
   }
   console.log('');
 
+  // --- Runtime enrichment from Broadway.com ---
+  let runtimeEnrichments = {};
+  if (!dryRun && newShows.length > 0) {
+    try {
+      console.log('⏱️  Looking up runtimes from Broadway.com...');
+      const runtimeEntries = await scrapeCurrentRuntimes();
+      runtimeEnrichments = matchRuntimesToShows(runtimeEntries, [...data.shows, ...newShows]);
+    } catch (e) {
+      console.log(`⚠️  Runtime lookup failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
   if (!dryRun) {
     // Add new shows to database
     for (let i = 0; i < newShows.length; i++) {
@@ -349,8 +363,8 @@ async function discoverShows() {
         closingDate: show.closingDate || null,
         status: status,
         type: detection.detectedType, // Auto-detected with revival logic
-        runtime: null,
-        intermissions: null,
+        runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
+        intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
         synopsis: '',
         ageRecommendation: null,

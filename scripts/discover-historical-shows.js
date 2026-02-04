@@ -22,6 +22,7 @@ const { validateVenue } = require('./lib/broadway-theaters');
 const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
+const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
@@ -494,6 +495,32 @@ async function discoverHistoricalShows() {
   }
   console.log('');
 
+  // --- Runtime enrichment from Broadway.com ---
+  let runtimeEnrichments = {};
+  if (!dryRun && newShows.length > 0) {
+    try {
+      console.log('⏱️  Looking up runtimes from Broadway.com...');
+      // Centralized page covers current shows; for historical, try individual pages
+      const runtimeEntries = await scrapeCurrentRuntimes();
+      runtimeEnrichments = matchRuntimesToShows(runtimeEntries, [...data.shows, ...newShows]);
+
+      // For shows not matched on centralized page, try individual pages
+      for (const show of newShows.slice(0, 25)) { // Limit to 25 to avoid rate issues
+        if (runtimeEnrichments[show.id]) continue;
+        try {
+          const result = await scrapeShowRuntime(show.title);
+          if (result.runtime) {
+            runtimeEnrichments[show.id] = result;
+          }
+        } catch (e) { /* skip */ }
+        await new Promise(r => setTimeout(r, 2000)); // Rate limit
+      }
+    } catch (e) {
+      console.log(`⚠️  Runtime lookup failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
   if (!dryRun) {
     // Add new shows to database
     for (const show of newShows) {
@@ -526,8 +553,8 @@ async function discoverHistoricalShows() {
         closingDate: show.closingDate || null,
         status: 'closed',
         type: show.type,
-        runtime: null,
-        intermissions: null,
+        runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
+        intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
         synopsis: '',
         ageRecommendation: null,
