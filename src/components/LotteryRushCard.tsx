@@ -1,6 +1,6 @@
 'use client';
 
-import { ShowLotteryRush } from '@/lib/data';
+import type { ShowLotteryRush } from '@/lib/data-types';
 
 interface LotteryRushCardProps {
   data: ShowLotteryRush;

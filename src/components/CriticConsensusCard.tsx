@@ -1,5 +1,5 @@
 import React from 'react';
-import { CriticConsensus } from '@/lib/data';
+import type { CriticConsensus } from '@/lib/data-types';
 
 interface CriticConsensusCardProps {
   consensus: CriticConsensus;

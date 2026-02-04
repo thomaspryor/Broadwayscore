@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getDirectorBySlug, getAllDirectorSlugs } from '@/lib/data';
+import { getDirectorBySlug, getAllDirectorSlugs } from '@/lib/data-core';
 import { generateBreadcrumbSchema, generatePersonSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 

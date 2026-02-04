@@ -1,7 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getShowBySlug, getAllShowSlugs, ComputedShow, getShowGrosses, getGrossesWeekEnding, getShowAwards, getAudienceBuzz, getCriticConsensus, getLotteryRush, getShowCommercial, getShowLastUpdated, getRecoupmentTrend } from '@/lib/data';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated } from '@/lib/data-core';
+import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
+import { getShowAwards } from '@/lib/data-awards';
+import { getAudienceBuzz } from '@/lib/data-audience';
+import { getCriticConsensus } from '@/lib/data-consensus';
+import { getLotteryRush } from '@/lib/data-lottery';
+import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
+import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';

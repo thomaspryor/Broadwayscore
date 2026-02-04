@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows, getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data';
+import { getAllShows } from '@/lib/data-core';
+import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
 

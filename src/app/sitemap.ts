@@ -6,7 +6,7 @@ import {
   getAllDirectorSlugs,
   getAllTheaterSlugs,
   getAllBrowseSlugs,
-} from '@/lib/data';
+} from '@/lib/data-core';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
