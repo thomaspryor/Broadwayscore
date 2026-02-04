@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The new Broadway production of David Harrower’s “Blackbird,” which opened Thursday at the Belasco Theatre, puts us in the very uncomfortable position of looking back at the affair a middle-aged man had with a 12-year-old girl 15 years ago.\n\nOf course, “affair” is not the right word. He sexually abused her.",
+  "isFullReview": false,
+  "textWordCount": 51,
+  "archivePath": "data/archives/reviews/blackbird-2016/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:51:38.326Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 57 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 51,
+  "tierReason": "Short text (51 words)"
 }
