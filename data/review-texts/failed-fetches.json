@@ -8488,18 +8488,6 @@
     "timestamp": "2026-02-03T22:49:01.310Z"
   },
   {
-    "reviewId": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Angie Han",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, company, fun home, once, evita...",
-    "textLength": 10181,
-    "timestamp": "2026-02-03T22:51:12.956Z"
-  },
-  {
     "reviewId": "between-riverside-and-crazy-2022/nytimes--jesse-green.json",
     "showId": "between-riverside-and-crazy-2022",
     "outlet": "The New York Times",
@@ -13394,5 +13382,65 @@
     "garbageReason": "Multiple shows mentioned (8): spamalot, betrayal, summer, betrayal, once...",
     "textLength": 4108,
     "timestamp": "2026-02-04T21:07:23.662Z"
+  },
+  {
+    "reviewId": "camelot-2023/nyt-theater--jonathan-mandell.json",
+    "showId": "camelot-2023",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2023/04/16/camelot-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): hamilton, spamalot, purpose, the inheritance, my fair lady...",
+    "textLength": 8358,
+    "timestamp": "2026-02-04T21:09:44.175Z"
+  },
+  {
+    "reviewId": "camelot-2023/nytg--joe-dziemianowicz.json",
+    "showId": "camelot-2023",
+    "outlet": "New York Theatre Guide",
+    "critic": "Joe Dziemianowicz",
+    "url": "https://www.newyorktheatreguide.com/reviews/camelot-broadway-review-aaron-sorkin",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): company, the inheritance, network, my fair lady, once...",
+    "textLength": 3986,
+    "timestamp": "2026-02-04T21:09:50.682Z"
+  },
+  {
+    "reviewId": "camelot-2023/variety--frank-rizzo.json",
+    "showId": "camelot-2023",
+    "outlet": "Variety",
+    "critic": "Frank Rizzo",
+    "url": "https://variety.com/2023/legit/reviews/camelot-review-broadway-aaron-sorkin-1235582644/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): giant, the inheritance, network, the king and i, once...",
+    "textLength": 6162,
+    "timestamp": "2026-02-04T21:13:16.698Z"
+  },
+  {
+    "reviewId": "camelot-2023/vulture--unknown.json",
+    "showId": "camelot-2023",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "https://www.vulture.com/2023/04/theater-review-camelot-sher-sorkin-lincoln-center.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
+    "textLength": 9819,
+    "timestamp": "2026-02-04T21:13:21.064Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Angie Han",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, company, fun home, rocky...",
+    "textLength": 10477,
+    "timestamp": "2026-02-04T21:13:40.497Z"
   }
 ]
