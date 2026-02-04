@@ -1475,8 +1475,13 @@ function verifyFullTextContent(fullText, showMetadata) {
     };
   }
 
-  const text = fullText.toLowerCase();
-  const title = (showMetadata.title || '').toLowerCase().trim();
+  // Normalize text: lowercase and normalize apostrophes/quotes for matching
+  const text = fullText.toLowerCase().replace(/[\u2018\u2019\u201C\u201D\u2032\u2033]/g, c =>
+    c === '\u2018' || c === '\u2019' || c === '\u2032' ? "'" : '"'
+  );
+  const title = (showMetadata.title || '').toLowerCase().trim().replace(/[\u2018\u2019\u201C\u201D\u2032\u2033]/g, c =>
+    c === '\u2018' || c === '\u2019' || c === '\u2032' ? "'" : '"'
+  );
   let score = 0;
   const positiveSignals = [];
   const negativeSignals = [];
@@ -1514,16 +1519,21 @@ function verifyFullTextContent(fullText, showMetadata) {
     if (!titleFound) {
       const titleWords = title
         .replace(/^(the|a|an)\s+/, '')
+        .replace(/['']/g, '') // Strip apostrophes so "doll's" → "dolls", matches text "dolls"
         .split(/[\s:,\-–—]+/)
-        .filter(w => w.length > 3 && !['the', 'and', 'for', 'with', 'from', 'that', 'this', 'into'].includes(w));
+        .filter(w => w.length > 3 && !['the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'part', 'musical'].includes(w));
+
+      // Also search in apostrophe-stripped text
+      const textNoApostrophe = text.replace(/['']/g, '');
 
       if (titleWords.length > 0) {
-        const matchedWords = titleWords.filter(w => text.includes(w));
+        const matchedWords = titleWords.filter(w => text.includes(w) || textNoApostrophe.includes(w));
         // For single-word titles, require exact match
-        // For multi-word titles, require majority of significant words
+        // For multi-word titles, require half of significant words (50% threshold)
+        // 50% catches "A Bronx Tale The Musical" matching on "bronx" + "tale" (2/3)
         if (titleWords.length === 1 && matchedWords.length === 1) {
           titleFound = true;
-        } else if (titleWords.length >= 2 && matchedWords.length >= Math.ceil(titleWords.length * 0.6)) {
+        } else if (titleWords.length >= 2 && matchedWords.length >= Math.ceil(titleWords.length * 0.5)) {
           titleFound = true;
         }
       }
