@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 606,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's deliberate of course, and as Hall's script flags up the fakeries of the original film, its contrived romance, it slips further and further into a stilted, self-aware soap.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises Cranston's performance and the production's multimedia concept but criticizes van Hove for reusing tricks with diminishing returns and warns the show risks leaving audiences 'bored as hell.' Mixed verdict with no clear recommendation. | GPT-4o: The review praises Bryan Cranston's performance and the intricate staging but criticizes the production for feeling repetitive and lacking life. The critic acknowledges the show's cleverness but notes that it risks becoming boring, indicating a mixed reception. | Gemini: The review praises Cranston's performance and the multimedia staging but criticizes the script and direction as repetitive and ultimately boring, resulting in a mixed assessment. | Kimi: While praising Cranston's majestic performance and the intricate multimedia staging as smart, the critic finds van Hove's direction stuck on repeat with diminishing returns, and warns that the show ultimately lacks life and risks leaving audiences bored.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:23:59.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

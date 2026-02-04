@@ -38,5 +38,59 @@
   "duplicateTextOf": "guardian--adrian-horton.json",
   "contentTier": "complete",
   "wordCount": 986,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cult of Love is designated to represent the sin of pride, yet it's a work to be proud of, nonetheless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review praises the performances as 'uniformly excellent,' calls Woodley 'fearless,' and describes the cult metaphor as 'brilliant.' The final line suggests pride in the work. However, confidence is low due to truncated text potentially missing the full verdict. | Gemini: The review is generally positive, praising the performances and the play's themes, but notes some issues with character development and cacophony. The truncated nature of the text lowers the confidence. | Kimi: The reviewer praises the 'uniformly excellent' performances and 'brilliant' central metaphor, calling the play smart, tense, and timely, while noting minor staging challenges with overlapping dialogue and one underwritten character.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:47:56.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

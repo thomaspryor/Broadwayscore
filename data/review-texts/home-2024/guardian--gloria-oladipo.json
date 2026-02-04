@@ -38,5 +38,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 693,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But, despite its misfires, Home remains a humorous and mythic romp.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges Williams's poetic writing and strong lead performance by Kittles, but consistently criticizes Leon's direction as uneven, lacking intimacy, and creating pacing problems. The final verdict calls it worthwhile 'despite its misfires,' indicating a mixed recommendation. | GPT-4o: The review acknowledges the play's humor and mythic qualities but criticizes the direction and pacing, leading to a mixed verdict. | Gemini: The review acknowledges both positive aspects (humor, performances) and negative aspects (uneven direction, pacing issues). The overall tone is neither strongly positive nor negative, leading to a mixed classification. | Kimi: The review explicitly labels the production as 'hit-and-miss' with 'mixed results,' praising the performances and Williams's writing while criticizing the uneven direction, slow pacing, and bare-bones scenic design.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:05:59.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

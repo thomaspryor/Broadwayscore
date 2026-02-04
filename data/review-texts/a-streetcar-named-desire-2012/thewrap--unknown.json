@@ -38,5 +38,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 54,
-  "tierReason": "Short text (54 words)"
+  "tierReason": "Short text (54 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T05:31:45.483Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about a production at St. Ann's Warehouse in Brooklyn, which is an off-Broadway venue, not a current Broadway production.; openai: The review is about a production at St. Ann's Warehouse in Brooklyn, not the current Broadway run.; gemini: This review is for an off-Broadway production at St. Ann's Warehouse in Brooklyn, not a Broadway production.; kimi: The production reviewed is at St. Ann's Warehouse in Brooklyn, an off-Broadway venue, not a Broadway theater. The instructions specify that reviews of off-Broadway productions should be rejected as 'wrong_production'.",
+  "promptVersion": "5.2.0"
 }

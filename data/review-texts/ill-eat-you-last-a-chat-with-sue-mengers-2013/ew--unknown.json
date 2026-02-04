@@ -52,5 +52,62 @@
   "archiveOrgUrl": "http://web.archive.org/web/20130926125231/http://www.ew.com/ew/article/0,,20364394_20694318,00.html",
   "contentTier": "complete",
   "wordCount": 505,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "low",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's real heaven in this profanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: Despite truncation warning, the review is overwhelmingly positive with consistent superlatives ('divine', 'fabulous feat', 'real heaven') and gives an 'A' grade. The critic praises every element from Midler's performance to direction, set, and writing. | GPT-4o: The review praises Bette Midler's performance and the play's engaging qualities, describing it as a 'bonbon of a play' and highlighting the 'real heaven' in the show. Despite the truncated text warning, the overall tone is positive, aligning with the original 'D' rating which suggests a positive but not overwhelming endorsement. | Gemini: The review ends abruptly, but the critic gives the show a 'D' rating. While praising Midler's performance, the overall tone and the D rating suggest a negative assessment. | Kimi: The review text is overwhelmingly positive, praising Midler's performance as 'divine,' the direction as 'dynamic,' and the play as a 'bonbon' with 'real heaven in this profanity.' However, confidence is low due to the truncation warning and the conflicting 'D' rating provided in the metadata, which contradicts the uniformly enthusiastic tone of the available text. | Buckets: claude=Rave, openai=Positive, gemini=Negative, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:09:35.582Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 79,
+    "geminiScore": 45,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 45,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (3 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

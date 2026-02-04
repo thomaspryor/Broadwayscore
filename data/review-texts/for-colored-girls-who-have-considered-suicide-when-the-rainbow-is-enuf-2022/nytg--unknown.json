@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 924,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production places an exclamation point at the end of its title, as if to claim that it will punch through every moment of grief until all that is left is celebratory victory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review offers substantial criticism of Brown's direction as lacking nuance and cohesion, while praising individual performances like Okpokwasili's. The critic finds the production 'frequently soars' but identifies significant structural and interpretive problems. | GPT-4o: The review acknowledges powerful performances and moments but criticizes the lack of cohesion and depth in the production. While there are highlights, the overall tone suggests a mixed experience with significant reservations. | Gemini: The review acknowledges powerful moments and strong performances, but criticizes the direction for lacking cohesion and depth. It neither fully recommends nor discourages seeing the show, placing it in the mixed category. | Kimi: The review offers strong praise for individual performers and specific moments ('frequently soars,' 'brilliant Broadway debut'), but consistently criticizes the direction for lacking nuance, throughline, and cohesion ('does not deepen the meaning of the text,' 'smolder in isolation'). The critic appreciates elements while finding the whole unsatisfying.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:57:22.575Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

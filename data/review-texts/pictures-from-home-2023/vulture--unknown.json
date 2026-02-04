@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240414082514/https://www.vulture.com/2023/02/theater-review-pictures-from-home-sultan-lane-burstein-broadway.html",
   "contentTier": "complete",
   "wordCount": 1328,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pictures From Home, the play, ends up being a very good argument for Pictures From Home, the memoir, but not much of one for itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic praises Lane's performance and acknowledges some effective moments, but finds the play dramatically inert with poor pacing, underdeveloped characters, and structural problems. The verdict suggests the source material is superior to this adaptation. | Gemini: The review acknowledges strong performances, particularly by Nathan Lane, but ultimately finds the play lacking in drama and depth compared to the source material. It's a qualified assessment that doesn't strongly recommend or discourage seeing it. | Kimi: While the review praises Nathan Lane's performance and the production design, it criticizes the script for lacking dramatic momentum, failing to explore its themes deeply, and being inferior to the source material, ultimately suggesting the play serves better as an advertisement for the book than as compelling theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:29:42.516Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

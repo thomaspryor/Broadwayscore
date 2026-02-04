@@ -29,5 +29,59 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 544,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This ebullient new musical has a book by James Graham, our finest contemporary playwright, and is directed by Rupert Goold, the best director in the country.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise throughout with superlatives about the creative team, performances described as 'magnificent' and 'excellent', music called 'strong and catchy'. The closing prediction that 'there is little doubt that we'll be seeing this show in venues beyond the Almeida' suggests transfer potential. Confidence medium due to truncated text potentially missing final verdict. | GPT-4o: The review is filled with praise for the production team, music, and performances, suggesting a strong recommendation. However, due to the truncated nature of the text, the final verdict might be missing, so the confidence is low. | Gemini: Despite the truncated text, the review is overwhelmingly positive, praising the performances, music, and direction. The final line suggests a future beyond the Almeida, indicating a strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:38:35.358Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Whitaker brings a touching vulnerability to Erie Smith, the small-time gambler and big-time dreamer at the center of O'Neill's meditation on loneliness and the human need for connection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -63,5 +63,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 660,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whitaker's hangdog vulnerability makes it tough to believe in Erie's better days.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the production design and direction extensively but expresses significant reservations about Whitaker's casting and performance, concluding the play is 'much more than a warm-up' for a better O'Neill work. | GPT-4o: The review praises the performances and set design but notes limitations in the play's impact and Whitaker's portrayal. It suggests the production is a lesser work compared to 'Iceman', indicating a mixed reception. | Gemini: The review acknowledges Whitaker's heartfelt performance and the impressive set design, but ultimately suggests that \"Hughie\" is not much more than a warm-up for \"Iceman\", indicating a mixed assessment. | Kimi: While praising the sensitive direction, astonishing set design, and heartfelt performances, the critic finds Whitaker miscast for the character's flashier past and dismisses the play as merely a 'warm-up' for O'Neill's greater works.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:08:20.467Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

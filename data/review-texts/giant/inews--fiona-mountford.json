@@ -29,5 +29,11 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 575,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T05:58:40.213Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Royal Court Theatre, not the current Broadway run.; kimi: This review covers the production at London's Royal Court Theatre (as indicated by the venue name, UK phone number, and references to British theatres), not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

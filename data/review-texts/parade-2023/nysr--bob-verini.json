@@ -19,5 +19,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“We’re never permitted to distance ourselves from the prejudice and blind hatred that tribalism fosters. And thank God for that, because when we forget past injustices we’re doomed to repeat them.”\n\nRead more"
+  "showScoreExcerpt": "“We’re never permitted to distance ourselves from the prejudice and blind hatred that tribalism fosters. And thank God for that, because when we forget past injustices we’re doomed to repeat them.”\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arden has been masterly at infusing ensemble roles with vivid life and outdoes himself here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with sustained superlative praise throughout. Uses terms like 'triumphantly,' 'masterly,' 'outdoes himself,' and 'thank God for that' while praising performances, direction, and social relevance without meaningful reservations. | GPT-4o: The review is overwhelmingly positive, highlighting the production's triumph and the masterful performances. Despite the text being truncated, the 5/5 star rating and the strong praise throughout suggest a rave review. | Gemini: The critic praises the production as \"welcome as it is provocative\" and highlights the excellent performances and staging. The 5/5 star rating and the phrase \"triumphantly marched back\" indicate a rave review, despite the truncated text. | Kimi: The review carries the critic's own 5/5 star rating and delivers consistent superlatives including 'triumphantly,' 'masterly,' and 'beautifully executed' with no critical caveats, indicating unqualified enthusiasm for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:29:00.582Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

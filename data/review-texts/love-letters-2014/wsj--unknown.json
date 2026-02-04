@@ -37,5 +37,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140922121944/http://online.wsj.com:80/articles/theater-review-love-letters-1411093815",
   "contentTier": "complete",
   "wordCount": 584,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's one of Mr. Gurney's best plays, a tender study of thwarted love.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the play itself ('one of Gurney's best'), enthusiastic acclaim for both lead performances (Farrow's 'fearlessly projected, fully involved performance' is 'the most gratifying of surprises'), and appreciation for the direction's 'uncanny timing.' No significant reservations expressed. | Gemini: The review is overwhelmingly positive, praising the play itself, the performances of Farrow and Dennehy, and the direction. The critic clearly recommends seeing it. | Kimi: The critic praises the play as one of Gurney's best works, commends the performances by Farrow and Dennehy, and lauds the direction, clearly recommending the production while noting its artistic merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:20:52.353Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

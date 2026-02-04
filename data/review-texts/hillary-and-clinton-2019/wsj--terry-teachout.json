@@ -22,5 +22,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote from a larger review, lacking any clear evaluative verdict or recommendation about the show; openai: The text is a brief excerpt that lacks evaluative content or a clear verdict about the show.; gemini: This is a single sentence excerpt, lacking any evaluative content or overall assessment of the show. It's just a quote from the play.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "https://www.wsj.com/articles/hillary-and-clinton-review-impeachable-offenses-11555630200",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

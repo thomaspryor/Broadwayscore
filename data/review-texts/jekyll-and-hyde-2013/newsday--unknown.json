@@ -57,5 +57,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210120133453/https://www.newsday.com/entertainment/theater/jekyll-hyde-review-schlock-opera-1.5092189",
   "contentTier": "truncated",
   "wordCount": 489,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway already has its tourist-ready 19th century potboiler for summer visitors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The critic dismisses the show as formulaic 'tourist fare' and 'schlock opera' but acknowledges competent performances and staging. The truncated text and lack of a clear final verdict reduces confidence in this mixed assessment. | Gemini: The review is mixed, pointing out flaws in the score and lyrics while acknowledging the performances. The bottom line \"Summer fare comes early\" suggests a lukewarm recommendation. The text is truncated, lowering confidence. | Kimi: While praising the cast (Maroulis, Cox, Wicks) and 'imaginative' staging, the critic savages the material as 'junk-food demiclassic' with 'schlock opera' music and 'klutzy' lyrics. The dismissive bottom line 'Summer fare comes early' confirms this is not a recommendation despite the performers' efforts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:13:43.646Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

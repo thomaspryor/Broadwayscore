@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 714,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This modest, unassuming tuner is a definite crowd-pleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it a 'definite crowd-pleaser' with 'refreshing change' and 'genuine wit and musical flair.' Praises performances and direction. However, acknowledges it may struggle commercially and would be better off-Broadway, creating some reservations. | GPT-4o: The review praises the show's wit, musical flair, and comedic elements, describing it as a 'crowd-pleaser' with 'small-scale charms.' However, it notes potential struggles for attention against larger shows and suggests it might be more suited to an off-Broadway venue. The text is truncated, so the final verdict may be missing. | Gemini: The review is generally positive, highlighting the wit, musical flair, and performances. However, the truncated text and comment about it being better suited for off-Broadway suggest some reservations, placing it in the positive range but not strongly so. | Kimi: The critic consistently praises the show's genuine wit, peppy score, strong lead performances by Levi and Rodriguez, and inventive design, calling it a 'definite crowd-pleaser' and 'refreshing change,' despite noting its modest scale may limit commercial appeal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:55:28.597Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

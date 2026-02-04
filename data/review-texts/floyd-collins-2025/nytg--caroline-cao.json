@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 773,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Comedic quips keep the musical from sinking into bleakness, and Guettel’s folksy bluegrass score, complete with yodeling, is a remarkable one.\"\n\nRead more"
+  "showScoreExcerpt": "\"Comedic quips keep the musical from sinking into bleakness, and Guettel’s folksy bluegrass score, complete with yodeling, is a remarkable one.\"\n\nRead more",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In spite of unevenness, the scope and score of Floyd Collins give meaning to the title character's journey.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review explicitly calls the show 'uneven but ambitious' and acknowledges both frustrations (first act lagginess, visual silliness) and strengths (remarkable score, searing critique). The final verdict finds meaning despite unevenness, placing it in mixed territory that neither fully recommends nor discourages. | GPT-4o: The review acknowledges the show's ambition and remarkable score but highlights significant issues such as visual silliness and a frustrating first act. The overall tone suggests a mixed reception with notable strengths and weaknesses. | Gemini: The review acknowledges flaws (\"uneven\", \"lagginess\") but also praises the score and ambition. The overall tone is mixed, leaning slightly positive due to the final statement. | Kimi: The reviewer acknowledges significant flaws including first-act lagginess, visually silly staging, and jumbled sound mixing, but explicitly states this shouldn't dissuade attendance and praises the remarkable score and ambitious scope.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:55:53.837Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 75,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

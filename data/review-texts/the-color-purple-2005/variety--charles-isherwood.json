@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical adaptation of Alice Walker's novel and Steven Spielberg's film is an earnest, often moving show that succeeds in translating the story's emotional power to the stage.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1082,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like the sugar-coated movie, this shapeless stage version is far more satisfying than it deserves to be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Isherwood extensively critiques the musical's structural flaws, calling it a 'big, messy patchwork' with 'unsophisticated storytelling' and 'by-the-numbers direction.' However, he acknowledges it's 'far more satisfying than it deserves to be' due to Walker's source material and predicts audience success, placing this in mixed territory with significant reservations but ultimate emotional payoff. | GPT-4o: The review acknowledges the show's emotional impact and audience connection but criticizes its storytelling and character development. The praise for individual performances and emotional moments is balanced by significant reservations about the production's cohesion and execution. | Gemini: The review acknowledges the show's flaws (shapeless, unsophisticated storytelling) but also recognizes its satisfying elements and the power of the source material. It's a mixed bag with both positive and negative aspects. | Kimi: The critic heavily criticizes the adaptation as a 'messy patchwork' with 'unsophisticated storytelling' and 'by-the-numbers' direction, yet acknowledges the strong performances and source material create a satisfying emotional experience that audiences will enjoy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:40:56.739Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

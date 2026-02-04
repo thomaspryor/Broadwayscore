@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Vega's production emphasizes the apocalyptic undertones of Ms. Kirkwood's text, creating an atmosphere of dread that hovers over the entire evening like radioactive dust.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (25 words)",
   "textQuality": "full",
   "previousUrl": "https://www.nytimes.com/2017/12/13/theater/the-children-review.html",
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20250602172611",
   "archiveOrgUrl": "http://web.archive.org/web/20250602172611/https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
   "wordCount": 345,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T06:39:56.062Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: Text ends with error message 'We are having trouble retrieving the article content. Please enable JavaScript in your browser settings' - this is technical error text, not a complete review; openai: The text appears to be a mix of article content and website navigation or error messages, indicating incomplete or corrupted data.",
+  "promptVersion": "5.2.0"
 }

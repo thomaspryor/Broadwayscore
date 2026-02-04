@@ -36,5 +36,59 @@
   ],
   "contentTier": "complete",
   "wordCount": 589,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even to the most pessimistic, Sylvia is innocuous and zippy, surprisingly foul-mouthed, and perhaps the very definition of disarmingly funny",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review gives a B grade and concludes positively despite noting flaws. The critic acknowledges weaknesses but finds the show 'disarmingly funny' and praises key performances, particularly Sella as 'indispensible.' | Gemini: The review is mostly positive, calling the show \"innocuous and zippy, surprisingly foul-mouthed, and perhaps the very definition of disarmingly funny.\" However, the text is truncated, so confidence is low. | Kimi: While criticizing Broderick's 'pathos-less performance' and noting the physical humor wears thin, the reviewer praises the comic turns of Ashford, White, and especially Sella, ultimately deeming the production 'disarmingly funny' and likely to win over cynics.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:37:10.481Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

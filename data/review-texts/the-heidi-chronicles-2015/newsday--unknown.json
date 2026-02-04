@@ -57,5 +57,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210926035731/https://www.newsday.com/entertainment/theater/the-heidi-chronicles-review-wonderful-return-of-heidi-and-wasserstein-1.10078409",
   "contentTier": "truncated",
   "wordCount": 442,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is still a witty, vibrant, wonderful play, directed with layers of wisdom and an embraceable aversion to cartoon by Pam MacKinnon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise throughout with superlatives like 'wonderful,' 'beautifully crafted,' and 'gloriously portrays.' The critic enthusiastically defends the play's continued relevance and praises performances across the board. Confidence is medium due to truncated text potentially missing final verdict. | GPT-4o: The review praises the play as 'witty, vibrant, wonderful' and highlights strong performances and direction. Despite the text being truncated, the overall tone is clearly positive with no significant reservations. | Gemini: Despite being truncated, the review is largely positive, praising the play's wit, vibrancy, and direction. The critic also commends the performances and design elements. | Kimi: The review consistently praises the production as 'witty, vibrant, wonderful' and 'beautifully crafted,' with strong accolades for the cast and direction. However, confidence is lowered due to the truncated ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:43:13.363Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

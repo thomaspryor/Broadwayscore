@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20160314161221/http://www.newsday.com:80/entertainment/theater/blackbird-review-jeff-daniels-michelle-williams-in-searing-drama-1.11558700",
   "contentTier": "complete",
   "wordCount": 520,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this riveting, visceral, uncompromising revival makes misgivings irrelevant",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Despite opening with context about the difficult subject matter, the critic delivers strong praise calling it 'riveting, visceral, uncompromising' and praising both lead performances as 'extraordinary' and matching 'layer for complicated layer.' The evolution from initial doubts to enthusiastic endorsement indicates a strong positive recommendation. | GPT-4o: The review is filled with superlatives and praises the performances and direction, describing the production as 'riveting' and 'visceral'. The critic's initial doubts are dismissed, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the performances of Daniels and Williams, the direction, and the psychological depth of the production. The critic explicitly states that their initial doubts were proven wrong. | Kimi: The review offers unqualified praise for the performances, direction, and production design, using superlatives like 'riveting,' 'peerless,' and 'extraordinary' with no significant caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:40:15.334Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

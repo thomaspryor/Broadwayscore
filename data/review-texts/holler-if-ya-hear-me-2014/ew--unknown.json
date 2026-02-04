@@ -49,5 +49,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 278,
-  "tierReason": "Short text (278 words)"
+  "tierReason": "Short text (278 words)",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The whole thing makes you want to holler.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite acknowledging some good moments, the critic finds the script a 'confusing muddle,' criticizes the direction and choreography, and gives a C+ grade. The final line confirms disappointment. | GPT-4o: The review criticizes the script as a 'confusing muddle' and highlights issues with staging and choreography, indicating a negative view. The 'C+' rating aligns with a negative assessment. However, the text is truncated, so the final verdict may be missing, leading to medium confidence. | Gemini: The review is mostly negative, criticizing the script, staging, and choreography. The final grade of C+ suggests a negative overall assessment, despite some positive moments. | Kimi: The review assigns a C+ grade and offers substantial criticism of the book and direction as 'awkward' and 'slender,' while acknowledging strong individual performances and energetic moments. The text is truncated, warranting caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:05:20.829Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 48,
+    "geminiScore": 45,
+    "kimiScore": 65,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

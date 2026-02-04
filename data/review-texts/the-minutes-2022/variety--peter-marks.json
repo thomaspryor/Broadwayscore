@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Letts has fashioned a drama that builds to a shattering climax, one that recontextualizes everything that has come before and leaves audiences with plenty to chew over.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -41,5 +41,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251103115442/https://variety.com/2022/legit/reviews/the-minutes-review-broadway-play-tracy-letts-1235234223/",
   "duplicateTextOf": "variety--naveen-kumar.json",
   "wordCount": 680,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is thrilling and essential theater that interrogates the present by laying bare how history is written.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives throughout: 'astonishing feat,' 'thrilling and essential theater,' 'among the best new plays on Broadway in years.' Praises all elements including writing, direction, and ensemble performance with no reservations. | GPT-4o: The review is filled with superlatives and high praise, describing the play as 'astonishing,' 'thrilling,' and 'essential theater.' The critic emphasizes its brilliance and impact, making it a must-see recommendation. | Gemini: The review is overwhelmingly positive, calling the play an \"astonishing feat\" and \"among the best new plays on Broadway in years.\" The critic emphasizes its brilliance and importance. | Kimi: The review offers unqualified praise with superlatives ('astonishing feat,' 'brilliant finesse,' 'among the best new plays on Broadway in years'), declaring the work essential viewing without any significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:45:21.005Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

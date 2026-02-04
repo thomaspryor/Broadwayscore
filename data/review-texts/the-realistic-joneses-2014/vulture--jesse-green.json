@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Realistic Joneses is a play about two couples who share more than a last name and a cul-de-sac address. They also share a rare neurological disease that affects movement and cognition.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,5 +64,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 951,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So even though The Realistic Joneses is smart and witty and beautifully produced, it's not exactly enjoyable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Green acknowledges the show's intelligence, wit, and strong performances but finds it fundamentally unenjoyable and dramatically inert. The review praises elements like the acting and direction while criticizing the play's repetitive structure and lack of dramatic substance. | Gemini: The review acknowledges the play's smartness, wit, and beautiful production but ultimately finds it not exactly enjoyable and lacking in dramatic impact, resulting in a mixed assessment. | Kimi: While the review praises the all-star cast and production values, it ultimately finds the play repetitive, undramatic, and not worth the effort despite its intellectual wit, ending with a Groucho Marx quote implying a disappointing evening.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:50:03.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

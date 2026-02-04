@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230414065950/https://www.nydailynews.com/entertainment/broadway/ny-camelot-broadway-review-chris-jones-20230414-dabflhnag5ggbp5m2hg2rek3le-story.html",
   "contentTier": "complete",
   "wordCount": 820,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 2023 'Camelot' has more the nihilistic ambiance of 'Game of Thrones' than an East Wing filled with art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic systematically dismantles the production, calling it the 'chilliest Camelot you ever did see' and criticizing fundamental choices in casting, direction, and adaptation. While acknowledging some technical merits (orchestra, Donica's performance), the overall verdict is clearly negative. | GPT-4o: The review criticizes the production for failing to capture the essence of 'Camelot' and for its lack of emotional connection, describing it as 'chilliest' and questioning the revival's purpose. While there are some positive notes on performances, the overall tone is negative. | Gemini: The review expresses disappointment with the production's cynical and joyless approach, contrasting it unfavorably with the original's romanticism and hope. The critic finds the changes to the story and characters detrimental to the overall experience. | Kimi: While praising Jordan Donica's performance and the orchestra, the critic fundamentally rejects Sorkin's book and Sher's direction for creating a chilly, cynical production that strips the romance from Lerner and Loewe's score, loses the thread of the action in Act Two, and ultimately fails to make the central love story believable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:42:54.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

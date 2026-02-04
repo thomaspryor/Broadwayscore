@@ -31,7 +31,12 @@
   "sourceMethod": "archive",
   "archiveOrgTimestamp": "20140110200500",
   "archiveOrgUrl": "http://web.archive.org/web/20140110200500/http://online.wsj.com:80/article/AP33d95e788ba1493d9b702142144b4aac.html",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 695,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T05:38:49.450Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This text begins with navigation menu items and error messages, not review content, indicating it's corrupted web page data rather than a clean review article.; openai: The text provided is mostly navigation menus and non-review content, making it unscoreable.",
+  "promptVersion": "5.2.0"
 }

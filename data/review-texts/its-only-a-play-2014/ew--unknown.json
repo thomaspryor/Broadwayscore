@@ -36,5 +36,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20141023125834/http://www.ew.com/ew/article/0,,20364394_20860749,00.html",
   "contentTier": "complete",
   "wordCount": 593,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a poison-pen mash note to New York theater, at once gleefully bitchy and affectionate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Despite the D grade, the review ends with 'B+' and calls it 'hilarious' with a 'genuinely funny script.' However, text appears truncated and there's inconsistency between the original D rating and the B+ mentioned, suggesting missing content. | GPT-4o: The review highlights both strengths and weaknesses, praising the humor and some performances but criticizing Broderick's performance and the plot's thinness. The original rating of D and the truncated text suggest caution, leading to a mixed classification. | Gemini: The review is mostly positive, highlighting the humor and performances, but notes the thin plot and Broderick's performance. The B+ grade suggests a positive but not rave review, and the truncated text warrants a lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:12:46.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

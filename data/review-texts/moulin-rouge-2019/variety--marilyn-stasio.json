@@ -68,7 +68,8 @@
   "sources": [
     "reviews-json-stub",
     "web-search",
-    "show-score-playwright"
+    "show-score-playwright",
+    "playbill-verdict"
   ],
   "rescoreReason": "fullText significantly longer than excerpt used for scoring",
   "previousLlmScore": 82,
@@ -78,5 +79,6 @@
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textQuality": "full"
+  "textQuality": "full",
+  "playbillVerdictUrl": "https://variety.com/2019/music/reviews/moulin-rouge-review-broadway-musical-2-1203278036/"
 }

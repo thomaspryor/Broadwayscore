@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 697,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But for all the strenuous effort involved, the repetitive show evaporates in your mind the moment it concludes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges the skillful execution and precision but finds the show repetitive, thin, and unmemorable. Despite praising the performances and technical aspects, the overall assessment is negative with no clear recommendation to see it. | GPT-4o: The review expresses disappointment with the show's humor and its repetitive nature, despite acknowledging the actors' skill and the production's precision. The critic's personal experience of not finding the show funny suggests a negative verdict, though the text is truncated, so confidence is low. | Gemini: The critic acknowledges the show's success and the actors' skill but ultimately finds it repetitive and lacking depth. The truncated text makes it difficult to assess the final verdict with high confidence. | Kimi: While praising the cast's physical comedy, direction, and set design as 'clockwork precision,' the critic found the material itself repetitive and forgettable, admitting he 'managed only a few chuckles' over two hours. Given the truncation warning, the final verdict may be missing, but the current text suggests appreciation for craft without endorsement of the experience. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:48:58.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

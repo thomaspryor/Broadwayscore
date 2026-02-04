@@ -36,5 +36,60 @@
   "expectedCritic": "Unknown",
   "contentTier": "complete",
   "wordCount": 602,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You're blinded to its flaws: humor that can miss the mark and campiness that's sometimes a bit too overwrought.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review awards a B+ grade and concludes audiences will be 'swept up in the show's energy' despite acknowledging flaws. The critic finds the performances 'unapologetically silly' in a positive way and praises the production's maximalist approach. Confidence is medium due to truncation warning, but the available text shows clear recommendation. | GPT-4o: The review praises the show's energy, performances, and maximalist approach, despite acknowledging some flaws. The B+ rating indicates a strong positive recommendation. | Gemini: The review acknowledges flaws but ultimately praises the performances and energy, leading to a positive assessment. The B+ grade also supports this classification. However, the text is truncated, lowering confidence. | Kimi: The critic awards the show a B+ grade, praising the 'unapologetically silly' performances, 'delightful' practical effects, and infectious energy while acknowledging that the humor sometimes misses the mark and the campiness can be overwrought. The overall verdict is clearly approving.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:50:43.096Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

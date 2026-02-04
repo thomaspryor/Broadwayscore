@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about the 2016 revival of 'Falsettos', not the current Broadway run.; kimi: The text explicitly reviews the '2016 revival' of Falsettos, which is a previous production from 2016 and not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "playbillVerdictUrl": "http://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-1477614600http://www.wsj.com/articles/falsettos-review-boundary-pushing-no-more-1477614600",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

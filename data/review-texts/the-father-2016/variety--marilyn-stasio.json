@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Frank Langella gives a master class in acting as Andre, an aging man whose grip on reality is slipping away in Florian Zeller's devastating drama about dementia.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,59 @@
   "archiveOrgTimestamp": "20250427092744",
   "archiveOrgUrl": "http://web.archive.org/web/20250427092744/https://variety.com/2016/legit/reviews/the-father-review-broadway-frank-langella-1201753769/",
   "wordCount": 611,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Langella does a superb job of communicating the conflicted feelings of a man who can't believe — and won't accept — the changes in his life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for Langella's 'superb' and 'brilliant' performance, positive assessment of direction and supporting cast. However, acknowledges the material is 'painful to watch' and 'disturbing.' The aggregator excerpt confirms this is viewed as a master class performance, suggesting a positive recommendation despite the difficult subject matter. | GPT-4o: The review praises Frank Langella's performance as a master class in acting and highlights the production's sensitive handling of the material. Despite the truncated text, the available content suggests a strong recommendation, especially for Langella's portrayal. | Gemini: The review focuses on Langella's performance and the play's exploration of dementia. While noting the painful nature of the subject matter, the critic praises Langella's portrayal and the production's sensitivity, suggesting a recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:41:23.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

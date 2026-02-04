@@ -29,5 +29,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 623,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I wonder if Macmillan, Icke and their producers, in their effort to provide an evening's entertainment, haven't bitten off some of poor Winston's nose to spite their own faces.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the performances ('Both actors are very good') and some theatrical devices, but repeatedly questions whether the sensory assault undermines the narrative. The review expresses genuine concern that the production 'squanders a chance to reflect 2017 by becoming lost in its overflowing theatrical bag of tricks.' Neither a clear recommendation nor discouragement. | GPT-4o: The review highlights both positive elements, such as the performances and clever framing device, and significant criticisms, particularly the overwhelming sensory elements that distract from the narrative. The critic is unsure if the production's impact is for the right reasons, indicating a mixed reception. | Gemini: The review acknowledges good acting and clever devices, but questions whether the theatricality overwhelms the message. It neither recommends nor discourages seeing the show. | Kimi: The critic praises the lead performances as 'very good' and finds the framing device clever, but ultimately finds the production's sensory excess (strobe lights, gore, gunshots) distracting from the story's message, ending with uncertainty about whether the show achieves its political aims.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:26:56.191Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

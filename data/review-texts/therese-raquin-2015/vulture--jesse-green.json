@@ -31,5 +31,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251112061509/https://www.vulture.com/2015/10/theater-review-keira-knightleys-thrse-raquin.html",
   "contentTier": "complete",
   "wordCount": 1053,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production gets just about everything right, from Knightley's jitters and Ebert's pastiness down to the delicate little caricatures of the domino players.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Green praises the performances, direction, and design extensively but finds the source material fundamentally flawed for stage adaptation. He acknowledges the production 'gets just about everything right' but concludes it 'dries up just when it gets juicy' - a mixed verdict that neither recommends nor discourages. | Gemini: The review praises the production elements and performances but ultimately finds the source material and adaptation lacking, leading to a mixed experience that doesn't strongly recommend or discourage seeing the show. | Kimi: While praising Keira Knightley's performance and the production design as getting 'just about everything right,' the critic finds the adaptation structurally flawed, with the drama diminishing in the second half and failing to provide the emotional or moral payoff the material demands.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:56:28.043Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

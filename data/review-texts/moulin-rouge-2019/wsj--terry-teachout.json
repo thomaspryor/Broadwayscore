@@ -65,7 +65,8 @@
   "sources": [
     "show-score",
     "show-score-playwright",
-    "web-search"
+    "web-search",
+    "playbill-verdict"
   ],
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 60,
@@ -108,5 +109,6 @@
     "Word count too low: 210 (min: 300)"
   ],
   "rescoreCompletedAt": "2026-02-02T03:34:54.767Z",
-  "tierReason": "Short text (195 words)"
+  "tierReason": "Short text (195 words)",
+  "playbillVerdictUrl": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001"
 }

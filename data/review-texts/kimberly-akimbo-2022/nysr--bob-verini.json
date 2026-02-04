@@ -19,5 +19,59 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\"This show is, in a word, a honey. How refreshing to get an unabashedly good-hearted musical that again and again affirms two simple truths: that we’re all more alike than we are different, and that we flourish, rather than wither, in the presence of our differences.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/11/10/kimberly-akimbo-the-sweet-musical-treat-we-need-right-now/"
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is, in a word, a honey.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Calls it 'luminous celebration', 'joyous evening', 'enchanting', and 'honey' with no reservations expressed. | GPT-4o: The review is filled with superlatives and praises the transformation of the source material into a 'luminous celebration of life.' The critic's 5/5 stars and enthusiastic language strongly indicate a rave review. | Gemini: The review is overwhelmingly positive, calling the show \"a honey\" and a \"luminous celebration of life.\" The critic praises the music, cast, and direction, and notes the positive audience reaction. 5/5 stars further supports a Rave classification. | Kimi: Awarded 5/5 stars, the review offers unqualified praise calling the show a 'honey' and 'luminous celebration,' commending the score, cast, and direction while expressing joy at the transformation from dark source material to uplifting musical without any significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:16:05.070Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Stephen McKinley Henderson gives a towering performance as Walter Washington Jr., a former NYPD cop who refuses to leave his rent-stabilized apartment on Riverside Drive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -64,8 +64,61 @@
   "tierReason": "Full review text",
   "sources": [
     "web-search",
-    "show-score-playwright",
-    "playbill-verdict"
+    "show-score-playwright"
   ],
-  "playbillVerdictUrl": "https://nypost.com/2022/12/19/between-riverside-and-crazy-review-a-titanic-stage-performance/"
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson gives the performance of his career and the Broadway season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with Henderson delivering 'the performance of the Broadway season' and the play being 'riveting' and 'more hilarious than many recent flat-out comedies.' Clear enthusiasm despite some minor reservations. | GPT-4o: The review is filled with superlatives and strong praise for both the play and Henderson's performance, describing it as the 'performance of the Broadway season' and highlighting the play's humor and complexity. The tone is enthusiastic and unreservedly positive. | Gemini: The review is overwhelmingly positive, especially highlighting Henderson's performance as the best of the season and praising the play's humor and compassion. The critic clearly recommends seeing the show. | Kimi: The review is unreservedly enthusiastic, praising the play as 'riveting' and highlighting Stephen McKinley Henderson's performance as the best of the Broadway season, with strong praise for the writing, direction, and comedic elements. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:39:29.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

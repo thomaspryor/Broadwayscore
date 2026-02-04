@@ -54,5 +54,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250717183248/https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019",
   "contentTier": "complete",
   "wordCount": 882,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm hard-pressed to explain how a musical that I found funny, poignant and beguiling three years ago could now also strike me as smug and self-righteous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic acknowledges the show's strengths (funny, beguiling, talented creator) but finds it has aged poorly, becoming smug and self-indulgent. Mixed feelings with no clear recommendation either way. | Gemini: The critic acknowledges the show's strengths but finds it less impactful than before, suggesting a mixed experience. The review expresses both positive and negative sentiments, leading to a 'Mixed' classification. | Kimi: The critic acknowledges the show's originality, strong performances, and Pulitzer-worthy craft but expresses significant reservations about how the material has aged, finding it now strikes her as 'smug and self-righteous' despite remaining 'beguiling and funny' to a large extent. The closing suggestion that she's eager to see the writer move beyond this work indicates a mixed rather than fully positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:31:34.872Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

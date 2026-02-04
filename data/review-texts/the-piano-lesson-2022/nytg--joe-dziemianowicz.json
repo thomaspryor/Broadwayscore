@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 623,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Wilson’s works sometimes take on mystical dimensions. 'The Piano Lesson' eventually leads to a supernatural confrontation that creeps close to being fright-night over-the-top.\"\n\nRead more"
+  "showScoreExcerpt": "\"Wilson’s works sometimes take on mystical dimensions. 'The Piano Lesson' eventually leads to a supernatural confrontation that creeps close to being fright-night over-the-top.\"\n\nRead more",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Piano Lesson at the Barrymore Theatre has been tuned to perfection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Opening with 'tuned to perfection', praising the directing debut as 'deft', calling the cast 'uniformly wonderful', and noting the production 'strikes just the right chord'. Unqualified praise throughout with no meaningful reservations. | GPT-4o: The review is filled with superlatives and praises the production, direction, and performances highly. The critic describes the show as 'tuned to perfection' and highlights the cast and production team's exceptional work, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, performances, and overall production. The critic uses terms like \"tuned to perfection\" and highlights the cast as \"uniformly wonderful.\" | Kimi: The review describes the production as 'tuned to perfection' with a 'uniformly wonderful' cast and praises the direction, design, and performances without reservation, offering unqualified enthusiasm throughout.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:48:04.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

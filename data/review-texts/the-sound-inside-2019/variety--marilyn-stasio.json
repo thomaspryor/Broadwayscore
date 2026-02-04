@@ -44,59 +44,9 @@
   ],
   "wordCount": 753,
   "tierReason": "Full review text",
-  "llmScore": {
-    "score": 93,
-    "confidence": "medium",
-    "range": {
-      "low": 88,
-      "high": 98
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Parker is the hypnotist and her ravishing voice is the Piper's song, drawing us closer and closer until we are perfectly happy to follow her off a cliff.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'stunning,' 'gorgeous,' 'perfect,' and 'ravishing.' The critic is completely captivated by the production and performances, describing the experience as hypnotic and transformative. | GPT-4o: The review is filled with superlatives and unqualified praise for the direction, acting, and writing, describing the play as 'stunning' and 'hypnotic'. The critic's tone is enthusiastic and recommends the show as a must-see. | Gemini: The review is overwhelmingly positive, praising the direction, acting (especially Parker's performance), and the character study itself. The critic uses strong language like \"stunning\" and highlights the play's hypnotic quality. | Kimi: The review offers unqualified superlatives ('stunning', 'gorgeous', 'perfect', 'master manager') for the direction, performances, and writing, with only fleeting acknowledgment of potential claustrophobia immediately dismissed by the critic's endorsement of the production's absolute control.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T06:28:18.121Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 92,
-    "geminiScore": 82,
-    "kimiScore": 94,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
-  }
+  "playbillVerdictUrl": "https://variety.com/2019/legit/reviews/the-sound-inside-review-mary-louise-parker-1203370204/",
+  "sources": [
+    "web-search",
+    "playbill-verdict"
+  ]
 }

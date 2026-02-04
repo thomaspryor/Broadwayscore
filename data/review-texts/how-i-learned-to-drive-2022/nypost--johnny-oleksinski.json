@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Parker's performance is a master class in vulnerability and strength, as she navigates the complex emotions of a woman looking back on her troubled childhood.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,9 +46,59 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251128193624/https://nypost.com/2022/04/19/how-i-learned-to-drive-review-mary-louise-parker-is-moving/",
   "wordCount": 665,
   "tierReason": "Full review text",
-  "playbillVerdictUrl": "https://nypost.com/2022/04/19/how-i-learned-to-drive-review-mary-louise-parker-is-moving/",
-  "sources": [
-    "web-search",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "However, it's rewarding to return to Vogel's play, if only to understand her growth as a writer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review acknowledges Parker's exceptional performance and finds value in the reunion, but identifies significant issues: the production feels 'lighter' and less impactful than before, supporting cast is weak, and the staging is limiting. The critic appreciates elements but doesn't give a clear recommendation. | GPT-4o: The review acknowledges strong performances, particularly by Mary-Louise Parker, but criticizes the production for lacking emotional impact and having a limiting set design. The overall tone is mixed, with both positive and negative elements discussed. | Gemini: The review praises Parker and Morse's performances and Vogel's writing, but finds the production lighter and less impactful than previous versions, with some issues in the supporting cast and set design. It's a mixed bag. | Kimi: While the critic finds the revival emotionally lighter than the original and criticizes the supporting cast and set design, they ultimately recommend the production based on Mary-Louise Parker's 'unfailingly genuine' performance and David Morse's nuanced work, calling the reunion 'rewarding' and the leads 'worth experiencing'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:07:27.583Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

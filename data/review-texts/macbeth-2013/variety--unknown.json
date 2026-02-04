@@ -41,5 +41,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 788,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T06:21:16.012Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is of the show's initial staging at the Edinburgh Intl. Festival, not the current Broadway production.; kimi: This text is explicitly identified as Mark Fisher's 'original review' from the Edinburgh International Festival dated June 18, 2012, with only credits updated for the Broadway production. The review content describes the 2012 Edinburgh staging ('Reviewed June 18, 2012'), not the current Broadway run that opened April 21, 2013.",
+  "promptVersion": "5.2.0"
 }

@@ -32,7 +32,12 @@
   "textIssues": [
     "Word count too low: 199 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 199,
-  "tierReason": "Short text (199 words)"
+  "tierReason": "Short text (199 words)",
+  "rejectedAt": "2026-02-04T05:48:09.077Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation page with subscription prompts and login text, not a complete review article.; openai: The text is about The Public Theater's Free Shakespeare in the Park production of 'Cymbeline,' not a Broadway production.; gemini: This text is a partial article about Shakespeare's 'Cymbeline,' but it's more of a description and commentary than a critical review offering a recommendation. The ending is also cut off.; kimi: This text reviews a production of 'Cymbeline' at The Public Theater's Free Shakespeare in the Park (an Off-Broadway/outdoor venue), not a current Broadway run. The review also appears truncated and contaminated with subscription service text.",
+  "promptVersion": "5.2.0"
 }

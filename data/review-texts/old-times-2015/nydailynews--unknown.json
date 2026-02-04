@@ -40,5 +40,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151010111224/http://www.nydailynews.com:80/entertainment/theater-arts/clive-owen-confident-broadway-debut-old-times-article-1.2387675",
   "contentTier": "truncated",
   "wordCount": 352,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The pleasures of the production come from watching three excellent actors confidently wind through the words, pauses and poses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Despite acknowledging the play's inherent ambiguity and puzzling nature, the critic praises the three 'excellent actors' and notes that 'you're somehow satisfied' at the end. The tone is appreciative of the production's strengths even while describing its challenging aspects. However, confidence is medium due to truncated text potentially missing final verdict. | GPT-4o: The review highlights the ambiguity and confusion inherent in the production while praising the performances. The final verdict seems to suggest a mixed experience, being both satisfying and puzzling. However, due to the truncated nature of the text, the confidence is low. | Gemini: The review acknowledges the ambiguity and puzzling nature of the play, but also mentions satisfaction despite the confusion. The truncated text makes the final verdict unclear, lowering the confidence. | Kimi: While the critic finds Pinter's play inherently ambiguous and 'blurry,' they praise the three leads as 'excellent actors' and conclude the experience is ultimately 'satisfying,' indicating a weak but genuine recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:26:22.917Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

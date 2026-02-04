@@ -31,5 +31,59 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 785,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Billy Elliot The Musical has it all: great songs and choreography, well-produced music and a powerfully told story that still feels relevant almost forty years after its events.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Despite truncation warning, review concludes with explicit 'A must-see' recommendation. Consistent praise throughout for direction, performances, music, and emotional impact with phrases like 'grips one from start to end' and 'has it all'. | GPT-4o: The review is overwhelmingly positive, highlighting the emotional impact, strong performances, and effective production elements. The phrase 'a must-see' indicates a strong recommendation, placing it in the Rave category despite the truncated text warning. | Gemini: The review concludes with \"A must-see,\" indicating a strong positive recommendation. However, the text is truncated, so confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:39:43.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

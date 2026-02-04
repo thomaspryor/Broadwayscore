@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210423062705/https://www.nydailynews.com/entertainment/theater-arts/airline-highway-review-lisa-amour-story-down-and-out-article-1.2196492",
   "contentTier": "complete",
   "wordCount": 366,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only part of this long, meandering byway you'll want to use is the exit ramp.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative recommendation with harsh metaphors ('road to nowhere', 'exit ramp'), calling it contrived and a 'waste of time' despite acknowledging the fine cast. | GPT-4o: The review is strongly negative, criticizing the storytelling and character development, and suggesting the play is not worth seeing despite a strong cast. | Gemini: The review is largely negative, calling the play a \"road to nowhere\" and criticizing the storytelling and characters. While acknowledging the fine cast, the overall recommendation is negative. | Kimi: While acknowledging the fine cast, the critic condemns the play as contrived, dull, and meandering, explicitly advising viewers to avoid it despite the production's pedigree.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:33:30.582Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

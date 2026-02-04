@@ -37,7 +37,12 @@
     "Word count too low: 78 (min: 300)",
     "Show title not found in text"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 72,
-  "tierReason": "Short text (72 words)"
+  "tierReason": "Short text (72 words)",
+  "rejectedAt": "2026-02-04T05:48:45.186Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This text only describes a performance technique and compares it to a 2005 show, with no evaluation or recommendation about any current Broadway production.; openai: The text discusses a past Off Off Broadway production and does not review the current Broadway show.; gemini: This is a comparison to another show, not a review of the current production.; kimi: The text contains only descriptive context about lip-syncing technique and a comparison to a 2005 Off-Off-Broadway production, with no evaluation, verdict, or recommendation regarding the target Broadway show.",
+  "promptVersion": "5.2.0"
 }
