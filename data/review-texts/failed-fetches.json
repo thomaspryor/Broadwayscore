@@ -8176,18 +8176,6 @@
     "timestamp": "2026-02-03T12:15:35.017Z"
   },
   {
-    "reviewId": "bandstand-2017/variety--marilyn-stasio.json",
-    "showId": "bandstand-2017",
-    "outlet": "Variety",
-    "critic": "Marilyn Stasio",
-    "url": "https://variety.com/2017/legit/reviews/bandstand-review-broadway-1202025287/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): hamilton, home, purpose, the prom, gigi...",
-    "textLength": 4456,
-    "timestamp": "2026-02-03T12:21:01.738Z"
-  },
-  {
     "reviewId": "beetlejuice-2019/hollywood-reporter--david-rooney.json",
     "showId": "beetlejuice-2019",
     "outlet": "The Hollywood Reporter",
@@ -13178,5 +13166,65 @@
     "garbageReason": "Multiple shows mentioned (8): wicked, tina, hair, once, high...",
     "textLength": 6602,
     "timestamp": "2026-02-04T19:30:33.931Z"
+  },
+  {
+    "reviewId": "bandstand-2017/variety--marilyn-stasio.json",
+    "showId": "bandstand-2017",
+    "outlet": "Variety",
+    "critic": "Marilyn Stasio",
+    "url": "https://variety.com/2017/legit/reviews/bandstand-review-broadway-1202025287/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): hamilton, home, purpose, the prom, gigi...",
+    "textLength": 4368,
+    "timestamp": "2026-02-04T19:35:11.775Z"
+  },
+  {
+    "reviewId": "be-more-chill-2019/hollywood-reporter--frank-scheck.json",
+    "showId": "be-more-chill-2019",
+    "outlet": "Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "https://www.hollywoodreporter.com/review/be-more-chill-theater-review-1193609",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): appropriate, home, smash, summer, evita...",
+    "textLength": 5833,
+    "timestamp": "2026-02-04T19:37:15.499Z"
+  },
+  {
+    "reviewId": "be-more-chill-2019/nytimes--ben-brantley.json",
+    "showId": "be-more-chill-2019",
+    "outlet": "New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2019/03/10/theater/review-be-more-chill-joe-iconis.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the prom, mean girls, summer, dear evan hansen, evita...",
+    "textLength": 2672,
+    "timestamp": "2026-02-04T19:37:18.771Z"
+  },
+  {
+    "reviewId": "be-more-chill-2019/vulture--sara-holdren.json",
+    "showId": "be-more-chill-2019",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/2019/03/theater-be-more-chill-does-high-school-with-knowing-cunning.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): wicked, west side story, spongebob squarepants, mean girls, summer...",
+    "textLength": 13602,
+    "timestamp": "2026-02-04T19:38:33.159Z"
+  },
+  {
+    "reviewId": "beautiful-the-carole-king-musical-2014/hollywood-reporter--unknown.json",
+    "showId": "beautiful-the-carole-king-musical-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/beautiful-carole-king-musical-theater-670124",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): mamma mia!, rocky, bullets over broadway, once, rain...",
+    "textLength": 7739,
+    "timestamp": "2026-02-04T19:38:48.378Z"
   }
 ]
