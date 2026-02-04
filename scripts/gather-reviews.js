@@ -425,7 +425,7 @@ async function searchDTLI(show) {
   for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
-    if (result.found && result.html && result.html.includes('review-item')) {
+    if (result.found && result.html && result.html.includes('<div class="review-item">')) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
