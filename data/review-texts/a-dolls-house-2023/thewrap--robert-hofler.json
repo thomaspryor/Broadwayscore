@@ -8,5 +8,38 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Theater audiences are used to writers taking the classics and completely overhauling them. Last month, Off Broadway saw the openings of Thomas Bradshaw’s “The Seagull/Woodstock, NY” and Marcus Gardley’s “Black Odyssey.” And next month on Broadway, the Bard’s moody Dane is transported to a backyard barbecue in the Deep South in James Ijames’ Pulitzer Prize-winning “Fat Ham.”",
+  "isFullReview": false,
+  "textWordCount": 57,
+  "archivePath": "data/archives/reviews/a-dolls-house-2023/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:35:51.065Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 63 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 57,
+  "tierReason": "Short text (57 words)"
 }
