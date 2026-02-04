@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "And though it's always hilarious to see floorboards fly up and smack actors in the face, the professionalization of fake trauma may have outstripped the comedy of it. The difficulty of producing a stunt safely is not, after all, related to the amusement it provides; in fact, the difficulty, when too obvious, can get in the way. 'Peter Pan Goes Wrong,' directed by Adam Meggido, too often belabors the horseplay, making it feel mechanical.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's commitment to comic chaos is both its greatest strength and its potential weakness, as the deliberate disasters pile up with the relentless efficiency of a well-oiled machine designed to break down.",
   "contentTier": "truncated",
@@ -22,7 +22,8 @@
   "sources": [
     "web-search",
     "show-score-playwright",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "textQuality": "truncated",
   "llmScore": {
@@ -79,5 +80,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "bwwScore": 6
 }
