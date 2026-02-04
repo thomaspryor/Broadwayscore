@@ -118,14 +118,16 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `bulk-collect-review-texts.yml`
 - **Runs:** Manual trigger only
 - **Does:** One-time bulk collection of review full texts across all shows, partitioned across parallel runners
-- **Options:** `parallel_jobs` (default 5, 1-10), `max_per_job` (0 = all), `batch_size` (default 10), `browserbase_enabled` (default true), `browserbase_per_job` (default 5), `retry_failed` (default true), `archive_first` (default true), `content_tier` (filter), `test_mode` (limit to 5/job)
-- **Job pipeline:** `prepare → collect (N parallel matrix jobs) → rebuild`
+- **Options:** `parallel_jobs` (default 5, 1-10), `max_per_job` (0 = all), `batch_size` (default 10), `browserbase_enabled` (default true), `browserbase_per_job` (default 5), `retry_failed` (default true), `archive_first` (default true), `content_tier` (filter), `aggressive` (default true, skips Playwright for known-blocked sites), `test_mode` (limit to 5/job), `max_rounds` (default 3, auto-chaining), `current_round` (auto-set)
+- **Job pipeline:** `prepare → collect (N parallel matrix jobs) → rebuild → chain next round`
+- **Self-chaining:** After rebuild, counts remaining reviews. If >50 remain and rounds left, auto-dispatches next round. Set `max_rounds=0` to disable. Stops at diminishing returns (<50 remaining).
 - **Parallel-safe:** 45s stagger between jobs, SHOW_FILTER ensures disjoint show sets, 5-retry push with shows.json integrity check
 - **Load balancing:** Prepare job counts reviews per show, sorts by count descending, distributes round-robin
 - **Script:** `scripts/collect-review-texts.js` (with SHOW_FILTER env var for partitioning)
 - **Requires:** `SCRAPINGBEE_API_KEY`, `BRIGHTDATA_TOKEN`, `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID`, plus login credentials (NYT, Vulture, WSJ, WaPo)
-- **Cost:** ~$22-38 ScrapingBee + Browserbase credits per full run
+- **Cost:** ~$22-38 ScrapingBee + Browserbase credits per round
 - **Manual trigger:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=5`
+- **Full autonomous run:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=5 -f max_rounds=5` (chains up to 5 rounds)
 - **Test mode:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=2 -f test_mode=true`
 
 ## `discover-historical-shows.yml`
