@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What we have in 'The Band's Visit' is something rarer: a small-scale musical with enormous heart, one that finds the universal in the utterly specific.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What we have in 'The Band's Visit' is something rarer: a small-scale musical with enormous heart, one that finds the universal in the utterly specific.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we have in 'The Band's Visit' is something rarer: a small-scale musical with enormous heart, one that finds the universal in the utterly specific.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong praise calling it 'something rarer' with 'enormous heart' and highlighting its ability to find universal themes, though the excerpt is brief which limits confidence. | GPT-4o: The review uses highly positive language, describing the show as having 'enormous heart' and finding 'the universal in the utterly specific,' indicating a strong recommendation. | Gemini: The review uses the phrase \"enormous heart\" and \"rarer\" to describe the musical, indicating a strong positive sentiment and recommendation. | Kimi: The excerpt offers strong praise ('enormous heart,' 'rare') for the show's emotional resonance and thematic depth, indicating an enthusiastic recommendation. Confidence is low due to the brevity of the provided text. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:41:50.482Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

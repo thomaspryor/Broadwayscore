@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Annaleigh Ashford's performance as the dog Sylvia is so winning, so perfectly calibrated between human and canine, that you forget how ridiculous the premise is.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Annaleigh Ashford's performance as the dog Sylvia is so winning, so perfectly calibrated between human and canine, that you forget how ridiculous the premise is.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Annaleigh Ashford's performance as the dog Sylvia is so winning, so perfectly calibrated between human and canine, that you forget how ridiculous the premise is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence excerpt praising the lead performance as 'winning' and 'perfectly calibrated.' However, confidence is low due to extremely limited text that may not represent the full review verdict. | Gemini: The review highlights a strong performance that overcomes a ridiculous premise, suggesting a positive but qualified recommendation. | Kimi: The critic praises Ashford's performance as 'so winning' and 'perfectly calibrated,' stating it overcomes the ridiculous premise, indicating a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:25:24.633Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

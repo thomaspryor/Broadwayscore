@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Groban's Sweeney is a tender-hearted monster, a man whose rage feels earned rather than theatrical, and Ashford's Mrs. Lovett is a delightfully unhinged entrepreneur of human flesh.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Groban's Sweeney is a tender-hearted monster, a man whose rage feels earned rather than theatrical, and Ashford's Mrs. Lovett is a delightfully unhinged entrepreneur of human flesh.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Groban's Sweeney is a tender-hearted monster, a man whose rage feels earned rather than theatrical, and Ashford's Mrs. Lovett is a delightfully unhinged entrepreneur of human flesh.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for both lead performances with vivid, appreciative language ('delightfully unhinged', 'earned rather than theatrical'), but excerpt is too brief to assess overall production recommendation with full confidence. | Gemini: The review praises the performances of the two leads, indicating a positive experience, though it is a brief excerpt. | Kimi: The critic offers unqualified, enthusiastic praise for both lead performances using evocative positive language ('tender-hearted', 'earned', 'delightfully unhinged'), clearly endorsing the show based on its acting, though the brevity suggests this is an excerpt from a longer review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:17:40.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

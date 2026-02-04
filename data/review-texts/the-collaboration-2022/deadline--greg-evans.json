@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\" 'The Collaboration,' when all is painted and done, is a jukebox musical without the music.\"\n\nRead more"
+  "showScoreExcerpt": "\" 'The Collaboration,' when all is painted and done, is a jukebox musical without the music.\"\n\nRead more",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Collaboration,' when all is painted and done, is a jukebox musical without the music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The comparison to 'a jukebox musical without the music' suggests the show lacks essential elements that make it compelling. However, with only one excerpt available, confidence is low as this could be from a more nuanced review. | GPT-4o: The excerpt suggests a mixed verdict by comparing the show to a 'jukebox musical without the music,' implying a lack of substance or coherence. However, without more context or a clear recommendation, the sentiment is ambiguous. | Gemini: The single excerpt available is negative, comparing the show unfavorably to a jukebox musical without the music. Given the limited text, confidence is low. | Kimi: The critic's metaphor suggests the show possesses the manufactured, commercial structure of a jukebox musical but lacks even the entertaining songs that make such shows bearable, implying an empty, cynical production. With only one excerpt available, this represents a significant criticism of the show's substance, though the full context of the review is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:49:00.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

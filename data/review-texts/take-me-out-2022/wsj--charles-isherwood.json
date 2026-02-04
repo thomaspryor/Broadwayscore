@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Mr. Ellis, a veteran Broadway director here at the top of his form, has in fact fielded an entirely terrific all-male cast, almost a dozen actors who, as with the best pro sports teams, work smoothly together even as they shine individually.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Ellis, a veteran Broadway director here at the top of his form, has in fact fielded an entirely terrific all-male cast",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows strong praise for director 'at the top of his form' and 'entirely terrific' cast with sports team analogy suggesting seamless ensemble work. However, confidence is low due to single excerpt limitation and potential cherry-picking bias. | GPT-4o: The excerpt praises the director's work and the cast's performance with strong positive language ('top of his form', 'entirely terrific'). However, with only one excerpt available, confidence is low. | Gemini: The excerpt praises the direction and the cast, suggesting a strong positive recommendation. Given it's a single excerpt, I'm using the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the director ('top of his form') and the entire ensemble ('terrific'), suggesting a strong positive verdict. However, as a single curated excerpt, the full scope of the review's recommendation is unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:28:20.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“This is Jason Alexander‘s Broadway directorial debut and he shines in bringing all the varied pieces together to present a playdate of delight for everyone. It’s always nice to leave the theatre with a good feeling of being both immensely entertained and given a goodie bag of things to think about as having…discovered what the cottage is for.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is Jason Alexander's Broadway directorial debut and he shines in bringing all the varied pieces together to present a playdate of delight for everyone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for direction and overall experience ('shines', 'playdate of delight for everyone', 'immensely entertained'). Single excerpt warning applied - positive language suggests upper Positive range, but medium confidence due to limited text. | GPT-4o: The excerpt praises Jason Alexander's directorial debut as a 'playdate of delight' and mentions leaving the theater feeling 'immensely entertained.' Despite the single excerpt warning, the language suggests strong positive sentiment. | Gemini: The excerpt is overwhelmingly positive, calling the show a \"playdate of delight\" and praising Jason Alexander's direction. The phrase \"immensely entertained\" further supports a positive classification. | Kimi: Single excerpt features enthusiastic praise for the direction ('shines,' 'delight') and describes an 'immensely entertained' experience, indicating a strong positive recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:56:38.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

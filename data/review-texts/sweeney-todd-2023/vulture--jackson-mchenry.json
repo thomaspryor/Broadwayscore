@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Sweeney Todd is a thrilling, bloody spectacle that makes the most of its Broadway return, with Josh Groban delivering a surprisingly effective performance as the demon barber.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Sweeney Todd is a thrilling, bloody spectacle that makes the most of its Broadway return",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language with 'thrilling' and 'makes the most of its Broadway return' indicates solid recommendation. Praise for lead performance adds to positive assessment. | GPT-4o: The review uses strong positive language such as 'thrilling' and 'bloody spectacle', indicating a highly enthusiastic recommendation for the show. | Gemini: The review uses positive language like \"thrilling\" and \"makes the most of\" and praises Josh Groban's performance, indicating a positive, but not rave, recommendation. | Kimi: The review offers clear praise for the production ('thrilling, bloody spectacle') and the lead performance, indicating a strong recommendation despite the brief length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:18:13.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

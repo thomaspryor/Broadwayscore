@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play, which opened on Broadway in December, explores the relationship between Andy Warhol and Jean-Michel Basquiat as they work together on a series of paintings in the mid-nineteen-eighties.",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T14:49:39.490Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is purely plot summary describing what the play explores, with no critical evaluation or opinion about the production quality.; openai: The text provided is a plot summary with no evaluative content or opinion on the production.; gemini: The provided text is a plot summary, not a review with evaluative content.; kimi: The provided text is purely descriptive, stating only that the play explores the relationship between Warhol and Basquiat. It contains no evaluative language, opinion on performances/direction, or recommendation regarding the production's quality.",
+  "promptVersion": "5.2.0"
 }

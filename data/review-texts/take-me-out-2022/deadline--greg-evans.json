@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"With an impeccable cast headed by Jesse Williams, Jesse Tyler Ferguson and Patrick J. Adams, 'Take Me Out' just might be a revelation even to those who saw the original Broadway production nearly 20 years ago...Directed by Scott Ellis with an attention to pace and nuance that locates every thought of a thoughtful play, 'Take Me Out' does nothing gratuitously, including the abundant full-frontal nudity of the locker room shower scenes.\" \n\nRead more"
+  "showScoreExcerpt": "\"With an impeccable cast headed by Jesse Williams, Jesse Tyler Ferguson and Patrick J. Adams, 'Take Me Out' just might be a revelation even to those who saw the original Broadway production nearly 20 years ago...Directed by Scott Ellis with an attention to pace and nuance that locates every thought of a thoughtful play, 'Take Me Out' does nothing gratuitously, including the abundant full-frontal nudity of the locker room shower scenes.\" \n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With an impeccable cast headed by Jesse Williams, Jesse Tyler Ferguson and Patrick J. Adams, 'Take Me Out' just might be a revelation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows strong praise ('impeccable cast', 'revelation', director's 'attention to pace and nuance') but limited text requires low confidence. Positive language suggests upper Positive range. | GPT-4o: The excerpt praises the cast and direction, suggesting the production is a revelation even for those familiar with the original. The positive tone and strong language indicate a solid recommendation. | Gemini: The review excerpt praises the cast as \"impeccable\" and suggests the production could be a \"revelation,\" indicating a strong positive recommendation. The direction is also praised for its attention to detail. | Kimi: The excerpt offers strong praise for the 'impeccable' cast and skilled direction, calling the production a 'revelation' with thoughtful pacing, warranting a high Positive score despite limited text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:26:07.416Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

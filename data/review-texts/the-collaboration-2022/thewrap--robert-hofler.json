@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"According to McCarten, Swiss art dealer Bruno Bischofberger (Erik Jensen) masterminded the collaboration between Warhol and Basquiat, an artistic and business deal that both men initially despised and had to be dragged kicking and mincing just to meet. This set-up, while untrue, does create drama. \"\n\nRead more"
+  "showScoreExcerpt": "\"According to McCarten, Swiss art dealer Bruno Bischofberger (Erik Jensen) masterminded the collaboration between Warhol and Basquiat, an artistic and business deal that both men initially despised and had to be dragged kicking and mincing just to meet. This set-up, while untrue, does create drama. \"\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This set-up, while untrue, does create drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows critic acknowledging dramatic effectiveness while explicitly noting historical inaccuracy. The phrase 'while untrue' suggests significant reservations. With only one curated quote available and no clear recommendation, this appears mixed at best. | GPT-4o: The excerpt suggests a mixed view, noting the dramatic potential of an untrue setup. The lack of a full review and single excerpt warning lead to a low confidence level. | Gemini: The review excerpt suggests the play takes liberties with the truth but creates drama. This is a mixed assessment, leaning towards neutral. | Kimi: The single excerpt identifies a factual inaccuracy in the playwright's narrative conceit but concedes that it effectively generates dramatic tension. With only one curated quote available, the overall verdict remains ambiguous, though the balanced observation suggests a middle-ground assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:53:00.033Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

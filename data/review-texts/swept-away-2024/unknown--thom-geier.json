@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"John Logan’s book presents a version of that modern cannibalism\"\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "needs-rescrape",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T14:22:45.347Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a navigation snippet or truncated quote with no evaluative content - just a fragment about the book followed by 'Read more' which suggests website navigation rather than actual review content.; openai: The provided text is an incomplete sentence with no evaluative content or clear verdict about the show.; gemini: This is not a review. It is a single sentence that appears to be setting up a review, but it does not contain any evaluative content about the show itself.",
+  "promptVersion": "5.2.0"
 }

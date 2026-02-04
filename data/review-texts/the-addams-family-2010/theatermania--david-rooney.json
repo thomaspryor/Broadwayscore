@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show has plenty of visual pizzazz and a few genuinely funny moments, but the book by Marshall Brickman and Rick Elice is disappointingly thin, and Andrew Lippa's score is serviceable at best.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show has plenty of visual pizzazz and a few genuinely funny moments, but the book by Marshall Brickman and Rick Elice is disappointingly thin, and Andrew Lippa's score is serviceable at best.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show has plenty of visual pizzazz and a few genuinely funny moments, but the book by Marshall Brickman and Rick Elice is disappointingly thin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Balances positive elements (visual appeal, some humor) against significant flaws (thin book, merely serviceable score). No clear recommendation either way. | GPT-4o: The review acknowledges some visual appeal and humor but criticizes the book as 'disappointingly thin' and the score as 'serviceable at best,' indicating an overall negative impression. | Gemini: The review acknowledges positive aspects (visuals, humor) but criticizes the book and score, resulting in a mixed assessment. | Kimi: While the critic acknowledges visual pizzazz and some humor, the assessment of core elements (book and score) is decidedly lukewarm to negative, resulting in a mixed verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:37:34.808Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Sorkin has turned the story of television's invention into a clever, fast-paced drama that manages to be both entertaining and instructive, even if it sometimes feels more like a very good lecture than a fully realized play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Sorkin has turned the story of television's invention into a clever, fast-paced drama that manages to be both entertaining and instructive, even if it sometimes feels more like a very good lecture than a fully realized play.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Sorkin has turned the story of television's invention into a clever, fast-paced drama that manages to be both entertaining and instructive, even if it sometimes feels more like a very good lecture than a fully realized play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'clever, fast-paced' and 'entertaining and instructive' but qualifies with 'sometimes feels more like a very good lecture than a fully realized play.' This suggests a positive but reserved recommendation. Single excerpt limits confidence. | GPT-4o: The excerpt praises the play as 'clever, fast-paced' and 'entertaining and instructive,' suggesting a positive tone. However, the mention of it feeling like a 'very good lecture' indicates some reservation. Given the single excerpt warning, the score is set at the lower end of the Positive range. | Gemini: The review excerpt describes the play as \"clever, fast-paced, entertaining and instructive,\" but also notes that it \"sometimes feels more like a very good lecture than a fully realized play.\" This suggests a positive but qualified recommendation. Given that it is a single excerpt, I am scoring it cautiously. | Kimi: The excerpt offers qualified praise, commending the show as clever and entertaining while criticizing it for feeling more like a lecture than a fully realized play. Given the single excerpt limitation, this represents a mild recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T15:04:15.077Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs, by the Avett Brothers, are lovely, but the musical lacks the dramatic architecture to support them effectively.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,5 +24,60 @@
     "show-score-playwright",
     "nyc-theatre"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs, by the Avett Brothers, are lovely, but the musical lacks the dramatic architecture to support them effectively.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises the songs as 'lovely' but criticizes the fundamental structural weakness of the musical. This balanced assessment with no clear recommendation places it in mixed territory. | GPT-4o: While the songs are praised as 'lovely,' the overall musical is criticized for lacking 'dramatic architecture,' suggesting a negative assessment of the show's structure and impact. | Gemini: The review praises the songs but criticizes the musical's structure, indicating a mixed assessment. | Kimi: The critic offers genuine praise for the music ('lovely') but balances it with a fundamental criticism of the show's construction ('lacks dramatic architecture'), resulting in an uneven assessment without a clear recommendation to attend.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:19:43.662Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

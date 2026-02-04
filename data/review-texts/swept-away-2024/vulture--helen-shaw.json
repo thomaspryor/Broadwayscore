@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, based on songs by the Avett Brothers, has moments of real beauty, but it's ultimately undone by its own earnestness and a book that never quite finds its sea legs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, based on songs by the Avett Brothers, has moments of real beauty, but it's ultimately undone by its own earnestness and a book that never quite finds its sea legs.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical has moments of real beauty, but it's ultimately undone by its own earnestness and a book that never quite finds its sea legs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows balanced criticism - acknowledges 'moments of real beauty' but concludes the show is 'ultimately undone' by fundamental flaws. Neither recommends nor discourages clearly. | GPT-4o: The review acknowledges moments of beauty but criticizes the musical for its earnestness and an ineffective book, indicating a mixed reception. | Gemini: The review acknowledges \"moments of real beauty\" but ultimately finds the show \"undone\" by its earnestness and weak book. This indicates a mixed assessment. | Kimi: The excerpt acknowledges genuine aesthetic strengths ('moments of real beauty') but delivers a disappointed final verdict ('ultimately undone'), suggesting a divided assessment typical of mixed reviews. Given this is a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:23:29.043Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

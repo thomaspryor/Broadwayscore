@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"the splashy new musical about the life of televangelist Tammy Faye Bakker\"\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T14:34:50.760Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a brief descriptive phrase about the show's subject matter with no critical evaluation or opinion, followed by a 'Read more' prompt indicating this is promotional/teaser text rather than actual review content.; openai: The provided text is a partial sentence that introduces the subject of the review but does not contain any evaluative content or opinion about the show.; gemini: This is just a brief mention of the show, not a review with any evaluative content.; kimi: The provided text is a 9-word descriptive fragment ('the splashy new musical about the life of televangelist Tammy Faye Bakker') containing no evaluation, opinion, or recommendation. It functions as a plot summary/catalog description rather than critical assessment.",
+  "promptVersion": "5.2.0"
 }

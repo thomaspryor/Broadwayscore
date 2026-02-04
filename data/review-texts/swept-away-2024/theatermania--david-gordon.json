@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "show-score-playwright",
     "nyc-theatre"
-  ]
+  ],
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Swept Away is one of the most menacing musicals I've ever seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for direction, design, and overall impact with superlative language ('exceptional', 'thrilling', 'one of the most'). However, confidence is low due to excerpt-only nature - full verdict unclear. | GPT-4o: The review excerpt praises the direction, music, and scenic design, and describes the show as 'one of the most menacing musicals I've ever seen,' indicating a strong positive impression. However, due to the limited text, confidence is low. | Gemini: The review excerpt uses strong positive language such as \"exceptional direction\" and \"thrilling scenic shift\", concluding that it is \"one of the most menacing musicals I've ever seen.\" Due to the truncated nature of the text, the confidence is low. | Kimi: The excerpt offers unqualified praise with superlatives ('exceptional', 'thrilling', 'most menacing'), indicating strong enthusiasm for the production's intensity and craft despite the limited context. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:20:44.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

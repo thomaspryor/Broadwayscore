@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Despite the nonstop tittering about the show's full-frontal male nudity (it has that too), Ferguson's performance is the real reason to see 'Take Me Out.' Fortunately, director Scott Ellis has given the 'Modern Family' star full rein to do his thing, and he does so to the delirious max...The oddness arises when Greenberg turns the dramatic screw too forcefully in Act 2...To his credit, Oberholtzer, in a breathtaking tour de force, rescues the scene from those lofty aspirations and gives it a solid knock out of the ballpark.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ferguson's performance is the real reason to see 'Take Me Out.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite some criticism of Act 2's dramatic choices, the review emphasizes strong performances as reason to see the show, with Ferguson's work being highlighted as the main draw and Oberholtzer delivering a 'tour de force.' | GPT-4o: The excerpt highlights strong performances, particularly by Ferguson and Oberholtzer, as reasons to see the show. Despite some criticism of the dramatic elements, the overall tone suggests a positive recommendation based on the acting. | Gemini: The review excerpt focuses on praising Ferguson's performance and Oberholtzer's rescue of a scene. While there's mention of the play's oddness and dramatic issues, the emphasis on strong performances suggests a positive recommendation, albeit with reservations. Confidence is low due to the limited excerpt. | Kimi: The excerpt explicitly recommends seeing the show for Ferguson's performance, praising the direction and another actor's 'tour de force' rescue of a problematic Act 2 scene.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:27:46.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

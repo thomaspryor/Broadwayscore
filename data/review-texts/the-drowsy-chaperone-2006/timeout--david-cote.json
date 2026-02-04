@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This witty meta-musical about musicals is a giddy celebration of old-fashioned Broadway razzle-dazzle, wrapped in smart, self-aware comedy.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This witty meta-musical about musicals is a giddy celebration of old-fashioned Broadway razzle-dazzle, wrapped in smart, self-aware comedy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (18 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This witty meta-musical about musicals is a giddy celebration of old-fashioned Broadway razzle-dazzle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's 80/100 rating combined with enthusiastic language like 'giddy celebration' and 'smart, self-aware comedy' indicates strong positive recommendation in the upper Positive range. | GPT-4o: The review describes the show as a 'giddy celebration' and 'smart, self-aware comedy', aligning with the critic's original rating of 80, indicating a solid recommendation. | Gemini: The review is positive and enthusiastic, describing the show as a \"giddy celebration\" and \"smart, self-aware comedy.\" The critic's rating of 80 aligns with a positive assessment. | Kimi: The review describes the show as a 'giddy celebration' with 'smart, self-aware comedy,' indicating strong approval that aligns with the critic's own 80 rating, placing it firmly in the positive recommendation range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T15:01:59.653Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

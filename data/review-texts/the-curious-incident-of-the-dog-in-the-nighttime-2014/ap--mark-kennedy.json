@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production is a marvel of stagecraft, transforming a simple story about an autistic teenager into a visually stunning theatrical experience that pulses with energy and emotion.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The production is a marvel of stagecraft, transforming a simple story about an autistic teenager into a visually stunning theatrical experience that pulses with energy and emotion.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production is a marvel of stagecraft, transforming a simple story about an autistic teenager into a visually stunning theatrical experience that pulses with energy and emotion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it a 'marvel of stagecraft' and 'visually stunning theatrical experience that pulses with energy and emotion' indicates enthusiastic recommendation, though this appears to be an excerpt with limited context. | GPT-4o: The review uses superlative language ('marvel of stagecraft', 'visually stunning', 'pulses with energy and emotion') indicating a strong, enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"marvel of stagecraft\" and \"visually stunning theatrical experience\" indicating a strong recommendation. | Kimi: The critic employs unqualified superlatives ('marvel,' 'visually stunning') and enthusiastic praise ('pulses with energy') with no reservations or caveats, indicating a strong recommendation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T15:01:30.169Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

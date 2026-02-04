@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Country House is a play that works better in theory than in practice, despite boasting a stellar cast and the reliable direction of Daniel Sullivan.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 46,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Country House is a play that works better in theory than in practice, despite boasting a stellar cast and the reliable direction of Daniel Sullivan.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Country House is a play that works better in theory than in practice, despite boasting a stellar cast and the reliable direction of Daniel Sullivan.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict stating the play doesn't work in practice, even acknowledging the strong cast and direction cannot overcome fundamental issues with the production. | GPT-4o: The review indicates that the play does not succeed in execution despite having a strong cast and direction, suggesting a negative overall impression. | Gemini: The review states the play works better in theory than in practice, suggesting it has potential but doesn't fully deliver. This indicates a mixed opinion. | Kimi: The critic finds the play's execution disappointing ('works better in theory than in practice'), though they acknowledge strong performances and direction. The brevity of the text suggests it may be truncated, warranting cautious confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:59:54.207Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

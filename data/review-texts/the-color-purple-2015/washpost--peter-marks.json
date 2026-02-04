@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway musical adaptation of 'The Color Purple' is gorgeous but safe, a production that honors Alice Walker's novel and the Steven Spielberg film without taking many risks.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway musical adaptation of 'The Color Purple' is gorgeous but safe, a production that honors Alice Walker's novel and the Steven Spielberg film without taking many risks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic praises the production as 'gorgeous' and acknowledges it 'honors' the source material, but the 'but safe' qualifier and criticism of not taking risks suggests a lukewarm recommendation - appreciative but not enthusiastic. | GPT-4o: The review describes the production as 'gorgeous but safe,' suggesting it is visually appealing but lacks innovation or risk-taking. This indicates a mixed assessment, as it acknowledges positive aspects but also notes a lack of daring. | Gemini: The review describes the show as \"gorgeous but safe,\" indicating a positive but qualified recommendation. The \"safe\" aspect suggests reservations. | Kimi: The critic offers genuine praise for the production values ('gorgeous') and its respectful treatment of the source material, but the 'but safe' qualifier and criticism of risk-aversion indicate a qualified rather than enthusiastic recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:55:26.984Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

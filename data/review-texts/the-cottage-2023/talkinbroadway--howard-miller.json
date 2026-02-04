@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘The Cottage’ is a perfect summertime play, as pleasurable as a stroll through an English country garden, followed by a perfect dish of strawberry ice cream.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Cottage' is a perfect summertime play, as pleasurable as a stroll through an English country garden, followed by a perfect dish of strawberry ice cream.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses highly positive language ('perfect', 'pleasurable') with charming analogies. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong positive language, describing the play as 'perfect' and 'pleasurable'. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review excerpt uses highly positive language, comparing the play to pleasurable summer activities, indicating a strong recommendation. Given it's a single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise using 'perfect' twice and evocative pleasurable imagery, clearly recommending the show as delightful summer fare. However, as a single curated excerpt, the full context and any potential reservations are unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:57:54.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

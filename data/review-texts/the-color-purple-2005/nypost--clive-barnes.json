@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a musical that works on every level — as entertainment, as drama, as a slice of African-American life, and as a celebration of the human spirit.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a musical that works on every level — as entertainment, as drama, as a slice of African-American life, and as a celebration of the human spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise stating the show 'works on every level' with multiple positive dimensions highlighted. Clear enthusiastic recommendation without any reservations. | GPT-4o: The review offers unqualified praise, stating the musical 'works on every level' and highlights its success in multiple aspects, indicating a strong recommendation. | Gemini: The review uses strong positive language, stating that the musical 'works on every level,' indicating a very high level of satisfaction and making it a rave review. | Kimi: The critic offers unqualified praise across all dimensions (entertainment value, dramatic merit, cultural representation, and emotional impact) using superlatives that indicate a masterpiece with no reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:54:22.794Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

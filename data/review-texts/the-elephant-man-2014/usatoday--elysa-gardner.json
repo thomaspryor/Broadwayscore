@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper brings a touching vulnerability to the role of John Merrick, the hideously deformed 19th-century Englishman who became a celebrity freak.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (21 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.usatoday.com/story/life/theater/2014/12/07/broadway-review-the-elephant-man/20000033/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T15:02:49.338Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence fragment or excerpt, not a complete review with any evaluative verdict or recommendation; openai: This text is a brief mention of a performance without any evaluative content or overall assessment of the show.",
+  "promptVersion": "5.2.0"
 }

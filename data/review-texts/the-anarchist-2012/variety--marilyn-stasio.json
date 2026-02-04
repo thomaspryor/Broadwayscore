@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David Mamet's new play 'The Anarchist' is a talky two-hander that pits a convicted terrorist against her parole officer in a battle of wits that generates more heat than light.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "David Mamet's new play 'The Anarchist' is a talky two-hander that pits a convicted terrorist against her parole officer in a battle of wits that generates more heat than light.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "generates more heat than light",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The phrase 'generates more heat than light' is a clear negative assessment suggesting the play is argumentative but lacks meaningful insight or substance. | GPT-4o: The review suggests that while the play has some engaging elements ('battle of wits'), it ultimately lacks substance ('more heat than light'), indicating a mixed reception. | Gemini: The review describes the play as a 'talky two-hander' that generates 'more heat than light,' suggesting it has some interesting aspects but ultimately falls short of being fully engaging or impactful. This indicates a mixed assessment. | Kimi: The critic uses the idiom 'generates more heat than light' to indicate the play produces drama but lacks intellectual substance, while 'talky' suggests a static, dialogue-heavy production that fails to engage. The brief length limits certainty, but the evaluative language clearly signals a negative assessment. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:38:42.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

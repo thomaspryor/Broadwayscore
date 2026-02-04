@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical, which opened at the Palace Theatre last week, starring Katie Brayben as the titular televangilist, is ambitious in scope but uneven in execution.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical, which opened at the Palace Theatre last week, starring Katie Brayben as the titular televangilist, is ambitious in scope but uneven in execution.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is ambitious in scope but uneven in execution.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - acknowledges ambition but criticizes execution as 'uneven.' However, with only one curated quote available, the full verdict is unclear. | GPT-4o: The excerpt describes the show as 'ambitious in scope but uneven in execution,' indicating a mixed review. The lack of a full review and single excerpt warning suggest caution, leading to a low confidence score. | Gemini: The review excerpt states that the musical is \"ambitious in scope but uneven in execution,\" indicating a mixed assessment. Given that this is a single excerpt, the confidence is low. | Kimi: The excerpt offers balanced praise for the show's ambition while explicitly criticizing its inconsistent execution, matching the 'uneven' descriptor characteristic of Mixed reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:30:26.910Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of The Color Purple succeeds in ways the original did not, finding the right balance between Celie's personal journey and the broader social issues that define her world.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This new production of The Color Purple succeeds in ways the original did not, finding the right balance between Celie's personal journey and the broader social issues that define her world.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production of The Color Purple succeeds in ways the original did not",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic states this production 'succeeds' and improved upon the original by finding the 'right balance,' indicating a positive recommendation despite the very brief text. | GPT-4o: The review highlights the success of the new production in balancing personal and social elements, indicating a positive assessment. However, the brief nature of the text limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review states that the new production 'succeeds' where the original did not, indicating a positive recommendation. | Kimi: The critic explicitly states the production succeeds and improves upon the original by finding the right balance between personal and social themes, indicating a clear recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:55:08.109Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
