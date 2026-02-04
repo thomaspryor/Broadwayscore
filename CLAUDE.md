@@ -160,6 +160,8 @@ WoW/YoY for capacity and ATP self-computed from `grosses-history.json`.
 - `scripts/validate-data.js` — **Run before pushing** — validates shows.json + reviews.json
 - `scripts/discover-new-shows.js` — Broadway.org discovery + IBDB enrichment (daily)
 - `scripts/enrich-ibdb-dates.js` — Standalone IBDB enrichment (`--dry-run`, `--show=SLUG`, `--verify`, `--force`, `--status=`)
+- `scripts/scrape-lottery-rush.js` — Lottery/rush scraper: BwayRush (ScrapingBee HTML→markdown) + Playbill (LLM extraction via Claude Sonnet). Incremental merge, pre-write backup, post-merge cleanup. CLI: `--source=bwayrush|playbill`, `--dry-run`, `--verbose`
+- `scripts/sync-lottery-rush-tags.js` — Syncs lottery/rush/sro tags in shows.json from lottery-rush.json
 - `scripts/scrape-grosses.ts` — BroadwayWorld weekly grosses + history enrichment
 - `scripts/update-commercial-data.js` — Weekly commercial automation
 - `scripts/generate-critic-consensus.js` — LLM editorial summaries
@@ -217,6 +219,7 @@ See `.github/workflows/CLAUDE.md` for individual workflow descriptions.
 | `gather-reviews.yml` | Yes | Yes | Manual/triggered |
 | `review-refresh.yml` | Yes | Yes | Weekly |
 | `adjudicate-review-queue.yml` | Yes | Triggers | Daily 5 AM UTC |
+| `update-lottery-rush.yml` | No | No | Weekly Mon 10 AM UTC, updates `lottery-rush.json` + syncs tags in `shows.json` |
 | `update-mezzanine.yml` | No | No | Weekly Sun 1 PM UTC |
 | `scrape-new-aggregators.yml` | Yes | Yes | Weekly Sun 11 AM UTC |
 | `fetch-guardian-reviews.yml` | Yes | Yes | Manual |
