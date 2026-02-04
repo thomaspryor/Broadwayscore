@@ -31,6 +31,11 @@ const verbose = args.includes('--verbose');
 const APP_ID = process.env.MEZZANINE_APP_ID;
 const SESSION_TOKEN = process.env.MEZZANINE_SESSION_TOKEN;
 
+// Manual overrides: our show ID → Mezzanine show name (for titles that differ)
+const MEZZANINE_OVERRIDES = {
+  'summer-2018': 'Summer: The Donna Summer Musical',
+};
+
 // Paths
 const showsPath = path.join(__dirname, '../data/shows.json');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
@@ -137,7 +142,7 @@ function parseDate(val) {
  */
 function normalize(s) {
   return s.toLowerCase()
-    .replace(/[''!:,.;\-–—&+()]/g, '')
+    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
     .replace(/\s+/g, ' ')
     .replace(/^the\s+/g, '')
     .trim();
@@ -145,6 +150,11 @@ function normalize(s) {
 
 /**
  * Match Mezzanine productions to our shows.json entries
+ *
+ * Strategy: For each of our shows, find ALL matching Mezzanine productions.
+ * When multiple productions match the same show (e.g., "Angels in America:
+ * Millennium Approaches" + "Perestroika"), merge them by averaging ratings
+ * weighted by review count.
  */
 function matchProductions(productions, shows) {
   const matches = [];
@@ -153,70 +163,90 @@ function matchProductions(productions, shows) {
     const title = show.title;
     const openYear = parseInt((show.openingDate || '').substring(0, 4));
     const normTitle = normalize(title);
+    const overrideName = MEZZANINE_OVERRIDES[show.id];
+    const normOverride = overrideName ? normalize(overrideName) : null;
 
-    let bestMatch = null;
-    let bestConfidence = 'none';
+    // Collect ALL matching productions (not just best)
+    const allMatches = [];
 
     for (const p of productions) {
       const mName = normalize(p.show?.name || p.showName || '');
       const mYear = parseInt(parseDate(p.opened || p.firstPreview).substring(0, 4));
+      let confidence = 'none';
+
+      // Strategy 0: Manual override match
+      if (normOverride && mName === normOverride) {
+        confidence = 'high';
+      }
 
       // Strategy 1: Normalized exact match
-      if (mName === normTitle) {
-        if (openYear && mYear && Math.abs(mYear - openYear) <= 1) {
-          bestMatch = p;
-          bestConfidence = 'high';
-          break; // Exact + year = perfect match
-        }
-        if (bestConfidence !== 'high') {
-          bestMatch = p;
-          bestConfidence = 'medium';
+      if (confidence === 'none' && mName === normTitle) {
+        confidence = (openYear && mYear && Math.abs(mYear - openYear) <= 1) ? 'high' : 'medium';
+      }
+
+      // Strategy 2: Prefix matching (handles subtitles like "Angels in America: Perestroika")
+      // Guards: shorter title must be >= 8 chars, at word boundary, and either >= 50% of longer
+      // or have 2+ words. This prevents "elf" matching "twelfth", "art" matching "tartuffe", etc.
+      if (confidence === 'none') {
+        const shorter = mName.length <= normTitle.length ? mName : normTitle;
+        const longer = mName.length <= normTitle.length ? normTitle : mName;
+        if (shorter.length >= 8 && longer.startsWith(shorter + ' ')) {
+          const ratio = shorter.length / longer.length;
+          const wordCount = shorter.split(' ').length;
+          if (ratio >= 0.5 || wordCount >= 2) {
+            confidence = (openYear && mYear && Math.abs(mYear - openYear) <= 1) ? 'high' : 'low';
+          }
         }
       }
 
-      // Strategy 2: One contains the other (handles subtitles)
-      if ((mName.includes(normTitle) || normTitle.includes(mName)) && mName.length > 3) {
-        if (openYear && mYear && Math.abs(mYear - openYear) <= 1) {
-          if (bestConfidence !== 'high') {
-            bestMatch = p;
-            bestConfidence = 'high';
-          }
-        } else if (bestConfidence === 'none') {
-          bestMatch = p;
-          bestConfidence = 'low';
-        }
-      }
-
-      // Strategy 3: First significant words + year match
-      const firstWords = normTitle.split(' ').slice(0, 2).join(' ');
-      if (firstWords.length > 4 && mName.startsWith(firstWords)) {
-        if (openYear && mYear && Math.abs(mYear - openYear) <= 1) {
-          if (bestConfidence !== 'high') {
-            bestMatch = p;
-            bestConfidence = 'medium';
-          }
-        }
+      if (confidence !== 'none' && p.ratingsCount >= 5) {
+        const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
+        // Require year verification for non-high confidence
+        if (!yearVerified && confidence !== 'high') continue;
+        allMatches.push({ production: p, confidence, yearVerified });
       }
     }
 
-    // Only include matches with sufficient ratings and at least medium confidence
-    if (bestMatch && bestMatch.ratingsCount >= 5 && bestConfidence !== 'none') {
-      const mYear = parseInt(parseDate(bestMatch.opened || bestMatch.firstPreview).substring(0, 4));
-      const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
+    if (allMatches.length === 0) continue;
 
-      // Require year verification for production-specific accuracy
-      if (!yearVerified && bestConfidence !== 'high') continue;
+    // Merge multiple matching productions (weighted average by review count)
+    if (allMatches.length > 1) {
+      const names = allMatches.map(m => m.production.show?.name || m.production.showName).join(' + ');
+      const totalRatings = allMatches.reduce((sum, m) => sum + m.production.ratingsCount, 0);
+      const weightedAvg = allMatches.reduce((sum, m) =>
+        sum + m.production.averageRating * m.production.ratingsCount, 0) / totalRatings;
+      const bestConf = allMatches.some(m => m.confidence === 'high') ? 'high' : 'medium';
+      const anyYearVerified = allMatches.some(m => m.yearVerified);
+
+      if (verbose) {
+        console.log(`  Merged ${allMatches.length} productions for ${title}: ${names} (${totalRatings} total ratings)`);
+      }
 
       matches.push({
         showId: show.id,
         title: show.title,
-        mezzName: bestMatch.show?.name || bestMatch.showName,
-        theater: bestMatch.theater?.name || bestMatch.theaterName || 'Unknown',
-        score: Math.round((bestMatch.averageRating / 5) * 100),
-        starRating: Math.round(bestMatch.averageRating * 10) / 10,
-        ratingsCount: bestMatch.ratingsCount,
-        yearVerified,
-        confidence: bestConfidence
+        mezzName: names,
+        theater: allMatches[0].production.theater?.name || 'Unknown',
+        score: Math.round((weightedAvg / 5) * 100),
+        starRating: Math.round(weightedAvg * 10) / 10,
+        ratingsCount: totalRatings,
+        yearVerified: anyYearVerified,
+        confidence: bestConf,
+        mergedFrom: allMatches.length
+      });
+    } else {
+      const m = allMatches[0];
+      const p = m.production;
+      matches.push({
+        showId: show.id,
+        title: show.title,
+        mezzName: p.show?.name || p.showName,
+        theater: p.theater?.name || p.theaterName || 'Unknown',
+        score: Math.round((p.averageRating / 5) * 100),
+        starRating: Math.round(p.averageRating * 10) / 10,
+        ratingsCount: p.ratingsCount,
+        yearVerified: m.yearVerified,
+        confidence: m.confidence
       });
     }
   }
