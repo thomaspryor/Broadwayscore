@@ -13,7 +13,7 @@
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "As adaptations of popular, already-established franchises continue to pop up on Broadway, it’s thrilling to see original, truly one-of-a-kind productions like Dead Outlaw rise up to meet them. Eccentric, silly, and moving, the tale of Elmer McCurdy is one that truly needs to be seen to be believed.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The pair are singing a much different, more raucous tune as they transform Elmer's larger-than-life story into a rollicking, country rock concert complete with a whole lot of laughs and a surprising amount of heart.\"\n\nRead more",
   "contentTier": "excerpt",
@@ -22,7 +22,8 @@
   "sources": [
     "show-score-playwright",
     "playbill-verdict",
-    "nyc-theatre"
+    "nyc-theatre",
+    "bww-reviews"
   ],
   "nycTheatreExcerpt": "As adaptations of popular, already-established franchises continue to pop up on Broadway, it's thrilling to see original, truly one-of-a-kind productions like Dead Outlaw rise up to meet them. Eccentric, silly, and moving, the tale of Elmer McCurdy is one that truly needs to be seen to be believed.",
   "llmScore": {
@@ -79,5 +80,6 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "bwwScore": 8
 }

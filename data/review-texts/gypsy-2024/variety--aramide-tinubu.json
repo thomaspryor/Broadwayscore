@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Sixty-five years after it first premiered on Broadway, “Gypsy” is still known as one of the greatest theater masterpieces of the 20th century. There have been stellar productions of the play from New York to London, led by icons including Angela Lansbury and Imelda Staunton. However, the latest revival, shepherded by legendary director and playwright George C. Wolfe and starring Tony Award winner Audra McDonald, is an electric and truly unique production that will undoubtedly become a crowning jewel in the canon of “Gypsy.”",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald's Rose is a force of nature, a woman who refuses to be ignored or dismissed, even when her dreams have long since passed their expiration date.",
   "contentTier": "invalid",
@@ -22,11 +22,13 @@
   "sources": [
     "web-search",
     "show-score-playwright",
-    "nyc-theatre"
+    "nyc-theatre",
+    "bww-reviews"
   ],
   "rejectedAt": "2026-02-03T17:03:21.794Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with evaluative content about the Broadway production; openai: The text is a single sentence that appears to be a character description or performance note, not a full review or evaluation of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 10
 }
