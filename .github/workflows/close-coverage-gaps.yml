@@ -288,7 +288,7 @@ jobs:
     needs: [audit]
     if: ${{ always() && needs.audit.result == 'success' && needs.audit.outputs.gap_count != '0' && needs.audit.outputs.gap_count != '' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
         with:
@@ -319,13 +319,8 @@ jobs:
           echo "Gathering reviews for ${{ needs.audit.outputs.gap_count }} shows with genuine gaps..."
           echo "Shows: $GAP_SHOWS"
 
-          # Run gather-reviews for each show
-          IFS=',' read -ra SHOWS <<< "$GAP_SHOWS"
-          for show in "${SHOWS[@]}"; do
-            echo ""
-            echo "=== Gathering: $show ==="
-            node scripts/gather-reviews.js --shows="$show" || true
-          done
+          # Run gather-reviews for all gapped shows in a single invocation
+          node scripts/gather-reviews.js --shows="$GAP_SHOWS" || true
 
       - name: Commit gathered reviews
         run: |
