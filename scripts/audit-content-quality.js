@@ -157,11 +157,26 @@ for (const [url, files] of Object.entries(urlToFiles)) {
     // Check if they're in different show directories
     const shows = new Set(files.map(f => f.split('/')[0]));
     if (shows.size > 1) {
-      findings.crossShowDuplicateUrls.push({
-        url: url.substring(0, 100),
-        files,
-        showCount: shows.size,
-      });
+      // Exclude roundup articles — they legitimately span multiple shows
+      let isRoundup = false;
+      for (const relPath of files) {
+        try {
+          const filePath = path.join(REVIEW_TEXTS_DIR, relPath);
+          const fileData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (fileData.isRoundupArticle === true) {
+            isRoundup = true;
+            break;
+          }
+        } catch (e) { /* skip unreadable */ }
+      }
+
+      if (!isRoundup) {
+        findings.crossShowDuplicateUrls.push({
+          url: url.substring(0, 100),
+          files,
+          showCount: shows.size,
+        });
+      }
     }
   }
 }
