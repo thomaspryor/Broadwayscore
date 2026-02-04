@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both writing and direction with positive language about balance and staging. However, confidence is low due to extremely brief excerpt lacking fuller context or explicit recommendation language. | GPT-4o: The review uses strong positive language ('hilarious and horrifying', 'just the right balance') indicating a highly favorable impression of both the writing and direction. | Gemini: The review praises the writing and direction of the play, indicating a positive overall assessment. | Kimi: The critic delivers strong praise for both the playwright's skill in blending tones and the director's execution, using words like 'hilarious' and 'just the right balance' that indicate a high recommendation despite the excerpt's brevity.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both writing and direction with no reservations expressed, but extremely brief excerpt limits confidence in the full review's verdict. | GPT-4o: The review offers unqualified praise for both the writing and direction, highlighting a perfect balance of comedy and horror, indicating a strong recommendation. | Gemini: The review praises the writing and direction, indicating a positive experience overall. | Kimi: The review offers strong unqualified praise for both the writing ('hilarious and horrifying') and direction ('just the right balance'), indicating an enthusiastic recommendation despite the brevity of the text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:49:54.572Z",
+    "scoredAt": "2026-02-04T04:13:17.041Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 78,
     "openaiScore": 90,
     "geminiScore": 78,
-    "kimiScore": 84,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 14,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

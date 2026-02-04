@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What emerges is a portrait of sexual frustration and romantic delusion so comprehensive and convincing that you feel as if you've been living with these people for years.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 82,
+    "score": 81,
     "confidence": "high",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the psychological depth and convincing characterization suggests positive recommendation, but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt provides a positive evaluation of the show's ability to convincingly portray its characters, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt describes the show as 'comprehensive and convincing,' suggesting a positive, immersive experience. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the show's character work with superlatives like 'comprehensive and convincing,' suggesting deep appreciation for the emotional authenticity. As a single curated excerpt, confidence is reduced despite the clearly positive tone.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the production's character development and convincing portrayal. The language 'comprehensive and convincing' with the immersive quality described suggests solid recommendation, though single excerpt limits confidence. | GPT-4o: The excerpt provides a positive evaluation of the show's ability to create a convincing and immersive experience. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt suggests a positive experience due to the convincing and comprehensive nature of the portrayal. However, due to the limited text, confidence is low. | Kimi: The excerpt offers strong praise for the production's psychological depth and immersive realism, describing the characterization as 'comprehensive and convincing,' which indicates a solid recommendation despite the limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:01:09.285Z",
+    "scoredAt": "2026-02-04T04:23:17.385Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,13 +59,13 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 79,
+    "geminiScore": 78,
     "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

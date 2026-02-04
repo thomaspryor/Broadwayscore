@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This faithful adaptation of Khaled Hosseini's beloved novel brings emotional weight to the stage, though it occasionally feels constrained by its reverence for the source material.",
+        "quote": "This faithful adaptation brings emotional weight to the stage, though it occasionally feels constrained by its reverence for the source material.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. Acknowledges emotional impact but identifies constraint as a significant flaw. | GPT-4o: The review acknowledges the adaptation's emotional impact but notes it feels constrained, aligning with the critic's original rating of 60, indicating a mixed reception. | Gemini: The review acknowledges emotional weight but also notes constraints, suggesting a mixed experience. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The critic's 60/100 rating and balanced assessment—praising the emotional impact while criticizing the production's excessive reverence for the source material—indicate a middle-of-the-road verdict with neither strong recommendation nor dismissal.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating places this squarely in Mixed territory. The review acknowledges positive elements (emotional weight) but identifies significant limitations (constrained by reverence), indicating neither a clear recommendation nor discouragement. | GPT-4o: The critic's original rating of 60 places it in the Mixed bucket. The review acknowledges emotional weight but notes constraints, indicating a balanced view. | Gemini: The review acknowledges emotional weight but also notes constraints, suggesting a mixed experience. The critic's rating of 60 aligns with the Mixed bucket. | Kimi: The critic's own rating of 60 falls within the Mixed range (55-69). The review praises the emotional weight and faithfulness but criticizes the constraints of reverence to the source material, resulting in a balanced, middle-of-the-road assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:46:56.720Z",
+    "scoredAt": "2026-02-04T04:09:14.156Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

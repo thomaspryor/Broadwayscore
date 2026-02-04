@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the appeal of the lead performers but explicitly states they cannot overcome the production's fundamental problems, indicating a mixed-to-negative assessment without a clear recommendation either way. | GPT-4o: The review acknowledges the appeal of the performers but ultimately indicates that the revival has fundamental problems that are not overcome, leading to a negative recommendation. | Gemini: The review acknowledges the star power of the leads but states that it cannot overcome the fundamental problems with the revival, indicating a negative overall assessment. | Kimi: While the critic acknowledges the lead performers are undeniably appealing, the emphasis on fundamental problems that star power cannot overcome indicates a negative verdict rather than a recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the stars' appeal but identifies 'fundamental problems' that their talent cannot overcome, indicating a qualified negative assessment without strong discouragement. | GPT-4o: The review acknowledges the appeal of the performers but ultimately indicates that the revival has fundamental problems that are not overcome, leading to a negative recommendation. | Gemini: The review acknowledges the appeal of the stars but states that their talent cannot overcome the show's fundamental problems, indicating a negative overall assessment. | Kimi: While acknowledging the star power of the leads as 'undeniably appealing,' the critic emphasizes that fundamental problems with the revival persist, delivering a verdict that advises against seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:56:30.340Z",
+    "scoredAt": "2026-02-04T04:18:36.713Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the work as pulsing with authenticity and emotional depth, but notes it 'occasionally stumbles,' indicating a positive but qualified recommendation. | GPT-4o: The review praises the work's authenticity and emotional impact, though it notes some occasional stumbles. The overall tone suggests a positive recommendation with minor reservations. | Gemini: Extracted from malformed response | Kimi: The critic praises the show's authentic vitality and emotional resonance while acknowledging it occasionally stumbles, indicating a qualified but clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the work as pulsing with authenticity and emotional depth, with only minor criticism about occasional stumbles over good intentions. The positive elements clearly outweigh the reservations. | GPT-4o: The review highlights the play's authenticity and emotional impact, though it notes occasional flaws. The overall tone suggests a positive recommendation with some reservations. | Gemini: Extracted from malformed response | Kimi: The critic offers genuine praise for the work's vitality and emotional authenticity ('pulses with real life') while acknowledging minor flaws ('occasionally stumbles'), indicating a solid but qualified recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:55:02.531Z",
+    "scoredAt": "2026-02-04T04:17:37.792Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 75,
-    "openaiScore": 75,
+    "openaiScore": 76,
     "geminiScore": 72,
-    "kimiScore": 76,
+    "kimiScore": 77,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 4,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McKellen and Stewart bring their considerable star power and decades of theatrical experience to Beckett's masterpiece, creating a production that feels both timeless and immediate.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "McKellen and Stewart bring their considerable star power and decades of theatrical experience to Beckett's masterpiece, creating a production that feels both timeless and immediate.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McKellen and Stewart bring their considerable star power and decades of theatrical experience to Beckett's masterpiece, creating a production that feels both timeless and immediate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence praising the stars and calling the production both 'timeless and immediate', but extremely brief excerpt limits confidence in full critical assessment. | GPT-4o: The review praises the production as a 'masterpiece' and highlights the star power and experience of the lead actors, suggesting a highly positive reception. | Gemini: The review praises the performances of McKellen and Stewart and calls the production \"timeless and immediate,\" indicating a positive recommendation. | Kimi: The excerpt offers clear praise for the lead performances and production quality, calling it a 'masterpiece' that feels 'timeless and immediate,' indicating a solid recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:10:12.005Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

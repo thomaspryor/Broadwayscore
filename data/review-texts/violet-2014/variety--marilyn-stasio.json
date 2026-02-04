@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Sutton Foster gives a powerhouse performance as a young woman on a Greyhound bus journey to get her facial scars healed, in this affecting musical that deserved a longer Broadway run.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Sutton Foster gives a powerhouse performance as a young woman on a Greyhound bus journey to get her facial scars healed, in this affecting musical that deserved a longer Broadway run.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sutton Foster gives a powerhouse performance as a young woman on a Greyhound bus journey to get her facial scars healed, in this affecting musical that deserved a longer Broadway run.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performance as 'powerhouse' and calls the musical 'affecting' while lamenting it deserved a longer run, indicating clear recommendation despite brevity of review. | GPT-4o: The review praises Sutton Foster's performance as 'powerhouse' and describes the musical as 'affecting', indicating a strong positive recommendation. The mention that it 'deserved a longer Broadway run' suggests high praise and enthusiasm. | Gemini: The review praises Sutton Foster's performance and calls the musical \"affecting,\" indicating a positive experience. The comment about the show deserving a longer run suggests it is worth seeing. | Kimi: The critic offers strong praise for the lead performance ('powerhouse') and the show itself ('affecting'), with a clear endorsement that it merited an extended run, though the brevity of the text warrants lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:09:49.121Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

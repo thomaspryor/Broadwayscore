@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Ian Rickson's production is polished to a high shine. The emotional arcs, the richness of the performances, the lucidity of the adaptation, the sumptuous design: everything about it gleams. There are no rough edges. It's almost too controlled, too clean. Its most charged moments are some of its smal...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ian Rickson's production is polished to a high shine.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the production quality and performances but critiques it as 'too controlled, too clean' suggesting some artistic reservations. Single excerpt warning applies - this appears mildly positive with caveats. | GPT-4o: The excerpt praises the production's polish, emotional arcs, performances, and design, indicating strong positive sentiment. The caution about control suggests minor reservations, but overall, the tone is highly positive. Given the single excerpt warning, a score at the higher end of Positive is appropriate. | Gemini: The review excerpt is overwhelmingly positive, praising the production's polish, performances, adaptation, and design. However, the truncated text and single excerpt warrant a 'low' confidence and a score on the higher end of the 'Positive' bucket, acknowledging potential reservations. | Kimi: The excerpt offers enthusiastic praise for the production's technical polish, performances, and design, placing it firmly in the Positive bucket. While the critic notes it is 'almost too controlled, too clean,' this reservation is minor compared to the extensive commendations. Given this is a single curated excerpt that appears strongly positive, the score falls in the upper Positive range (80-84) per scoring guidelines, though confidence is lowered due to the truncated text and excerpt-only availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:08:06.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

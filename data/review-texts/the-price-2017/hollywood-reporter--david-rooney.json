@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Danny DeVito brings his distinctive comic timing and unpretentious authenticity to Arthur Miller's family drama, anchoring a solid revival that benefits from Terry Kinney's sensitive direction.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Danny DeVito brings his distinctive comic timing and unpretentious authenticity to Arthur Miller's family drama, anchoring a solid revival that benefits from Terry Kinney's sensitive direction.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Danny DeVito brings his distinctive comic timing and unpretentious authenticity to Arthur Miller's family drama, anchoring a solid revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performance and direction, calls it a 'solid revival' - clearly positive but moderate language suggests mid-range positive score. | GPT-4o: The review praises Danny DeVito's performance and the direction, describing the revival as 'solid,' indicating a positive recommendation with some reservations. | Gemini: The review uses positive language like \"solid revival\" and \"sensitive direction,\" indicating a recommendation, but not an overwhelming one. DeVito's performance is highlighted as a key strength. | Kimi: The excerpt offers unambiguous praise for DeVito's performance and the direction, explicitly calling it a 'solid revival'—a clear but measured recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:32:06.125Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise ('powerhouse performance', 'moving drama') suggests positive recommendation, but limited text requires low confidence. Scored in upper Positive range given clearly enthusiastic language. | GPT-4o: The excerpt highlights a strong performance by Nathan Lane and describes the drama as 'moving'. However, due to the single excerpt warning, the overall sentiment might be mildly positive rather than strongly positive. | Gemini: The excerpt highlights a 'powerhouse performance' and a 'moving drama,' suggesting a strong positive experience. Given it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited information. | Kimi: The excerpt offers strong praise for the lead performance ('powerhouse') and the play itself ('moving drama'), indicating an enthusiastic recommendation. As a single curated excerpt, this represents the upper end of the Positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises both Lane's 'powerhouse performance' and calls the drama 'moving', suggesting strong positive assessment. However, confidence is low due to limited text from what may be a longer review. | GPT-4o: The excerpt praises Nathan Lane's performance and describes the drama as 'moving'. However, due to the single excerpt warning and lack of broader context, the score is set at the lower end of the Positive range. | Gemini: The excerpt focuses on a 'powerhouse performance' and a 'moving drama,' indicating a positive assessment. Given the single excerpt warning, I'm placing it at the higher end of the 'Positive' bucket. | Kimi: The excerpt contains strong positive evaluative language ('powerhouse performance,' 'moving drama') indicating a clear recommendation. Per single-excerpt guidance for clearly positive quotes, the score falls in the upper range of the Positive bucket (80-84), though confidence is low due to limited text availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:57:41.882Z",
+    "scoredAt": "2026-02-04T04:19:56.809Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Karam's play is a masterpiece of ordinary dread, finding horror in the everyday anxieties of a middle-class family gathering for Thanksgiving dinner.",
   "originalScore": 80,
-  "assignedScore": 83,
+  "assignedScore": 84,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 83,
+    "score": 84,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 79,
+      "high": 89
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Critic explicitly calls the play 'a masterpiece' with 80/100 rating, indicating strong enthusiasm and recommendation despite the brief excerpt. | GPT-4o: The use of 'masterpiece' indicates a strong, enthusiastic recommendation, aligning with the original rating of 80, which suggests a high level of praise. | Gemini: The critic calls the play a \"masterpiece of ordinary dread,\" which indicates a positive assessment, though not a rave. The score aligns with the original rating of 80. | Kimi: The explicit original rating of 80 places this in the Positive range (70-84). While the excerpt uses superlative language ('masterpiece'), its brevity suggests it may be truncated or a pull-quote, warranting low confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Critic explicitly calls the play a 'masterpiece' which is classic rave language. The 80 rating from the critic confirms strong positive assessment. | GPT-4o: The critic describes the play as a 'masterpiece,' indicating a strong recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review calls the play a \"masterpiece of ordinary dread,\" indicating a positive assessment. The critic's rating of 80 further supports this classification. | Kimi: The critic assigns an explicit rating of 80 and uses superlative language ('masterpiece'), indicating a strong positive recommendation for this production. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:42:47.098Z",
+    "scoredAt": "2026-02-04T04:04:43.235Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,14 +64,14 @@
   },
   "ensembleData": {
     "claudeScore": 88,
-    "openaiScore": 85,
+    "openaiScore": 90,
     "geminiScore": 80,
     "kimiScore": 80,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

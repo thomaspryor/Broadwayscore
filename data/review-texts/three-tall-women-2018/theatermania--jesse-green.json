@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Albee's Pulitzer Prize-winning play gets a magnificent revival with Glenda Jackson, Laurie Metcalf, and Alison Pill.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Albee's Pulitzer Prize-winning play gets a magnificent revival with Glenda Jackson, Laurie Metcalf, and Alison Pill.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (16 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 89,
+    "confidence": "high",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Albee's Pulitzer Prize-winning play gets a magnificent revival with Glenda Jackson, Laurie Metcalf, and Alison Pill.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses the word 'magnificent' to describe the revival, indicating a strong, enthusiastic recommendation with no reservations. | Gemini: The review uses the word \"magnificent,\" indicating a very positive and enthusiastic assessment of the revival. The presence of acclaimed actresses further supports this classification. | Kimi: The critic uses the superlative 'magnificent' to describe the revival, indicating unqualified enthusiasm characteristic of a rave. However, confidence is low given the text appears severely truncated to a single sentence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:54:17.443Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 88,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

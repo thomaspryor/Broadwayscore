@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 62,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 62,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 57,
-      "high": 67
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Breadth doesn't always equal depth in Matthew Lopez's supersize, vividly painted portrait of gay life in the 21st century.",
+        "quote": "Breadth doesn't always equal depth in Matthew Lopez's supersize, vividly painted portrait of gay life in the 21st century",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals: 'vividly painted' suggests praise, but 'breadth doesn't always equal depth' implies structural criticism. With only a headline excerpt available, confidence is low. | GPT-4o: The excerpt suggests a mixed review, noting the play's ambition and vivid portrayal but also implying a lack of depth. The single excerpt warning and lack of full context lead to a low confidence score. | Gemini: The excerpt suggests the play has some positive qualities ('vividly painted portrait') but lacks depth, indicating a mixed reaction. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise ('vividly painted') undercut by a fundamental criticism about the show's depth relative to its length ('Breadth doesn't always equal depth'). As a single curated excerpt with no additional context, confidence must be low.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the work is 'vividly painted' but criticizes that 'breadth doesn't always equal depth,' suggesting the ambitious scope doesn't fully succeed. Single excerpt with mixed signals requires low confidence. | GPT-4o: The excerpt suggests a mixed review, noting the play's vivid portrayal but also implying a lack of depth. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The excerpt suggests the show has some good qualities (vividly painted portrait) but lacks depth. Given the truncated nature and single excerpt, a mixed score with low confidence seems appropriate. | Kimi: The single excerpt offers both genuine praise ('vividly painted') and significant criticism ('breadth doesn't always equal depth'), suggesting the critic found the ambitious production visually striking but superficial. With only one curated excerpt available, the overall verdict remains unclear.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:45:06.627Z",
+    "scoredAt": "2026-02-04T04:06:33.275Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,12 +63,12 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 60,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
-    "scoreDelta": 5,
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

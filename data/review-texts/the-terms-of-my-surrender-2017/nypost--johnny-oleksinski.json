@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Moore's show is sloppy, self-indulgent and often dull — but it's also necessary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Moore's show is sloppy, self-indulgent and often dull — but it's also necessary.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textQuality": "excerpt"
+  "textQuality": "excerpt",
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moore's show is sloppy, self-indulgent and often dull — but it's also necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic delivers harsh criticism ('sloppy, self-indulgent and often dull') but ultimately endorses the show as 'necessary,' indicating mixed feelings with no clear recommendation either way. | GPT-4o: The review acknowledges significant flaws ('sloppy, self-indulgent, dull') but also describes the show as 'necessary,' indicating a mixed assessment with some redeeming value. | Gemini: The review presents both negative and positive aspects, ultimately landing in the mixed category. The 'but it's also necessary' suggests a reason to see it despite its flaws. | Kimi: The critic balances harsh criticism of the production quality ('sloppy, self-indulgent and often dull') with an acknowledgment of its cultural importance ('necessary'), resulting in an ambivalent assessment that neither fully recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:41:55.994Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

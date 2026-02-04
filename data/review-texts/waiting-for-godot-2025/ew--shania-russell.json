@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads. Reeves and Winter are old friends playing old friends and their dynamic oozes fondness and longfelt frustration. The love and safety that Didi and Gogo find in one another is so endearing.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges the production doesn't innovate but strongly praises the central performances and chemistry. However, with only one curated quote available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt highlights a positive aspect of the production, focusing on the chemistry between the leads. However, it also notes that the production doesn't bring new insights to the material, suggesting a mild recommendation. | Gemini: The review praises the leads' dynamic and the endearing nature of their friendship, but notes that the production doesn't offer a fresh perspective. Given the single excerpt and lack of overall verdict, I'm scoring it as positive with reservations and low confidence. | Kimi: While the critic notes the production doesn't innovate, they offer strong praise for the lead performances and their 'endearing' dynamic, suggesting a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:10:56.697Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though the play sometimes feels more like a series of monologues than a fully integrated drama, it offers a rich and varied portrait of Black masculinity that is both specific and universal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Though the play sometimes feels more like a series of monologues than a fully integrated drama, it offers a rich and varied portrait of Black masculinity that is both specific and universal.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Though the play sometimes feels more like a series of monologues than a fully integrated drama, it offers a rich and varied portrait of Black masculinity that is both specific and universal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges structural flaws (feels like monologues rather than integrated drama) but finds value in the thematic content (rich portrait). The balanced critique with no clear recommendation places it in mixed territory. | GPT-4o: The review acknowledges a structural flaw ('series of monologues') but praises the thematic depth ('rich and varied portrait'). This suggests a mixed review with both positive and negative elements. | Gemini: The review acknowledges a structural weakness (monologues) but ultimately praises the play's portrayal of Black masculinity, suggesting a positive but qualified recommendation. | Kimi: The critic acknowledges structural weaknesses (feels like monologues rather than integrated drama) but strongly praises the rich, specific, and universal portrayal of Black masculinity, recommending the show for its thematic depth. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:51:54.204Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

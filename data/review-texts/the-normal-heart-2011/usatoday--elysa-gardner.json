@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Normal Heart beats with urgent passion and piercing honesty, making for one of the most important theatrical experiences of the season.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Strong superlative language calling it 'one of the most important theatrical experiences of the season' with emphatic praise for passion and honesty indicates enthusiastic recommendation. | GPT-4o: The review uses strong, enthusiastic language ('urgent passion', 'piercing honesty') and describes the show as one of the most important experiences, indicating a rave recommendation. | Gemini: The review uses strong positive language such as \"urgent passion,\" \"piercing honesty,\" and \"most important theatrical experiences,\" indicating a rave review. | Kimi: The critic employs superlatives ('most important theatrical experiences of the season') and evocative praise ('urgent passion,' 'piercing honesty') to deliver an unqualified, enthusiastic recommendation without reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it 'one of the most important theatrical experiences of the season' with strong positive descriptors like 'urgent passion' and 'piercing honesty' indicates a must-see recommendation. | GPT-4o: The review uses strong, superlative language ('urgent passion', 'piercing honesty', 'most important') indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"urgent passion,\" \"piercing honesty,\" and \"most important theatrical experiences,\" indicating a rave review. | Kimi: The critic offers unqualified superlatives, calling the show one of the 'most important theatrical experiences of the season' with 'urgent passion' and 'piercing honesty,' indicating an enthusiastic, must-see recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:58:41.485Z",
+    "scoredAt": "2026-02-04T04:21:07.616Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 92,
     "openaiScore": 92,
     "geminiScore": 88,
-    "kimiScore": 94,
+    "kimiScore": 95,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 6,
+    "scoreDelta": 7,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

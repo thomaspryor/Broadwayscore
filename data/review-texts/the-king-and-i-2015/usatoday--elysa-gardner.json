@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical, making this revival feel both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 82,
+    "score": 80,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 75,
+      "high": 85
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical.",
+        "quote": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performances and positive framing of the revival as both 'timeless and urgently contemporary', but brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review praises the performances as bringing 'fresh depth and nuance,' making the revival feel 'timeless and urgently contemporary,' indicating a strong recommendation. | Gemini: The review uses strong positive language like \"fresh depth and nuance\" and \"timeless and urgently contemporary,\" indicating a strong recommendation. | Kimi: The critic offers unreserved praise for the lead performances ('fresh depth and nuance') and the production's artistic achievement ('timeless and urgently contemporary'), indicating a strong recommendation despite the brevity of the text.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises lead performances for bringing 'fresh depth and nuance' and calls the revival both 'timeless and urgently contemporary', but this appears to be an excerpt with limited evaluative detail. | GPT-4o: The review praises the performances as bringing 'fresh depth and nuance' and describes the revival as 'timeless and urgently contemporary', indicating a strong recommendation. | Gemini: The review uses strong positive language like \"fresh depth and nuance\" and \"timeless and urgently contemporary,\" indicating a strong recommendation. | Kimi: The critic praises the lead performances for bringing fresh depth and nuance, and describes the revival as both timeless and urgently contemporary, indicating strong enthusiasm for this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,22 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:46:18.986Z",
+    "scoredAt": "2026-02-04T04:08:04.079Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 78,
     "openaiScore": 90,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

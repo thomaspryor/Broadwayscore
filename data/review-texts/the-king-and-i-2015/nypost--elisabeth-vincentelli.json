@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This revival is a gorgeous, sumptuous production that honors the original while making it feel fresh and relevant for today's audiences.",
   "originalScore": null,
-  "assignedScore": 85,
+  "assignedScore": 86,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 85,
+    "score": 86,
     "confidence": "medium",
     "range": {
-      "low": 80,
-      "high": 90
+      "low": 81,
+      "high": 91
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('gorgeous, sumptuous') with clear endorsement of the production's quality and contemporary relevance. However, this appears to be a brief excerpt which limits confidence in capturing the full critical assessment. | GPT-4o: The review uses strong positive language ('gorgeous', 'sumptuous', 'fresh and relevant') indicating an enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"gorgeous\" and \"sumptuous\" and states that the revival honors the original while feeling fresh and relevant. | Kimi: Unqualified enthusiastic praise using superlatives ('gorgeous', 'sumptuous') and noting the production feels 'fresh and relevant' indicates a strong recommendation despite the brevity of the text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise with 'gorgeous' and 'sumptuous' combined with contemporary relevance suggests solid positive recommendation, though brief text limits confidence. | GPT-4o: The review uses strong positive language ('gorgeous', 'sumptuous', 'fresh and relevant') indicating a highly enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"gorgeous\" and \"sumptuous\" and states that the revival honors the original while making it feel fresh and relevant. | Kimi: The critic employs unqualified superlatives ('gorgeous,' 'sumptuous') and praises the production for successfully balancing fidelity to the original with contemporary relevance, indicating an enthusiastic, must-see recommendation with no reservations expressed. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,22 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:45:44.343Z",
+    "scoredAt": "2026-02-04T04:07:10.224Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 88,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 9,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation ('worthwhile') anchored by strong praise for Jackman, but with notable reservation about not matching the original's magic. | GPT-4o: The critic's rating of 87 indicates a strong positive review. The text praises Jackman's performance as making the revival worthwhile, despite some reservations about recapturing the original's magic. | Gemini: The review explicitly states the revival is \"worthwhile\" due to Jackman's performance, but acknowledges it doesn't fully recapture the original's magic, indicating a positive but not rave review. | Kimi: The critic's explicit 87/100 rating places this in the Rave range, and while noting the production doesn't match the original, clearly recommends it as worthwhile.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation ('worthwhile') anchored by praise for Jackman's performance, but with notable reservation about not matching the original's magic. The critic's 87 rating confirms positive territory. | GPT-4o: The critic's original rating of 87 aligns with a strong positive recommendation. The review highlights Jackman's performance as a key reason to see the revival, despite some reservations about recapturing the original's magic. | Gemini: The review states the revival is \"worthwhile\" due to Jackman's performance, but acknowledges it doesn't reach the level of the original production, indicating a positive but not rave recommendation. | Kimi: The critic explicitly calls the show 'worthwhile' due to the star's performance, indicating a clear recommendation, but the caveat about failing to match the original production's magic keeps it from being an unqualified rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:55:54.957Z",
+    "scoredAt": "2026-02-04T04:18:12.098Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,18 +60,18 @@
   "ensembleData": {
     "claudeScore": 76,
     "openaiScore": 84,
-    "geminiScore": 78,
-    "kimiScore": 87,
+    "geminiScore": 75,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 11,
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
   }
 }

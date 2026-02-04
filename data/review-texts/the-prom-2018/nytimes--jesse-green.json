@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite some clunky plotting and a few too many songs that sound like songs about songs, 'The Prom' mostly succeeds in wrapping its valuable message in enough razzle-dazzle to make it go down easy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite some clunky plotting and a few too many songs that sound like songs about songs, 'The Prom' mostly succeeds in wrapping its valuable message in enough razzle-dazzle to make it go down easy.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (34 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Prom' mostly succeeds in wrapping its valuable message in enough razzle-dazzle to make it go down easy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'mostly succeeds' despite acknowledging specific flaws (clunky plotting, meta songs). The critic recommends the show while noting reservations. | GPT-4o: The review acknowledges some flaws in plotting and music but ultimately recommends the show for its successful delivery of a valuable message with entertaining elements. | Gemini: The review indicates that the show \"mostly succeeds\" despite some flaws, which is a positive recommendation with reservations. | Kimi: While criticizing the plotting and some derivative songs, the critic ultimately delivers a positive verdict that the show succeeds in delivering its valuable message with sufficient entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:33:30.631Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

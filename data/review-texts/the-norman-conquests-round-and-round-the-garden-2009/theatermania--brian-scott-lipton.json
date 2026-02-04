@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('superb cast', 'effortless and inevitable') but only one excerpt available, so confidence is low. Upper end of Positive range due to unqualified praise. | GPT-4o: The excerpt praises the director and cast, describing the production as 'effortless and inevitable,' suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises the director and cast, suggesting a strong positive experience. Given the single excerpt, confidence is low, but the positive language suggests a score on the higher end of the positive range. | Kimi: The excerpt uses unambiguously positive language ('superb', 'effortless and inevitable') indicating a strong endorsement, though with only one curated excerpt available, confidence in the overall verdict is reduced.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction and cast with superlative language ('superb', 'effortless and inevitable'), but confidence is low due to single excerpt that may not represent full verdict. | GPT-4o: The excerpt praises the director's work and the cast, indicating a strong positive impression. The use of 'superb' and 'effortless and inevitable' suggests a solid recommendation, though the single excerpt limits full context. | Gemini: The excerpt praises the director and cast, indicating a positive experience. Given the single excerpt, confidence is low, but the positive language suggests a score on the higher end of the positive range. | Kimi: The excerpt offers strong praise for the cast and direction, describing the production as 'effortless and inevitable,' indicating a clear recommendation, though the single-excerpt format limits certainty about the full review's tone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:01:43.313Z",
+    "scoredAt": "2026-02-04T04:23:41.837Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

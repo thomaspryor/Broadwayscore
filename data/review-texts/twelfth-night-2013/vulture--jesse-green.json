@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Daniel Sullivan, is handsome and well-meaning but oddly tepid, like a luxury hotel that's been decorated to within an inch of its life but somehow lacks a soul.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Daniel Sullivan, is handsome and well-meaning but oddly tepid, like a luxury hotel that's been decorated to within an inch of its life but somehow lacks a soul.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed by Daniel Sullivan, is handsome and well-meaning but oddly tepid, like a luxury hotel that's been decorated to within an inch of its life but somehow lacks a soul.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges production values ('handsome') but the dominant sentiment is criticism ('oddly tepid', 'lacks a soul'). Single excerpt warning applies - this mixed-negative assessment suggests the full review likely doesn't recommend. | GPT-4o: The excerpt describes the production as 'handsome and well-meaning' but ultimately 'tepid', suggesting a lack of strong recommendation or discouragement. The single excerpt and lack of full context lead to a low confidence score. | Gemini: The review describes the production as \"handsome and well-meaning\" but also \"oddly tepid\", suggesting a mixed or neutral assessment. The comparison to a soulless luxury hotel further reinforces this mixed sentiment. | Kimi: The excerpt praises the visual presentation ('handsome') but delivers a fundamental criticism that the production lacks emotional core or vitality ('tepid', 'lacks a soul'), suggesting significant reservations without being entirely dismissive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:06:57.804Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

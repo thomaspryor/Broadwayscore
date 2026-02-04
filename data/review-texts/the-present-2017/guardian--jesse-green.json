@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blanchett is magnificent in this adaptation of Chekhov's first play, but the production around her feels uncertain and overwrought.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Blanchett is magnificent in this adaptation of Chekhov's first play, but the production around her feels uncertain and overwrought.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (19 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blanchett is magnificent in this adaptation of Chekhov's first play, but the production around her feels uncertain and overwrought.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear praise for Blanchett's performance balanced by criticism of the overall production quality. The 'but' construction indicates significant reservations that prevent a positive recommendation. | GPT-4o: The review praises Blanchett's performance but criticizes the overall production as uncertain and overwrought, indicating a mixed reception. | Gemini: The review praises Blanchett's performance but criticizes the overall production, resulting in a mixed assessment. | Kimi: The review offers high praise for Blanchett's performance ('magnificent') but significant criticism of the production itself ('uncertain and overwrought'), creating a balanced mixed assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:29:59.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

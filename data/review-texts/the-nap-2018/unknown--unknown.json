@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('delicious', 'assured', 'success') praising direction and performances, but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt praises the direction and cast, describing the comedy as 'delicious' and 'dexterous'. The positive tone suggests a strong recommendation, but confidence is low due to the single excerpt limitation. | Gemini: The excerpt uses positive language such as \"delicious\", \"assured balance\", and praises the cast. Given the single excerpt warning, I'm scoring on the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise using words like 'delicious,' 'success,' and 'dexterity' to commend the direction and performances, indicating a strong recommendation at the upper end of the Positive range.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('delicious', 'assured', 'success') praising direction and cast, but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt praises the direction and cast, describing the comedy as 'delicious' and 'assured'. The tone is clearly positive, suggesting a strong recommendation. | Gemini: The excerpt praises the direction and describes the comedy as \"delicious,\" suggesting a positive review. Given that it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers strong praise for the production's direction and performances, describing the show as 'delicious' and highlighting its 'dexterity' and success, indicating a clear recommendation despite the limited available text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:58:18.476Z",
+    "scoredAt": "2026-02-04T04:20:43.855Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

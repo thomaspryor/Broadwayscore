@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Sara Bareilles has written a score that is both tuneful and emotionally rich, with lyrics that are clever without being overly cute.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T05:12:03.946Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a single sentence excerpt praising the score, not a complete review with an overall verdict or recommendation; openai: The text provided is a single sentence that evaluates the score but does not constitute a full review of the show.",
+  "promptVersion": "5.2.0"
 }

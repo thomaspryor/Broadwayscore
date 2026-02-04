@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'The Velocity of Autumn' from terminal cuteness is the unforced naturalness of the relationship between Estelle Parsons and Stephen Spinella, who play Alexandra and her son Chris with a mixture of irritation and affection that rings completely true.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What saves 'The Velocity of Autumn' from terminal cuteness is the unforced naturalness of the relationship between Estelle Parsons and Stephen Spinella",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt suggests a qualified positive - the show is 'saved' from a major flaw by strong performances, indicating overall recommendation despite reservations. Low confidence due to limited text and potential for cherry-picking. | GPT-4o: The excerpt praises the performances and chemistry of the lead actors, suggesting a positive view of the production. However, the use of 'saves' implies some reservations, and the single excerpt limits confidence. | Gemini: The excerpt highlights the positive performances of the two leads, suggesting the show is worth seeing for their performances. However, it also implies the play flirts with being overly sentimental, indicating reservations. | Kimi: The critic offers qualified praise, noting that the performances rescue an otherwise overly cute production, indicating a mild recommendation based on acting quality. As a single excerpt, this represents a lower-confidence assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:44:56.991Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

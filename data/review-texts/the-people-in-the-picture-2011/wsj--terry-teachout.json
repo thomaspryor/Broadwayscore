@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The People in the Picture is a well-intentioned musical about the Holocaust that suffers from a fatal case of good intentions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The People in the Picture is a well-intentioned musical about the Holocaust that suffers from a fatal case of good intentions.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The People in the Picture is a well-intentioned musical about the Holocaust that suffers from a fatal case of good intentions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic identifies the show as 'suffering from a fatal case of good intentions,' which clearly indicates significant problems despite acknowledging the well-meaning nature of the production. | GPT-4o: The review describes the show as suffering from 'a fatal case of good intentions,' indicating a strong negative assessment with no redeeming qualities. | Gemini: The review states that the musical \"suffers from a fatal case of good intentions,\" indicating a negative assessment despite acknowledging good intentions. | Kimi: While the critic acknowledges the show's worthy subject matter, the description of it suffering from a 'fatal case' of good intentions indicates the production fails fundamentally in execution, resulting in a clear non-recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:27:48.514Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
