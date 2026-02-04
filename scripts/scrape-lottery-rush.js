@@ -1,729 +1,892 @@
 #!/usr/bin/env node
 /**
- * scrape-lottery-rush.js
+ * scrape-lottery-rush.js — Robust Lottery/Rush Data System
  *
- * Scrapes lottery/rush data from multiple sources:
- * 1. Playbill - detailed policies and instructions
- * 2. BwayRush.com - current prices (more frequently updated)
+ * Scrapes lottery/rush data from two sources:
+ * 1. BwayRush.com — Current prices (ScrapingBee/Bright Data markdown extraction)
+ * 2. Playbill — Detailed policies/instructions (LLM-powered extraction)
  *
- * Cross-references both sources and flags discrepancies.
- * BwayRush prices are preferred when they differ.
+ * Key design principles:
+ * - Incremental merge (never wholesale replace)
+ * - Pre-write backup with rotation
+ * - High-confidence show matching only
+ * - Fail-safe: any failure preserves existing data
  *
- * Usage: node scripts/scrape-lottery-rush.js
- *
- * Requires: Playwright
+ * Usage:
+ *   node scripts/scrape-lottery-rush.js                    # Full scrape
+ *   node scripts/scrape-lottery-rush.js --source=bwayrush   # Single source
+ *   node scripts/scrape-lottery-rush.js --source=playbill   # Single source
+ *   node scripts/scrape-lottery-rush.js --dry-run           # Preview only
+ *   node scripts/scrape-lottery-rush.js --verbose           # Verbose logging
  */
 
 const fs = require('fs');
 const path = require('path');
-const { chromium } = require('playwright');
+const https = require('https');
+const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 
-const PLAYBILL_URL = 'https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003';
+// ==================== Configuration ====================
+
 const BWAYRUSH_URL = 'https://bwayrush.com/';
+const PLAYBILL_URL = 'https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003';
 const OUTPUT_PATH = path.join(__dirname, '../data/lottery-rush.json');
+const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 
-// Known show ID mappings from show titles to our slugs
-const SHOW_TITLE_TO_ID = {
-  // Uppercase (Playbill format)
-  '& JULIET': 'and-juliet-2022',
-  'ALADDIN': 'aladdin-2014',
-  'ALL OUT: COMEDY ABOUT AMBITION': 'all-out-2025',
-  'THE BOOK OF MORMON': 'book-of-mormon-2011',
-  'BUENA VISTA SOCIAL CLUB': 'buena-vista-social-club-2025',
-  'BUG': 'bug-2026',
-  'CHESS': 'chess-2025',
-  'CHICAGO': 'chicago-1996',
-  'DEATH BECOMES HER': 'death-becomes-her-2024',
-  'THE GREAT GATSBY': 'the-great-gatsby-2024',
-  'HADESTOWN': 'hadestown-2019',
-  'HAMILTON': 'hamilton-2015',
-  'HARRY POTTER AND THE CURSED CHILD': 'harry-potter-2021',
-  "HELL'S KITCHEN": 'hells-kitchen-2024',
-  'JUST IN TIME': 'just-in-time-2025',
-  'LIBERATION': 'liberation-2025',
-  'THE LION KING': 'the-lion-king-1997',
-  'MAMMA MIA!': 'mamma-mia-2025',
-  'MARJORIE PRIME': 'marjorie-prime-2025',
-  'MAYBE HAPPY ENDING': 'maybe-happy-ending-2024',
-  'MJ THE MUSICAL': 'mj-2022',
-  'MOULIN ROUGE! THE MUSICAL': 'moulin-rouge-2019',
-  'OEDIPUS': 'oedipus-2025',
-  'OH, MARY!': 'oh-mary-2024',
-  'OPERATION MINCEMEAT': 'operation-mincemeat-2025',
-  'THE OUTSIDERS': 'the-outsiders-2024',
-  'RAGTIME': 'ragtime-2025',
-  'SIX: THE MUSICAL': 'six-2021',
-  'STRANGER THINGS: THE FIRST SHADOW': 'stranger-things-2025',
-  'WICKED': 'wicked-2003',
-  'TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK)': 'two-strangers-bway-2025',
+// CLI args
+const args = process.argv.slice(2);
+const sourceFilter = args.find(a => a.startsWith('--source='))?.split('=')[1];
+const dryRun = args.includes('--dry-run');
+const verbose = args.includes('--verbose');
 
-  // Mixed case (BwayRush format)
+// API keys
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+
+// Load shows data for matching
+const allShows = loadShows();
+
+// Override map for titles fuzzy matching can't handle
+const TITLE_OVERRIDES = {
   '& Juliet': 'and-juliet-2022',
-  'Aladdin': 'aladdin-2014',
-  'All Out': 'all-out-2025',
-  'The Book of Mormon': 'book-of-mormon-2011',
-  'Buena Vista Social Club': 'buena-vista-social-club-2025',
-  'Bug': 'bug-2026',
-  'Chess': 'chess-2025',
-  'Chicago': 'chicago-1996',
-  'Death Becomes Her': 'death-becomes-her-2024',
-  'The Great Gatsby': 'the-great-gatsby-2024',
-  'Hadestown': 'hadestown-2019',
-  'Hamilton': 'hamilton-2015',
-  'Harry Potter and the Cursed Child': 'harry-potter-2021',
-  "Hell's Kitchen": 'hells-kitchen-2024',
-  'Just in Time': 'just-in-time-2025',
-  'Liberation': 'liberation-2025',
-  'The Lion King': 'the-lion-king-1997',
-  'Mamma Mia!': 'mamma-mia-2025',
-  'Marjorie Prime': 'marjorie-prime-2025',
-  'Maybe Happy Ending': 'maybe-happy-ending-2024',
-  'MJ': 'mj-2022',
-  'Moulin Rouge!': 'moulin-rouge-2019',
-  'Oedipus': 'oedipus-2025',
-  'Oh, Mary!': 'oh-mary-2024',
-  'Operation Mincemeat': 'operation-mincemeat-2025',
-  'The Outsiders': 'the-outsiders-2024',
-  'Ragtime': 'ragtime-2025',
-  'Six': 'six-2021',
-  'Stranger Things: The First Shadow': 'stranger-things-2025',
-  'Wicked': 'wicked-2003',
-  'Two Strangers (Carry a Cake Across New York)': 'two-strangers-bway-2025',
 };
 
-// ============================================================================
-// BwayRush Scraper - More current price data
-// ============================================================================
+// ==================== HTTP Utilities ====================
 
-async function scrapeBwayRush(browser) {
-  console.log('\n[BwayRush] Scraping current prices...');
-  const page = await browser.newPage();
+function httpsRequest(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const reqOptions = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method: options.method || 'GET',
+      headers: options.headers || {},
+    };
 
-  try {
-    await page.goto(BWAYRUSH_URL, { waitUntil: 'networkidle', timeout: 60000 });
-    await page.waitForTimeout(2000);
-
-    // Extract show data from the page
-    const showData = await page.evaluate(() => {
-      const shows = {};
-
-      // Find all show containers - they have links to show websites
-      const showContainers = document.querySelectorAll('[class*="generic"]');
-
-      // Look for links that contain show info
-      const allLinks = document.querySelectorAll('a');
-      let currentShow = null;
-
-      allLinks.forEach(link => {
-        const text = link.textContent.trim();
-        const href = link.href;
-
-        // Detect show name links (they link to official show sites)
-        if (href && !href.includes('bwayrush') && !href.includes('instagram') &&
-            !href.includes('todaytix') && !href.includes('telecharge') &&
-            !href.includes('luckyseat') && !href.includes('broadwaydirect') &&
-            !href.includes('socialtoaster') &&
-            text && text.length > 2 && text.length < 60 &&
-            !text.includes('$') && !text.match(/^\d/)) {
-          // This might be a show name
-          currentShow = text;
-          if (!shows[currentShow]) {
-            shows[currentShow] = { rush: [], lottery: [], sro: null, special: [] };
-          }
-        }
-
-        // Detect price links
-        const priceMatch = text.match(/^\$?([\d.]+(?:\/\d+)?)\s*(.*)$/);
-        if (priceMatch && currentShow && shows[currentShow]) {
-          const price = priceMatch[1];
-          const type = priceMatch[2].toLowerCase();
-
-          if (type.includes('in-person') || type.includes('general')) {
-            shows[currentShow].rush.push({ price: parseFloat(price), type: 'in-person', url: href });
-          } else if (type.includes('mobile') || type.includes('digital rush')) {
-            shows[currentShow].rush.push({ price: parseFloat(price), type: 'digital', url: href });
-          } else if (type.includes('digital') || type.includes('lottery')) {
-            shows[currentShow].lottery.push({ price: parseFloat(price), url: href });
-          } else if (type.includes('student')) {
-            shows[currentShow].special.push({ price: parseFloat(price), type: 'student', url: href });
-          } else if (type.includes('30 under 30') || type.includes('under 30')) {
-            shows[currentShow].special.push({ price: parseFloat(price), type: 'under30', url: href });
-          } else if (type.includes('sro') || type.includes('standing')) {
-            shows[currentShow].sro = parseFloat(price);
-          } else if (type.includes('anniv')) {
-            shows[currentShow].special.push({ price: parseFloat(price), type: 'anniversary', url: href });
-          }
+    const req = https.request(reqOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(data);
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 300)}`));
         }
       });
-
-      return shows;
     });
 
-    await page.close();
-    console.log(`[BwayRush] Found ${Object.keys(showData).length} shows`);
-    return showData;
+    req.on('error', reject);
+    req.setTimeout(90000, () => req.destroy(new Error('Request timeout')));
 
-  } catch (error) {
-    console.error('[BwayRush] Error:', error.message);
-    await page.close();
-    return {};
-  }
+    if (options.body) req.write(options.body);
+    req.end();
+  });
 }
 
-// Alternative: Extract from page snapshot (more reliable)
-async function scrapeBwayRushFromSnapshot(browser) {
-  console.log('\n[BwayRush] Scraping from page structure...');
-  const page = await browser.newPage();
-
-  try {
-    await page.goto(BWAYRUSH_URL, { waitUntil: 'networkidle', timeout: 60000 });
-    await page.waitForTimeout(3000);
-
-    // Get the full HTML and parse it
-    const html = await page.content();
-
-    // Extract data using a more structured approach
-    const data = await page.evaluate(() => {
-      const results = {};
-
-      // The page structure has show blocks with links
-      // Each show has a title link followed by price links
-      const container = document.body;
-      const text = container.innerText;
-      const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-
-      let currentShow = null;
-
-      for (const line of lines) {
-        // Skip header lines
-        if (line.includes('week of') || line === 'show' || line === 'rush' ||
-            line === 'lottery' || line === 'sro' || line === 'special' ||
-            line.match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/i) ||
-            line.match(/^\d+[ap]m$/) || line === '0') {
-          continue;
-        }
-
-        // Check if this is a show name (no $ sign, reasonable length)
-        if (!line.includes('$') && line.length > 2 && line.length < 80 &&
-            !line.match(/^Closing|^Previews|^FAQ|^What is/i)) {
-          // Could be a show name
-          const cleanName = line.replace(/\s*Closing on.*$/, '').replace(/\s*Previews start.*$/, '').trim();
-          if (cleanName.length > 2) {
-            currentShow = cleanName;
-            if (!results[currentShow]) {
-              results[currentShow] = {
-                rushPrices: [],
-                lotteryPrices: [],
-                sroPrices: [],
-                specialPrices: []
-              };
-            }
-          }
-          continue;
-        }
-
-        // Parse price lines like "$49 in-person" or "$45 digital"
-        const priceMatch = line.match(/^\$?([\d.]+(?:\/\d+)?)\s*(.*)$/);
-        if (priceMatch && currentShow && results[currentShow]) {
-          const price = parseFloat(priceMatch[1]);
-          const descriptor = priceMatch[2].toLowerCase();
-
-          if (descriptor.includes('in-person') || descriptor.includes('general')) {
-            results[currentShow].rushPrices.push({ price, type: 'in-person' });
-          } else if (descriptor.includes('mobile')) {
-            results[currentShow].rushPrices.push({ price, type: 'mobile' });
-          } else if (descriptor.includes('digital') && !descriptor.includes('lottery')) {
-            // Could be digital rush or digital lottery
-            if (descriptor.includes('rush')) {
-              results[currentShow].rushPrices.push({ price, type: 'digital' });
-            } else {
-              results[currentShow].lotteryPrices.push({ price, type: 'digital' });
-            }
-          } else if (descriptor.includes('student')) {
-            results[currentShow].specialPrices.push({ price, type: 'student' });
-          } else if (descriptor.includes('30 under') || descriptor.includes('under 30')) {
-            results[currentShow].specialPrices.push({ price, type: 'under30' });
-          } else if (descriptor.includes('anniv')) {
-            results[currentShow].specialPrices.push({ price, type: 'anniversary' });
-          } else if (descriptor.includes('ponyboy')) {
-            results[currentShow].specialPrices.push({ price, type: 'ponyboy' });
-          } else if (descriptor.includes('club 2064')) {
-            results[currentShow].lotteryPrices.push({ price, type: 'club2064' });
-          } else if (!descriptor || descriptor.length < 3) {
-            // Just a price, likely SRO based on context
-            results[currentShow].sroPrices.push(price);
-          }
-        }
+/**
+ * Fetch a URL as markdown (Bright Data) or HTML (ScrapingBee fallback).
+ * Returns { content, format } or null.
+ */
+async function fetchContent(url, { renderJs = true, premiumProxy = false } = {}) {
+  // Try Bright Data first (returns markdown natively)
+  if (BRIGHTDATA_TOKEN) {
+    try {
+      const result = await httpsRequest('https://api.brightdata.com/request', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ zone: 'scraping_browser', url, format: 'raw' }),
+      });
+      if (result && result.length > 500) {
+        if (verbose) console.log(`  [Bright Data] Success (${result.length} chars HTML)`);
+        return { content: result, format: 'html' };
       }
-
-      return results;
-    });
-
-    await page.close();
-
-    // Convert to our format
-    const converted = {};
-    for (const [showName, showData] of Object.entries(data)) {
-      const showId = SHOW_TITLE_TO_ID[showName];
-      if (!showId) {
-        console.log(`  [BwayRush] Unknown show: "${showName}"`);
-        continue;
-      }
-
-      converted[showId] = {
-        rushPrice: showData.rushPrices.length > 0 ? showData.rushPrices[0].price : null,
-        lotteryPrice: showData.lotteryPrices.length > 0 ? showData.lotteryPrices[0].price : null,
-        sroPrice: showData.sroPrices.length > 0 ? showData.sroPrices[0] : null,
-        specialPrices: showData.specialPrices,
-        allRush: showData.rushPrices,
-        allLottery: showData.lotteryPrices
-      };
-    }
-
-    console.log(`[BwayRush] Mapped ${Object.keys(converted).length} shows to our IDs`);
-    return converted;
-
-  } catch (error) {
-    console.error('[BwayRush] Error:', error.message);
-    await page.close();
-    return {};
-  }
-}
-
-// ============================================================================
-// Playbill Scraper - Detailed policies
-// ============================================================================
-
-async function scrapePlaybill(browser) {
-  console.log('\n[Playbill] Scraping detailed policies...');
-  const page = await browser.newPage();
-
-  try {
-    await page.goto(PLAYBILL_URL, { waitUntil: 'networkidle', timeout: 60000 });
-    await page.waitForTimeout(3000);
-
-    const content = await page.evaluate(() => {
-      const article = document.querySelector('.body__inner-container') ||
-                      document.querySelector('article') ||
-                      document.querySelector('.article-body');
-      return article ? article.innerText : document.body.innerText;
-    });
-
-    await page.close();
-    console.log('[Playbill] Content extracted');
-    return parsePlaybillContent(content);
-
-  } catch (error) {
-    console.error('[Playbill] Error:', error.message);
-    await page.close();
-    return {};
-  }
-}
-
-function parsePlaybillContent(content) {
-  const shows = {};
-  const lines = content.split('\n').map(l => l.trim()).filter(l => l);
-
-  let currentShowTitle = null;
-  let currentShowId = null;
-  let currentSection = null;
-  let sectionData = {};
-
-  const showTitleRegex = /^([A-Z][A-Z&!':,\s\-()]+)\s*\(/;
-  const sectionRegex = /^(Digital Lottery|Digital Rush|General Rush|Standing Room|Student Rush|Student Tickets|Military Tickets|Cancellation Line|The Friday Forty|\$30 Under 30|Ponyboy Seat)$/i;
-  const priceRegex = /^Price:\s*\$?([\d.]+)/i;
-  const howRegex = /^How:\s*(.+)/i;
-  const whereRegex = /^Where:\s*(.+)/i;
-  const timeRegex = /^Time:\s*(.+)/i;
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    const titleMatch = line.match(showTitleRegex);
-    if (titleMatch) {
-      if (currentShowId && currentSection && Object.keys(sectionData).length > 0) {
-        savePlaybillSection(shows, currentShowId, currentSection, sectionData);
-      }
-
-      const title = titleMatch[1].trim();
-      currentShowTitle = title;
-      currentShowId = SHOW_TITLE_TO_ID[title];
-
-      if (!currentShowId) {
-        console.log(`  [Playbill] Unknown show: ${title}`);
-      } else {
-        if (!shows[currentShowId]) {
-          shows[currentShowId] = {
-            lottery: null,
-            rush: null,
-            standingRoom: null
-          };
-        }
-      }
-      currentSection = null;
-      sectionData = {};
-      continue;
-    }
-
-    const sectionMatch = line.match(sectionRegex);
-    if (sectionMatch && currentShowId) {
-      if (currentSection && Object.keys(sectionData).length > 0) {
-        savePlaybillSection(shows, currentShowId, currentSection, sectionData);
-      }
-      currentSection = sectionMatch[1];
-      sectionData = {};
-      continue;
-    }
-
-    if (currentSection && currentShowId) {
-      const priceMatch = line.match(priceRegex);
-      if (priceMatch) {
-        sectionData.price = parseFloat(priceMatch[1]);
-        continue;
-      }
-
-      const howMatch = line.match(howRegex);
-      if (howMatch) {
-        sectionData.how = howMatch[1];
-        continue;
-      }
-
-      const whereMatch = line.match(whereRegex);
-      if (whereMatch) {
-        sectionData.where = whereMatch[1];
-        continue;
-      }
-
-      const timeMatch = line.match(timeRegex);
-      if (timeMatch) {
-        sectionData.time = timeMatch[1];
-        continue;
-      }
+    } catch (err) {
+      console.error(`  [Bright Data] Failed: ${err.message}`);
     }
   }
 
-  if (currentShowId && currentSection && Object.keys(sectionData).length > 0) {
-    savePlaybillSection(shows, currentShowId, currentSection, sectionData);
-  }
-
-  console.log(`[Playbill] Parsed ${Object.keys(shows).length} shows`);
-  return shows;
-}
-
-function savePlaybillSection(shows, showId, sectionType, data) {
-  if (!shows[showId]) return;
-
-  const sectionLower = sectionType.toLowerCase();
-
-  if (sectionLower.includes('lottery') || sectionLower === 'the friday forty') {
-    const platform = detectPlatform(data.where || data.how || '');
-    shows[showId].lottery = {
-      type: sectionLower.includes('friday forty') ? 'friday-forty' : 'digital',
-      platform: platform,
-      url: extractUrl(data.where || data.how || ''),
-      price: data.price || null,
-      time: data.time || '',
-      instructions: data.how || ''
-    };
-  } else if (sectionLower === 'digital rush') {
-    const platform = detectPlatform(data.where || data.how || '');
-    if (!shows[showId].rush) {
-      shows[showId].rush = {
-        type: 'digital',
-        platform: platform,
-        url: extractUrl(data.where || data.how || ''),
-        price: data.price || null,
-        time: data.time || '',
-        instructions: data.how || ''
-      };
-    } else {
-      shows[showId].digitalRush = {
-        platform: platform,
-        url: extractUrl(data.where || data.how || ''),
-        price: data.price || null,
-        time: data.time || '',
-        instructions: data.how || ''
-      };
+  // Fallback: ScrapingBee (returns HTML, converted to pseudo-markdown for link parsing)
+  if (SCRAPINGBEE_KEY) {
+    try {
+      const params = new URLSearchParams({
+        api_key: SCRAPINGBEE_KEY,
+        url,
+        render_js: String(renderJs),
+      });
+      if (premiumProxy) params.set('premium_proxy', 'true');
+      const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
+      const result = await httpsRequest(apiUrl);
+      if (result && result.length > 500) {
+        if (verbose) console.log(`  [ScrapingBee] Success (${result.length} chars HTML)`);
+        return { content: result, format: 'html' };
+      }
+    } catch (err) {
+      console.error(`  [ScrapingBee] Failed: ${err.message}`);
     }
-  } else if (sectionLower === 'general rush') {
-    shows[showId].rush = {
-      type: 'general',
-      price: data.price || null,
-      time: data.time || '',
-      location: data.where || '',
-      instructions: data.how || ''
-    };
-  } else if (sectionLower === 'student rush') {
-    shows[showId].studentRush = {
-      price: data.price || null,
-      time: data.time || '',
-      instructions: data.how || ''
-    };
-  } else if (sectionLower === 'standing room') {
-    shows[showId].standingRoom = {
-      price: data.price || null,
-      time: data.time || '',
-      instructions: data.how || ''
-    };
   }
-}
-
-function detectPlatform(text) {
-  const lower = text.toLowerCase();
-  if (lower.includes('todaytix')) return 'TodayTix';
-  if (lower.includes('luckyseat')) return 'LuckySeat';
-  if (lower.includes('broadwaydirect') || lower.includes('broadway direct')) return 'Broadway Direct';
-  if (lower.includes('telecharge') || lower.includes('socialtoaster')) return 'Telecharge';
-  if (lower.includes('hamilton')) return 'Hamilton App';
-  return 'Unknown';
-}
-
-function extractUrl(text) {
-  const urlMatch = text.match(/https?:\/\/[^\s]+/);
-  if (urlMatch) return urlMatch[0].replace(/[,.]$/, '');
-
-  const lower = text.toLowerCase();
-  if (lower.includes('todaytix')) return 'https://www.todaytix.com';
-  if (lower.includes('luckyseat')) return 'https://www.luckyseat.com';
-  if (lower.includes('telecharge')) return 'https://rush.telecharge.com';
-  if (lower.includes('broadwaydirect')) return 'https://lottery.broadwaydirect.com';
 
   return null;
 }
 
-// ============================================================================
-// Merge and Cross-Reference
-// ============================================================================
+function htmlToText(html) {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/h[1-6]>/gi, '\n\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
 
-function mergeData(playbillData, bwayrushData) {
-  const merged = {};
-  const discrepancies = [];
+/**
+ * Convert HTML to pseudo-markdown preserving link structure.
+ * Converts <a href="url" title="tooltip">text</a> to [text](url "tooltip")
+ * This allows the same parseBwayRushMarkdown() to work on both formats.
+ */
+function htmlToMarkdownLinks(html) {
+  return html
+    // Strip scripts and styles
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    // Convert <a> tags to markdown links, preserving title attribute
+    .replace(/<a\s+[^>]*?href="([^"]*)"[^>]*?title="([^"]*)"[^>]*?>(.*?)<\/a>/gi,
+      (_, href, title, text) => `[${text.replace(/<[^>]*>/g, '').trim()}](${href} "${title}")`)
+    // Convert remaining <a> tags without title
+    .replace(/<a\s+[^>]*?href="([^"]*)"[^>]*?>(.*?)<\/a>/gi,
+      (_, href, text) => `[${text.replace(/<[^>]*>/g, '').trim()}](${href})`)
+    // Block elements to newlines
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/tr>/gi, '\n')
+    .replace(/<\/h[1-6]>/gi, '\n\n')
+    // Strip remaining tags
+    .replace(/<[^>]*>/g, '')
+    // Decode entities
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
 
-  // Start with Playbill data (has detailed instructions)
-  for (const [showId, showData] of Object.entries(playbillData)) {
-    merged[showId] = JSON.parse(JSON.stringify(showData)); // Deep copy
+// ==================== Show ID Resolution ====================
+
+function resolveShowId(externalTitle) {
+  // Check overrides first
+  if (TITLE_OVERRIDES[externalTitle]) {
+    return { id: TITLE_OVERRIDES[externalTitle], confidence: 'override' };
   }
 
-  // Cross-reference with BwayRush prices
-  for (const [showId, bwrData] of Object.entries(bwayrushData)) {
-    if (!merged[showId]) {
-      // Show in BwayRush but not Playbill - add it
-      merged[showId] = {
-        lottery: bwrData.lotteryPrice ? {
-          type: 'digital',
-          platform: 'Unknown',
-          url: null,
-          price: bwrData.lotteryPrice,
-          time: '',
-          instructions: ''
-        } : null,
-        rush: bwrData.rushPrice ? {
-          type: 'general',
-          price: bwrData.rushPrice,
-          time: '',
-          location: '',
-          instructions: ''
-        } : null,
-        standingRoom: bwrData.sroPrice ? {
-          price: bwrData.sroPrice,
-          time: '',
-          instructions: ''
-        } : null
-      };
-      console.log(`  [Merge] Added ${showId} from BwayRush (not in Playbill)`);
+  const match = matchTitleToShow(externalTitle, allShows);
+
+  // Only accept high-confidence matches
+  if (match && match.confidence === 'high') {
+    return { id: match.show.id, confidence: match.confidence };
+  }
+
+  return null;
+}
+
+// ==================== Platform Detection ====================
+
+function detectPlatform(url) {
+  if (!url) return null;
+  const lower = url.toLowerCase();
+  if (lower.includes('todaytix.com')) return 'TodayTix';
+  if (lower.includes('luckyseat.com')) return 'LuckySeat';
+  if (lower.includes('broadwaydirect.com')) return 'Broadway Direct';
+  if (lower.includes('socialtoaster.com') || lower.includes('rush.telecharge.com')) return 'Telecharge';
+  if (lower.includes('hamiltonmusical.com')) return 'Hamilton App';
+  return null;
+}
+
+// ==================== BwayRush Extraction ====================
+
+async function scrapeBwayRush() {
+  console.log('\n[BwayRush] Fetching current prices...');
+  const result = await fetchContent(BWAYRUSH_URL, { renderJs: true, premiumProxy: true });
+
+  if (!result) {
+    console.error('[BwayRush] Failed to fetch page — skipping');
+    return {};
+  }
+
+  // Convert HTML to pseudo-markdown if needed (preserving link structure)
+  if (result.format === 'html') {
+    if (verbose) console.log('[BwayRush] Converting HTML to markdown links...');
+    result.content = htmlToMarkdownLinks(result.content);
+    result.format = 'markdown';
+  }
+
+  if (result.content.length < 500) {
+    console.error(`[BwayRush] Response too short (${result.content.length} chars) — skipping`);
+    return {};
+  }
+
+  const rawData = parseBwayRushMarkdown(result.content);
+  const showCount = Object.keys(rawData).length;
+
+  if (showCount < 5) {
+    console.error(`[BwayRush] Only found ${showCount} shows — something is wrong, skipping`);
+    return {};
+  }
+
+  console.log(`[BwayRush] Parsed ${showCount} shows from markdown`);
+  return mapBwayRushToShows(rawData);
+}
+
+function parseBwayRushMarkdown(markdown) {
+  // Preprocess: join multi-line markdown links into single lines
+  // e.g., [$49\n\nin-person](url) → [$49 in-person](url)
+  const text = markdown.replace(/\[(\$[^\]]*?)\]\(([^)]+)\)/g, (_match, content, url) => {
+    const joined = content.replace(/\n+/g, ' ').trim();
+    return `[${joined}](${url})`;
+  });
+
+  const shows = {};
+
+  // Find show title links: [Title](url "Title at Theatre")
+  // URL pattern excludes ) and " to prevent matching across link boundaries
+  const titlePattern = /\[([^\]]+)\]\(([^)"]+)\s+"([^"]+)"\)/g;
+  const titleMatches = [...text.matchAll(titlePattern)];
+
+  for (let i = 0; i < titleMatches.length; i++) {
+    const match = titleMatches[i];
+    const title = match[1];
+    const tooltip = match[3];
+
+    // Get block between this show and next
+    const startIdx = match.index + match[0].length;
+    const endIdx = i < titleMatches.length - 1 ? titleMatches[i + 1].index : text.length;
+    const block = text.slice(startIdx, endIdx);
+
+    // Stop at FAQ section
+    if (title === 'FAQ' || block.includes('What is rush?')) break;
+
+    // Extract prices from the block
+    const prices = extractPrices(block);
+
+    shows[title] = { tooltip, prices };
+  }
+
+  return shows;
+}
+
+function extractPrices(block) {
+  const prices = [];
+
+  // 1. Extract linked prices: [$XX descriptor](url)
+  const linkPattern = /\[(\$[^\]]+)\]\(([^)]+)\)/g;
+  const linkRanges = [];
+  let match;
+
+  while ((match = linkPattern.exec(block)) !== null) {
+    linkRanges.push({ start: match.index, end: match.index + match[0].length });
+
+    const content = match[1]; // "$49 in-person" (after preprocessing)
+    const url = match[2];
+
+    // Split: first token is price, rest is descriptor
+    const spaceIdx = content.indexOf(' ');
+    const priceStr = spaceIdx > 0 ? content.slice(0, spaceIdx) : content;
+    const descriptor = spaceIdx > 0 ? content.slice(spaceIdx + 1).trim() : '';
+
+    const parsed = parsePriceStr(priceStr);
+    if (parsed) {
+      prices.push({ ...parsed, descriptor, url });
+    }
+  }
+
+  // 2. Extract unlinked prices: $XX on their own line (not inside brackets)
+  let cleanBlock = block;
+  for (const range of [...linkRanges].reverse()) {
+    cleanBlock = cleanBlock.slice(0, range.start) + cleanBlock.slice(range.end);
+  }
+
+  const lines = cleanBlock.split('\n').map(l => l.trim()).filter(l => l);
+  for (let i = 0; i < lines.length; i++) {
+    const priceMatch = lines[i].match(/^\$([\d.]+(?:\/[\d.]+)?)$/);
+    if (priceMatch) {
+      const parsed = parsePriceStr('$' + priceMatch[1]);
+      if (parsed && parsed.price > 0) {
+        // Check next non-empty line for descriptor
+        let descriptor = '';
+        if (i + 1 < lines.length && isKnownDescriptor(lines[i + 1])) {
+          descriptor = lines[i + 1];
+        }
+        prices.push({ ...parsed, descriptor, url: null });
+      }
+    }
+  }
+
+  return prices;
+}
+
+function parsePriceStr(priceStr) {
+  const cleaned = priceStr.replace(/^\$/, '').replace(/\s*\+fee$/i, '');
+
+  // Handle "$55/65" format (weekday/weekend)
+  const slashMatch = cleaned.match(/^([\d.]+)\/([\d.]+)$/);
+  if (slashMatch) {
+    return { price: parseFloat(slashMatch[1]), priceWeekend: parseFloat(slashMatch[2]) };
+  }
+
+  const price = parseFloat(cleaned);
+  return isNaN(price) ? null : { price };
+}
+
+function isKnownDescriptor(text) {
+  const lower = text.toLowerCase().trim();
+  const patterns = [
+    'in-person', 'mobile', 'digital', 'student', '30 under 30', 'under 30',
+    'ponyboy', 'military', 'mtc', 'hiptix', 'linctix', 'college',
+    'general', 'anniv', 'club 2064',
+  ];
+  return patterns.some(p => lower.includes(p));
+}
+
+/**
+ * Classify a price entry into our schema field type.
+ * Uses descriptor text and URL patterns.
+ */
+function classifyPrice(descriptor, url) {
+  const desc = (descriptor || '').toLowerCase().trim();
+  const urlLower = (url || '').toLowerCase();
+
+  // Special programs (descriptor-based, highest priority)
+  if (desc.includes('college') || desc.includes('student')) return { field: 'studentRush' };
+  if (desc.includes('30 under 30') || desc.includes('under 30')) return { field: 'under30' };
+  if (desc.includes('ponyboy')) return { field: 'special', name: 'Ponyboy Seat' };
+  if (desc.includes('military')) return { field: 'militaryTickets' };
+  if (desc.includes('mtc')) return { field: 'special', name: 'MTC $35' };
+  if (desc.includes('hiptix')) return { field: 'special', name: 'HipTix' };
+  if (desc.includes('linctix')) return { field: 'special', name: 'LincTix' };
+  if (desc.includes('anniv')) return { field: 'specialLottery', name: descriptor };
+  if (desc.includes('club 2064')) return { field: 'specialLottery', name: 'Club 2064' };
+
+  // In-person rush
+  if (desc.includes('in-person')) return { field: 'rush', rushType: 'general' };
+
+  // Mobile — usually TodayTix rush, but Hamilton lottery uses "mobile" too
+  if (desc.includes('mobile')) {
+    if (urlLower.includes('lottery')) return { field: 'lottery' };
+    return { field: 'rush', rushType: 'digital' };
+  }
+
+  // Digital — lottery or digital rush depending on URL
+  if (desc.includes('digital')) {
+    if (urlLower.includes('rush_select')) return { field: 'digitalRush' };
+    return { field: 'lottery' };
+  }
+
+  // No descriptor — SRO (standing room)
+  if (!desc) return { field: 'standingRoom' };
+
+  if (verbose) console.log(`  [Classify] Unknown descriptor: "${descriptor}"`);
+  return { field: 'unknown' };
+}
+
+function mapBwayRushToShows(rawData) {
+  const result = {};
+  const unmatched = [];
+
+  for (const [title, showData] of Object.entries(rawData)) {
+    if (showData.prices.length === 0) {
+      if (verbose) console.log(`  [Skip] ${title} (no prices)`);
       continue;
     }
 
-    // Check for price discrepancies and use BwayRush (more current)
-    const show = merged[showId];
-
-    // Lottery price check
-    if (show.lottery && bwrData.lotteryPrice) {
-      if (show.lottery.price !== bwrData.lotteryPrice) {
-        discrepancies.push({
-          show: showId,
-          field: 'lottery price',
-          playbill: show.lottery.price,
-          bwayrush: bwrData.lotteryPrice
-        });
-        show.lottery.price = bwrData.lotteryPrice; // Use BwayRush
-      }
-    } else if (!show.lottery && bwrData.lotteryPrice) {
-      // Playbill missing lottery, add from BwayRush
-      show.lottery = {
-        type: 'digital',
-        platform: 'Unknown',
-        url: null,
-        price: bwrData.lotteryPrice,
-        time: '',
-        instructions: ''
-      };
-      discrepancies.push({
-        show: showId,
-        field: 'lottery',
-        playbill: 'missing',
-        bwayrush: bwrData.lotteryPrice
-      });
+    const resolved = resolveShowId(title);
+    if (!resolved) {
+      unmatched.push(title);
+      continue;
     }
 
-    // Rush price check
-    if (show.rush && bwrData.rushPrice) {
-      if (show.rush.price !== bwrData.rushPrice) {
-        discrepancies.push({
-          show: showId,
-          field: 'rush price',
-          playbill: show.rush.price,
-          bwayrush: bwrData.rushPrice
-        });
-        show.rush.price = bwrData.rushPrice; // Use BwayRush
+    const entry = {};
+
+    for (const p of showData.prices) {
+      const cls = classifyPrice(p.descriptor, p.url);
+
+      switch (cls.field) {
+        case 'lottery':
+          if (!entry.lottery) {
+            entry.lottery = {
+              type: 'digital',
+              platform: detectPlatform(p.url),
+              url: p.url,
+              price: p.price,
+            };
+            if (p.priceWeekend) entry.lottery.priceWeekend = p.priceWeekend;
+          }
+          break;
+
+        case 'rush':
+          if (!entry.rush) {
+            entry.rush = {
+              type: cls.rushType || 'general',
+              price: p.price,
+            };
+            if (cls.rushType === 'digital') {
+              entry.rush.platform = detectPlatform(p.url);
+              entry.rush.url = p.url;
+            }
+          } else if (cls.rushType === 'digital' && entry.rush.type === 'general') {
+            // General rush exists, add digital as separate field
+            entry.digitalRush = {
+              platform: detectPlatform(p.url),
+              url: p.url,
+              price: p.price,
+            };
+          }
+          break;
+
+        case 'digitalRush':
+          if (!entry.digitalRush) {
+            entry.digitalRush = {
+              platform: detectPlatform(p.url),
+              url: p.url,
+              price: p.price,
+            };
+          }
+          break;
+
+        case 'studentRush':
+          if (!entry.studentRush) {
+            entry.studentRush = { price: p.price };
+          }
+          break;
+
+        case 'standingRoom':
+          if (!entry.standingRoom) {
+            entry.standingRoom = { price: p.price };
+          }
+          break;
+
+        case 'specialLottery':
+          if (!entry.specialLottery) {
+            entry.specialLottery = {
+              name: cls.name || 'Special Lottery',
+              platform: detectPlatform(p.url),
+              url: p.url,
+              price: p.price,
+            };
+          }
+          break;
+
+        case 'under30':
+          if (!entry.under30) {
+            entry.under30 = { price: p.price };
+          }
+          break;
+
+        case 'special':
+          if (!entry.special) {
+            entry.special = { name: cls.name, price: p.price };
+          }
+          break;
+
+        case 'militaryTickets':
+          if (!entry.militaryTickets) {
+            entry.militaryTickets = { price: p.price };
+          }
+          break;
       }
-    } else if (!show.rush && bwrData.rushPrice) {
-      // Playbill missing rush, add from BwayRush
-      show.rush = {
-        type: 'general',
-        price: bwrData.rushPrice,
-        time: '',
-        location: '',
-        instructions: ''
-      };
-      discrepancies.push({
-        show: showId,
-        field: 'rush',
-        playbill: 'missing',
-        bwayrush: bwrData.rushPrice
-      });
     }
 
-    // SRO price check
-    if (show.standingRoom && bwrData.sroPrice) {
-      if (show.standingRoom.price !== bwrData.sroPrice) {
-        discrepancies.push({
-          show: showId,
-          field: 'SRO price',
-          playbill: show.standingRoom.price,
-          bwayrush: bwrData.sroPrice
-        });
-        show.standingRoom.price = bwrData.sroPrice; // Use BwayRush
-      }
-    } else if (!show.standingRoom && bwrData.sroPrice) {
-      // Playbill missing SRO, add from BwayRush
-      show.standingRoom = {
-        price: bwrData.sroPrice,
-        time: '',
-        instructions: 'Available only if sold out.'
-      };
-      discrepancies.push({
-        show: showId,
-        field: 'standingRoom',
-        playbill: 'missing',
-        bwayrush: bwrData.sroPrice
-      });
+    result[resolved.id] = entry;
+  }
+
+  if (unmatched.length > 0) {
+    console.log(`\n[BwayRush] ${unmatched.length} unmatched titles:`);
+    unmatched.forEach(t => console.log(`  ? "${t}"`));
+  }
+
+  console.log(`[BwayRush] Mapped ${Object.keys(result).length} shows to IDs`);
+  return result;
+}
+
+// ==================== Playbill Extraction ====================
+
+async function scrapePlaybill() {
+  if (!ANTHROPIC_KEY) {
+    console.error('[Playbill] ANTHROPIC_API_KEY not set — skipping');
+    return {};
+  }
+
+  console.log('\n[Playbill] Fetching article...');
+  const result = await fetchContent(PLAYBILL_URL, { renderJs: false });
+
+  if (!result) {
+    console.error('[Playbill] Failed to fetch article — skipping');
+    return {};
+  }
+
+  // Convert HTML to text if needed (reduces tokens for LLM)
+  let articleText = result.content;
+  if (result.format === 'html') {
+    articleText = htmlToText(articleText);
+  }
+
+  if (articleText.length < 1000) {
+    console.error(`[Playbill] Article too short (${articleText.length} chars) — skipping`);
+    return {};
+  }
+
+  console.log(`[Playbill] Got article (${articleText.length} chars), extracting via LLM...`);
+
+  const extracted = await extractPlaybillWithLLM(articleText);
+  if (!extracted || extracted.length === 0) {
+    console.error('[Playbill] LLM extraction returned no results — skipping');
+    return {};
+  }
+
+  console.log(`[Playbill] LLM extracted ${extracted.length} valid shows`);
+  return mapPlaybillToShows(extracted);
+}
+
+async function extractPlaybillWithLLM(articleText) {
+  const prompt = `Extract lottery/rush/SRO data from this Playbill article.
+
+Return ONLY a JSON array (no markdown fences, no explanation). Each element:
+{
+  "title": "Show Title",
+  "lottery": { "type": "digital", "platform": "TodayTix|LuckySeat|Broadway Direct|Telecharge|Hamilton App", "url": "https://...", "price": 49, "time": "9 AM day of", "instructions": "..." } or null,
+  "rush": { "type": "general|digital", "price": 49, "time": "10 AM Mon-Sat", "location": "Theatre box office", "instructions": "...", "platform": "TodayTix" } or null,
+  "digitalRush": { "platform": "...", "url": "...", "price": 49, "time": "...", "instructions": "..." } or null,
+  "standingRoom": { "price": 45, "time": "...", "instructions": "..." } or null,
+  "studentRush": { "price": 39, "time": "...", "instructions": "..." } or null,
+  "specialLottery": { "name": "...", "platform": "...", "url": "...", "price": 15, "instructions": "..." } or null
+}
+
+Rules:
+- price must be a number (not a string with $)
+- Only include fields that exist in the article
+- Do not invent data not in the article
+
+Article:
+${articleText}`;
+
+  try {
+    const response = await httpsRequest('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 8000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const parsed = JSON.parse(response);
+    const text = parsed.content?.[0]?.text;
+
+    if (!text) throw new Error('No text in LLM response');
+
+    // Extract JSON array (handle potential markdown wrapping)
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) throw new Error('No JSON array found in LLM response');
+
+    const shows = JSON.parse(jsonMatch[0]);
+    if (!Array.isArray(shows)) throw new Error('LLM response is not an array');
+
+    // Validate: each entry must have a title and at least one program
+    const valid = shows.filter(entry => {
+      if (!entry.title || typeof entry.title !== 'string') return false;
+      return !!(entry.lottery || entry.rush || entry.digitalRush ||
+                entry.standingRoom || entry.studentRush || entry.specialLottery);
+    });
+
+    console.log(`  [LLM] ${shows.length} extracted, ${valid.length} valid`);
+    return valid;
+
+  } catch (err) {
+    console.error(`[Playbill] LLM extraction failed: ${err.message}`);
+    return null;
+  }
+}
+
+function mapPlaybillToShows(extracted) {
+  const result = {};
+  const unmatched = [];
+
+  for (const entry of extracted) {
+    const resolved = resolveShowId(entry.title);
+    if (!resolved) {
+      unmatched.push(entry.title);
+      continue;
     }
 
-    // Add special prices from BwayRush
-    if (bwrData.specialPrices && bwrData.specialPrices.length > 0) {
-      for (const special of bwrData.specialPrices) {
-        if (special.type === 'student' && !show.studentRush) {
-          show.studentRush = { price: special.price, time: '', instructions: 'Valid student ID required.' };
-        } else if (special.type === 'under30' && !show.under30) {
-          show.under30 = { price: special.price, instructions: 'For ages 30 and under with valid ID.' };
-        } else if (special.type === 'anniversary' && !show.specialLottery) {
-          show.specialLottery = { name: 'Anniversary Lottery', price: special.price };
+    const showEntry = {};
+    const fields = ['lottery', 'rush', 'digitalRush', 'standingRoom', 'studentRush', 'specialLottery'];
+    for (const field of fields) {
+      if (entry[field]) showEntry[field] = entry[field];
+    }
+
+    result[resolved.id] = showEntry;
+  }
+
+  if (unmatched.length > 0) {
+    console.log(`\n[Playbill] ${unmatched.length} unmatched titles:`);
+    unmatched.forEach(t => console.log(`  ? "${t}"`));
+  }
+
+  console.log(`[Playbill] Mapped ${Object.keys(result).length} shows to IDs`);
+  return result;
+}
+
+// ==================== Backup & Safety ====================
+
+function backupExisting() {
+  if (!fs.existsSync(OUTPUT_PATH)) return;
+
+  const backupPath = OUTPUT_PATH.replace('.json', `.backup-${Date.now()}.json`);
+  fs.copyFileSync(OUTPUT_PATH, backupPath);
+  console.log(`[Backup] Saved to ${path.basename(backupPath)}`);
+
+  // Keep only last 5 backups
+  const dir = path.dirname(OUTPUT_PATH);
+  const backups = fs.readdirSync(dir)
+    .filter(f => f.startsWith('lottery-rush.backup-'))
+    .sort()
+    .reverse();
+  for (const old of backups.slice(5)) {
+    fs.unlinkSync(path.join(dir, old));
+  }
+}
+
+/**
+ * Incrementally merge scraped data into existing data.
+ * A scraper can add or update fields, but never delete them.
+ * Sub-field level merge: new prices update, but existing time/instructions are preserved.
+ */
+function mergeIntoExisting(existing, scraped, source) {
+  const changes = [];
+
+  for (const [showId, newData] of Object.entries(scraped)) {
+    if (!existing.shows[showId]) {
+      // New show — add it with metadata
+      existing.shows[showId] = {
+        ...newData,
+        _lastScrapedFrom: source,
+        _lastScrapedAt: new Date().toISOString(),
+      };
+      changes.push({ showId, type: 'added', source });
+      continue;
+    }
+
+    const current = existing.shows[showId];
+    const allFields = [
+      'lottery', 'rush', 'digitalRush', 'studentRush', 'standingRoom',
+      'specialLottery', 'under30', 'special', 'studentTickets', 'militaryTickets',
+    ];
+
+    for (const field of allFields) {
+      if (!newData[field]) continue; // Source didn't have this — preserve existing
+
+      if (!current[field]) {
+        // New field for this show
+        current[field] = newData[field];
+        changes.push({ showId, type: 'added-field', field, source });
+      } else {
+        // Merge sub-fields: update price/url/platform, preserve time/instructions
+        let changed = false;
+        for (const [key, value] of Object.entries(newData[field])) {
+          if (value !== null && value !== undefined && value !== '') {
+            if (current[field][key] !== value) {
+              if (key === 'price') {
+                changes.push({
+                  showId, type: 'updated', field, key,
+                  old: current[field][key], new: value, source,
+                });
+              }
+              current[field][key] = value;
+              changed = true;
+            }
+          }
+        }
+        if (changed && verbose) {
+          console.log(`  [Merge] Updated ${showId}.${field} from ${source}`);
         }
       }
     }
+
+    // Update provenance metadata
+    current._lastScrapedFrom = source;
+    current._lastScrapedAt = new Date().toISOString();
   }
 
-  return { merged, discrepancies };
+  return changes;
 }
 
-// ============================================================================
-// Main
-// ============================================================================
+/**
+ * Guard: abort if the set of show IDs changed too dramatically.
+ */
+function validateShowIdStability(original, updated) {
+  const oldIds = new Set(Object.keys(original.shows || {}));
+  const newIds = new Set(Object.keys(updated.shows || {}));
+
+  const added = [...newIds].filter(id => !oldIds.has(id));
+  const removed = [...oldIds].filter(id => !newIds.has(id));
+
+  if (added.length > 5 || removed.length > 3) {
+    console.error(`\n[Guard] ABORT: Too many ID changes (${added.length} added, ${removed.length} removed)`);
+    if (added.length > 0) console.error(`  Added: ${added.join(', ')}`);
+    if (removed.length > 0) console.error(`  Removed: ${removed.join(', ')}`);
+    process.exit(1);
+  }
+
+  if (verbose && (added.length > 0 || removed.length > 0)) {
+    console.log(`[Guard] ID changes: +${added.length} -${removed.length} (within limits)`);
+  }
+}
+
+/**
+ * Remove entries for shows that have closed.
+ * This is a lifecycle cleanup step, separate from the "scrapers never delete" rule.
+ */
+function cleanClosedShows(existing) {
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const changes = [];
+
+  for (const showId of Object.keys(existing.shows)) {
+    const show = showsData.shows.find(s => s.id === showId);
+    if (show && show.status === 'closed') {
+      delete existing.shows[showId];
+      changes.push({ showId, type: 'removed-closed' });
+    } else if (!show) {
+      // Orphaned entry — show ID not in shows.json at all
+      delete existing.shows[showId];
+      changes.push({ showId, type: 'removed-orphan' });
+    }
+  }
+
+  return changes;
+}
+
+// ==================== Summary ====================
+
+function printSummary(changes) {
+  if (changes.length === 0) {
+    console.log('\n[Summary] No changes');
+    return;
+  }
+
+  console.log(`\n[Summary] ${changes.length} changes:`);
+  for (const c of changes) {
+    switch (c.type) {
+      case 'added':
+        console.log(`  + ${c.showId} (added from ${c.source})`);
+        break;
+      case 'added-field':
+        console.log(`  + ${c.showId} ${c.field} (new field from ${c.source})`);
+        break;
+      case 'updated':
+        console.log(`  ~ ${c.showId} ${c.field}.${c.key}: ${c.old} → ${c.new} (from ${c.source})`);
+        break;
+      case 'removed-closed':
+        console.log(`  - ${c.showId} (removed, show closed)`);
+        break;
+      case 'removed-orphan':
+        console.log(`  - ${c.showId} (removed, not in shows.json)`);
+        break;
+    }
+  }
+}
+
+// ==================== Main ====================
 
 async function main() {
   console.log('='.repeat(60));
-  console.log('Broadway Lottery/Rush Scraper - Multi-Source');
+  console.log('Broadway Lottery/Rush Scraper — Robust System');
   console.log('='.repeat(60));
+  if (dryRun) console.log('[Mode] DRY RUN — no files will be written\n');
+  if (sourceFilter) console.log(`[Mode] Source filter: ${sourceFilter}\n`);
 
-  const browser = await chromium.launch({ headless: true });
-
-  try {
-    // Scrape both sources
-    const playbillData = await scrapePlaybill(browser);
-    const bwayrushData = await scrapeBwayRushFromSnapshot(browser);
-
-    // Merge data
-    console.log('\n[Merge] Cross-referencing sources...');
-    const { merged, discrepancies } = mergeData(playbillData, bwayrushData);
-
-    // Report discrepancies
-    if (discrepancies.length > 0) {
-      console.log(`\n[Discrepancies] Found ${discrepancies.length} price differences:`);
-      for (const d of discrepancies) {
-        console.log(`  - ${d.show}: ${d.field} (Playbill: ${d.playbill}, BwayRush: ${d.bwayrush}) -> Using BwayRush`);
-      }
-    } else {
-      console.log('\n[Discrepancies] None found - sources agree!');
-    }
-
-    // Guard: don't overwrite existing data with empty/degraded results
-    const newShowCount = Object.keys(merged).length;
-    const newShowsWithData = Object.values(merged).filter(s =>
-      s && (s.lottery || s.rush || s.digitalRush || s.standingRoom || s.specialLottery || s.studentRush)
-    ).length;
-
-    if (fs.existsSync(OUTPUT_PATH)) {
-      const existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8'));
-      const existingShowCount = Object.keys(existing.shows || {}).length;
-      const existingWithData = Object.values(existing.shows || {}).filter(s =>
-        s && (s.lottery || s.rush || s.digitalRush || s.standingRoom || s.specialLottery || s.studentRush)
-      ).length;
-
-      console.log(`\n[Guard] Existing: ${existingShowCount} shows (${existingWithData} with data)`);
-      console.log(`[Guard] New:      ${newShowCount} shows (${newShowsWithData} with data)`);
-
-      if (newShowsWithData === 0 && existingWithData > 0) {
-        console.error(`\n[Guard] ABORT: Scrape returned 0 shows with data but existing file has ${existingWithData}. Refusing to overwrite.`);
-        process.exit(1);
-      }
-
-      if (existingWithData > 0 && newShowsWithData < existingWithData * 0.5) {
-        console.error(`\n[Guard] ABORT: Scrape returned ${newShowsWithData} shows with data, less than 50% of existing ${existingWithData}. Refusing to overwrite.`);
-        process.exit(1);
-      }
-    }
-
-    // Build output
-    const output = {
-      lastUpdated: new Date().toISOString(),
-      sources: [PLAYBILL_URL, BWAYRUSH_URL],
-      discrepanciesFound: discrepancies.length,
-      shows: merged
-    };
-
-    // Write output
-    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
-    console.log(`\n[Output] Wrote lottery-rush.json with ${newShowCount} shows (${newShowsWithData} with data).`);
-
-    // Run tag sync
-    console.log('\n[Tags] Syncing tags in shows.json...');
-    const syncScript = path.join(__dirname, 'sync-lottery-rush-tags.js');
-    if (fs.existsSync(syncScript)) {
-      const { execSync } = require('child_process');
-      execSync(`node ${syncScript}`, { stdio: 'inherit' });
-    }
-
-    console.log('\n' + '='.repeat(60));
-    console.log('Done!');
-    console.log('='.repeat(60));
-
-  } catch (error) {
-    console.error('\n[Error]', error.message);
-    process.exit(1);
-  } finally {
-    await browser.close();
+  // Load existing data
+  let existing = { lastUpdated: '', source: '', shows: {} };
+  if (fs.existsSync(OUTPUT_PATH)) {
+    existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
   }
+  const originalSnapshot = JSON.parse(JSON.stringify(existing));
+
+  const allChanges = [];
+
+  // Scrape sources
+  if (!sourceFilter || sourceFilter === 'bwayrush') {
+    const bwayrushData = await scrapeBwayRush();
+    if (Object.keys(bwayrushData).length > 0) {
+      const changes = mergeIntoExisting(existing, bwayrushData, 'bwayrush');
+      allChanges.push(...changes);
+    }
+  }
+
+  if (!sourceFilter || sourceFilter === 'playbill') {
+    const playbillData = await scrapePlaybill();
+    if (Object.keys(playbillData).length > 0) {
+      const changes = mergeIntoExisting(existing, playbillData, 'playbill');
+      allChanges.push(...changes);
+    }
+  }
+
+  // Clean closed shows
+  const closedChanges = cleanClosedShows(existing);
+  allChanges.push(...closedChanges);
+
+  // Update top-level metadata
+  existing.lastUpdated = new Date().toISOString();
+  existing.source = PLAYBILL_URL;
+
+  // Validate stability against original
+  validateShowIdStability(originalSnapshot, existing);
+
+  // Summary
+  printSummary(allChanges);
+
+  if (allChanges.length === 0) {
+    console.log('\n[Result] No changes — data is up to date');
+    return;
+  }
+
+  if (dryRun) {
+    console.log(`\n[Dry Run] Would write ${Object.keys(existing.shows).length} shows to lottery-rush.json`);
+    return;
+  }
+
+  // Backup before writing
+  backupExisting();
+
+  // Write output
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(existing, null, 2) + '\n');
+  console.log(`\n[Output] Wrote lottery-rush.json with ${Object.keys(existing.shows).length} shows`);
+
+  // Run tag sync
+  console.log('\n[Tags] Syncing tags in shows.json...');
+  const syncScript = path.join(__dirname, 'sync-lottery-rush-tags.js');
+  if (fs.existsSync(syncScript)) {
+    const { execSync } = require('child_process');
+    execSync(`node ${syncScript}`, { stdio: 'inherit' });
+  }
+
+  console.log('\n' + '='.repeat(60));
+  console.log('Done!');
+  console.log('='.repeat(60));
 }
 
-main();
+main().catch(err => {
+  console.error('\n[Fatal]', err.message);
+  if (verbose) console.error(err.stack);
+  process.exit(1);
+});
