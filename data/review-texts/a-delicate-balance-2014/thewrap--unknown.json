@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "At least Glenn Close is entertaining and fun to watch in the new, blunt revival of Edward Albee’s “A Delicate Balance” that opened Thursday at the Golden Theatre in New York. Avid theatergoers like to revisit classic plays, not so much looking for the definitive production but a different interpretation of great, familiar material.",
+  "isFullReview": false,
+  "textWordCount": 54,
+  "archivePath": "data/archives/reviews/a-delicate-balance-2014/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:54:53.085Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 60 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 54,
+  "tierReason": "Short text (54 words)"
 }

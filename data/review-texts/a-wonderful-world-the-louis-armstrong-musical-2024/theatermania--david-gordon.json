@@ -5,7 +5,7 @@
   "criticName": "David Gordon",
   "url": "https://www.theatermania.com/new-york-city-theater/reviews/a-wonderful-world-the-louis-armstrong-musical_96847.html",
   "publishDate": "November 12, 2024",
-  "fullText": "James Monroe Iglehart brings his considerable charm and vocal prowess to the role of Louis Armstrong, anchoring this biographical musical with warmth and authenticity.",
+  "fullText": "It seems we can't find what you're looking for. Perhaps searching can help.\n\n Search for:\n \n \n \n \n\n \n\n \n\n \n \n\n \n\n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n Latest Videos\n \n \n \n \n \n \n\n \n \n \n \n \n \n \n Watch Jessica Vosk and Kelli Barrett Sing a Song From the Upcoming Broadway Musical Beaches \n \n \n Broadway performances start on March 27 at the Majestic Theatre.",
   "isFullReview": false,
   "dtliExcerpt": "James Monroe Iglehart brings his considerable charm and vocal prowess to the role of Louis Armstrong, anchoring this biographical musical with warmth and authenticity.",
   "originalScore": null,
@@ -16,12 +16,56 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Monroe Iglehart brings his considerable charm and vocal prowess to the role of Louis Armstrong, anchoring this biographical musical with warmth and authenticity.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
   "rejectedAt": "2026-02-03T11:57:00.022Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a single descriptive sentence that reads like promotional copy or a plot summary with no critical evaluation or recommendation.; openai: The text is a brief mention of a performance without a comprehensive evaluation or recommendation of the show.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "excerpt",
+  "textWordCount": 42,
+  "archivePath": "data/archives/reviews/a-wonderful-world-the-louis-armstrong-musical-2024/theatermania--david-gordon_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:03:07.759Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Insufficient text: 141 chars"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 42 (min: 300)"
+  ],
+  "wordCount": 42,
+  "tierReason": "Short text (42 words)"
 }

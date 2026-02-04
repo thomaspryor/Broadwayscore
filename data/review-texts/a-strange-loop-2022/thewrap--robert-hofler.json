@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "In addition to all the free tickets, one of the great benefits of being a theater critic is that you’re sent the script. This email ritual not only makes it unnecessary for critics to transcribe what the actors are saying on stage while we’re supposed to be watching the play, it gives us a look into the playwright’s mind.",
+  "isFullReview": false,
+  "textWordCount": 59,
+  "archivePath": "data/archives/reviews/a-strange-loop-2022/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:01:14.784Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 65 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 59,
+  "tierReason": "Short text (59 words)"
 }
