@@ -3,10 +3,10 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "https://www.nydailynews.com/2014/03/26/mothers-and-sons-review-tyne-daly-fredrick-weller-star-in-terrence-mcnallys-broadway-drama/",
+  "url": "https://www.nydailynews.com/2014/03/25/mothers-and-sons-theater-review/",
   "publishDate": "March 26, 2014",
-  "fullText": "The play works best when it focuses on the messy, complicated relationship between Katharine and Andre, two people who loved the same man but couldn't be more different.",
-  "isFullReview": false,
+  "fullText": "In the opening moments of “Mothers and Sons,” Cal and Katharine stare out a window of his comfortably lived-in Central Park West apartment.\n\nIt’s the only instance these two people will share the same view — on anything — in veteran Tony winner Terrence McNally’s sincere but frustrating drama about family and fear.\n\nThe 100-minute one-act revisits characters that McNally (“Master Class,” “Love! Valour! Compassion!”) introduced in “Andre’s Mother,” a four-page 1988 play he expanded into an hourlong TV movie two years later.\n\nThis story, set today, traces the awkward, sometimes hostile reunion between Katharine (Tyne Daly), a recent widow who lost her son, Andre, to AIDS, and Cal (Frederick Weller) the lover he left behind 20 years before.\n\nCal is now married to Will (Bobby Steggert), a househusband and wannabe writer 15 years his junior. The men have a 6-year-old son, Bud (Grayson Taylor).\n\nIt’s a different world. But Katharine has grown bitter and sickened by the gay lifestyle — and rocked by the fact that Cal, her only living connection to Andre, has moved on.\n\nThere’s grist for a provocative and touching drama as a mom takes stock of the life her son might have had. But the script doesn’t go there.\n\nInstead it careens from expositional jibber-jabber (West Siders versus East Siders) to pithy one-liners (Cal relates how he struggled with calling Will his “hu—hu—hu—sband”) to preachy asides (Will waxes philosophical about AIDS becoming a “footnote” as life goes on). And there are talking points — gay marriage, survivor guilt, homophobia and fear.\n\nFear is the most interesting topic, considering Andre’s fear of coming out, Will’s fear that Cal loves him differently than he did Andre, and Cal’s fears about forgetting his first love.\n\nDirector Sheryl Kaller and her talented cast can’t turn these topics into cohesive drama. Weller, who’s a bit mannered, and Steggert, who’s effusive, manage to hold their own. Taylor, at times hard to understand, has been directed to be irritatingly adorable.\n\nThe estimable Daly, who’s stern and stately, is eventually undone by her character. When say-anything little Bud mentions the AIDS quilt, Katharine responds: “The quilt?”\n\nA mom who lost her only child to HIV has never heard of the AIDS quilt — a memorial of international significance?\n\nUnless she’s Rip Van Winkle, there is no context — religious or social — for her ignorance and denial. That is the moment when “Mothers and Sons” dies. Not even the sweetly optimistic final tableau can resurrect it.",
+  "isFullReview": true,
   "dtliExcerpt": "The play works best when it focuses on the messy, complicated relationship between Katharine and Andre, two people who loved the same man but couldn't be more different.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play works best when it focuses on the messy, complicated relationship between Katharine and Andre, two people who loved the same man but couldn't be more different.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 61,
@@ -76,5 +76,47 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.nydailynews.com/2014/03/26/mothers-and-sons-review-tyne-daly-fredrick-weller-star-in-terrence-mcnallys-broadway-drama/",
+  "urlDiscoveredAt": "2026-02-04T03:30:43.201Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 413,
+  "archivePath": "data/archives/reviews/mothers-and-sons-2014/nydailynews--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:30:43.205Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 413,
+  "tierReason": "Full review text"
 }
