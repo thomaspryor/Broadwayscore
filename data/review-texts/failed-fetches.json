@@ -8896,18 +8896,6 @@
     "timestamp": "2026-02-03T22:51:12.956Z"
   },
   {
-    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
-    "showId": "act-one-2014",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): hamilton, english, frozen, my fair lady, the audience...",
-    "textLength": 7187,
-    "timestamp": "2026-02-03T23:01:08.465Z"
-  },
-  {
     "reviewId": "american-idiot-2010/hollywood-reporter--david-rooney.json",
     "showId": "american-idiot-2010",
     "outlet": "The Hollywood Reporter",
@@ -12878,5 +12866,53 @@
     "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
     "textLength": 7831,
     "timestamp": "2026-02-04T17:29:25.655Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
+    "textLength": 8832,
+    "timestamp": "2026-02-04T17:30:42.502Z"
+  },
+  {
+    "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
+    "showId": "act-one-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/act-one-theater-review-697276",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): hamilton, mamma mia!, english, frozen, my fair lady...",
+    "textLength": 7640,
+    "timestamp": "2026-02-04T17:31:08.060Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/hollywood-reporter--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (13): mamma mia!, parade, the color purple, rocky, the performers...",
+    "textLength": 7878,
+    "timestamp": "2026-02-04T17:32:56.861Z"
+  },
+  {
+    "reviewId": "after-midnight-2013/vulture--unknown.json",
+    "showId": "after-midnight-2013",
+    "outlet": "Vulture",
+    "critic": "Unknown",
+    "url": "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): parade, company, bandstand, the color purple, once...",
+    "textLength": 6965,
+    "timestamp": "2026-02-04T17:36:22.775Z"
   }
 ]
