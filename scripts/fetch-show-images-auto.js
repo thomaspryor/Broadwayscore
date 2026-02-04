@@ -880,16 +880,30 @@ async function fetchFromPlaybill(show) {
   return null;
 }
 
-// Verify images from a non-trusted tier before accepting.
-// Returns images if verified (or verification disabled), null if rejected.
-async function verifyAndAccept(images, show, tierName, verifyCtx) {
-  if (!verifyCtx) return images;
+// Score an image candidate based on verification result and URL heuristics.
+// Higher score = more desirable image (promotional art > production still > other).
+function scoreCandidate(verifyResult, url) {
+  const { classifyImageUrl } = require('./lib/verify-image');
+  const typeScores = { promotional_art: 3, production_still: 1, headshot_cast: 0, other: 0 };
+  const confScores = { high: 2, medium: 1, low: 0 };
+  let score = (typeScores[verifyResult.imageType] || 0) * 10
+            + (confScores[verifyResult.confidence] || 0);
+  // URL heuristic bonus
+  if (classifyImageUrl(url) === 'promotional_art') score += 3;
+  return score;
+}
+
+// Verify images from a non-trusted tier.
+// Returns { images, verifyResult, url, tierName, score } for candidate collection,
+// or null if rejected.
+async function verifyAndCollect(images, show, tierName, verifyCtx) {
+  if (!verifyCtx) return { images, verifyResult: null, tierName, score: 0 };
 
   const { verifyImage } = require('./lib/verify-image');
 
   // Pick best image to verify: thumbnail > poster > hero
   const urlToVerify = images.thumbnail || images.poster || images.hero;
-  if (!urlToVerify) return images;
+  if (!urlToVerify) return { images, verifyResult: null, tierName, score: 0 };
 
   const year = show.openingDate ? show.openingDate.substring(0, 4) : null;
   console.log(`   🔍 Verifying ${tierName} image...`);
@@ -901,9 +915,14 @@ async function verifyAndAccept(images, show, tierName, verifyCtx) {
   });
 
   if (result.match === true) {
-    console.log(`   ✓ VERIFIED (${result.confidence}): ${result.description}`);
+    const score = scoreCandidate(result, urlToVerify);
+    console.log(`   ✓ VERIFIED (${result.confidence}, ${result.imageType}): ${result.description} [score=${score}]`);
     verifyCtx.verified = (verifyCtx.verified || 0) + 1;
-    return images;
+    if (result.imageType) {
+      verifyCtx.imageTypes = verifyCtx.imageTypes || {};
+      verifyCtx.imageTypes[result.imageType] = (verifyCtx.imageTypes[result.imageType] || 0) + 1;
+    }
+    return { images, verifyResult: result, url: urlToVerify, tierName, score };
   } else if (result.match === false &&
              (result.confidence === 'high' || result.confidence === 'medium')) {
     console.log(`   ✗ REJECTED (${result.confidence}): ${result.description} [${result.issues.join(', ')}]`);
@@ -911,9 +930,10 @@ async function verifyAndAccept(images, show, tierName, verifyCtx) {
     return null;
   } else {
     // Low confidence rejection or API error → fail open
-    console.log(`   ⚠ UNCERTAIN (${result.confidence}): ${result.description} — accepting`);
+    const score = scoreCandidate(result, urlToVerify);
+    console.log(`   ⚠ UNCERTAIN (${result.confidence}): ${result.description} — accepting [score=${score}]`);
     verifyCtx.uncertain = (verifyCtx.uncertain || 0) + 1;
-    return images;
+    return { images, verifyResult: result, url: urlToVerify, tierName, score };
   }
 }
 
@@ -951,6 +971,10 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
 
     console.log(`   API match found but missing image data, falling back to page scrape`);
   }
+
+  // When --verify is active, collect candidates from all tiers and pick the best
+  // instead of returning on first success. This prefers promotional art over production stills.
+  const candidates = [];
 
   // Step 2: Try TodayTix page scrape if we have an ID
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
@@ -992,9 +1016,19 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
           poster: images.portrait,
         };
 
-        const verified = await verifyAndAccept(formatted, show, 'TodayTix scrape', verifyCtx);
-        if (verified) return verified;
-        console.log(`   Falling through to IBDB...`);
+        const candidate = await verifyAndCollect(formatted, show, 'TodayTix scrape', verifyCtx);
+        if (candidate) {
+          candidates.push(candidate);
+          // Early exit: if this is promotional art at high confidence, no need to try more tiers
+          if (candidate.verifyResult?.imageType === 'promotional_art' &&
+              candidate.verifyResult?.confidence === 'high') {
+            console.log(`   ★ Promotional art found at high confidence — using this`);
+            return candidate.images;
+          }
+          // Without verify, first success wins (original behavior)
+          if (!verifyCtx) return candidate.images;
+        }
+        if (verifyCtx && !candidate) console.log(`   Falling through to IBDB...`);
       } else {
         console.log(`   ✗ No images found in TodayTix page`);
       }
@@ -1009,23 +1043,47 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // NEEDS VERIFICATION — IBDB neighbor shows cause cross-contamination
   const ibdbImages = await fetchFromIBDB(show);
   if (ibdbImages && (ibdbImages.thumbnail || ibdbImages.poster)) {
-    const verified = await verifyAndAccept(ibdbImages, show, 'IBDB', verifyCtx);
-    if (verified) return verified;
-    console.log(`   Falling through to Playbill...`);
+    const candidate = await verifyAndCollect(ibdbImages, show, 'IBDB', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (candidate.verifyResult?.imageType === 'promotional_art' &&
+          candidate.verifyResult?.confidence === 'high') {
+        console.log(`   ★ Promotional art found at high confidence — using this`);
+        return candidate.images;
+      }
+      if (!verifyCtx) return candidate.images;
+    }
+    if (verifyCtx && !candidate) console.log(`   Falling through to Playbill...`);
   }
 
   // Step 4: Playbill fallback (landscape OG image only)
-  // NEEDS VERIFICATION — last resort, accept with warning if verification fails
+  // NEEDS VERIFICATION — last resort
   const playbillImages = await fetchFromPlaybill(show);
   if (playbillImages) {
-    const verified = await verifyAndAccept(playbillImages, show, 'Playbill', verifyCtx);
-    if (verified) return verified;
-    console.log(`   ⚠ Playbill image failed verification but accepting as last resort`);
-    if (verifyCtx) {
-      verifyCtx.rejected = (verifyCtx.rejected || 0) - 1; // Don't count last-resort accepts as rejections
+    const candidate = await verifyAndCollect(playbillImages, show, 'Playbill', verifyCtx);
+    if (candidate) {
+      candidates.push(candidate);
+      if (!verifyCtx) return candidate.images;
+    } else if (verifyCtx) {
+      // Even Playbill failed verification — treat as last resort candidate
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+      candidates.push({ images: playbillImages, verifyResult: null, tierName: 'Playbill (last resort)', score: -1 });
     }
-    return playbillImages;
+  }
+
+  // Pick the best candidate from all tiers
+  if (candidates.length > 0) {
+    if (verifyCtx && candidates.length > 1) {
+      candidates.sort((a, b) => b.score - a.score);
+      const best = candidates[0];
+      console.log(`   ★ Picked best candidate: ${best.tierName} (score=${best.score}, type=${best.verifyResult?.imageType || 'unknown'})`);
+      if (candidates.length > 1) {
+        const others = candidates.slice(1).map(c => `${c.tierName}(${c.score})`).join(', ');
+        console.log(`     Other candidates: ${others}`);
+      }
+      return best.images;
+    }
+    return candidates[0].images;
   }
 
   return null;
@@ -1253,6 +1311,14 @@ async function main() {
     if (verifyCtx.lastResort > 0) {
       console.log(`  Last resort (Playbill, accepted with warning): ${verifyCtx.lastResort}`);
     }
+    if (verifyCtx.imageTypes) {
+      console.log(`\n📊 Image Type Distribution:`);
+      const types = verifyCtx.imageTypes;
+      console.log(`  Promotional art: ${types.promotional_art || 0}`);
+      console.log(`  Production stills: ${types.production_still || 0}`);
+      console.log(`  Headshot/cast: ${types.headshot_cast || 0}`);
+      console.log(`  Other: ${types.other || 0}`);
+    }
   }
 
   // GitHub Actions output
@@ -1262,6 +1328,10 @@ async function main() {
     fs.appendFileSync(outputFile, `images_failed=${results.failed.length}\n`);
     if (verifyCtx) {
       fs.appendFileSync(outputFile, `images_rejected=${verifyCtx.rejected}\n`);
+      if (verifyCtx.imageTypes) {
+        fs.appendFileSync(outputFile, `promotional_art=${verifyCtx.imageTypes.promotional_art || 0}\n`);
+        fs.appendFileSync(outputFile, `production_stills=${verifyCtx.imageTypes.production_still || 0}\n`);
+      }
     }
   }
 }

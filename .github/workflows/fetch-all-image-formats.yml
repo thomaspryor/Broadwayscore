@@ -140,3 +140,7 @@ jobs:
           echo "**Failed:** ${{ steps.fetch.outputs.images_failed || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
           echo "**LLM rejected:** ${{ steps.fetch.outputs.images_rejected || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
           echo "**Verification:** ${{ inputs.verify != 'false' && 'Enabled' || 'Disabled' }}" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.fetch.outputs.promotional_art }}" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Image Types:** Promotional art: ${{ steps.fetch.outputs.promotional_art }}, Production stills: ${{ steps.fetch.outputs.production_stills }}" >> $GITHUB_STEP_SUMMARY
+          fi
