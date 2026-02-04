@@ -5,7 +5,7 @@
 
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
-import type { RecoupmentTrend } from '@/lib/data';
+import type { RecoupmentTrend } from '@/lib/data-types';
 
 interface AtRiskCardProps {
   slug: string;
