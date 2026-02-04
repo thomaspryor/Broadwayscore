@@ -21,7 +21,7 @@ export default function CriticConsensusCard({ consensus }: CriticConsensusCardPr
           <QuoteIcon />
         </div>
         <div>
-          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
             Critics&apos; Take
           </h2>
           <p className="text-gray-300 text-sm sm:text-base leading-relaxed">

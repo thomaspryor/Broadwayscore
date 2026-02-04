@@ -69,7 +69,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
       <div className="space-y-4">
         {/* Lottery Section */}
         {data.lottery && (
-          <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4">
+          <div className="bg-purple-500/15 border border-purple-500/20 rounded-lg p-4 hover:bg-purple-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <DiceIcon />
@@ -100,7 +100,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
 
         {/* Special Lottery (e.g., anniversary lottery) */}
         {data.specialLottery && (
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
+          <div className="bg-amber-500/15 border border-amber-500/20 rounded-lg p-4 hover:bg-amber-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <DiceIcon />
@@ -127,7 +127,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
 
         {/* Rush Section */}
         {data.rush && (
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4">
+          <div className="bg-emerald-500/15 border border-emerald-500/20 rounded-lg p-4 hover:bg-emerald-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <TicketIcon />
@@ -166,7 +166,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
 
         {/* Digital Rush (separate from box office rush) */}
         {data.digitalRush && (
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+          <div className="bg-blue-500/15 border border-blue-500/20 rounded-lg p-4 hover:bg-blue-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <TicketIcon />
@@ -197,7 +197,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
 
         {/* Student Rush */}
         {data.studentRush && (
-          <div className="bg-pink-500/10 border border-pink-500/20 rounded-lg p-4">
+          <div className="bg-pink-500/15 border border-pink-500/20 rounded-lg p-4 hover:bg-pink-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <TicketIcon />
@@ -223,7 +223,7 @@ export default function LotteryRushCard({ data, showStatus }: LotteryRushCardPro
 
         {/* Standing Room */}
         {data.standingRoom && (
-          <div className="bg-gray-500/10 border border-gray-500/20 rounded-lg p-4">
+          <div className="bg-gray-500/15 border border-gray-500/20 rounded-lg p-4 hover:bg-gray-500/20 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <TicketIcon />

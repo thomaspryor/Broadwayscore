@@ -1,5 +1,3 @@
-import ScoreTooltip from '@/components/ScoreTooltip';
-
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
   mustSee: {
@@ -56,13 +54,9 @@ export interface ScoreBadgeProps {
   size?: 'sm' | 'md' | 'lg';
   reviewCount?: number;
   status?: string;
-  tier1Count?: number;
-  tier2Count?: number;
-  tier3Count?: number;
-  showTooltip?: boolean;
 }
 
-export function ScoreBadge({ score, size = 'md', reviewCount, status, tier1Count, tier2Count, tier3Count, showTooltip = false }: ScoreBadgeProps) {
+export function ScoreBadge({ score, size = 'md', reviewCount, status }: ScoreBadgeProps) {
   const sizeClass = {
     sm: 'w-11 h-11 text-lg rounded-lg',
     md: 'w-14 h-14 text-2xl rounded-xl',
@@ -116,28 +110,9 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, tier1Count
     label = 'Skip';
   }
 
-  const badge = (
+  return (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
       {roundedScore}
     </div>
   );
-
-  // Wrap with tooltip if enabled and we have the necessary data
-  if (showTooltip && reviewCount !== undefined && tier1Count !== undefined) {
-    return (
-      <ScoreTooltip
-        score={roundedScore}
-        label={label}
-        tier1Count={tier1Count}
-        tier2Count={tier2Count || 0}
-        tier3Count={tier3Count || 0}
-        totalReviews={reviewCount}
-        size="sm"
-      >
-        {badge}
-      </ScoreTooltip>
-    );
-  }
-
-  return badge;
 }

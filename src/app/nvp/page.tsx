@@ -312,7 +312,7 @@ function NVPPageInner() {
                     decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 will-change-transform"
                     fallback={
-                      <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 px-2" aria-hidden="true">
+                      <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 px-2" aria-hidden="true">
                         <div className="text-2xl mb-0.5">🎭</div>
                         {show.status === 'previews' && (
                           <div className="text-[9px] text-gray-500 text-center font-medium leading-tight">Images<br/>soon</div>

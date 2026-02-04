@@ -22,7 +22,7 @@ export default function SubmitReviewPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Submit a Missing Review
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-500">
             Help us expand our database by contributing professional critic reviews
           </p>
         </div>

@@ -22,7 +22,7 @@ export default function FeedbackPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             We&apos;d Love Your Feedback
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-500">
             Help us improve Broadway Scorecard
           </p>
         </div>
@@ -37,28 +37,28 @@ export default function FeedbackPage() {
                 <span className="text-2xl">🐛</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Report a Bug</h3>
-                  <p className="text-sm text-gray-600">Something not working right?</p>
+                  <p className="text-sm text-gray-500">Something not working right?</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
                 <span className="text-2xl">💡</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Feature Request</h3>
-                  <p className="text-sm text-gray-600">Ideas for new features</p>
+                  <p className="text-sm text-gray-500">Ideas for new features</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
                 <span className="text-2xl">📝</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">Content Error</h3>
-                  <p className="text-sm text-gray-600">Incorrect show data or scores</p>
+                  <p className="text-sm text-gray-500">Incorrect show data or scores</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
                 <span className="text-2xl">💬</span>
                 <div>
                   <h3 className="font-semibold text-gray-900">General Feedback</h3>
-                  <p className="text-sm text-gray-600">Thoughts, praise, or suggestions</p>
+                  <p className="text-sm text-gray-500">Thoughts, praise, or suggestions</p>
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default function FeedbackPage() {
                     Submit Missing Reviews
                   </Link>
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-500 text-sm">
                   Help us expand our database by submitting professional critic reviews we might have missed
                 </p>
               </div>
@@ -205,7 +205,7 @@ export default function FeedbackPage() {
                     Contribute on GitHub
                   </a>
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-500 text-sm">
                   This is an open-source project. View the code, report issues, or contribute improvements
                 </p>
               </div>
@@ -217,7 +217,7 @@ export default function FeedbackPage() {
                 <h3 className="font-semibold text-gray-900 mb-1">
                   Spread the Word
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-500 text-sm">
                   Share Broadway Scorecard with fellow theater fans and help grow the community
                 </p>
               </div>

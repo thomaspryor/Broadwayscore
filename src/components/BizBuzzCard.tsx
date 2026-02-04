@@ -255,22 +255,22 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                   {commercial.notes}
                 </p>
                 {commercial.capitalizationSource && (
-                  <p className="text-xs text-gray-600 mt-2">
+                  <p className="text-xs text-gray-500 mt-2">
                     Source: {commercial.capitalizationSource}
                   </p>
                 )}
                 {commercial.recoupedDate && (
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     Recouped: {commercial.recoupedDate}
                   </p>
                 )}
                 {commercial.weeklyRunningCostSource && (
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     Weekly cost source: {commercial.weeklyRunningCostSource}
                   </p>
                 )}
                 {commercial.estimatedRecoupmentSource && (
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     Recoupment estimate source: {commercial.estimatedRecoupmentSource}
                   </p>
                 )}
