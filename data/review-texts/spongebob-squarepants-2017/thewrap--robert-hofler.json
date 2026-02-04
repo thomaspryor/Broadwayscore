@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "The 2008 Broadway musical “Shrek” required its star Brian d’Arcy James to spend at least two hours in makeup to turn himself into the spitting image of the famed green ogre. To director Tina Landau’s credit, actor Ethan Slater never resembles a yellow sponge that lives in a pineapple at the bottom of the sea in the new musical “SpongeBob SquarePants,” which opened Monday at the Palace Theatre.",
+  "isFullReview": false,
+  "textWordCount": 68,
+  "archivePath": "data/archives/reviews/spongebob-squarepants-2017/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:18:32.694Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 74 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 68,
+  "tierReason": "Short text (68 words)"
 }
