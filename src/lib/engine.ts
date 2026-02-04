@@ -219,6 +219,8 @@ export interface ComputedShow {
   buzzScore: BuzzScoreResult | null;
   compositeScore: number | null;
   confidence: ConfidenceResult;
+  // Review age context for long-running shows
+  reviewYearNote: string | null;
   methodologyVersion: string;
   methodologyDate: string;
   computedAt: string;
@@ -573,6 +575,30 @@ export function computeShowData(
 
   const confidence = assessConfidence(criticScore, null, show.status);
 
+  // Compute review age note for long-running open shows (10+ years)
+  let reviewYearNote: string | null = null;
+  if (show.status === 'open' && show.openingDate) {
+    const openYear = new Date(show.openingDate).getFullYear();
+    const yearsOld = new Date().getFullYear() - openYear;
+    if (yearsOld >= 10 && showReviews.length >= 5) {
+      // Parse review years from various date formats
+      const reviewYears = showReviews.map(r => {
+        if (!r.publishDate) return null;
+        // Handle ISO dates (2011-03-24), full dates (March 24, 2011), ISO timestamps
+        const match = r.publishDate.match(/\b(19|20)\d{2}\b/);
+        return match ? parseInt(match[0]) : null;
+      }).filter((y): y is number => y !== null);
+
+      if (reviewYears.length > 0) {
+        const fromOpeningEra = reviewYears.filter(y => Math.abs(y - openYear) <= 1).length;
+        const pct = fromOpeningEra / reviewYears.length;
+        reviewYearNote = pct >= 0.9
+          ? `Reviews from ${openYear}`
+          : `Most reviews from ${openYear}`;
+      }
+    }
+  }
+
   return {
     id: show.id,
     title: show.title,
@@ -607,6 +633,7 @@ export function computeShowData(
     buzzScore: null,
     compositeScore,
     confidence,
+    reviewYearNote,
     methodologyVersion: METHODOLOGY_VERSION,
     methodologyDate: METHODOLOGY_DATE,
     computedAt: new Date().toISOString(),
