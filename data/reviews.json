@@ -4,11 +4,11 @@
     "lastUpdated": "2026-02-04",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 4081,
-      "skippedNoScore": 5627,
+      "totalReviews": 4077,
+      "skippedNoScore": 5530,
       "skippedDuplicate": 16,
-      "skippedDuplicateUrl": 9,
-      "skippedWrongProduction": 289,
+      "skippedDuplicateUrl": 8,
+      "skippedWrongProduction": 287,
       "recoveredFromGarbage": 95,
       "scoreSources": {
         "explicit-stars": 4,
@@ -16,10 +16,10 @@
         "explicit-slash": 5,
         "explicit-letterGrade": 1,
         "human-review": 60,
-        "originalScore-priority0": 849,
-        "llmScore": 2576,
+        "originalScore-priority0": 845,
+        "llmScore": 2579,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 579,
+        "llmScore-lowconf": 576,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
@@ -310,13 +310,13 @@
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Adrian Horton",
-      "url": "https://www.theguardian.com/books/2017/may/19/1984-review-stage-adaptation-confuses-orwells-classic",
+      "url": "https://www.theguardian.com/stage/2017/jun/23/1984-review-broadway-hudson-theatre-orwell",
       "publishDate": "June 23, 2017",
       "originalRating": null,
       "pullQuote": "This is a visceral, uncompromising adaptation that doesn't shy away from the novel's most disturbing elements, creating a theatrical experience that is both brilliant and genuinely harrowing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "1984-2017",
@@ -595,7 +595,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 62,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Jesse Green",
@@ -605,7 +605,7 @@
       "pullQuote": "The show works best when it stops trying to be a musical and just lets Diamond's songs do the talking.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -973,13 +973,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Hassenger",
-      "url": "https://www.theguardian.com/stage/2019/nov/20/a-christmas-carol-review-dickens-broadway-lyceum-theatre-new-york",
+      "url": "https://www.theguardian.com/stage/2019/nov/21/a-christmas-carol-review-broadway-lyceum-theater",
       "publishDate": "November 21, 2019",
       "originalRating": null,
       "pullQuote": "This new adaptation of A Christmas Carol feels less like a musical than a play with songs, and benefits from that approach.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -1003,7 +1003,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 77,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Jesse Green",
@@ -1013,7 +1013,7 @@
       "pullQuote": "This new Broadway adaptation of A Christmas Carol manages to capture both the intimacy of Dickens's original story and the spectacle that modern audiences expect from a big-budget musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-christmas-carol-2019",
@@ -2048,23 +2048,6 @@
       "publishDate": "October 11, 2013",
       "originalRating": null,
       "pullQuote": "Mary Bridget Davies gives a powerhouse performance as Janis Joplin, capturing both the raw vocal power and vulnerable soul of the rock legend.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "a-raisin-in-the-sun-2014",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 87,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Unknown",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20802907,00.html",
-      "publishDate": null,
-      "originalRating": "B+",
-      "pullQuote": "As the matriarch of the extended Younger household (which includes Sophie Okonedo as Walter's wife and a fine Anika Noni Rose as the spirited sister who dreams of becoming a doctor), Richardson Jackson conveys complicated layers of emotion with a simplicity of presence that makes Lena's climactic scenes all the more stirring.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -7759,13 +7742,13 @@
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "Joe Dziemianowicz",
-      "url": "https://www.nydailynews.com/2012/11/08/theater-review-annie-on-broadway/",
+      "url": "https://www.nydailynews.com/2012/11/09/annie-broadway-review-revival-palace-theatre/",
       "publishDate": "November 9, 2012",
       "originalRating": 60,
       "pullQuote": "Still, there's enough charm and energy to keep families entertained.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "annie-2012",
@@ -7823,7 +7806,7 @@
       "outletId": "theatermania",
       "outlet": "TheaterMania",
       "assignedScore": 63,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Mixed",
       "thumb": "Flat",
       "criticName": "David Gordon",
@@ -7833,7 +7816,7 @@
       "pullQuote": "The new Annie is a handsome production that benefits from strong performances and slick staging, but it lacks the scrappy charm that made the original so endearing.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "annie-2012",
@@ -10422,23 +10405,6 @@
     },
     {
       "showId": "betrayal-2013",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 35,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Unknown",
-      "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
-      "publishDate": null,
-      "originalRating": "D",
-      "pullQuote": "Though Betrayal runs less than 90 intermission-less minutes, it can feel longer  thanks in part to Pinter's notorious pregnant pauses, his elliptical dialogue of misdirection, and the languorous scene changes for Ian MacNeil's simple but stylish sets. Director Mike Nichols' handsome, well-staged production is not your typical crowd-pleaser.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "truncated"
-    },
-    {
-      "showId": "betrayal-2013",
       "outletId": "talkinbroadway",
       "outlet": "Talkin' Broadway",
       "assignedScore": 76,
@@ -10463,13 +10429,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
-      "url": "https://www.theguardian.com/stage/2013/oct/28/betrayal-review-daniel-craig-pinter-new-york",
+      "url": "https://www.theguardian.com/stage/2013/nov/06/betrayal-review-pinter-daniel-craig",
       "publishDate": "November 6, 2013",
       "originalRating": null,
       "pullQuote": "This Broadway revival benefits from three superb performances and Mike Nichols's characteristically intelligent direction.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "betrayal-2013",
@@ -12578,7 +12544,7 @@
       "pullQuote": "This new musical by Steve Martin and Edie Brickell has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "complete"
+      "contentTier": "truncated"
     },
     {
       "showId": "bright-star-2016",
@@ -29225,7 +29191,7 @@
       "url": "https://nypost.com/2023/11/13/entertainment/harmony-review-barry-manilows-musical-is-moving-but-isnt-in-sync/",
       "publishDate": "November 13, 2023",
       "originalRating": null,
-      "pullQuote": "...not everything is harmonious, but nonetheless there is much that’s worth listening to.",
+      "pullQuote": "Zien’s wealth of experience is paired with exciting young talent. Five of the Harmonists are making their Broadway debuts, and all of them are tremendous singers. And, most poignantly, the show’s forceful rallying cry against anti-Semitism and for peaceful coexistence is relevant and movingly reverberates.",
       "dtliThumb": "Meh",
       "bwwThumb": "Meh",
       "contentTier": "complete"
@@ -32001,7 +31967,7 @@
       "url": "https://www.amny.com/entertainment/review-here-lies-love-finally-turns-broadway-into-an-immersive-dance-club/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "“Although the show does incorporate live guitar and drums at certain times, it relies mainly on prerecorded music. Due to the electronic nature and synthetic sound of the score, as well as the immersive and highly physical nature of the production, one might forget or forgive the fact that the music is prerecorded – but I couldn’t shake it.",
+      "pullQuote": "As inventively staged by wunderkind director Alex Timbers (\"Rocky,\" \"Peter and the Starcatcher\"), \"Here Lies Love\" is a high-energy, immersive experience not unlike \"Sleep No More\" and \"Fuerza Bruta\" where audience members stand throughout the show and can freely move around.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -32035,7 +32001,7 @@
       "url": "https://www.broadwaynews.com/review-2/",
       "publishDate": "July 20, 2023",
       "originalRating": null,
-      "pullQuote": "There is room for so much to go physically wrong at ‘Here Lies Love,’ but Timbers chews through the 360-degree challenge, offering dazzling spectacle from any angle.",
+      "pullQuote": "As a frequenter of both, it was easy to surrender to “Here Lies Love.” But that ease feels directly tied to my lack of cultural connection to the musical’s complicated history.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -32056,23 +32022,6 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "here-lies-love-2023",
-      "outletId": "ew",
-      "outlet": "Entertainment Weekly",
-      "assignedScore": 87,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Joey Nolfi",
-      "url": "https://ew.com/theater/here-lies-love-broadway-review/",
-      "publishDate": "July 20, 2023",
-      "originalRating": 87,
-      "pullQuote": "Here Lies Love succeeds as both a thrilling piece of immersive theater and a pointed political statement, even if its disco-ball dazzle occasionally threatens to overshadow its more serious intentions.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "here-lies-love-2023",
@@ -32137,7 +32086,7 @@
       "url": "https://nystagereview.com/2023/07/20/here-lies-love-its-a-vibe/",
       "publishDate": "2023-07-20T20:56:37",
       "originalRating": "4/5 stars",
-      "pullQuote": "The show is absolutely an indictment of the autocratic Marcos administration...If you really want to immerse yourself in Imelda’s world, go for the floor. You might find yourself shaking hands with the candidates on the campaign trail, joining in a line dance, or even holding up your own laban sign.",
+      "pullQuote": "You might be jumping up and down; you might just be swaying your shoulders or tapping your toes. But at some point, you realize that dammit! You’ve fallen under her spell.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -32154,7 +32103,7 @@
       "url": "https://nystagereview.com/2023/07/20/here-lies-love-innovatively-immersive-musical-retains-disco-sheen-mostly/",
       "publishDate": "2023-07-20T20:55:25",
       "originalRating": "4/5 stars",
-      "pullQuote": "‘Here Lies Love’ remains an impressive and effective experience; but uptown on Broadway, at the over-sized Broadway, the bloom is off the rose of Tacloban...Regretfully, we conclude that the uptown edition—as of the official opening—is not yet quite so powerful as what enthralled us, three times, down on Astor Place.",
+      "pullQuote": "If we must wager a guess, it would be that those watching from the stage floor will experience the thrill of the original conception.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -32307,7 +32256,7 @@
       "url": "https://www.theatermania.com/news/review-david-byrne-and-fatboy-slims-here-lies-love-is-the-party-to-end-all-parties_1708759/",
       "publishDate": "July 20, 2023",
       "originalRating": null,
-      "pullQuote": "“I’d still recommend prospective ticket buyers to pick the floor for one simple reason: It’s an experience unlike any other you’ve ever had on Broadway. The amount of thought, planning, detail, and money that went into this is insane, and it’s not hyperbole to say that you won’t believe your eyes.",
+      "pullQuote": "And just like that, a decade went by. Politics have changed, the world has transformed, and the theater industry is certainly different than it was back in the simpler time of 2013.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -32341,7 +32290,7 @@
       "url": "https://www.thewrap.com/here-lies-love-broadway-review-david-byrne-musical/",
       "publishDate": "July 20, 2023",
       "originalRating": null,
-      "pullQuote": "‘Here Lies Love’ isn’t about Ferdinand or Imelda or even a bygone Philippines. It’s all about Alex Timbers.",
+      "pullQuote": "Alex Timbers' extraordinarily inventive direction of \"Here Lies Loves\" makes this musical worth seeing...",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -32715,8 +32664,8 @@
       "url": "https://nystagereview.com/2024/06/05/home-not-always-easy-to-go-back/",
       "publishDate": "2024-06-05T21:27:14",
       "originalRating": "3/5 stars",
-      "pullQuote": "Cephus is then drafted to serve in the military in Vietnam, but being opposed to the war for religious reasons, he winds up serving five years in prison as a draft dodger. Upon his release, he heads to the big city where he becomes involved with a not-so-good woman and loses himself to the temporary pleasures of cocaine and Night Train wine.",
-      "dtliThumb": null,
+      "pullQuote": "The story is touching, but the ritualistic telling proves problematic. It’s done in large part through narration, often delivered in a poetical, incantational style that can be distancing.",
+      "dtliThumb": "MEH",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -32732,8 +32681,8 @@
       "url": "https://nystagereview.com/2024/06/05/home-is-where-the-art-is-at-roundabout/",
       "publishDate": "2024-06-05T21:26:06",
       "originalRating": "3/5 stars",
-      "pullQuote": "Opening on Wednesday, Roundabout Theatre Company’s revival of Home launches the 2024-2025. Let’s hope most of the incoming shows of the new season look nearly as good as Home.",
-      "dtliThumb": null,
+      "pullQuote": "Here, the lyrical opening passages of Home intended to evoke the long ago rural South are nearly lost in the breakneck speed they are spoken. Other poetic sections tend to rush by, too, suggesting that Leon doesn’t trust the audience to appreciate their beauty.",
+      "dtliThumb": "MEH",
       "bwwThumb": null,
       "contentTier": "complete"
     },
@@ -49946,7 +49895,7 @@
       "url": "https://apnews.com/article/britney-spears-broadway-musical-review-1ffe5baca1d45e850f71b6eed4195acd",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "It is a story that veers in tone from glib satire to sugary sentimentality, trying to establish a sisterhood it hasn’t earned and adding a gay-rights story that seems tacked on and distracting...A desperate attempt to make a coherent happy ending fails.",
+      "pullQuote": null,
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -49963,7 +49912,7 @@
       "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
       "publishDate": "June 22, 2023",
       "originalRating": null,
-      "pullQuote": "Surely there is a way to include children of color...Until that way is discovered, I’ll take up ‘Once Upon On a One More Time’ on the valuable lessons it does provide: from Cinderella, to keep on dreaming and from Spears, to keep on dancing.",
+      "pullQuote": "Spears, is a delight\" and Entertainment Weekly: \"a youthful, exuberant take on beloved tales that's more dazzling and polished than Cinderella's glass slipper. Expect to keep on dancin' long after the musical ends.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -50099,7 +50048,7 @@
       "url": "https://nystagereview.com/2023/06/22/once-upon-a-one-more-time-what-youre-tired-of-fairy-tale-musicals/",
       "publishDate": "2023-06-22T20:55:39",
       "originalRating": "3/5 stars",
-      "pullQuote": "Based on the fact that it distributes free glowing bracelets to every audience member to wave in the air for the inevitable megamix during the curtain call, they’re not exactly straining for Sondheim-level depth.",
+      "pullQuote": "I Did It Again.”) Meanwhile, Prince Erudite (Ryan Steele) finds himself swooning over Clumsy (a charming Nathan Levy) despite his diminutive height, in a cute subplot that elicits happy “Ooohs” from the audience when the couple finally kisses.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50116,7 +50065,7 @@
       "url": "https://nystagereview.com/2023/06/22/once-upon-a-one-more-time-betty-friedan-would-plotz/",
       "publishDate": "2023-06-22T20:54:32",
       "originalRating": "3/5 stars",
-      "pullQuote": "“I’m the wrong generation – if the ostensibly intended gender – for ‘Once Upon a One More Time,’ an unimaginative mishmash/send-up of classic fairy tales.",
+      "pullQuote": "Segue to “Backstage Story Land,” where a half-dozen heroines-in-waiting hang out en déshabillé, hoping to be selected. When Cinderella (Broadway first-timer Briga Heelan, skilled but rather bland) gets the summons, the action heats up for a while. Channeling Tom Jones, the seemingly age-proof Justin Guarini is hilarious as the preening Prince.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50167,7 +50116,7 @@
       "url": "https://observer.com/2023/06/review-once-upon-a-one-more-time-wont-leave-britney-alone/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "This family-friendly jukebox musical cobbled around Britney Spears songs see a group of classic fairytale princesses rebelling against a faithless Prince. But it's more marketing gimmick than fractured, feminist fairytale.",
+      "pullQuote": "Repackaging hit tunes with pretty girls is as old as Flo Ziegfeld and his Follies. What’s new (not really) is the middle finger to heteropatriarchy. A group of classic fairytale princesses (Snow White, Rapunzel, et al.) rebel against their oppressive Narrator and faithless Prince, ultimately busting out of their happy-ever-after corsets.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50286,7 +50235,7 @@
       "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-britney-spears-e1e61468",
       "publishDate": "June 22, 2023",
       "originalRating": null,
-      "pullQuote": "“The musical’s primary assets are its splendid cast and the silly smartness of the integration of song and story. Which brings to mind the splendid, silly and smart performance of Jennifer Simard in the role of Cinderella’s stepmother...Ms.",
+      "pullQuote": "In any case, “Once Upon a One More Time” is a dizzy but enjoyable goof, similar in many ways to “& Juliet.”",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -50303,7 +50252,7 @@
       "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "...there’s no particular development of choreographic style over the show’s 2½ hours. The exhilaration wears off as the moves repeat again and again. Too much tutting, and a show set in a fantasyland starts to look like a recycled concert routine.",
+      "pullQuote": "The big difficulty at this point in the musical's evolution - a production with Broadway on its agenda - is that no song gets the space and time necessary to truly break out. This frustratingly rushed sensation is emblematic of a production that packs in too many competing conceits and devices.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50320,7 +50269,7 @@
       "url": "https://www.theatermania.com/news/review-once-upon-a-one-more-time-broadways-awkwardly-arranged-marriage-of-britney-spears-and-feminism_1706165/",
       "publishDate": "June 22, 2023",
       "originalRating": null,
-      "pullQuote": "‘Once Upon a One More Time’ may not have taught me anything new about western mythology, feminism, or Britney Spears, but it did leave me with one surprise: a newfound respect for the art of the jukebox musical.",
+      "pullQuote": "Once Upon a One More Time emerges as a worthwhile concept thwarted by poor execution. It is certainly preferable to a Britney Spears biomusical, which would have been a sad affair for a 41-year-old artist with more yet to offer.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50354,7 +50303,7 @@
       "url": "https://www.thewrap.com/once-upon-a-one-more-time-broadway-review-britney-spears-musical/",
       "publishDate": "June 22, 2023",
       "originalRating": null,
-      "pullQuote": "Who would have thought that female empowerment in the 21st century would need to wear so many tiaras? ‘Once Upon a One More Time’ gives us not one rhinestone-fixated heroine but over half a dozen",
+      "pullQuote": "What do you get by crossing “Six” with “& Juliet”? No, “Bad Cinderella” was last season. Today, that mash-up of two similar musicals gives you the slightly better Cinderella show, which has been tortuously titled “Once Upon a One More Time.”",
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -53722,7 +53671,7 @@
       "url": "https://ew.com/theater/theater-reviews/purlie-victorious-review-leslie-odom-jr-broadway/",
       "publishDate": null,
       "originalRating": "B+",
-      "pullQuote": "The pleasures of ’Purlie Victorious’ aren't just verbal. The high-energy production often has the physicality of a top-notch farce, with characters running back and forth across the stage...’Purlie Victorious’ manages to have fun without shying away from the historical reality of Black oppression.",
+      "pullQuote": "Along with the revival of The Sign in Sidney Brustein's Window earlier this year, this second-ever Broadway production of Purlie Victorious makes you wonder how many other vital works by Black playwrights are sitting somewhere, underused and underseen, waiting to be brought up under the bright lights where they belong.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53756,7 +53705,7 @@
       "url": "https://nystagereview.com/2023/09/27/purlie-victorious-wickedly-funny-politically-provocative-antebellum-satire/",
       "publishDate": "September 27, 2023",
       "originalRating": "5/5 stars",
-      "pullQuote": "“Most critical to the success of the evening, perhaps, is the work of director Leon. He honors Davis’s every intention, both written and unwritten in the script.",
+      "pullQuote": "As playgoers might expect, Odom has all that silver-tongued preaching down cold. One of the chief delights of the production comes from the performance of Young as Lutiebelle.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53773,7 +53722,7 @@
       "url": "https://newyorktheater.me/2023/09/27/purlie-victorious-review/",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "Odom must toggle between sounding like a comic mountebank (“I ain’t never in all my life told a lie I didn’t mean to make come true, some day!”) and like an impassioned civil rights advocate (“We want our cut of the Constitution…”) As deft as the acting is, the audience also winds up toggling – between the (sometimes outdated) comedy of the plot...",
+      "pullQuote": "It’s hard to picture a better cast for this first Broadway revival of Ossie Davis’s 1961 broad, biting comedy about racism in the Old South. As the title character, Leslie Odom Jr., assuming the role originated by Davis himself, feels especially well-matched.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53790,7 +53739,7 @@
       "url": "https://www.newyorktheatreguide.com/reviews/purlie-victorious-broadway-review-leslie-odom-jr",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, 'Purlie Victorious' is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today’s racial tumult.",
+      "pullQuote": "Flat-out hilarious and stacked with topflight performances led by Leslie Odom, Jr. and Kara Young, Purlie Victorious is also a triumph when it comes to timing. Suffice it to say the play speaks directly to today's racial tumult.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53841,7 +53790,7 @@
       "url": "https://www.talkinbroadway.com/page/world/PurlieVictorious.html",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "“Even while playing around with exaggerated stereotyping to accentuate the satirical comedy, it is clear that Ossie Davis, writing in the midst of the American Civil Rights Movement, strove mightily to achieve a balance between the ludicrous and a powerful message of equality and the potential for a better world.",
+      "pullQuote": "Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch, Ossie Davis's 1961 satirical play about Jim Crow racism, opens tonight at the Theatre in a long-overdue first-ever Broadway revival. The production, under the discerning direction of Kenny Leon, is an outstanding one, with uniformly splendid performances by the entire cast.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53892,7 +53841,7 @@
       "url": "https://www.nytimes.com/2023/09/27/theater/purlie-victorious-review.html",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "CRITIC’S PICK: “‘Purlie Victorious’...is every bit as scathingly funny as the 1961 reviews said it was. But even though times have surely changed everything dark in the play is still dark, and the lightness no less necessary.”",
+      "pullQuote": "Originally played by Dee, and now by Kara Young, Lutiebelle is a rich creation, sweet and hungry, down-home and dirty.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete",
@@ -53927,7 +53876,7 @@
       "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/27/purlie-victorious-leslie-odom-broadway/",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "The production treats us to this sort of divinely worked-out moment in every scene. Sometimes, a cast in a well-made comedy can let us know they’re playing for keeps and, at the same time, for fun. This is the fine line that ‘Purlie Victorious’ walks so beautifully.",
+      "pullQuote": "A godawful White character prowls “Purlie Victorious” — the extremely funny anti-racist farce receiving its first Broadway revival — and Jay O. Sanders is having the time of his life playing him. In fact, everyone in director Kenny Leon’s zanily vivacious production — including Leslie Odom Jr.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "truncated"
@@ -53944,7 +53893,7 @@
       "url": "https://www.theatermania.com/news/review-purlie-victorious-makes-a-triumphant-return-to-the-broadway-stage_1716129/",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "Beyond the opportunity it offers to discover, or rediscover, Davis’s still-fresh, still-impressive play itself, she is arguably the best reason to catch this excellent production.",
+      "pullQuote": "But there’s nothing at all musty or reverential about this production. Instead, it makes a convincing case for Davis’s satirical play as a living, breathing work of art, one that, for all its dated elements, still has much to offer to contemporary audiences.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -53978,7 +53927,7 @@
       "url": "https://www.thewrap.com/purlie-victorious-broadway-review-leslie-odom-jr-kenny-leon/",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "Despite all his sermonizing, Purlie never turns into a pedagogue, thanks to Davis, who has loaded the preacher’s speeches with great one-liners and epigrams — none of which will be repeated here. They need to be experience first-hand in the theater...‘Purlie Victorious’ is the funniest show now performing on Broadway",
+      "pullQuote": "Davis and Ludlam both possessed a real flair for the outrageous, but they end up in different places. Ludlam’s aggressive sense of irony was unyielding. Davis, after entertaining us with memorably flamboyant characters, turns to agitprop, but keeps his sense of wicked humor intact.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -53995,7 +53944,7 @@
       "url": "https://www.timeout.com/newyork/theater/purlie-victorious-broadway-review-ossie-davis-leslie-odom-kara-young",
       "publishDate": "September 27, 2023",
       "originalRating": "4/5",
-      "pullQuote": "‘Purlie Victorious’ is uncompromising in its defiance, but it rarely feels preachy. Its medicine goes down with a heap of dark brown sugar.",
+      "pullQuote": "Ossie Davis’s 1961 play—in which the actor and activist originally starred opposite Ruby Dee—may not seem a likely candidate for revival. Comedies often age badly, and comedies about race are even riskier.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -54012,7 +53961,7 @@
       "url": "https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "“The themes of ‘Purlie Victorious’ — segregation, racial terror and the unjustness of sharecropping — are no laughing matter.",
+      "pullQuote": "Directed by Kenny Leon, the beauty of the Black vernacular is embedded in the “Purlie Victorious” script. Specificities of Black American life are infused within the jokes as Odom and the cast deftly switch from comedy to drama on a dime.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -54029,7 +53978,7 @@
       "url": "https://www.vulture.com/2023/09/theater-review-purlie-victorious-leslie-odom-jr-kara-young-ossie-davis.html",
       "publishDate": "September 27, 2023",
       "originalRating": null,
-      "pullQuote": "In a lot of ways, ’Purlie’ is a trickster story, which means it runs on a combination of brains, guts, and charisma",
+      "pullQuote": "Happily, I have no need to keep my mouth shut about Purlie Victorious. (Conveniently, too, since my job is to run it constantly.) Fast, fierce, and big-hearted, the show crackles with the verve of its central performances, and the play, at 62 years old, feels wittier, braver, less careful, and more caring than much contemporary writing.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -60055,7 +60004,7 @@
       "url": "https://www.broadwaynews.com/review-spending-an-eventful-but-hackneyed-evening-at-the-cottage/",
       "publishDate": "July 24, 2023",
       "originalRating": null,
-      "pullQuote": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at ‘The Cottage’ than laughing along to it.",
+      "pullQuote": "Audience members seemed eager to yield to Rustin’s shticks and howl along, but in reality there’s more delight in looking at “The Cottage” than laughing along to it.",
       "dtliThumb": "Down",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -60140,7 +60089,7 @@
       "url": "https://nystagereview.com/2023/07/24/the-cottage-a-new-sex-farce-that-already-feels-dated/",
       "publishDate": "July 24, 2023",
       "originalRating": "3/5 stars",
-      "pullQuote": "It’s hard to see exactly who ‘The Cottage’ is for, since even a first-class Coward revival would have a tough go of it on Broadway without major star power. It’s a play whose ideal audiences have by now passed on to become blithe spirits themselves.",
+      "pullQuote": "But the humor is so devoid of reality that the laughs become increasingly strained. The plot twists have little impact since we’re so little invested in the characters or situations, and with its two-hour running time the evening has the feel of an elongated Carol Burnett Show sketch (Harvey Korman and Burnett would have made a great Beau and Sy...",
       "dtliThumb": null,
       "bwwThumb": "Down",
       "contentTier": "complete"
@@ -60157,7 +60106,7 @@
       "url": "https://nystagereview.com/2023/07/24/the-cottage-a-midsummer-nights-frolic/",
       "publishDate": "July 24, 2023",
       "originalRating": "4/5 stars",
-      "pullQuote": "‘The Cottage’ is at its best when at its lightest...And the intermission takes a bit of air out of the proceedings.",
+      "pullQuote": "The Cottage is at its best when at its lightest. A few philosophical tangents—Dierdre and Sylvia discussing “varying degrees” of love, Beau and Marjorie debating the merits of marriage (Beau: “In my opinion, faithfulness is an entirely separate matter from marriage”)—drag down the otherwise snap-crackle pace that director Jason Alexander (of TV’...",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -60293,7 +60242,7 @@
       "url": "https://www.theatermania.com/news/review-the-cottage-is-a-welcome-retreat-from-the-summer-heat_1709694/",
       "publishDate": "July 24, 2023",
       "originalRating": null,
-      "pullQuote": ".“When you feel you need some respite from the heat or just from the world in general, 'The Cottage' is well worth paying a visit to.”",
+      "pullQuote": "There are few things more pleasant on a steamy New York afternoon or evening than to sit down in a cool theater, turn off your brain, and laugh for two hours straight. The Cottage more than fits that bill.",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "complete"
@@ -60344,7 +60293,7 @@
       "url": "https://www.timeout.com/newyork/theater/the-cottage-broadway-comedy-review",
       "publishDate": "July 21, 2023",
       "originalRating": null,
-      "pullQuote": "While the architecture of the plot is solid, what really keeps 'The Cottage' up is the comedic industry of its cast. Directed by Jason Alexander, a seasoned hand at classic timing, the actors leap gamely into their funny business.",
+      "pullQuote": "The Cottage may look like a throwback to the tony sauciness of Noël Coward’s plays in the 1930s—in a nod to the Master, Beau’s secretary is named Mrs. Worthington—but it is broader in character and characters, and less sophisticated in language. Some of the play’s biggest laughs come from outright s...",
       "dtliThumb": "Up",
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -61351,23 +61300,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "outletId": "the-times-uk",
-      "outlet": "the-times-uk",
-      "assignedScore": 80,
-      "scoreSource": "originalScore-priority0",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Ann Treneman",
-      "url": "https://www.thetimes.com/uk/culture/theatre/article/the-hills-of-california-review-broadhurst-theatre-broadway-lbjr9k6qj",
-      "publishDate": "October 3, 2024",
-      "originalRating": 80,
-      "pullQuote": "Jez Butterworth's latest play is a sprawling family drama that builds to a devastating crescendo, with Laura Donnelly giving a performance of extraordinary emotional range.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
     },
     {
       "showId": "the-history-boys-2006",
@@ -64798,7 +64730,7 @@
       "url": "https://www.broadwaynews.com/review-the-shark-is-broken-offers-fan-service-without-teeth/",
       "publishDate": "August 10, 2023",
       "originalRating": null,
-      "pullQuote": "“The playwrights are counting on familiarity to make this fanfiction float, and their own affection for the source material is clear... ‘The Shark Is Broken’ also quips about the degeneration of the entertainment business into a factory for sequels and remakes.",
+      "pullQuote": "But neither these glimpses at their private lives — nor the play’s treatment of the film’s troubled production — much exceed what one could read on Wikipedia. The play amounts to little more than a companion text, a dutiful piece of fan service without its own narrative engine.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "truncated"
@@ -64900,7 +64832,7 @@
       "url": "https://nystagereview.com/2023/08/10/the-shark-is-broken-jaws-stars-square-off-for-fun-and-fishticuffs/",
       "publishDate": "August 10, 2023",
       "originalRating": "4/5 stars",
-      "pullQuote": "...the comfort that ‘The Shark Is Broken' brings, and it truly is a most enjoyable 95 minutes, stems from the canny way in which it channels Jaws itself...Watching ‘The Shark Is Broken,’ then, is not unlike diving into a boatload of outtakes from a beloved classic. If you’re anything like me, you eat it up like it’s popcorn.",
+      "pullQuote": "In the end, though, the comfort that The Shark Is Broken brings, and it truly is a most enjoyable 95 minutes, stems from the canny way in which it channels Jaws itself.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -64917,7 +64849,7 @@
       "url": "https://nystagereview.com/2023/08/10/the-shark-is-broken-the-greatest-fish-story-never-told/",
       "publishDate": "August 10, 2023",
       "originalRating": "4/5 stars",
-      "pullQuote": "As is the whole 95 minutes of three men—no, three actors with a broken mechanical shark—on a boat. All laughter, with no threat of a shark attack. ’Cause the shark is broken.",
+      "pullQuote": "The younger Mr. Shaw, who is now older than his father was when he died in 1978 at the age of 51, has stepped into his father’s deck shoes.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -64934,7 +64866,7 @@
       "url": "https://newyorktheater.me/2023/08/10/the-shark-is-broken-broadway-review-waiting-for-jaws/",
       "publishDate": "August 10, 2023",
       "originalRating": null,
-      "pullQuote": "All three actors give uncanny impersonations that sometimes shade into nuanced portraits….The main question, though, is why do a backstage comedy about “Jaws” almost half a century after its release? The only obvious answer is that the show needed to wait until Robert Shaw’s son Ian got to be as old as his father was when he portrayed Quint… now...",
+      "pullQuote": "I suppose if you knew nothing about Steven Spielberg or “Jaws” or the blockbuster’s three stars — Robert Shaw , Roy Scheider and Richard Dreyfuss – you might still be able to appreciate “The Shark Is Broken” as a kind of Beckett-light pop play about three characters who spend most of their time waiting for something to happen.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "complete"
@@ -64968,7 +64900,7 @@
       "url": "https://observer.com/2023/08/review-does-the-shark-is-broken-have-much-bite-on-broadway/?utm_medium=social&utm_source=t.co",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "...'The Shark Is Broken' isn’t an ambitious drama, just an unusual workplace dramedy with a genealogical twist.",
+      "pullQuote": "Need I add that Jaws will probably be admired for another 50 years, whereas The Shark Is Broken sinks from memory not long after you exit the Golden Theatre? As you sit watching three skilled and likable actors do celebrity impressions, there are decent punch lines, visual treats, even a poignant moment or two of harpooned masculinity.",
       "dtliThumb": null,
       "bwwThumb": "Down",
       "contentTier": "complete"
@@ -65002,7 +64934,7 @@
       "url": "https://www.talkinbroadway.com/page/world/TheSharkIsBroken.html",
       "publishDate": "August 10, 2023",
       "originalRating": null,
-      "pullQuote": "‘The Shark Is Broken’ is a character study in which your level of interest will be tied to your curiosity about the trio of film actors being depicted here, all of them flummoxed by the many delays in shooting and lacking the knowledge of foresight about what ultimately will be the massive popularity and financial success of ‘Jaws’.",
+      "pullQuote": "Eventually, we get to the last day of filming and the final farewells. Not surprisingly, Scheider proffers his hand to the other two: 'I gotta say, I feel kind of sad. It's been a pleasure, gentlemen.' And true to form, Shaw and Dreyfuss say goodbye by trading sarcastic barbs.",
       "dtliThumb": null,
       "bwwThumb": "Down",
       "contentTier": "complete"
@@ -65104,7 +65036,7 @@
       "url": "https://www.thewrap.com/the-shark-is-broken-jaws-broadway-golden-theatre-bruce-shaw/",
       "publishDate": "August 10, 2023",
       "originalRating": null,
-      "pullQuote": "‘Shark’ is written so that each actor gets his solo moment to unload on Dad, blow up in a dramatic fashion and show off his thespian chops. Guy Masterson’s blunt direction does nothing to mitigate these over-the-top acting exercises.",
+      "pullQuote": "Robert Shaw’s portrayal of Quint in “Jaws” remains one of the most grating performances ever put on celluloid. Ian Shaw imitates his father’s every grimace and vocal mannerism, delivering one of the most grating performances ever put on stage.",
       "dtliThumb": "Down",
       "bwwThumb": "Down",
       "contentTier": "complete"
@@ -65614,7 +65546,7 @@
       "url": "https://nypost.com/2024/03/28/entertainment/the-whos-tommy-broadway-review-4-stars-for-a-rock-revival/",
       "publishDate": "March 28, 2024",
       "originalRating": null,
-      "pullQuote": "Everything about this exhilarating production shakes you awake and leaves you buzzed",
+      "pullQuote": "The quaking revival of Pete Townshend’s seminal rock opera, which opened Thursday night at the Nederlander Theater after nearly three decades away, really is an espresso martini of a show after a chamomile-tea season of musicals.",
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -66039,7 +65971,7 @@
       "url": "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
       "publishDate": "April 17, 2024",
       "originalRating": null,
-      "pullQuote": "No Toto, Munchkins, Yellow Brick Road..little ease",
+      "pullQuote": "What I mean is: The cast as a whole can sing to the rafters and dance like the dickens, but their belting started to feel like an American Idol competition, and some of the dance numbers seemed so frenzied that at times they gave off an aura of desperation.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "complete"
@@ -67604,7 +67536,7 @@
       "url": "https://newyorktheater.me/2024/04/24/uncle-vanya-broadway-review/",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "the performances…do click often enough to reward those of us who are patient.",
+      "pullQuote": "More than a century after “Uncle Vanya” was first directed by Konstantin Stanislavski at the Moscow Art Theater in 1899, more and more American playwrights such as Schreck (best-known for “What The Constitution Means to Me”) seem to be taking it on. Over the last few years, I’ve seen “Uncle Vanya” translated by Annie Baker, Richard Nelson.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -67740,7 +67672,7 @@
       "url": "https://www.theatermania.com/news/review-steve-carell-leads-an-all-over-the-place-uncle-vanya-at-lincoln-center-theater_1738133/",
       "publishDate": "April 24, 2024",
       "originalRating": null,
-      "pullQuote": "If I had to choose the style that suits my own interests, it would be Carell’s.",
+      "pullQuote": "But this Uncle Vanya is only enjoyable in fits and starts. It’s modern, but not completely; brisk, while still feeling too long.",
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"

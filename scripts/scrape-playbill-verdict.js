@@ -456,7 +456,13 @@ async function processShowViaGoogle(show, showId, shows) {
     return;
   }
 
-  const query = `site:playbill.com/article "what are the reviews" OR "the verdict" OR "critics think" "${show.title}" broadway`;
+  // Simplify title for search: strip venue qualifiers and subtitles
+  let searchTitle = show.title;
+  searchTitle = searchTitle.replace(/\s+at\s+the\s+.+$/i, ''); // "Cabaret at the Kit Kat Club" → "Cabaret"
+  searchTitle = searchTitle.replace(/:\s+.+$/, '');              // "Title: Subtitle" → "Title"
+  searchTitle = searchTitle.replace(/\s+[–—]\s+.+$/, '');        // "Title — Subtitle" → "Title"
+
+  const query = `site:playbill.com/article ("what are the reviews" OR "the verdict" OR "critics think" OR "what do the critics") "${searchTitle}" broadway`;
 
   try {
     stats.googleSearches++;
@@ -464,44 +470,63 @@ async function processShowViaGoogle(show, showId, shows) {
 
     const verdictUrls = urls.filter(u => {
       const slug = u.split('/article/')[1] || '';
-      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are');
+      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are') || slug.includes('what-do');
+    });
+
+    // Prefer URLs with "broadway" in slug (more likely to be the right production)
+    verdictUrls.sort((a, b) => {
+      const aSlug = (a.split('/article/')[1] || '').toLowerCase();
+      const bSlug = (b.split('/article/')[1] || '').toLowerCase();
+      const aHasBway = aSlug.includes('broadway') ? 0 : 1;
+      const bHasBway = bSlug.includes('broadway') ? 0 : 1;
+      return aHasBway - bHasBway;
     });
 
     if (verdictUrls.length > 0) {
-      const articleUrl = verdictUrls[0];
-      console.log(`  [GOOGLE] ${showId}: Found ${articleUrl}`);
+      // Look up show opening date for URL year validation (shared across candidates)
+      const showEntry = shows.find(s => s.id === showId);
+      const showOpeningYear = showEntry && showEntry.openingDate
+        ? new Date(showEntry.openingDate).getFullYear() : null;
+      const showClosingYear = showEntry && showEntry.closingDate
+        ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
+      const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
-      const html = await fetchHtml(articleUrl);
-      if (html) {
+      const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
+      const showTitleLower = show.title.toLowerCase()
+        .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
+      const showSlugWords = showTitleLower.split(/[\s,]+/)
+        .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
+      const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
+
+      // Try each candidate URL — skip non-Broadway/non-matching, use first good one
+      let found = false;
+      for (const articleUrl of verdictUrls) {
+        console.log(`  [GOOGLE] ${showId}: Trying ${articleUrl}`);
+
+        let html;
+        try {
+          html = await fetchHtml(articleUrl);
+        } catch (fetchErr) {
+          console.log(`    [WARN] Fetch failed for ${articleUrl}: ${fetchErr.message.slice(0, 80)}`);
+          continue;
+        }
+        if (!html) continue;
+
         const $ = cheerio.load(html);
         const pageTitle = $('title').text() + ' ' + $('h1').text();
         if (isNotBroadway(pageTitle)) {
           console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
-          return;
+          continue;
         }
 
-        const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
-        const showTitleLower = show.title.toLowerCase()
-          .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
         const pageTitleLower = pageTitle.toLowerCase();
         const articleSlug = (articleUrl.split('/article/')[1] || '').toLowerCase();
-        const showSlugWords = showTitleLower.split(/[\s,]+/)
-          .filter(w => w.length > 2 && !GENERIC_WORDS.has(w));
-        const firstWord = showSlugWords[0] || showTitleLower.split(/[\s,]+/)[0];
         const titleHasFirstWord = firstWord && pageTitleLower.includes(firstWord);
         const urlHasFirstWord = firstWord && articleSlug.includes(firstWord);
         if (!titleHasFirstWord && !urlHasFirstWord) {
           console.log(`    [SKIP] Article doesn't match show "${show.title}": "${pageTitle.slice(0, 80)}"`);
-          return;
+          continue;
         }
-
-        // Look up show opening date for URL year validation
-        const showEntry = shows.find(s => s.id === showId);
-        const showOpeningYear = showEntry && showEntry.openingDate
-          ? new Date(showEntry.openingDate).getFullYear() : null;
-        const showClosingYear = showEntry && showEntry.closingDate
-          ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
-        const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
 
         fs.writeFileSync(existingArchive, html);
 
@@ -527,6 +552,11 @@ async function processShowViaGoogle(show, showId, shows) {
             console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
           }
         }
+        found = true;
+        break; // Successfully processed an article
+      }
+      if (!found) {
+        console.log(`  [GOOGLE] ${showId}: No matching Broadway article found`);
       }
     } else {
       console.log(`  [GOOGLE] ${showId}: No results`);
@@ -584,7 +614,7 @@ async function scrapePlaybillVerdict() {
 
   // In targeted mode, skip category page scan and go directly to Google fallback
   if (targetShowIds) {
-    let targetShows = shows.filter(s => targetShowIds.includes(s.slug || s.id));
+    let targetShows = shows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
     if (!noDateFilter) {
       targetShows = targetShows.filter(s => new Date(s.openingDate) >= new Date('2023-01-01'));
     }
