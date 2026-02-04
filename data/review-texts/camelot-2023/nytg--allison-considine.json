@@ -5,8 +5,8 @@
   "criticName": "Allison Considine",
   "url": "https://www.newyorktheatreguide.com/reviews/reasons-to-see-camelot-on-broadway",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "This revival of Alan Jay Lerner and Frederick Loewe's classic musical features a lush orchestra, thrilling sword fights, and a new book by Aaron Sorkin. The Broadway revival of Camelot, featuring a new book by Aaron Sorkin, updates the 1960 musical for contemporary audiences and brings drama to the Vivian Beaumont Theater. Whether audiences are familiar with Arthurian legends or are completely new to stories of the king who pulled a sword from a stone, like me, Camelot paints a full portrait of the courageous leader and his utopian court. The revival features lyrics by Alan Jay Lerner, music by Frederick Loewe, and an updated book by Sorkin. The production, directed by Bartlett Sher, begins with the marriage of the legendary English warrior (Andrew Burnap) to France’s Princess Guenevere (Phillipa Soo) in a union to pacify the nations. Together, the pair devise a new order to bring justice and democratic leadership to Camelot. The utopia falters, though, when Guenevere falls for Sir Lancelot du Lac (Jordan Donica), an earnest knight from France who joins King Arthur’s Knights of the Round Table. The musical is full of energy and praiseworthy performances, particularly from Soo and Donica. An evening at the Vivian Beaumont Theater is a theatrical event in and of itself, and I enjoyed a themed cocktail at intermission called Here in Camelot and people-watching at the Lincoln Center complex. This new production boasts a 30-piece orchestra. Lerner and Lowe’s music, complete with the original orchestrations by Robert Russell Bennett and Philip J. Lang, swells to fill the 1,080-seat Vivian Beaumont Theater. From my center orchestra seat, I could see the sprightly conductor Kimberly Grigsby leading the charge in the pit, and a smiling bassoonist. The score sings with this orchestral treatment, especially the catchy title number “Camelot” and the bouncy “Here in Camelot” performed with vivacity by Burnap. The energy from the music pit is infectious and buoys the musical. Costume designer Jennifer Moeller brings a modern spin to the 1960 musical, particularly through the character of Guenevere. Instead of a bridal gown, Guenevere meets her betrothed wearing leather pants and a sleek cape. The outfit signals Queen Guenevere’s role in the relationship — in many ways, she wears the pants and steers King Arthur’s new order. Throughout the show, Guenevere’s costumes illuminate different facets of her varied personality; she’s French, headstrong, regal, and sexy. An ombre pink frock with embroidered flowers shows off her sensuality, and a ruby velvet gown worthy of a runway highlights her power. Moeller’s medieval couture creations are spectacles. If you’re into Arthurian battles, this production will impress. Under the sly direction of fight director B.H. Barry, the actors transform into menacing crusaders. (Barry, who is 83 years old, is the only fight director to receive a Tony Award — he received a Lifetime Achievement Award in 2010 in recognition of his onstage scuffles.) When Lancelot (Donica) arrives in Camelot to dazzle King Arthur in hopes of joining the Round Table, the show-stopping song “C’est Moi” highlights his physical strengths: “When swords are crossed, 'tis always the same — one blow and au revoir!” Lancelot delivers in the knightly tournament, which features three fight sequences. There are gleaming swords and lots of swift footwork. The best onstage fights drive the narrative forward, and this does just that, with King Arthur and Lancelot dueling with double swords in a battle for Guenevere’s heart. Camelot is a sweeping drama packed with royal romance and sword fights. It’s an impressive spectacle to see the Beaumont transform into King Arthur’s legendary castle and court. Photo credit: Phillipa Soo (center) and company in Lincoln Center Theater's production of Camelot. (Photo by Joan Marcus) Originally published on Jun 7, 202311:00",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The musical is full of energy and praiseworthy performances, particularly from Soo and Donica. An evening at the Vivian Beaumont Theater is a theatrical event in and of itself, and I enjoyed a themed cocktail at intermission called Here in Camelot and people-watching at the Lincoln Center complex.”\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 77,
@@ -72,5 +72,28 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 619,
+  "archivePath": "data/archives/reviews/camelot-2023/nytg--allison-considine_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T14:38:46.254Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "playwright",
+  "wordCount": 619,
+  "tierReason": "Full review text"
 }
