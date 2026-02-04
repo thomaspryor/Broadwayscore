@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play distinguishes itself from the many, many dramas about kids caught in the web of their parent's pipe dream.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the show's 'appealing haunted atmosphere' and notes it 'distinguishes itself' from similar works, suggesting mild positive recommendation. However, confidence is low due to limited text and potential cherry-picking of favorable quotes. | GPT-4o: The excerpt describes the play as having an 'appealing haunted atmosphere' and distinguishes itself in its third act, indicating a positive view. However, the mention of 'many, many dramas' suggests some reservations. The single excerpt and lack of full context lower confidence. | Gemini: The review excerpt is positive, noting the appealing atmosphere and distinguishing the play from similar dramas. Given it's a single excerpt, confidence is low, and the score is in the lower end of the positive range. | Kimi: The excerpt offers clear praise for the show's 'appealing haunted atmosphere' and distinguishes it favorably from similar dramas, warranting a score in the upper Positive range per the single-excerpt guidance, though limited context reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:01:41.151Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

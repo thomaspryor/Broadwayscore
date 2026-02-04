@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a tone that screeches as the play becomes darker.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises lead performances ('tragic hero', 'highly credible') but criticizes the revival's tonal choices and direction. 'Earthbound' and tonal problems suggest significant reservations despite performance quality. | GPT-4o: The review praises individual performances but criticizes the overall tone and execution, suggesting a mixed reception. The excerpt's limited nature and lack of a full verdict lower confidence. | Gemini: The review praises the performances of Mr. Hawkins and Ms. Janney, but notes that the production has heightened the farcical elements at the expense of poignancy and that the tone screeches as the play becomes darker. Due to the limited excerpt, confidence is low. | Kimi: While the excerpt praises Corey Hawkins' performance as 'close to a tragic hero' and Allison Janney as 'highly credible,' it criticizes the revival as 'earthbound' with a tone that 'screeches' at the expense of poignancy. The significant criticism of the production's tonal handling alongside performance praise indicates a mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:54:16.128Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The third and final panel of Tom Stoppard's theatrical triptych, 'The Coast of Utopia,' achieves something close to the impossible: it makes you feel that you have lived through history.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,59 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it makes you feel that you have lived through history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong positive language, suggesting an exceptional theatrical experience that achieves 'something close to the impossible.' | Gemini: The review states that the show achieves something close to the impossible, which is a positive statement, indicating a recommendation. | Kimi: Despite the brevity of this excerpt, the critic employs superlatives ('close to the impossible') to praise the production's immersive power and historical impact, indicating an enthusiastic, must-see recommendation typical of a rave review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:36:27.549Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 93,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

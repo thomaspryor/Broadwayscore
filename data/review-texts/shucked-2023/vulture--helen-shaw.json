@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Shucked is a musical that knows exactly what it is: a cornball comedy that revels in its own silliness, delivering puns and pratfalls with the confidence of a vaudeville act.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "web-search",
     "playbill-verdict"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shucked is a musical that knows exactly what it is: a cornball comedy that revels in its own silliness, delivering puns and pratfalls with the confidence of a vaudeville act.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic appreciates the show's self-awareness and confidence in its comedic approach, describing it positively as knowing 'exactly what it is' and executing with 'confidence.' However, the brief excerpt lacks explicit recommendation language or deeper praise that would push it higher in the Positive range. | GPT-4o: The review describes the show as confidently delivering its comedic style, which suggests a positive recommendation for those who appreciate its genre. However, the lack of detailed praise or critique keeps the score in the lower positive range. | Gemini: The review describes the show as a \"cornball comedy\" that \"revels in its own silliness,\" indicating a positive, though perhaps not overwhelmingly enthusiastic, recommendation. | Kimi: The brief excerpt offers descriptive analysis of the show's tone and style, noting its self-awareness and confidence, but provides no explicit recommendation to see or skip the production. Without a clear verdict or additional evaluative context, the sentiment remains ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:49:30.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 63,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

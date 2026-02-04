@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway version of Rodgers and Hammerstein's Cinderella is so determined to be contemporary and relevant that it sometimes forgets to be magical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows criticism that the show prioritizes contemporary relevance over theatrical magic, suggesting fundamental flaws. However, with only one curated quote available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a mixed review, highlighting a lack of magic in an attempt to be contemporary. Without more context, it's unclear if the critic ultimately recommends the show. | Gemini: The excerpt suggests that the production has some positive aspects (contemporary and relevant) but also misses the mark in some areas (forgetting to be magical). Given the limited text, a mixed score is appropriate. | Kimi: The excerpt criticizes the production for prioritizing contemporary relevance over the essential magical quality expected of the material, suggesting an uneven execution. With only one curated quote available, the full verdict may differ significantly.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:36:37.377Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

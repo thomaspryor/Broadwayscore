@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The new musical adaptation of Billy Wilder's classic 1959 comedy manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to update the material for contemporary audiences while preserving much of what made the original so enduring.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review indicates that the adaptation successfully updates the classic while retaining its enduring qualities, suggesting a positive but not overly enthusiastic recommendation. | Gemini: The review states that the musical manages to update the material while preserving what made the original enduring, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The critic clearly praises the adaptation's ability to modernize the material while maintaining the original's appeal, indicating a solid recommendation. Confidence is low due to the truncated length of the provided text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:59:01.378Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

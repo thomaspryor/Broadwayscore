@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jonathan Pryce and Eileen Atkins give stunning performances as an elderly couple whose minds are slipping away in Florian Zeller's poignant memory play.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Jonathan Pryce and Eileen Atkins give stunning performances as an elderly couple whose minds are slipping away in Florian Zeller's poignant memory play.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jonathan Pryce and Eileen Atkins give stunning performances as an elderly couple whose minds are slipping away in Florian Zeller's poignant memory play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for lead performances ('stunning') and positive description of the play itself ('poignant'). However, this appears to be a brief excerpt or headline rather than a full review, limiting confidence in the overall assessment. | Gemini: The review highlights the 'stunning performances' of the leads, indicating a positive experience, even though it's a brief assessment. | Kimi: The excerpt offers unqualified praise for the lead performances ('stunning') and the play itself ('poignant'), indicating a clear positive recommendation, though the extreme brevity limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:58:39.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

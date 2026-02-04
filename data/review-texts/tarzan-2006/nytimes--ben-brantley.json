@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Disney production is gorgeous to look at and listen to, but it swings and misses when it comes to dramatic coherence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This Disney production is gorgeous to look at and listen to, but it swings and misses when it comes to dramatic coherence.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Disney production is gorgeous to look at and listen to, but it swings and misses when it comes to dramatic coherence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict: praises production values ('gorgeous to look at and listen to') but criticizes the fundamental storytelling ('swings and misses' on dramatic coherence). No clear recommendation either way. | GPT-4o: The review praises the visual and auditory aspects but criticizes the lack of dramatic coherence, indicating a mixed reception. | Gemini: The review praises the visual and auditory aspects but criticizes the dramatic coherence, indicating a mixed opinion. | Kimi: The review offers strong praise for the production's visual and auditory elements ('gorgeous') but criticizes its fundamental narrative structure ('swings and misses'), resulting in a balanced neither-here-nor-there assessment without a clear recommendation to see or skip the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:23:44.584Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -8,11 +8,64 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Unfortunately, the production's rave-like, nihilistic drive does little to make up for its lack of clarity or a pulse.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"The enthusiasm is thrilling, even when it almost flattens you underfoot.\"\n\nRead more"
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, the production's rave-like, nihilistic drive does little to make up for its lack of clarity or a pulse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges the production has energy ('rave-like, nihilistic drive') but ultimately finds it lacking in fundamental ways ('lack of clarity or a pulse'). The word 'Unfortunately' signals disappointment. However, with only one excerpt available, confidence is low as this could be from a mixed review with more positive elements elsewhere. | GPT-4o: The excerpt criticizes the production's lack of clarity and energy, suggesting disappointment and a lack of recommendation. The tone is negative, indicating a recommendation to skip the show. | Gemini: The excerpt indicates a negative assessment due to a lack of clarity and pulse, despite the production's drive. Given the single excerpt and negative language, I've classified it as negative with low confidence. | Kimi: The critic acknowledges the production has some 'rave-like' drive but explicitly states this fails to compensate for fatal flaws including lack of clarity and vitality (pulse), indicating a clear recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:41:27.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

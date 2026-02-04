@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the British playwright's expert hands, the nearly three-hour tragicomedy never feels indulgent; the rich texture of the world Butterworth builds is our payoff.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the playwright's skill and the rich world-building, with no reservations expressed. However, confidence is low due to having only one curated excerpt that may not represent the full review verdict. | GPT-4o: The excerpt praises the playwright's skill and the rich texture of the play, indicating a positive view. Given the single excerpt warning, the score is set towards the upper end of the Positive range. | Gemini: The excerpt praises the playwright's skill and the richness of the world-building, suggesting a positive experience. Given the single excerpt, I'm scoring on the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers clear praise for the playwright's expert craftsmanship and the rich texture of the production, indicating a solid recommendation despite the long runtime. As a single curated excerpt, the sentiment appears strongly favorable toward the show's construction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:00:44.188Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

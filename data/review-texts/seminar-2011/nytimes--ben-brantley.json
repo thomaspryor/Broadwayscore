@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Rickman brings a magnetic, prowling menace to Leonard, a once-prominent novelist now reduced to conducting writing seminars for desperate scribblers willing to pay $5,000 for his wisdom.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T02:44:56.676Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or fragment describing a character/performance, not a complete review with an evaluative verdict; openai: The text is about Alan Rickman's performance as Leonard, which does not pertain to a specific Broadway show being reviewed.; gemini: This is a single sentence, likely an excerpt, and doesn't provide a comprehensive review or recommendation.",
+  "promptVersion": "5.2.0"
 }

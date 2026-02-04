@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Though gorgeously designed and smartly cast, this Romeo and Juliet feels more like a museum piece than a living, breathing tragedy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more like a museum piece than a living, breathing tragedy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges production strengths (design, casting) but criticizes the core theatrical experience as static and uninvolving. Clear mixed verdict. | GPT-4o: The review acknowledges the design and casting but ultimately criticizes the production for lacking vitality, suggesting it is not recommended. | Gemini: The review acknowledges positive aspects (design, casting) but ultimately finds the production lacking in vitality, suggesting a mixed or neutral recommendation. | Kimi: The critic acknowledges strong production values and casting but ultimately finds the production emotionally lifeless, comparing it to a museum piece rather than a vital, breathing tragedy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:37:40.259Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 61,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

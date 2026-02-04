@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of 'The Gershwins' Porgy and Bess' honors both the glorious music and the problematic nature of its source, creating a version that feels both authentic and contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This new production of 'The Gershwins' Porgy and Bess' honors both the glorious music and the problematic nature of its source, creating a version that feels both authentic and contemporary.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production honors both the glorious music and the problematic nature of its source, creating a version that feels both authentic and contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive language ('honors', 'glorious', 'authentic and contemporary') indicates recommendation, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review praises the production for honoring the music and addressing the source material's issues, suggesting a positive reception with some acknowledgment of complexity. | Gemini: The review acknowledges the problematic nature of the source material but ultimately praises the production for honoring both the music and the source, suggesting a positive but not unqualified recommendation. | Kimi: The critic praises the production for successfully balancing respect for the original music with a contemporary sensibility, calling it both authentic and glorious despite acknowledging source material issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:54:13.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Close's performance is a tour de force of theatrical artifice, but the production around her feels oddly cramped and underpowered for such a grandly scaled musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Ms. Close's performance is a tour de force of theatrical artifice, but the production around her feels oddly cramped and underpowered for such a grandly scaled musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Close's performance is a tour de force of theatrical artifice, but the production around her feels oddly cramped and underpowered",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict - praises Close's performance as a 'tour de force' but finds the overall production 'cramped and underpowered,' suggesting significant reservations about the show despite the stellar lead performance. | GPT-4o: The review praises Ms. Close's performance but criticizes the overall production as cramped and underpowered, indicating a mixed verdict. | Gemini: The review praises Close's performance highly but criticizes the production's scale and power, resulting in a mixed assessment. | Kimi: While the critic praises the lead performance with superlatives ('tour de force'), the concluding criticism that the production feels 'cramped and underpowered' significantly qualifies the assessment, creating a balanced verdict that highlights excellence in acting but disappointment in staging.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:12:45.382Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This musical, based on the 1992 movie that starred Whoopi Goldberg, is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This musical, based on the 1992 movie that starred Whoopi Goldberg, is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This musical is a determinedly old-fashioned entertainment that wears its good intentions on its sequined sleeves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The phrase 'determinedly old-fashioned' suggests dated approach, while 'good intentions' offers mild praise. The tone is neutral-to-lukewarm without clear recommendation either way. However, confidence is low due to very limited text that appears truncated. | GPT-4o: The review describes the musical as 'old-fashioned' and 'wears its good intentions,' which suggests a neutral stance without strong praise or criticism. | Gemini: The review describes the musical as \"old-fashioned\" and wearing its \"good intentions on its sequined sleeves,\" which suggests a mixed or neutral assessment rather than a strong recommendation or discouragement. | Kimi: The single-sentence excerpt suggests the show is competent but conventional and unsubtle, implying neither strong recommendation nor discouragement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:52:44.475Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

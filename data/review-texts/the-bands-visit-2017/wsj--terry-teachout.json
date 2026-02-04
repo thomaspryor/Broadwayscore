@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "It is a quiet masterpiece, a musical of extraordinary subtlety and emotional depth that proves once again that the best art often emerges from the most unlikely sources.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "It is a quiet masterpiece, a musical of extraordinary subtlety and emotional depth that proves once again that the best art often emerges from the most unlikely sources.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a quiet masterpiece, a musical of extraordinary subtlety and emotional depth",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it a 'masterpiece' with superlative language ('extraordinary subtlety and emotional depth') and no reservations expressed. | GPT-4o: The review uses superlatives like 'masterpiece' and 'extraordinary', indicating a strong, enthusiastic recommendation with no reservations. | Gemini: The review uses the term \"masterpiece\" and praises the show's subtlety and emotional depth, indicating a rave review. | Kimi: Unqualified enthusiasm with superlatives 'masterpiece' and 'extraordinary' describing the show's artistic merit and emotional impact with no reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:30:33.354Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mulligan is luminous in this demanding role, bringing both steely determination and heartbreaking vulnerability to Kyra.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (16 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://nypost.com/2015/04/02/carey-mulligan-and-bill-nighy-are-a-mismatched-couple-in-skylight/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T02:55:14.817Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single quote or excerpt about a performance, not a complete review with an evaluative verdict about the show.; openai: The text is a single sentence praising a performance without evaluating the show overall.",
+  "promptVersion": "5.2.0"
 }

@@ -8,11 +8,64 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Is that a reasonable response to aim for when staging the world's most famous weepie? For me, seeing so many young people engaged, it is. Perhaps, as Shakespeare commands in the play's closing speech, they will \"Go hence, to have more talk of these sad things.\" And so what if the production achieves that goal by protecting them from too much unruly feeling, just as the Capulets aimed to protect Juliet? Probably, the Capulets were right.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "“The play is thus less terrifying than teenifying — hence the plus sign instead of the ‘and’ in the title.”\n\nRead more"
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For me, seeing so many young people engaged, it is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt suggests qualified approval - the critic finds the production succeeds in engaging young audiences, even if it 'protects them from too much unruly feeling.' However, this is only one excerpt and may not represent the full verdict. | GPT-4o: The excerpt suggests a positive outcome by engaging young audiences, despite some reservations about the emotional impact. However, the single excerpt and lack of full context reduce confidence. | Gemini: The critic seems to be saying that the production is successful in engaging young people, even if it does so by protecting them from too much emotion. This suggests a qualified recommendation. | Kimi: The excerpt offers qualified approval of the production's restrained approach, finding value in its ability to engage young audiences despite protecting them from intense emotion. Single excerpt limits confidence in overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:39:05.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

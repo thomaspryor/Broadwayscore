@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Summer succeeds in large part because it doesn't try to be more than it is: a celebration of the music and the woman who made it immortal.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Summer succeeds in large part because it doesn't try to be more than it is: a celebration of the music and the woman who made it immortal.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Summer succeeds in large part because it doesn't try to be more than it is: a celebration of the music and the woman who made it immortal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with 'succeeds' and praise for being an effective celebration, but this appears to be a brief excerpt lacking fuller context for higher confidence. | GPT-4o: The review suggests that the show achieves its goal as a celebration, implying a positive experience. However, the lack of superlative language or detailed praise indicates a solid but not enthusiastic recommendation. | Gemini: The review states that the show \"succeeds,\" indicating a positive recommendation. The phrase \"in large part because it doesn't try to be more than it is\" suggests a reservation or qualification, but the overall sentiment is positive. | Kimi: The critic clearly recommends the show, praising it for succeeding as a celebration of Donna Summer's music, though the qualified phrasing ('in large part') and lack of superlatives places it in the solid Positive range rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:09:26.362Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

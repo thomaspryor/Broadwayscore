@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Dominique Morisseau's Skeleton Crew is a thoughtful, well-crafted drama about factory workers facing an uncertain future, elevated by strong performances from its ensemble cast.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Dominique Morisseau's Skeleton Crew is a thoughtful, well-crafted drama about factory workers facing an uncertain future, elevated by strong performances from its ensemble cast.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Skeleton Crew is a thoughtful, well-crafted drama about factory workers facing an uncertain future, elevated by strong performances from its ensemble cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('thoughtful, well-crafted', 'elevated by strong performances') indicates a solid recommendation, though without more enthusiastic superlatives or explicit must-see language to push it higher in the Positive range. | GPT-4o: The review describes the show as 'thoughtful' and 'well-crafted' with 'strong performances,' indicating a positive recommendation. However, the lack of superlatives or strong enthusiasm suggests some reservations. | Gemini: The review describes the play as \"thoughtful\" and \"well-crafted\" and praises the performances, indicating a positive recommendation, although without strong enthusiasm. | Kimi: The critic offers clear praise for both the writing ('thoughtful, well-crafted') and the acting ('strong performances'), indicating a solid recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:54:46.482Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

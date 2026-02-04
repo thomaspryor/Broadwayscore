@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite its pedigree and star power, 'The Addams Family' feels more tedious than macabre, delivering few genuine laughs and even fewer memorable songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Despite its pedigree and star power, 'The Addams Family' feels more tedious than macabre, delivering few genuine laughs and even fewer memorable songs.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "feels more tedious than macabre, delivering few genuine laughs and even fewer memorable songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show 'tedious' with 'few genuine laughs' and unmemorable songs, despite acknowledging the production's advantages. | GPT-4o: The review clearly indicates disappointment with the show, describing it as tedious with few laughs and memorable songs, suggesting a negative experience overall. | Gemini: The review explicitly states that the show feels tedious and delivers few laughs or memorable songs, indicating a negative assessment. | Kimi: The reviewer explicitly criticizes the show's entertainment value (tedious), humor (few genuine laughs), and score (forgettable songs), offering no redeeming qualities and clearly advising against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:24:55.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

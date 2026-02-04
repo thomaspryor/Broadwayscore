@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Donald Margulies's new play is a thoughtful meditation on family, art and mortality, even if it doesn't always achieve the emotional depths it reaches for.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a thoughtful meditation on family, art and mortality, even if it doesn't always achieve the emotional depths it reaches for",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the play's thoughtful qualities but clearly states it falls short of its emotional goals. The 60 rating from the critic confirms this as a mixed review that neither recommends nor discourages. | GPT-4o: The critic's original rating of 60 aligns with a mixed review, acknowledging the play's thoughtfulness but noting it falls short of its emotional aims. | Gemini: The review is mixed, acknowledging thoughtfulness but also noting that it doesn't always achieve its goals. The critic's rating of 60 aligns with the 'Mixed' bucket. | Kimi: The review praises the play as 'thoughtful' but explicitly notes its failure to achieve intended emotional depths, resulting in a balanced, middle-of-the-road assessment consistent with the 60 rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:46:40.837Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

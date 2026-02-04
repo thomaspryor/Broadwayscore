@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "George C. Wolfe has constructed an evening that's part history lesson, part backstage musical, and part meditation on the nature of entertainment itself, but the constituent parts don't always mesh as smoothly as they should.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "George C. Wolfe has constructed an evening that's part history lesson, part backstage musical, and part meditation on the nature of entertainment itself, but the constituent parts don't always mesh as smoothly as they should.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the constituent parts don't always mesh as smoothly as they should",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows qualified praise for the concept but clear criticism of execution. However, with only one curated quote available, the full verdict remains unclear, warranting low confidence. | GPT-4o: The excerpt indicates a mixed review, noting that the elements of the show do not mesh smoothly. However, the single excerpt and lack of full context limit confidence in the overall verdict. | Gemini: The review excerpt indicates that the show has good elements but they don't come together perfectly, suggesting a mixed or neutral recommendation. Confidence is low due to the limited text available. | Kimi: The excerpt acknowledges the production's ambitious multi-layered structure but explicitly criticizes its lack of cohesion ('don't always mesh'), indicating a mixed verdict that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:50:04.516Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

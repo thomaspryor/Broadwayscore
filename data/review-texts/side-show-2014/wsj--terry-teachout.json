@@ -16,7 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's book, by Bill Russell, is based on the real-life story of Daisy and Violet Hilton, conjoined twins who became vaudeville stars in the 1930s.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "rejectedAt": "2026-02-04T02:50:57.589Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a plot summary describing the show's source material, with no critical evaluation or opinion about the production.; openai: The text provided is a plot summary with no evaluation or opinion on the Broadway show.; gemini: This is a plot summary, not a review. There is no evaluation of the show's quality.; kimi: The text provides only contextual information about the show's source material (conjoined twins Daisy and Violet Hilton) with no critical evaluation, opinion, or assessment of the production quality.",
+  "promptVersion": "5.2.0"
 }

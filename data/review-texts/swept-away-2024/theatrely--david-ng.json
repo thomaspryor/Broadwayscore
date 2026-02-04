@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical adaptation of the Avett Brothers' folk-rock catalog feels emotionally authentic, even when the plot occasionally feels forced into the framework of their existing songs.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The musical adaptation of the Avett Brothers' folk-rock catalog feels emotionally authentic, even when the plot occasionally feels forced into the framework of their existing songs.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of the Avett Brothers' folk-rock catalog feels emotionally authentic, even when the plot occasionally feels forced into the framework of their existing songs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges emotional authenticity as a positive but criticizes the forced plot structure. The 'even when' construction suggests significant reservations that temper the praise. | GPT-4o: The review acknowledges the emotional authenticity of the musical but notes that the plot feels forced, indicating a mixed assessment with both positive and negative elements. | Gemini: The review suggests the show is \"emotionally authentic\" but acknowledges that the plot feels forced at times. This indicates a positive but qualified recommendation. | Kimi: The critic offers genuine praise for the show's emotional authenticity, presenting the criticism about the forced plot as a secondary concession rather than a primary flaw, suggesting a qualified recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:19:37.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

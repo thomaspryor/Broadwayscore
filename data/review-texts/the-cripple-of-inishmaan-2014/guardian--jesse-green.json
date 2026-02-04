@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Daniel Radcliffe gives a performance of surprising depth and complexity as Billy Claven, the disabled dreamer at the heart of Martin McDonagh's dark comedy.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.theguardian.com/stage/2014/apr/21/daniel-radcliffe-broadway-the-cripple-of-inishmaan-reviews",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T03:47:22.658Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or pull quote, not a complete review with sufficient evaluative content to determine a recommendation.; openai: This text is a single sentence focusing on a performance, not a full review with an evaluative verdict of the show.",
+  "promptVersion": "5.2.0"
 }

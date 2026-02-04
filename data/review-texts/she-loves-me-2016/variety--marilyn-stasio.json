@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This exquisite revival of the 1963 musical 'She Loves Me' is a masterclass in how to stage an intimate show with maximum emotional impact.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This exquisite revival of the 1963 musical 'She Loves Me' is a masterclass in how to stage an intimate show with maximum emotional impact.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This exquisite revival of the 1963 musical 'She Loves Me' is a masterclass in how to stage an intimate show with maximum emotional impact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses superlative language 'exquisite' and 'masterclass' with praise for 'maximum emotional impact.' Clear rave recommendation despite brevity. | GPT-4o: The review uses strong, unqualified praise ('exquisite', 'masterclass') and highlights the production's emotional impact, indicating a must-see recommendation. | Gemini: The review uses strong positive language like \"exquisite\" and \"masterclass\", indicating a rave review. | Kimi: Unqualified superlatives ('exquisite', 'masterclass', 'maximum emotional impact') indicate enthusiastic recommendation with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:46:35.077Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

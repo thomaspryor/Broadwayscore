@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap, especially when filtered through America's racial history.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap, especially when filtered through America's racial history.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Harris has created something unprecedented: a play that uses the theatrical frame to examine how sexual desire can be both liberation and trap, especially when filtered through America's racial history.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the play as 'unprecedented' and praises its sophisticated examination of complex themes. However, this is only a single curated excerpt, so confidence is low despite the clearly positive language. | GPT-4o: The excerpt praises the play's innovative approach and thematic depth, suggesting a positive reception. However, the single excerpt and lack of full context limit confidence. | Gemini: The quote suggests a highly innovative and thought-provoking play, indicating a positive assessment. Given it's a single excerpt, I'm placing it at the higher end of the positive bucket. | Kimi: The excerpt offers strong praise, calling the work 'unprecedented' and highlighting its sophisticated thematic depth, indicating a clear recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:56:37.356Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

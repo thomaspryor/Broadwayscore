@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Cranston's Johnson is a tour de force of physical and vocal impersonation that never feels like mere mimicry—he inhabits the role so completely that you forget you're watching an actor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Mr. Cranston's Johnson is a tour de force of physical and vocal impersonation that never feels like mere mimicry—he inhabits the role so completely that you forget you're watching an actor.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Cranston's Johnson is a tour de force of physical and vocal impersonation that never feels like mere mimicry",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for Cranston's transformative performance using superlative language ('tour de force'), but this appears to be an excerpt focusing only on the lead actor without broader production assessment. | Gemini: The review uses strong positive language like \"tour de force\" and emphasizes the completeness of Cranston's performance, indicating a strong recommendation. | Kimi: This appears to be an excerpt or truncated review, but the available text offers unqualified superlatives ('tour de force') for the central performance, suggesting strong recommendation despite limited context about other production elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:58:16.019Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

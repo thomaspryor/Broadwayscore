@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Smash exists to sing the praises of the many, many talented people on and off the stage that it takes to bring a blockbuster musical to life. As much as I loved that mess on NBC, it's clear Smash belonged on Broadway all along,",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As much as I loved that mess on NBC, it's clear Smash belonged on Broadway all along",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation stating the show 'belonged on Broadway all along' and praising the talented people involved. Single excerpt limitation reduces confidence but sentiment is clearly enthusiastic. | GPT-4o: The excerpt is strongly positive, praising the talent involved and suggesting the show is well-suited to Broadway. However, with only one excerpt, confidence is low. | Gemini: The critic clearly states that the show belongs on Broadway and expresses love for it, indicating a positive recommendation. Due to the limited text, confidence is low. | Kimi: The critic expresses strong affection for the source material and clearly endorses the Broadway transfer, stating the show fulfills its destiny on stage.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:57:05.282Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

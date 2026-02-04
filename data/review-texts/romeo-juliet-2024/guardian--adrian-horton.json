@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "\"More often than not, it irks, like an overly enthusiastic theater teacher straining to get equally enthusiastic kids interested in the classics via whatever means necessary, be it overt eroticism, Doc Martens, a couple of mid original pop songs by Antonoff, or the jarring presence of the TikTok binge drinking phenomenon known as a Borg (Blackout Rage Gallon).\"",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More often than not, it irks, like an overly enthusiastic theater teacher straining to get equally enthusiastic kids interested in the classics via whatever means necessary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic describes the production as something that 'irks' and compares it unfavorably to an overly enthusiastic teacher straining to engage students. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt describes the production as irksome and overly enthusiastic, suggesting a negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes the show as \"irksome\" and compares it negatively to an overly enthusiastic teacher. This suggests a negative overall experience, despite the lack of full context. | Kimi: The excerpt describes the production as irritating ('irks') and criticizes its modern updates (Doc Martens, TikTok references, 'mid' pop songs) as forced and jarring gimmicks rather than organic choices. The comparison to a 'straining' teacher suggests the show tries too hard and fails to connect authentically. With no positive elements mentioned and single-excerpt limitations, this indicates a negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:38:29.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

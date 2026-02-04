@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway production of Rodgers + Hammerstein's Cinderella is a feast for the eyes and ears, with sumptuous costumes and sets that create a truly magical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway production of Rodgers + Hammerstein's Cinderella is a feast for the eyes and ears, with sumptuous costumes and sets that create a truly magical experience.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway production of Rodgers + Hammerstein's Cinderella is a feast for the eyes and ears, with sumptuous costumes and sets that create a truly magical experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for production values ('feast for the eyes and ears', 'sumptuous', 'truly magical'). Single excerpt warning applies - this sounds clearly positive so scoring upper Positive range, but low confidence due to limited text. | GPT-4o: The excerpt provides strong positive language, describing the production as a 'feast for the eyes and ears' and 'truly magical'. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"feast for the eyes and ears\" and \"truly magical experience,\" indicating a positive recommendation. Given that it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt uses enthusiastic language ('feast,' 'sumptuous,' 'truly magical') to praise the production design, indicating a clearly positive view of the visual elements, though the single-excerpt format limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:36:00.908Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

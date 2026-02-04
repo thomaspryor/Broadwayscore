@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,59 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Critic’s Pick: Bernadette Peters and Lea Salonga lead the festivities in a new Broadway revue of the great musical dramatist’s work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt labels the show as a 'Critic’s Pick', indicating a strong recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The \"Critic's Pick\" designation indicates a strong positive recommendation. Given the limited excerpt, I'm scoring it at the higher end of the positive range with low confidence. | Kimi: The 'Critic's Pick' designation indicates a clear recommendation to see the show, and the celebratory language ('festivities', 'great musical dramatist') suggests a favorable assessment, though the single excerpt limits confidence in the full review's tenor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:05:19.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

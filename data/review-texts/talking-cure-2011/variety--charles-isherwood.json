@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 53,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,50 +18,59 @@
   "showScoreExcerpt": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "textWordCount": 143,
-  "archivePath": "data/archives/reviews/talking-cure-2011/variety--charles-isherwood_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T01:14:01.318Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
     },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "No CDX snapshots found"
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
     },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
+    "keyPhrases": [
+      {
+        "quote": "Despite a clever premise and some witty dialogue, this biographical drama about the relationship between Freud and Jung feels more like a lecture than a living piece of theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges positive elements (clever premise, witty dialogue) but delivers a significant criticism that it 'feels more like a lecture than a living piece of theater,' suggesting it fails as theatrical entertainment. With only one excerpt available, confidence is low as this could be setup for a more positive or negative overall verdict. | GPT-4o: The review acknowledges a clever premise and witty dialogue but ultimately criticizes the show for lacking vitality, comparing it to a lecture. This suggests a negative overall impression. | Gemini: The review acknowledges positive aspects like a clever premise and witty dialogue, but ultimately finds the play lacking as a piece of theater, leaning towards a more academic experience. Given the single excerpt, confidence is low. | Kimi: While the critic acknowledges a clever premise and witty dialogue, the decisive verdict compares the show unfavorably to a lecture, criticizing its lack of theatrical vitality and life. This represents a clear recommendation against seeing the production. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
     }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Word count too low: 143 (min: 300)",
-    "Show title not found in text"
-  ],
-  "showNotMentioned": true,
-  "wrongFullText": "Five student writers take prizes\n\nUCLA student Robin Rudenberg has picked up the 2011 Samuel Goldwyn Writing Award, scoring $15,000 for her script “Reckoning.”\n\nThe 56th annual kudo, established by the Samuel Goldwyn Foundation and awarded to aspiring scribes enrolled in any school in the U. of California system, also hands out second and third place prizes as well as an honorable mention laurel.\n\nSecond place went to Devin Fearn, nabbing $7,500 for screenplay “Wendigo,” while Amy Aniobi and Georgia Lin Sundling tied for third place, taking $4,000 each for Aniobi’s “Blame Candy” and Sundling’s “The Long Short Drop.” Fearn, Aniobi and Sundling are all enrolled at UCLA.\n\nUC Santa Barbara’s Cameron Lund picked up honorable mention and a $2,000 prize for her script “Practice Makes Perfect.”\n\nDavid Hoberman, Paul Mazursky and Melanie Marnich selected this year’s winners, announced Wednesday evening in L.A."
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:21:47.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

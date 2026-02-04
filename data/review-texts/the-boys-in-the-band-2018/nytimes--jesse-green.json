@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What seemed revolutionary in 1968 now seems like archaeology. But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What seemed revolutionary in 1968 now seems like archaeology. But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict that the production successfully overcomes dated source material. 'Thrilling' is strong praise that outweighs the 'archaeology' concern. | GPT-4o: The review acknowledges the dated nature of the material but praises the current production for making it thrilling, indicating a positive recommendation with some reservations. | Gemini: The review acknowledges that the play seems dated, but the production makes it thrilling, indicating a positive, but not enthusiastic, recommendation. | Kimi: While the critic finds the 1968 material dated, the praise for Mantello's direction as thrilling indicates a clear recommendation to see this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:31:52.653Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 72,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

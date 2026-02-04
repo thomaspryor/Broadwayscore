@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cooper brings a fierce commitment to this demanding role, contorting his body into painful-looking shapes and delivering Merrick's lines with a mixture of dignity and desperation.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/the-elephant-man-1",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T03:49:04.943Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt describing a performance, not a complete review with an evaluative verdict; openai: The text provided is a single sentence focusing on an actor's performance without evaluating the overall production.",
+  "promptVersion": "5.2.0"
 }

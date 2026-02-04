@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the play both 'engrossing' and 'irritating' - classic mixed language. However, with only one excerpt available, this could be cherry-picked from a longer review with a clearer verdict either direction. | GPT-4o: The excerpt describes the play as both 'engrossing' and 'irritating', indicating a mixed reception. The single excerpt warning and lack of a clear positive or negative tilt suggest a balanced view. | Gemini: The review excerpt presents a mixed assessment, describing the play as both \"engrossing\" and \"irritating,\" indicating a lack of clear recommendation. Given the limited text, confidence is low. | Kimi: The excerpt balances strong positive qualities ('engrossing', 'slick') against clear negatives ('irritating'), indicating an uneven, mixed verdict without explicit recommendation. Single excerpt availability limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:50:17.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

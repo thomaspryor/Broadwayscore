@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Sweat' often feels too conscientiously assembled, a point-counterpoint presentation in which every disaffected voice is allowed its how-I-got-this-way monologue.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with mixed signals - praises when show is 'at its muddiest' and characters' 'full tragic humanity' but criticizes it as 'too conscientiously assembled.' No clear recommendation either way. Low confidence due to incomplete text and potential cherry-picking. | GPT-4o: The review acknowledges the play's topical nature and moments of depth, but criticizes it for feeling too 'conscientiously assembled' and structured. The excerpt suggests a mix of strengths and weaknesses, leading to a mixed verdict. | Gemini: The review notes that the play feels \"too conscientiously assembled\" but also praises when it is at its \"muddiest.\" This suggests a mixed reaction, with both positive and negative aspects. | Kimi: Single excerpt shows mildly positive tone: praises topical relevance and cast's 'tragic humanity' but criticizes 'too conscientiously assembled' structure. With significant reservations noted, this falls in lower Positive range per single-excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:16:21.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 66,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

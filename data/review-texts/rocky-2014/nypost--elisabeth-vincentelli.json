@@ -16,12 +16,17 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show works best when it sticks to the basics: guy meets girl, guy trains hard, guy gets his shot at the title.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (23 words)",
   "textQuality": "truncated",
   "playbillVerdictUrl": "http://nypost.com/2014/03/13/rocky-musical-scores-an-unexpected-knockout/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "rejectedAt": "2026-02-04T02:34:37.980Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence fragment or quote, not a complete review with sufficient evaluative content to score; openai: The text is a plot summary with no evaluative content or critical opinion.",
+  "promptVersion": "5.2.0"
 }

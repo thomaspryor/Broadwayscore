@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This cheerfully anachronistic musical comedy about the invention of the musical comedy is a kaleidoscope of inside jokes, self-referential gags and winking tributes to the theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cheerfully anachronistic musical comedy about the invention of the musical comedy is a kaleidoscope of inside jokes, self-referential gags and winking tributes to the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The word 'cheerfully' suggests positive sentiment, and describing it as a 'kaleidoscope' implies richness and entertainment value. However, this appears to be a truncated excerpt with limited evaluative content, so confidence is medium. | Gemini: The review describes the show as \"cheerfully anachronistic\" and a \"kaleidoscope of inside jokes,\" indicating a positive but potentially niche appeal. | Kimi: The critic employs distinctly positive descriptors ('cheerfully', 'kaleidoscope') to characterize the show's meta-theatrical conceit, suggesting appreciation for its playful cleverness. However, the text is extremely brief (under 50 words), lacking a definitive verdict or clear recommendation language, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:59:48.229Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

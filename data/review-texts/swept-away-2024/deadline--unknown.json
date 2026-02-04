@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A powerful and supple singer, Enscoe's duets with Sands (the evocative \"Murder In The City\") and Gallagher (on the show's title song) are highlights in a musical with no shortage of quietly devastating moments.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performer and highlights specific musical moments in a show described as having 'no shortage of quietly devastating moments,' suggesting overall quality. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt praises the performances and highlights the emotional impact of the musical, suggesting a strong positive sentiment. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt praises specific performances and highlights, suggesting a positive but not overwhelmingly enthusiastic review. Given the limited text, a score in the lower-middle of the positive range seems appropriate. | Kimi: The excerpt offers strong praise for the vocal performances and emotional impact, describing moments as 'quietly devastating' and duets as 'highlights,' indicating clear approval despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:19:11.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

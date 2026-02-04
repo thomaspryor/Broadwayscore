@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Band's Visit is a small miracle of a musical, one that finds profound beauty in the most ordinary of human encounters.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The Band's Visit is a small miracle of a musical, one that finds profound beauty in the most ordinary of human encounters.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (22 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Band's Visit is a small miracle of a musical, one that finds profound beauty in the most ordinary of human encounters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Calls the show 'a small miracle' and finds 'profound beauty' in it - clear superlative language indicating an enthusiastic recommendation without any reservations. | GPT-4o: The review uses superlative language, calling the musical a 'small miracle' and highlighting 'profound beauty,' which indicates a strong, enthusiastic recommendation. | Gemini: The review uses the language \"small miracle\" to describe the musical, indicating a rave review. | Kimi: The critic employs superlative language ('small miracle', 'profound beauty') without reservation, indicating an enthusiastic, must-see recommendation despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:30:02.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

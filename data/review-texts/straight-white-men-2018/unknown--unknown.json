@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,5 +20,60 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It remains undeniably powerful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic compares this Broadway production unfavorably to the previous Off-Broadway version, missing the 'brutality' and finding it less coherent. However, they conclude it's 'still an exceedingly odd — and thus welcome — presence on Broadway' and 'remains undeniably powerful,' indicating a qualified positive view despite the production's shortcomings. | GPT-4o: The excerpt acknowledges some reservations about the current production compared to a previous one, but ultimately describes the show as 'welcome' and 'undeniably powerful,' indicating a positive recommendation with some reservations. | Gemini: The review acknowledges missing some aspects of the previous production but ultimately states that the current production remains undeniably powerful and welcome on Broadway. Given the single excerpt and the reservations mentioned, a low positive score seems appropriate. | Kimi: While the critic prefers the shaggier Off-Broadway production at the Public Theater and misses the earlier 'brutality,' the final assessment finds the current Broadway production 'welcome' and 'undeniably powerful,' indicating a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:07:23.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

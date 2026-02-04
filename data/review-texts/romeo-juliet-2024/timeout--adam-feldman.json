@@ -8,13 +8,64 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
-    "web-search",
-    "show-score-playwright",
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"This production seems intent on appealing to TikTok audiences who don't know much about the play going in, which is a laudable goal, and I think it will succeed. But those newcomers may be surprised to find that what they thought was a tragedy about young people crushed by societal constraints is actually the sad tale of two nice kids who died from a lack of adult supervision.\"",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"What makes 'We Are Young' feel so right is more literal than all that: This Romeo and Juliet is very much about being young.\"\n\nRead more",
-  "publishDate": "October 24, 2024"
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This production seems intent on appealing to TikTok audiences who don't know much about the play going in, which is a laudable goal, and I think it will succeed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals - critic acknowledges the production will succeed at its goal of appealing to newcomers (positive), but frames this as dumbing down the material and missing the play's deeper meaning (negative undertone). With only one curated quote available, confidence is low. | GPT-4o: The excerpt suggests the production may succeed with a specific audience but implies a disconnect between expectations and the play's content. The tone is not clearly positive or negative, leading to a mixed classification. | Gemini: The review excerpt suggests the production is geared towards a specific audience and may not fully capture the depth of the play, resulting in a mixed assessment. | Kimi: The critic acknowledges the production will achieve its goal of attracting new audiences but criticizes its reductive interpretation of the source material, suggesting it transforms a profound tragedy into something trivial.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:40:26.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

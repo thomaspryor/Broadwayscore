@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Close doesn't just embody Norma; she inhabits her so completely that when she's onstage, you can't imagine the character being played by anyone else.",
-  "contentTier": "complete",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (25 words)",
   "textQuality": "full",
   "previousUrl": "https://www.nytimes.com/2017/02/10/theater/sunset-boulevard-review-glenn-close.html",
@@ -56,5 +56,10 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1054,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T03:11:47.904Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly evaluated for a recommendation; openai: This is a single sentence about Glenn Close's performance, not a full review of the Broadway show.",
+  "promptVersion": "5.2.0"
 }

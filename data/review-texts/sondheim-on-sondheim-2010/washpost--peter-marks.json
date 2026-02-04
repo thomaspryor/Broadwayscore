@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The evening has the feel of a classroom discussion in which the professor happens to be a genius and the students happen to be among the finest Broadway performers of their generation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,59 @@
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The evening has the feel of a classroom discussion in which the professor happens to be a genius and the students happen to be among the finest Broadway performers of their generation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the production by likening it to a genius-led classroom with top-tier performers, indicating a strong recommendation. | Gemini: The review is positive, comparing the show to a classroom discussion led by a genius with talented students, suggesting an engaging and intellectual experience. While not a rave, it's a clear recommendation. | Kimi: The critic applies superlatives ('genius', 'finest Broadway performers of their generation') to the creative leadership and cast, indicating strong admiration. However, as a single-sentence excerpt, the full context of the recommendation is limited.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:01:22.124Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

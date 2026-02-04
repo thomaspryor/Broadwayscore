@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Something Rotten! is a musical about musicals that manages to be both a loving tribute to and a sharp satire of Broadway conventions.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "manages to be both a loving tribute to and a sharp satire of Broadway conventions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The phrase 'manages to be both' suggests the show successfully executes its concept, indicating a positive assessment. However, this appears to be a very brief excerpt, so confidence is low due to limited context. | Gemini: The review describes the show as both a loving tribute and a sharp satire, indicating a positive but not overwhelmingly enthusiastic assessment. | Kimi: The critic offers clear praise for the show's successful balancing of tribute and satire, indicating a solid recommendation, though the single-sentence excerpt limits certainty about the full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:00:34.370Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }
