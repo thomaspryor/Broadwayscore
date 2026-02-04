@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/review/indecent-theater-review-1002016/",
   "publishDate": "May 9, 2017",
-  "fullText": "Paula Vogel's play about the controversial Yiddish drama 'God of Vengeance' is a passionate meditation on art, censorship and persecution.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Paula Vogel's play about the controversial Yiddish drama 'God of Vengeance' is a passionate meditation on art, censorship and persecution.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's play about the controversial Yiddish drama 'God of Vengeance' is a passionate meditation on art, censorship and persecution.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (20 words)",
   "rejectedAt": "2026-02-03T17:07:12.916Z",
   "rejectedBy": "ensemble-scoreability-check",
@@ -27,5 +27,51 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 205,
+  "archivePath": "data/archives/reviews/indecent-2017/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:21:12.742Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 205 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Senior Editor, Diversity & Inclusion\n\nThe Southern Poverty Law Center is tackling the Trump era with investigative journalism, The Hollywood Reporter has exclusively learned.\n\nThe Birmingham, Ala.-based civil rights nonprofit is partnering with Black Box Management for a six-part documentary series that will explore \"the normalization of American far-right extremism in the age of Donald Trump,\" according to a statement announcing the untitled project. Black Box co-founder Mike Dill tells THR that the goal is to begin shopping the project to potential cable and streaming outlets in June.\n\nBlack Box also is developing drama series Fast Boys, about the post-World War II rise of the fast-food industry, at WGN America. The sale was made before the announcement of the cabler's change in direction and its parent company Tribune Media's sale to Sinclair Broadcast Group, but a spokesperson for WGN tells THR that there is no change in the status of the project from Black Box client Anthony Pucillo.\n\n\"Both Fast Boys and the SPLC project tell the stories of those who don't accept the limitations that others try to place upon them,\" Black Box co-founder Lowell Shapiro said in a statement. \"The subjects see an opportunity to create change and evolve beyond the status quo.\""
 }
