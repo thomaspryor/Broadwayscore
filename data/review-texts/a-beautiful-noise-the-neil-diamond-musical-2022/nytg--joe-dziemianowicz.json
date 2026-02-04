@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Despite being a lukewarm look at the Brooklyn-born superstar, the show headlined by Will Swenson will nonetheless appeal to Diamond’s ardent fans...Plenty of theatregoers at my performance didn’t have to be asked twice or need another sip of “Red, Red Wine” to noisily join in.\"\n\nRead more"
+  "showScoreExcerpt": "\"Despite being a lukewarm look at the Brooklyn-born superstar, the show headlined by Will Swenson will nonetheless appeal to Diamond’s ardent fans...Plenty of theatregoers at my performance didn’t have to be asked twice or need another sip of “Red, Red Wine” to noisily join in.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite being a lukewarm look at the Brooklyn-born superstar, the show headlined by Will Swenson will nonetheless appeal to Diamond's ardent fans.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Critic explicitly calls it 'lukewarm' but acknowledges it will appeal to fans and notes audience engagement. This suggests a qualified, conditional recommendation - classic mixed territory. | GPT-4o: The review describes the show as 'lukewarm', indicating a mixed reception, but notes it will appeal to fans, suggesting some positive elements. The single excerpt limits confidence in the overall verdict. | Gemini: The review states the show will appeal to fans, which indicates a positive recommendation, but the 'lukewarm look' suggests reservations. Given it's a single excerpt, I'm placing it at the lower end of the positive range. | Kimi: The critic explicitly calls the show 'lukewarm' and limits its appeal to existing fans, indicating a middling verdict with niche appeal rather than a broad recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:39:52.489Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

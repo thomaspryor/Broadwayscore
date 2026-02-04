@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show's emotional core remains intact, even if the production sometimes feels overstuffed with spectacle.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 71,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's emotional core remains intact, even if the production sometimes feels overstuffed with spectacle.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's emotional core remains intact, even if the production sometimes feels overstuffed with spectacle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows balanced assessment - acknowledges emotional strength but criticizes production choices. 'Even if' construction suggests reservations outweigh positives. Low confidence due to limited text. | GPT-4o: The excerpt acknowledges the show's emotional core as a positive aspect but also notes that the production feels overstuffed with spectacle, indicating a mixed review. The single excerpt warning suggests caution, leading to a low confidence score. | Gemini: The review acknowledges a positive aspect (emotional core) but also points out a negative one (overstuffed spectacle). Due to the single excerpt and the slightly negative tone, I'm scoring it as a low positive. | Kimi: The excerpt validates the show's central emotional effectiveness while offering a significant caveat about excess spectacle, suggesting a qualified but genuine recommendation typical of the lower Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:43:46.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

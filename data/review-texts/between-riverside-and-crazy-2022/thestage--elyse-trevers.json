@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Directed by Austin Pendleton, the show is slightly dated with references to Giuliani as mayor. Yet it still feels somewhat relevant...After all these years, 73 year old Stephen McKinley Henderson finally plays the leading man, presenting a master class in acting.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stephen McKinley Henderson finally plays the leading man, presenting a master class in acting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt praises Henderson's 'master class in acting' performance and finds the show 'somewhat relevant' despite being 'slightly dated.' Single excerpt warning applies - this appears mildly positive but may not represent full verdict. | GPT-4o: The excerpt praises Stephen McKinley Henderson's performance as a 'master class in acting,' suggesting a positive view despite noting the show feels 'slightly dated.' The single excerpt warning suggests using the lower end of the Positive range. | Gemini: The review excerpt notes the show is slightly dated but praises Stephen McKinley Henderson's performance as a \"master class in acting.\" Given the single excerpt and the positive emphasis on the lead performance, I'm scoring it as a low positive. | Kimi: Single excerpt shows qualified praise: critic notes the show is 'slightly dated' but praises Henderson's performance as a 'master class,' suggesting the production is worthwhile primarily for the acting. With only one excerpt available, scoring at the lower end of the Positive bucket per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:19:27.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

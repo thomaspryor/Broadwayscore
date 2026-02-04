@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘Camelot’ has been a crowd-pleaser since it opened at the dawn of the Kennedy Administration...For it to return as anything but a museum piece would require spectacular design, knockout leads, or a truly daring new book; all are absent on the Vivian Beaumont stage.” \n\nRead more"
+  "showScoreExcerpt": "“ ‘Camelot’ has been a crowd-pleaser since it opened at the dawn of the Kennedy Administration...For it to return as anything but a museum piece would require spectacular design, knockout leads, or a truly daring new book; all are absent on the Vivian Beaumont stage.” \n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For it to return as anything but a museum piece would require spectacular design, knockout leads, or a truly daring new book; all are absent on the Vivian Beaumont stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic states that to succeed, the revival would need spectacular design, knockout leads, or daring new book, then explicitly says 'all are absent.' This is a clear negative assessment. However, confidence is low due to single excerpt warning and potential for fuller context in complete review. | GPT-4o: The excerpt indicates the production lacks the necessary elements to be more than a 'museum piece', suggesting disappointment and a lack of recommendation. The absence of 'spectacular design, knockout leads, or a truly daring new book' points to a negative assessment. | Gemini: The critic states that the production lacks the necessary elements to be anything but a museum piece, indicating a negative assessment. Given the single excerpt, confidence is medium. | Kimi: The critic argues that a successful revival would require spectacular design, knockout leads, or a daring new book, but finds all these elements absent, dismissing the production as a mere 'museum piece' with no compelling reason to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:27:35.102Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

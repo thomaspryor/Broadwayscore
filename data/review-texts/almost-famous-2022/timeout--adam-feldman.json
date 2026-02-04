@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Almost Famous is a sweet-natured but uneven musical that captures some of the joy of its source material while struggling to justify its own existence as a stage adaptation.",
   "originalScore": 60,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Almost Famous is a sweet-natured but uneven musical that captures some of the joy of its source material while struggling to justify its own existence as a stage adaptation.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Almost Famous is a sweet-natured but uneven musical that captures some of the joy of its source material while struggling to justify its own existence as a stage adaptation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's own 60 rating aligns with Mixed bucket. The review acknowledges positive elements ('sweet-natured', 'captures some of the joy') but expresses significant reservations about the adaptation's necessity and execution ('uneven', 'struggling to justify its own existence'). | GPT-4o: The review describes the musical as 'sweet-natured but uneven' and notes it 'struggles to justify its own existence,' indicating a mixed assessment. The original rating of 60 aligns with this interpretation. | Gemini: The review uses \"uneven\" which is a common word for mixed reviews. The critic's rating of 60 also indicates a mixed review. | Kimi: The critic's 60/100 rating and mixed description—praising the show as 'sweet-natured' while noting it is 'uneven' and struggles to justify its stage existence—indicate a middle-of-the-road assessment with both positive and negative elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:00:06.702Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

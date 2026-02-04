@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Somehow both jaw droppingly ill-mannered and adorably innocent, not to mention one of the best new musicals in recent memory...While 'The Book of Mormon' is foul-mouthed, offensive, blasphemous, and incredibly rude, it is also one of the sweetest, most innocently hopeful musicals I have seen in a long time. And the fact that it manages to be both is a key factor in its success.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the best new musicals in recent memory",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the critic uses superlative language ('one of the best new musicals in recent memory') and frames apparent negatives (foul-mouthed, offensive) as positives that contribute to success. The tone is clearly enthusiastic praise warranting Rave bucket, though single-excerpt limitation prevents highest confidence. | GPT-4o: The excerpt describes the show as 'one of the best new musicals in recent memory' and highlights its dual nature as both offensive and sweet, suggesting a strong positive impression. The curated excerpt implies a rave review. | Gemini: The review excerpt is overwhelmingly positive, calling it \"one of the best new musicals in recent memory\" and highlighting its unique blend of offensiveness and sweetness as a key factor in its success. Given it's a single excerpt, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: Single curated excerpt contains superlative praise calling the show one of the best new musicals in recent memory and one of the sweetest, most hopeful in a long time, warranting upper Positive range per single-excerpt guidelines. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:23:30.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

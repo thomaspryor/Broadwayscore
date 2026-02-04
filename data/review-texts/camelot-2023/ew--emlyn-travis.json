@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“While the literal magic of ‘Camelot’ might be absent this time around, there's still an endless amount of theater magic at play throughout the entire performance.”\n\nRead more"
+  "showScoreExcerpt": "“While the literal magic of ‘Camelot’ might be absent this time around, there's still an endless amount of theater magic at play throughout the entire performance.”\n\nRead more",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While the literal magic of 'Camelot' might be absent this time around, there's still an endless amount of theater magic at play throughout the entire performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges something missing ('literal magic') but finds 'endless theater magic' in the performance, suggesting a positive recommendation despite some reservations. Single excerpt warning applied - using upper-middle Positive range. | GPT-4o: The excerpt highlights 'an endless amount of theater magic,' suggesting a strong positive impression. Given the single excerpt warning, the score is placed in the upper range of Positive. | Gemini: The review acknowledges the absence of 'literal magic' but highlights the presence of 'theater magic', suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and 'Read more' prompt, confidence is low. | Kimi: The critic acknowledges one missing element (literal magic) but emphasizes 'endless' theatrical magic throughout the entire performance, indicating a clear recommendation with only minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:26:09.191Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

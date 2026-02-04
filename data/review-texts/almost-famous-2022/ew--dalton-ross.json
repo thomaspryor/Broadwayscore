@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"While the Broadway version of 'Almost Famous' may not be full of surprises, it capably and dutifully retells Crowe's semi-autobiographical tale of aspiring teen rock journalist William Miller.\"\n\nRead more"
+  "showScoreExcerpt": "\"While the Broadway version of 'Almost Famous' may not be full of surprises, it capably and dutifully retells Crowe's semi-autobiographical tale of aspiring teen rock journalist William Miller.\"\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it capably and dutifully retells Crowe's semi-autobiographical tale",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows qualified praise - 'capably and dutifully' suggests competent execution, but 'may not be full of surprises' indicates some limitations. Single excerpt warning applies, so scoring at lower end of Positive range due to restrained language. | GPT-4o: The excerpt suggests a competent but unremarkable production. The lack of surprises implies a lack of innovation or excitement, placing it in the Mixed bucket. The confidence is low due to the single excerpt warning. | Gemini: The review states that the show \"capably and dutifully retells\" the story, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, the score is placed at the lower end of the positive range with low confidence. | Kimi: The excerpt offers qualified praise, acknowledging the production competently adapts the source material but lacks originality or surprises, suggesting a mild recommendation rather than an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:57:57.287Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

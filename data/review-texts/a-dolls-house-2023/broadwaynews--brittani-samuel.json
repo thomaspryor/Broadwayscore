@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"In this boldly envisioned, yet minimalistically executed production directed by Jamie Lloyd and adapted by Amy Herzog, silence and simplicity are constantly at play.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this boldly envisioned, yet minimalistically executed production directed by Jamie Lloyd and adapted by Amy Herzog, silence and simplicity are constantly at play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt with contrasting descriptors - 'boldly envisioned' suggests ambition but 'minimalistically executed' implies underwhelming delivery. The neutral tone about 'silence and simplicity' doesn't indicate clear recommendation either way. With only one curated quote available, this appears mixed rather than positive. | GPT-4o: The excerpt highlights a 'boldly envisioned' and 'minimalistically executed' production, suggesting an interesting but potentially divisive approach. The lack of clear recommendation or discouragement and the single excerpt warning suggest a mixed review. | Gemini: The excerpt describes the production as \"boldly envisioned\" which indicates a positive sentiment. However, due to the limited text and the warning about potential cherry-picking, the confidence is low and the score is in the lower end of the positive range. | Kimi: The excerpt offers qualified praise ('boldly envisioned') but tempers it with neutral-to-hesitant phrasing about the 'minimalistic' execution. Given only one curated excerpt is available per the warning, this represents a tentative positive description rather than an enthusiastic recommendation, warranting the lower end of the Positive bucket. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:44:56.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

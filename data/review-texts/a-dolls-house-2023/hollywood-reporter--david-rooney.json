@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘A Doll’s House’ was considered shocking in its day for showing Nora’s rejection of that trap. When she steps out of the Helmer home and quite literally into the 21st century in this boldly conceived, commandingly acted production, it’s both shattering and exhilarating.”\n\nRead more"
+  "showScoreExcerpt": "“ ‘A Doll’s House’ was considered shocking in its day for showing Nora’s rejection of that trap. When she steps out of the Helmer home and quite literally into the 21st century in this boldly conceived, commandingly acted production, it’s both shattering and exhilarating.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When she steps out of the Helmer home and quite literally into the 21st century in this boldly conceived, commandingly acted production, it's both shattering and exhilarating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('boldly conceived', 'commandingly acted', 'exhilarating') indicates enthusiastic recommendation. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt describes the production as 'boldly conceived' and 'commandingly acted,' with a strong emotional impact ('shattering and exhilarating'). These superlatives suggest a highly positive assessment, placing it in the Rave bucket despite the limited context. | Gemini: The excerpt uses strong positive language like \"boldly conceived\", \"commandingly acted\", \"shattering and exhilarating\", indicating a strong recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the production's concept and performances, describing it as 'shattering and exhilarating,' though the single excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:47:06.752Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

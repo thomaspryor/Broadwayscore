@@ -10,7 +10,7 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "I couldn't help but think of an ATF agent named Peter Forcelli while I watched the super-charged Broadway revival of An Enemy of the People, Henrik Ibsen's play about a man who tries to do the right thing and makes the awful discovery that in his Norwegian town, money is the root of all truth. The m...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "needs-rescrape",
@@ -20,5 +20,59 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated opening paragraph that cuts off mid-sentence and contains no evaluative content about the Broadway production - just setup context about an ATF agent and plot summary.; openai: The provided text is an incomplete excerpt that does not contain any evaluative content or a clear verdict about the production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I couldn't help but think of an ATF agent named Peter Forcelli while I watched the super-charged Broadway revival of An Enemy of the People.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt describes the production as 'super-charged', suggesting a positive impression. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The phrase \"super-charged Broadway revival\" suggests a positive assessment, but with only one excerpt, the confidence is low. I am assuming it is a positive review with some reservations. | Kimi: The critic describes the production as 'super-charged,' indicating strong approval of its intensity and energy, though the single truncated excerpt limits certainty about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:02:21.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

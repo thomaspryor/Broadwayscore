@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Short of lightning-fast rap battles, if anything can make a group of dead white men talking interesting, it's the knowledge that we're really watching a lively, fresh generation of actors making their names known and their voices heard.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Short of lightning-fast rap battles, if anything can make a group of dead white men talking interesting, it's the knowledge that we're really watching a lively, fresh generation of actors making their names known and their voices heard.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise for the performances and cast, but the phrasing suggests the material itself needs help to be 'interesting'. With only one curated quote available, confidence is low and score reflects cautious positive assessment. | GPT-4o: The excerpt suggests a positive view of the actors' performances, describing them as 'lively' and 'fresh'. However, the context is limited and the overall sentiment is not strongly enthusiastic, leading to a lower end Positive score. | Gemini: The excerpt suggests that the actors are making the show interesting, which implies a positive, but not overwhelmingly enthusiastic, recommendation. Given that it's a single excerpt, confidence is low. | Kimi: Single excerpt praises the cast as 'lively' and 'fresh' but qualifies that they are needed to make the material interesting, suggesting a qualified recommendation based on performances rather than material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:36:27.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

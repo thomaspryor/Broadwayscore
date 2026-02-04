@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"'Almost Famous: The Musical' may well be the most dispiriting example of this screen-to-stage trend: a creatively bankrupt illustration of exactly the kind of commercialism that these characters rail against.\"\n\nRead more"
+  "showScoreExcerpt": "\"'Almost Famous: The Musical' may well be the most dispiriting example of this screen-to-stage trend: a creatively bankrupt illustration of exactly the kind of commercialism that these characters rail against.\"\n\nRead more",
+  "assignedScore": 19,
+  "llmScore": {
+    "score": 19,
+    "confidence": "medium",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Almost Famous: The Musical' may well be the most dispiriting example of this screen-to-stage trend: a creatively bankrupt illustration of exactly the kind of commercialism that these characters rail against.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: Calls the show 'most dispiriting' and 'creatively bankrupt' - devastating language that places this firmly in Pan territory. Single excerpt limits confidence but the condemnation is unambiguous. | GPT-4o: The excerpt describes the show as 'creatively bankrupt' and 'dispiriting,' indicating a strongly negative view. The language suggests a deep dissatisfaction with the production. | Gemini: The review excerpt calls the show a \"creatively bankrupt illustration\" and \"dispiriting example\", indicating a negative assessment. Given that it's a single excerpt, the confidence is low. | Kimi: The excerpt uses devastating language ('creatively bankrupt,' 'most dispiriting example') to condemn the show as a complete artistic failure and the worst of its genre, fitting the Pan bucket. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:59:41.785Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

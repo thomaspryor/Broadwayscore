@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Under the skilled direction of Lila Neugebauer, the cast delivers performances that are both raw and nuanced, bringing depth to characters that could easily become caricatures.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Under the skilled direction of Lila Neugebauer, the cast delivers performances that are both raw and nuanced, bringing depth to characters that could easily become caricatures.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under the skilled direction of Lila Neugebauer, the cast delivers performances that are both raw and nuanced, bringing depth to characters that could easily become caricatures.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises both direction and cast performances with positive descriptors like 'skilled' and 'raw and nuanced.' However, this is only one curated excerpt, so confidence is low and the full verdict may differ. | GPT-4o: The excerpt praises the direction and performances, suggesting a positive view. However, due to the single excerpt warning, confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt praises the direction and cast performances, suggesting a positive experience, but without more context, it's hard to determine the strength of the recommendation. | Kimi: The excerpt offers unqualified praise for the direction ('skilled') and performances ('raw and nuanced,' 'depth'), indicating a clear recommendation. However, as a single curated quote, it may not capture the full scope of the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:07:32.104Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

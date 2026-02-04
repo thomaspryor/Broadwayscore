@@ -12,5 +12,59 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "\"One of the things that impressed me about the play this time around - was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.\"\n\nRead more",
-  "publishDate": "December 4, 2022"
+  "publishDate": "December 4, 2022",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One of the things that impressed me about the play this time around - was the oppressive presence of whiteness that Cooper and the creative team create with nary a Caucasian in sight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt indicates an appreciation for the creative team's work, suggesting a positive view. However, due to the single excerpt and lack of full context, the confidence is low. | Gemini: The excerpt suggests a positive impression of the play's creative choices, but the lack of context and single excerpt makes it difficult to gauge the overall sentiment with high confidence. | Kimi: The critic expresses clear appreciation ('impressed me') for the production's artistic execution, indicating a positive reception. However, with only a single curated excerpt available, the overall verdict strength remains uncertain, warranting the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:54:05.168Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

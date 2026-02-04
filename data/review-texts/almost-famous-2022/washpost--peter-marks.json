@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"In the end, all that these re-creations bring to mind is that imitation is not always the sincerest form of flattery.\"\n\nRead more"
+  "showScoreExcerpt": "\"In the end, all that these re-creations bring to mind is that imitation is not always the sincerest form of flattery.\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the end, all that these re-creations bring to mind is that imitation is not always the sincerest form of flattery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt suggests the show is derivative and unflattering imitation, but with only one curated quote available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a negative view, implying that the show lacks originality or fails to impress. However, due to the single excerpt warning, confidence is low. | Gemini: The single excerpt available is negative, suggesting the critic does not recommend the show due to its imitative nature. Given the single excerpt, confidence is low. | Kimi: The excerpt provides a concluding verdict that criticizes the show's imitative elements as unsuccessful and unflattering. While clearly negative in sentiment, confidence is low due to the availability of only a single curated quote without broader context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:00:55.449Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }
