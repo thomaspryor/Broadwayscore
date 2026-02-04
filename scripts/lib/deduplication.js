@@ -79,6 +79,10 @@ const KNOWN_DUPLICATES = {
   // IBDB imports individual one-acts/double bills as separate entries — these are single productions
   'relatively speaking': ['relatively speaking', 'talking cure', 'george is dead', 'honeymoon motel'],
   'sea wall a life': ['sea wall a life', 'sea wall', 'a life'],
+  // Multi-part productions — IBDB has separate pages per part but reviews cover the whole production
+  'angels in america': ['angels in america', 'angels in america millennium approaches', 'angels in america perestroika'],
+  'the coast of utopia': ['the coast of utopia', 'the coast of utopia voyage', 'the coast of utopia shipwreck', 'the coast of utopia salvage'],
+  'the norman conquests': ['the norman conquests', 'the norman conquests table manners', 'the norman conquests living together', 'the norman conquests round and round the garden'],
 };
 
 /**

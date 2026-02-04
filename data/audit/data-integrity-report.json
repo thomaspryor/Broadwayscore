@@ -1,9 +1,9 @@
 {
-  "auditedAt": "2026-02-04T15:57:41.817Z",
-  "totalFilesScanned": 11625,
-  "totalWithFullText": 3075,
+  "auditedAt": "2026-02-04T16:22:00.326Z",
+  "totalFilesScanned": 11539,
+  "totalWithFullText": 3057,
   "fixesApplied": 0,
-  "totalIssues": 402,
+  "totalIssues": 331,
   "results": {
     "investigation1": {
       "contentMismatches": [
@@ -260,20 +260,6 @@
           "url": "https://www.thewrap.com/american-psycho-theater-review-broadway-musical/"
         },
         {
-          "file": "american-son-2018/variety--marilyn-stasio.json",
-          "showTitle": "American Son",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"American Son\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2018/legit/reviews/american-son-review-kerry-washington-1203017336/"
-        },
-        {
           "file": "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
           "showTitle": "An Enemy of the People",
           "verdict": "confident_mismatch",
@@ -314,34 +300,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.hollywoodreporter.com/reviews/anything-goes-broadway-review-172002/"
-        },
-        {
-          "file": "arcadia-2011/variety--marilyn-stasio.json",
-          "showTitle": "Arcadia",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Arcadia\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2011/legit/reviews/arcadia-1117944526/"
-        },
-        {
-          "file": "assassins-2012/variety--marilyn-stasio.json",
-          "showTitle": "Assassins",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Assassins\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2012/legit/reviews/assassins-1117948526/"
         },
         {
           "file": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
@@ -456,20 +414,6 @@
           "url": "https://www.wsj.com/articles/bullets-over-broadway-review-woody-allens-musical-shoots-blanks-1396580"
         },
         {
-          "file": "burn-the-floor-2009/variety--david-rooney.json",
-          "showTitle": "Burn the Floor",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Burn the Floor\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2009/legit/reviews/burn-the-floor-1200476270/"
-        },
-        {
           "file": "burn-this-2019/theatermania--jesse-green.json",
           "showTitle": "Burn This",
           "verdict": "confident_mismatch",
@@ -498,20 +442,6 @@
           "url": "https://www.vulture.com/2019/04/theater-review-burn-this-on-broadway.html"
         },
         {
-          "file": "carousel-2018/variety--marilyn-stasio.json",
-          "showTitle": "Carousel",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Carousel\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2018/legit/reviews/carousel-review-broadway-revival-1202747963/"
-        },
-        {
           "file": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
           "showTitle": "Cat on a Hot Tin Roof",
           "verdict": "confident_mismatch",
@@ -524,20 +454,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
-        },
-        {
-          "file": "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
-          "showTitle": "CATS: The Jellicle Ball",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"CATS: The Jellicle Ball\" not found in text"
-          ],
-          "hasExcerpts": false,
-          "wrongShowMentioned": null,
-          "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/"
         },
         {
           "file": "charlie-and-the-chocolate-factory-2017/timeout--adam-feldman.json",
@@ -566,20 +482,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-review.html"
-        },
-        {
-          "file": "clybourne-park-2012/variety--marilyn-stasio.json",
-          "showTitle": "Clybourne Park",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Clybourne Park\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2012/legit/reviews/clybourne-park-1117947192/"
         },
         {
           "file": "clydes-2021/vulture--jesse-green.json",
@@ -664,20 +566,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://variety.com/2008/legit/reviews/cry-baby-1200472551/"
-        },
-        {
-          "file": "cyrano-de-bergerac-2007/variety--charles-isherwood.json",
-          "showTitle": "Cyrano de Bergerac",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Cyrano de Bergerac\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2007/legit/reviews/cyrano-de-bergerac-1200558847/"
         },
         {
           "file": "dames-at-sea-2015/observer--rex-reed.json",
@@ -776,34 +664,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://variety.com/2016/legit/reviews/disaster-review-broadway-musical-1201722916/"
-        },
-        {
-          "file": "doubt-2024/theatermania--andy-propst.json",
-          "showTitle": "Doubt: A Parable",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Doubt: A Parable\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://www.theatermania.com/new-york-city-theater/reviews/doubt-a-parable_93847.html"
-        },
-        {
-          "file": "driving-miss-daisy-2010/variety--joe-dziemianowicz.json",
-          "showTitle": "Driving Miss Daisy",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Driving Miss Daisy\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944063/"
         },
         {
           "file": "elf-2012/nytimes--charles-isherwood.json",
@@ -916,20 +776,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.washingtonpost.com/entertainment/theater_dance/fish-in-the-dark-theater-review-larry-dav"
-        },
-        {
-          "file": "fool-for-love-2015/variety--marilyn-stasio.json",
-          "showTitle": "Fool for Love",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Fool for Love\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2015/legit/reviews/fool-for-love-theater-review-sam-shepard-1201617446/"
         },
         {
           "file": "fool-for-love-2015/wsj--terry-teachout.json",
@@ -1252,6 +1098,20 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.timeout.com/newyork/theater/how-i-learned-to-drive-review"
+        },
+        {
+          "file": "how-i-learned-to-drive-2022/variety--peter-marks.json",
+          "showTitle": "How I Learned to Drive",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How I Learned to Drive\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2022/legit/reviews/how-i-learned-to-drive-review-broadway-1235224478/"
         },
         {
           "file": "how-i-learned-to-drive-2022/washpost--peter-marks.json",
@@ -1602,20 +1462,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2015/11/16/theater/review-misery-on-broadway-tortures-bruce-willis-and-us.ht"
-        },
-        {
-          "file": "mj-2022/usatoday--david-rooney.json",
-          "showTitle": "MJ The Musical",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"MJ The Musical\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://www.usatoday.com/story/life/theater/2022/02/02/mj-musical-broadway-review-michael-jackson/92"
         },
         {
           "file": "mr-saturday-night-2022/thewrap--robert-hofler.json",
@@ -2052,20 +1898,6 @@
           "url": "https://www.nytimes.com/2007/10/19/theater/reviews/19pygm.html"
         },
         {
-          "file": "race-2009/variety--marilyn-stasio.json",
-          "showTitle": "Race",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Race\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2009/legit/reviews/race-1200473116/"
-        },
-        {
           "file": "ragtime-2009/nypost--frank-scheck.json",
           "showTitle": "Ragtime",
           "verdict": "confident_mismatch",
@@ -2190,20 +2022,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.usatoday.com/story/life/theater/2015/04/22/something-rotten-broadway-review/26180611/"
-        },
-        {
-          "file": "sondheim-on-sondheim-2010/variety--charles-isherwood.json",
-          "showTitle": "Sondheim on Sondheim",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"Sondheim on Sondheim\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2010/legit/reviews/sondheim-on-sondheim-1117942391/"
         },
         {
           "file": "speedtheplow-2008/variety--david-rooney.json",
@@ -2724,20 +2542,6 @@
           "url": "https://www.theatermania.com/broadway/reviews/the-hills-of-california_94471"
         },
         {
-          "file": "the-homecoming-2007/variety--david-rooney.json",
-          "showTitle": "The Homecoming",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"The Homecoming\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2007/legit/reviews/the-homecoming-1200558166/"
-        },
-        {
           "file": "the-house-of-blue-leaves-2011/washpost--peter-marks.json",
           "showTitle": "The House of Blue Leaves",
           "verdict": "confident_mismatch",
@@ -3002,20 +2806,6 @@
           "hasExcerpts": true,
           "wrongShowMentioned": null,
           "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-american-airlines-theate"
-        },
-        {
-          "file": "the-roommate-2024/variety--charles-isherwood.json",
-          "showTitle": "The Roommate",
-          "verdict": "confident_mismatch",
-          "score": -3,
-          "negativeSignalCount": 1,
-          "positiveSignals": [],
-          "negativeSignals": [
-            "Show title \"The Roommate\" not found in text"
-          ],
-          "hasExcerpts": true,
-          "wrongShowMentioned": null,
-          "url": "https://variety.com/2024/legit/reviews/the-roommate-review-broadway-mia-farrow-patti-lupone-12361298"
         },
         {
           "file": "the-rose-tattoo-2019/guardian--adrian-horton.json",
@@ -4133,8 +3923,8 @@
     "investigation2": {
       "categories": {
         "published_before": 54,
-        "no_note": 37,
-        "manual_offbroadway": 23,
+        "no_note": 32,
+        "manual_offbroadway": 35,
         "other_auto": 1
       },
       "likelyFalsePositives": [
@@ -4147,6 +3937,66 @@
         }
       ],
       "confirmedCorrect": [
+        {
+          "file": "cats-the-jellicle-ball-2026/chicagotribune--chris-jones.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/cititour--brian-scott-lipton.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/exeunt-nyc--lane-williamson.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nydailynews--unknown.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nypost--johnny-oleksinski.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nysr--unknown.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nytg--kyle-turner.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/timeout--adam-feldman.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
         {
           "file": "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
           "category": "manual_offbroadway",
@@ -4299,6 +4149,31 @@
     "investigation4": {
       "roundupDuplicates": [
         {
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+          "files": [
+            "a-wonderful-world-the-louis-armstrong-musical-2024/the-interested-bystander--cary-wong.json",
+            "sunset-boulevard-2017/the-interested-bystander--cary-wong.json",
+            "sunset-boulevard-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/broadway-two-icons-are-celebrated-in.html?m=0",
+          "files": [
+            "boop-2025/the-interested-bystander--cary-wong.json",
+            "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
+          "files": [
+            "bug-2026/the-interested-bystander--cary-wong.json",
+            "two-strangers-bway-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
           "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
           "files": [
             "cabaret-2024/deadline--greg-evans.json",
@@ -4310,6 +4185,63 @@
             "uncle-vanya-2024/deadline--greg-evans.json"
           ],
           "showCount": 7
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html",
+          "files": [
+            "cabaret-2024/the-interested-bystander--cary-wong.json",
+            "the-outsiders-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
+          "files": [
+            "cult-of-love-2024/the-interested-bystander--cary-wong.json",
+            "gypsy-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html?m=0",
+          "files": [
+            "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+            "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
+            "tammy-faye-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/theater-reviews-tragedy-of-floyd.html#more",
+          "files": [
+            "floyd-collins-2025/the-interested-bystander--cary-wong.json",
+            "john-proctor-is-the-villain-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+          "files": [
+            "oedipus-2025/the-interested-bystander--cary-wong.json",
+            "queen-versailles-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
+          "files": [
+            "our-town-2024/the-interested-bystander--cary-wong.json",
+            "romeo-juliet-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/05/theater-reviews-stranger-things-first.html?m=0",
+          "files": [
+            "real-women-have-curves-2025/the-interested-bystander--cary-wong.json",
+            "stranger-things-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
         }
       ],
       "nonRoundupDuplicates": [
@@ -4362,151 +4294,6 @@
           "showCount": 2
         },
         {
-          "url": "https://www.amny.com/entertainment/sea-wall-a-life-review-1.34782260",
-          "files": [
-            "a-life-2019/amny--matt-windman.json",
-            "sea-wall-2019/amny--matt-windman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://broadwaynews.com/2019/08/08/review-life-death-and-the-banalities-in-between-in-sea-wall-a-li",
-          "files": [
-            "a-life-2019/broadwaynews--charles-isherwood.json",
-            "sea-wall-2019/broadwaynews--charles-isherwood.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.thedailybeast.com/sea-walla-life-jake-gyllenhaal-and-tom-sturridge-confront-life-and-dea",
-          "files": [
-            "a-life-2019/dailybeast--tim-teeman.json",
-            "sea-wall-2019/dailybeast--tim-teeman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://dctheatrescene.com/2019/08/08/sea-wall-a-life-review-tom-sturridge-and-jake-gyllenhaal-talk-",
-          "files": [
-            "a-life-2019/dctheatrescene--jonathan-mandell.json",
-            "sea-wall-2019/dctheatrescene--jonathan-mandell.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://deadline.com/2019/08/sea-wall-a-life-broadway-review-jake-gyllenhaal-tom-sturridge-power-to-",
-          "files": [
-            "a-life-2019/deadline--greg-evans.json",
-            "sea-wall-2019/deadline--greg-evans.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://medium.com/swlh/review-storytelling-reinvented-in-sea-wall-a-life-a9af3e22eb26",
-          "files": [
-            "a-life-2019/medium-christian-lewis--christian-lewis.json",
-            "sea-wall-2019/medium-christian-lewis--christian-lewis.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.nationalreview.com/2019/08/theater-review-sea-wall-a-life-stagy-kind-of-mourning/",
-          "files": [
-            "a-life-2019/national-review-kyle-smith--kyle-smith.json",
-            "sea-wall-2019/national-review-kyle-smith--kyle-smith.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/sea-wall-a-life-1.34750953",
-          "files": [
-            "a-life-2019/newsday--barbara-schuler.json",
-            "sea-wall-2019/newsday--barbara-schuler.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2019/08/19/endgames-in-sea-wall-a-life-and-coriolanus",
-          "files": [
-            "a-life-2019/newyorker--vinson-cunningham.json",
-            "sea-wall-2019/newyorker--vinson-cunningham.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2019/08/sea-wall-a-life-review-jake-gyllenhaal-and-tom-sturridge-st",
-          "files": [
-            "a-life-2019/njcom--christoher-kelly.json",
-            "sea-wall-2019/njcom--christoher-kelly.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "http://nystagereview.com/2019/08/08/sea-wall-a-life-jake-gyllenhaal-tom-sturridge-in-great-nervous-s",
-          "files": [
-            "a-life-2019/nysr--unknown.json",
-            "sea-wall-2019/nysr--unknown.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-sea-walla-life-starring-jake-gyllenhaal-tom-st",
-          "files": [
-            "a-life-2019/nytg--donna-herman.json",
-            "sea-wall-2019/nytg--donna-herman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://observer.com/2019/08/sea-wall-a-life-broadway-review-tom-sturridge-jake-gyllenhaal/",
-          "files": [
-            "a-life-2019/observer--david-cote.json",
-            "sea-wall-2019/observer--david-cote.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.thewrap.com/sea-wall-a-life-theater-review-jake-gyllenhaal-tom-sturridge/",
-          "files": [
-            "a-life-2019/thewrap--robert-hofler.json",
-            "sea-wall-2019/thewrap--robert-hofler.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridg",
-          "files": [
-            "a-life-2019/timeout--adam-feldman.json",
-            "sea-wall-2019/timeout--adam-feldman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-broadway-1203292445/",
-          "files": [
-            "a-life-2019/variety--marilyn-stasio.json",
-            "sea-wall-2019/variety--marilyn-stasio.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/jake-gyllenhaal-is-a-stage-animal-for-sur",
-          "files": [
-            "a-life-2019/washpost--peter-marks.json",
-            "sea-wall-2019/washpost--peter-marks.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
-          "files": [
-            "a-wonderful-world-the-louis-armstrong-musical-2024/the-interested-bystander--cary-wong.json",
-            "sunset-boulevard-2017/the-interested-bystander--cary-wong.json",
-            "sunset-boulevard-2024/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 3
-        },
-        {
           "url": "http://deadline.com/2015/04/the-visit-airline-highway-broadway-review-1201414889/",
           "files": [
             "airline-highway-2015/deadline--unknown.json",
@@ -4514,142 +4301,6 @@
             "the-visit-2015/deadline--jeremy-gerard.json"
           ],
           "showCount": 3
-        },
-        {
-          "url": "https://www.4columns.org/cote-david/bug",
-          "files": [
-            "all-out-2025/4-columns-david-cote--david-cote.json",
-            "bug-2026/4-columns-david-cote--david-cote.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Bug/1349",
-          "files": [
-            "all-out-2025/cititour--brian-scott-lipton.json",
-            "bug-2026/cititour--brian-scott-lipton.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://culturesauce.com/2026/01/11/bug-carrie-coon-broadway-review/",
-          "files": [
-            "all-out-2025/culturesauce--thom-geier.json",
-            "bug-2026/culturesauce--thom-geier.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.thedailybeast.com/obsessed/bug-broadway-review-carrie-coon-absolutely-loses-her-mind/",
-          "files": [
-            "all-out-2025/dailybeast--tim-teeman.json",
-            "bug-2026/dailybeast--tim-teeman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
-          "files": [
-            "all-out-2025/deadline--greg-evans.json",
-            "bug-2026/deadline--greg-evans.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://ew.com/bug-review-carrie-coon-captivating-tracy-letts-play-broadway-11881324",
-          "files": [
-            "all-out-2025/ew--shania-russell.json",
-            "bug-2026/ew--shania-russell.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/jan/09/bug-play-review-carrie-coon-tracy-letts",
-          "files": [
-            "all-out-2025/guardian--jesse-hassenger.json",
-            "bug-2026/guardian--jesse-hassenger.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://newyorknotebook.substack.com/p/bug?r=1gwcg&utm_medium=ios&shareImageVariant=overlay&triedRed",
-          "files": [
-            "all-out-2025/nysr--new-york-notebook-sandy-macdonald.json",
-            "bug-2026/nysr--new-york-notebook-sandy-macdonald.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/bug-broadway-review-carrie-coon-namir-smallwood",
-          "files": [
-            "all-out-2025/nytg--joe-dziemianowicz.json",
-            "bug-2026/nytg--joe-dziemianowicz.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.nytimes.com/2026/01/08/theater/bug-review-carrie-coon.html",
-          "files": [
-            "all-out-2025/nytimes--jason-zinoman.json",
-            "bug-2026/nytimes--jason-zinoman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://1minutecritic.com/carrie-coon-broadway-review/",
-          "files": [
-            "all-out-2025/oneminutecritic--matthew-wexler.json",
-            "bug-2026/one-minute-critic--matthew-wexler.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-carrie-coon-and-namir-smallwood-as-paranoid-crackheads-in-l",
-          "files": [
-            "all-out-2025/theatermania--david-gordon.json",
-            "bug-2026/theatermania--david-gordon.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.theatrely.com/post/conspiracies-abound-in-bug-review",
-          "files": [
-            "all-out-2025/theatrely--joey-sims.json",
-            "bug-2026/theatrely--joey-sims.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-",
-          "files": [
-            "all-out-2025/timeout--adam-feldman.json",
-            "bug-2026/timeout--adam-feldman.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/music/2026/01/08/carrie-coon-bug-broadway-review/880308",
-          "files": [
-            "all-out-2025/usatoday--patrick-ryan.json",
-            "bug-2026/usatoday--patrick-ryan.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://variety.com/2026/legit/reviews/bug-broadway-review-carrie-coon-1236625316/",
-          "files": [
-            "all-out-2025/variety--aramide-tinubu.json",
-            "bug-2026/variety--aramide-tinubu.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2026/01/08/bug-broadway-carrie-coon-review/",
-          "files": [
-            "all-out-2025/washpost--naveen-kumar.json",
-            "bug-2026/washpost--naveen-kumar.json"
-          ],
-          "showCount": 2
         },
         {
           "url": "https://www.nytimes.com/2018/03/25/theater/angels-in-america-review.html",
@@ -4725,14 +4376,6 @@
           "showCount": 2
         },
         {
-          "url": "https://www.interestedbystander.com/2025/04/broadway-two-icons-are-celebrated-in.html?m=0",
-          "files": [
-            "boop-2025/the-interested-bystander--cary-wong.json",
-            "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
-        },
-        {
           "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
           "files": [
             "boop-2025/washpost--naveen-kumar.json",
@@ -4741,164 +4384,12 @@
           "showCount": 2
         },
         {
-          "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
-          "files": [
-            "bug-2026/the-interested-bystander--cary-wong.json",
-            "two-strangers-bway-2025/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html",
-          "files": [
-            "cabaret-2024/the-interested-bystander--cary-wong.json",
-            "the-outsiders-2024/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-music",
-          "files": [
-            "cats-1982/chicagotribune--chris-jones.json",
-            "cats-2016/chicagotribune--chris-jones.json",
-            "cats-the-jellicle-ball/chicagotribune--chris-jones.json",
-            "cats-the-jellicle-ball-2026/chicagotribune--chris-jones.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
-          "files": [
-            "cats-1982/cititour--brian-scott-lipton.json",
-            "cats-2016/cititour--brian-scott-lipton.json",
-            "cats-the-jellicle-ball/cititour--brian-scott-lipton.json",
-            "cats-the-jellicle-ball-2026/cititour--brian-scott-lipton.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
-          "files": [
-            "cats-1982/exeunt-nyc--lane-williamson.json",
-            "cats-2016/exeunt-nyc--lane-williamson.json",
-            "cats-the-jellicle-ball/exeunt-nyc--lane-williamson.json",
-            "cats-the-jellicle-ball-2026/exeunt-nyc--lane-williamson.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagin",
-          "files": [
-            "cats-1982/nydailynews--unknown.json",
-            "cats-2016/nydailynews--unknown.json",
-            "cats-the-jellicle-ball/nydailynews--unknown.json",
-            "cats-the-jellicle-ball-2026/nydailynews--unknown.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-th",
-          "files": [
-            "cats-1982/nypost--johnny-oleksinski.json",
-            "cats-2016/nypost--johnny-oleksinski.json",
-            "cats-the-jellicle-ball/nypost--johnny-oleksinski.json",
-            "cats-the-jellicle-ball-2026/nypost--johnny-oleksinski.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
-          "files": [
-            "cats-1982/nysr--unknown.json",
-            "cats-2016/nysr--unknown.json",
-            "cats-the-jellicle-ball/nysr--unknown.json",
-            "cats-the-jellicle-ball-2026/nysr--unknown.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-",
-          "files": [
-            "cats-1982/nytg--kyle-turner.json",
-            "cats-2016/nytg--kyle-turner.json",
-            "cats-the-jellicle-ball/nytg--kyle-turner.json",
-            "cats-the-jellicle-ball-2026/nytg--kyle-turner.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html?searchResultPosition=1",
-          "files": [
-            "cats-1982/nytimes--jesse-green.json",
-            "cats-2016/nytimes--jesse-green.json",
-            "cats-the-jellicle-ball/nytimes--jesse-green.json",
-            "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-o",
-          "files": [
-            "cats-1982/queerty--matthew-wexler.json",
-            "cats-2016/queerty--matthew-wexler.json",
-            "cats-the-jellicle-ball/queerty--matthew-wexler.json",
-            "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-a",
-          "files": [
-            "cats-1982/theatermania--zachary-stewart.json",
-            "cats-2016/theatermania--zachary-stewart.json",
-            "cats-the-jellicle-ball/theatermania--zachary-stewart.json",
-            "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-          "files": [
-            "cats-1982/thewrap--robert-hofler.json",
-            "cats-2016/thewrap--robert-hofler.json",
-            "cats-the-jellicle-ball/thewrap--robert-hofler.json",
-            "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json"
-          ],
-          "showCount": 4
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ba",
-          "files": [
-            "cats-1982/timeout--adam-feldman.json",
-            "cats-the-jellicle-ball/timeout--adam-feldman.json",
-            "cats-the-jellicle-ball-2026/timeout--adam-feldman.json"
-          ],
-          "showCount": 3
-        },
-        {
           "url": "http://www.ft.com/home/us",
           "files": [
             "china-doll-2015/financialtimes--unknown.json",
             "fiddler-on-the-roof-2015/financialtimes--unknown.json"
           ],
           "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
-          "files": [
-            "cult-of-love-2024/the-interested-bystander--cary-wong.json",
-            "gypsy-2024/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html?m=0",
-          "files": [
-            "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
-            "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
-            "tammy-faye-2024/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 3
         },
         {
           "url": "https://www.talkinbroadway.com/page/world/index.html",
@@ -4913,14 +4404,6 @@
           "files": [
             "disaster-2016/vulture--jesse-green.json",
             "red-2010/vulture--jesse-green.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/04/theater-reviews-tragedy-of-floyd.html#more",
-          "files": [
-            "floyd-collins-2025/the-interested-bystander--cary-wong.json",
-            "john-proctor-is-the-villain-2025/the-interested-bystander--cary-wong.json"
           ],
           "showCount": 2
         },
@@ -4940,14 +4423,6 @@
             "yellow-face-2024/this-week-in-new-york--mark-rifkin.json"
           ],
           "showCount": 3
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-          "files": [
-            "oedipus-2025/the-interested-bystander--cary-wong.json",
-            "queen-versailles-2025/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
         },
         {
           "url": "http://abcnews.go.com/Entertainment/wireStory/review-spring-awakening-opens-arms-34093481",
@@ -4987,22 +4462,6 @@
           "files": [
             "once-2012/vulture--chris-bonano.json",
             "once-upon-a-mattress-2024/vulture--christopher-bonanos.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
-          "files": [
-            "our-town-2024/the-interested-bystander--cary-wong.json",
-            "romeo-juliet-2024/the-interested-bystander--cary-wong.json"
-          ],
-          "showCount": 2
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/05/theater-reviews-stranger-things-first.html?m=0",
-          "files": [
-            "real-women-have-curves-2025/the-interested-bystander--cary-wong.json",
-            "stranger-things-2024/the-interested-bystander--cary-wong.json"
           ],
           "showCount": 2
         },
