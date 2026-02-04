@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This British import is a delightful disaster that works because it takes tremendous skill to look so skillless.",
   "originalScore": null,
-  "assignedScore": 78,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (18 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 78,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 73,
-      "high": 83
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The paradoxical praise 'delightful disaster that works' indicates a positive recommendation for a show that succeeds through skillful execution of apparent chaos. | GPT-4o: The review describes the show as a 'delightful disaster' that 'works,' indicating a positive recommendation despite acknowledging its chaotic nature. The tone suggests enjoyment and appreciation for the skill involved. | Gemini: The review calls the show a \"delightful disaster,\" which indicates a mixed reaction. It's neither a strong recommendation nor a strong discouragement. | Kimi: Despite the 'disaster' descriptor, the critic explicitly states the show 'works' and calls it 'delightful' while praising the 'tremendous skill' on display, indicating a clear recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'delightful disaster that works,' indicating a positive recommendation for a show that succeeds through deliberate comic incompetence. The paradoxical praise suggests skilled execution of apparent amateurishness. | GPT-4o: The review describes the show as a 'delightful disaster' that 'works,' indicating a positive recommendation despite some reservations about its chaotic nature. | Gemini: The review calls the show a 'delightful disaster,' which suggests a mixed reaction. It acknowledges both positive and negative aspects, fitting the 'Mixed' bucket. | Kimi: Despite labeling the show a 'disaster,' the critic uses the affectionate modifier 'delightful' and explicitly states the production 'works,' praising the tremendous skill involved. The oxymoronic phrasing suggests an appreciation for intentional messiness, though the extreme brevity/truncation prevents a higher confidence rating.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:06:55.883Z",
+    "scoredAt": "2026-02-04T04:29:35.271Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 76,
-    "openaiScore": 78,
+    "openaiScore": 76,
     "geminiScore": 62,
-    "kimiScore": 80,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Mixed",
     "kimiBucket": "Positive",
-    "scoreDelta": 18,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

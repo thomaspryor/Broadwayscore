@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Danny DeVito brings his distinctive comic timing and unpretentious authenticity to Arthur Miller's family drama, anchoring a solid revival that benefits from Terry Kinney's sensitive direction.",
   "originalScore": null,
-  "assignedScore": 76,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (26 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 76,
+    "score": 77,
     "confidence": "high",
     "range": {
-      "low": 71,
-      "high": 81
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it a 'solid revival' with praise for DeVito's performance and direction, though lacks strong enthusiasm or superlatives that would push it higher in the Positive range. | GPT-4o: The review praises DeVito's performance and the direction, suggesting a solid revival. The tone is positive, though not overly enthusiastic, indicating a strong recommendation with some reservations. | Gemini: The review uses positive language like \"solid revival\" and \"sensitive direction\", indicating a recommendation, although not an enthusiastic one. | Kimi: The critic offers specific praise for DeVito's performance and Kinney's sensitive direction, explicitly calling the production a 'solid revival' that benefits from these strengths, indicating a clear recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises lead performance and direction, calls it a 'solid revival' - clearly positive but moderate language suggests mid-range positive score. | GPT-4o: The review praises Danny DeVito's performance and the direction, describing the revival as 'solid,' indicating a positive recommendation with some reservations. | Gemini: The review uses positive language like \"solid revival\" and \"sensitive direction,\" indicating a recommendation, but not an overwhelming one. DeVito's performance is highlighted as a key strength. | Kimi: The excerpt offers unambiguous praise for DeVito's performance and the direction, explicitly calling it a 'solid revival'—a clear but measured recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:10:16.364Z",
+    "scoredAt": "2026-02-04T04:32:06.125Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 76,
     "openaiScore": 78,
     "geminiScore": 75,
-    "kimiScore": 76,
+    "kimiScore": 78,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

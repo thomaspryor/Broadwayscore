@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Tomei brings a touching vulnerability to Serafina, finding the wounded child within the tempestuous woman. Her performance grows in emotional complexity as the evening progresses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,9 +19,58 @@
   "contentTier": "invalid",
   "contentTierReason": "Short text (26 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T04:19:10.173Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or fragment describing one performance aspect, not a complete review with an evaluative verdict; openai: This is an excerpt focusing solely on a performance, lacking a broader evaluation of the show.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Tomei brings a touching vulnerability to Serafina, finding the wounded child within the tempestuous woman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be a truncated excerpt focusing only on praise for Tomei's performance. The evaluative language is positive but lacks broader production assessment or explicit recommendation. | Gemini: The review praises Marisa Tomei's performance, noting her emotional complexity and vulnerability. This indicates a positive, though not overwhelmingly enthusiastic, recommendation. | Kimi: Brief excerpt offers clear, warm praise for Tomei's performance with no negative caveats visible, though truncated length prevents assessment of full show verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:37:16.874Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

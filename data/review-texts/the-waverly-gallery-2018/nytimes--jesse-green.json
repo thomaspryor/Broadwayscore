@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "But in the end it is May who makes the play, and the play that makes May, in a performance that is both heartbreaking and hilariously precise.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,9 +19,58 @@
   "contentTier": "invalid",
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T04:29:35.842Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with sufficient evaluative content to determine a recommendation.; openai: This is an excerpt without enough context to determine if it is a review of the current Broadway production.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "May delivers a performance that is both heartbreaking and hilariously precise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The review highlights a standout performance as the defining feature of the play, using strong positive language ('heartbreaking', 'hilariously precise'), indicating a highly favorable view. | Gemini: The review praises the performance as both heartbreaking and hilariously precise, indicating a positive assessment and recommendation. | Kimi: The critic delivers a strong endorsement of the central performance, describing it as emotionally resonant and expertly crafted, though the 'but in the end' construction suggests possible reservations about other elements of the production not visible in this excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:46:46.513Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

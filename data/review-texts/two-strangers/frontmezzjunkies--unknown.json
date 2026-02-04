@@ -32,7 +32,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it a 'winning Broadway arrival' with hope for Tony success, but single excerpt warning requires caution about overall verdict strength. | GPT-4o: The excerpt praises the show's emotional depth and direction, suggesting a strong positive reception. However, with only one curated quote, confidence is low. | Gemini: The review uses strong positive language such as \"winning Broadway arrival\", \"delightfully engaging\", and praises the direction and creative team. The excerpt suggests a strong recommendation. | Kimi: Single excerpt describes the show as a 'winning Broadway arrival' with 'delightfully engaging' performances and 'surefooted' direction, recommending it as emotionally satisfying craft. Score reflects upper Positive range per excerpt guidance, with low confidence due to limited text availability.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('winning Broadway arrival', 'delightfully engaging', 'sneaks up on you') with praise for direction, performances, and craft. Compares favorably to Tony-nominated show and expresses hope for awards recognition. | GPT-4o: The excerpt praises the show as 'winning' and 'delightfully engaging', with strong direction and emotional depth. The positive tone and hope for Tony Award success suggest a strong recommendation. | Gemini: The review uses strong positive language like \"winning Broadway arrival\" and praises the direction and creative team, indicating a strong recommendation. The comparison to \"Maybe Happy Ending\" and hope for Tony Awards further supports this. | Kimi: Single excerpt provides clearly positive evaluation praising direction, performances, and emotional resonance, warranting upper Positive range despite limited context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -42,21 +42,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:50:30.291Z",
+    "scoredAt": "2026-02-04T05:07:27.120Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 0,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

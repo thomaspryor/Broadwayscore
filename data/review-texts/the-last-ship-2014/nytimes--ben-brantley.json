@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show feels more like a concept album with choreography than a fully realized musical, despite the genuine passion that Mr. Sting brings to his material.",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 53,
+    "score": 60,
     "confidence": "medium",
     "range": {
-      "low": 48,
-      "high": 58
+      "low": 55,
+      "high": 65
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The show feels more like a concept album with choreography than a fully realized musical",
+        "quote": "The show feels more like a concept album with choreography than a fully realized musical.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Acknowledges genuine passion but fundamentally questions the show's success as a musical theater piece. This is a qualified criticism that neither recommends nor strongly discourages. | GPT-4o: The review suggests that the show lacks the qualities of a fully realized musical, despite acknowledging Sting's passion. This indicates a negative assessment. | Gemini: The review acknowledges Sting's passion but ultimately finds the show lacking as a fully realized musical, suggesting a mixed or lukewarm reception. | Kimi: The critic fundamentally criticizes the show's theatrical construction, describing it as incomplete ('not a fully realized musical'), with the acknowledgment of Sting's passion framed as insufficient to redeem the production's structural failures. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Acknowledges the star's genuine passion but criticizes the show as incomplete and not fully realized as a musical. Neither recommends nor discourages attendance. | GPT-4o: The review suggests the show lacks the depth and completeness expected of a Broadway musical, despite acknowledging Sting's passion. This indicates a negative recommendation. | Gemini: The review acknowledges Sting's passion but ultimately finds the show lacking in its realization as a fully formed musical, suggesting a mixed or lukewarm reception. | Kimi: The excerpt offers a fundamental criticism of the show's form while acknowledging the creator's genuine commitment, suggesting significant reservations without a clear recommendation to see or skip it.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:48:46.445Z",
+    "scoredAt": "2026-02-04T04:10:53.470Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,17 +66,17 @@
     "claudeScore": 58,
     "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 48,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
+    "kimiBucket": "Mixed",
     "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

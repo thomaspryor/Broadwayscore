@@ -21,7 +21,7 @@
   "textQuality": "truncated",
   "llmScore": {
     "score": 63,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Jackman's performance but suggests the material itself is problematic and doesn't merit his talents. The phrase 'doesn't always reward such efforts' indicates mixed feelings about the overall production. | GPT-4o: The review acknowledges Hugh Jackman's strong performance but suggests the drama itself may not fully justify or complement his efforts, indicating a mixed reception. | Gemini: The review acknowledges Jackman's talent but states the drama doesn't always reward his efforts, indicating a mixed or lukewarm reception. | Kimi: While the critic acknowledges Jackman's considerable talent and charisma, the explicit judgment that the drama 'doesn't always reward such efforts' indicates the production fails to capitalize on its star's strengths, resulting in a disappointing experience rather than a recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Jackman's performance but suggests the material itself is problematic ('doesn't always reward such efforts'), indicating a mixed assessment without a clear recommendation either way. | GPT-4o: The review acknowledges Hugh Jackman's strong performance but suggests that the play itself may not fully justify his efforts, indicating a mixed response. | Gemini: The review acknowledges Jackman's talent but implies the play itself is lacking, resulting in a mixed assessment. | Kimi: While the critic praises Jackman's considerable charisma and skill, the verdict emphasizes that the dramatic material fails to consistently reward either the star's efforts or the audience's attention, creating a lukewarm, qualified assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:18:10.465Z",
+    "scoredAt": "2026-02-04T04:36:04.964Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,17 +61,17 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 52,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 13,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   }
 }

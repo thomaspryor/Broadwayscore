@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rosemary Harris gives a performance of such fierce intelligence and emotional complexity that she transforms what could have been a talky three-character play into a riveting theatrical experience.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (28 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 82,
+    "score": 83,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 78,
+      "high": 88
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the lead performance that 'transforms' the play into a 'riveting theatrical experience', but this appears to be an excerpt with limited context about the overall production. | GPT-4o: The review praises Harris's performance as transformative, turning a potentially dull play into a 'riveting theatrical experience,' indicating a strong recommendation. | Gemini: The review strongly praises Rosemary Harris's performance, stating it transforms the play into a 'riveting theatrical experience,' indicating a positive recommendation. | Kimi: While the review enthusiastically praises Harris's performance as transformative and the overall experience as 'riveting,' the caveat that the material 'could have been talky' without her indicates strong praise with slight reservations about the play itself.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Harris's transformative performance that elevates the material into a 'riveting theatrical experience.' However, this appears to be an excerpt with limited context about the overall production. | GPT-4o: The review offers high praise for Rosemary Harris's performance, describing it as transformative and making the play a 'riveting theatrical experience', indicating a strong recommendation. | Gemini: The review praises Rosemary Harris's performance as transforming the play into a \"riveting theatrical experience,\" indicating a strong positive recommendation. | Kimi: The critic offers high praise for the lead performance as transformative and the overall experience as riveting, indicating a strong recommendation despite the potentially talky nature of the material.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:18:49.588Z",
+    "scoredAt": "2026-02-04T04:36:49.266Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 83,
+    "kimiScore": 84,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 8,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

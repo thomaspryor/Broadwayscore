@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is visually sumptuous but dramatically thin, with a score that rarely soars above the mediocre.",
   "originalScore": null,
-  "assignedScore": 60,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 60,
+    "score": 63,
     "confidence": "medium",
     "range": {
-      "low": 55,
-      "high": 65
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt warning applies - this balanced critique praises visuals but criticizes drama and score as thin/mediocre, suggesting mixed reception without clear recommendation. | GPT-4o: The excerpt describes the show as visually appealing but lacking in dramatic substance and musical quality. The mixed assessment of strengths and weaknesses suggests a neither fully positive nor negative verdict. | Gemini: The review acknowledges visual appeal but criticizes the dramatic depth and score, indicating a mixed assessment. Given the single excerpt, confidence is low. | Kimi: While the critic praises the visual design as 'sumptuous,' the core theatrical elements receive sharp criticism: the drama is deemed 'thin' and the score 'mediocre.' For a musical, these are fundamental weaknesses that outweigh the production values, suggesting the critic does not recommend the show.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows clear criticism of core elements (drama, score) despite acknowledging visual appeal. However, low confidence due to single curated quote that may not represent full verdict. | GPT-4o: The excerpt highlights visual appeal but criticizes the dramatic and musical elements, suggesting a mixed reception. The single excerpt and lack of full context lower confidence. | Gemini: The review describes the show as visually appealing but criticizes the dramatic content and music, indicating a mixed opinion. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt balances genuine praise for the visual design ('visually sumptuous') with significant criticism of the dramatic content ('dramatically thin') and score ('mediocre'), indicating an ambivalent assessment that acknowledges strengths and weaknesses without a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:51:21.231Z",
+    "scoredAt": "2026-02-04T04:14:45.277Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 60,
+    "claudeScore": 45,
+    "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 48,
-    "claudeBucket": "Mixed",
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 14,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

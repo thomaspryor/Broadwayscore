@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict with harsh language ('bombastic', 'overstuffed') and specific criticism that the show fundamentally misunderstands what makes good theater. | GPT-4o: The review uses strong negative language such as 'bombastic', 'overstuffed', and 'mistakes noise for energy', indicating a strongly negative assessment with no redeeming qualities. | Gemini: The review uses strong negative language such as \"bombastic\", \"overstuffed\", and \"mistakes noise for energy and confusion for creativity\", indicating a pan. | Kimi: The critic delivers a concise but unambiguous negative verdict, condemning the production as 'bombastic' and 'overstuffed' with fundamental creative failures ('mistakes noise for energy'). No redeeming qualities are mentioned. | Buckets: claude=Negative, openai=Pan, gemini=Pan, kimi=Negative",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict with harsh criticism calling it 'bombastic,' 'overstuffed,' and criticizing fundamental creative choices. No redeeming qualities mentioned. | GPT-4o: The review uses strongly negative language ('bombastic', 'overstuffed', 'mistakes noise for energy'), indicating a clear lack of recommendation and significant criticism of the production. | Gemini: The review uses strong negative language like \"bombastic\", \"overstuffed\", and \"mistakes noise for energy\", indicating a pan. | Kimi: The review describes the show with strongly negative language ('bombastic,' 'overstuffed,' 'confusion'), indicating a clear lack of recommendation. Confidence is low due to the extreme brevity of the provided text. | Buckets: claude=Negative, openai=Pan, gemini=Pan, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:04:54.533Z",
+    "scoredAt": "2026-02-04T05:20:39.932Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,12 +61,12 @@
     "claudeScore": 38,
     "openaiScore": 20,
     "geminiScore": 20,
-    "kimiScore": 38,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Pan",
     "geminiBucket": "Pan",
     "kimiBucket": "Negative",
-    "scoreDelta": 18,
+    "scoreDelta": 20,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

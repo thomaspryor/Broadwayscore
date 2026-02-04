@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Visit is a show that works best when it embraces its operatic aspirations and worst when it tries to be a traditional Broadway musical.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (25 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The review provides a balanced view, noting both strengths and weaknesses. It doesn't clearly recommend or discourage seeing the show, hence a mixed classification. | Gemini: The review presents a mixed assessment, highlighting both strengths and weaknesses without a clear recommendation. | Kimi: The critic acknowledges effective elements (operatic style) while criticizing other aspects (traditional musical approach), indicating an inconsistent production that succeeds only intermittently.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: This appears to be a truncated excerpt that identifies what works and doesn't work about the show without providing a clear recommendation. The balanced assessment of strengths and weaknesses suggests mixed reception. | GPT-4o: The review highlights both strengths and weaknesses, indicating a mixed experience without a clear recommendation for or against seeing the show. | Gemini: The review highlights both strengths and weaknesses, indicating a mixed experience rather than a clear recommendation. | Kimi: The single-sentence review presents a balanced assessment, praising the show's operatic elements while criticizing its traditional musical theater aspects, indicating a mixed reception without clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,17 +51,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:28:42.093Z",
+    "scoredAt": "2026-02-04T04:45:42.117Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 62,
     "openaiScore": 60,
     "geminiScore": 62,
     "kimiScore": 62,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
@@ -71,6 +72,6 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   }
 }

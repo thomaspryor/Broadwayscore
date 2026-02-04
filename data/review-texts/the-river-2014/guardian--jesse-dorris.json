@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hugh Jackman gives a committed performance in Jez Butterworth's mysterious new play, but the drama itself remains frustratingly opaque.",
   "originalScore": null,
-  "assignedScore": 53,
+  "assignedScore": 52,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 53,
+    "score": 52,
     "confidence": "medium",
     "range": {
-      "low": 48,
-      "high": 58
+      "low": 47,
+      "high": 57
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Hugh Jackman gives a committed performance in Jez Butterworth's mysterious new play, but the drama itself remains frustratingly opaque.",
+        "quote": "the drama itself remains frustratingly opaque",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Praises lead performance but finds the drama 'frustratingly opaque,' indicating neither clear recommendation nor discouragement - a classic mixed review with reservations outweighing positives. | GPT-4o: The review acknowledges Hugh Jackman's performance but criticizes the play as 'frustratingly opaque,' indicating a negative overall assessment. | Gemini: The review praises Jackman's performance but finds the play itself \"frustratingly opaque,\" indicating a mixed assessment. | Kimi: The critic praises the lead actor's commitment but explicitly criticizes the play as 'frustratingly opaque,' indicating the show itself is not recommended. The brevity of the text suggests this may be a truncated excerpt. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: This appears to be just a headline or excerpt. The critic praises Jackman's performance but finds the play itself 'frustratingly opaque,' suggesting mixed feelings without a clear recommendation either way. | GPT-4o: The review acknowledges Hugh Jackman's committed performance but criticizes the play as 'frustratingly opaque,' indicating a negative overall impression. | Gemini: The review praises Jackman's performance but finds the play itself \"frustratingly opaque,\" indicating a mixed reaction and no clear recommendation. | Kimi: While the critic praises Jackman's committed performance, the conjunction 'but' signals that the negative assessment of the drama ('frustratingly opaque') outweighs the positive, indicating the production is not worth seeing. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:17:09.361Z",
+    "scoredAt": "2026-02-04T04:35:31.738Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,7 +66,7 @@
     "claudeScore": 58,
     "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 48,
+    "kimiScore": 45,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",

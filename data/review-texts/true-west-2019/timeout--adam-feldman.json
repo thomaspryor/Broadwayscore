@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production succeeds largely because of the ferocious commitment of its two leads.",
+        "quote": "The production succeeds largely because of the ferocious commitment of its two leads, Ethan Hawke and Paul Dano.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The original rating of 80 places it in the Positive bucket. The review highlights strong performances as a key success factor, aligning with a positive recommendation. | Gemini: The review highlights the strong performances of the leads as the main reason for the production's success. Given the original rating of 80, this indicates a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The review explicitly states the production 'succeeds' and praises the 'ferocious commitment' of the lead actors, indicating a clear positive recommendation. The original rating of 80 supports this classification in the Positive bucket.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The original rating of 80 suggests a positive review. The key quote highlights the strong performances of the leads, indicating a recommendation. | Gemini: The review is very short, but the critic explicitly states that the production succeeds due to the leads' performances. Given the limited text, I'm scoring it as positive but with low confidence. | Kimi: The critic assigns an 80/100 rating and praises the 'ferocious commitment' of the alternating leads as the primary reason for the production's success, indicating a solid recommendation despite the brief excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:48:40.371Z",
+    "scoredAt": "2026-02-04T05:05:50.942Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

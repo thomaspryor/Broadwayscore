@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for both the play and production quality, but the brief excerpt limits ability to gauge enthusiasm level. The phrase 'worthy of its worth' suggests solid approval without extreme superlatives. | GPT-4o: The review uses strong positive language ('beautifully written', 'worthy of its worth') indicating a high level of praise for both the play and its production. | Gemini: The review explicitly states that the production is \"worthy of its worth\", indicating a strong positive recommendation. | Kimi: The critic offers unambiguous praise for both the play's writing and the quality of the production, indicating a clear recommendation to see the show.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment praising both the play and production quality, though brief and without elaboration or strong superlatives. | GPT-4o: The review uses strong positive language, praising both the writing and the production quality, indicating a highly enthusiastic recommendation. | Gemini: The review is short but contains clear and enthusiastic praise, stating the production is \"worthy of its worth,\" indicating a strong positive recommendation. | Kimi: The reviewer describes the play as 'beautifully written' and praises the production as 'worthy of its worth,' indicating a strong recommendation without any noted reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,22 +56,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:31:05.187Z",
+    "scoredAt": "2026-02-04T04:48:13.951Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 80,
+    "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

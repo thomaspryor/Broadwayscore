@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses the word 'magnificent' to describe the revival, indicating a strong, enthusiastic recommendation with no reservations. | Gemini: The review uses the word \"magnificent\" to describe the revival, indicating a very positive and enthusiastic recommendation. | Kimi: The use of 'magnificent' indicates unqualified enthusiasm and highest-tier praise for this revival, placing it firmly in the Rave category despite the excerpt's brevity.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses the word 'magnificent' to describe the revival, indicating a strong, enthusiastic recommendation with no reservations. | Gemini: The review uses the word \"magnificent,\" indicating a very positive and enthusiastic assessment of the revival. The presence of acclaimed actresses further supports this classification. | Kimi: The critic uses the superlative 'magnificent' to describe the revival, indicating unqualified enthusiasm characteristic of a rave. However, confidence is low given the text appears severely truncated to a single sentence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:37:48.963Z",
+    "scoredAt": "2026-02-04T04:54:17.443Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,8 +60,8 @@
   "ensembleData": {
     "claudeScore": null,
     "openaiScore": 90,
-    "geminiScore": 88,
-    "kimiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 88,
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",

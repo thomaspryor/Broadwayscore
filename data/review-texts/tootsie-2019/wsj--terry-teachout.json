@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Tootsie' work so well is that it succeeds both as a crowd-pleasing musical comedy and as a thoughtful meditation on gender roles in contemporary America.",
   "originalScore": null,
-  "assignedScore": 82,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 82,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 77,
-      "high": 87
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment praising the show's dual success as entertainment and meaningful commentary. 'Works so well' and 'succeeds' indicate strong recommendation. | GPT-4o: The review highlights the show's success in both entertainment and thoughtful commentary, indicating a strong recommendation without reservations. | Gemini: The review explicitly states what makes the show work well, highlighting its success as both entertainment and a thoughtful commentary, indicating a strong positive recommendation. | Kimi: The critic offers unqualified praise, stating the show 'works so well' and 'succeeds' on dual levels as both comedy and serious meditation, indicating a strong recommendation despite the brevity of the excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment saying the show 'works so well' and 'succeeds' on multiple levels, but this appears to be an excerpt with limited context for determining strength of recommendation. | GPT-4o: The review offers strong praise for the show's dual success as both entertaining and thoughtful, indicating a high level of recommendation. | Gemini: The review explicitly states what makes the show work well, indicating a positive assessment and recommendation. | Kimi: The critic offers unqualified praise for the show's success as both entertainment and social commentary, using strong positive language ('work so well,' 'succeeds').",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:43:20.827Z",
+    "scoredAt": "2026-02-04T05:00:06.956Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 79,
     "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 83,
+    "geminiScore": 78,
+    "kimiScore": 80,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 9,
+    "scoreDelta": 12,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

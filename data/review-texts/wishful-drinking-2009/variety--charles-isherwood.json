@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Critic acknowledges positive elements (funny material, appealing delivery) but delivers a qualified negative verdict about the show's theatrical merit. The 'but' structure and therapy comparison indicate disappointment despite performer strengths. | GPT-4o: The review acknowledges some positive aspects such as the humor and delivery, but overall suggests the show lacks polish and feels more like therapy than theater, leading to a mixed verdict. | Gemini: The review acknowledges positive aspects (funny material, appealing delivery) but ultimately finds the show lacking polish and more akin to therapy than theater, resulting in a mixed assessment. | Kimi: The critic offers faint praise ('funny enough,' 'appealingly loose') for Fisher's material and delivery, but the dominant 'But' clause criticizes the show as self-indulgent therapy rather than crafted theater, creating an overall mixed assessment.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges positive qualities (funny material, appealing delivery) but delivers a clear criticism that it lacks theatrical polish, positioning it as neither recommended nor discouraged. | GPT-4o: The review acknowledges the humor and delivery but criticizes the overall structure as lacking polish, suggesting a mixed impression. | Gemini: The review acknowledges positive aspects (funny material, appealing delivery) but ultimately finds the show lacking polish and more akin to therapy than theater, resulting in a mixed assessment. | Kimi: The critic acknowledges Fisher's humor and appealing delivery but ultimately characterizes the show as an unpolished therapy session rather than quality theater, creating a balanced but lukewarm assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:01:49.670Z",
+    "scoredAt": "2026-02-04T05:18:26.386Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

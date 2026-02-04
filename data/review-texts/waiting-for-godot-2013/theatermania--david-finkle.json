@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McKellen and Stewart bring their considerable star power and decades of theatrical experience to Beckett's masterpiece, creating a production that feels both timeless and immediate.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (25 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 79,
+    "score": 77,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 72,
+      "high": 82
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the stars and calls it a 'masterpiece' production that feels 'timeless and immediate', but this appears to be a brief excerpt with insufficient context for a higher confidence score. | GPT-4o: The review praises the production as 'timeless and immediate,' highlighting the star power and experience of the lead actors, suggesting a strong recommendation. | Gemini: The review praises the performances of McKellen and Stewart and calls the production \"timeless and immediate,\" indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the leads' performances and describes the production as 'timeless and immediate,' indicating strong approval without any reservations.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence praising the stars and calling the production both 'timeless and immediate', but extremely brief excerpt limits confidence in full critical assessment. | GPT-4o: The review praises the production as a 'masterpiece' and highlights the star power and experience of the lead actors, suggesting a highly positive reception. | Gemini: The review praises the performances of McKellen and Stewart and calls the production \"timeless and immediate,\" indicating a positive recommendation. | Kimi: The excerpt offers clear praise for the lead performances and production quality, calling it a 'masterpiece' that feels 'timeless and immediate,' indicating a solid recommendation despite the brief text.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:53:43.120Z",
+    "scoredAt": "2026-02-04T05:10:12.005Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 78,
-    "kimiScore": 82,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

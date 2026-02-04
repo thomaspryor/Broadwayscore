@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review praises the lead performances as 'powerhouse' but finds the musical itself merely 'serviceable' with book and score that 'don't quite live up' to the performers' talents. This is classic mixed territory - acknowledging strengths while highlighting significant weaknesses. | GPT-4o: The review acknowledges strong performances but notes that the book and score fall short, resulting in a mixed recommendation. | Gemini: The review praises the performances but notes the book and score don't quite live up to the talents, indicating a positive but qualified recommendation. | Kimi: The critic uses lukewarm language ('serviceable') to describe the show while praising the lead performances, explicitly noting that the material fails to match the stars' talents. This creates a balanced mixed verdict without a clear recommendation to see or skip the production.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls the musical 'serviceable' and praises the lead performances, but notes the book and score 'don't quite live up to their talents,' indicating neither a recommendation nor discouragement. | GPT-4o: The review acknowledges strong performances but indicates that the book and score fall short, leading to a mixed overall impression. | Gemini: The review praises the performances of the leads but notes that the book and score are not as strong, indicating a positive but qualified recommendation. | Kimi: The critic offers qualified praise for the lead performances ('powerhouse') but explicitly notes that the book and score fail to match that quality, resulting in a lukewarm 'serviceable' assessment rather than a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:57:36.116Z",
+    "scoredAt": "2026-02-04T05:14:19.876Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

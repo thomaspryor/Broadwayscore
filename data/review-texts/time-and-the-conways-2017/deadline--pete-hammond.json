@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "This is a beautiful production of a beautiful play, one that deserves to find its audience despite the crowded Broadway landscape.",
+        "quote": "This is a beautiful production of a beautiful play, one that deserves to find its audience",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling both play and production 'beautiful' and stating it 'deserves to find its audience,' though brief length limits confidence level. | GPT-4o: The review uses strong positive language ('beautiful production', 'deserves to find its audience') indicating a solid recommendation to see the show. | Gemini: The review explicitly states that the production is beautiful and deserves to find its audience, indicating a positive recommendation. | Kimi: The critic uses the word 'beautiful' twice and explicitly states the show deserves to find its audience, indicating a clear recommendation to see it.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling both the play and production 'beautiful' and stating it 'deserves to find its audience', though brief and without elaboration on specific strengths. | GPT-4o: The review uses strong positive language ('beautiful production', 'deserves to find its audience') indicating a solid recommendation with no reservations. | Gemini: The review explicitly states that the play \"deserves to find its audience,\" indicating a positive recommendation. The description of the production and play as \"beautiful\" further supports this classification. | Kimi: The critic offers unqualified praise calling the show 'beautiful' twice and explicitly states it deserves to find its audience, indicating a warm recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:38:07.898Z",
+    "scoredAt": "2026-02-04T04:54:45.680Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 76,
     "openaiScore": 82,
     "geminiScore": 80,
-    "kimiScore": 82,
+    "kimiScore": 81,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

@@ -23,7 +23,7 @@
   ],
   "llmScore": {
     "score": 74,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 69,
       "high": 79
@@ -38,12 +38,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "So, though my eyes occasionally glazed seeing 'War Paint,' I wouldn't have missed it, if only to hear its leading ladies' climactic ballads.",
+        "quote": "So, though my eyes occasionally glazed seeing 'War Paint,' I wouldn't have missed it",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified recommendation - critic admits to occasional boredom but still says 'wouldn't have missed it.' Praises lead performances but acknowledges show's 'essential sameness.' | GPT-4o: The excerpt praises the performances of Ms. Ebersole and Ms. LuPone, suggesting the show is worth seeing for their climactic ballads despite some reservations about the show's 'essential sameness'. The positive mention of the stars' performances suggests a mild recommendation. | Gemini: The review praises the performances of the leading ladies and their numbers, but also mentions that the reviewer's eyes occasionally glazed over. This suggests a positive but not overwhelmingly enthusiastic recommendation. | Kimi: While the critic notes the show's 'essential sameness' and moments of boredom ('eyes occasionally glazed'), the final verdict 'I wouldn't have missed it' constitutes a qualified recommendation, primarily for the star performances.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws ('essential sameness,' 'eyes occasionally glazed') but concludes they 'wouldn't have missed it' and praises the leading performances. This is a qualified positive recommendation, but the single excerpt warning and admission of boredom keeps it at the lower end of Positive. | GPT-4o: The excerpt praises the performances of the leading ladies and the songs written for them, suggesting a positive experience despite some reservations about the show's 'sameness'. The recommendation is mild, with specific praise for the stars' performances. | Gemini: The reviewer acknowledges some issues ('eyes occasionally glazed') but ultimately states they 'wouldn’t have missed it,' indicating a positive, though qualified, recommendation. Confidence is low due to the limited excerpt. | Kimi: The critic offers qualified praise, noting the show's 'essential sameness' and occasionally glazing eyes, but ultimately recommends seeing it specifically for the formidable performances of Ebersole and LuPone. Given this is a single excerpt, the score reflects a cautious lower-positive range.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,22 +53,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:58:01.659Z",
+    "scoredAt": "2026-02-04T05:14:52.977Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 72,
-    "geminiScore": 77,
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 78,
     "kimiScore": 73,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 5,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

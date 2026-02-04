@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances with specific, sophisticated language ('finely tuned', 'genuine chemistry', 'grounded'). However, this is only one curated excerpt focusing on acting, so the full review sentiment remains unclear. | GPT-4o: The excerpt praises the performances as 'finely tuned' and 'quiet and grounded,' suggesting a positive view of the actors' work. However, the lack of a broader context or explicit recommendation limits the confidence in the overall verdict. | Gemini: The excerpt praises the performances as \"finely tuned\" and \"completely in service of the production,\" indicating a positive assessment. Given it's a single excerpt, I'm placing it at the higher end of the positive range due to the strong language. | Kimi: The excerpt uses clearly positive language ('finely tuned,' 'profound,' 'genuine chemistry') to praise the lead performances, suggesting a solid recommendation. As a single curated excerpt, confidence is lowered since it may not capture the full review's verdict on the complete production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances with specific appreciation for their chemistry and authenticity. However, this is only one excerpt focusing solely on acting, so the overall show assessment is unclear. | GPT-4o: The excerpt praises the performances and chemistry of the actors, suggesting a positive view of the production. However, the lack of a full review and the single excerpt warning necessitate a cautious, low-confidence score at the lower end of the Positive range. | Gemini: The excerpt focuses on the positive aspects of the performances, highlighting their authenticity and chemistry. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the lead actors' 'finely tuned' and 'profound' performances and their chemistry, though the single curated quote limits confidence in the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,13 +46,13 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:54:44.237Z",
+    "scoredAt": "2026-02-04T05:11:29.127Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 81,
+    "claudeScore": 82,
     "openaiScore": 72,
     "geminiScore": 81,
     "kimiScore": 82,

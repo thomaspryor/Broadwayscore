@@ -26,7 +26,7 @@
   ],
   "llmScore": {
     "score": 63,
-    "confidence": "medium",
+    "confidence": "high",
     "range": {
       "low": 58,
       "high": 68
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Colm Tóibín's monodrama is a stirring vehicle for Fiona Shaw, but the material feels better suited to intimate theater than Broadway.",
+        "quote": "a stirring vehicle for Fiona Shaw, but the material feels better suited to intimate theater than Broadway",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises Shaw's performance as 'stirring' but criticizes the Broadway venue choice, suggesting the material doesn't work well in this context. A qualified assessment without clear recommendation either way. | GPT-4o: The review praises Fiona Shaw's performance but suggests the material is not well-suited for Broadway, indicating a mixed reception. | Gemini: The review acknowledges Fiona Shaw's performance but suggests the material is not well-suited for Broadway, indicating a mixed assessment. | Kimi: The critic offers qualified praise, calling the show a 'stirring vehicle' for Shaw's performance while questioning whether the intimate material works effectively on a Broadway scale.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises Shaw's performance as 'stirring' but questions whether the material works on Broadway, suggesting it's not ideally suited for the venue. This creates a mixed recommendation. | GPT-4o: The review praises Fiona Shaw's performance but suggests the material is not ideal for Broadway, indicating mixed feelings about the production's suitability for its current venue. | Gemini: The review praises Fiona Shaw's performance but suggests the material is not a good fit for Broadway, indicating a mixed assessment. | Kimi: The critic praises the monodrama as a 'stirring vehicle' for the lead performance but questions whether the intimate material works effectively on a Broadway scale, creating a qualified rather than enthusiastic recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:25:16.795Z",
+    "scoredAt": "2026-02-04T04:42:28.859Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,17 +66,17 @@
     "claudeScore": 62,
     "openaiScore": 65,
     "geminiScore": 62,
-    "kimiScore": 73,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Positive",
-    "scoreDelta": 11,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Mixed"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
   }
 }

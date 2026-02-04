@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 94,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 93,
-    "confidence": "medium",
+    "score": 94,
+    "confidence": "high",
     "range": {
-      "low": 88,
-      "high": 98
+      "low": 89,
+      "high": 99
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified superlatives ('best play', 'most important') with multiple dimensions of praise - artistic merit, social significance, and civic value. Despite being an excerpt, the language is definitively in rave territory. | GPT-4o: The excerpt provides high praise, calling it the best and most important play of the season, and highlights its civic engagement, indicating a strong recommendation. | Gemini: The review uses superlative language, calling it the best and most important play of the season. It also describes the play as a work of inspired protest and a tangible contribution to change. | Kimi: The excerpt contains superlative praise calling the show the best and most important of the season with phrases like 'work of inspired protest,' but as a single curated quote that may be cherry-picked, confidence is low and the score is capped in the upper Positive range per the single-excerpt warning.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being a single excerpt, this contains unqualified superlatives ('best play', 'most important') and describes it as essential civic engagement. The language is consistently rapturous throughout. | GPT-4o: The excerpt uses superlatives ('best play', 'most important') and praises the play as an 'act of civic engagement', indicating a strong recommendation. However, the single excerpt warning suggests caution, so confidence is low. | Gemini: The review uses superlatives like \"best play\", \"most important\", and describes the play as \"an act of civic engagement\", indicating a rave review. | Kimi: The excerpt contains unqualified superlatives ('best play', 'most important', 'inspired protest') and explicitly calls it essential civic theater, warranting a top-range Rave score despite the limited single-excerpt context.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:00:21.945Z",
+    "scoredAt": "2026-02-04T05:17:09.250Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,17 +63,17 @@
     "claudeScore": 92,
     "openaiScore": 95,
     "geminiScore": 92,
-    "kimiScore": 83,
+    "kimiScore": 96,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
-    "kimiBucket": "Positive",
-    "scoreDelta": 12,
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
   }
 }

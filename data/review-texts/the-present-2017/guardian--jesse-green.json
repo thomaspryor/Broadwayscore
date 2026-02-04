@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Blanchett is magnificent in this adaptation of Chekhov's first play, but the production around her feels uncertain and overwrought.",
   "originalScore": null,
-  "assignedScore": 64,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (19 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 64,
+    "score": 63,
     "confidence": "high",
     "range": {
-      "low": 59,
-      "high": 69
+      "low": 58,
+      "high": 68
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: High praise for Blanchett's performance but clear criticism of the production as 'uncertain and overwrought,' indicating a mixed experience with significant reservations. | GPT-4o: The review praises Blanchett's performance but criticizes the overall production as 'uncertain and overwrought,' indicating a mixed reception. | Gemini: The review praises Blanchett's performance as magnificent, but criticizes the production as uncertain and overwrought, resulting in a mixed assessment. | Kimi: While Blanchett receives superlative praise, the production is criticized as 'uncertain and overwrought,' creating a split verdict that neither fully endorses nor rejects the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear praise for Blanchett's performance balanced by criticism of the overall production quality. The 'but' construction indicates significant reservations that prevent a positive recommendation. | GPT-4o: The review praises Blanchett's performance but criticizes the overall production as uncertain and overwrought, indicating a mixed reception. | Gemini: The review praises Blanchett's performance but criticizes the overall production, resulting in a mixed assessment. | Kimi: The review offers high praise for Blanchett's performance ('magnificent') but significant criticism of the production itself ('uncertain and overwrought'), creating a balanced mixed assessment without clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:07:48.170Z",
+    "scoredAt": "2026-02-04T04:29:59.290Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -60,7 +60,7 @@
   "ensembleData": {
     "claudeScore": 62,
     "openaiScore": 65,
-    "geminiScore": 65,
+    "geminiScore": 62,
     "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",

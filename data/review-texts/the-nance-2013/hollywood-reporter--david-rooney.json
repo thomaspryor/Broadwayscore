@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nathan Lane gives a powerhouse performance in Douglas Carter Beane's moving drama about a comedian who performs in drag in 1930s burlesque houses.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 80,
+    "score": 79,
     "confidence": "medium",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 74,
+      "high": 84
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises Lane's 'powerhouse performance' and calls the drama 'moving', indicating positive reception. However, this is only one curated quote, so confidence is low and verdict may not represent the full review. | GPT-4o: The excerpt highlights a strong performance by Nathan Lane and describes the drama as 'moving,' suggesting a positive impression. However, due to the single excerpt warning, the overall sentiment might not be fully captured, leading to a lower confidence level. | Gemini: The excerpt praises Nathan Lane's performance as a \"powerhouse\" in a \"moving drama.\" Given the limited text, I am scoring it as positive, but with low confidence. | Kimi: The single available excerpt contains strongly positive language ('powerhouse performance,' 'moving drama'), indicating a clear recommendation in the upper Positive range. However, confidence is low due to the limited excerpt availability.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Lane's 'powerhouse performance' and calling the drama 'moving' suggests strong positive elements, but limited text prevents full assessment of overall recommendation. | GPT-4o: The excerpt praises Nathan Lane's performance and describes the drama as 'moving,' suggesting a positive view. However, without additional context, the overall sentiment is unclear, leading to a cautious, low-confidence score. | Gemini: The excerpt focuses on a \"powerhouse performance\" and a \"moving drama,\" which suggests a positive, though limited, assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt contains strong praise for both the lead performance ('powerhouse') and the play itself ('moving'), indicating a clear positive recommendation. However, with only one curated excerpt available, confidence remains low regarding the full review's overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,22 +55,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:57:19.175Z",
+    "scoredAt": "2026-02-04T04:19:23.015Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 74,
+    "claudeScore": 82,
+    "openaiScore": 72,
     "geminiScore": 81,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

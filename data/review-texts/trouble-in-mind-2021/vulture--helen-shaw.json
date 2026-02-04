@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Alice Childress's 1955 play about Black actors rehearsing a lynching drama feels both of its time and urgently contemporary, and LaChanze gives a performance that's worth the 66-year wait.",
   "originalScore": null,
-  "assignedScore": 80,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 80,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 75,
-      "high": 85
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance as 'worth the 66-year wait' indicates enthusiastic recommendation. The play is described as both historically significant and 'urgently contemporary,' suggesting solid artistic merit. | GPT-4o: The review highlights the play's relevance and praises LaChanze's performance as exceptional, indicating a strong recommendation. | Gemini: The review explicitly states that LaChanze's performance is \"worth the 66-year wait,\" indicating a positive recommendation, although it's focused on a single element. | Kimi: The critic praises the play as urgently contemporary and LaChanze's performance as worth the long wait, indicating a clear recommendation to see the show.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with the specific phrase 'worth the wait' indicating clear recommendation, plus acknowledgment of the play's contemporary relevance. | GPT-4o: The review highlights the play's contemporary relevance and praises LaChanze's performance as exceptional, indicating a strong recommendation. | Gemini: The review explicitly states that LaChanze's performance is \"worth the 66-year wait,\" indicating a positive recommendation. | Kimi: The critic offers a clear endorsement, praising the production as urgently contemporary and the lead performance as worth the long wait for this Broadway premiere.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:48:25.432Z",
+    "scoredAt": "2026-02-04T05:05:34.094Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -65,13 +65,13 @@
   "ensembleData": {
     "claudeScore": 82,
     "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

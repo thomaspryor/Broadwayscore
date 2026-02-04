@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges significant flaws (sloppy, self-indulgent, dull) but concludes the show is 'necessary,' suggesting cultural or artistic value that counterbalances the criticisms without constituting a clear recommendation. | GPT-4o: The review acknowledges significant flaws ('sloppy', 'self-indulgent', 'dull') but also describes the show as 'necessary', indicating a mixed evaluation with some redeeming qualities. | Gemini: The review presents both positive and negative aspects of the show, leading to a mixed classification. The word 'but' indicates a shift in perspective, suggesting a balanced view. | Kimi: The critic cites significant flaws in execution (sloppy, self-indulgent, dull) but counters with the show's perceived necessity or importance, creating a mixed verdict that neither recommends nor discourages outright.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic delivers harsh criticism ('sloppy, self-indulgent and often dull') but ultimately endorses the show as 'necessary,' indicating mixed feelings with no clear recommendation either way. | GPT-4o: The review acknowledges significant flaws ('sloppy, self-indulgent, dull') but also describes the show as 'necessary,' indicating a mixed assessment with some redeeming value. | Gemini: The review presents both negative and positive aspects, ultimately landing in the mixed category. The 'but it's also necessary' suggests a reason to see it despite its flaws. | Kimi: The critic balances harsh criticism of the production quality ('sloppy, self-indulgent and often dull') with an acknowledgment of its cultural importance ('necessary'), resulting in an ambivalent assessment that neither fully recommends nor discourages attendance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:24:46.400Z",
+    "scoredAt": "2026-02-04T04:41:55.994Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,9 +59,9 @@
   },
   "ensembleData": {
     "claudeScore": 62,
-    "openaiScore": 60,
+    "openaiScore": 58,
     "geminiScore": 62,
-    "kimiScore": 58,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

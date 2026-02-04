@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,11 +22,11 @@
     "show-score-playwright"
   ],
   "llmScore": {
-    "score": 83,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('joyful hoot', 'makes you believe', 'a blast', 'consistently delivers') with comparison to 'greatest Golden Age musicals'. Single excerpt warning noted, but tone is clearly enthusiastic recommendation. | GPT-4o: The excerpt is highly positive, using enthusiastic language like 'joyful hoot' and 'makes you believe in musical comedy again'. Despite the single excerpt warning, the tone suggests a strong recommendation. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"joyful hoot\", \"makes you believe in musical comedy again\", and \"a blast\". Given the single excerpt warning, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt offers unqualified enthusiasm, praising the show as a 'joyful hoot' that restores faith in the musical comedy genre, though as a single curated quote it may not reflect the complete critical assessment.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong enthusiastic language ('joyful hoot', 'makes you believe again', 'consistently delivers') with comparison to greatest Golden Age musicals. Single excerpt warning noted, but tone is clearly positive with no reservations mentioned. | GPT-4o: The excerpt is highly positive, describing the show as a 'joyful hoot' and praising its ability to 'make you believe in musical comedy again.' The language suggests a strong recommendation, fitting the Rave bucket. However, confidence is low due to the single excerpt warning. | Gemini: The review excerpt is overwhelmingly positive, using phrases like \"joyful hoot\", \"makes you believe in musical comedy again\", and \"a blast\". Given the single excerpt warning, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt contains strong praise ('joyful hoot', 'makes you believe in musical comedy again', 'are a blast') indicating a clear recommendation, though as a single curated excerpt it may not capture the full review's nuance.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,7 +53,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:15:30.409Z",
+    "scoredAt": "2026-02-04T04:34:13.708Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,7 +63,7 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 84,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

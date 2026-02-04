@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous revival of the Bernstein-Sondheim musical classic proves that great theater is timeless. The production crackles with energy and passion that makes the familiar feel fresh again.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (28 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 90,
-    "confidence": "high",
+    "score": 91,
+    "confidence": "medium",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with strong positive language ('gorgeous', 'crackles with energy and passion') and declares the production proves timeless greatness, indicating enthusiastic recommendation. | GPT-4o: The review uses strong positive language ('gorgeous revival', 'crackles with energy and passion') and emphasizes the timelessness and freshness of the production, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"gorgeous\" and \"classic\" and states that the production \"crackles with energy and passion,\" indicating a rave review. | Kimi: The critic offers unqualified praise using words like 'gorgeous,' 'timeless,' and 'crackles with energy,' indicating strong enthusiasm for the production despite the brief excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise calling it 'gorgeous' with enthusiastic language about energy, passion, and timeless quality, indicating clear recommendation. | GPT-4o: The review uses superlative language ('gorgeous', 'crackles with energy and passion') and emphasizes the timelessness and freshness of the production, indicating a strong recommendation. | Gemini: The review uses strong positive language like \"gorgeous revival\" and \"great theater is timeless.\" The phrase \"crackles with energy and passion\" indicates a highly positive experience, justifying a Rave score. | Kimi: Unqualified praise with superlatives ('gorgeous', 'timeless', 'crackles with energy') and no reservations; the critic finds the production makes the familiar feel fresh.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:58:49.316Z",
+    "scoredAt": "2026-02-04T05:15:17.946Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 88,
+    "claudeScore": 82,
     "openaiScore": 92,
     "geminiScore": 90,
-    "kimiScore": 91,
-    "claudeBucket": "Rave",
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 4,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Rave"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
   }
 }

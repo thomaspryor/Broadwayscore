@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "It's an endearing, if unpolished, valentine to the creative process and to the bonds forged by people united in the quixotic pursuit of getting a show on Broadway.",
+        "quote": "It's an endearing, if unpolished, valentine to the creative process",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show 'endearing' and appreciates its theme, but the qualifier 'if unpolished' indicates notable flaws that prevent stronger enthusiasm. | GPT-4o: The review describes the show as 'endearing' and acknowledges its charm, but also notes it is 'unpolished'. This suggests a positive recommendation, albeit with some reservations. | Gemini: The review uses the word \"endearing\" which is positive, but also notes that it is \"unpolished\", indicating a recommendation with reservations. | Kimi: The critic offers a qualified recommendation, using warm terms like 'endearing' and 'valentine' while explicitly noting the production is 'unpolished,' suggesting solid merit despite noticeable flaws.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'endearing' and a 'valentine' to the creative process, which is positive, but the 'unpolished' qualifier and brief excerpt suggest reservations that keep this in the lower positive range. | GPT-4o: The review describes the show as 'endearing', indicating a positive view, but notes it is 'unpolished', suggesting some reservations. | Gemini: The review uses the word \"endearing\" which is positive, but also states that the show is \"unpolished\", indicating reservations. This places it in the lower end of the positive bucket. | Kimi: The critic uses affectionate language ('endearing,' 'valentine') indicating a recommendation, but the caveat 'unpolished' tempers the enthusiasm, suggesting a qualified positive reception rather than unqualified praise.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:41:12.514Z",
+    "scoredAt": "2026-02-04T04:57:38.540Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -59,14 +59,14 @@
   },
   "ensembleData": {
     "claudeScore": 73,
-    "openaiScore": 72,
+    "openaiScore": 74,
     "geminiScore": 74,
     "kimiScore": 75,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 2,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

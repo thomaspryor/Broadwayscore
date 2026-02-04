@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tom Stoppard's 1982 play about love, marriage and the nature of art gets a handsome but lifeless revival that squanders a terrific cast.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 43,
+    "score": 45,
     "confidence": "high",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 40,
+      "high": 50
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "gets a handsome but lifeless revival that squanders a terrific cast",
+        "quote": "handsome but lifeless revival that squanders a terrific cast",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the revival 'lifeless' and criticizing it for 'squandering' good actors. Despite praising the cast and calling it 'handsome,' the overall assessment is disappointment. | GPT-4o: The review describes the revival as 'lifeless' despite having a 'terrific cast,' indicating a negative overall assessment of the production. | Gemini: The review explicitly states the revival is \"lifeless\" and \"squanders a terrific cast,\" indicating a negative assessment despite acknowledging positive aspects like the cast. | Kimi: The critic delivers a clear negative verdict, describing the revival as 'lifeless' and stating it 'squanders' its talented cast, indicating the production fails despite handsome staging and strong actors.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the revival 'lifeless' and criticizing it for wasting good actors, despite acknowledging production values and cast quality. | GPT-4o: The review describes the revival as 'lifeless' and suggests that the cast's potential is wasted, indicating a negative assessment of the production. | Gemini: The review explicitly states that the revival is \"lifeless\" and \"squanders a terrific cast\", indicating a negative assessment despite acknowledging the handsome production. | Kimi: The critic describes the production as 'lifeless' and explicitly states it 'squanders' the terrific cast, indicating a failed revival despite strong ingredients. The brief length warrants low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:16:21.901Z",
+    "scoredAt": "2026-02-04T04:34:41.303Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,14 +64,14 @@
   },
   "ensembleData": {
     "claudeScore": 45,
-    "openaiScore": 40,
+    "openaiScore": 45,
     "geminiScore": 45,
-    "kimiScore": 42,
+    "kimiScore": 45,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Negative",
-    "scoreDelta": 5,
+    "scoreDelta": 0,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

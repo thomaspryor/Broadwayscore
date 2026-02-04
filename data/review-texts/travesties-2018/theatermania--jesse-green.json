@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for lead performance ('tour de force') and calls Stoppard's play 'brilliant', but this appears to be a brief excerpt focusing mainly on one element rather than a comprehensive review assessment. | GPT-4o: The review praises Tom Hollander's performance as a 'tour de force' and describes the play as 'brilliant', indicating a strong recommendation. However, the review is brief, so confidence is medium. | Gemini: The review praises Tom Hollander's performance as a 'tour de force' and calls the play 'brilliant,' indicating a positive recommendation. | Kimi: The critic employs unqualified superlatives ('tour de force', 'brilliant') with no reservations, indicating strong enthusiasm for the production. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for lead performance calling it a 'tour de force' and describes the play as 'brilliant', but limited text provides only brief assessment. | GPT-4o: The review praises Tom Hollander's performance as a 'tour de force' and describes the play as 'brilliant,' indicating a strong recommendation. However, the review is brief, leading to medium confidence. | Gemini: The review uses strong positive language, calling Hollander's performance a \"tour de force\" and the play \"brilliant.\" This indicates a positive recommendation. | Kimi: The critic employs superlatives ('tour de force,' 'brilliant') to praise both the lead performance and the play itself without reservation, indicating an enthusiastic recommendation despite the excerpt's brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:47:23.271Z",
+    "scoredAt": "2026-02-04T05:04:22.314Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,12 +61,12 @@
     "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 80,
-    "kimiScore": 92,
+    "kimiScore": 90,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 12,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

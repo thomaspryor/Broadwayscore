@@ -16,61 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "LaChanze delivers a knockout performance as Wiletta Mayer, a veteran Black actress forced to swallow her pride and talent to make a living in the segregated theater world of the 1950s.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (31 words)",
   "textQuality": "truncated",
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "LaChanze delivers a knockout performance as Wiletta Mayer",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance ('knockout') suggests positive recommendation, but this appears to be a brief excerpt with limited context for full evaluation. | Gemini: The review highlights a \"knockout performance\" by the lead actress, which indicates a positive recommendation. | Kimi: The excerpt offers strong praise ('knockout') for the lead performance, indicating a recommendation to see the show for this element. However, as a brief excerpt without assessment of the overall production, confidence is reduced.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:47:51.806Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 76,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "rejectedAt": "2026-02-04T05:05:00.471Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or pull quote describing a performance, not a complete review with critical evaluation or recommendation.; openai: The text is a single sentence highlighting a performance, lacking any evaluative content about the overall production.",
+  "promptVersion": "5.2.0"
 }

@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the production's 'clarity and emotional precision' and calls the source material a 'masterpiece.' However, with only one excerpt available, confidence is low as this could be cherry-picked from a more nuanced review. | GPT-4o: The excerpt provides strong praise for the production's clarity and emotional precision, suggesting a highly positive reception. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"masterpiece,\" \"clarity,\" and \"emotional precision,\" suggesting a positive recommendation. However, because it is a single excerpt, the confidence is low. | Kimi: The excerpt describes the production as emotionally precise and clear, referring to the source material as a 'masterpiece'—indicating strong approval. However, as a single curated excerpt, the full context of the review is unavailable.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production's clarity and emotional precision, calling the source material a 'masterpiece.' However, confidence is medium due to single excerpt limitation and lack of broader verdict context. | GPT-4o: The excerpt praises the production's clarity and emotional precision, suggesting a high level of performance quality. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"masterpiece,\" \"clarity,\" and \"emotional precision,\" suggesting a positive recommendation. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers strong unqualified praise for the production's performances and emotional precision. However, as a single curated excerpt, confidence is reduced and the score reflects the upper range of Positive rather than Rave.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:46:35.340Z",
+    "scoredAt": "2026-02-04T05:03:46.261Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -58,14 +58,14 @@
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 85,
+    "openaiScore": 86,
     "geminiScore": 82,
-    "kimiScore": 82,
+    "kimiScore": 83,
     "claudeBucket": "Positive",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

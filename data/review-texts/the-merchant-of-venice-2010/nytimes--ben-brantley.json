@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Al Pacino's Shylock is a man of wounded dignity and cunning intelligence, and his presence elevates this straightforward revival of Shakespeare's problem play.",
   "originalScore": null,
-  "assignedScore": 75,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 75,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 70,
-      "high": 80
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Pacino's performance as elevating the production, but describes it as merely 'straightforward' which suggests solid but unremarkable. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises Al Pacino's performance as elevating the production, suggesting a positive view. However, the limited text and warning about potential cherry-picking necessitate a cautious approach, placing it in the lower end of the Positive range. | Gemini: The review excerpt praises Pacino's performance and suggests it elevates the production, implying a positive but potentially qualified recommendation. Given it's a single excerpt, confidence is low. | Kimi: Single excerpt praises Pacino's performance as 'elevating' the production while damning the revival itself with faint praise ('straightforward'), indicating a mild positive recommendation focused on the star turn rather than the overall production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for Pacino's performance which 'elevates' the production, but describes the revival as merely 'straightforward,' suggesting qualified recommendation. Low confidence due to single curated quote. | GPT-4o: The excerpt praises Al Pacino's performance as elevating the production, suggesting a positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises Pacino's performance and suggests it elevates the production. Given that this is the only excerpt available, and it is positive, I am scoring it as positive, but with low confidence due to the limited information. | Kimi: While the critic praises Pacino's performance as elevating the production, describing the revival itself as merely 'straightforward' suggests a qualified recommendation focused primarily on the star rather than the production as a whole.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,14 +55,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:51:49.246Z",
+    "scoredAt": "2026-02-04T04:15:27.804Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 74,
     "openaiScore": 80,
     "geminiScore": 75,
     "kimiScore": 73,

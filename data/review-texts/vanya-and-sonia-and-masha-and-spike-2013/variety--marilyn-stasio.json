@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('surprisingly moving') but very brief excerpt limits confidence in full critical assessment. | GPT-4o: The review describes the show as both 'deeply silly' and 'surprisingly moving', indicating a positive recommendation with appreciation for its emotional and comedic elements. | Gemini: The review describes the play as \"bittersweet\" and \"surprisingly moving\", indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic praises the show's successful tonal balance and emotional impact, calling it 'surprisingly moving' and appreciating how it manages to be both 'deeply silly' and meaningful. The brief excerpt indicates clear approval without reservations.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Positive assessment calling it 'bittersweet meditation' that succeeds on multiple levels, but brief excerpt limits confidence in full verdict. | GPT-4o: The review describes the show as both 'deeply silly and surprisingly moving,' which indicates a positive response. The balance of humor and emotional depth suggests a strong recommendation. | Gemini: The review describes the play as \"bittersweet\" and \"surprisingly moving\", indicating a positive experience despite the \"silly\" nature of the comedy. | Kimi: The critic offers unambiguous praise for the show's tonal balance and emotional impact, calling it 'surprisingly moving,' though the extreme brevity of the excerpt warrants low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:51:21.485Z",
+    "scoredAt": "2026-02-04T05:08:29.282Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 76,
     "openaiScore": 80,
     "geminiScore": 75,
-    "kimiScore": 78,
+    "kimiScore": 76,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",

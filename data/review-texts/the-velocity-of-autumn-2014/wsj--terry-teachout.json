@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What saves 'The Velocity of Autumn' from terminal cuteness is the unforced naturalness of the relationship between Estelle Parsons and Stephen Spinella, who play Alexandra and her son Chris with a mixture of irritation and affection that rings completely true.",
   "originalScore": null,
-  "assignedScore": 74,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,11 +24,11 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 74,
+    "score": 73,
     "confidence": "high",
     "range": {
-      "low": 69,
-      "high": 79
+      "low": 68,
+      "high": 78
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this quote suggests the show has flaws ('terminal cuteness') but is saved by strong performances. The phrase 'what saves' implies problems that need saving from, making this a qualified positive recommendation. | GPT-4o: The excerpt highlights the genuine chemistry between the lead actors as a saving grace, suggesting a positive view of their performances. However, the mention of 'terminal cuteness' implies some reservations about the show overall. Given the single excerpt and potential cherry-picking, a lower-end Positive score is appropriate. | Gemini: The review excerpt highlights the positive performances and relationship between the actors, suggesting a worthwhile aspect of the play, but the limited text and warning about excerpts reduce confidence. | Kimi: The excerpt offers qualified praise, noting that the lead performances redeem an otherwise overly cute or sentimental show. While the acting is praised as 'unforced' and authentic, the reference to 'terminal cuteness' suggests significant reservations about the material itself.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt suggests a qualified positive - the show is 'saved' from a major flaw by strong performances, indicating overall recommendation despite reservations. Low confidence due to limited text and potential for cherry-picking. | GPT-4o: The excerpt praises the performances and chemistry of the lead actors, suggesting a positive view of the production. However, the use of 'saves' implies some reservations, and the single excerpt limits confidence. | Gemini: The excerpt highlights the positive performances of the two leads, suggesting the show is worth seeing for their performances. However, it also implies the play flirts with being overly sentimental, indicating reservations. | Kimi: The critic offers qualified praise, noting that the performances rescue an otherwise overly cute production, indicating a mild recommendation based on acting quality. As a single excerpt, this represents a lower-confidence assessment.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,15 +55,15 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:27:54.955Z",
+    "scoredAt": "2026-02-04T04:44:56.991Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 74,
+    "claudeScore": 72,
+    "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 72,
     "claudeBucket": "Positive",

@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt acknowledges Wilson's writing quality but criticizes the production as dragging and repetitive. However, with only one cherry-picked excerpt available, the full review verdict remains unclear. | GPT-4o: The excerpt highlights significant criticism of the show's pacing and dialogue, suggesting a negative view. However, the single excerpt warning and lack of full context reduce confidence. | Gemini: The review excerpt indicates that the play drags on despite the eloquent writing, suggesting a negative experience due to pacing issues. Given that this is the only excerpt, confidence is low. | Kimi: The excerpt acknowledges the source material's quality ('eloquent writing') but delivers substantial criticism regarding the production's pacing ('drags on') and repetitive nature, suggesting significant reservations without being a total dismissal.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt acknowledges Wilson's writing quality but criticizes the production's pacing and length as dragging, with repetitive dialogue creating déjà vu. However, with only one excerpt available, the full review's verdict is unclear. | GPT-4o: The excerpt criticizes the pacing and repetitive dialogue, suggesting the show is tedious. However, due to the single excerpt warning, confidence is low as the full context is missing. | Gemini: The review excerpt indicates that the play \"drags on\" and has \"repetitive dialogue\", suggesting a negative experience. Given that this is the only excerpt available, confidence is low. | Kimi: The excerpt offers qualified criticism: while acknowledging the source material's quality ('eloquent writing'), it emphasizes significant flaws including excessive length ('drags on'), repetitive dialogue, and a 'nagging sensation of déjà vu' that detract from the experience. With only one excerpt available, confidence is low, but the tone suggests the critic does not recommend this production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,27 +53,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:05:52.979Z",
+    "scoredAt": "2026-02-04T04:28:28.178Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 49,
-    "kimiScore": 58,
+    "kimiScore": 48,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 18,
+    "kimiBucket": "Negative",
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
   }
 }

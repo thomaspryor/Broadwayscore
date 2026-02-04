@@ -16,61 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Laurie Metcalf gives a performance of stunning intensity and emotional truth as a brilliant scientist whose mind is beginning to fragment.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (21 words)",
   "textQuality": "truncated",
-  "llmScore": {
-    "score": 80,
-    "confidence": "high",
-    "range": {
-      "low": 75,
-      "high": 85
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Laurie Metcalf gives a performance of stunning intensity and emotional truth as a brilliant scientist whose mind is beginning to fragment.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: This appears to be a truncated excerpt focusing solely on praise for Metcalf's performance. The critic's own 80 rating confirms positive territory, but without context about the overall production, confidence is low. | Gemini: The review praises Laurie Metcalf's performance with strong positive language, indicating a positive recommendation. The original rating of 80 supports this classification. | Kimi: The critic's own rating of 80 places this firmly in the Positive bucket, and the excerpt offers high praise for the lead actress's performance. Confidence is low due to the brevity of the provided text.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:02:56.395Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": null,
-    "geminiScore": 80,
-    "kimiScore": 80,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 0,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "rejectedAt": "2026-02-04T04:25:21.815Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "openai: The text provided is a single sentence focusing on a performance, lacking a comprehensive evaluation of the show.; kimi: This review describes Laurie Metcalf in a play about a scientist whose mind is fragmenting, which matches 'The Other Place' by Sharr White. That production premiered Off-Broadway at MCC Theater and did not transfer to Broadway. Additionally, Charles Spencer was chief drama critic for The Daily Telegraph (London), suggesting this may review a West End or Off-Broadway production rather than the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

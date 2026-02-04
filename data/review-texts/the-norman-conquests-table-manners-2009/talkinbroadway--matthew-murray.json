@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is farce of the highest caliber, with every line and every moment calculated to maximum comic effect while never losing sight of the essential humanity of these six people.",
   "originalScore": null,
-  "assignedScore": 83,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 83,
+    "score": 82,
     "confidence": "medium",
     "range": {
-      "low": 78,
-      "high": 88
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this quote shows strong praise ('highest caliber') and appreciation for both craft and humanity. Given the enthusiastic language, scored at upper end of Positive bucket, but confidence is low due to limited text. | GPT-4o: The excerpt provides high praise, describing the show as 'farce of the highest caliber' with effective comedy and humanity. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The excerpt is highly positive, describing the show as \"farce of the highest caliber\" and praising its comic effect and essential humanity. Given the single excerpt warning, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt delivers superlative praise ('highest caliber', 'maximum comic effect') for the production's comedic precision and humanity. Per single-excerpt guidelines, scoring at the upper end of Positive (80-84) with low confidence due to potential cherry-picking.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'farce of the highest caliber' with appreciation for both craft and humanity. Single excerpt limitation requires low confidence, but the superlative language suggests upper Positive range. | GPT-4o: The excerpt praises the show as 'farce of the highest caliber' with 'maximum comic effect,' indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is highly positive, calling the show \"farce of the highest caliber\" and praising its comic effect and humanity. Given that it is a single excerpt, I am scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt contains unambiguous superlatives ('highest caliber', 'maximum comic effect') indicating strong enthusiasm, warranting the upper end of the Positive range, though the single-excerpt limitation necessitates low confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:02:14.545Z",
+    "scoredAt": "2026-02-04T04:24:31.403Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 82,
     "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 83,

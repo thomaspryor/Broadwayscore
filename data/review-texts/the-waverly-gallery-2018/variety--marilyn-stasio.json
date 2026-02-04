@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance using 'magnificent', but this appears to be a brief excerpt with limited evaluative content about the overall production. | Gemini: The review highlights a 'magnificent performance' which indicates a positive recommendation. | Kimi: The critic uses the superlative 'magnificent' to describe the lead performance, indicating clear enthusiasm and recommendation, though the extreme brevity of the text prevents higher confidence in the overall assessment.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance with 'magnificent' but this appears to be a brief excerpt focusing only on May's acting, lacking broader production assessment for fuller confidence. | Gemini: The review highlights a 'magnificent performance' by Elaine May, suggesting a positive experience for the audience. | Kimi: The critic describes the lead performance as 'magnificent,' indicating strong approval, though the excerpt's brevity prevents full assessment of the overall recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:30:28.078Z",
+    "scoredAt": "2026-02-04T04:47:36.245Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

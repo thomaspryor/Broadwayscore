@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Hathaway's performance with 'fierce intelligence' and 'welcome lack of vanity' suggests positive assessment, but limited text and single excerpt warning requires conservative scoring within Positive range. | GPT-4o: The excerpt praises Anne Hathaway's performance, indicating a positive view of her role. However, without more context or a clear overall verdict, the confidence is low and the score reflects a mildly positive impression. | Gemini: The excerpt praises Hathaway's performance, suggesting a positive but limited assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performance with phrases like 'fierce intelligence' and 'welcome lack of vanity,' indicating a clear positive recommendation. Score placed at the upper end of the Positive bucket per instructions for clearly positive single excerpts, though confidence is reduced due to limited text availability.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Hathaway's performance with strong positive language ('fierce intelligence', 'welcome'). However, one performer-focused quote from a curated excerpt cannot determine overall show verdict. Low confidence due to limited text. | GPT-4o: The excerpt praises Hathaway's performance, indicating a positive view. However, with only one excerpt available, the overall sentiment of the review is unclear, leading to a low confidence score. | Gemini: The excerpt praises Hathaway's performance, suggesting a positive but limited assessment. Given it's a single excerpt, confidence is low. | Kimi: The excerpt provides strong, unambiguous praise for Hathaway's performance using words like 'fierce' and 'welcome,' indicating a clear recommendation, though the limited single-excerpt format prevents assessment of the overall production verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,14 +55,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:49:08.006Z",
+    "scoredAt": "2026-02-04T05:06:19.722Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 73,
+    "claudeScore": 74,
     "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 82,

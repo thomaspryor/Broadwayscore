@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The Visit is a show that seems to have been conceived in grief and executed in amber — beautiful to look at but oddly lifeless.",
   "originalScore": null,
-  "assignedScore": 52,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,14 +25,14 @@
     "playbill-verdict"
   ],
   "llmScore": {
-    "score": 52,
+    "score": 61,
     "confidence": "medium",
     "range": {
-      "low": 47,
-      "high": 57
+      "low": 56,
+      "high": 66
     },
-    "bucket": "Negative",
-    "thumb": "Down",
+    "bucket": "Mixed",
+    "thumb": "Flat",
     "components": {
       "book": null,
       "music": null,
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges the show's visual beauty but finds it fundamentally lacking in vitality. The 'amber' metaphor suggests something preserved but dead, which is a significant criticism despite aesthetic praise. | GPT-4o: The review describes the show as 'beautiful to look at but oddly lifeless,' indicating a negative impression despite visual appeal. The tone suggests a lack of engagement or vitality, leading to a negative recommendation. | Gemini: The review describes the show as \"beautiful to look at but oddly lifeless,\" indicating a mixed reaction. It acknowledges positive aspects (beautiful) but also points out a significant flaw (lifeless). | Kimi: While the critic acknowledges the production's visual beauty ('beautiful to look at'), the verdict 'oddly lifeless' constitutes a clear recommendation against seeing the show, as theatrical vitality is essential to the medium. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Clear mixed assessment acknowledging visual beauty while criticizing the production as 'oddly lifeless.' No recommendation either way. | GPT-4o: The review describes the show as 'beautiful to look at but oddly lifeless,' indicating a lack of enthusiasm and a negative overall impression. | Gemini: The review uses contrasting descriptions, calling the show \"beautiful to look at\" but also \"oddly lifeless,\" indicating a mixed reaction. | Kimi: The review balances genuine praise for the visual design ('beautiful to look at') against a fundamental criticism of the show's vitality ('oddly lifeless'), resulting in an ambivalent assessment without a clear recommendation to see or skip the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,27 +56,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:29:10.798Z",
+    "scoredAt": "2026-02-04T04:46:12.008Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 58,
+    "claudeScore": 62,
     "openaiScore": 45,
     "geminiScore": 62,
-    "kimiScore": 40,
+    "kimiScore": 60,
     "claudeBucket": "Mixed",
     "openaiBucket": "Negative",
     "geminiBucket": "Mixed",
-    "kimiBucket": "Negative",
-    "scoreDelta": 22,
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
   }
 }

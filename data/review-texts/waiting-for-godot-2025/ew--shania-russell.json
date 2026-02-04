@@ -13,13 +13,13 @@
   "nycTheatreExcerpt": "This production isn't exactly cracking the material open in any new way, but soars in one particular aspect: the friendship between its leads. Reeves and Winter are old friends playing old friends and their dynamic oozes fondness and longfelt frustration. The love and safety that Didi and Gogo find in one another is so endearing.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 73,
+  "assignedScore": 74,
   "llmScore": {
-    "score": 73,
+    "score": 74,
     "confidence": "high",
     "range": {
-      "low": 68,
-      "high": 78
+      "low": 69,
+      "high": 79
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed opening ('isn't exactly cracking the material open') followed by praise for specific aspect that 'soars' - the lead performances and their chemistry. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the chemistry between the leads, but notes that the production doesn't offer new insights into the material. The single excerpt and lack of a full review text suggest a mild positive impression. | Gemini: The review praises the leads' dynamic and the endearing nature of their friendship, but notes the production doesn't break new ground. Given the single excerpt and lack of overall verdict, a cautious positive score is appropriate. | Kimi: Single excerpt indicates the production lacks innovation ('isn't exactly cracking the material open') but strongly praises the lead chemistry as 'soaring' and 'endearing', suggesting a qualified but genuine recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges the production doesn't innovate but strongly praises the central performances and chemistry. However, with only one curated quote available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt highlights a positive aspect of the production, focusing on the chemistry between the leads. However, it also notes that the production doesn't bring new insights to the material, suggesting a mild recommendation. | Gemini: The review praises the leads' dynamic and the endearing nature of their friendship, but notes that the production doesn't offer a fresh perspective. Given the single excerpt and lack of overall verdict, I'm scoring it as positive with reservations and low confidence. | Kimi: While the critic notes the production doesn't innovate, they offer strong praise for the lead performances and their 'endearing' dynamic, suggesting a qualified but genuine recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,13 +46,13 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:54:20.513Z",
+    "scoredAt": "2026-02-04T05:10:56.697Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 74,
+    "claudeScore": 76,
     "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 72,
@@ -60,7 +60,7 @@
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

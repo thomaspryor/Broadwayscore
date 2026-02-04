@@ -9,19 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Washington's Hickey is a man of such manic, glittering intensity that he seems to vibrate even when he's standing still. This is a performance of hypnotic authority.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Washington's Hickey is a man of such manic, glittering intensity that he seems to vibrate even when he's standing still. This is a performance of hypnotic authority.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T03:43:36.793Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote focusing only on one performance, lacking the context and evaluation necessary for a complete review assessment.; openai: The text is a brief excerpt focusing solely on a performance without evaluating the overall production.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a performance of hypnotic authority.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for Washington's performance with vivid, enthusiastic language ('hypnotic authority', 'manic, glittering intensity'), but this appears to be an excerpt focusing only on one element rather than a complete review verdict. | Gemini: The review excerpt praises Washington's performance with strong language, indicating a positive, though limited, assessment of the production. | Kimi: Brantley delivers effusive praise for Washington's performance using superlatives like 'hypnotic authority' and 'glittering intensity', indicating strong enthusiasm despite the excerpt's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:05:16.154Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

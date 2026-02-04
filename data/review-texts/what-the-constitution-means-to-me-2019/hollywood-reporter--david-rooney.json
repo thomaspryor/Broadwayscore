@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive language ('uncommon intelligence', 'emotional power', 'bracingly political') with no reservations expressed. However, this appears to be an excerpt with limited context, affecting confidence level. | GPT-4o: The review uses strong positive language such as 'uncommon intelligence' and 'emotional power,' indicating a highly favorable opinion without reservations. | Gemini: The review uses strong positive language such as \"uncommon intelligence and emotional power\" and praises the work for being both personal and political, indicating a strong recommendation. | Kimi: The excerpt offers unqualified praise for the show's intellectual depth and emotional impact, noting its deft balance of personal and political themes without being didactic. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the work's intelligence and emotional impact, with positive descriptors like 'uncommon' and 'bracingly political,' though this appears to be an excerpt with limited context. | GPT-4o: The review praises the show for its intelligence and emotional power, describing it as both personal and political without being preachy, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"uncommon intelligence\" and \"emotional power\", indicating a positive recommendation. | Kimi: The excerpt contains high praise, describing the work as having uncommon intelligence and emotional power while successfully balancing personal and political themes without being preachy. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,14 +51,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:59:29.171Z",
+    "scoredAt": "2026-02-04T05:16:33.825Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 90,
     "geminiScore": 82,
     "kimiScore": 88,
@@ -66,7 +66,7 @@
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Rave",
-    "scoreDelta": 8,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

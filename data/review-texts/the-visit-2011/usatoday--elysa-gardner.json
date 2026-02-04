@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising Rivera's powerful performance with vivid language ('force of nature'). Given single excerpt warning and clearly positive tone about the lead performance, scoring in upper Positive range, but low confidence due to limited text. | GPT-4o: The excerpt praises Chita Rivera's performance, suggesting a positive view of the production. However, the single excerpt and lack of full context limit confidence. | Gemini: The excerpt praises Chita Rivera's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've placed it in the lower end of the Positive bucket. | Kimi: The single available excerpt offers strong praise for the lead performance ('force of nature'), suggesting a positive view, though the limited context prevents a definitive assessment of the overall production.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the star's performance with strong language ('force of nature'), but this is only a single excerpt focusing on one performer, so the overall show verdict is unclear. | GPT-4o: The excerpt provides strong praise for Chita Rivera's performance, describing her as a 'force of nature' with 'vulnerability and steely determination.' However, due to the single excerpt warning, the confidence is low, and the score is at the upper end of the Positive range. | Gemini: The excerpt praises Chita Rivera's performance, suggesting a positive aspect of the show. However, without more context, it's difficult to determine the overall recommendation strength, so I've placed it in the lower end of the positive range. | Kimi: The excerpt provides enthusiastic praise for the lead performer using superlatives like 'force of nature,' indicating a positive assessment. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range, though limited context prevents higher confidence.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,7 +55,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:28:20.991Z",
+    "scoredAt": "2026-02-04T04:45:23.046Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -63,7 +63,7 @@
   },
   "ensembleData": {
     "claudeScore": 81,
-    "openaiScore": 80,
+    "openaiScore": 82,
     "geminiScore": 75,
     "kimiScore": 82,
     "claudeBucket": "Positive",

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, starring Roslyn Ruff, Gabby Beans and James Vincent Meredith, brings Wilder's play into the present with both wit and gravitas.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,9 +19,58 @@
   "contentTier": "invalid",
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T04:22:33.871Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or pull quote rather than a complete review with evaluative content to score.; openai: This text is a brief mention of the production's cast and approach, lacking evaluative content or a clear verdict.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "brings Wilder's play into the present with both wit and gravitas",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the production for its wit and gravitas, suggesting a positive reception. However, the text is very brief, limiting the confidence in the score. | Gemini: The review praises the production for bringing the play into the present with both wit and gravitas, indicating a positive assessment. | Kimi: The critic offers unqualified praise for the production's contemporary relevance and successful balance of humor and seriousness, though the brevity of the excerpt limits full assessment of recommendation strength.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:39:19.903Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Al Pacino's Shylock is a compelling figure, but the production around him is uneven and at times confusing in its interpretive choices.",
   "originalScore": null,
-  "assignedScore": 61,
+  "assignedScore": 62,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (22 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 61,
+    "score": 62,
     "confidence": "high",
     "range": {
-      "low": 56,
-      "high": 66
+      "low": 57,
+      "high": 67
     },
     "bucket": "Mixed",
     "thumb": "Flat",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Al Pacino's Shylock is a compelling figure, but the production around him is uneven and at times confusing",
+        "quote": "Al Pacino's Shylock is a compelling figure, but the production around him is uneven and at times confusing in its interpretive choices.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the lead performance but criticizes the production as 'uneven' and 'confusing,' indicating neither a clear recommendation nor discouragement. | GPT-4o: The review praises Al Pacino's performance but criticizes the production for being uneven and confusing, indicating a mixed reception. | Gemini: The review praises Pacino's performance but criticizes the overall production as uneven and confusing, indicating a mixed assessment. | Kimi: The critic offers genuine praise for Pacino's performance ('compelling') but significantly criticizes the production quality ('uneven,' 'confusing'), resulting in a balanced mixed assessment without a clear recommendation to attend or avoid.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear mixed verdict praising the lead performance while criticizing the overall production as 'uneven' and 'confusing.' No clear recommendation either way. | GPT-4o: The review acknowledges a strong performance by Al Pacino but criticizes the overall production as uneven and confusing, indicating a mixed assessment. | Gemini: The review praises Pacino's performance but finds the overall production uneven and confusing, indicating a mixed assessment. | Kimi: The review balances strong praise for Pacino's performance against significant criticism of the production's unevenness and confusing choices, placing it squarely in mixed territory without a clear recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,7 +51,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T03:52:22.428Z",
+    "scoredAt": "2026-02-04T04:15:55.819Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -61,7 +61,7 @@
     "claudeScore": 62,
     "openaiScore": 60,
     "geminiScore": 62,
-    "kimiScore": 60,
+    "kimiScore": 62,
     "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",

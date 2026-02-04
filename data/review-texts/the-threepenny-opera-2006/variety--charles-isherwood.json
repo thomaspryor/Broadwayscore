@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises cast and design but criticizes the production for feeling dutiful rather than vital. The 'but' construction and 'never quite achieves' indicates disappointment despite positive elements. | GPT-4o: The review acknowledges positive aspects like the cast and design but ultimately suggests the revival lacks impact, resulting in a mixed assessment. The single excerpt and text quality warning suggest caution in interpretation. | Gemini: The review acknowledges positive aspects like the cast and design, but ultimately finds the production lacking in theatrical impact, suggesting a mixed assessment. | Kimi: The excerpt offers genuine praise for the cast ('first-rate') and design ('striking'), but the dominant critique is that the production lacks theatrical vitality, describing it as merely 'dutiful' rather than inspired, suggesting it falls short of its potential.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises cast and design but criticizes lack of theatrical vitality, describing it as 'dutifully revived' which suggests competent but uninspired. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges positive aspects such as the cast and design but ultimately indicates a lack of excitement or freshness, suggesting a mixed reception. | Gemini: The review acknowledges positive aspects like the cast and design but ultimately finds the production lacking the necessary theatrical impact. This suggests a mixed or lukewarm reception. | Kimi: The excerpt offers genuine praise for the cast and design but ultimately criticizes the production for lacking energy and feeling mechanical, suggesting a mixed verdict that acknowledges competence without enthusiasm.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,7 +50,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:26:59.496Z",
+    "scoredAt": "2026-02-04T04:43:45.741Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

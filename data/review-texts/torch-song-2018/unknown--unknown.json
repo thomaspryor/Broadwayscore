@@ -43,7 +43,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for performances and direction ('happy revival', 'smoother and quicker', 'nearly steals the show'). However, confidence is low due to limited text from curated excerpt. | GPT-4o: The excerpt describes the revival as 'happy' and praises the performances, suggesting an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses positive language such as \"happy revival\" and praises the performances of Michael Urie and Mercedes Ruehl. Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise, calling it a 'happy revival' that is 'smoother and quicker on its feet' with performances that 'nearly steal the show.' However, confidence is low given this is a single curated excerpt that may not represent the full review.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the revival ('happy revival'), improved staging ('smoother and quicker'), and strong performances (Ruehl 'nearly steals the show'). Single excerpt warning applies - setting confidence to low due to limited text, but the available quotes are consistently positive. | GPT-4o: The excerpt provides clear positive sentiment about the production, praising both the lead performance and the staging. The use of 'happy revival' and 'pull you out of your election-season weariness' suggests an enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses positive language such as \"happy revival\" and praises the performances of Michael Urie and Mercedes Ruehl. Given the single excerpt warning, I am scoring on the higher end of the positive bucket. | Kimi: The excerpt offers clear praise for this 'happy revival,' citing smoother staging and expert performances, indicating a strong recommendation despite the limited text available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -53,14 +53,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:46:10.435Z",
+    "scoredAt": "2026-02-04T05:03:13.071Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
     "geminiScore": 81,
     "kimiScore": 82,

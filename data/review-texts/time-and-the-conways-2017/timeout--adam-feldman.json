@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The production is handsomely mounted, with a lovely set by Peter McKintosh.",
+        "quote": "The production is handsomely mounted, with a lovely set by Peter McKintosh that transforms from cozy to cavernous, and it features some strong performances.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The critic's original rating of 60 places the review in the Mixed bucket. The text praises the set and performances but lacks strong recommendation language, aligning with a mixed verdict. | Gemini: The review highlights positive aspects like the set design and performances, but lacks a clear recommendation for or against seeing the show. Given the original rating of 60, it falls into the mixed category. | Kimi: The critic's explicit rating of 60/100 falls squarely in the Mixed range (55-69). While the excerpt offers praise for the production design and performances, the middling numeric score indicates a lukewarm overall recommendation.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The text appears to be a truncated excerpt with only positive observations about production values and performances. The critic's own 60 rating indicates Mixed territory, but without the full review context including any criticisms or overall verdict, confidence is low. | GPT-4o: The original rating of 60 suggests a mixed review, and the text highlights production qualities without a strong recommendation or discouragement. | Gemini: The review highlights positive aspects like the set design and performances, but doesn't offer a clear recommendation, aligning with a mixed assessment. | Kimi: The critic's explicit rating of 60 falls squarely in the Mixed range (55-69). While the excerpt praises the technical elements and performances, the numerical score indicates overall reservations that prevent a full recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,17 +56,18 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T04:39:00.071Z",
+    "scoredAt": "2026-02-04T04:55:43.465Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": null,
+    "claudeScore": 60,
     "openaiScore": 60,
     "geminiScore": 62,
     "kimiScore": 60,
+    "claudeBucket": "Mixed",
     "openaiBucket": "Mixed",
     "geminiBucket": "Mixed",
     "kimiBucket": "Mixed",
@@ -76,6 +77,6 @@
     "needsReview": false,
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Mixed"
+    "modelAgreement": "All 4 models agree: Mixed"
   }
 }
