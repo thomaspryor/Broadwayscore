@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Scherzinger also nails the comedy of a camp diva, inhabiting Norma's delusion and ego\"\n\nRead more"
+  "showScoreExcerpt": "\"Scherzinger also nails the comedy of a camp diva, inhabiting Norma's delusion and ego\"\n\nRead more",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scherzinger also nails the comedy of a camp diva, inhabiting Norma's delusion and ego",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for lead performance ('nails the comedy', 'inhabiting'). Given single excerpt warning and clear positive language about star performance, scoring upper end of Positive bucket, but low confidence due to limited text. | GPT-4o: The excerpt highlights Scherzinger's performance positively, suggesting a recommendation based on her portrayal. However, the single excerpt and lack of a full review limit confidence in the overall sentiment. | Gemini: The single excerpt praises Scherzinger's performance. Without more context, it's difficult to determine the overall recommendation, but the positive tone suggests a positive review. | Kimi: The single available excerpt offers clear, specific praise for Nicole Scherzinger's performance, stating she 'nails' the character's comedic delusion and ego. As an isolated curated quote about only one element of the production, this indicates a positive assessment but with limited context for the full show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:10:57.692Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

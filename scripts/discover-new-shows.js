@@ -17,6 +17,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { batchLookupIBDBDates } = require('./lib/ibdb-dates');
+const { getTheaterAddress } = require('./lib/venue-addresses');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -355,6 +356,7 @@ async function discoverShows() {
         ageRecommendation: null,
         previewsStartDate: show.previewsStartDate || null,
         tags: tags,
+        theaterAddress: getTheaterAddress(show.venue) || null,
         ticketLinks: [],
         cast: [],
         creativeTeam: [],

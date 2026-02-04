@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is an absolute blast, bursting with energy, irreverent humor and catchy songs that lovingly spoof the conventions of musical theater while celebrating them at the same time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is an absolute blast, bursting with energy, irreverent humor and catchy songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified enthusiastic praise with strong positive language ('absolute blast', 'bursting with energy') and no reservations expressed. | GPT-4o: The review uses superlative language ('absolute blast', 'bursting with energy') and highlights both humor and music positively, indicating a strong recommendation. | Gemini: The review uses very positive language such as \"absolute blast\" and \"bursting with energy\", indicating a strong recommendation. | Kimi: Unqualified enthusiastic praise using superlatives ('absolute blast', 'bursting with energy') across multiple production elements (humor, songs, tone) with no caveats mentioned, indicating strong recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:49:37.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

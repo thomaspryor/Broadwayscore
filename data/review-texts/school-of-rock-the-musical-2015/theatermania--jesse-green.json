@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show works best when it sticks closest to the movie's template, allowing Lloyd Webber's songs to amplify rather than replace the emotions that made the original so appealing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The show works best when it sticks closest to the movie's template, allowing Lloyd Webber's songs to amplify rather than replace the emotions that made the original so appealing.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show works best when it sticks closest to the movie's template, allowing Lloyd Webber's songs to amplify rather than replace the emotions.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: This excerpt suggests conditional praise - the show works when it follows certain elements but implies problems when it deviates. However, this appears to be a truncated excerpt with unclear overall verdict. | Gemini: The review suggests the show is enjoyable when it adheres to the original movie, indicating a positive but qualified recommendation. | Kimi: The critic offers a qualified endorsement, praising the show when it adheres to the source material but implying it falters when it deviates from the template.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:26:03.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

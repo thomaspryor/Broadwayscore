@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Wilson's final play is a fitting capstone to his decade-by-decade chronicle of black American life in the 20th century, though it lacks the theatrical fire of his greatest works.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Wilson's final play is a fitting capstone to his decade-by-decade chronicle of black American life in the 20th century, though it lacks the theatrical fire of his greatest works.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Wilson's final play is a fitting capstone to his decade-by-decade chronicle of black American life in the 20th century, though it lacks the theatrical fire of his greatest works.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic calls it a 'fitting capstone' which is positive, but immediately qualifies this by noting it 'lacks the theatrical fire of his greatest works.' This suggests a qualified recommendation - worth seeing for its place in Wilson's canon but not his strongest work. Single excerpt warning and qualified praise puts this at lower end of Positive range. | GPT-4o: The excerpt acknowledges the play's significance as a 'fitting capstone' but notes it 'lacks the theatrical fire' of Wilson's best works, suggesting a mixed assessment. The single excerpt and lack of full context lower confidence. | Gemini: The review calls the play a 'fitting capstone' but notes it 'lacks the theatrical fire of his greatest works.' This suggests a positive but qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers balanced praise ('fitting capstone') with significant criticism ('lacks the theatrical fire'), suggesting respect for the work's place in Wilson's canon but disappointment in its dramatic impact. With only one curated excerpt available, the full verdict may differ. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:12:29.700Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

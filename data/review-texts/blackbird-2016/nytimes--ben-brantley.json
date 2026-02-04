@@ -27,9 +27,9 @@
   "urlDiscoveredAt": "2026-02-03T16:47:04.230Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 1163,
-  "archivePath": "data/archives/reviews/blackbird-2016/nytimes--ben-brantley_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T23:26:38.905Z",
-  "fetchMethod": "brightdata",
+  "archivePath": "data/archives/reviews/blackbird-2016/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T14:44:09.765Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
@@ -52,22 +52,16 @@
     {
       "tier": 2,
       "method": "scrapingbee",
-      "success": false,
-      "error": "Parse Error: Header overflow"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
       "success": true
     }
   ],
-  "fetchTier": 3,
+  "fetchTier": 2,
   "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
   "textStatus": "truncated",
-  "sourceMethod": "brightdata",
+  "sourceMethod": "scrapingbee",
   "archiveOrgTimestamp": "20250714112616",
   "archiveOrgUrl": "http://web.archive.org/web/20250714112616/https://www.nytimes.com/2016/03/11/theater/review-blackbird-the-past-returns-taunting.html",
   "wordCount": 1163,

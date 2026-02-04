@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Comer delivers a masterclass in controlled vulnerability, her performance building from confident legal expertise to devastating personal reckoning with surgical precision.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Comer delivers a masterclass in controlled vulnerability, her performance building from confident legal expertise to devastating personal reckoning with surgical precision.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Comer delivers a masterclass in controlled vulnerability, her performance building from confident legal expertise to devastating personal reckoning with surgical precision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for lead performance with sophisticated language ('masterclass', 'surgical precision'), but this appears to be a truncated excerpt focusing only on one performer with no overall show assessment. | Gemini: The review uses strong positive language like \"masterclass\" and \"devastating personal reckoning\" to describe the performance, indicating a highly positive assessment. | Kimi: The excerpt offers unqualified superlative praise for the central performance using terms like 'masterclass' and 'surgical precision,' indicating enthusiastic recommendation despite the text's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:03:53.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

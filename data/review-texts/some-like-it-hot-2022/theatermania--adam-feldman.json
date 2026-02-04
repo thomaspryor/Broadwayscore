@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Some Like It Hot is a lavish, old-fashioned musical comedy that knows how to entertain, even if it doesn't always know when to stop.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Some Like It Hot is a lavish, old-fashioned musical comedy that knows how to entertain, even if it doesn't always know when to stop.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some Like It Hot is a lavish, old-fashioned musical comedy that knows how to entertain, even if it doesn't always know when to stop.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the show is entertaining and lavish, but the qualifier 'even if it doesn't always know when to stop' suggests pacing issues. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the show as entertaining and lavish, suggesting a positive experience, but notes a flaw in pacing. The single excerpt and lack of full context lower confidence. | Gemini: The review excerpt is generally positive, describing the show as entertaining, but also notes a potential issue with pacing or length. Given the single excerpt and the warning, I've placed it in the lower-middle of the Positive bucket. | Kimi: The excerpt offers qualified praise, acknowledging the show's entertainment value and lavish production while criticizing its length. With only one curated excerpt available, this represents a mildly positive recommendation in the lower range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:47:12.176Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

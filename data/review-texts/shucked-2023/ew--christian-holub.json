@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“It's too soon to tell if ‘Shucked’ has staying power as a Broadway musical, but its refreshing embrace of diversity and unapologetically corny sincerity can definitely put a smile on your face.”\n\nRead more"
+  "showScoreExcerpt": "“It's too soon to tell if ‘Shucked’ has staying power as a Broadway musical, but its refreshing embrace of diversity and unapologetically corny sincerity can definitely put a smile on your face.”\n\nRead more",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Its refreshing embrace of diversity and unapologetically corny sincerity can definitely put a smile on your face.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified positive sentiment - acknowledges uncertainty about longevity but finds the show refreshing and smile-inducing. Given the caveat about staying power and limited text, this lands in lower positive range. | GPT-4o: The excerpt suggests a positive view of the show's diversity and sincerity, indicating it is enjoyable. However, the lack of a full review and the single excerpt warning reduce confidence in the overall sentiment. | Gemini: The review expresses a positive sentiment, noting the show's refreshing qualities and ability to bring a smile. However, it also expresses uncertainty about its long-term success, indicating a recommendation with reservations. Confidence is low due to the single excerpt. | Kimi: The excerpt recommends the show for its entertaining sincerity and diversity while explicitly hedging on whether it has lasting quality, indicating a qualified, mild positive rather than enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:29:41.481Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

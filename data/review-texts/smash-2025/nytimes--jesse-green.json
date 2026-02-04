@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "As the plot touches down for its perfect landing, I was surprised again by the turn of events. Not only the ones in the plot but also the ones well beyond it. Smash' the musical is a kind of reclamation of Smash' the series, and probably a kind of revenge as well. You won't see the program credit for Theresa Rebeck, the series' creator, without a microscope. For some fans, the changes may feel like a desecration. For the rest of us, a real musical comedy is a cause for celebration; most are either too tuneless to be musicals or too dull to be comedies. The true mystery of Smash' is how such a messy makeover produced such a sterling example of both,"
+  "nycTheatreExcerpt": "As the plot touches down for its perfect landing, I was surprised again by the turn of events. Not only the ones in the plot but also the ones well beyond it. Smash' the musical is a kind of reclamation of Smash' the series, and probably a kind of revenge as well. You won't see the program credit for Theresa Rebeck, the series' creator, without a microscope. For some fans, the changes may feel like a desecration. For the rest of us, a real musical comedy is a cause for celebration; most are either too tuneless to be musicals or too dull to be comedies. The true mystery of Smash' is how such a messy makeover produced such a sterling example of both,",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the rest of us, a real musical comedy is a cause for celebration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'a sterling example' and 'cause for celebration' with surprise at quality despite messy origins. Single excerpt limits full context assessment. | GPT-4o: The excerpt praises the show as a 'sterling example' of musical comedy, suggesting a strong positive assessment. The tone is enthusiastic, indicating a rave review despite the limited excerpt. | Gemini: The review concludes with strong positive sentiment, calling the show a \"cause for celebration\" and a \"sterling example\" of musical comedy, despite acknowledging potential controversy among fans of the original series. | Kimi: The critic praises the show as a 'sterling example' of both musical and comedy, calling it a 'cause for celebration' and citing its 'perfect landing,' indicating strong enthusiasm despite acknowledging potential controversy for fans of the original series.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:41:09.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

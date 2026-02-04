@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"And the production is fun: The actors use the in-the-round theater to its fullest\"\n\nRead more"
+  "showScoreExcerpt": "\"And the production is fun: The actors use the in-the-round theater to its fullest\"\n\nRead more",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the production is fun: The actors use the in-the-round theater to its fullest",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt calls the production 'fun' and praises how actors use the space, but this brief quote may not represent the full review sentiment. Given the single excerpt warning, scoring at lower end of Positive range. | GPT-4o: The excerpt provides a positive evaluation of the production, highlighting its fun nature and effective use of the theater space. However, due to the single excerpt warning and lack of a full review, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The single excerpt is positive, calling the production 'fun' and praising the use of the theater. Given the limited text, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers unambiguous praise calling the production 'fun' with effective use of staging, indicating a positive recommendation, though the limited single-excerpt format prevents a more precise assessment or higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:24:51.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "I do not believe that anybody’s mind was changed in the course of this show. Rather, the characters ultimately accepted and humanized each other. And that kind of safety, that kind of trust—that’s what has kept Jewish culture alive through thousands of years. The intergenerational trauma of the Holocaust was incredibly well expressed, as were the differences in how each generation copes with this trauma and expresses their own beliefs. The juxtapositions of coping methods were truly brilliant.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The intergenerational trauma of the Holocaust was incredibly well expressed, as were the differences in how each generation copes with this trauma and expresses their own beliefs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the show's handling of complex themes ('incredibly well expressed', 'truly brilliant'), but this is only one excerpt which may not represent the full review verdict. | GPT-4o: The excerpt praises the show for its brilliant expression of intergenerational trauma and coping methods. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The excerpt praises the show's expression of trauma and coping mechanisms, calling the juxtapositions of coping methods \"truly brilliant.\" Given the single excerpt, I am scoring on the higher end of positive. | Kimi: The excerpt offers strong praise ('truly brilliant', 'incredibly well expressed') for the show's thematic execution and character work, indicating a clear recommendation. Score reflects the upper Positive range per single-excerpt guidelines, with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:00:41.492Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

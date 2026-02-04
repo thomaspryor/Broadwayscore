@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway musical about corn is as corny as it sounds — and that's exactly the point. 'Shucked' is a delightfully silly show that knows exactly what it is and never apologizes for it.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,5 +24,60 @@
     "show-score-playwright",
     "playbill-verdict"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Broadway musical about corn is as corny as it sounds — and that's exactly the point.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment calling it 'delightfully silly' with appreciation for its self-aware tone. Recommends it as knowingly campy entertainment. | GPT-4o: The review uses positive language like 'delightfully silly' and suggests the show is self-aware and enjoyable. The tone is enthusiastic without reservations. | Gemini: The review is positive, calling the show \"delightfully silly\" and stating that it \"knows exactly what it is.\" The \"corny\" comment is framed as intentional and part of the show's charm. | Kimi: The critic warmly praises the show's intentional corniness and self-aware humor, recommending it as charming entertainment despite the review's brevity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:30:13.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

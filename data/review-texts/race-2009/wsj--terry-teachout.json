@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Mamet has written a taut, hard-hitting courtroom drama that crackles with the kind of streetwise dialogue that made his reputation.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Mamet has written a taut, hard-hitting courtroom drama that crackles with the kind of streetwise dialogue that made his reputation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clearly positive language (taut, hard-hitting, crackles) but extremely brief excerpt limits confidence in full verdict. | GPT-4o: The review uses strong, positive language such as 'taut', 'hard-hitting', and 'crackles', indicating an enthusiastic recommendation without reservations. | Gemini: The review uses positive language such as \"taut\", \"hard-hitting\", and \"crackles\" to describe the play, indicating a recommendation. | Kimi: The critic offers unqualified praise for Mamet's writing, describing it as taut, hard-hitting, and crackling with the quality that established his reputation, indicating a solid recommendation despite the brief excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:11:48.570Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 80,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

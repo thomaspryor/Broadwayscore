@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "You may have trouble catching your breath from laughing so hard during the first act of Branden Jacobs-Jenkins's sophomore Broadway outing, \"Purpose,\" which opened Monday at the Helen Hayes Theater. Deeply imagined and grave beneath its yucks, it unspools like a brilliant sitcom."
+  "nycTheatreExcerpt": "You may have trouble catching your breath from laughing so hard during the first act of Branden Jacobs-Jenkins's sophomore Broadway outing, \"Purpose,\" which opened Monday at the Helen Hayes Theater. Deeply imagined and grave beneath its yucks, it unspools like a brilliant sitcom.",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You may have trouble catching your breath from laughing so hard during the first act.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language with 'brilliant' and emphasis on audience impact ('catching your breath from laughing'), but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt describes the show as 'brilliant' and highlights its comedic strength, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is highly positive, describing the play as deeply imagined, grave, and like a brilliant sitcom, suggesting a strong recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt offers enthusiastic praise ('brilliant sitcom', 'laughing so hard') but focuses only on the first act and limited text necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:08:38.376Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

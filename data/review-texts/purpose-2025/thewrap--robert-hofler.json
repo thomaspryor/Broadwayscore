@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "There are other reasons to see \"Purpose\" beyond its awards potential. For those of us too young to have seen Laurette Taylor in \"The Glass Menagerie,\" there is now the opportunity to see LaTanya Richardson Jackson in \"Purpose.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For those of us too young to have seen Laurette Taylor in 'The Glass Menagerie,' there is now the opportunity to see LaTanya Richardson Jackson in 'Purpose.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The comparison to legendary Laurette Taylor suggests high praise for Jackson's performance and positions this as a rare theatrical opportunity worth seeing, but with only one excerpt available, confidence is low. | GPT-4o: The excerpt suggests a positive recommendation by highlighting reasons to see the show, but lacks strong enthusiasm or detailed praise. The limited excerpt and lack of full context lower confidence. | Gemini: The review suggests there are reasons to see the show, specifically LaTanya Richardson Jackson's performance, which implies a positive recommendation, but the single excerpt and lack of detail lowers confidence. | Kimi: The critic explicitly recommends seeing the show and compares LaTanya Richardson Jackson's performance to legendary stage actress Laurette Taylor's iconic turn in 'The Glass Menagerie,' indicating exceptional praise for the lead performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:10:18.057Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

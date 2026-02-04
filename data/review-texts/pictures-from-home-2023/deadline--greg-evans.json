@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“While the intimate and honest views of a family’s inner workings can’t help but touch our hearts at steadily paced moments, ‘Pictures From Home’ is too blunt in its characterizations...we can’t help but feeling sympathy for all concerned, characters and actors, but, sad to say, it’s the arguments we’ll remember.”\n\nRead more"
+  "showScoreExcerpt": "“While the intimate and honest views of a family’s inner workings can’t help but touch our hearts at steadily paced moments, ‘Pictures From Home’ is too blunt in its characterizations...we can’t help but feeling sympathy for all concerned, characters and actors, but, sad to say, it’s the arguments we’ll remember.”\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While the intimate and honest views of a family's inner workings can't help but touch our hearts at steadily paced moments, 'Pictures From Home' is too blunt in its characterizations.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows qualified praise (touching hearts) but significant criticism (too blunt characterizations, memorable for arguments). Mixed verdict with more negative weight. Low confidence due to single curated excerpt warning. | GPT-4o: The review acknowledges touching moments but criticizes blunt characterizations, suggesting mixed feelings. The single excerpt and lack of a full review text lower confidence. | Gemini: The review acknowledges touching moments but criticizes the blunt characterizations, suggesting a mixed experience. The truncated text and single excerpt lower the confidence. | Kimi: The excerpt acknowledges emotional resonance and quality acting ('sympathy for actors') but criticizes the characterization as 'too blunt' and suggests the lasting impression is negative ('the arguments we'll remember'). With only one curated excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:51:14.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
