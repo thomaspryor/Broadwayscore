@@ -288,7 +288,7 @@ jobs:
     needs: [audit]
     if: ${{ always() && needs.audit.result == 'success' && needs.audit.outputs.gap_count != '0' && needs.audit.outputs.gap_count != '' && inputs.dry_run != true }}
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
         with:
@@ -309,47 +309,79 @@ jobs:
       - name: Pull latest
         run: git pull --rebase origin main || true
 
-      - name: Gather reviews for gapped shows
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Gather reviews with checkpointing
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           GAP_SHOWS="${{ needs.audit.outputs.gap_shows }}"
-          echo "Gathering reviews for ${{ needs.audit.outputs.gap_count }} shows with genuine gaps..."
-          echo "Shows: $GAP_SHOWS"
+          IFS=',' read -ra SHOWS <<< "$GAP_SHOWS"
+          TOTAL=${#SHOWS[@]}
+          CHECKPOINT_EVERY=5
+          COUNT=0
+          TOTAL_COMMITTED=0
 
-          # Run gather-reviews for all gapped shows in a single invocation
-          node scripts/gather-reviews.js --shows="$GAP_SHOWS" || true
+          echo "Gathering reviews for $TOTAL shows with genuine gaps (checkpointing every $CHECKPOINT_EVERY)..."
 
-      - name: Commit gathered reviews
-        run: |
-          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard data/)" ]; then
-            echo "No new reviews"
-            exit 0
-          fi
+          for show in "${SHOWS[@]}"; do
+            COUNT=$((COUNT + 1))
+            echo ""
+            echo "==========================================="
+            echo "[$COUNT/$TOTAL] Gathering: $show"
+            echo "==========================================="
 
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add data/review-texts/ data/aggregator-archive/
-          CHANGED=$(git diff --cached --name-only | wc -l | tr -d ' ')
+            node scripts/gather-reviews.js --shows="$show" || true
 
-          if [ "$CHANGED" = "0" ]; then
-            echo "Nothing staged"
-            exit 0
-          fi
-
-          git commit -m "data: Gather $CHANGED review files for coverage gaps (${{ inputs.era }})
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          for i in 1 2 3 4 5; do
-            if git push origin main; then break; fi
-            git checkout -- . 2>/dev/null || true
-            git clean -fd 2>/dev/null || true
-            git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
-            sleep $((RANDOM % 21 + 10))
+            # Checkpoint every N shows or on the last show
+            if [ $((COUNT % CHECKPOINT_EVERY)) -eq 0 ] || [ "$COUNT" -eq "$TOTAL" ]; then
+              echo "--- Checkpoint at $COUNT/$TOTAL ---"
+              git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
+              STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
+              if [ "$STAGED" -gt 0 ]; then
+                TOTAL_COMMITTED=$((TOTAL_COMMITTED + STAGED))
+                git commit -m "data: Checkpoint $COUNT/$TOTAL — $STAGED files (coverage gaps ${{ inputs.era }})" || true
+                for i in 1 2 3 4 5; do
+                  if git push origin main; then
+                    echo "Checkpoint pushed ($TOTAL_COMMITTED total files committed so far)"
+                    break
+                  fi
+                  echo "Push retry $i..."
+                  git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+                  sleep $((RANDOM % 11 + 5))
+                done
+              else
+                echo "No new files since last checkpoint"
+              fi
+            fi
           done
+
+          echo ""
+          echo "==========================================="
+          echo "DONE: Processed $COUNT/$TOTAL shows, committed $TOTAL_COMMITTED files total"
+          echo "==========================================="
+
+      - name: Final commit (catch any uncommitted files)
+        run: |
+          git add data/review-texts/ data/aggregator-archive/ 2>/dev/null || true
+          STAGED=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$STAGED" -gt 0 ]; then
+            git commit -m "data: Final gather commit — $STAGED remaining files (coverage gaps ${{ inputs.era }})
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>" || true
+            for i in 1 2 3 4 5; do
+              if git push origin main; then break; fi
+              git pull --rebase -X theirs origin main || { git rebase --abort 2>/dev/null || true; }
+              sleep $((RANDOM % 21 + 10))
+            done
+          else
+            echo "All files already committed via checkpoints"
+          fi
 
   # Job 6: Rebuild reviews.json
   rebuild:

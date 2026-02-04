@@ -297,7 +297,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   2. `fetch-archives` — Runs `fetch-aggregator-pages.ts --aggregator all` for era shows (120 min timeout)
   3. `scrape-pv-nyc` — Runs Playbill Verdict + NYC Theatre scrapers (120 min timeout, continue-on-error)
   4. `audit` — Re-runs `audit-aggregator-coverage.js --output-gaps`, identifies truly missing reviews
-  5. `gather-gaps` — Runs `gather-reviews.js --show=X` for each gapped show (180 min timeout)
+  5. `gather-gaps` — Runs `gather-reviews.js` per show with git checkpointing every 5 shows (360 min timeout). Progress is preserved even on timeout.
   6. `rebuild` — Rebuilds reviews.json, writes step summary
 - **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN
 - **Era breakdown (as of Feb 2026):**
