@@ -1,0 +1,123 @@
+name: Enrich Runtimes
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: current-only (open shows, 1 request), all (batch), single show'
+        required: true
+        default: 'current-only'
+        type: choice
+        options:
+          - current-only
+          - all
+          - show
+      show:
+        description: 'Show slug (required if mode=show)'
+        required: false
+        type: string
+      force:
+        description: 'Overwrite existing runtime values'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Preview changes only (no writes)'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 7 * * 1'  # Weekly Mondays at 7 AM UTC
+
+permissions:
+  contents: write
+
+jobs:
+  enrich-runtimes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Run runtime enrichment
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          FLAGS=""
+
+          # Mode flags
+          MODE="${{ inputs.mode || 'current-only' }}"
+
+          if [ "$MODE" = "current-only" ]; then
+            FLAGS="$FLAGS --current-only"
+          elif [ "$MODE" = "show" ]; then
+            if [ -z "${{ inputs.show }}" ]; then
+              echo "Error: --show is required when mode=show"
+              exit 1
+            fi
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+          # "all" mode needs no extra flags
+
+          # Force flag
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+
+          # Dry run flag
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+
+          echo "Running: node scripts/scrape-broadway-com-runtimes.js $FLAGS"
+          node scripts/scrape-broadway-com-runtimes.js $FLAGS
+
+      - name: Run validation
+        if: inputs.dry_run != true
+        run: node scripts/validate-data.js
+
+      - name: Check for changes
+        if: inputs.dry_run != true
+        id: git-check
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true' && inputs.dry_run != true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/shows.json
+
+          MODE="${{ inputs.mode || 'current-only' }}"
+          SHOW_MSG=""
+          if [ "$MODE" = "show" ]; then
+            SHOW_MSG=" for ${{ inputs.show }}"
+          fi
+
+          git commit -m "data: Enrich runtimes from Broadway.com${SHOW_MSG}"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main; then
+              echo "Push succeeded on attempt $i"
+              break
+            fi
+            echo "Push failed (attempt $i), pulling and rebasing..."
+            git pull --rebase origin main
+            sleep $((RANDOM % 5 + 2))
+          done
