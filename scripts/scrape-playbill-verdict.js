@@ -483,14 +483,6 @@ async function processShowViaGoogle(show, showId, shows) {
     });
 
     if (verdictUrls.length > 0) {
-      // Look up show opening date for URL year validation (shared across candidates)
-      const showEntry = shows.find(s => s.id === showId);
-      const showOpeningYear = showEntry && showEntry.openingDate
-        ? new Date(showEntry.openingDate).getFullYear() : null;
-      const showClosingYear = showEntry && showEntry.closingDate
-        ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
-      const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
-
       const GENERIC_WORDS = new Set(['the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival', 'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for']);
       const showTitleLower = show.title.toLowerCase()
         .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
@@ -534,18 +526,9 @@ async function processShowViaGoogle(show, showId, shows) {
         stats.reviewLinksExtracted += reviewLinks.length;
 
         for (const link of reviewLinks) {
-          // URL year validation
-          if (showOpeningYear && showUpperBound && link.url) {
-            const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
-            if (urlYearMatch) {
-              const urlYear = parseInt(urlYearMatch[1]);
-              if (urlYear < showOpeningYear - 3 || urlYear > showUpperBound) {
-                console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside ${showOpeningYear - 3}–${showUpperBound}`);
-                stats.skippedOffBroadway++;
-                continue;
-              }
-            }
-          }
+          // NOTE: Do NOT filter by URL year. URL patterns are unreliable across outlets.
+          // Title-based filtering (isNotBroadway) and cross-production URL dedup in
+          // gather-reviews.js are the correct guards against wrong-production content.
 
           const result = saveReviewFromPlaybill(showId, link);
           if (result === 'new') {
@@ -730,28 +713,10 @@ async function scrapePlaybillVerdict() {
     const reviewLinks = extractReviewLinksFromArticle(html, article.showId);
     stats.reviewLinksExtracted += reviewLinks.length;
 
-    // Look up show opening date for URL year validation
-    const showEntry = shows.find(s => s.id === article.showId);
-    const showOpeningYear = showEntry && showEntry.openingDate
-      ? new Date(showEntry.openingDate).getFullYear() : null;
-    const showClosingYear = showEntry && showEntry.closingDate
-      ? new Date(showEntry.closingDate).getFullYear() : new Date().getFullYear();
-    const showUpperBound = showOpeningYear ? Math.max(showOpeningYear + 2, showClosingYear + 1) : null;
-
     for (const link of reviewLinks) {
-      // Check for URL year mismatch (catches TV reviews, wrong productions)
-      // Upper bound adapts to show run length (long-running shows get wider window)
-      if (showOpeningYear && showUpperBound && link.url) {
-        const urlYearMatch = link.url.match(/\/((?:19|20)\d{2})\//);
-        if (urlYearMatch) {
-          const urlYear = parseInt(urlYearMatch[1]);
-          if (urlYear < showOpeningYear - 3 || urlYear > showUpperBound) {
-            console.log(`    [SKIP] ${link.outletDomain}: URL year ${urlYear} outside ${showOpeningYear - 3}–${showUpperBound} (${Math.abs(urlYear - showOpeningYear)}yr from opening)`);
-            stats.skippedOffBroadway++;
-            continue;
-          }
-        }
-      }
+      // NOTE: Do NOT filter by URL year. URL patterns are unreliable across outlets.
+      // Title-based filtering (isNotBroadway) and cross-production URL dedup in
+      // gather-reviews.js are the correct guards against wrong-production content.
 
       const result = saveReviewFromPlaybill(article.showId, link);
       if (result === 'new') {
