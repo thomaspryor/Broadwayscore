@@ -6,7 +6,7 @@
   "url": "https://www.theatermania.com/broadway/reviews/honeymoon-in-vegas_73123.html",
   "publishDate": "January 16, 2015",
   "fullText": null,
-  "isFullReview": false,
+  "isFullReview": true,
   "dtliExcerpt": "Jason Robert Brown and Andrew Bergman have turned the 1992 Nicolas Cage romantic comedy into a surprisingly engaging musical that captures the manic energy of Las Vegas while delivering genuine heart.",
   "originalScore": null,
   "assignedScore": 82,
@@ -72,5 +72,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 313,
+  "archivePath": "data/archives/reviews/honeymoon-in-vegas-2015/theatermania--david-gordon_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:50:57.439Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "John Collins directs the production at the Public Theater.\n\nThe Public Theater has announced a second and final two-week extension for Elevator Repair Service’s The Sound and the Fury. The production, which began performances in the Public’s Martinson Theater on May 14, was originally extended to June 27. Directed by John Collins, the show will now run an additional two weeks through July 12.\n\nThe Sound and the Fury is a staging of the first section of William Faulkner's famous novel of the same name. As with 2012's Gatz, ERS has remained faithful to its source material, using Faulkner's own language rather than adapting it. With the help of split-screen staging, video-projected text, and a lush sound score, ERS pulls Faulkner's story off the page.\n\nThe ensemble cast will feature Daphne Gaines, Rosie Goldensohn, Mike Iveson, Vin Knight, Aaron Landsman, Randolph Curtis Rand, Greig Sargeant, Kaneza Schaal, Pete Simpson, Susie Sokol, Lucy Taylor, Tory Vazquez, and Ben Williams.\n\nThe Sound and the Fury marked the company's off-Broadway debut in 2008 at New York Theatre Workshop, and the production has since toured the U.S., Europe, and Australia. The production will mark the third collaboration between the Public and Elevator Repair Service, having previously presented Gatz and Arguendo.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
