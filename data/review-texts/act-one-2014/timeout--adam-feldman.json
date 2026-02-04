@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/act-one",
   "publishDate": "April 17, 2014",
-  "fullText": "Act One is an affectionate, if uneven, tribute to Hart's talent and his friendship with George S. Kaufman. The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Act One is an affectionate, if uneven, tribute to Hart's talent and his friendship with George S. Kaufman. The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
   "originalScore": 60,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Act One is an affectionate, if uneven, tribute to Hart's talent and his friendship with George S. Kaufman. The play captures Hart's wit and ambition, but sometimes feels more like a dramatized biography than a fully realized theatrical experience.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (39 words)",
   "llmScore": {
     "score": 61,
@@ -78,5 +78,39 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 86,
+  "archivePath": "data/archives/reviews/act-one-2014/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:33:07.418Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20140305180126",
+  "archiveOrgUrl": "http://web.archive.org/web/20140305180126/http://www.timeout.com:80/newyork/theater/act-one",
+  "textIssues": [
+    "Word count too low: 86 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Vivian Beaumont Theater (at Lincoln Center)\n\nMoss Hart's 1959 showbiz memoir has inspired generations of theater geeks. Now it comes to the stage in a version written and directed by James Lapine. The knockout cast includes Santino Fontana and Tony Shalhoub as the younger and older Hart, respectively, dazzled by the lights of Broadway and finding a home there.\n\nVivian Beaumont Theater (at Lincoln Center)\n\nVivian Beaumont Theater (at Lincoln Center)\n \n 150 W 65th St\n \n \n Upper West Side\n \n New York\n\nSubway: 1 to 66th St–Lincoln Ctr",
+  "misattributedFullText": true,
+  "extractedByline": "Lincoln Ctr",
+  "expectedCritic": "Adam Feldman"
 }
