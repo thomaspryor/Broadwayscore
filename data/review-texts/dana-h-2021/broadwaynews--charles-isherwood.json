@@ -44,5 +44,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 139,
-  "tierReason": "Short text (139 words)"
+  "tierReason": "Short text (139 words)",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Both play and performance are a gift we are lucky to receive, as this Broadway season shapes up to be a landmark one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise with superlatives ('uncommon and uncanny talents', 'extraordinary', 'gift we are lucky to receive') and positioning as part of a 'landmark' season. No reservations expressed. | GPT-4o: The review is filled with superlatives and praises both the play and the performance as exceptional. The critic describes the play and performance as a 'gift' and highlights the season as 'landmark,' indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising both the play and the performance as a \"gift\" and \"revelatory.\" | Kimi: Unqualified enthusiasm with superlatives like 'revelatory,' 'gift,' and 'landmark' praises both the play and performance without reservation, strongly urging attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:32:52.621Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

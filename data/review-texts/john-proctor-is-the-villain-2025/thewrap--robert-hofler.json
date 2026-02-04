@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 70 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 64,
-  "tierReason": "Short text (64 words)"
+  "tierReason": "Short text (64 words)",
+  "rejectedAt": "2026-02-04T05:58:21.566Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be just background information about the play's development history and author, not an actual review with critical evaluation.; openai: The text provided is an introductory paragraph with no evaluative content about the current Broadway production.; gemini: This is just a brief mention of the play's opening and background, not a review with any evaluative content.",
+  "promptVersion": "5.2.0"
 }

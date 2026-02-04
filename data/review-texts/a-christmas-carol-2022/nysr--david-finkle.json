@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"It’s incentive enough to cause a grateful reviewer to wish a blessing on this miraculous new presentation of Charles Dickens’ 'A Christmas Carol'.\"\n\nRead more"
+  "showScoreExcerpt": "\"It’s incentive enough to cause a grateful reviewer to wish a blessing on this miraculous new presentation of Charles Dickens’ 'A Christmas Carol'.\"\n\nRead more",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's incentive enough to cause a grateful reviewer to wish a blessing on this miraculous new presentation of Charles Dickens' A Christmas Carol.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with superlatives throughout: 'magnificently,' 'must-see,' 'miraculous,' 'enthralling accomplishment.' The critic uses unqualified praise and calls it a performance that 'must rank as highly as any Christmas Carol performances ever offered here.' | GPT-4o: The review is overwhelmingly positive, praising Jefferson Mays' performance and the production's imaginative staging. The critic's 5/5 stars and use of 'miraculous' indicate a strong recommendation, despite the text being truncated. | Gemini: The review is overwhelmingly positive, using words like \"magnificently\", \"must-see\", and \"enthralling accomplishment\". The critic clearly loved the production, and the 5/5 star rating supports this. | Kimi: The critic awards 5/5 stars and delivers unqualified praise with superlatives like 'magnificently,' 'enthralling,' and 'miraculous,' explicitly calling it a 'must-see' presentation despite minor truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:10:43.434Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

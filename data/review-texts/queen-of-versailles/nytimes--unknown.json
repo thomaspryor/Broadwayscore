@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251111213654/https://www.nytimes.com/2025/11/09/theater/queen-of-versailles-broadway-chenoweth.html",
   "contentTier": "complete",
   "wordCount": 1205,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stephen Schwartz and Lindsey Ferrentino's smart and sparkling new musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'smart and sparkling,' praises Chenoweth as 'a wonder,' and describes it as 'more than an entertaining biomusical' with strong performances throughout. Despite noting one 'tonal misstep,' the overall assessment is positive with clear recommendation. | GPT-4o: The review praises the musical as 'smart and sparkling' with strong performances, particularly highlighting Kristin Chenoweth's charm and the show's emotional depth. The critic's tone is consistently positive, recommending the show enthusiastically. | Gemini: The review is overwhelmingly positive, calling the musical \"smart and sparkling\" and praising Chenoweth's performance. While it mentions some minor flaws, the overall tone is enthusiastic and recommends seeing the show. | Kimi: The critic offers enthusiastic praise for the performances (particularly Chenoweth and White), direction, and score, calling the show 'smart and sparkling' with only minor reservations about one tonal misstep involving a pet lizard's death.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:10:44.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

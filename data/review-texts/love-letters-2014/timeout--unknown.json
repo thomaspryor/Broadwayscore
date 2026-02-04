@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20141001023421/http://www.timeout.com:80/newyork/theater/love-letters",
   "contentTier": "complete",
   "wordCount": 319,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This vintage Gurney is worth a second read.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with explicit endorsement in the bottom line. Praises the performances, direction, and writing quality, calling it 'affecting' with no significant reservations. | GPT-4o: The review acknowledges the play as a 'cultural artifact' but ultimately finds it 'affecting' and 'worth a second read', indicating a positive recommendation with some reservations about its dated nature. | Gemini: The review is positive, calling the play \"affecting\" and \"worth a second read.\" While not a rave, it's a clear recommendation. | Kimi: The critic praises the performances by Dennehy and Farrow and Mosher's direction, calling the play 'wry, witty' and ultimately recommending it as 'worth a second read,' despite noting it 'may not push the envelope.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:02:00.365Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

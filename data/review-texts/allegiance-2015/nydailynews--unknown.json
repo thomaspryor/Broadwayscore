@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230330175423/https://www.nydailynews.com/entertainment/theater-arts/george-takei-lends-luster-uneven-allegiance-broadway-article-1.2425909",
   "contentTier": "complete",
   "wordCount": 362,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the storytelling has issues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges worthy subject matter and some strong performances but finds fundamental flaws in the production's execution, calling it 'a jumble' and 'too tangled to say very much.' | GPT-4o: The review acknowledges the noble intentions and some strong performances but criticizes the storytelling and production as being inconsistent and tangled. This suggests a mixed review with both positive and negative elements. | Gemini: The review acknowledges the importance of the subject matter and praises some performances, but criticizes the storytelling and the score's inconsistency, resulting in a mixed assessment. | Kimi: While acknowledging the cast's strong performances (Takei, Salonga, Leung) and the importance of the subject matter, the critic finds the production jumbled, the score uneven with 'trivial filler songs,' and the storytelling ineffective, ultimately concluding the show fails to deliver its message coherently. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:16:38.195Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

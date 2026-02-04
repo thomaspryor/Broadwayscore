@@ -36,5 +36,11 @@
   "expectedCritic": "Unknown",
   "contentTier": "truncated",
   "wordCount": 334,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T05:52:27.028Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about an Off-Broadway production at the Vineyard Theatre, not the current Broadway run.; kimi: This review explicitly covers the Off-Broadway premiere at Vineyard Theatre ('Indecent at Off Broadway’s Vineyard Theatre'), not the subsequent Broadway transfer production.",
+  "promptVersion": "5.2.0"
 }

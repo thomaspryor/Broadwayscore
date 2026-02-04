@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"What colors and fills up the room is the vibrant, gifted cast...a mild loss for historical accuracy, maybe, but a bigger win for life and liberty, created equally.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What colors and fills up the room is the vibrant, gifted cast...a bigger win for life and liberty, created equally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt clearly praises the cast as 'vibrant, gifted' and frames the production as 'a bigger win.' However, this is only one curated excerpt, so confidence is low and the score reflects strong positive language. | GPT-4o: The excerpt praises the cast as 'vibrant' and 'gifted', and frames the show as a 'bigger win for life and liberty', indicating a positive recommendation despite some historical inaccuracies. Given the single excerpt warning, the score is set at the lower end of the positive range. | Gemini: The excerpt focuses on the vibrant cast and calls it a \"bigger win\", indicating a positive assessment. Given the single excerpt, confidence is low, but the positive tone warrants a score on the higher end of the positive bucket. | Kimi: The excerpt offers enthusiastic praise for the performances ('vibrant, gifted cast') and explicitly frames the production as a 'bigger win' despite minor historical inaccuracies, indicating a clear recommendation. Confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:34:44.999Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -57,5 +57,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150930220001/http://abcnews.go.com:80/Entertainment/wireStory/review-spring-awakening-opens-arms-34093481",
   "contentTier": "complete",
   "wordCount": 587,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is an exhilarating and fluid hybrid of song, word, dance and sign — and a sheer triumph for director Michael Arden and choreographer Spencer Liff.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with words like 'triumphant,' 'exhilarating,' 'sheer triumph,' and 'brilliant staging.' Minor criticisms of book/lyrics don't diminish the overall enthusiastic recommendation. Confidence medium due to truncated text. | GPT-4o: The review praises the production as 'electrifying', 'astonishingly alive', and a 'sheer triumph', indicating a strong recommendation. Despite minor criticisms of the book and lyrics, the overall tone and language suggest a rave review. | Gemini: Despite some reservations about the book and lyrics, the review is overwhelmingly positive, praising the direction, choreography, and the innovative use of sign language. The phrase \"sheer triumph\" indicates a strong recommendation. | Kimi: Despite noting flaws in the original book and lyrics, the critic celebrates this production as 'electrifying,' 'astonishingly alive,' and a 'sheer triumph,' with overwhelming praise for the innovative staging and performances. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:05:59.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

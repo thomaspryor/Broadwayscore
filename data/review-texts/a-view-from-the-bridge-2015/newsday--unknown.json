@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20151116071339/http://www.newsday.com:80/entertainment/theater/view-from-a-bridge-review-stripped-down-stunning-1.11117336",
   "contentTier": "complete",
   "wordCount": 498,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "van Hove takes us deep into the unadorned marrow of this drama with terrifying inevitability of myth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Consistent superlatives throughout ('stunning,' 'downright stunning,' 'staggering,' 'terrific actors') with no meaningful reservations. The critic praises every major element and describes the production as achieving mythic power that previous revivals couldn't match. | GPT-4o: The review is full of superlatives and praises the production as 'stunning' and 'mythic', indicating a strong recommendation. The critic highlights the unique and powerful direction and performances, suggesting it is a must-see. | Gemini: The review uses strong positive language like \"stunning\", \"terrific\", and \"terrifying inevitability of myth\". It praises the direction, acting, and design, indicating a very high level of recommendation. | Kimi: The review is unqualifiedly enthusiastic, calling the production 'stunning,' 'stripped-down and downright stunning,' with 'terrifying inevitability of myth.' The critic explicitly ranks this above almost all previous productions, praises the emotional honesty, direction, design, and entire cast. The 'BOTTOM LINE' header calls it 'Stunning, stripped down and mythic.' No reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:13:40.961Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

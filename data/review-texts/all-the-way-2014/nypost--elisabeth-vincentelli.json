@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Cranston's physical transformation is remarkable — he's buried under prosthetics and padding, yet his natural charisma shines through. The actor captures Johnson's legendary arm-twisting skills and his crude humor.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -48,5 +48,60 @@
     "Show title not found in text"
   ],
   "wordCount": 466,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston is terrific as LBJ, a feat that has little to do with the technical quality of his impersonation.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for Cranston's commanding performance and direction, but significant criticism of the script's pacing issues and extraneous material in Act 2. The 'Thank God for Cranston' conclusion suggests the star performance makes it worth seeing despite flaws. | GPT-4o: The review praises Bryan Cranston's performance as the standout element, describing him as 'terrific' and 'compelling'. However, it notes that the play itself is less compelling than its star, with energy flagging in the second act. The overall tone is positive due to Cranston's performance, but with reservations about the play's writing and pacing. | Gemini: The review praises Cranston's performance highly and states that he holds the show together. While the play itself is seen as less compelling, Cranston's performance makes it worth seeing. | Kimi: The reviewer lavishes praise on Cranston's commanding performance but criticizes the play itself as 'by-the-numbers' with a second act that 'bogs down.' The recommendation is conditional on the star's presence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:16:01.731Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

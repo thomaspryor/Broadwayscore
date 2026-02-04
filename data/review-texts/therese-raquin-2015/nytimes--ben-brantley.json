@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Knightley brings a compelling combination of fragility and fierce determination to her role as a woman awakened to both passion and its terrible consequences.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "archiveOrgTimestamp": "20220922041033",
   "archiveOrgUrl": "http://web.archive.org/web/20220922041033/https://www.nytimes.com/2015/10/30/theater/review-in-therese-raquin-keira-knightley-as-a-baleful-adulteress.html",
   "wordCount": 1048,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The great problem with fatalism as a form of entertainment is that its monotone palette quickly turns monotonous unless it's generously spiced with suspense and empathy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Brantley finds the production monotonous and lacking in tension, criticizing the direction, performances, and overall execution. While he acknowledges some technical craft, the review is clearly negative with no recommendation to see it. | Gemini: The review is largely negative, describing the play as lacking tension and empathy, and ultimately monotonous. While acknowledging the actors' efforts, the overall assessment is unfavorable. | Kimi: While acknowledging Knightley's disciplined performance and the appropriate mortuary-themed design, Brantley finds the production monotonous and 'steeped in a single shade of morbid resignation,' explicitly stating that happiness is 'never in the cards' for audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:30:55.550Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

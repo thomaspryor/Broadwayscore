@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20251019062640/https://www.vulture.com/2014/10/theater-review-curious-incident-of-dog-in-night-time.html",
   "contentTier": "complete",
   "wordCount": 803,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If there's any justice, the superb stage adaptation will be as big a hit on Broadway this year as the original novel was.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Despite some reservations about narrative choices, the critic calls it 'superb' and predicts it will be a hit, with extensive praise for performances, direction, and technical elements. | GPT-4o: The review praises the play as a superb adaptation with world-class technical elements and an extraordinary lead performance. Despite minor criticisms, the overall tone is highly enthusiastic and recommends the show strongly. | Gemini: The review is generally positive, highlighting the superb stage adaptation and world-class technical elements, but notes some trade-offs and changes from the book, leading to a recommendation with reservations. | Kimi: The review offers consistent superlatives ('superb', 'world-class', 'extraordinary') and explicitly calls the production a 'cause for rejoicing.' While noting trade-offs in the novel-to-stage adaptation, the critic clearly champions the show as a major theatrical achievement. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:19:03.641Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 79,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

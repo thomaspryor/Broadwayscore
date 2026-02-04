@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Joshua Harmon's Significant Other is a beautifully written, ruthlessly honest comedy about the particular pain of being the single friend watching everyone else pair off.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 61,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -62,5 +62,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 1091,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite all the tightening, and all the emotion, Significant Other is still a lot like one of those rituals: a happy occasion, somehow, yet loud, tiresome, and overlong.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Green acknowledges significant improvements from the Off-Broadway version and praises individual performances, particularly Glick's, but ultimately finds the show still fundamentally flawed - overlong, underdeveloped, and built around an unsympathetic protagonist. The mixed verdict weighs improvements against persistent structural problems. | GPT-4o: The review acknowledges improvements and strong performances but criticizes the play's lack of development and overlong nature, resulting in a mixed assessment. | Gemini: The review acknowledges improvements from the Off-Broadway production but ultimately finds the show tiresome and overlong. The critic praises Glick's performance but questions the play's overall impact and message, resulting in a mixed assessment. | Kimi: While the critic praises the performances (particularly Gideon Glick) and acknowledges improvements from the Off-Broadway production, the overall verdict is that the play is 'tiresome,' 'overlong,' and lacks dramatic development. The review concludes that the material makes 'too much' of small matters, indicating a clear recommendation against seeing the show despite its acting merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:12:41.526Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

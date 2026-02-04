@@ -33,5 +33,59 @@
   ],
   "textStatus": "partial",
   "sourceMethod": "playwright",
-  "wordCount": 715
+  "wordCount": 715,
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Able star turns by Reeves and Winter ground this entertaining revival with the credible chemistry of longtime friends.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the performances, direction, and design elements. Terms like 'entertaining revival,' 'able star turns,' 'terrific support,' and 'makes you think' indicate a solid recommendation without overwhelming enthusiasm. | Gemini: The review is positive, highlighting the chemistry between the leads and the production design. It acknowledges the play's inherent nature (minimalism, lots of talk) but frames it as a funny-sad reflection on the human condition, making it a worthwhile experience. | Kimi: The review consistently praises the performances of both leads and supporting cast, the production design, and direction, calling the show 'entertaining' and a 'timely' reflection on the human condition with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:32:03.410Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

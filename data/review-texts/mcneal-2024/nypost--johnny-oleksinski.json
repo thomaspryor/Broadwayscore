@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20241001140652/https://nypost.com/2024/09/30/entertainment/mcneal-review-robert-downey-jr-s-broadway-play-is-a-total-wipeout/?utm_campaign=nypost&utm_medium=referral",
   "contentTier": "complete",
   "wordCount": 703,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even Iron Man is no match for a fatally shoddy script.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the play 'tiresome' with a 'mind-numbing plot' and 'fatally shoddy script,' calling it a 'frustrating early effort' that's 'bogged down by superficial intelligence.' While acknowledging Downey Jr.'s capable performance, the overall verdict is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the plot as 'mind-numbing' and the script as 'fatally shoddy'. Despite acknowledging Robert Downey Jr.'s performance, the overall tone is dismissive and discourages viewing. | Gemini: The review is overwhelmingly negative, criticizing the plot, characters, and overall execution despite Downey Jr.'s performance. The critic uses strong negative language like \"tiresome,\" \"mind-numbing,\" and \"frustrating.\" | Kimi: While acknowledging Robert Downey Jr.'s capable and charismatic performance, the critic excoriates the play as 'mind-numbing,' 'crummy,' and 'frustrating,' with flat supporting characters and a jumbled plot that wastes its star's potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:03:25.058Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 44,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220810104416/https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
   "contentTier": "complete",
   "wordCount": 785,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's great to see this spectacular American piece of writing now reaching a new generation of Broadway theatergoers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the original work as 'masterful' and 'spectacular,' finds the revival 'moving' and 'heartening,' but notes missed opportunities in design and over-pushed performances. The overall tone is appreciative and recommending. | GPT-4o: The review praises the revival for its moving and affirmative qualities, highlighting the expansion of its scope. However, it notes missed opportunities in design and some over-pushed performances, indicating a solid recommendation with some reservations. | Gemini: The review is largely positive, calling the play a \"masterful piece of writing\" and \"spectacular American piece\", but notes some issues with the visual design and over-pushed performances, leading to a recommendation with reservations. | Kimi: The critic finds the revival 'moving' and 'heartening' with 'rich and vibrant moments,' praising the expansion of the work's scope, but deducts points for a simple design that misses opportunities and performances that are 'over pushed' rather than letting the language speak for itself.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:41:19.980Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

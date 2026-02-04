@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140122100538/http://www.ew.com/ew/article/0,,20364394_20754387,00.html",
   "contentTier": "complete",
   "wordCount": 713,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Plainly speaking, this Twelfth Night is a triumph. (And Richard III well worth seeing.)",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear A- grade with enthusiastic final verdict calling one show 'a triumph' and the other 'well worth seeing.' Consistent praise for performances, direction, and authenticity throughout. | GPT-4o: The review praises the authenticity and performances of both productions, particularly highlighting 'Twelfth Night' as a triumph and 'Richard III' as well worth seeing. Despite the original 'D' rating, the text suggests a positive overall impression, but the truncated nature of the text and the discrepancy with the original rating lower the confidence. | Gemini: The review gives an A- to Twelfth Night and says Richard III is worth seeing. The critic praises the performances and direction, making it a positive review. | Kimi: The critic awards the production an A- and uses superlatives like 'triumph' and 'unforgettable,' praising the authentic Elizabethan staging and Mark Rylance's performance, despite minor reservations about the comic approach to Richard III.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:11:19.472Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 79,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

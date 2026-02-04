@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Mr. Jones and Ms. Tyson bring such depth of feeling and lived experience to their roles that the evening becomes something deeper and more affecting than the sum of its parts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "archiveOrgTimestamp": "20250426204009",
   "archiveOrgUrl": "http://web.archive.org/web/20250426204009/https://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.html",
   "wordCount": 373,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These two superlative performers establish beyond doubt, if we needed any reminding, that great talent is ageless and ever-rewarding.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear praise for the lead performances calling them 'superlative' and the production 'excellent,' though the play itself is described more modestly. The truncated ending reduces confidence but the positive assessment is evident. | Gemini: The review is generally positive, highlighting the performances of James Earl Jones and Cicely Tyson. While the play itself isn't considered a masterpiece, it's a 'sturdy, humming vehicle' for their talents. | Kimi: The critic delivers a strong recommendation for this revival, calling it 'excellent' and praising the lead performances as 'superlative' and ageless, while acknowledging the play itself is sturdy but not an 'Everest' of drama.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:19:43.339Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

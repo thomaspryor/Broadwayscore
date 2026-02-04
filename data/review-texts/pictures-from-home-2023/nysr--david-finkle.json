@@ -19,5 +19,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“The modicum of attention that might be paid is due to venerable actors Lane, Burstein and Wanamaker...Dominating as each can be, they’re hampered by Sharr’s script and Sher’s acquiescing direction.”\n\nRead more"
+  "showScoreExcerpt": "“The modicum of attention that might be paid is due to venerable actors Lane, Burstein and Wanamaker...Dominating as each can be, they’re hampered by Sharr’s script and Sher’s acquiescing direction.”\n\nRead more",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dominating as each can be, they're hampered by Sharr's script and Sher's acquiescing direction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with praise for veteran actors but criticism of script and direction. Single excerpt limits confidence, but the 'hampered by' critique suggests mixed-to-negative territory within the Mixed bucket. | GPT-4o: The review excerpt highlights strong performances by the actors but criticizes the script and direction. The original rating of 3/5 stars suggests a mixed verdict, and the excerpt supports this with praise for the actors but not the overall production. | Gemini: The review praises the actors but criticizes the script and direction, suggesting a mixed experience. The limited excerpt and 3/5 stars support a 'Mixed' classification. | Kimi: The 3/5 star rating and lukewarm tone ('modicum of attention') place this in Mixed territory. While Lane, Burstein and Wanamaker are praised as 'venerable' and 'dominating,' the script and direction are criticized as hampering their performances, resulting in a qualified, lukewarm assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:09:07.778Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

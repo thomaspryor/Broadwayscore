@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20210415081210/https://www.nydailynews.com/entertainment/music-arts/theater-review-testament-mary-article-1.1324310",
   "contentTier": "complete",
   "wordCount": 504,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shaw ignites and glows with a fevered intensity and intelligence in this bold and indelibly theatrical work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear praise for Shaw's performance ('gripping and dynamic'), the production ('cannily establishes'), and the overall work ('imaginative and provocative — what theater should be'). Minor reservation about 'overkill' but dismissed as 'minor sin'. | GPT-4o: The review is overwhelmingly positive, praising Fiona Shaw's performance and the imaginative, provocative nature of the play. The critic describes it as 'bold' and 'indelibly theatrical,' indicating a strong recommendation. | Gemini: The review is generally positive, highlighting Fiona Shaw's performance and the play's provocative nature, while acknowledging some moments of potential overkill. The conclusion states it is \"imaginative and provocative — what theater should be.\" | Kimi: The review offers strong praise for Fiona Shaw's performance ('ignites and glows') and the production's bold theatricality, concluding with an unqualified endorsement that it is 'what theater should be.' While noting a minor reservation about moments of 'overkill,' the critic dismisses this as a 'minor sin' in an otherwise gripping and dynamic work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:28:50.914Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 92,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

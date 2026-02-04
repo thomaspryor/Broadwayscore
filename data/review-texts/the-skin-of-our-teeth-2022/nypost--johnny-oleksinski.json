@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The revival of Thornton Wilder's Pulitzer Prize-winning play is both timely and timeless, with Roslyn Ruff delivering a powerhouse performance as Sabina.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 55,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -51,5 +51,60 @@
   "archiveOrgTimestamp": "20220426020205",
   "archiveOrgUrl": "http://web.archive.org/web/20220426020205/https://nypost.com/2022/04/25/the-skin-of-our-teeth-review-a-set-as-big-as-the-running-time/",
   "wordCount": 649,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even with a pinky-out 'I won a Pulitzer' attitude, the show can be amusing in spots.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The review acknowledges some positives (spectacular sets, energetic staging, amusing moments) but ultimately finds the play pretentious, overlong, and less emotionally true than Wilder's other work. The critic questions the wisdom of even producing this show. | GPT-4o: The review criticizes the play for being long, pretentious, and less impactful than Wilder's other works. While the set design is praised, the overall tone is negative, with the critic questioning the play's appeal and relevance. | Gemini: The review praises the set design and energetic staging, but criticizes the play's length, pretentiousness, and lack of emotional depth. It's a mixed bag with some redeeming qualities. | Kimi: While praising the spectacular set design and energetic staging, the critic finds Wilder's play pretentious, self-indulgent, and overlong, concluding with skepticism about the revival's overall merit. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:27:37.963Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

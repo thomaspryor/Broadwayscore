@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 72 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 66,
-  "tierReason": "Short text (66 words)"
+  "tierReason": "Short text (66 words)",
+  "rejectedAt": "2026-02-04T05:42:59.995Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be the opening paragraph of an article providing biographical context about Charles Ludlam, not an evaluative review of a current Broadway production; openai: The text is a historical context about Charles Ludlam and does not evaluate a current Broadway production.; gemini: The text is an introduction to the playwright and his history, not a review of a current production.; kimi: The text provided consists entirely of biographical/historical context about Charles Ludlam and his unfulfilled desire to stage 'Titus Andronicus.' It contains zero evaluation of the current Broadway production (no mention of performances, direction, staging, or writing) and offers no verdict or recommendation regarding the show itself.",
+  "promptVersion": "5.2.0"
 }

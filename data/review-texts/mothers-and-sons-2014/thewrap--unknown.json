@@ -55,5 +55,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20200304070813/https://www.thewrap.com/mothers-sons-theater-review-tyne-daly-frederick-weller-slug-out/",
   "contentTier": "complete",
   "wordCount": 477,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whatever, this public trashing is a riveting show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening critiques about the difficult character and questioning McNally's motives, the critic calls it 'riveting' and praises Daly's performance, the direction, and ensemble balance. Clear recommendation with some reservations. | GPT-4o: The review acknowledges the challenging nature of the character and the play's themes but ultimately describes the show as 'riveting' and highlights strong performances, particularly by Tyne Daly. The tone suggests a recommendation with some reservations about the character's unpleasantness. | Gemini: The review describes the play as \"riveting\" and highlights strong performances, indicating a positive overall experience despite the difficult subject matter and the character's initial unpleasantness. | Kimi: Despite the unlikable central character, the critic delivers an enthusiastic verdict calling the production 'riveting,' praising Tyne Daly's star turn and Sheryl Kaller's direction for achieving 'perfect balance' across the ensemble.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:04:14.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

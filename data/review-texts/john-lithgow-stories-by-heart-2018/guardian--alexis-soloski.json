@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 591,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stories by Heart is cozy and folksy, as affable and daring as a dish of vanilla ice cream.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic consistently uses negative language like 'disappointingly ordinary', 'humdrum', 'low bar', and compares the show unfavorably to vanilla ice cream. Despite praising Lithgow's abilities, the overall assessment is clearly negative. | GPT-4o: The review describes the show as 'disappointingly ordinary' and 'humdrum,' indicating a negative assessment. However, due to the truncated text, the final verdict may be missing, so the confidence is low. | Gemini: Despite Lithgow's talent, the reviewer finds the show humdrum and aggressively ordinary, suggesting it's not worth the Broadway space. The truncated text makes me less confident in the score. | Kimi: While acknowledging Lithgow's technical skill, the critic finds the show 'aggressively ordinary' and 'humdrum,' questioning why a major nonprofit would devote a Broadway theater to such a 'bare minimum' experience. Confidence is low due to truncated text that may have contained a final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:57:05.976Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

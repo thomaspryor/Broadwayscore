@@ -36,5 +36,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 584,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much of the first act feels like throat clearing, a long limbering up to set the wheels of plot spinning.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the play 'lacklustre' and 'superfluous' with unclear plotting and questions whether anyone would bother with it without Pacino. Despite acknowledging the star's draw, the overall assessment is clearly negative. | GPT-4o: The review describes the play as 'lacklustre' and 'superfluous,' with much of the first act feeling like 'throat clearing.' However, due to the truncated text warning, the final verdict may be missing, so the confidence is set to low. | Gemini: The review is mostly negative, describing the play as a \"lacklustre Broadway transfer\" and questioning if anyone would have bothered with it if Pacino hadn't signed on. The truncated text and missing final verdict lower the confidence. | Kimi: The review consistently criticizes the play as lacklustre and superfluous with a muddled plot and confused direction, suggesting it relies entirely on Pacino's star power. The text is truncated, preventing certainty about the final verdict, but the sustained negative tone throughout indicates a clear recommendation against.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:30:12.108Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

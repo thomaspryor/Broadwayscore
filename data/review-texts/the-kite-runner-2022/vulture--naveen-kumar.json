@@ -34,5 +34,60 @@
   "duplicateTextOf": "vulture--helen-shaw.json",
   "contentTier": "complete",
   "wordCount": 1224,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spangler has not conceived The Kite Runner to function theatrically, and the production cannot overcome the foundational shortfall.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in the adaptation, calling it 'more of a vivid recitation than fully realized drama' and stating it fails to function theatrically. Despite praising individual elements like Arison's commitment and the staging, the overall verdict is clearly negative. | GPT-4o: The review criticizes the adaptation for being more of a 'vivid recitation than fully realized drama' and highlights its failure to engage theatrically. While there is some praise for the production's simplicity and Arison's performance, the overall tone is negative. Given the truncated text warning, confidence is low. | Gemini: The review is largely negative, criticizing the adaptation for being more of a recitation than a fully realized drama. While acknowledging some positive aspects, the overall assessment is that the production fails to overcome the shortcomings of the adaptation. | Kimi: The review consistently criticizes the adaptation as overly reliant on narration rather than dramatic action, calling it a 'vivid recitation' with emotional climaxes that buckle under their own weight. While the lead actor's commitment and minimalist design are praised, the overall verdict indicates the show fails to justify its transition from page to stage.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:22:57.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

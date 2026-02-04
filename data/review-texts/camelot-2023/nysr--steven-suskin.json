@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "“Struggling to keep the proceedings under three hours, Sorkin eventually resorts to a dramatically lazy overlay...Not surprisingly, this cinematic overlap bogs down.”\n\nRead more"
+  "showScoreExcerpt": "“Struggling to keep the proceedings under three hours, Sorkin eventually resorts to a dramatically lazy overlay...Not surprisingly, this cinematic overlap bogs down.”\n\nRead more",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Camelot remains as disjointed as before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with sustained criticism of Sorkin's book revisions, staging choices, and overall execution. While praising individual performances (Soo, Donica), the critic finds fundamental flaws that make the production unsuccessful despite good intentions. | GPT-4o: The review criticizes the production for failing to improve on the original's flaws, with specific issues in the book and staging. Despite some praise for individual performances, the overall tone is negative, aligning with the 2/5 star rating. | Gemini: The review is mostly negative, pointing out the show's disjointed nature and the failure of Sorkin's rewrite to fix the book. The 2/5 star rating confirms this negative assessment, even though the text is truncated. | Kimi: The 2/5 star rating and extensive criticism of Sorkin's 'dramatically lazy' rewrite, underwhelming production values, and 'disjointed' pacing indicate a clear negative verdict, despite isolated praise for individual performers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:28:32.876Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

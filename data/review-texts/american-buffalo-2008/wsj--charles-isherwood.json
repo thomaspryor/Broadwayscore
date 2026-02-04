@@ -38,7 +38,12 @@
   "textIssues": [
     "Word count too low: 140 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 140,
-  "tierReason": "Short text (140 words)"
+  "tierReason": "Short text (140 words)",
+  "rejectedAt": "2026-02-04T05:17:50.082Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a subscription paywall message mixed with navigation elements, not a complete review text; openai: This text contains subscription and billing information, not a review.; gemini: This is a truncated article that ends mid-sentence and prompts the user to resume their subscription. It's not a complete, scoreable review.; kimi: The text is primarily subscription resumption prompts and navigation links ('Resume Subscription', billing details) with only a single sentence of the actual review, which contains purely biographical context about David Mamet and no evaluative content about the production itself (performances, direction, staging, or verdict).",
+  "promptVersion": "5.2.0"
 }

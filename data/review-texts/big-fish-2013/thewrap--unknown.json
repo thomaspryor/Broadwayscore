@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 85,
-  "tierReason": "Short text (85 words)"
+  "tierReason": "Short text (85 words)",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there's a distinct feeling of the wrong kind of déjà vu",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges Stroman's directorial skill but finds the musical adaptation fundamentally flawed, describing an uncomfortable 'wrong kind of déjà vu' when familiar characters are forced into musical theater format without proper introduction. | GPT-4o: The review describes a lack of originality and an awkward introduction to the characters, suggesting a mixed reception without a clear recommendation or discouragement. | Gemini: The review highlights a specific issue with the opening number, suggesting a potential disconnect or lack of proper introduction to the characters. This indicates a mixed reaction rather than a clear recommendation or rejection. | Kimi: The text praises the opening number as 'splashy' and effective but immediately pivots to criticize the immediate song-and-dance approach for creating 'the wrong kind of déjà vu' compared to the film; the review appears truncated before delivering a final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:23:49.981Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -35,5 +35,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 805,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a pronounced lag underlying the script's punchlines.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the performances and acknowledges the play's previous success, but finds the 2015-written satire feels 'out of step' and 'outpaced by history' in 2023's political climate. Mixed verdict with reservations about relevance. | GPT-4o: The review acknowledges the comedic talents of the cast but criticizes the play for feeling out of step with current social and political climates. The verdict is mixed, noting both strengths and significant weaknesses. | Gemini: The review praises the cast's performances but finds the script's humor lacking and the satire feeling dated. It acknowledges the play's initial success but suggests it's out of step with the current social and political climate, indicating a mixed assessment. | Kimi: While praising the cast's comic agility and acknowledging the play's Off-Broadway success, the critic finds the Broadway production out of step with the current political climate, noting it would be better suited to its original 2015 context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:29:44.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

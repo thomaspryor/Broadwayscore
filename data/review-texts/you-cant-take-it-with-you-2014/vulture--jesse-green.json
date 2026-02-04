@@ -45,7 +45,12 @@
   "truncationSignals": [],
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "wordCount": 329,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T06:33:56.844Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation/product page fragment with subscription prompts and commerce links, not a complete review; openai: The text includes navigation elements and promotional content, not a review.",
+  "promptVersion": "5.2.0"
 }

@@ -44,5 +44,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 857,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Jackson has created with A Strange Loop is nothing short of astounding.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Grade A review with superlative language throughout ('astounding', 'electrifying', 'shattering', 'nothing short of astounding'). Critic calls it groundbreaking and emphasizes its transformative impact on Broadway itself. | GPT-4o: The review is filled with superlatives and praises the show as 'shattering', 'electrifying', and 'astounding'. The critic's original rating of 'A' further supports a strong recommendation. | Gemini: The review is overwhelmingly positive, using words like \"shattering,\" \"electrifying,\" and \"astounding.\" The critic gives the show an A grade, indicating a rave review. | Kimi: The review offers unqualified praise with superlatives like 'astounding' and 'electrifying,' awards an A grade, and explicitly recommends the work as a groundbreaking achievement with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:13:06.041Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

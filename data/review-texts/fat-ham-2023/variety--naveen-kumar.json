@@ -45,5 +45,60 @@
   "duplicateTextOf": "variety--aramide-tinubu.json",
   "contentTier": "complete",
   "wordCount": 739,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Fat Ham' is a total gas — the funniest and most invigorating new show on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'funniest and most invigorating new show on Broadway,' 'total gas,' 'brilliance,' and 'extraordinary cast.' The critic presents this as essential viewing with no meaningful reservations. | GPT-4o: The review is filled with superlatives and enthusiastic praise, describing the show as 'funniest and most invigorating,' highlighting its brilliance and the synergy of the cast and crew. The critic's tone is overwhelmingly positive with no significant reservations. | Gemini: The review is overwhelmingly positive, calling the show \"the funniest and most invigorating new show on Broadway\" and praising the cast, direction, and writing. The critic clearly recommends seeing it. | Kimi: Unqualified praise with superlatives ('total gas', 'funniest and most invigorating', 'brilliance', 'nose-to-tail extraordinary cast') and a strong recommendation to see the show with no significant reservations or caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:38:37.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

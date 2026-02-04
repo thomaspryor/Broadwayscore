@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 75 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 69,
-  "tierReason": "Short text (69 words)"
+  "tierReason": "Short text (69 words)",
+  "rejectedAt": "2026-02-04T05:42:27.125Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be the opening of a longer article that provides background context about previous productions, but contains no evaluation of the current Broadway production being reviewed.; openai: The text provided is a personal anecdote and historical context about a past performance, not a review of the current Broadway production.; gemini: The text describes a past performance of Funny Girl, not a review of the current Broadway production.; kimi: The text describes a one-night-only benefit performance of 'Funny Girl' from September 23, 2002, not a current Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -29,5 +29,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 897,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "high",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My opinion has gone from a thumbs up with caveats to a qualified thumbs down.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states their verdict changed to 'a qualified thumbs down' and finds the show 'ultimately less than satisfying' with 'disappointing holes in the plot.' While acknowledging craft and some good performances, the overall recommendation is clearly negative. | GPT-4o: The critic expresses a shift from a previous positive view to a more negative one, citing persistent issues and a less satisfying experience. However, the text is truncated, which may omit a more conclusive verdict. | Gemini: The critic explicitly states their opinion has changed to a \"qualified thumbs down.\" While praising some elements, the overall assessment is negative due to plot holes and cast changes. | Kimi: The critic explicitly states a 'qualified thumbs down,' finding the Broadway production less satisfying than the previous Off-Broadway run due to disappointing plot holes and less impactful casting, despite praising the design and some performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:47:33.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

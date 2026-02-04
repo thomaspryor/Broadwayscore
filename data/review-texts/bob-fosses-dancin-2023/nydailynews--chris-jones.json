@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230606204748/https://www.nydailynews.com/entertainment/broadway/ny-broadway-dancin-dancing-bob-fosse-review-20230320-wpf4xaqo4vdx7ajmjivv4zde3i-story.html",
   "contentTier": "complete",
   "wordCount": 954,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's truly something to watch phenomenal artists like Peter John Chursin, the beauty of whose dancing just blew me away.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Despite extensive discussion of the show's conflicts between past and present, the critic clearly admires the performances and finds the production compelling. The praise for individual dancers is enthusiastic, and the final comparison to ChatGPT reinforces the irreplaceable value of live performance. | GPT-4o: The review highlights the show's fascinating elements and the impressive performances of certain dancers, but also notes significant tensions and an awkward ending, leading to a mixed overall impression. | Gemini: The review highlights both the fascinating aspects and the conflicts within the revival, landing in an uneasy middle ground. It acknowledges the talent of the dancers but also points out the tension between Fosse's vision and modern sensibilities. | Kimi: While the critic notes significant tensions between Fosse's dated vision and modern sensibilities, calling the revival 'deeply conflicted' and landing in 'uneasy middle ground,' they ultimately recommend the experience for its phenomenal dancing and historical fascination, praising specific performers as 'truly something to watch' and suggesting it will please both Fosse fans and tourists. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:25:33.680Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 67,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

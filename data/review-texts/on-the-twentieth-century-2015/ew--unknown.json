@@ -42,5 +42,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150317042406/http://www.ew.com:80/article/2015/03/15/on-the-twentieth-century-ew-review",
   "contentTier": "complete",
   "wordCount": 509,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After witnessing Chenoweth's supreme triumph in Roundabout Theatre Company's ultimate chase-the-blues-away confection currently playing at the American Airlines Theatre, all one can say is God bless that voice teacher.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: A- rating with consistent enthusiastic praise throughout. Calls it Chenoweth's 'supreme triumph' and an 'ultimate chase-the-blues-away confection,' praises the entire cast as 'uniquely suited,' and describes multiple 'showstopper' moments. Minor structural criticism doesn't diminish the strong positive recommendation. | GPT-4o: The review is highly positive about the performances, particularly Kristin Chenoweth's, and praises the production's energy and cast suitability. Despite noting a structural issue with the second act, the overall tone and the original A- rating suggest a strong recommendation. However, the text is truncated, so confidence is low. | Gemini: The review is overwhelmingly positive, praising Chenoweth's performance as a \"supreme triumph\" and the production as a \"chase-the-blues-away confection.\" The A- rating and enthusiastic tone suggest a strong recommendation, despite the truncated text. | Kimi: Despite being truncated, the review carries an A- rating and features unambiguous raves like 'supreme triumph' and 'chase-the-blues-away confection,' praising the entire cast while dismissing the show's structural second-act issues as irrelevant due to the leads' chemistry.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:07:46.096Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

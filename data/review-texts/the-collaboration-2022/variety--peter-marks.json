@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The play succeeds in making us feel like flies on the wall during the creation of art, even if the ultimate artistic payoff feels a bit thin.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -63,5 +63,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "variety--marilyn-stasio.json",
   "wordCount": 656,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard to call this gushing fountain of clever talk a play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Strong praise for both lead performances and their chemistry, but significant criticism of the play's lack of dramatic structure, plot, or conflict. The critic finds it fascinating but fundamentally flawed as theater. | GPT-4o: The review praises the performances, particularly of Jeremy Pope and Paul Bettany, but criticizes the play for lacking dramatic structure and conflict. The overall tone suggests interest in the characters but disappointment in the play's execution. | Gemini: The review praises the acting and characters, but notes the lack of dramatic shape and plot. It's a qualified recommendation due to the lack of traditional dramatic elements. | Kimi: While the critic criticizes the play's lack of dramatic structure and plot, the review is dominated by praise for the 'eye-catching' performances of Jeremy Pope and Paul Bettany, calling them 'impossible to resist' and 'richly drawn,' resulting in a qualified recommendation to see the show for the acting alone. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:18:16.239Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

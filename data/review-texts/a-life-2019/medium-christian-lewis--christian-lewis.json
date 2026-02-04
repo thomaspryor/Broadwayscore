@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 227,
-  "tierReason": "Truncation detected: ends_with_ellipsis, no_ending_punctuation"
+  "tierReason": "Truncation detected: ends_with_ellipsis, no_ending_punctuation",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Together they make a fascinating pairing that is equally captivating and devastating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The critic gives an A rating and describes the show as 'fascinating,' 'captivating,' and 'devastating' (used positively). Despite truncation, the strong praise and A rating clearly indicate positive recommendation. | GPT-4o: The review uses strong positive language, describing the plays as 'captivating and devastating' and likening them to 'Greek tragedies for the modern age.' The original rating of 'A' suggests a high recommendation. However, the text is truncated, so the confidence is low. | Gemini: The review is positive, calling the plays \"captivating and devastating\". However, the text is truncated, so the confidence is low. | Kimi: The critic assigns an 'A' grade and describes the works as 'captivating and devastating' 'Greek tragedies for the modern age,' indicating enthusiastic recommendation despite truncated text. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:12:35.975Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

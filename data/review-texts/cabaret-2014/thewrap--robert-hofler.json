@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 59 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 53,
-  "tierReason": "Short text (53 words)"
+  "tierReason": "Short text (53 words)",
+  "rejectedAt": "2026-02-04T05:27:39.786Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an opening line or excerpt that focuses on theater design rather than reviewing the show itself - lacks actual critical evaluation of the production.; openai: The text is a brief mention of the theater's redesign and does not provide an evaluation of the show's performances or production quality.; gemini: This is just an introductory sentence about the set design, not a full review.",
+  "promptVersion": "5.2.0"
 }

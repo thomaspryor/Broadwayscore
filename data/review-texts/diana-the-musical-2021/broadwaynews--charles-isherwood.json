@@ -44,5 +44,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 161,
-  "tierReason": "Short text (161 words)"
+  "tierReason": "Short text (161 words)",
+  "assignedScore": 23,
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Diana, The Musical\" is every bit as abysmal as rumored.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic calls the show 'abysmal' and compares it to notorious flops like 'Carrie', but suggests it's so bad it becomes a must-see curiosity. This is a pan with camp appreciation - negative overall but acknowledging perverse entertainment value. | GPT-4o: The review strongly criticizes the show, calling it 'abysmal' and 'pointless', indicating a clear recommendation to avoid it. The tone is overwhelmingly negative with no redeeming qualities mentioned. | Gemini: The review states the musical is \"abysmal\" and compares it to a flavorless, stale wedding cake. While the critic suggests it might be worth seeing for its badness, the overall tone is negative. | Kimi: The review deploys devastating descriptors ('abysmal', 'flavorless', 'stale', 'pointless afterthought') and only offers a 'qualified yes' for audiences who collect memorably bad musicals, indicating strong artistic disapproval with no genuine recommendation for general theatergoers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:33:44.125Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

@@ -38,7 +38,12 @@
   "textIssues": [
     "Word count too low: 246 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 246,
-  "tierReason": "Short text (246 words)"
+  "tierReason": "Short text (246 words)",
+  "rejectedAt": "2026-02-04T05:52:11.851Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This is website navigation menus, error messages, and legal footer text - not a review article; openai: This text is a collection of navigation menus, error messages, and unrelated news headlines, not a review.; gemini: This is not a review, but a collection of links, navigation, and promotional material.; kimi: The text explicitly states 'failed to render body of article' and contains only navigation menus, social media links, site footers, and unrelated news headlines with no actual review content.",
+  "promptVersion": "5.2.0"
 }

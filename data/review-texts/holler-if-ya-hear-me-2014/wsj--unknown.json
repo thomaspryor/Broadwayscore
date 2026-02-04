@@ -51,7 +51,12 @@
   "textIssues": [
     "Word count too low: 190 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "needs-rescrape",
   "wordCount": 190,
-  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation",
+  "rejectedAt": "2026-02-04T05:49:40.851Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website paywall/subscription page with navigation elements and article headlines, not the actual review content. The brief text about the show is just a setup paragraph before the paywall kicks in.; openai: The text is mostly navigation menus, copyright notices, and unrelated content, not a coherent review.",
+  "promptVersion": "5.2.0"
 }

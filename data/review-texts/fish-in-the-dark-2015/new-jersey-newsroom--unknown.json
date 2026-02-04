@@ -49,5 +49,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20150308200110/http://www.newjerseynewsroom.com:80/movies/fish-in-the-dark-broadway-review-larry-david-swims-through-a-brackish-new-comedy",
   "contentTier": "complete",
   "wordCount": 415,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As a play with plausible characters and story, 'Fish in the Dark' is merely tinned TV fare but as a sketchy showcase for David's brand of brackish comedy, it's pretty tasty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges frequent laughs and entertainment value while clearly stating it's 'merely tinned TV fare' as theater. Mixed signals with qualified praise but no clear recommendation to see or skip it. | GPT-4o: The review acknowledges frequent laughs and a proficient company but describes the play as 'tinned TV fare' and suggests it won't win critics' awards. The tone is mixed, appreciating the humor but critiquing the substance. | Gemini: The review acknowledges the show's flaws as a play but finds it amusing and tasty as a showcase for Larry David's comedy. It neither strongly recommends nor discourages seeing it. | Kimi: The critic dismisses the show as lightweight 'tinned TV fare' lacking theatrical merit, but acknowledges it delivers frequent laughs and is 'pretty tasty' as a comedy vehicle, ultimately suggesting it will satisfy customers despite not winning critical awards.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:40:10.280Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

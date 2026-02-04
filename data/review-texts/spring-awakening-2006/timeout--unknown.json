@@ -43,5 +43,60 @@
   "expectedCritic": "Unknown",
   "contentTier": "complete",
   "wordCount": 505,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all of the valid reservations one can have about this experiment, there's still beauty to admire, if you're willing to hear.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: 3/5 rating with balanced critique. Praises the concept, performances, and enduring power of songs, but identifies significant execution problems with integration, staging, and design elements. | GPT-4o: The review acknowledges strong performances and powerful songs but highlights significant execution issues and confusion in staging. The original 3/5 rating supports a mixed verdict. | Gemini: Despite some reservations about the execution and staging, the reviewer acknowledges the enduring power of the songs and strong performances, ultimately suggesting it's worth seeing if you're willing to overlook the flaws. The 3/5 star rating also indicates a positive but not rave review. | Kimi: The 3/5 star rating reflects substantial criticisms of staging, design and execution alongside praise for performances and conceptual resonance; the critic acknowledges significant drawbacks but finds sufficient beauty to neither fully recommend nor discourage.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:14:30.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

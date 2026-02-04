@@ -43,5 +43,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1037,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T06:04:29.958Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review discusses a production at the Bridge Theatre in London, not the current Broadway run.; kimi: This review covers the London production at the Bridge Theatre, not a Broadway production. The text explicitly states the venue is 'Bridge Theatre, London' and notes that 'No plans have yet been announced for a cross-Atlantic transfer.'",
+  "promptVersion": "5.2.0"
 }

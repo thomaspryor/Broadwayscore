@@ -43,5 +43,60 @@
   "truncationSignals": [],
   "textStatus": "complete",
   "sourceMethod": "brightdata",
-  "wordCount": 902
+  "wordCount": 902,
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's frustrating enough when this happens in the privacy of one's own home. It's infuriating in the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the play tedious, undramatic, and irritating, criticizing everything from the pre-show audio to the plot structure to the characters' believability. While acknowledging some technical elements like costume changes, the overall assessment is clearly negative with no recommendation to see it. | GPT-4o: The review is overwhelmingly negative, criticizing the play's lack of drama, tediousness, and implausible characters. The critic expresses frustration and disappointment throughout, with no redeeming qualities mentioned. | Gemini: The review is overwhelmingly negative, criticizing the plot, characters, and overall experience. The critic expresses a lack of sympathy and engagement with the story. | Kimi: The critic finds the play tedious and undramatic, criticizing the pre-show annoyances, lack of plot, unbelievable romance, and factual errors, with only minor praise for costume and wig changes. The overall verdict clearly discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:59:12.127Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
