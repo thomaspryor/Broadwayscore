@@ -10,5 +10,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "\"Yet one of the wonders of the show's glorious-sounding new production, which opened on Monday night at the Vivian Beaumont Theater with a thoroughly winning Jeremy Jordan in the title role, is how far from claustrophobic it feels. Lincoln Center Theater's vast and airy Broadway stage becomes an exalted evocation of the enormous cavern that Floyd discovers, delighting in its echoing acoustics, just before he gets into his ultimately fatal jam.\""
+  "nycTheatreExcerpt": "\"Yet one of the wonders of the show's glorious-sounding new production, which opened on Monday night at the Vivian Beaumont Theater with a thoroughly winning Jeremy Jordan in the title role, is how far from claustrophobic it feels. Lincoln Center Theater's vast and airy Broadway stage becomes an exalted evocation of the enormous cavern that Floyd discovers, delighting in its echoing acoustics, just before he gets into his ultimately fatal jam.\"",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the wonders of the show's glorious-sounding new production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production ('glorious-sounding', 'wonders', 'exalted evocation') and lead performance ('thoroughly winning Jeremy Jordan'), but low confidence due to single excerpt warning and potential cherry-picking of positive quotes. | GPT-4o: The excerpt uses highly positive language such as 'glorious-sounding', 'thoroughly winning', and 'exalted evocation', indicating a strong recommendation. Despite the single excerpt warning, the tone suggests a rave review. | Gemini: The excerpt uses strong positive language such as \"glorious-sounding\" and \"thoroughly winning\" to describe the production and Jeremy Jordan's performance, indicating a positive recommendation. Given it's a single excerpt, I've set the confidence to low. | Kimi: The excerpt offers enthusiastic praise for the production ('wonders,' 'glorious-sounding,' 'exalted evocation') and lead performance ('thoroughly winning'). Following the single-excerpt guidance for clearly positive quotes, this scores in the 80-84 range, though confidence is low given the curated nature of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:54:53.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

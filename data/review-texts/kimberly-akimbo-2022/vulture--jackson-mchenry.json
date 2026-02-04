@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical felt like a glimmer of sunlight breaking through the winter of Omicron. In the Broadway run, that sun shines brighter and clearer— the show-choir costumes are shinier.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the Broadway run, that sun shines brighter and clearer— the show-choir costumes are shinier.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The metaphor of 'sunlight breaking through winter' and Broadway version shining 'brighter and clearer' indicates clear enthusiasm, but single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt uses positive imagery ('sun shines brighter and clearer') and suggests an improvement from a previous run, indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is very positive, using the metaphor of sunlight breaking through winter to describe the musical's impact. The phrase 'shines brighter and clearer' suggests an improvement over a previous production, indicating a strong recommendation. | Kimi: The excerpt uses enthusiastic imagery ('sun shines brighter', 'glimmer of sunlight') to praise the Broadway production as improved and visually dazzling. However, with only one curated excerpt available, the full critical context remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:56:08.983Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

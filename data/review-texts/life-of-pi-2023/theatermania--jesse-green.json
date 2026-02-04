@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The adaptation of Yann Martel's novel is a triumph of theatrical imagination, with puppetry that brings the ocean and its creatures to vivid life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The adaptation of Yann Martel's novel is a triumph of theatrical imagination, with puppetry that brings the ocean and its creatures to vivid life.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The adaptation of Yann Martel's novel is a triumph of theatrical imagination, with puppetry that brings the ocean and its creatures to vivid life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Uses strong praise language 'triumph of theatrical imagination' with specific commendation of key production elements. However, confidence is low due to single excerpt warning - this may be cherry-picked positive quote. | GPT-4o: The excerpt describes the show as a 'triumph of theatrical imagination,' indicating a highly positive evaluation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the word \"triumph\", which is a strong positive indicator. Given that this is the only excerpt, I am scoring it as positive with a high score in that range, but with low confidence. | Kimi: The excerpt offers enthusiastic praise using the word 'triumph' and celebrating the production's puppetry and imagination. However, confidence is low due to the availability of only a single curated excerpt which may not represent the full review's complete verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:10:41.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

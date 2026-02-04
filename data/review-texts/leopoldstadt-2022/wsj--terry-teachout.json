@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Stoppard has written what may well be his finest play, one that combines the intellectual complexity for which he is known with a straightforward emotional directness that he has rarely if ever achieved before.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Stoppard has written what may well be his finest play, one that combines the intellectual complexity for which he is known with a straightforward emotional directness that he has rarely if ever achieved before.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Stoppard has written what may well be his finest play, one that combines the intellectual complexity for which he is known with a straightforward emotional directness that he has rarely if ever achieved before.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calling it potentially Stoppard's 'finest play' is extremely high praise from a major critic. However, confidence is medium due to single excerpt warning - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt praises the play as possibly Stoppard's finest, highlighting both intellectual and emotional achievements. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The excerpt contains very high praise, calling the play Stoppard's \"finest.\" Given the single excerpt, I am placing it at the higher end of the positive range. | Kimi: The excerpt offers superlative praise describing the work as Stoppard's 'finest play' with unprecedented emotional directness, indicating strong recommendation. However, as a single curated excerpt that may be cherry-picked, the score is capped at the upper end of the Positive bucket with low confidence. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:07:25.028Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

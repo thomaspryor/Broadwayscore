@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"there was never any doubt that Mamet’s brand of spiky, sputtering American masculinity would, in different ways, fit Odenkirk, Culkin, and Burr. All three performers can weasel, bully, and talk a blue streak, and all are skilled at providing internal drive to text that can feel elliptical, coded, or without obvious dramatic action.\"\n\nRead more"
+  "showScoreExcerpt": "\"there was never any doubt that Mamet’s brand of spiky, sputtering American masculinity would, in different ways, fit Odenkirk, Culkin, and Burr. All three performers can weasel, bully, and talk a blue streak, and all are skilled at providing internal drive to text that can feel elliptical, coded, or without obvious dramatic action.\"\n\nRead more",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All three performers can weasel, bully, and talk a blue streak, and all are skilled at providing internal drive to text that can feel elliptical, coded, or without obvious dramatic action.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the three lead performances and their fit for Mamet's material. However, this is only one curated quote and may not reflect the full review verdict. The praise is substantive but not effusive, placing it in the lower Positive range. | GPT-4o: The excerpt praises the performers' ability to handle Mamet's challenging text, suggesting a positive view of the production. However, the single excerpt and lack of explicit recommendation warrant a lower score within the Positive range. | Gemini: The excerpt praises the performers' ability to handle Mamet's style, suggesting a positive experience, but the limited text and lack of a clear recommendation warrant a lower score and confidence. | Kimi: The excerpt offers clear praise for the lead performances and their fit with Mamet's material, but as a single curated quote with no broader context about the production overall, the recommendation strength is limited and the verdict uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:58:43.287Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

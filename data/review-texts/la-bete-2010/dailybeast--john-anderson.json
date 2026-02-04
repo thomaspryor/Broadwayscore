@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "David Hirson's 'La Bête' is a theatrical anomaly—a rhyming comedy that manages to be both pretentious and genuinely funny, often at the same time.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "David Hirson's 'La Bête' is a theatrical anomaly—a rhyming comedy that manages to be both pretentious and genuinely funny, often at the same time.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "David Hirson's 'La Bête' is a theatrical anomaly—a rhyming comedy that manages to be both pretentious and genuinely funny, often at the same time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt presents contradictory elements ('pretentious' vs 'genuinely funny'). The critic calls it an 'anomaly' which suggests neither strong recommendation nor dismissal. With only one curated quote available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt describes the show as 'genuinely funny' despite being 'pretentious', suggesting a positive but qualified recommendation. Due to the single excerpt warning, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt suggests a positive but qualified assessment, describing the play as \"genuinely funny\" despite being \"pretentious.\" Given the single excerpt and the outlet tier, confidence is low, and the score is placed in the lower-middle of the positive range. | Kimi: The excerpt validates the show's comedic effectiveness ('genuinely funny') while acknowledging its pretentiousness, suggesting a mild recommendation rather than a rave or pan. Single-excerpt limitation necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:00:05.775Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

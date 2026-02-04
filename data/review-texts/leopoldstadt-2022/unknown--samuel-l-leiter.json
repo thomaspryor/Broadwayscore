@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Stoppard manages to give most of those assembled significant dramatic material to chew on, thereby presenting their individual stories in a way that reveals them—even if more in outline than three dimensions—as human beings to whom we can relate, while also illuminating issues of anti-Semitism. The plethora of characters, however, does create the dilemma of trying to keep track of who’s who and how they’re related to one another.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stoppard manages to give most of those assembled significant dramatic material to chew on, thereby presenting their individual stories in a way that reveals them as human beings to whom we can relate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt praises Stoppard's dramatic writing and character development, but notes structural issues with tracking multiple characters. Single excerpt warning suggests caution - this appears mildly positive but may not represent the full verdict. | GPT-4o: The review excerpt praises the dramatic material and relatability of characters but notes a significant issue with the plethora of characters creating confusion. The single excerpt and lack of full context lead to a low confidence in the verdict. | Gemini: The review excerpt indicates that the play has significant dramatic material and reveals characters in a relatable way. However, the excerpt also mentions the difficulty of keeping track of the characters, suggesting a reservation. Given the single excerpt, the score is placed at the lower end of the positive range. | Kimi: The excerpt balances praise for the dramatic material and thematic illumination of anti-Semitism against criticism of shallow character development and confusing narrative structure, resulting in an ambivalent evaluation without clear recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:06:42.317Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

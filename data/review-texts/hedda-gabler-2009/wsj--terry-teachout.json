@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Ms. Parker's Hedda is a woman of genuine intelligence and sophistication who has made the mistake of marrying beneath her station, and her mounting frustration with the mediocrity that surrounds her is palpable and persuasive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Parker's Hedda is a woman of genuine intelligence and sophistication who has made the mistake of marrying beneath her station, and her mounting frustration with the mediocrity that surrounds her is palpable and persuasive.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Parker's Hedda is a woman of genuine intelligence and sophistication who has made the mistake of marrying beneath her station, and her mounting frustration with the mediocrity that surrounds her is palpable and persuasive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'palpable and persuasive' with sophisticated character analysis suggests positive assessment, but limited text requires caution. Upper Positive range due to quality of praise. | GPT-4o: The excerpt praises the lead performance as 'genuine intelligence and sophistication' and describes the portrayal as 'palpable and persuasive'. However, due to the single excerpt warning and lack of full context, confidence is low and the score is at the lower end of the Positive range. | Gemini: The excerpt focuses on a positive assessment of the actress's portrayal of Hedda. Due to the limited text, confidence is low, and the score reflects a mild recommendation. | Kimi: The excerpt offers strong praise for the lead performance using words like 'palpable and persuasive' and 'genuine intelligence,' indicating a clearly positive assessment. However, as a single curated excerpt, the overall production verdict may differ.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:16:38.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

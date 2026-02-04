@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘Fat Ham,’ James Ijames' fanciful Pulitzer Prize-winning riff on Hamlet that opened tonight at the American Airlines Theatre, takes a sad tale about bloody vengeance and reconfigures it into a joyful celebration of love and a quest for self-determination.”\n\nRead more"
+  "showScoreExcerpt": "“ ‘Fat Ham,’ James Ijames' fanciful Pulitzer Prize-winning riff on Hamlet that opened tonight at the American Airlines Theatre, takes a sad tale about bloody vengeance and reconfigures it into a joyful celebration of love and a quest for self-determination.”\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "takes a sad tale about bloody vengeance and reconfigures it into a joyful celebration of love and a quest for self-determination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as a 'joyful celebration' with positive transformation of source material. However, this is only one curated quote and may not reflect the full review verdict, warranting low confidence. | GPT-4o: The excerpt presents a positive transformation of the source material into something joyful and celebratory, suggesting a strong recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt describes the show as a \"joyful celebration of love,\" which is a strong positive sentiment. Given the single excerpt warning, I'm scoring on the higher end of the positive bucket. | Kimi: The excerpt uses strongly positive language ('joyful celebration,' 'fanciful') to praise the Pulitzer-winning work's transformation of Hamlet, though the single-excerpt format requires cautious scoring at the upper end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:53:00.721Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

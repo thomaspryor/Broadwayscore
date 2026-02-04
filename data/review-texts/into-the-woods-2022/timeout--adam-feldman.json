@@ -12,5 +12,60 @@
     "show-score-playwright"
   ],
   "showScoreExcerpt": "“True to its semi-concert roots, this production is low on spectacle. … The costumes are a weak spot—even dialed up to Skittles brightness for the Broadway transfer, they are mostly dull and sometimes perversely indifferent to their function—but it hardly matters. The emphasis is on Sondheim’s twisting, punning, verbose score and on the easy charisma of the performers, who seem to be having an infectiously good time and who strike an expert balance between charming and sincere.”\n\nRead more",
-  "publishDate": "July 12, 2022"
+  "publishDate": "July 12, 2022",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The emphasis is on Sondheim's twisting, punning, verbose score and on the easy charisma of the performers, who seem to be having an infectiously good time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting production weaknesses (costumes, low spectacle), the critic emphasizes the performers' 'infectious' energy and 'expert balance' while dismissing flaws as unimportant ('but it hardly matters'). Single excerpt warning suggests this could be cherry-picked positivity, but the tone is genuinely enthusiastic about what matters most. | GPT-4o: The review excerpt highlights positive elements such as the performers' charisma and the focus on Sondheim's score, despite noting issues with the costumes. The overall tone suggests a mild recommendation. | Gemini: The review praises the score and performers' charisma, but notes the production is low on spectacle and costumes are a weak spot. Given the single excerpt, I'm scoring it as a positive with reservations. | Kimi: While the excerpt notes weaknesses in costumes and spectacle, the critic dismisses them as insignificant ('it hardly matters') in light of the charismatic performances and Sondheim's score, ending on a note of infectious enjoyment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:39:27.322Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

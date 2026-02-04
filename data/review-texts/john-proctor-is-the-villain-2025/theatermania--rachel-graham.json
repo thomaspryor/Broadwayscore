@@ -14,5 +14,60 @@
   "nycTheatreExcerpt": "Sink shines in using her physicality here. With more room for her and the other actors to play and relax, there's potential for this production to be even better. But despite its shortcomings, it's a stunner.",
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "showScoreExcerpt": "\"It’s meaningful, silly, powerful, extremely high school, and worth the price of admission.\"\n\nRead more"
+  "showScoreExcerpt": "\"It’s meaningful, silly, powerful, extremely high school, and worth the price of admission.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's meaningful, silly, powerful, extremely high school, and worth the price of admission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly states it's 'worth the price of admission' which is a clear recommendation, despite acknowledging it's 'extremely high school'. The mixed descriptors but positive conclusion suggest solid positive territory. | GPT-4o: The excerpt suggests a positive recommendation with some reservations, noting the show is 'worth the price of admission' despite being 'extremely high school'. The lack of full text and context limits confidence. | Gemini: The quote states the show is \"worth the price of admission,\" which indicates a positive recommendation. However, due to the limited text available, the confidence is low. | Kimi: The excerpt contains explicit recommendation language ('worth the price of admission') along with positive descriptors ('meaningful', 'powerful'), indicating a solid endorsement despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:48:02.114Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

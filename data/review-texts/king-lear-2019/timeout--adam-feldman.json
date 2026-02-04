@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jackson's Lear is a compelling study in imperial decline, her voice cracking with age and authority in equal measure.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson's Lear is a compelling study in imperial decline, her voice cracking with age and authority in equal measure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses strong evaluative language ('compelling study') and praises the lead performance with vivid, appreciative description. Given the critic's 80 rating and positive language, this falls in the upper Positive range, but confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt praises Jackson's performance as 'compelling,' suggesting a positive view of the production. The original rating of 80 supports a positive classification, aligning with the critic's likely overall sentiment. | Gemini: The single excerpt praises the lead performance as \"compelling,\" suggesting a positive, but potentially qualified, recommendation. Given the limited text, confidence is low. | Kimi: The original rating of 80 falls within the Positive bucket and aligns with the excerpt's clear praise for Jackson's 'compelling' performance. Confidence is low due to reliance on a single curated quote that may not represent the full review's balance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:56:39.036Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

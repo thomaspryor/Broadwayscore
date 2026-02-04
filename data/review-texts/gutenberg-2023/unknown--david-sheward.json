@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“ ‘Gutenberg! The Musical!’ is as sweet, light and fun as a big chocolate chip coookie—and about as nourishing. But that’s okay. This fluffy, insider meta-musical for those who love musicals is nothing more than a diversion, mildly tweaking the conventions of Broadway and ribbing those who are obsessed with them.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Gutenberg! The Musical!' is as sweet, light and fun as a big chocolate chip cookie—and about as nourishing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses positive descriptors ('sweet, light and fun') but acknowledges it's not particularly substantial ('about as nourishing'). The 'But that's okay' suggests acceptance of its limitations. This reads as a qualified positive recommendation for light entertainment, but the single excerpt warning and potential for cherry-picking requires low confidence. | GPT-4o: The review describes the show as 'sweet, light and fun', suggesting a positive experience, but also notes it is 'nothing more than a diversion', indicating a mild recommendation. The excerpt is the only available text, so confidence is low. | Gemini: The review describes the show as \"sweet, light and fun\" but also \"about as nourishing as a chocolate chip cookie.\" This suggests a positive but not overwhelmingly enthusiastic recommendation, placing it in the lower end of the positive bucket. | Kimi: The critic finds the show fun and sweet but explicitly notes its lack of depth or substance, calling it a 'fluffy' 'diversion' that is merely 'mildly tweaking' conventions. This represents a mildly positive recommendation with clear reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:04:36.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

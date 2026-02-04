@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“As the action meanders toward its climax, director Joe Mantello can't prevent the tension from draining away. This is in part because most of the shock moments have little or nothing to do with the situation; they're a collection of easy setups, quickly laughed off. And when one finds out what is going on -- let's just say that, in this house, history has a way of repeating itself -- the impact is surprisingly flat, despite some impressive Grand Guignol effects.” \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The impact is surprisingly flat, despite some impressive Grand Guignol effects.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Criticizes the director's inability to maintain tension and finds the climax surprisingly flat, but this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt highlights significant issues with the production, such as a lack of tension and ineffective shock moments, leading to a flat impact. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt indicates a lack of tension and a flat impact, suggesting a negative assessment of the production. The truncated nature lowers confidence. | Kimi: The excerpt criticizes the direction for failing to maintain tension and describes the climactic impact as surprisingly flat, indicating a clear recommendation against seeing the show. Confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:01:57.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

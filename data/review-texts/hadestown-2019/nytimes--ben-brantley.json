@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "The gods, or more likely Ms. Chavkin and her creative team, have saved \"Hadestown\" on its way uptown - via Edmonton and London - by turning it into something very much warmer, if not yet ideally warm. The story is clearer, the songs express that story more directly and the larger themes arise from i...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The gods, or more likely Ms. Chavkin and her creative team, have saved 'Hadestown' on its way uptown by turning it into something very much warmer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear improvement praise ('saved the show', 'much warmer') but includes qualifier 'if not yet ideally warm', suggesting positive but reserved recommendation. Low confidence due to truncated text. | GPT-4o: The excerpt suggests improvements and a positive shift in the production, but the phrase 'if not yet ideally warm' indicates some reservations. Given the single excerpt and the caution about cherry-picking, a lower positive score is appropriate. | Gemini: The excerpt indicates a positive change and improvement in the show, suggesting a recommendation, but the phrase \"if not yet ideally warm\" implies reservations. Given the single excerpt, confidence is low. | Kimi: The critic praises significant improvements from previous productions ('saved', 'clearer', 'more directly') while noting lingering imperfections ('not yet ideally warm'). As a single curated excerpt, confidence is reduced, but the tone indicates a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:09:26.015Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

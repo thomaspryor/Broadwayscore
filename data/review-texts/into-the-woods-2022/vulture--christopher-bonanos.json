@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"A mild surprise, if you’ve become accustomed to the show via its various original cast albums, is just how much comedy there is in this musical comedy. The book scenes, which the recordings skip, are funnier than I remembered, and deBessonet gets a lot out of them.\"\n\nRead more"
+  "showScoreExcerpt": "\"A mild surprise, if you’ve become accustomed to the show via its various original cast albums, is just how much comedy there is in this musical comedy. The book scenes, which the recordings skip, are funnier than I remembered, and deBessonet gets a lot out of them.\"\n\nRead more",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A mild surprise, if you've become accustomed to the show via its various original cast albums, is just how much comedy there is in this musical comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows pleasant surprise about the comedy and praises the director's work, but 'mild surprise' suggests restrained enthusiasm. With only one curated quote available, confidence is low. | GPT-4o: The excerpt highlights a positive aspect of the production, noting the comedy in the book scenes and the director's effective handling of them. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt expresses surprise at the comedy and notes that the director gets a lot out of the book scenes. Given the single excerpt and lack of full context, the confidence is low, but the tone is positive. | Kimi: The critic expresses a 'mild surprise' at the show's comedy and praises the director's handling of material, but the temperate language and comparative praise ('funnier than I remembered') suggest appreciation rather than enthusiasm. The single-excerpt format warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:39:53.949Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

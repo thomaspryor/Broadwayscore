@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 62,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“In contrast to its intimate domestic scale and relatively subdued dramatic stakes, ‘Hell’s Kitchen’ is slick and aggressively commercial”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In contrast to its intimate domestic scale and relatively subdued dramatic stakes, 'Hell's Kitchen' is slick and aggressively commercial",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with negative language ('aggressively commercial') contrasting intimate material with slick presentation suggests criticism of the production's approach. However, excerpt is too brief to determine full verdict. | GPT-4o: The excerpt describes the show as 'slick and aggressively commercial', which suggests a focus on production values over substance. The lack of a clear recommendation or discouragement places it in the Mixed bucket. | Gemini: The excerpt uses negative language like \"slick and aggressively commercial,\" suggesting a negative assessment. Given it's the only excerpt, confidence is low. | Kimi: The excerpt suggests a disconnect between the show's polished, commercial Broadway presentation and its supposedly intimate domestic content, implying the production style may overwhelm the material. Given only one curated excerpt is available, the full critical verdict remains ambiguous, but the language indicates significant reservations about the production approach.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:18:20.847Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

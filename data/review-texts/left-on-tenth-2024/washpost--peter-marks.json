@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Margulies brings a warm, conversational ease to the role that makes you feel as if you're sitting across from her at a coffee shop, listening to her recount the most important chapters of her life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Margulies brings a warm, conversational ease to the role that makes you feel as if you're sitting across from her at a coffee shop, listening to her recount the most important chapters of her life.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Margulies brings a warm, conversational ease to the role that makes you feel as if you're sitting across from her at a coffee shop, listening to her recount the most important chapters of her life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for lead performance using intimate, positive language. Given single excerpt warning and positive tone, scoring upper end of Positive bucket, but low confidence due to lack of full review context. | GPT-4o: The excerpt provides a positive assessment of Margulies' performance, describing it as warm and engaging. However, due to the single excerpt warning, the overall sentiment is unclear, leading to a cautious, mildly positive score. | Gemini: The excerpt praises the actress's performance, suggesting a positive experience. However, due to the limited text, the confidence is low, and the score is at the lower end of the positive range. | Kimi: The excerpt offers clearly positive, effusive praise for Margulies's performance using warm, intimate metaphors. While indicative of a recommendation, the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:01:09.998Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

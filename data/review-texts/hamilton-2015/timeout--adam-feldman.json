@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hamilton is a masterpiece of musical theater that succeeds on every level, combining brilliant writing, exceptional performances, and innovative staging to create something truly revolutionary.",
   "originalScore": 100,
-  "assignedScore": null,
+  "assignedScore": 98,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Hamilton is a masterpiece of musical theater that succeeds on every level, combining brilliant writing, exceptional performances, and innovative staging to create something truly revolutionary.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 98,
+    "confidence": "high",
+    "range": {
+      "low": 93,
+      "high": 103
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hamilton is a masterpiece of musical theater that succeeds on every level, combining brilliant writing, exceptional performances, and innovative staging to create something truly revolutionary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The critic's own 100 rating plus unqualified superlatives ('masterpiece', 'succeeds on every level', 'truly revolutionary') clearly indicate this is a rave review with enthusiastic recommendation. | GPT-4o: The excerpt provides unqualified praise, calling the show a 'masterpiece' and 'revolutionary'. The original rating of 100 further supports a Rave classification. | Gemini: The review uses the word \"masterpiece\" and states that the show succeeds on every level, indicating a rave review. | Kimi: The critic declares the show a 'masterpiece' that 'succeeds on every level' with 'brilliant' writing and 'exceptional' performances, indicating the highest possible recommendation despite the limited excerpt context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:13:26.495Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 100,
+    "geminiScore": 100,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

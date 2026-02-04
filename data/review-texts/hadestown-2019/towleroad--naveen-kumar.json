@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“It’s immediately clear that ‘Hadestown’, a haunting gut-punch of a new musical...breathes the same air we do. This imaginative spin on Orpheus and Eurydice speaks with a bleeding heart to the here and now. It is both the most original and breathtaking musical of the season and a trenchant piece of political art...For all its chilling resonance, ‘Hadestown’ is also a hoot...It’s further proof we’re witnessing a new dawn for American musicals.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is both the most original and breathtaking musical of the season and a trenchant piece of political art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Exceptional praise with superlatives like 'most original and breathtaking musical of the season' and 'new dawn for American musicals' indicates a rave review despite being a single excerpt. | GPT-4o: The excerpt provides strong praise with superlatives like 'most original' and 'breathtaking', indicating a highly positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language such as \"haunting gut-punch\", \"breathtaking\", and \"most original\", indicating a rave review. Despite being a single excerpt, the language is overwhelmingly positive. | Kimi: The single available excerpt contains superlative praise calling the show the most original and breathtaking of the season, but per the single-excerpt guidance, scores in the upper Positive range (80-84) rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:10:46.133Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

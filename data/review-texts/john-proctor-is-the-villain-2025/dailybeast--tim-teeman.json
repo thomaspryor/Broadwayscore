@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "A new reading of The Crucible becomes both scary and liberating. Just as John Proctor is shown to be not the hero of Miller's play (but rather, for Shelby, the much be-knighted Abigail Williams), so Mr. Smith is shown to be far from the supportive teacher we and the girls may have thought. From Lee's menace and temper to shoulder-rubbing memories of Ivy's \"gross\" dad, the evidence of patriarchal abuses in the everyday fabric of their lives become apparent to the young women.",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A new reading of The Crucible becomes both scary and liberating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the production as offering a 'new reading' that is 'scary and liberating,' suggesting the critic finds this reinterpretation meaningful and effective. However, with only one excerpt available, confidence is medium. | GPT-4o: The excerpt suggests a positive reinterpretation of the play, highlighting a fresh perspective that is both 'scary and liberating.' However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt suggests a positive reinterpretation of the play, making it both \"scary and liberating.\" Given it's a single excerpt, confidence is low, but the tone is positive enough for a 78. | Kimi: Single excerpt indicates clear enthusiasm ('scary and liberating') for the production's interpretive approach, warranting upper Positive range per excerpt scoring guidelines, though confidence is reduced due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:46:31.196Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

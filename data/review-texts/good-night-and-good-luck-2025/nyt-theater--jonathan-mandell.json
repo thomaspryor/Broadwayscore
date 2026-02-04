@@ -10,5 +10,59 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "Where is our Murrow is the implicit question in this elegant, meticulous,timely production\n\nRead more"
+  "showScoreExcerpt": "Where is our Murrow is the implicit question in this elegant, meticulous,timely production\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Where is our Murrow is the implicit question in this elegant, meticulous, timely production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt describes the production as 'elegant, meticulous, timely,' which suggests a positive view. However, the single excerpt warning and lack of full context necessitate a cautious, low-confidence score. | Gemini: The review excerpt describes the production as \"elegant, meticulous, timely\", which suggests a positive assessment. However, due to the limited text available, the confidence is low. | Kimi: The excerpt uses unambiguously positive descriptors ('elegant,' 'meticulous,' 'timely') indicating a solid recommendation. However, as a single curated excerpt, it may not represent the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T07:59:16.951Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

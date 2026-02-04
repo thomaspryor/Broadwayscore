@@ -12,5 +12,60 @@
   ],
   "dtliExcerpt": "No doubt some will call “Home” sentimental or romantic or overly inclined to see America through a soft gauze. All fair criticisms, I guess. But I see this show as a celebration of the Black farmer, the rural life, the pull of the land, the notion that you should always keep hold of your beginnings. What Cephus gets at the end is not afforded to most of us but as you watch him get it in this production, you sit forward in your seat and think, well, what dramatic character of your acquaintance ever was more deserving?",
   "dtliThumb": "UP",
-  "publishDate": "June 5, 2024"
+  "publishDate": "June 5, 2024",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you sit forward in your seat and think, well, what dramatic character of your acquaintance ever was more deserving?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic acknowledges valid criticisms ('sentimental', 'soft gauze') but defends the show as a meaningful celebration, expressing emotional engagement. Single excerpt limits confidence. | GPT-4o: The excerpt praises the production as a celebration and evokes a strong emotional response, suggesting a positive recommendation. The caution about the single excerpt and lack of full context leads to a low confidence level. | Gemini: The critic acknowledges potential criticisms but ultimately views the show as a celebration and finds the protagonist deserving, indicating a positive recommendation. Confidence is low due to the single excerpt. | Kimi: While acknowledging potential criticisms of sentimentality, the critic clearly champions the show's celebration of rural Black life and describes an emotionally resonant theatrical experience that engages the audience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:24:54.195Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

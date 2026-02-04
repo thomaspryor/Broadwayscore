@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"This play shines in the details. By the end it has won you over into joy.\"\n\nRead more"
+  "showScoreExcerpt": "\"This play shines in the details. By the end it has won you over into joy.\"\n\nRead more",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the end it has won you over into joy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language about the show 'winning you over into joy,' but low confidence due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt suggests a positive verdict with phrases like 'shines in the details' and 'won you over into joy', indicating a strong recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The single excerpt is strongly positive, stating the play 'shines' and 'has won you over into joy.' Given the lack of full text, confidence is low, but the positive sentiment warrants a score in the upper end of the 'Positive' bucket. | Kimi: The excerpt indicates a clearly positive experience, praising the play's detailed craftsmanship and emotional resonance that culminates in joy. As a single curated excerpt, it suggests strong approval but may not capture the full scope of the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:26:42.027Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
