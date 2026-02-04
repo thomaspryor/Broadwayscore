@@ -575,13 +575,13 @@ export function computeShowData(
 
   const confidence = assessConfidence(criticScore, null, show.status);
 
-  // Compute review age note for long-running open shows (15+ years)
+  // Compute review age note for shows where reviews are from a past year
   let reviewYearNote: string | null = null;
-  if (show.status === 'open' && show.openingDate) {
+  if (show.openingDate && showReviews.length >= 3) {
     const openYear = new Date(show.openingDate).getFullYear();
-    const yearsOld = new Date().getFullYear() - openYear;
-    if (yearsOld >= 15 && showReviews.length >= 5) {
-      reviewYearNote = `Most reviews from ${openYear}`;
+    const currentYear = new Date().getFullYear();
+    if (currentYear - openYear >= 2) {
+      reviewYearNote = `*Most reviews from ${openYear}`;
     }
   }
 
