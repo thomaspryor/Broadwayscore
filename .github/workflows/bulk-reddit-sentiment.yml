@@ -18,6 +18,16 @@ on:
         required: false
         type: boolean
         default: false
+      chain:
+        description: 'Auto-chain next run when done (if shows remain)'
+        required: false
+        type: boolean
+        default: true
+      remaining_chains:
+        description: 'Max remaining chain iterations (prevents runaway)'
+        required: false
+        type: number
+        default: 10
 
 jobs:
   prepare:
@@ -154,6 +164,8 @@ jobs:
     needs: [prepare, scrape]
     if: always() && needs.prepare.outputs.missing_count > 0
     runs-on: ubuntu-latest
+    outputs:
+      still_missing: ${{ steps.count-remaining.outputs.remaining }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -213,3 +225,51 @@ jobs:
             done
             echo "✓ Merge complete"
           fi
+
+      - name: Count remaining shows
+        id: count-remaining
+        run: |
+          REMAINING=$(node -e "
+            const s = require('./data/shows.json');
+            const b = require('./data/audience-buzz.json');
+            const list = s.shows || s;
+            const active = list.filter(x => x.status === 'open' || x.status === 'closed');
+            const missing = active.filter(x => { const e = (b.shows || {})[x.id]; return !(e && e.sources && e.sources.reddit); });
+            process.stdout.write(String(missing.length));
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Shows still missing Reddit data: $REMAINING"
+
+  chain:
+    needs: [prepare, merge]
+    if: |
+      always() &&
+      needs.merge.outputs.still_missing > 0 &&
+      github.event.inputs.chain == 'true' &&
+      github.event.inputs.dry_run != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chain next run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAINING_CHAINS=${{ github.event.inputs.remaining_chains || 10 }}
+          STILL_MISSING=${{ needs.merge.outputs.still_missing }}
+
+          if [ "$REMAINING_CHAINS" -le 0 ]; then
+            echo "No remaining chain iterations. Stopping. $STILL_MISSING shows still need Reddit data."
+            exit 0
+          fi
+
+          NEXT_CHAINS=$((REMAINING_CHAINS - 1))
+          JOBS=${{ github.event.inputs.parallel_jobs || 4 }}
+
+          echo "Chaining next run: $STILL_MISSING shows remaining, $NEXT_CHAINS chain iterations left"
+          gh workflow run "Bulk Reddit Sentiment" \
+            -f parallel_jobs=$JOBS \
+            -f chain=true \
+            -f remaining_chains=$NEXT_CHAINS \
+            -f limit_per_shard=0 \
+            -f dry_run=false
+
+          echo "✓ Next run triggered"
