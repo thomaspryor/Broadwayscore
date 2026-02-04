@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/harvey-broadway-review-338412/",
   "publishDate": "June 15, 2012",
-  "fullText": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
   "originalScore": null,
   "assignedScore": 77,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jim Parsons brings his own distinctive comic sensibility to the role of Elwood P. Dowd, making Harvey feel fresh while honoring the gentle spirit of Mary Chase's Pulitzer Prize-winning play.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 77,
@@ -77,5 +77,53 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 266,
+  "archivePath": "data/archives/reviews/harvey-2012/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:10:01.700Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Three months after New York local news station WNBC announced that it would not be renewing the contract of network veteran Sue Simmons, the evening news anchor delivered her last broadcast on Friday night.\n\nPHOTOS: The Most Talked-About TV News Faces\n\nSimmons, who joined the network in 1980, had hoped to renew her contract but was informed of her forced retirement in 2010.\n\n\"This week I was thinking, somebody's made a mistake,\" Simmons said during her appearance on the 11 p.m. news. \"But, you know, everything comes to an end at some point, and this is it for me here, at this station. I hope to be employed elsewhere at some point — even if it's maybe just once a week.\"\n\nSimmons’ co-anchor Chuck Scarborough was joined a slew of famous faces and New York personalities paying tribute to her three-decade career at the network during a retrospective — Joan Rivers, Brian Williams, Andy Cohen and Mayor Michael Bloomberg among them.\n\nBloomberg, who issued a proclamation calling June 15 “Sue Simmons Day” in New York City, called her a “quintessential New Yorker.”\n\nSTORY: WNBC Anchor Sue Simmons Gets Pink Slip, Contract Not Renewed\n\nSince word of her departure broke, Simmons has not spoken publicly of her ousting — she had seen a diminished role at the network in recent years, most notably leaving the 6 p.m. evening news — but as she made clear during her parting words, the 69-year-old is looking for new options.\n\nBefore throwing the audience to Friday’s episode of The Tonight Show, Simmons left viewers by blowing a kiss to the camera."
 }
