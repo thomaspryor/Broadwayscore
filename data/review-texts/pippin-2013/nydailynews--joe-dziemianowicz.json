@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new 'Pippin' is a marvel that marries the earthy appeal of circus performers with the airy artifice of Broadway magic. It's a thrilling reinvention that makes an old show feel blazingly new.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new 'Pippin' is a marvel that marries the earthy appeal of circus performers with the airy artifice of Broadway magic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong praise with superlatives ('marvel', 'thrilling', 'blazingly new') and the critic's own 80 rating confirms high positive territory. Language suggests enthusiastic recommendation. | GPT-4o: The review uses strong positive language such as 'marvel' and 'thrilling reinvention', indicating an enthusiastic recommendation. The original rating of 80 supports a high score within the Rave bucket. | Gemini: The review uses strong positive language like \"marvel\" and \"thrilling reinvention,\" indicating a strong recommendation. The critic's rating of 80 aligns with the Positive bucket. | Kimi: The critic provides an explicit 80 rating and describes the show as a 'marvel' and 'thrilling reinvention,' indicating strong enthusiasm while falling within the Positive range (70-84) rather than the highest Rave tier. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:56:51.873Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 80,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

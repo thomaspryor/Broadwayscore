@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Allison Janney is magnificent as Ouisa, the wealthy Manhattan socialite who opens her heart and home to a mysterious young black man claiming to be Sidney Poitier's son.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Allison Janney is magnificent as Ouisa, the wealthy Manhattan socialite who opens her heart and home to a mysterious young black man claiming to be Sidney Poitier's son.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allison Janney is magnificent as Ouisa, the wealthy Manhattan socialite who opens her heart and home to a mysterious young black man claiming to be Sidney Poitier's son.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise for the lead performance using 'magnificent,' but this appears to be a very brief excerpt with no overall show assessment. Low confidence due to limited text. | Gemini: The review praises Allison Janney's performance as magnificent, indicating a positive assessment of the show. | Kimi: The excerpt provides strong praise for the lead performance but offers no overall verdict on the production quality or recommendation. Text is significantly truncated or excerpted, preventing assessment of the critic's full opinion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:38:05.064Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 71,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

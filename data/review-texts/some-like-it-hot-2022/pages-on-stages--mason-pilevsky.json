@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Some Like It Hot was a victory for people wanting to be who they are every day. It was moving to see Daphne embrace the fluidity of gender and lean into who she is today not being who she is forever. People rarely stay exactly the same our whole life long in any facet of our identity--we grapple with what our identities means in diverse contexts. Daphne is human: unsure at times, worried about implications, and steeped in self-sabotage-- to me, that is the epitome of my transgender experience.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Some Like It Hot was a victory for people wanting to be who they are every day.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the show as 'a victory' and 'moving,' with deep personal resonance for the critic's transgender experience. However, this is only one curated excerpt, so confidence is low. | GPT-4o: The excerpt highlights a positive aspect of the show, particularly in its portrayal of gender fluidity and identity, which is moving and relatable. However, due to the single excerpt warning and lack of full context, the confidence is low. | Gemini: The review excerpt focuses on the positive representation and impact of the show, particularly Daphne's character. Given the limited text, but strong positive sentiment, I'm scoring it as positive with a higher score. | Kimi: The excerpt uses strongly positive language ('victory', 'moving', 'epitome') regarding the show's gender identity themes, though as a single curated quote it may not represent the full review's assessment of theatrical elements like performances or score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:46:50.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

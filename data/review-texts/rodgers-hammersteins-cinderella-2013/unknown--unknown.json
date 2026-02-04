@@ -20,5 +20,11 @@
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "show-score-playwright"
-  ]
+  ],
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T13:20:00.944Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is about a production at Paper Mill Playhouse in New Jersey, not a current Broadway production.; openai: The review is about a production at Paper Mill Playhouse, not the current Broadway run.; kimi: This review covers a production at Paper Mill Playhouse in New Jersey, not the current Broadway run. The text explicitly states the show 'comes to New Jersey for the holidays' and is being performed at the regional Paper Mill Playhouse rather than a Broadway theater.",
+  "promptVersion": "5.2.0"
 }

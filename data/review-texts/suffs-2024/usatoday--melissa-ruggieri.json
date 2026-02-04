@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Taub has crafted a musical that is both educational and entertaining, managing to avoid the trap of creating a history lesson set to music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Taub has crafted a musical that is both educational and entertaining, managing to avoid the trap of creating a history lesson set to music.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Taub has crafted a musical that is both educational and entertaining, managing to avoid the trap of creating a history lesson set to music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the show as successfully balancing education with entertainment and avoiding common pitfalls. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt praises the musical for being both educational and entertaining, suggesting a strong positive impression. Given the single excerpt warning, the score is set at the higher end of the Positive range. | Gemini: The excerpt praises the musical as both educational and entertaining, indicating a positive recommendation. Given the single excerpt, I've placed the score on the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise for the show's successful balance of education and entertainment, warranting a score in the upper Positive range per the single-excerpt guidance, though confidence is reduced due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T14:06:20.216Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

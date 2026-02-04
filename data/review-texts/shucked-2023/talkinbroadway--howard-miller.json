@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 69,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Brace yourself, indeed, and welcome to ‘Shucked,’ the new musical opening tonight at the Nederlander Theatre in a cornucopia of corn-fed corny jokes.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "welcome to 'Shucked,' the new musical opening tonight at the Nederlander Theatre in a cornucopia of corn-fed corny jokes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Single excerpt with 'welcome' suggesting positive reception of the show's corny humor style, but limited text and potential cherry-picking requires lower confidence and conservative scoring within Positive range. | GPT-4o: The excerpt suggests a focus on humor that may be seen as overly corny, indicating a mixed tone. The lack of clear positive or negative language and the single excerpt warning lead to a low confidence mixed score. | Gemini: The excerpt uses the phrase \"welcome to\" which indicates a positive sentiment. However, the phrase \"corn-fed corny jokes\" suggests that the humor may be low-brow, so I am scoring it as a mildly positive review. | Kimi: Single excerpt contains cautionary language ('brace yourself') and describes the humor as 'corny,' which carries negative connotations, though 'cornucopia' suggests abundance. Insufficient context to determine if this is playful description or criticism. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:31:07.540Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 60,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

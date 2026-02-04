@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Director and choreographer Josh Rhodes keeps things moving at a swift pace and manages to keep his group of clowns from upstaging one another (no easy task). It’s a wonderful ensemble effort and Rhodes’s work here is first-rate...But, like this new ‘Spamalot’, it’s irresistible and sends the audience out on a cloud of comedy.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But, like this new 'Spamalot', it's irresistible and sends the audience out on a cloud of comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise ('wonderful ensemble', 'first-rate', 'irresistible') with strong positive conclusion. However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the direction and ensemble, calling the show 'irresistible' and 'first-rate'. Despite the single excerpt warning, the tone suggests a strong positive recommendation. | Gemini: The review excerpt praises the direction and choreography, calling it \"first-rate\" and \"irresistible\", indicating a positive recommendation. Due to the limited text, confidence is low. | Kimi: The excerpt contains enthusiastic praise ('wonderful', 'first-rate', 'irresistible') and a clear recommendation, though as a single curated quote it may not capture the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:53:05.745Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Not really a play for the ages, Pictures from Home is, nevertheless, such an delightful display of star techniques and temperaments that it can't help but give pleasure. As Larry admits, one reason for drawing out his project at such length is his conviction that, photographing Irv and Jean, he can keep them alive; thanks to Burstein, Lane, and Wanamaker, all three Sultans attain vivid onstage life. As vehicles go, this is a pretty sleek model.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not really a play for the ages, Pictures from Home is, nevertheless, such an delightful display of star techniques and temperaments that it can't help but give pleasure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with a caveat ('not really a play for the ages') but delivers clear positive verdict ('delightful display', 'can't help but give pleasure', 'pretty sleek model'). Single excerpt warning suggests caution - this qualified positive recommendation scores in lower Positive range. | GPT-4o: The excerpt praises the performances and overall experience, describing it as a 'delightful display' that 'can't help but give pleasure.' Despite acknowledging it's not a 'play for the ages,' the positive tone and focus on the actors' vivid performances suggest a strong recommendation. | Gemini: The review states the play is not for the ages but praises the performances and techniques, ultimately saying it gives pleasure. This indicates a positive but not rave review. | Kimi: While the critic notes the material is not 'a play for the ages,' they praise the production as a 'delightful display' and 'sleek model' that gives pleasure through its star performances, constituting a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:51:45.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

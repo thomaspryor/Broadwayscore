@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What emerges is a production that generates more heat than light and that confirms Mamet's ability to write speakable dialogue without fully exploring the moral vacuum he depicts.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 59,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What emerges is a production that generates more heat than light and that confirms Mamet's ability to write speakable dialogue without fully exploring the moral vacuum he depicts.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (28 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 59,
+    "confidence": "medium",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What emerges is a production that generates more heat than light",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges Mamet's dialogue skills but finds the production lacking in substance and depth. 'More heat than light' suggests surface drama without meaningful insight. | GPT-4o: The review criticizes the production for lacking depth and fully exploring its themes, suggesting it is more style than substance. | Gemini: The review suggests the production has some merit in its dialogue but ultimately doesn't fully explore its themes, indicating a mixed or lukewarm assessment. | Kimi: The excerpt acknowledges Mamet's skill with dialogue as a positive attribute, but the dominant critique is that the production favors superficial heat over substantive illumination, failing to adequately explore its thematic material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:54:15.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

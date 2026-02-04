@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 43,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The main problem with \"Peter Pan Goes Wrong\" is that virtually all the jokes are physical, an unending series of scenic disasters that become not just predictable, but tiresome. Even the great physical comedians of the silent film era knew when enough was enough.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The main problem with 'Peter Pan Goes Wrong' is that virtually all the jokes are physical, an unending series of scenic disasters that become not just predictable, but tiresome.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic identifies a fundamental problem with the show's comedy structure, calling it 'predictable' and 'tiresome.' The comparison to silent film comedians suggests the show lacks the sophistication of masters of physical comedy. This is clearly negative but not a complete pan. | GPT-4o: The excerpt criticizes the show for relying too heavily on physical comedy, which becomes predictable and tiresome. This suggests a negative view, but the single excerpt limits confidence in the overall verdict. | Gemini: The excerpt clearly states the reviewer found the physical comedy repetitive and tiresome, leading to a negative assessment. Due to the limited text, confidence is low. | Kimi: The critic finds the physical comedy repetitive and tiresome, noting that the scenic disasters become predictable and the show doesn't know when to stop, comparing it unfavorably to silent film standards.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:49:57.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

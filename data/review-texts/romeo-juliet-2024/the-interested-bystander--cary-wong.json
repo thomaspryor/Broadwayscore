@@ -16,6 +16,11 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A big welcome to what I’m dubbing Romeo + Juliet: The Jellicle Ball to Broadway.\n\nRead more",
-  "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTier": "invalid",
+  "contentTierReason": "Only aggregator excerpts available",
+  "rejectedAt": "2026-02-04T13:22:12.910Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This is just a headline/teaser with a 'Read more' link, not actual review content that can be scored.; openai: The provided text is a single line that does not offer any evaluative content or clear recommendation about the show.; gemini: This is not a complete review, just an opening line. There is no evaluative content.",
+  "promptVersion": "5.2.0"
 }
