@@ -11608,18 +11608,6 @@
     "timestamp": "2026-02-04T14:07:28.241Z"
   },
   {
-    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
-    "showId": "a-life-in-the-theatre-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): chicago, appropriate, american buffalo, macbeth, noises off...",
-    "textLength": 6907,
-    "timestamp": "2026-02-04T14:11:28.617Z"
-  },
-  {
     "reviewId": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
     "showId": "all-my-sons-2019",
     "outlet": "The Hollywood Reporter",
@@ -12734,5 +12722,65 @@
     "garbageReason": "Multiple shows mentioned (7): english, once, bloody bloody andrew jackson, colin quinn: long story short, high...",
     "textLength": 4890,
     "timestamp": "2026-02-04T17:06:09.746Z"
+  },
+  {
+    "reviewId": "a-life-in-the-theatre-2010/nytimes--ben-brantley.json",
+    "showId": "a-life-in-the-theatre-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/10/13/theater/reviews/13life.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): chicago, appropriate, american buffalo, macbeth, macbeth...",
+    "textLength": 3604,
+    "timestamp": "2026-02-04T17:07:05.754Z"
+  },
+  {
+    "reviewId": "a-moon-for-the-misbegotten-2007/nytimes--ben-brantley.json",
+    "showId": "a-moon-for-the-misbegotten-2007",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2007/04/10/theater/reviews/10moon.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): giant, purpose, company, race, hedda gabler...",
+    "textLength": 4425,
+    "timestamp": "2026-02-04T17:11:14.356Z"
+  },
+  {
+    "reviewId": "a-night-with-janis-joplin-2013/hollywood-reporter--unknown.json",
+    "showId": "a-night-with-janis-joplin-2013",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-night-janis-joplin-theater-647216?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (16): mamma mia!, liberation, giant, home, company...",
+    "textLength": 7141,
+    "timestamp": "2026-02-04T17:11:33.332Z"
+  },
+  {
+    "reviewId": "a-raisin-in-the-sun-2014/hollywood-reporter--unknown.json",
+    "showId": "a-raisin-in-the-sun-2014",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, aladdin, mamma mia!, home, smash...",
+    "textLength": 10011,
+    "timestamp": "2026-02-04T17:12:27.571Z"
+  },
+  {
+    "reviewId": "a-raisin-in-the-sun-2014/nytimes--unknown.json",
+    "showId": "a-raisin-in-the-sun-2014",
+    "outlet": "New York Times",
+    "critic": "Unknown",
+    "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): chicago, caroline, or change, frozen, clybourne park, rain...",
+    "textLength": 7226,
+    "timestamp": "2026-02-04T17:12:31.839Z"
   }
 ]
