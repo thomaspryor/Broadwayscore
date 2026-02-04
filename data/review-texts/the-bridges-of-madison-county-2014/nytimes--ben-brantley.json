@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Broadway musical, based on the Robert James Waller novel and Clint Eastwood film, turns out to be a surprisingly honest and affecting portrait of middle-aged longing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "turns out to be a surprisingly honest and affecting portrait of middle-aged longing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses positive surprise with 'surprisingly honest and affecting,' indicating the show exceeded expectations and delivered emotional impact, though the brief excerpt limits confidence in the full assessment. | GPT-4o: The review describes the musical as 'surprisingly honest and affecting,' indicating a positive recommendation. However, the brevity of the review and lack of detailed evaluation leads to medium confidence. | Gemini: The review uses the phrase \"surprisingly honest and affecting\" which indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic delivers a clear recommendation with warm praise ('honest and affecting'), though the single-sentence excerpt provides limited context for a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:19:00.211Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Spring Awakening is a musical of exceptional power and beauty, a show that succeeds in making the late 19th century feel urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Spring Awakening is a musical of exceptional power and beauty, a show that succeeds in making the late 19th century feel urgently contemporary.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise using superlatives 'exceptional power and beauty' and emphasizing the show's success in feeling 'urgently contemporary.' However, this appears to be a brief excerpt, so confidence is medium due to limited text. | GPT-4o: The review uses strong positive language ('exceptional power and beauty') and indicates a successful contemporary relevance, suggesting a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"exceptional power and beauty\" and praises the show's ability to feel contemporary, indicating a strong recommendation. | Kimi: The critic deploys superlatives ('exceptional') and unqualified praise for the production's contemporary impact, indicating a must-see recommendation despite the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:48:34.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

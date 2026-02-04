@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Nathan Lane delivers a powerhouse performance in Douglas Carter Beane's moving drama about a gay performer in 1930s burlesque houses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Nathan Lane delivers a powerhouse performance in Douglas Carter Beane's moving drama about a gay performer in 1930s burlesque houses.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nathan Lane delivers a powerhouse performance in Douglas Carter Beane's moving drama about a gay performer in 1930s burlesque houses.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise ('powerhouse performance', 'moving drama') suggests positive recommendation, but limited text requires low confidence. Scored in upper Positive range given clearly enthusiastic language. | GPT-4o: The excerpt highlights a strong performance by Nathan Lane and describes the drama as 'moving'. However, due to the single excerpt warning, the overall sentiment might be mildly positive rather than strongly positive. | Gemini: The excerpt highlights a 'powerhouse performance' and a 'moving drama,' suggesting a strong positive experience. Given it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited information. | Kimi: The excerpt offers strong praise for the lead performance ('powerhouse') and the play itself ('moving drama'), indicating an enthusiastic recommendation. As a single curated excerpt, this represents the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:57:41.882Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

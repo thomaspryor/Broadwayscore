@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What seemed revolutionary in 1968 now seems like archaeology. But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "What seemed revolutionary in 1968 now seems like archaeology. But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this production, directed by Joe Mantello, makes the case that archaeology can be thrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the material feels dated but clearly endorses this specific production as 'thrilling,' indicating a solid positive recommendation with some reservations about the source material's age. | GPT-4o: The review acknowledges that the material may seem outdated but praises the current production for making it thrilling, indicating a positive recommendation with some reservations about the source material. | Gemini: The critic acknowledges the dated nature of the play but states that the current production makes it thrilling, indicating a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic acknowledges the 1968 material feels dated like archaeology, but argues Mantello's production makes it thrilling, indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:17:45.685Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 72,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

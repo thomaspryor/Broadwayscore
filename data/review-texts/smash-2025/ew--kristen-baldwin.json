@@ -12,5 +12,60 @@
   ],
   "nycTheatreExcerpt": "Smash exists to sing the praises of the many, many talented people on and off the stage that it takes to bring a blockbuster musical to life. As much as I loved that mess on NBC, it's clear Smash belonged on Broadway all along,",
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As much as I loved that mess on NBC, it's clear Smash belonged on Broadway all along",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses clear enthusiasm, saying they 'loved' the source material and that the show 'belongs on Broadway.' The phrase 'sing the praises' indicates strong appreciation for the production's merits. Single excerpt warning applies, but the tone is genuinely positive rather than mildly so. | GPT-4o: The excerpt is clearly positive, praising the talents involved and suggesting that Broadway is the right home for 'Smash'. However, due to the single excerpt warning, confidence is low. | Gemini: The critic clearly states that the show belongs on Broadway and references their love for the original show, indicating a positive sentiment. Given the single excerpt warning, I am scoring on the higher end of the positive range. | Kimi: The critic explicitly states they loved the original material and declares the show clearly belongs on Broadway, praising the talented cast and crew. However, as this is a single curated excerpt, the full context of the review is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:41:20.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

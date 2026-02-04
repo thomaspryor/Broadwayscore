@@ -10,10 +10,65 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "It could have risked devolving into campy schmaltz but Kate Trefry, along with Jack Thorne, pen a standalone story that stands strongly on its own two feet. An adventure romp brimming with action and exploding with spectacle, expect a fare few winks to the fans along the way and a healthy dash of ho...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An adventure romp brimming with action and exploding with spectacle",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows clear praise for the writing ('stands strongly on its own two feet') and describes it as an exciting spectacle. However, this is only one curated excerpt which may not represent the full review sentiment, so confidence is low. | GPT-4o: The excerpt praises the show as a 'standalone story' that is 'brimming with action and exploding with spectacle.' This suggests a strong positive recommendation, though the single excerpt limits confidence. | Gemini: The excerpt describes the show as an \"adventure romp\" that \"stands strongly on its own two feet,\" indicating a positive, but not overwhelmingly enthusiastic, review. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the writing and describes the production as 'brimming with action and exploding with spectacle,' indicating a clear recommendation. However, as a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:51:47.451Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

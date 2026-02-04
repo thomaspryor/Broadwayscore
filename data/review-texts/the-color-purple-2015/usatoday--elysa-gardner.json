@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new production of 'The Color Purple' is a triumph that honors both Walker's source material and the 2005 musical adaptation while infusing the material with fresh energy and insight.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new production of 'The Color Purple' is a triumph that honors both Walker's source material and the 2005 musical adaptation while infusing the material with fresh energy and insight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Uses the word 'triumph' which is a clear rave indicator, praising both faithfulness to source material and fresh innovation without any reservations. | GPT-4o: The review uses strong positive language, calling the production a 'triumph' and highlighting its fresh energy and insight, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word 'triumph' and praises the production for honoring the source material while adding fresh energy and insight, indicating a rave review. | Kimi: The critic unambiguously declares the production a 'triumph,' praising it for honoring the source material while bringing fresh energy and insight.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:22:59.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

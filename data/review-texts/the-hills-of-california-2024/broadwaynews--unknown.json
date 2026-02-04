@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the British playwright's expert hands, the nearly three-hour tragicomedy never feels indulgent; the rich texture of the world Butterworth builds is our payoff.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the playwright's 'expert hands' and describes the experience as rewarding ('our payoff'), suggesting strong recommendation despite the lengthy runtime. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt praises the playwright's skill and the play's rich texture, suggesting a strong positive recommendation. However, as only one excerpt is available, confidence is low. | Gemini: The excerpt praises the playwright's skill and the richness of the world-building, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt praises the playwright's 'expert hands' and describes the show as a rewarding 'payoff' with 'rich texture,' indicating a clear recommendation despite the nearly three-hour runtime. As a single clearly positive excerpt, it falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:38:54.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

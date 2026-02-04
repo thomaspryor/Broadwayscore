@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Mr. Greenberg has created a work that feels both deeply personal and universal, a memory play that doesn't sentimentalize the past but finds the poetry in the everyday details of a family's life.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0"
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Greenberg has created a work that feels both deeply personal and universal, a memory play that doesn't sentimentalize the past but finds the poetry in the everyday details of a family's life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Appreciative language about the work's artistry and emotional resonance, praising both personal and universal qualities, but lacks strong superlatives or explicit recommendation language. | Gemini: The review praises the work as deeply personal and universal, finding poetry in everyday details, indicating a positive, though not ecstatic, recommendation. | Kimi: The critic praises the play's emotional authenticity and poetic craft, appreciating how it balances personal specificity with universal themes without falling into sentimentality. While brief, the excerpt indicates strong appreciation for the work's artistic merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:12:06.437Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jackman's charisma and vocal prowess make this revival worthwhile, even if it doesn't quite recapture the magic of the original.",
   "originalScore": 87,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Jackman's charisma and vocal prowess make this revival worthwhile, even if it doesn't quite recapture the magic of the original.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (20 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackman's charisma and vocal prowess make this revival worthwhile, even if it doesn't quite recapture the magic of the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive recommendation ('worthwhile') anchored by strong praise for Jackman, but with notable reservation about not matching the original's magic. | GPT-4o: The critic's rating of 87 indicates a strong positive review. The text praises Jackman's performance as making the revival worthwhile, despite some reservations about recapturing the original's magic. | Gemini: The review explicitly states the revival is \"worthwhile\" due to Jackman's performance, but acknowledges it doesn't fully recapture the original's magic, indicating a positive but not rave review. | Kimi: The critic's explicit 87/100 rating places this in the Rave range, and while noting the production doesn't match the original, clearly recommends it as worthwhile.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:55:54.957Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 84,
+    "geminiScore": 78,
+    "kimiScore": 87,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

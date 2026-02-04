@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical, making this revival feel both timeless and urgently contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kelli O'Hara and Ken Watanabe bring fresh depth and nuance to the classic Rodgers and Hammerstein musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for lead performances and positive framing of the revival as both 'timeless and urgently contemporary', but brief excerpt limits full assessment of recommendation strength. | GPT-4o: The review praises the performances as bringing 'fresh depth and nuance,' making the revival feel 'timeless and urgently contemporary,' indicating a strong recommendation. | Gemini: The review uses strong positive language like \"fresh depth and nuance\" and \"timeless and urgently contemporary,\" indicating a strong recommendation. | Kimi: The critic offers unreserved praise for the lead performances ('fresh depth and nuance') and the production's artistic achievement ('timeless and urgently contemporary'), indicating a strong recommendation despite the brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:46:18.986Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

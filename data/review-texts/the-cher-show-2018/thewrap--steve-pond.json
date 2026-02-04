@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The show is silly and slight and not particularly deep, but it's also entertaining and colorful and full of familiar songs that the audience clearly loves.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The show is silly and slight and not particularly deep, but it's also entertaining and colorful and full of familiar songs that the audience clearly loves.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show is silly and slight and not particularly deep, but it's also entertaining and colorful and full of familiar songs that the audience clearly loves.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict despite acknowledging flaws - 'entertaining and colorful' with audience appeal outweighs 'silly and slight' criticisms, landing in barely positive range. | GPT-4o: The review acknowledges the show as 'silly and slight,' but ultimately describes it as 'entertaining and colorful,' with songs that resonate with the audience. This indicates a positive recommendation despite some reservations. | Gemini: The review acknowledges flaws but ultimately describes the show as entertaining and enjoyable, indicating a positive recommendation with reservations. | Kimi: The critic balances significant criticisms (silly, slight, lacking depth) against clear praise (entertaining, colorful, audience-pleasing songs), resulting in a qualified but firm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:19:41.580Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

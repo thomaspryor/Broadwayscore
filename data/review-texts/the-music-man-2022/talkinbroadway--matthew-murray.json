@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Hugh Jackman and Sutton Foster are undeniably appealing performers, but their star power can't quite mask the fundamental problems with this revival of Meredith Willson's classic musical.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Hugh Jackman and Sutton Foster are undeniably appealing performers, but their star power can't quite mask the fundamental problems with this revival of Meredith Willson's classic musical.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "their star power can't quite mask the fundamental problems with this revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the appeal of the lead performers but explicitly states they cannot overcome the production's fundamental problems, indicating a mixed-to-negative assessment without a clear recommendation either way. | GPT-4o: The review acknowledges the appeal of the performers but ultimately indicates that the revival has fundamental problems that are not overcome, leading to a negative recommendation. | Gemini: The review acknowledges the star power of the leads but states that it cannot overcome the fundamental problems with the revival, indicating a negative overall assessment. | Kimi: While the critic acknowledges the lead performers are undeniably appealing, the emphasis on fundamental problems that star power cannot overcome indicates a negative verdict rather than a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:56:30.340Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

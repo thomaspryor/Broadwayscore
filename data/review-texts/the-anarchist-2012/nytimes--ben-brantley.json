@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The two actresses, seated across from each other at a plain table, engage in a battle of wills that feels more like a philosophical exercise than a fully realized drama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 60,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "The two actresses, seated across from each other at a plain table, engage in a battle of wills that feels more like a philosophical exercise than a fully realized drama.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a battle of wills that feels more like a philosophical exercise than a fully realized drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the performances as engaging but finds the overall dramatic impact lacking, suggesting it's more intellectual than emotionally satisfying. This indicates a mixed response without clear recommendation. | GPT-4o: The review suggests a lack of dramatic engagement, indicating a mixed reception. The critic neither strongly recommends nor discourages seeing the show. | Gemini: The review describes the performance as a \"philosophical exercise\" rather than a \"fully realized drama,\" suggesting a mixed or neutral assessment. | Kimi: The critic acknowledges the intense dynamic between the performers ('battle of wills') but ultimately finds the production lacking in dramatic substance, dismissing it as a 'philosophical exercise' rather than a fully realized drama. Confidence is low due to the brevity of the excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:10:24.752Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

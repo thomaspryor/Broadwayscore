@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Soul Doctor is a musical about the life of Shlomo Carlebach, the singing rabbi who brought Jewish music to the mainstream in the 1960s and '70s. But the show itself is anything but mainstream — it's a passionate, if uneven, celebration of faith and music.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the show itself is anything but mainstream — it's a passionate, if uneven, celebration of faith and music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes show as 'passionate' (positive) but 'uneven' (negative qualifier), suggesting mixed verdict. Low confidence due to limited text from curated excerpt. | GPT-4o: The excerpt describes the show as 'passionate' but 'uneven', indicating a mixed review. The lack of full context and the warning about cherry-picked excerpts suggest a cautious approach, hence a score on the higher end of the Mixed range. | Gemini: The review excerpt describes the show as \"passionate, if uneven\", which indicates a mixed reaction. Given the limited text, confidence is low. | Kimi: The excerpt describes the show as a 'passionate celebration' while acknowledging it is 'uneven', suggesting a qualified positive recommendation. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:45:54.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

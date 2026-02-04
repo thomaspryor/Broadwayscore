@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Scherzinger's Norma is a tour de force performance that's both deeply vulnerable and utterly commanding, bringing fresh nuance to this iconic role.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,5 +25,59 @@
     "nyc-theatre"
   ],
   "nycTheatreExcerpt": "\"Norma Desmond's problem, as she tells us upon her entrance, is that she is big, but the pictures have gotten small. No such problem here. Scherzinger and the stage she inhabits push each other to grand extremes. The result is something like magic.\"",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scherzinger's Norma is a tour de force performance that's both deeply vulnerable and utterly commanding, bringing fresh nuance to this iconic role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for the lead performance using superlative language ('tour de force', 'utterly commanding') with no reservations mentioned, though this appears to be a brief excerpt focused solely on one element. | Gemini: The review uses the phrase \"tour de force performance\" and describes the performance as \"deeply vulnerable and utterly commanding\", indicating a strong positive recommendation. | Kimi: This excerpt offers the highest possible praise for the lead performance ('tour de force,' 'utterly commanding'), indicating an unambiguous rave verdict, though the brevity limits confidence in the overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:57:50.508Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

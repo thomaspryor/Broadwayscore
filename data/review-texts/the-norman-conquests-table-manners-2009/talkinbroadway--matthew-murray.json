@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is farce of the highest caliber, with every line and every moment calculated to maximum comic effect while never losing sight of the essential humanity of these six people.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 83,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This is farce of the highest caliber, with every line and every moment calculated to maximum comic effect while never losing sight of the essential humanity of these six people.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is farce of the highest caliber, with every line and every moment calculated to maximum comic effect while never losing sight of the essential humanity of these six people.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt warning applies - this quote shows strong praise ('highest caliber') and appreciation for both craft and humanity. Given the enthusiastic language, scored at upper end of Positive bucket, but confidence is low due to limited text. | GPT-4o: The excerpt provides high praise, describing the show as 'farce of the highest caliber' with effective comedy and humanity. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The excerpt is highly positive, describing the show as \"farce of the highest caliber\" and praising its comic effect and essential humanity. Given the single excerpt warning, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The excerpt delivers superlative praise ('highest caliber', 'maximum comic effect') for the production's comedic precision and humanity. Per single-excerpt guidelines, scoring at the upper end of Positive (80-84) with low confidence due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T04:02:14.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

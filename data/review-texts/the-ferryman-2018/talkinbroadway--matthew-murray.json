@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Butterworth has crafted a work that is at once intimate and epic, personal and political, hilarious and heartbreaking, and above all deeply, movingly human.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "Butterworth has crafted a work that is at once intimate and epic, personal and political, hilarious and heartbreaking, and above all deeply, movingly human.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 91,
+    "confidence": "high",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Butterworth has crafted a work that is at once intimate and epic, personal and political, hilarious and heartbreaking, and above all deeply, movingly human.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | GPT-4o: The review uses superlative language to describe the show as both 'intimate and epic' and 'hilarious and heartbreaking', indicating a strong, enthusiastic recommendation without reservations. | Gemini: The review uses strong positive language such as \"intimate and epic\", \"hilarious and heartbreaking\", and \"deeply, movingly human\", indicating a rave review. | Kimi: The excerpt offers unqualified superlatives describing the work as simultaneously 'intimate and epic' and 'hilarious and heartbreaking', indicating a rave recommendation despite limited excerpt length.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:31:58.651Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

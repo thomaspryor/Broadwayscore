@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Aaron Sorkin's new play about the invention of television is a slick piece of work that manages to be simultaneously engrossing and irritating.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly describes the play as 'simultaneously engrossing and irritating' - a textbook mixed verdict. With only one excerpt available, confidence is low as the full review context is unknown. | GPT-4o: The excerpt indicates a mixed reaction, noting both engrossing and irritating aspects. The single excerpt warning suggests caution, leading to a score in the middle of the Mixed range. | Gemini: The review excerpt indicates mixed feelings, describing the play as both \"engrossing\" and \"irritating.\" Due to the limited text, confidence is low. | Kimi: The critic offers directly competing assessments, praising the play as 'engrossing' while criticizing it as 'irritating,' indicating an ambivalent reaction that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:29:10.198Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
