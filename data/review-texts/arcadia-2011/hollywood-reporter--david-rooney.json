@@ -22,13 +22,19 @@
   "urlDiscoveredAt": "2026-02-03T09:23:50.996Z",
   "urlDiscoveryMethod": "google-serp",
   "textWordCount": 844,
-  "archivePath": "data/archives/reviews/arcadia-2011/hollywood-reporter--david-rooney_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T09:23:51.002Z",
+  "archivePath": "data/archives/reviews/arcadia-2011/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T19:14:34.227Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
       "success": true
     }
   ],

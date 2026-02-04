@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2013/11/theater-review-waiting-for-godot.html",
+  "url": "https://www.vulture.com/2013/11/reviews-no-mans-land.html",
   "publishDate": "November 25, 2013",
-  "fullText": "The production, directed by Sean Mathias, is beautifully acted and designed, but it's also surprisingly conventional — which may be exactly what this particular Godot needs.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Sean Mathias, is beautifully acted and designed, but it's also surprisingly conventional — which may be exactly what this particular Godot needs.",
   "originalScore": null,
@@ -16,10 +16,49 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Sean Mathias, is beautifully acted and designed, but it's also surprisingly conventional — which may be exactly what this particular Godot needs.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "textQuality": "truncated",
   "sources": [
     "web-search"
-  ]
+  ],
+  "previousUrl": "https://www.vulture.com/2013/11/theater-review-waiting-for-godot.html",
+  "urlDiscoveredAt": "2026-02-04T18:48:00.874Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/waiting-for-godot-2013/vulture--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T18:48:00.882Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

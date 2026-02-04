@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/bring-it-on-the-musical-1117948024/",
   "publishDate": "August 1, 2012",
-  "fullText": "The cheerleading musical 'Bring It On' brings enough peppy energy and athletic pizzazz to its slight story to make it a reasonably entertaining diversion, if hardly a memorable one.",
-  "isFullReview": false,
+  "fullText": "In Patrick Hamilton's 1929 thriller \"Rope,\" two young men gratuitously murder one of their friends after taking Nietzsche's supremacist philosophy too literally.\n\nIn Patrick Hamilton’s 1929 thriller “Rope,” two young men gratuitously murder one of their friends after taking Nietzsche’s supremacist philosophy too literally. Eighty years later, in this Edinburgh Fringe preem of Simon Stephens’ “Morning,” the teenage Stephanie brutally murders her boyfriend Stephen without even the excuse of a German philosopher to fall back on; she does it out of pure nihilism. Whether or not such alienation is an accurate reflection of the adolescent mindset, the production — bound for a London run at Lyric Hammersmith next month — is a demoralizing piece of theater that wallows in despair rather than challenging it.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Whitney Leavitt Leveraged 'Mormon Wives' to Earn 'Chicago.' She's Not Sure How She'll Ever Go Back\n\nStephens’ vision is unremitting in its bleakness. Stephanie is a character without moral foundation; self-centered, capricious and disconnected, she acts without reference to anyone around her, finding pleasure in the discomfort she causes. When she steals her brother’s iPod as a leaving present for a friend, she is not only indifferent to his feelings but genuinely mystified by his anger.\n\nOn one level, this is fascinating. Played by Scarlet Billham in Sean Holmes’ stripped-down production, she has a tantalizing air of self-possession. Stephanie is in a world of her own; friends and family just have to work around her. Billham and her fellow teenage cast have an authority that belies their age, punching out the clipped sentences of the script with an unselfconscious directness and creating a credible impression of a generation of suburban youth, materially comfortable, but emotionally adrift.\n\nWhile Michael Czepiel sits on at a computer creating the chilled-out electronic score, the others come and go on a stage pared back to the theater walls, creating a tapestry of teenage boredom, sex and squabbling as some of their number prepare to leave home for university. The everyday nature of their lives makes Stephanie’s random act of violence against Ted Reilly’s good-natured Stephen, after an apparently playful seduction, seem even more inexplicable and shocking. Only once — letting out a terrible scream — does she indicate any awareness of the severity of her crime.\n\nDramatically, however, it comes across as shock for the sake of shock. It offers a comfortable theatergoing aud an image of gratuitous violence, capped by a closing speech of indulgent despair (“there is no future and all of the city is full of shit”), without providing any context to suggest this is anything more than typical adolescent doom-laden fantasy. It isn’t just that you leave the theater depressed by so much negativity (drama, after all, is allowed to rub our faces in it), it’s that you are unconvinced such existential angst is any more than a passing phase.",
+  "isFullReview": true,
   "dtliExcerpt": "The cheerleading musical 'Bring It On' brings enough peppy energy and athletic pizzazz to its slight story to make it a reasonably entertaining diversion, if hardly a memorable one.",
   "originalScore": null,
   "assignedScore": 69,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The cheerleading musical 'Bring It On' brings enough peppy energy and athletic pizzazz to its slight story to make it a reasonably entertaining diversion, if hardly a memorable one.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
     "score": 69,
@@ -73,5 +73,52 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 69,
+  "textWordCount": 475,
+  "archivePath": "data/archives/reviews/bring-it-on-the-musical-2012/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T20:46:47.456Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 475,
+  "tierReason": "Full review text"
 }

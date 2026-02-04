@@ -667,6 +667,33 @@ async function main() {
       console.log('\n[Discrepancies] None found - sources agree!');
     }
 
+    // Guard: don't overwrite existing data with empty/degraded results
+    const newShowCount = Object.keys(merged).length;
+    const newShowsWithData = Object.values(merged).filter(s =>
+      s && (s.lottery || s.rush || s.digitalRush || s.standingRoom || s.specialLottery || s.studentRush)
+    ).length;
+
+    if (fs.existsSync(OUTPUT_PATH)) {
+      const existing = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8'));
+      const existingShowCount = Object.keys(existing.shows || {}).length;
+      const existingWithData = Object.values(existing.shows || {}).filter(s =>
+        s && (s.lottery || s.rush || s.digitalRush || s.standingRoom || s.specialLottery || s.studentRush)
+      ).length;
+
+      console.log(`\n[Guard] Existing: ${existingShowCount} shows (${existingWithData} with data)`);
+      console.log(`[Guard] New:      ${newShowCount} shows (${newShowsWithData} with data)`);
+
+      if (newShowsWithData === 0 && existingWithData > 0) {
+        console.error(`\n[Guard] ABORT: Scrape returned 0 shows with data but existing file has ${existingWithData}. Refusing to overwrite.`);
+        process.exit(1);
+      }
+
+      if (existingWithData > 0 && newShowsWithData < existingWithData * 0.5) {
+        console.error(`\n[Guard] ABORT: Scrape returned ${newShowsWithData} shows with data, less than 50% of existing ${existingWithData}. Refusing to overwrite.`);
+        process.exit(1);
+      }
+    }
+
     // Build output
     const output = {
       lastUpdated: new Date().toISOString(),
@@ -677,7 +704,7 @@ async function main() {
 
     // Write output
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
-    console.log(`\n[Output] Wrote lottery-rush.json with ${Object.keys(merged).length} shows.`);
+    console.log(`\n[Output] Wrote lottery-rush.json with ${newShowCount} shows (${newShowsWithData} with data).`);
 
     // Run tag sync
     console.log('\n[Tags] Syncing tags in shows.json...');

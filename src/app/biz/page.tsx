@@ -16,7 +16,7 @@ import {
   getUpcomingClosings,
   getAllOpenShowsWithCommercial,
   getCommercialLastUpdated,
-} from '@/lib/data';
+} from '@/lib/data-commercial';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';

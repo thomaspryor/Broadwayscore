@@ -18,6 +18,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
 | `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
 | `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline after scrape |
+| `scrape-bww-reviews.yml` | ✅ | ✅ | Weekly BWW /reviews/ pages + roundups, rebuilds after scrape |
 | `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
 | `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (fetch → scrape → audit → gather → rebuild) |
 
@@ -267,9 +268,20 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **NYC Theatre:** Only processes shows from 2023+, skip-if-exists caching via `data/aggregator-archive/nyc-theatre/`
 - **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
 
+## `scrape-bww-reviews.yml`
+- **Runs:** Weekly on Sundays at 1 PM UTC (after existing scrapers), or manually
+- **Does:** Scrapes BWW `/reviews/` pages (1-10 scores, review URLs, excerpts) and BWW Review Roundup articles (thumb up/meh/down, review URLs, excerpts), then rebuilds `reviews.json`
+- **Options:** `type` (all/reviews/roundup), `shows` (comma-separated show IDs), `limit` (default 200), `force` (override cache)
+- **Requires:** SCRAPINGBEE_API_KEY
+- **Script:** `scripts/scrape-bww-reviews.js`
+- **Three BWW formats handled:** (1) `/reviews/` pages with 1-10 scores, (2) new-format roundups (~2023+) with thumb images, (3) old-format roundups (pre-2023) with plain text
+- **Checkpointing:** Every 25 shows in CI with git push retry
+- **Archives:** `data/aggregator-archive/bww-reviews/` (review pages), `data/aggregator-archive/bww-roundups/` (roundup articles)
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
+
 ## `audit-aggregator-coverage.yml`
 - **Runs:** Weekly on Mondays at 6 AM UTC, or manually
-- **Does:** Audits review coverage across all 5 aggregator sources (DTLI, Show Score, BWW, Playbill Verdict, NYC Theatre) for all shows. Compares archive-extracted counts against local review files to identify genuine coverage gaps.
+- **Does:** Audits review coverage across all 6 aggregator sources (DTLI, Show Score, BWW Roundups, BWW Reviews, Playbill Verdict, NYC Theatre) for all shows. Compares archive-extracted counts against local review files to identify genuine coverage gaps.
 - **Options:** `status` (open/closed/all, default all), `show` (single show ID for targeted audit)
 - **Script:** `scripts/audit-aggregator-coverage.js`
 - **Output:** `data/audit/aggregator-coverage.json` — per-show gap analysis with `trulyMissing` metric

@@ -10,7 +10,7 @@ import {
   getSeasonsWithCommercialData,
   getSeasonStats,
   getShowsBySeasonWithCommercial,
-} from '@/lib/data';
+} from '@/lib/data-commercial';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
 

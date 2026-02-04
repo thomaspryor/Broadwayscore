@@ -22,6 +22,51 @@ const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
 
+// Import pinned images list from fetch script to prevent overwriting curated thumbnails
+const PINNED_IMAGES = new Set([
+  // Manually curated promotional art (restored/selected by human review)
+  'sunset-boulevard-2024',        // Nicole Scherzinger Tony Award promo art
+  'an-enemy-of-the-people-2024',  // Jeremy Strong underwater poster art
+  'waiting-for-godot-2025',       // Reeves & Winter blue promo poster
+  'good-night-and-good-luck-2025',// George Clooney B&W full title poster
+  'parade-2023',                  // Ben Platt & Micaela Diamond promo art
+  'redwood-2025',                 // Idina Menzel "Returns to Broadway" poster
+  'smash-2025',                   // Red marquee light-bulb logo
+  'once-upon-a-mattress-2024',    // Sutton Foster promo art
+  'maybe-happy-ending-2024',      // Square key art (protected from poster crop)
+  'romeo-juliet-2024',            // Manually uploaded promotional art
+  'art-2025',                     // Manually sourced thumbnail
+  // Currently open shows — thumbnails curated/verified by human
+  'aladdin-2014',
+  'all-out-2025',
+  'and-juliet-2022',
+  'book-of-mormon-2011',
+  'buena-vista-social-club-2025',
+  'bug-2026',
+  'chess-2025',
+  'chicago-1996',
+  'death-becomes-her-2024',
+  'hadestown-2019',
+  'hamilton-2015',
+  'harry-potter-2021',
+  'hells-kitchen-2024',
+  'just-in-time-2025',
+  'marjorie-prime-2025',
+  'mj-2022',
+  'moulin-rouge-2019',
+  'oedipus-2025',
+  'oh-mary-2024',
+  'operation-mincemeat-2025',
+  'ragtime-2025',
+  'six-2021',
+  'stranger-things-2024',
+  'the-great-gatsby-2024',
+  'the-lion-king-1997',
+  'the-outsiders-2024',
+  'two-strangers-bway-2025',
+  'wicked-2003',
+]);
+
 // Contentful transformation parameters for each format
 const CONTENTFUL_PARAMS = {
   poster:    'w=720&h=1080&fit=fill&f=face&fm=webp&q=85',
@@ -113,6 +158,16 @@ async function main() {
     for (const format of FORMATS) {
       const url = show.images[format];
       if (!url) continue;
+
+      // Skip pinned thumbnails — these were manually curated
+      if (format === 'thumbnail' && PINNED_IMAGES.has(show.id) && !force) {
+        const localPath = path.join(OUTPUT_DIR, show.id, 'thumbnail.webp');
+        const localJpg = path.join(OUTPUT_DIR, show.id, 'thumbnail.jpg');
+        if (fs.existsSync(localPath) || fs.existsSync(localJpg)) {
+          totalSkipped++;
+          continue;
+        }
+      }
 
       // If URL is already local and we're not forcing, skip
       if (url.startsWith('/images/') && !force) {
