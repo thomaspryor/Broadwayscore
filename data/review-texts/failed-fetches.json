@@ -5692,30 +5692,6 @@
     "timestamp": "2026-02-02T15:45:18.748Z"
   },
   {
-    "reviewId": "bug-2026/deadline--greg-evans.json",
-    "showId": "bug-2026",
-    "outlet": "Deadline",
-    "critic": "Greg Evans",
-    "url": "https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 6252,
-    "timestamp": "2026-02-02T15:46:38.975Z"
-  },
-  {
-    "reviewId": "bug-2026/timeout--adam-feldman.json",
-    "showId": "bug-2026",
-    "outlet": "Time Out New York",
-    "critic": "Adam Feldman",
-    "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-paranoia",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
-    "textLength": 7563,
-    "timestamp": "2026-02-02T15:46:45.121Z"
-  },
-  {
     "reviewId": "buena-vista-social-club/nyt-theater--jonathan-mandell.json",
     "showId": "buena-vista-social-club",
     "outlet": "New York Theater",
@@ -8054,18 +8030,6 @@
     "garbageReason": "Newsletter form: \"Get the latest news\"",
     "textLength": 2908,
     "timestamp": "2026-02-03T04:58:00.695Z"
-  },
-  {
-    "reviewId": "bug-2026/wsj--charles-isherwood.json",
-    "showId": "bug-2026",
-    "outlet": "The Wall Street Journal",
-    "critic": "Charles Isherwood",
-    "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
-    "textLength": 728,
-    "timestamp": "2026-02-03T04:58:19.848Z"
   },
   {
     "reviewId": "cabaret-2024/wsj--charles-isherwood.json",
@@ -11114,5 +11078,125 @@
     "garbageReason": "Multiple shows mentioned (13): proof, home, english, parade, company...",
     "textLength": 5750,
     "timestamp": "2026-02-04T02:50:59.830Z"
+  },
+  {
+    "reviewId": "bug-2026/deadline--greg-evans.json",
+    "showId": "bug-2026",
+    "outlet": "Deadline",
+    "critic": "Greg Evans",
+    "url": "https://deadline.com/2026/01/bug-broadway-review-carrie-coon-tracy-letts-1236680796/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): waitress, company, waitress, once, rain...",
+    "textLength": 7658,
+    "timestamp": "2026-02-04T02:53:08.549Z"
+  },
+  {
+    "reviewId": "bug-2026/timeout--adam-feldman.json",
+    "showId": "bug-2026",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-paranoia",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 7749,
+    "timestamp": "2026-02-04T02:53:40.481Z"
+  },
+  {
+    "reviewId": "bug-2026/wsj--charles-isherwood.json",
+    "showId": "bug-2026",
+    "outlet": "The Wall Street Journal",
+    "critic": "Charles Isherwood",
+    "url": "https://www.wsj.com/articles/bug-review-a-broadway-drama-of-insidious-delusion-8f98eb22?gaa_at=eafs&gaa_n=AWEtsqdAp__gqv-BbzJiFKBGQwvZXjhWkzfUmogj6_5saRXy96Y9EIM7twHr&gaa_ts=6982b83c&gaa_sig=OPEU5W-GNQ8567JzDIfBXGYIxlrn1VM6INA61ITPRQU2mWibjCBgtBQyCI7d6JXNrbjqVoafV0mMI_4gv7XYAg%3D%3D",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Legal/privacy page: \"©2026 Dow Jones & Company, Inc. All Rights Reserved\"",
+    "textLength": 728,
+    "timestamp": "2026-02-04T02:54:16.662Z"
+  },
+  {
+    "reviewId": "exit-the-king-2009/guardian--susannah-clapp.json",
+    "showId": "exit-the-king-2009",
+    "outlet": "The Guardian",
+    "critic": "Susannah Clapp",
+    "url": "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): wicked, giant, home, summer, hair...",
+    "textLength": 6524,
+    "timestamp": "2026-02-04T02:57:10.888Z"
+  },
+  {
+    "reviewId": "falsettos-2016/observer--rex-reed.json",
+    "showId": "falsettos-2016",
+    "outlet": "Observer",
+    "critic": "Rex Reed",
+    "url": "https://observer.com/2016/11/falsettos-revival-succeeds-despite-dated-material/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Ad blocker message: \"ad blocker\"",
+    "textLength": 582,
+    "timestamp": "2026-02-04T02:59:08.176Z"
+  },
+  {
+    "reviewId": "falsettos-2016/theatermania--jesse-green.json",
+    "showId": "falsettos-2016",
+    "outlet": "TheaterMania",
+    "critic": "Jesse Green",
+    "url": "https://www.theatermania.com/new-york-city-theater/reviews/falsettos_78691.html",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): chess, sweeney todd, company, king lear, once...",
+    "textLength": 4647,
+    "timestamp": "2026-02-04T02:59:26.462Z"
+  },
+  {
+    "reviewId": "falsettos-2016/timeout--adam-feldman.json",
+    "showId": "falsettos-2016",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/falsettos",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 1916,
+    "timestamp": "2026-02-04T02:59:48.723Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/deadline--unknown.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "Deadline",
+    "critic": "Unknown",
+    "url": "http://deadline.com/2014/08/harvey-weinsteins-neverland-re-boot-is-twee-to-the-max-819774/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): mamma mia!, liberation, dog day afternoon, sylvia, the audience...",
+    "textLength": 6376,
+    "timestamp": "2026-02-04T03:00:07.389Z"
+  },
+  {
+    "reviewId": "finding-neverland-2015/timeout--adam-feldman.json",
+    "showId": "finding-neverland-2015",
+    "outlet": "Time Out New York",
+    "critic": "Adam Feldman",
+    "url": "https://www.timeout.com/newyork/theater/finding-neverland",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Newsletter form: \"Thanks for subscribing\"",
+    "textLength": 3950,
+    "timestamp": "2026-02-04T03:01:39.271Z"
+  },
+  {
+    "reviewId": "fish-in-the-dark-2015/deadline--unknown.json",
+    "showId": "fish-in-the-dark-2015",
+    "outlet": "Deadline",
+    "critic": "Unknown",
+    "url": "http://deadline.com/2015/03/larry-david-fish-in-the-dark-review-broadway-1201386962/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): mamma mia!, liberation, misery, rocky, rain...",
+    "textLength": 5812,
+    "timestamp": "2026-02-04T03:02:28.708Z"
   }
 ]

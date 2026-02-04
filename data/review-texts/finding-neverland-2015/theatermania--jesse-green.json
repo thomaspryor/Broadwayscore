@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/finding-neverland_72395.html",
   "publishDate": "April 16, 2015",
-  "fullText": "The show is so eager to please that it practically wags its tail, but the pleasure it offers is mostly empty calories.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "The show is so eager to please that it practically wags its tail, but the pleasure it offers is mostly empty calories.",
   "originalScore": null,
   "assignedScore": 43,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show is so eager to please that it practically wags its tail, but the pleasure it offers is mostly empty calories.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (22 words)",
   "llmScore": {
     "score": 43,
@@ -72,5 +72,49 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 43,
+  "textWordCount": 321,
+  "archivePath": "data/archives/reviews/finding-neverland-2015/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:01:00.851Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "More than a year after opening, the Tony-winning show is in the black.\n\nTony-winning musical A Gentleman's Guide to Love and Murder has officially recouped its $7.5 million capitalization. The production, which opened on November 17, 2013, also holds the house records at the Walter Kerr Theatre for both the highest single-week gross ($1,062,740.60 over eight performances on the week ending December 28, 2014) and total cumulative gross, which now stands at $51,557,644.05.\n\nA Gentleman's Guide to Love and Murder tells the story of Monty Navarro, who has received the news that he is descended from a noble family and could become the next Earl of Highhurst. There are only eight issues standing in his way: the other heirs (all played by a single actor) who precede him in line for the title. What does Monty choose to do? Eliminate them, of course. It features a book and lyrics by Robert L. Freedman, and music and lyrics by Steven Lutvak. Darko Tresnjak directs, with choreography by Peggy Hickey.\n\nA Gentleman’s Guide to Love and Murder stars Tony winner Jefferson Mays, Jeff Kready, Scarlett Strallen, Catherine Walker, and Carole Shelley, with Sandra DeNise, Joanna Glushak, Kristen Hahn, Greg Jackson, Eddie Korbich, Mark Ledbetter, Kevin Massey, Michael McCorry Rose, Jennifer Smith, Kathy Voytko, and Price Waldman.\n\nFor tickets and more information, click here.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }
