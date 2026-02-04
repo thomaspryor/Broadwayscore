@@ -324,7 +324,7 @@ jobs:
           for show in "${SHOWS[@]}"; do
             echo ""
             echo "=== Gathering: $show ==="
-            node scripts/gather-reviews.js --show="$show" || true
+            node scripts/gather-reviews.js --shows="$show" || true
           done
 
       - name: Commit gathered reviews
