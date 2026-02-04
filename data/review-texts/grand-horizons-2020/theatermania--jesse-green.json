@@ -5,8 +5,8 @@
   "criticName": "Jesse Green",
   "url": "https://www.theatermania.com/broadway/reviews/grand-horizons_89453.html",
   "publishDate": "February 24, 2020",
-  "fullText": "Bess Wohl's new play Grand Horizons is a family comedy that manages to be both deeply familiar and surprisingly fresh, finding genuine emotion in the rubble of a long marriage.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Bess Wohl's new play Grand Horizons is a family comedy that manages to be both deeply familiar and surprisingly fresh, finding genuine emotion in the rubble of a long marriage.",
   "originalScore": null,
   "assignedScore": 76,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Bess Wohl's new play Grand Horizons is a family comedy that manages to be both deeply familiar and surprisingly fresh, finding genuine emotion in the rubble of a long marriage.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (30 words)",
   "llmScore": {
     "score": 76,
@@ -72,5 +72,56 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "textWordCount": 230,
+  "archivePath": "data/archives/reviews/grand-horizons-2020/theatermania--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:16:19.550Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 230 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "The one-night-only concert will take place on February 17.\n\nManhattan Concert Productions has announced that Michael Arden will serve as the director for Joseph and the Amazing Technicolor Dreamcoat, and that Stephen Oremus will serve as music director. The one-night-only concert will take place on February 17, 2020, at Lincoln Center's David Geffen Hall.\n\nWith music by Andrew Lloyd Webber and lyrics by Tim Rice, Joseph is a reimagining of the bible story of Joseph, his 11 brothers, and his coat of many colors. The musical, which originated as a concept album in 1969, is celebrating its 50th anniversary this year.\n\nThe concert performance will feature a star-studded company, a chorus of 200 singers, and the New York City Chamber Orchestra. Additional details will be announced in the coming months.\n\nReview: Jason Alexander Leaves a Little Gristle in New Production of Sweeney Todd \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Manon!, Opera’s Have-It-All Girl \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: In The Porch on Windy Hill, Bluegrass Heals a Broken Family \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Power Slips Away, One Lear at a Time, in King Lear at La MaMa \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Blackout Songs, When Your Life Is One Long Night Out \n \n \n \n\n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Review: Stories of Childhood Told Through Dance in BLACK GIRL: Linguistic Play \n \n \n \n\n \n\n \n \n\n \n \n\n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n Theater News & discounts\n \n Get the best deals and latest updates on theater and shows by signing up for TheaterMania's newsletter today!\n\nBroadway performances start on March 27 at the Majestic Theatre."
 }

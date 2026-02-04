@@ -3,10 +3,10 @@
   "outletId": "guardian",
   "outlet": "The Guardian",
   "criticName": "Jesse Green",
-  "url": "https://www.theguardian.com/stage/2017/apr/18/groundhog-day-review-broadway-musical",
+  "url": "https://www.theguardian.com/stage/2023/jun/09/groundhog-day-review-old-vic-london-tim-minchin",
   "publishDate": "April 18, 2017",
-  "fullText": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
-  "isFullReview": false,
+  "fullText": "Flamboyant theatricality … Andy Karl as Phil Connors in Groundhog Day at the Old Vic, London. Photograph: Manuel HarlanView image in fullscreenFlamboyant theatricality … Andy Karl as Phil Connors in Groundhog Day at the Old Vic, London. Photograph: Manuel Harlan This article is more than 2 years oldReviewGroundhog Day review – repeat production makes for guaranteed entertainmentThis article is more than 2 years oldOld Vic, London A revival of the musical at the same venue where it premiered combines clever staging, impeccable performances and Tim Minchin’s lyrical brilliance into a reassuringly familiar and enjoyable package\n\nThis musical, of a man trapped inside one day on repeat, runs the risk of living its own groundhog day. It will be familiar to many from the Bill Murray film on which it is based, and also from its original run, seven years ago at the same theatre.\n\nThe story of arrogant TV weatherman Phil Connors (Andy Karl), who gets stuck in backwater America reporting on an annual “Groundhog Day” event, is indubitably a throwback: even its book is written by the screenwriter of the 1993 film, Danny Rubin. The big surprise is that it still lifts us with its comedy, and thrills us with its theatrical invention.\n\nSo much of that is down to Tim Minchin. His music is fine if relentless, with songs coming thick and fast at first, none of the tunes memorable. But his lyrics are a blast, zinging with clever, quick wit. The show glows with bursts of comic brilliance as a result, and slightly better songs in the second half, such as Playing Nancy (sung by Eve Norris), about the woes of being a single, small-town woman, and If I Had My Time Again.\n\nThere is also a bewitching performance from Karl, reprising the role of the anchorman, who really is a throwback to another era. Karl makes a more predatory Phil than Murray did, with impeccable comic timing. Tanisha Spring is winning as his producer, Rita, and their spiky chemistry fuels the romance. “They told me he was an asshole – and he is,” she sings.\n\nView image in fullscreenSpiky chemistry … Tanisha Spring as Rita and Karl as Phil. Photograph: Manuel HarlanDirected by Matthew Warchus, who also worked with Minchin on Matilda, the production uses overt, flamboyant theatricality to its advantage. Rob Howell’s set creates the hallucinatory effect of a recurring dream, with 19th-century troupes in top hats and a high-kicking band with pompoms (choreography by Lizzi Gee). Howell uses miniaturisation to brilliant effect too: a drunken late-night car ride goes from a life-size chase on stage to an aerial view with model cars.\n\nRubin’s story has a thudding moral lesson at its core – “Isn’t it a wonderful life when you’re a good person?” – which is neither deep nor convincing. Phil becomes boringly vanilla after going through his entertaining cycles of hedonism and hopelessness, so it is an achievement that Karl keeps us on his side.\n\nRather like the Old Vic’s returning production of A Christmas Carol, this revival is hardly daring programming. But it is guaranteed entertainment and will no doubt get bums on seats. A comfy pair of slippers then, but ones we enjoy slipping into.\n\nAt any point, you can opt out of the sale of all of your personal information by pressing",
+  "isFullReview": true,
   "dtliExcerpt": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
   "originalScore": 80,
   "assignedScore": 79,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tim Minchin's songs are clever and catchy, and the show finds genuine emotion in its repetitive premise.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (17 words)",
   "llmScore": {
     "score": 79,
@@ -72,5 +72,51 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "previousUrl": "https://www.theguardian.com/stage/2017/apr/18/groundhog-day-review-broadway-musical",
+  "urlDiscoveredAt": "2026-02-04T03:20:11.532Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 79,
+  "textWordCount": 552,
+  "archivePath": "data/archives/reviews/groundhog-day-2017/guardian--jesse-green_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T03:20:11.536Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "Request failed with status code 403"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Paywall detected - login may have failed"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 552,
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "wrongProductionNote": "Auto-flagged: URL year 2023 outside valid range 2014–2019 for show opening 2017"
 }
