@@ -94,6 +94,8 @@ const ShowCard = memo(function ShowCard({ show, index, hideStatus, scoreMode }: 
         <ShowImage
           sources={[
             show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
+            show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
+            show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
           ]}
           alt={`${show.title} Broadway ${show.type}`}
           priority={index < 4}
@@ -213,6 +215,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: { sh
           sources={[
             show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
             show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
+            show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
           ]}
           alt={`${show.title} Broadway ${show.type}`}
           priority={priority}

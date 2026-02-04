@@ -300,6 +300,8 @@ function NVPPageInner() {
                   <ShowImage
                     sources={[
                       show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
+                      show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
+                      show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'thumbnail') : null,
                     ]}
                     alt={`${show.title} Broadway ${show.type}`}
                     priority={index < 4}

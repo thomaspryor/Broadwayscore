@@ -131,8 +131,8 @@ async function getOriginalImageUrl(pageUrl, showTitle) {
   }
 }
 
-// Download image and check if it's square enough
-async function tryDownloadSquareImage(imageUrl, minSize = 400) {
+// Download image and check dimensions
+async function tryDownloadImage(imageUrl, minSize = 400) {
   try {
     const buffer = await downloadUrl(imageUrl);
     if (buffer.length < 5000) return null; // Too small, probably not a real image
@@ -141,11 +141,10 @@ async function tryDownloadSquareImage(imageUrl, minSize = 400) {
     if (!dims) return null;
 
     const ratio = Math.min(dims.width, dims.height) / Math.max(dims.width, dims.height);
-    const isSquare = ratio >= 0.85; // Allow 15% tolerance
     const isLargeEnough = dims.width >= minSize && dims.height >= minSize;
 
-    if (isSquare && isLargeEnough) {
-      return { buffer, width: dims.width, height: dims.height, ratio, url: imageUrl };
+    if (isLargeEnough) {
+      return { buffer, width: dims.width, height: dims.height, ratio, url: imageUrl, isSquare: ratio >= 0.85 };
     }
     return null;
   } catch {
@@ -153,8 +152,8 @@ async function tryDownloadSquareImage(imageUrl, minSize = 400) {
   }
 }
 
-// Resize image to square JPEG using sips (macOS)
-function resizeAndSave(inputBuffer, outputPath, size = 540) {
+// Center-crop and resize image to square JPEG using sips (macOS)
+function resizeAndSave(inputBuffer, outputPath, size = 540, cropFirst = false) {
   const tmpInput = `/tmp/broadway-convert-${Date.now()}.tmp`;
   const tmpOutput = `/tmp/broadway-convert-${Date.now()}.jpg`;
 
@@ -164,6 +163,14 @@ function resizeAndSave(inputBuffer, outputPath, size = 540) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
   try {
+    // If not square, center-crop to square first
+    if (cropFirst) {
+      const dims = getImageDimensions(inputBuffer);
+      if (dims) {
+        const cropSize = Math.min(dims.width, dims.height);
+        execSync(`sips --cropToHeightWidth ${cropSize} ${cropSize} "${tmpInput}" 2>/dev/null`);
+      }
+    }
     // Resize to target size and save as JPEG (sips can't write WebP on macOS)
     execSync(`sips -z ${size} ${size} -s format jpeg -s formatOptions 85 "${tmpInput}" --out "${tmpOutput}" 2>/dev/null`);
 
@@ -198,12 +205,15 @@ async function processShow(show) {
   const showDir = path.join(IMAGES_DIR, show.id);
   const thumbPath = path.join(showDir, 'thumbnail.jpg');
 
-  // Search Google Images for square promotional images
+  // Search Google Images — prefer square, but track best non-square as fallback
   const searchQueries = [
     `"${show.title}" broadway show square poster`,
     `"${show.title}" broadway musical 1080x1080`,
     `"${show.title}" broadway todaytix`,
+    `"${show.title}" broadway show poster`,
   ];
+
+  let bestFallback = null; // Best non-square image found
 
   for (const query of searchQueries) {
     console.log(`   Searching: ${query}`);
@@ -217,7 +227,7 @@ async function processShow(show) {
 
       console.log(`   Found ${results.length} image results`);
 
-      // Try to find square images from the source pages
+      // Try to find images from the source pages
       for (let i = 0; i < Math.min(results.length, 8); i++) {
         const result = results[i];
         const sourceUrl = result.url;
@@ -233,7 +243,7 @@ async function processShow(show) {
 
           if (thumbDims) {
             const ratio = Math.min(thumbDims.width, thumbDims.height) / Math.max(thumbDims.width, thumbDims.height);
-            if (ratio < 0.8) continue; // Not square enough, skip
+            if (ratio < 0.5) continue; // Way too narrow, skip entirely
           }
         }
 
@@ -242,19 +252,26 @@ async function processShow(show) {
         const imageUrls = await getOriginalImageUrl(sourceUrl, show.title);
 
         for (const imgUrl of imageUrls) {
-          const squareImg = await tryDownloadSquareImage(imgUrl, 400);
-          if (squareImg) {
-            console.log(`   ✅ Found square image: ${squareImg.width}x${squareImg.height} (ratio ${squareImg.ratio.toFixed(2)})`);
+          const img = await tryDownloadImage(imgUrl, 400);
+          if (!img) continue;
+
+          if (img.isSquare) {
+            console.log(`   ✅ Found square image: ${img.width}x${img.height} (ratio ${img.ratio.toFixed(2)})`);
 
             if (!dryRun) {
-              resizeAndSave(squareImg.buffer, thumbPath, 540);
+              resizeAndSave(img.buffer, thumbPath, 540);
               console.log(`   Saved: ${thumbPath}`);
 
-              // Update shows.json
               show.images = show.images || {};
               show.images.thumbnail = `/images/shows/${show.id}/thumbnail.jpg`;
             }
             return true;
+          }
+
+          // Track best non-square fallback (prefer larger, more square)
+          if (!bestFallback || img.ratio > bestFallback.ratio ||
+              (img.ratio === bestFallback.ratio && Math.min(img.width, img.height) > Math.min(bestFallback.width, bestFallback.height))) {
+            bestFallback = img;
           }
         }
 
@@ -267,7 +284,21 @@ async function processShow(show) {
     await sleep(1000); // Rate limit between searches
   }
 
-  console.log('   ❌ No square image found');
+  // Fallback: crop the best non-square image to square
+  if (bestFallback) {
+    console.log(`   🔲 Cropping non-square fallback: ${bestFallback.width}x${bestFallback.height} (ratio ${bestFallback.ratio.toFixed(2)})`);
+
+    if (!dryRun) {
+      resizeAndSave(bestFallback.buffer, thumbPath, 540, true);
+      console.log(`   Saved (cropped): ${thumbPath}`);
+
+      show.images = show.images || {};
+      show.images.thumbnail = `/images/shows/${show.id}/thumbnail.jpg`;
+    }
+    return true;
+  }
+
+  console.log('   ❌ No image found');
   return false;
 }
 
