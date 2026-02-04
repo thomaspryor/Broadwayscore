@@ -8212,18 +8212,6 @@
     "timestamp": "2026-02-03T16:08:11.796Z"
   },
   {
-    "reviewId": "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
-    "showId": "breakfast-at-tiffanys-2013",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2013/03/21/theater/reviews/breakfast-at-tiffanys-starring-emilia-clarke.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (8): the glass menagerie, on the town, the glass menagerie, once, rain...",
-    "textLength": 7656,
-    "timestamp": "2026-02-03T16:37:08.016Z"
-  },
-  {
     "reviewId": "breakfast-at-tiffanys-2013/variety--marilyn-stasio.json",
     "showId": "breakfast-at-tiffanys-2013",
     "outlet": "Variety",
@@ -13334,5 +13322,65 @@
     "garbageReason": "Multiple shows mentioned (9): wicked, the lion king, mamma mia!, golden boy, rain...",
     "textLength": 6554,
     "timestamp": "2026-02-04T20:35:50.346Z"
+  },
+  {
+    "reviewId": "book-of-mormon-2011/nyt-theater--jonathan-mandell.json",
+    "showId": "book-of-mormon-2011",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "http://newyorktheater.me/2014/03/24/the-book-of-mormon-three-years-old/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (19): the lion king, chicago, home, the music man, frozen...",
+    "textLength": 10122,
+    "timestamp": "2026-02-04T20:38:34.133Z"
+  },
+  {
+    "reviewId": "born-yesterday-2011/hollywood-reporter--david-rooney.json",
+    "showId": "born-yesterday-2011",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/born-yesterday-theater-review-181735/",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): junk, the price, the audience, venus in fur, once...",
+    "textLength": 5945,
+    "timestamp": "2026-02-04T20:39:01.407Z"
+  },
+  {
+    "reviewId": "breakfast-at-tiffanys-2013/nytimes--ben-brantley.json",
+    "showId": "breakfast-at-tiffanys-2013",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2013/03/21/theater/reviews/breakfast-at-tiffanys-starring-emilia-clarke.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): the glass menagerie, on the town, the glass menagerie, once, rain...",
+    "textLength": 7656,
+    "timestamp": "2026-02-04T20:40:31.389Z"
+  },
+  {
+    "reviewId": "bridge-and-tunnel-2006/nytimes--ben-brantley.json",
+    "showId": "bridge-and-tunnel-2006",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2006/01/27/theater/reviews/27brid.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): giant, proof, the audience, hair, once...",
+    "textLength": 7287,
+    "timestamp": "2026-02-04T20:41:49.444Z"
+  },
+  {
+    "reviewId": "bridge-and-tunnel-2006/variety--charles-isherwood.json",
+    "showId": "bridge-and-tunnel-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/bridge-tunnel-1200514598/",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): harmony, appropriate, home, the audience, hair...",
+    "textLength": 7020,
+    "timestamp": "2026-02-04T20:42:07.007Z"
   }
 ]
