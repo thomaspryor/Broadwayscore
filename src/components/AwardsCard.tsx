@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import {
-  ShowAwards,
-  AwardsDesignation,
   getAwardsDesignation,
   getTonyWinCount,
   getTonyNominationCount,
-} from '@/lib/data';
+} from '@/lib/data-awards';
+import type { ShowAwards, AwardsDesignation } from '@/lib/data-types';
 
 interface AwardsCardProps {
   showId: string;

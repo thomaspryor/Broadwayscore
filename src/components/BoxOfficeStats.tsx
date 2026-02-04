@@ -1,6 +1,6 @@
 'use client';
 
-import { ShowGrosses } from '@/lib/data';
+import type { ShowGrosses } from '@/lib/data-types';
 
 interface BoxOfficeStatsProps {
   grosses: ShowGrosses;

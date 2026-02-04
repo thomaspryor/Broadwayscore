@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ShowCommercial, RecoupmentTrend } from '@/lib/data';
+import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 

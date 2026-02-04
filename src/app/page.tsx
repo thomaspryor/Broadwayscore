@@ -3,7 +3,9 @@
 import { useMemo, memo, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { getAllShows, ComputedShow, getDataStats, getUpcomingShows, getAudienceBuzz, getAudienceGrade } from '@/lib/data';
+import { getAllShows, getDataStats, getUpcomingShows } from '@/lib/data-core';
+import type { ComputedShow } from '@/lib/data-types';
+import { getAudienceBuzz, getAudienceGrade } from '@/lib/data-audience';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import ScoreTooltip from '@/components/ScoreTooltip';
