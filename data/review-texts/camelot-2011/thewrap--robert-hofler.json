@@ -36,7 +36,12 @@
   "textIssues": [
     "Word count too low: 61 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 55,
-  "tierReason": "Short text (55 words)"
+  "tierReason": "Short text (55 words)",
+  "rejectedAt": "2026-02-04T10:12:34.375Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be only the opening paragraph of a review that sets up context but contains no critical evaluation or recommendation about the production.; openai: The text provided is an introductory paragraph that lacks evaluative content or a clear verdict on the production.",
+  "promptVersion": "5.2.0"
 }

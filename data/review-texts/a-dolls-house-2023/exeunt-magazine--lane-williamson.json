@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“There’s so much to appreciate in this revival, particularly Herzog’s writing and the scenework between Chastain and Moayed.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's so much to appreciate in this revival, particularly Herzog's writing and the scenework between Chastain and Moayed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear appreciation for multiple elements (writing, performances), but limited text and cherry-picked nature requires caution. Sounds positive but not enthusiastic. | GPT-4o: The excerpt highlights appreciation for the revival, specifically praising Herzog's writing and the performances of Chastain and Moayed. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt praises the writing and the performances of the leads, suggesting a positive experience. However, as it is a single excerpt, the confidence is low. | Kimi: The excerpt offers unreserved praise for the writing and lead performances ('so much to appreciate'), indicating a clearly positive verdict. However, as a single curated excerpt, confidence is reduced per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:54:04.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,5 +24,60 @@
     "playbill-verdict",
     "nyc-theatre"
   ],
-  "nycTheatreExcerpt": "As adaptations of popular, already-established franchises continue to pop up on Broadway, it's thrilling to see original, truly one-of-a-kind productions like Dead Outlaw rise up to meet them. Eccentric, silly, and moving, the tale of Elmer McCurdy is one that truly needs to be seen to be believed."
+  "nycTheatreExcerpt": "As adaptations of popular, already-established franchises continue to pop up on Broadway, it's thrilling to see original, truly one-of-a-kind productions like Dead Outlaw rise up to meet them. Eccentric, silly, and moving, the tale of Elmer McCurdy is one that truly needs to be seen to be believed.",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's thrilling to see original, truly one-of-a-kind productions like Dead Outlaw rise up to meet them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: The critic uses strongly positive language ('thrilling', 'truly one-of-a-kind') and explicitly recommends it as something that 'truly needs to be seen to be believed.' However, confidence is medium due to limited excerpt text. | GPT-4o: The review excerpt uses strong positive language ('thrilling', 'one-of-a-kind', 'truly needs to be seen to be believed'), indicating an enthusiastic recommendation. However, due to the limited excerpt, confidence is low. | Gemini: The review uses strong positive language such as \"thrilling\" and \"truly one-of-a-kind\" and states that the show \"needs to be seen.\" | Kimi: The excerpts express enthusiastic praise for the show's originality and emotional impact, calling it 'thrilling' and 'one-of-a-kind' with a clear directive that it 'needs to be seen,' indicating strong rave-level recommendation despite limited text availability. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:19:57.910Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

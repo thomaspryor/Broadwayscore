@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Jonathan Spector's 'Eureka Day' is a timely comedy that expertly captures the polarizing nature of contemporary American discourse while delivering genuine laughs and moments of真实 human connection.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jonathan Spector's 'Eureka Day' is a timely comedy that expertly captures the polarizing nature of contemporary American discourse while delivering genuine laughs and moments of真实 human connection.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jonathan Spector's 'Eureka Day' is a timely comedy that expertly captures the polarizing nature of contemporary American discourse while delivering genuine laughs and moments of真实 human connection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise with 'expertly captures' and 'delivering genuine laughs,' indicating a positive recommendation. However, confidence is low due to single excerpt warning - this could be cherry-picked positive language from a more mixed review. | GPT-4o: The excerpt praises the play for its timeliness, humor, and ability to capture human connection, indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language such as \"expertly captures\", \"genuine laughs\", and \"moments of human connection\", suggesting a positive review. Given that it is a single excerpt, I am scoring it at the higher end of the positive range but with low confidence. | Kimi: Single excerpt contains clearly positive evaluative language ('expertly captures', 'genuine laughs'), warranting upper Positive range, though limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:27:56.283Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

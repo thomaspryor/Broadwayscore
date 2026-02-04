@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220521024307/https://www.nydailynews.com/entertainment/theater-arts/fiddler-roof-broadway-revival-mines-rich-material-article-1.2470270",
   "contentTier": "complete",
   "wordCount": 445,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new revival at the Broadway Theatre does a fine job mining this rich vein of material.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment of performances and material with praise for Burstein's 'star turn' and 'very good' performances overall. Acknowledges scenic issues but maintains positive recommendation. | GPT-4o: The review praises the performances and the emotional impact of the show, despite noting some issues with the scenery. The overall tone is positive, recommending the show with some reservations about the production elements. | Gemini: The review is generally positive, highlighting the strength of the source material and performances, but notes issues with the scenery that detract from the overall experience. This warrants a positive score with some reservations. | Kimi: While the critic finds the scenery 'distracting' and 'slow-pokey,' they praise Danny Burstein's 'star turn' and Jessica Hecht's touching performance, calling the revival a 'fine job' that delivers emotional impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:16:36.576Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

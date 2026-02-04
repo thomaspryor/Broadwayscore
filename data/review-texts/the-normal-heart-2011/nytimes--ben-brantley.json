@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This revival of Larry Kramer's 1985 drama about the early days of the AIDS crisis crackles with an urgency that feels both period-appropriate and entirely contemporary.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 94,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -61,5 +61,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 1358,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Your eyes are pretty much guaranteed to start stinging before the first act is over, and by the play's end even people who think they have no patience for polemical theater may find their resistance has melted into tears.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Brantley delivers sustained, enthusiastic praise throughout - calling it 'deeply affecting,' praising the 'top-notch cast,' and describing powerful emotional impact. He finds the production superior to his memory of the original, with special praise for the direction and performances. The review positions this as essential theater that transcends its political messaging to achieve great art. | GPT-4o: The review is filled with superlatives and strong emotional impact, describing the production as 'deeply affecting' and praising the performances and direction. The critic's language is enthusiastic and recommends the show highly. | Gemini: The review is overwhelmingly positive, praising the acting, direction, and the play's enduring relevance. The critic highlights the production's empathy and emotional impact, making it a strong recommendation. | Kimi: Brantley delivers unqualified praise for this revival, calling it 'deeply affecting' and 'passionately acted' with a 'top-notch cast,' and declares it a 'far better play than you might have thought,' with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:44:14.556Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 94,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

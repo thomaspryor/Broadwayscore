@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The seats may not move, but ‘Back to the Future: The Musical’ is nearly as transporting...At its best, it feels as if the whole theatre is traveling at 88mph with Marty McFly...It doesn’t make for a good musical, but it is a good show.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It doesn't make for a good musical, but it is a good show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic explicitly states it's 'not a good musical' while acknowledging it's entertaining and transporting. This direct contradiction places it in mixed territory, leaning toward the lower end due to the clear artistic reservation. | GPT-4o: The excerpt suggests that while the musical aspect may not be strong, the overall experience is enjoyable and transporting. This indicates a positive recommendation with some reservations. | Gemini: The review states that it's not a good musical, but a good show, indicating a positive but qualified recommendation. Due to the limited excerpt, confidence is low. | Kimi: The critic offers a qualified recommendation, praising the immersive theatrical experience ('transporting,' 'traveling at 88mph') while explicitly stating the work fails as a musical. Given only one excerpt is available, this mildly positive verdict warrants the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:06:54.268Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

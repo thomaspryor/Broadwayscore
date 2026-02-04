@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Overall, 'Bad Cinderella' is way out of balance. The title character tends to get misplaced and underutilized, while even the visual elements proffered by Gabriela Tylesova's set and costume design are overwrought.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Overall, 'Bad Cinderella' is way out of balance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the show fundamentally flawed ('way out of balance') with the title character 'misplaced and underutilized' and design elements 'overwrought'. However, single excerpt warning applies - this could be one negative section of a more mixed review. | GPT-4o: The excerpt highlights significant issues with the balance and utilization of the title character, as well as criticism of the visual elements. The tone suggests a negative impression, but with only one excerpt, confidence is low. | Gemini: The review excerpt indicates that the show is \"way out of balance\" and the title character is \"misplaced and underutilized.\" This suggests a negative assessment, but due to the limited excerpt, the confidence is low. | Kimi: The excerpt criticizes the show's structural imbalance, underutilization of the title character, and finds even the visual design overwrought, indicating a clear negative verdict, though the single-excerpt format limits certainty about the full review's tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:08:31.858Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

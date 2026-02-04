@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Condola Rashad brings fierce intelligence and blazing conviction to her portrayal of the teenage peasant who heard voices from God and liberated France from English rule.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -56,5 +56,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 507,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rashad steps into the starring role in a blaze of glory and claims it as her own.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout for the production ('smart, stylish and engaging'), lead performance ('blaze of glory'), direction ('deftly directs'), and ensemble cast. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production, direction, and especially Rashad's performance. The language is enthusiastic and recommends the show as a must-see. | Gemini: The review is overwhelmingly positive, praising Rashad's performance and the production's direction and design. The critic clearly recommends seeing the show. | Kimi: Unqualified praise for Rashad's performance and the entire production; the revival is described as 'smart, stylish and engaging' with a 'first-class' cast and 'handsome' design, offering no caveats. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:35:17.334Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 92,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

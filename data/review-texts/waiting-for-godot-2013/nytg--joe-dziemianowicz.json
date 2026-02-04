@@ -31,5 +31,59 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 715,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Able star turns by Reeves as forgetful Estragon and Winter as his reflective friend Vladimir ground this entertaining revival with the credible chemistry of longtime friends.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review consistently praises the performances, direction, and design elements. The critic calls it an 'entertaining revival' and highlights the strong chemistry between the leads, quality supporting performances, and thoughtful production design that adds 'depth and dimension.' The positive language throughout and encouraging conclusion indicate a solid recommendation. | Gemini: The review is positive, highlighting the performances of the leads and the production design. The critic calls it an \"entertaining revival\". | Kimi: The critic consistently praises the lead performances ('able star turns', 'impressive gravity'), supporting cast ('terrific support'), and production design, calling the revival 'entertaining' with a 'timely takeaway', indicating a solid recommendation without ecstatic hyperbole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:48:34.194Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

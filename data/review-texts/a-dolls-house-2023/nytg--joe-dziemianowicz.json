@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "show-score-playwright",
     "nyc-theatre"
-  ]
+  ],
+  "llmScore": {
+    "score": 90,
+    "confidence": "high",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway production of Henrik Ibsen's 'A Doll's House' starring Jessica Chastain is laser-focused, laid bare, and simply stunning.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: The excerpt uses strong positive language ('simply stunning', 'laser-focused') suggesting enthusiastic praise, but confidence is low due to very limited text from curated excerpts only. | GPT-4o: The excerpt uses strong positive language ('laser-focused', 'simply stunning') indicating a highly favorable view, suggesting a rave. However, due to the text quality warning and limited context, confidence is low. | Gemini: The review excerpt uses strong positive language like \"simply stunning,\" indicating a rave review. However, due to the truncated text, the confidence is low. | Kimi: The excerpt employs superlatives including 'simply stunning' and 'laser-focused,' indicating an enthusiastic endorsement of this Broadway revival despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:54:25.222Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

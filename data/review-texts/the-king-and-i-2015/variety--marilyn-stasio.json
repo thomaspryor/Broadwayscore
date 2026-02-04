@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This handsome revival of Rodgers and Hammerstein's 1951 musical succeeds in large part because of the chemistry between its two leads, Kelli O'Hara and Ken Watanabe.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 93,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -67,5 +67,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 653,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chalk up another triumph for Lincoln Center Theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Consistent superlative language throughout ('extraordinarily deep', 'sumptuous', 'absolutely stunning', 'breathtaking', 'exquisite') culminating in explicit praise calling it 'another triumph'. No meaningful reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production's visual and musical elements, performances, and overall impact. Words like 'sumptuous revival', 'ravishing', 'magnificently regal', and 'absolutely stunning' indicate a strong, enthusiastic recommendation. | Gemini: The review is overwhelmingly positive, using terms like \"sumptuous,\" \"ravishing,\" \"powerfully seductive,\" \"magnificently regal,\" and \"absolutely stunning.\" The critic concludes with \"Chalk up another triumph for Lincoln Center Theater.\" | Kimi: The review overflows with superlatives including 'sumptuous,' 'ravishing,' 'breathtaking,' and 'triumph,' praising the operatic production design, Bartlett Sher's direction, and every major performance without a single reservation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:42:54.599Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

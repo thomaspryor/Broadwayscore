@@ -38,5 +38,60 @@
   ],
   "contentTier": "truncated",
   "wordCount": 75,
-  "tierReason": "Short text (75 words)"
+  "tierReason": "Short text (75 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fans of this restaurant-reservationist comedy will not be disappointed, and fans of 'Modern Family' will be delighted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review recommends the show with qualified enthusiasm, suggesting fans will be satisfied and highlighting Ferguson's performance appeal, though the recommendation feels somewhat conditional. | GPT-4o: The review suggests that fans of the original production and Jesse Tyler Ferguson will enjoy this Broadway version. It implies a positive reception for specific audiences, indicating a solid recommendation. | Gemini: The review states that fans of the play and of Jesse Tyler Ferguson will be delighted, indicating a positive recommendation, although it is somewhat qualified. | Kimi: The critic assures fans of the show and Jesse Tyler Ferguson they will be delighted, offering a clear recommendation despite the brief text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:18:12.293Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

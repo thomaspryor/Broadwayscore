@@ -43,5 +43,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 772,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That much of this formulaic material nonetheless proves highly amusing is a testament to Wohl's often genuinely funny writing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic finds the play formulaic and too long but praises the writing, direction, and performances as 'highly amusing' and 'terrific.' Despite reservations, the overall assessment is positive with clear appreciation for the entertainment value. | GPT-4o: The review describes the play as formulaic and overlong but acknowledges genuinely funny writing and strong performances. The truncated nature of the text suggests caution in scoring too negatively. | Gemini: Despite some criticisms about the play's length and trivial gags, the review acknowledges genuinely funny writing, expert direction, and terrific performances, leading to an overall positive assessment, though with reservations. | Kimi: While criticizing the play as formulaic, overlong, and lacking depth except in its final scene, the reviewer praises the expert performances and direction, calls the writing genuinely funny, and predicts it will be a 'huge crowd-pleaser'—indicating a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:20:55.832Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

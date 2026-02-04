@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "showScoreExcerpt": "\"Everyone involved in the show deserves credit for pulling off a delicate balancing act between raucous comedy and staggering pathos...'Kimberly Akimbo' helps to advance a new vision of what musicals can be.\"\n\nRead more"
+  "showScoreExcerpt": "\"Everyone involved in the show deserves credit for pulling off a delicate balancing act between raucous comedy and staggering pathos...'Kimberly Akimbo' helps to advance a new vision of what musicals can be.\"\n\nRead more",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Everyone involved in the show deserves credit for pulling off a delicate balancing act between raucous comedy and staggering pathos.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. Calls it 'exquisite,' describes performances as shining, praises the 'delicate balancing act,' and concludes it 'helps advance a new vision of what musicals can be' - clear rave territory. | GPT-4o: The review is overwhelmingly positive, highlighting the show's successful transition to Broadway, its unique narrative, and the balance of comedy and pathos. The original 5/5 star rating and praise for the production's creativity and emotional impact support a 'Rave' classification. | Gemini: The review is overwhelmingly positive, praising the show's uniqueness, humor, pathos, and the performances of the cast. The critic also notes that the show helps to advance a new vision of what musicals can be, indicating a high level of appreciation. | Kimi: The critic awards 5/5 stars and offers unqualified praise for the Broadway transfer, performances, and writing, calling it a resplendently unique work that advances the musical form.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:27:01.915Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

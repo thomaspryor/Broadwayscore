@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Whitaker brings a weary gravitas to Erie, a small-time hustler who buttonholes the night clerk at a seedy Times Square hotel with tales of his friendship with the previous clerk, Hughie.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -63,5 +63,59 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 574,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whitaker brings a weary gravitas to Erie, a small-time hustler.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt highlights a strong performance by Whitaker but lacks broader evaluative content about the production. Given the limited and potentially cherry-picked nature of the excerpt, the overall sentiment is unclear, leading to a mixed classification with low confidence. | Gemini: The excerpt describes the performance of the actor, but does not give an overall recommendation for the show. It's hard to determine the overall sentiment based on this single excerpt, so I'm classifying it as mixed with low confidence. | Kimi: Single excerpt offers specific, professional appreciation for Whitaker's performance ('weary gravitas') but lacks broader context on production quality, book, or direction. The praise is solid but not effusive, suggesting a qualified positive assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:23:03.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 73,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

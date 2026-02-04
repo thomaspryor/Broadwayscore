@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play's exploration of faith and family dysfunction feels both deeply personal and universally resonant, even when it occasionally veers into melodrama.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play's exploration of faith and family dysfunction feels both deeply personal and universally resonant, even when it occasionally veers into melodrama.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play's exploration of faith and family dysfunction feels both deeply personal and universally resonant, even when it occasionally veers into melodrama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows appreciation for thematic resonance but notes melodramatic flaws. The qualifier 'even when it occasionally veers into melodrama' suggests meaningful reservations. With only one curated excerpt available, confidence is low as this may not represent the full review's verdict. | GPT-4o: The excerpt suggests a generally positive view with some reservations about melodrama. The lack of full context and single excerpt warning necessitate a cautious, low-confidence score at the lower end of the Positive range. | Gemini: The excerpt suggests a positive but qualified recommendation. The phrase \"feels both deeply personal and universally resonant\" indicates a positive aspect, while \"occasionally veers into melodrama\" suggests a reservation. | Kimi: Single excerpt indicates mild praise acknowledging universal resonance and personal depth, tempered by a reservation about melodrama. Following the single-excerpt guidance for mildly positive quotes, scoring in the lower Positive range (70-74).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:18:22.647Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

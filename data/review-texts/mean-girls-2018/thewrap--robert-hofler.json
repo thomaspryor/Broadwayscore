@@ -38,12 +38,12 @@
   "textIssues": [
     "Word count too low: 71 (min: 300)"
   ],
-  "contentTier": "needs-rescrape",
+  "contentTier": "invalid",
   "wordCount": 65,
   "tierReason": "Short text (65 words)",
-  "rejectedAt": "2026-02-04T06:03:44.306Z",
+  "rejectedAt": "2026-02-04T10:30:46.620Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be only the opening paragraph of an article, providing background context rather than any critical evaluation of the show; openai: This text is an excerpt from an interview discussing the differences between the musical and its source material, not a review of the Broadway production.; gemini: This is just an introductory paragraph referencing an interview, not a review of the show itself.; kimi: The provided text contains only background context about the creators and source material (quoting the composer about differences from the movie) with no critical evaluation of the production quality, performances, or direction.",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an interview excerpt or press coverage about the creators, not a theatrical review of the production itself; openai: This text is an excerpt from an interview discussing the differences between the musical and its source material, not an evaluative review of the Broadway production.; gemini: This is just an introductory paragraph discussing the background of the musical and its creators, not a review of the show itself.; kimi: The text contains only background information about the creators discussing their work in an interview, with no evaluative content about the production quality, performances, or the critic's assessment of the show.",
   "promptVersion": "5.2.0"
 }

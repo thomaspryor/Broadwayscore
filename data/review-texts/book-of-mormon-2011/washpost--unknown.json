@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 87,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Money can buy you happiness! If you’re in possession of a ticket, you’ve wisely secured a seat in the premier-class cabin of delirium.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Money can buy you happiness! If you're in possession of a ticket, you've wisely secured a seat in the premier-class cabin of delirium.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Single excerpt uses ecstatic language ('premier-class cabin of delirium') and directly tells readers they've 'wisely secured' tickets, indicating strong enthusiasm. However, confidence is low due to single cherry-picked quote warning. | GPT-4o: The excerpt is highly enthusiastic, suggesting a must-see experience. However, due to the single excerpt warning, confidence is low. | Gemini: The quote is very positive, suggesting a highly enjoyable and worthwhile experience. Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise and a clear recommendation to see the show, describing it as a 'premier-class' theatrical experience. As a single curated quote, the full context is unknown, warranting a high-end Positive score rather than a Rave. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:12:18.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

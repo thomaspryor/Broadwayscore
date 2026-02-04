@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The story it tells is a simple one, delivering a message of good cheer.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The story it tells is a simple one, delivering a message of good cheer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the show as delivering 'good cheer' which suggests mild positivity, but the phrase 'simple' could imply limitations. With only one curated quote available, confidence is low and score stays in lower positive range. | GPT-4o: The excerpt suggests a positive tone with its mention of 'good cheer,' but lacks strong enthusiasm or detailed praise. The single excerpt and text quality warning necessitate a low confidence score. | Gemini: The single excerpt available is positive, but brief. Given the limited information, I'm scoring it as a low-end positive recommendation. | Kimi: Single curated excerpt indicates gentle appreciation with 'message of good cheer,' suggesting a mild recommendation, though limited context necessitates low confidence and a lower-end Positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:25:09.446Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

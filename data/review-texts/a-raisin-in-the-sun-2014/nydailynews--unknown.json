@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230329072037/https://www.nydailynews.com/entertainment/music-arts/raisin-sun-theater-review-article-1.1742462",
   "contentTier": "complete",
   "wordCount": 469,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He and the show are flat-out excellent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'flat-out excellent,' 'stunning,' 'sterling cast,' and 'sublime.' Strong recommendation with no meaningful reservations. | GPT-4o: The review is filled with superlatives and praises the performances, direction, and relevance of the production. The critic describes the show as 'excellent' and highlights the strong performances, particularly Denzel Washington's, making it a must-see. | Gemini: The review is overwhelmingly positive, praising Washington's performance, the direction, and the enduring relevance of the play. The phrase \"flat-out excellent\" indicates a strong recommendation. | Kimi: The critic delivers an unreserved endorsement, praising Washington's 'stunning' performance, the 'sterling' cast, and the direction as 'natural and lived-in,' with no caveats or negative notes.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:04:25.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 86,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

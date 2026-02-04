@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "As Aaron Sorkin keeps [saying], his revised book takes the magic out of Camelot…How else to account for the cloud of melancholy parked over the Beaumont stage? Why is the atmosphere so drained of color and life? And why does no one appear to be having the tiniest bit of fun? The playwright has apparently tried to convert this golden-age-of-Broadway musical fantasy… into a historical drama along the lines of Becket or The Lion in Winter. It's a transmutation that would challenge the wiliest medieval alchemist; the result is arid, a musical that can't decide why anyone is singing.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is arid, a musical that can't decide why anyone is singing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic finds Sorkin's revision fundamentally misguided, describing it as 'arid' with 'cloud of melancholy' and questioning basic creative choices. Single excerpt warning applied but tone is consistently negative throughout. | GPT-4o: The excerpt describes the production as lacking magic, color, and life, with a failed attempt to transform it into a historical drama. The tone is strongly negative, indicating a pan. | Gemini: The review excerpt expresses disappointment with the production, describing it as melancholy, drained of color and life, and arid. The critic questions why anyone is singing, indicating a lack of enjoyment and purpose in the musical. | Kimi: The excerpt consistently criticizes the production's atmosphere, tone, and conceptual approach, finding it drained of life and magic with fundamental flaws in its adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:14:58.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

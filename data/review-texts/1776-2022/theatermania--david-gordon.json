@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 42,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -21,5 +21,60 @@
   "sources": [
     "show-score-playwright",
     "web-search"
-  ]
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this over-amplified, terminally woke revival that doesn't really have anything to say",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the revival as 'over-amplified' and 'terminally woke' with nothing meaningful to contribute. Despite praising some 'revolutionary elements,' the overall assessment is clearly negative. Single excerpt warning requires caution about full verdict. | GPT-4o: The excerpt criticizes the revival as 'over-amplified' and 'terminally woke', suggesting it lacks substance. The lack of elderly casting is noted as a negative. The tone suggests a negative view, but with only one excerpt, confidence is low. | Gemini: The review excerpt is negative, calling the revival \"over-amplified, terminally woke\" and saying it \"doesn't really have anything to say.\" Due to the limited text, confidence is low. | Kimi: While the critic acknowledges some elements as 'truly revolutionary,' the overall verdict condemns the revival as 'over-amplified' and lacking substance, with 'terminally woke' used pejoratively to dismiss the production's relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:50:53.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

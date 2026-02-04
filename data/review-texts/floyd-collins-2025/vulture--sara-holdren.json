@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"Floyd Collins leaves far too soft an impression. It never really joins its hero in the depths.\"\n\nRead more"
+  "showScoreExcerpt": "\"Floyd Collins leaves far too soft an impression. It never really joins its hero in the depths.\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Floyd Collins leaves far too soft an impression. It never really joins its hero in the depths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show for being ineffective ('far too soft an impression') and failing to achieve its dramatic goals ('never really joins its hero in the depths'). However, with only one curated excerpt available, confidence is low as the full review sentiment is unclear. | GPT-4o: The excerpt suggests a lack of impact and engagement with the show's themes, indicating a negative impression. However, with only one excerpt, the confidence is low. | Gemini: The single excerpt available is negative, stating the show \"leaves far too soft an impression.\" Given the lack of additional context, confidence is low, but the statement is clearly a negative assessment. | Kimi: The excerpt criticizes the production for lacking sufficient impact and failing to engage with the emotional depths of its subject matter, indicating a negative verdict against the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:30:35.937Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

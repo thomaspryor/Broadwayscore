@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“ ‘Bad Cinderella’ proves there is something worse than a new musical being bad:  being unoriginal.”\n\nRead more"
+  "showScoreExcerpt": "“ ‘Bad Cinderella’ proves there is something worse than a new musical being bad:  being unoriginal.”\n\nRead more",
+  "assignedScore": 39,
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bad Cinderella' proves there is something worse than a new musical being bad: being unoriginal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt suggests the critic finds the show worse than just 'bad' - specifically calling it unoriginal, which is presented as worse than being outright bad. However, with only one curated quote available, the full review sentiment is unclear. | GPT-4o: The excerpt is strongly negative, criticizing the show for being unoriginal, which is considered worse than being bad. Given the lack of full context and only one excerpt, the confidence is low, but the sentiment is clearly negative. | Gemini: The single quote available is negative, stating the show is unoriginal. Given the limited context, confidence is low, but the statement is clearly a negative assessment. | Kimi: The single excerpt delivers a clear negative verdict, explicitly calling the show 'bad' and criticizing it as 'unoriginal.' Given this is the only available curated quote, confidence is low, but the sentiment is unambiguously negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:07:44.581Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

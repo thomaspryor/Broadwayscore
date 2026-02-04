@@ -37,5 +37,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220124153439/https://www.nydailynews.com/entertainment/broadway/ny-broadway-flying-over-sunset-review-20211214-2iqaaoas65h3bkfith2znsgt4m-story.html",
   "contentTier": "complete",
   "wordCount": 816,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That, in a nutshell, is the chronic problem that afflicts 'Flying Over Sunset,' the intellectually rich, admirably ambitious and elegantly produced new musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show's intellectual ambitions and production values but identifies chronic structural problems including repetitiveness, lack of dramatic tension, and disengagement. Mixed positive and negative elements with no clear recommendation. | GPT-4o: The review acknowledges the show's ambition and some positive elements like the score and choreography, but criticizes its lack of dramatic tension and repetitive nature. The overall tone suggests a mixed experience with notable flaws. | Gemini: The review acknowledges the show's intellectual ambition and some cool elements, but ultimately finds it lacking in dramatic tension and repetitive, leading to a disengaged experience for the audience. | Kimi: While praising the elegant production, sumptuous score, and committed performances, the critic finds the show chronically disengaging, repetitive, and lacking dramatic tension, ultimately recommending it only for a niche audience of 'LSD vets'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:17:41.500Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

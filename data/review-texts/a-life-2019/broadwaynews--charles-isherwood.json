@@ -44,5 +44,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 166,
-  "tierReason": "Short text (166 words)"
+  "tierReason": "Short text (166 words)",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "two modestly engaging solo plays that have rather unnecessarily washed up on Broadway",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic finds the plays 'modestly engaging' but questions their Broadway transfer as 'rather unnecessary,' suggesting they're minor works elevated by celebrity casting. The dismissive tone and breakfast joke indicate lukewarm interest at best. | Gemini: The review describes the plays as \"modestly engaging\" but questions their Broadway run, suggesting they are not particularly noteworthy. This indicates a mixed opinion. | Kimi: The critic offers faint praise ('modestly engaging') but clearly disapproves of the Broadway transfer, calling them 'plays of minor distinction' that rely on celebrity casting, suggesting they don't merit the venue or ticket price despite talented performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:03:22.929Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": null,
+    "geminiScore": 60,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

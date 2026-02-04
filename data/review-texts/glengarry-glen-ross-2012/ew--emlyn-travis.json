@@ -36,5 +36,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250506015021/https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926",
   "contentTier": "complete",
   "wordCount": 1209,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is a zippy production that might not exactly break the mold or push its cast outside of their career-established comfort zones, but still buzzes with life and unexpected humor all the same.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Entertainment Weekly's B grade aligns with positive assessment. Review praises performances and energy while noting the production doesn't break new ground or deeply explore themes. Clear recommendation despite reservations. | GPT-4o: The review praises the performances and energy of the production, indicating it's worth seeing for the cast. However, it notes the lack of deeper thematic exploration, aligning with the B grade for a positive but not exceptional recommendation. | Gemini: The critic gives the production a B grade and states that the actors 'knock it out of the park'. However, they also mention that deeper themes are left at the wayside, indicating some reservations. The text is truncated, lowering confidence. | Kimi: The reviewer assigns a B grade and praises the star-studded cast (particularly Culkin and McKean) as knocking it out of the park, while noting the production doesn't break new ground and lacks thematic depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:20:09.093Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

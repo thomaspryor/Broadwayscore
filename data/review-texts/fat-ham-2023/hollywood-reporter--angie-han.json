@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "James Ijames' Pulitzer Prize-winning play gets a Broadway production that's both joyous and messy, much like the family at its center.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "James Ijames' Pulitzer Prize-winning play gets a Broadway production that's both joyous and messy, much like the family at its center.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "James Ijames' Pulitzer Prize-winning play gets a Broadway production that's both joyous and messy, much like the family at its center.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes the production as 'joyous and messy' - positive but qualified. Given the limited context and mixed descriptors, this falls in the lower end of Positive range. | GPT-4o: The excerpt describes the production as 'joyous and messy,' suggesting a mix of positive and negative elements. With only one excerpt available, the overall sentiment is unclear, leading to a mixed classification with low confidence. | Gemini: The review excerpt describes the production as \"joyous and messy.\" While positive, the \"messy\" aspect suggests reservations, placing it in the lower end of the Positive bucket. Confidence is low due to the limited text. | Kimi: The descriptor 'joyous' indicates a strong, enthusiastic recommendation, while 'messy' introduces a qualification that prevents it from being an unqualified rave. However, the messiness is contextualized as thematic (like the family), not a technical flaw, placing it in the Positive bucket. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:28:38.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

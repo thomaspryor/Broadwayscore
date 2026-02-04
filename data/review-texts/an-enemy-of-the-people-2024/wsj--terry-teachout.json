@@ -16,9 +16,9 @@
   "contentTier": "needs-rescrape",
   "wordCount": 0,
   "tierReason": "Only aggregator excerpts available",
-  "rejectedAt": "2026-02-04T07:04:14.600Z",
+  "rejectedAt": "2026-02-04T11:03:53.103Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be truncated text that cuts off mid-sentence with '(Y...' and provides only setup/context about the plot and production history without any evaluative content about the current Broadway production.; openai: The provided text is a plot summary and context about the adaptation, not an evaluative review of the production.",
+  "rejectionReasoning": "claude: This appears to be a truncated text fragment that cuts off mid-sentence with '(Y...' and provides only plot setup without any evaluative content about the production; openai: The text provided is a plot summary and does not contain any evaluative content or critique of the current production.; gemini: The provided excerpt is merely a plot summary and does not contain any evaluative statements or opinions about the production's quality.",
   "promptVersion": "5.2.0"
 }

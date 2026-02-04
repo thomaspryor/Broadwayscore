@@ -34,5 +34,60 @@
   "expectedCritic": "Unknown",
   "contentTier": "complete",
   "wordCount": 485,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A musical comedy that leans too impetuously on the former, it nevertheless goes down as easily as Jewish penicillin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: B- grade with mixed but ultimately positive assessment. Critic acknowledges significant flaws (uninspired score, stale material) but praises the performances and direction, concluding it's an enjoyable lightweight entertainment worth seeing for the cast. | GPT-4o: The review highlights both positive and negative aspects, praising the cast and direction but criticizing the music and freshness of the material. The truncated nature of the text suggests caution, but the overall tone leans towards a mixed reception. | Gemini: The review is mixed, but the critic ultimately seems to recommend the show, especially praising the performances of the actresses. The B- grade also indicates a positive, but not rave, review. Confidence is low due to the truncated text. | Kimi: Despite significant criticism of the uninspired score and book, the B- grade and final endorsement of the cast—particularly Tyne Daly and Harriet Harris—indicate a qualified recommendation to see the show for its performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:24:33.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

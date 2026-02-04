@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Greenberg's play is a thoughtful meditation on disability, caregiving, and human connection that feels both timely and timeless in its exploration of what we owe each other.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Greenberg's play is a thoughtful meditation on disability, caregiving, and human connection that feels both timely and timeless in its exploration of what we owe each other.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Greenberg's play is a thoughtful meditation on disability, caregiving, and human connection that feels both timely and timeless.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear positive evaluation ('thoughtful', 'timely and timeless') but lacks explicit recommendation language or superlatives. Given excerpt limitation, scored at lower end of Positive range. | GPT-4o: The excerpt praises the play as a 'thoughtful meditation' and highlights its relevance and universal themes, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is positive, describing the play as thoughtful and timely. However, as it's a single excerpt, confidence is low and the score is in the lower half of the positive range. | Kimi: The excerpt offers clear, warm praise for the play's thematic richness and writing quality, describing it as both timely and timeless. Limited to a single curated quote, the evaluative language indicates a solid recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:17:55.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "certainly an efficient delivery system for twenty-nine of Neil Diamond’s most popular songs...he must be at least as interesting in real life as Carole King, with whom he shares much in common: They are both prolific and popular octogenarian singer-songwriters who grew up Jewish in Brooklyn. Yet I found “A Beautiful Noise:  The Neil Diamond Musical” less engaging than “Beautiful: The Carole King Musical.” Maybe it’s just a matter of taste, and not only in music. I couldn’t get past all the sequins.\n\nRead more"
+  "showScoreExcerpt": "certainly an efficient delivery system for twenty-nine of Neil Diamond’s most popular songs...he must be at least as interesting in real life as Carole King, with whom he shares much in common: They are both prolific and popular octogenarian singer-songwriters who grew up Jewish in Brooklyn. Yet I found “A Beautiful Noise:  The Neil Diamond Musical” less engaging than “Beautiful: The Carole King Musical.” Maybe it’s just a matter of taste, and not only in music. I couldn’t get past all the sequins.\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found 'A Beautiful Noise: The Neil Diamond Musical' less engaging than 'Beautiful: The Carole King Musical.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the show delivers Diamond's songs efficiently but finds it less engaging than a similar musical, suggesting lukewarm reception. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges the musical as an efficient delivery system for Neil Diamond's songs but finds it less engaging than a comparable show. The comparison suggests a mixed reception, with personal taste affecting the critic's enjoyment. | Gemini: The review compares the show unfavorably to another musical and expresses a lack of engagement, suggesting a mixed reaction. The truncated text and single excerpt lower the confidence. | Kimi: The critic acknowledges the show efficiently delivers Neil Diamond's songs but unfavorably compares it to 'Beautiful: The Carole King Musical' and criticizes the production's sequins, indicating tempered enthusiasm.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:51:52.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

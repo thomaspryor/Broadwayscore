@@ -10,5 +10,60 @@
     "nyc-theatre"
   ],
   "contentTier": "excerpt",
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eureka Day is actually a blunt yet effective portrait of power in allegedly egalitarian spaces.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the play 'effective' which is positive, but 'blunt' suggests a qualified approach. Single excerpt warning applies - this sounds mildly positive so using lower end of Positive bucket. | GPT-4o: The excerpt describes the play as 'blunt yet effective,' indicating a positive view of its portrayal of power dynamics. However, the single excerpt and lack of a clear overall verdict lower confidence. | Gemini: The review excerpt describes the play as a \"blunt yet effective portrait,\" indicating a positive assessment. Given that it is a single excerpt, the confidence is low, and the score is placed at the lower end of the positive range. | Kimi: The critic praises the production as an effective portrait that transcends standard issue-play conventions, offering clear endorsement despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:27:31.555Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

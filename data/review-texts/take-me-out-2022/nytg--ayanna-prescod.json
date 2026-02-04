@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 582,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"3/5 stars...Unfortunately for this disjointed slow burn, the play’s X-rated factor becomes the audience’s talk point, a major distraction that causes some to miss the message or overlook it entirely...Under the uneven direction of Scott Ellis, 'Take Me Out' becomes a cluster of both remarkable and insignificant performances pieced together inside a scattered plot. The story’s dramatic turns quickly evolve into humor and fluff...What 'Take Me Out' does right is highlight how sportsmen, entrenched in a business that boasts the traditional expectations of masculinity, respond to a team member’s homosexuality.\" \n\nRead more"
+  "showScoreExcerpt": "\"3/5 stars...Unfortunately for this disjointed slow burn, the play’s X-rated factor becomes the audience’s talk point, a major distraction that causes some to miss the message or overlook it entirely...Under the uneven direction of Scott Ellis, 'Take Me Out' becomes a cluster of both remarkable and insignificant performances pieced together inside a scattered plot. The story’s dramatic turns quickly evolve into humor and fluff...What 'Take Me Out' does right is highlight how sportsmen, entrenched in a business that boasts the traditional expectations of masculinity, respond to a team member’s homosexuality.\" \n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under the uneven direction of Scott Ellis, Take Me Out becomes a cluster of both remarkable and insignificant performances pieced together inside a scattered plot.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic finds the production uneven and disjointed with identity crisis issues, but praises the strong second act and some performances. Mixed signals with no clear recommendation either way. | GPT-4o: The review highlights both strengths and weaknesses, noting remarkable performances but also a disjointed plot and lack of relevance. The critic's tone suggests a mixed experience with notable moments but significant reservations. | Gemini: The review highlights both positive and negative aspects of the production, including uneven direction and a scattered plot, but also remarkable performances. The overall tone suggests a mixed experience. | Kimi: While praising Jesse Tyler Ferguson's performance and the second act's 'home run' moments, the critic finds the lead one-dimensional, the direction uneven, and the plot scattered, ultimately concluding the play is less relevant today than 20 years ago.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:39:20.381Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

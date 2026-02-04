@@ -39,7 +39,12 @@
   "textIssues": [
     "Word count too low: 77 (min: 300)"
   ],
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "wordCount": 71,
-  "tierReason": "Short text (71 words)"
+  "tierReason": "Short text (71 words)",
+  "rejectedAt": "2026-02-04T10:11:35.264Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be an introductory paragraph that sets up a comparison between two shows but contains no actual evaluation or critique of either production.; openai: The text is about 'Bullets Over Broadway' and 'Rocky', not a review of a specific Broadway show.; gemini: This is a brief introduction comparing two musicals, 'Rocky' and 'Bullets Over Broadway,' but it doesn't offer a critical evaluation or recommendation of 'Bullets Over Broadway.' It's more of a setup than a review.",
+  "promptVersion": "5.2.0"
 }

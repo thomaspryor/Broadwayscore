@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220816072619/https://www.nydailynews.com/entertainment/theater-arts/theater-review-disaster-isn-article-1.2556904",
   "contentTier": "complete",
   "wordCount": 428,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The campy entertainment lands halfway between.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states it's 'see-worthy but middle-of-the-road' and 'lands halfway between' disaster and jackpot. Praises the cast but finds the show not sharp or consistently funny enough, with structural problems. | GPT-4o: The review describes the show as 'middle-of-the-road' and 'Tepid Stuff,' indicating a mixed reception. While there are positive notes about the cast and song integration, the overall tone suggests it's not sharp or consistently funny enough to be highly recommended. | Gemini: The review is mixed, calling the show \"Tepid Stuff\" and \"see-worthy but middle-of-the-road.\" While praising the cast, it notes issues with the show's writing and pacing. | Kimi: The review explicitly labels the show 'middle-of-the-road' and 'Tepid Stuff,' praising the clever song integration and sterling cast while criticizing excessive exposition and repetitive staging, resulting in an ambivalent assessment that neither strongly recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:14:48.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

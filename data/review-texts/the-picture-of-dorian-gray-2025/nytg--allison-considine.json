@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 812,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Snook tackles dozens of roles with remarkable aplomb, from a cynical aristocrat to a Cockney maid to the dynamic protagonist and beyond\"\n\nRead more"
+  "showScoreExcerpt": "\"Snook tackles dozens of roles with remarkable aplomb, from a cynical aristocrat to a Cockney maid to the dynamic protagonist and beyond\"\n\nRead more",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "From the storytelling and innovative staging to Sarah Snook's incredible performance as numerous characters, it's a show you won't want to miss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong positive review with consistent praise throughout - calls the performance 'career-defining' and 'a masterpiece,' describes the production as 'theatrical marvel,' and ends with clear recommendation 'you won't want to miss.' 91% audience score supports positive reception. | GPT-4o: The review is filled with superlatives and unqualified praise for both Snook's performance and the innovative use of cameras, describing it as a 'theatrical marvel' and 'a show you won’t want to miss.' | Gemini: The review is overwhelmingly positive, using terms like \"masterfully,\" \"innovative,\" \"brilliant,\" and \"theatrical marvel.\" The critic strongly recommends seeing the show. | Kimi: Unqualified enthusiastic praise using superlatives like 'masterpiece' and 'career-defining,' with explicit recommendation that it's a show 'you won't want to miss' and no negative caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:44:48.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 95,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

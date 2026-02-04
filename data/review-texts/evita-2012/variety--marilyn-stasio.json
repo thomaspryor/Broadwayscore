@@ -18,10 +18,10 @@
   "showScoreExcerpt": "Elena Roger, reprising her Olivier Award-winning performance from the West End revival, brings a ferocious intensity to Eva Peron that's both thrilling and exhausting to watch.",
   "contentTier": "complete",
   "contentTierReason": "Short text (26 words)",
-  "rejectedAt": "2026-02-03T15:56:30.875Z",
+  "rejectedAt": "2026-02-04T10:15:53.800Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with an evaluative verdict; openai: The review focuses on Elena Roger's performance from the West End revival, not the current Broadway production.",
+  "rejectionReason": "wrong_show",
+  "rejectionReasoning": "claude: This is a film review of 'Small Apartments' directed by Jonas Akerlund, not a Broadway theater review; openai: The review is about the film 'Small Apartments', not a Broadway show.; gemini: This is a review of the movie 'Small Apartments', not a Broadway show.; kimi: This text is a review of the 2012 film 'Small Apartments' directed by Jonas Akerlund, not a Broadway theatrical production. The content references cinematic elements including 'the bigscreen,' 'pic,' film distribution, and movie stars (Matt Lucas, Billy Crystal, James Caan), confirming it is a movie review rather than a theater review.",
   "promptVersion": "5.2.0",
   "textWordCount": 683,
   "archivePath": "data/archives/reviews/evita-2012/variety--marilyn-stasio_2026-02-03.html",
@@ -67,5 +67,6 @@
     "Show title not found in text"
   ],
   "wordCount": 683,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongShow": true
 }
