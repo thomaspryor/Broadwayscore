@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Xanadu is a show that knows exactly what it is and revels in every cheesy, glittery moment of its existence.",
   "originalScore": null,
-  "assignedScore": 81,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 81,
+    "score": 82,
     "confidence": "high",
     "range": {
-      "low": 76,
-      "high": 86
+      "low": 77,
+      "high": 87
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear appreciation for the show's self-aware, celebratory approach to its campy nature. 'Revels in' suggests joy and recommendation, but low confidence due to limited text. | GPT-4o: The excerpt suggests a positive tone, highlighting the show's self-awareness and enjoyment of its own style. Given the single excerpt warning, the score is placed at the higher end of the Positive range. | Gemini: The quote indicates enjoyment and appreciation for the show's campy nature, suggesting a positive, albeit potentially qualified, recommendation. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt expresses clear enthusiasm for the production's confident commitment to its camp aesthetic ('revels in every... moment'), indicating a solid recommendation. Confidence is low due to the availability of only a single curated excerpt.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic appreciates the show's self-aware embrace of camp, with 'revels in' suggesting enjoyment rather than criticism. Single excerpt limits confidence, but tone is clearly positive. | GPT-4o: The excerpt suggests a positive tone, highlighting the show's self-awareness and enjoyment of its own style. The lack of full context and the single excerpt warning necessitate a cautious approach, but the language indicates a strong positive sentiment. | Gemini: The quote indicates a positive view of the show, suggesting it embraces its nature and is enjoyable. Given that it's a single excerpt, I'm placing it at the higher end of the positive bucket. | Kimi: The critic praises the show's self-awareness and enthusiastic commitment to its aesthetic, with 'revels' indicating strong appreciation, though the single-excerpt format limits certainty about the full verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:05:26.885Z",
+    "scoredAt": "2026-02-04T05:20:58.097Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 82,
+    "claudeScore": 81,
     "openaiScore": 82,
-    "geminiScore": 79,
+    "geminiScore": 81,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

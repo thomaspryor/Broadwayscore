@@ -9,19 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Huang's script is a masterclass in threading the needle between comedy and drama, never letting audiences off the hook even when they're laughing.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Huang's script is a masterclass in threading the needle between comedy and drama, never letting audiences off the hook even when they're laughing.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (23 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T05:06:33.837Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with enough content to determine an overall recommendation.; openai: This is a single sentence with no context or evaluation of a specific Broadway production.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Huang's script is a masterclass in threading the needle between comedy and drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | GPT-4o: The review uses strong positive language ('masterclass') to describe the script, indicating a highly favorable view of the show. The lack of additional context or reservations suggests a strong recommendation. | Gemini: The review uses the phrase \"masterclass\" indicating high praise and a strong positive recommendation. | Kimi: The critic employs superlative language ('masterclass') to praise the script's expert craftsmanship and its successful balance of comedy with sustained dramatic tension, indicating the highest level of theatrical achievement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:21:51.493Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 92,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

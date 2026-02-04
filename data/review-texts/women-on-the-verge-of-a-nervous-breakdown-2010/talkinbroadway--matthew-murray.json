@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs themselves are pleasant enough, but they don't advance the plot or develop the characters in meaningful ways, and they frequently stop the show dead in its tracks.",
   "originalScore": null,
-  "assignedScore": 43,
+  "assignedScore": 42,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 43,
+    "score": 42,
     "confidence": "medium",
     "range": {
-      "low": 38,
-      "high": 48
+      "low": 37,
+      "high": 47
     },
     "bucket": "Negative",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic finds fundamental flaws in the musical's structure - songs that don't advance plot or character and 'stop the show dead.' This is a core negative assessment of a musical's basic functionality, despite calling songs 'pleasant enough.' | GPT-4o: The excerpt criticizes the songs for failing to contribute to the plot or character development, suggesting a negative impact on the show's pacing. The lack of full context and single excerpt warning leads to a low confidence in the verdict. | Gemini: The excerpt indicates that the songs, a key component of a musical, are ineffective and detrimental to the show's pacing and narrative. This suggests a negative overall assessment, despite the songs being \"pleasant enough.\" | Kimi: While the critic finds the songs 'pleasant enough,' the criticism that they fail to advance plot or character and 'frequently stop the show dead in its tracks' indicates significant structural problems. Given this is a single excerpt, the overall verdict likely falls in the mixed range with reservations.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The excerpt criticizes fundamental musical theater elements - songs that don't advance plot/character and stop the show 'dead in its tracks' - indicating significant structural problems. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt criticizes the songs for lacking narrative and character development impact, suggesting a negative view of the show's effectiveness. The confidence is low due to the single excerpt warning. | Gemini: The excerpt indicates that the songs are pleasant but ultimately detrimental to the show, suggesting a negative overall assessment. Given the single excerpt, confidence is low. | Kimi: Single excerpt indicates the songs, while pleasant musically, fail dramatically by not advancing plot or character and stopping the show's momentum. With only one curated quote available, confidence is reduced.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,22 +50,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:04:19.302Z",
+    "scoredAt": "2026-02-04T05:20:10.333Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 45,
+    "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 62,
+    "kimiScore": 58,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",
     "kimiBucket": "Mixed",
-    "scoreDelta": 22,
+    "scoreDelta": 18,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

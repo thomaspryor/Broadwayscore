@@ -9,19 +9,68 @@
   "isFullReview": false,
   "dtliExcerpt": "Cynthia Nixon gives a towering performance as Vivian Bearing, the English literature professor who faces ovarian cancer with the same analytical rigor she brings to John Donne's Holy Sonnets.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Cynthia Nixon gives a towering performance as Vivian Bearing, the English literature professor who faces ovarian cancer with the same analytical rigor she brings to John Donne's Holy Sonnets.",
-  "contentTier": "invalid",
+  "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
   "textQuality": "truncated",
-  "rejectedAt": "2026-02-04T05:03:10.029Z",
-  "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment, not a complete review with an evaluative verdict about the show's overall quality or recommendation.; openai: The text provided is a brief mention of a performance without any evaluative content or overall review of the show.",
-  "promptVersion": "5.2.0"
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cynthia Nixon gives a towering performance as Vivian Bearing, the English literature professor who faces ovarian cancer with the same analytical rigor she brings to John Donne's Holy Sonnets.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single sentence praising Nixon's performance as 'towering' suggests recommendation, but excerpt is too brief to assess overall production verdict or tone. | Gemini: The review focuses on Cynthia Nixon's performance, describing it as 'towering.' While brief, it is a positive assessment, suggesting the show is worth seeing for her performance alone. | Kimi: The excerpt offers strong praise for the central performance ('towering') but provides insufficient text to determine a full recommendation verdict on the production overall.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T05:18:52.982Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

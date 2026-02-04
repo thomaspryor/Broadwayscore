@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
   "originalScore": null,
-  "assignedScore": 89,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -25,11 +25,11 @@
   ],
   "textQuality": "truncated",
   "llmScore": {
-    "score": 89,
+    "score": 88,
     "confidence": "medium",
     "range": {
-      "low": 84,
-      "high": 94
+      "low": 83,
+      "high": 93
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -46,7 +46,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise with 'spectacular effect' and 'bracingly universal' indicates a rave, but this appears to be an excerpt with very limited text available for assessment. | GPT-4o: The review uses strong positive language ('spectacular effect') indicating a high level of praise and a strong recommendation. | Gemini: The review uses strong positive language such as \"deeply personal and bracingly universal\" and \"spectacular effect,\" indicating a positive recommendation. | Kimi: Extracted from malformed response",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Strong praise with 'spectacular effect' and 'bracingly universal' indicates enthusiastic recommendation, but extremely brief excerpt limits confidence in full review assessment. | GPT-4o: The review uses strong positive language such as 'spectacular effect' and 'deeply personal and bracingly universal,' indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language like \"deeply personal and bracingly universal\" and \"spectacular effect,\" indicating a strong recommendation. | Kimi: The critic deploys superlatives ('spectacular effect') and praises the work's universal resonance and mastery of theatrical form, indicating enthusiastic endorsement. Confidence is reduced due to the brevity of the excerpt.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:07:49.868Z",
+    "scoredAt": "2026-02-04T05:22:48.012Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -66,7 +66,7 @@
     "claudeScore": 88,
     "openaiScore": 90,
     "geminiScore": 82,
-    "kimiScore": 88,
+    "kimiScore": 86,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",

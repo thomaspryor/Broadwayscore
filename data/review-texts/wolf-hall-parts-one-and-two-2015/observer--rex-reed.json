@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is a magnificent evening in the theater that brings history to life with intelligence, wit and dramatic power that will leave you breathless.",
   "originalScore": null,
-  "assignedScore": 94,
+  "assignedScore": 95,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 94,
+    "score": 95,
     "confidence": "high",
     "range": {
-      "low": 89,
-      "high": 99
+      "low": 90,
+      "high": 100
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise using superlatives like 'magnificent' and promising audiences will be left 'breathless' - clear rave recommendation. | GPT-4o: The review uses superlative language ('magnificent', 'breathless') indicating an enthusiastic, must-see recommendation with no reservations. | Gemini: The review uses strong positive language such as \"magnificent\" and \"dramatic power\" and states that the show will leave you \"breathless,\" indicating a very high level of recommendation. | Kimi: Unqualified rave using superlatives ('magnificent', 'dramatic power', 'breathless') with no reservations or criticisms.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlative praise calling it 'magnificent' with promise of breathtaking dramatic power. No reservations expressed. | GPT-4o: The review uses superlatives like 'magnificent' and 'breathless', indicating an enthusiastic, must-see recommendation with no reservations. | Gemini: The review uses strong positive language such as \"magnificent\", \"intelligence, wit and dramatic power\", and \"leave you breathless\", indicating a rave review. | Kimi: The critic employs unqualified superlatives ('magnificent', 'breathless') and praises the production's intelligence, wit, and dramatic power with no reservations, indicating an enthusiastic, top-tier recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,14 +51,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-04T05:03:40.022Z",
+    "scoredAt": "2026-02-04T05:19:24.595Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 92,
+    "claudeScore": 95,
     "openaiScore": 95,
     "geminiScore": 92,
     "kimiScore": 96,
