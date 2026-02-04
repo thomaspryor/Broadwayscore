@@ -105,7 +105,11 @@ async function main() {
 
   for (const show of shows) {
     const ibdb = ibdbResults.get(show.title);
-    if (!ibdb || !ibdb.found) continue;
+    if (!ibdb) continue;
+
+    // Allow processing if IBDB returned creative team even without dates
+    const hasCreativeTeamData = ibdb.creativeTeam && ibdb.creativeTeam.length > 0;
+    if (!ibdb.found && !hasCreativeTeamData) continue;
 
     const showChanges = [];
 
