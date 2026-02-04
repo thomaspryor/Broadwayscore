@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jackson McHenry",
-  "url": "https://www.vulture.com/article/yellow-face-broadway-review.html",
+  "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
   "publishDate": "October 2, 2024",
-  "fullText": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
   "originalScore": null,
@@ -16,12 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Park has written himself a comedy that's both deeply personal and bracingly universal, a work that uses the theater's capacity for self-examination to spectacular effect.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "nycTheatreExcerpt": "\"Seventeen years is an eon in theater time, enough to make some plays feel as dated as fondue and Fawlty Towers, but David Henry Hwang's Yellow Face has aged well. Currently receiving its belated Broadway premiere in a swift, tangy production by Leigh Silverman  who also directed its first New York run in 2007  the play retains its bite in part because its essential subject, like that of many a good comedy, is human folly.\"",
   "sources": [
     "web-search",
     "nyc-theatre"
   ],
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.vulture.com/article/yellow-face-broadway-review.html",
+  "urlDiscoveredAt": "2026-02-04T02:13:29.694Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/yellow-face-2024/vulture--jackson-mchenry_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:13:29.704Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

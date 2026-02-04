@@ -5,7 +5,7 @@
   "criticName": "Joe Dziemianowicz",
   "url": "https://variety.com/2010/legit/reviews/present-laughter-1118014603/",
   "publishDate": "January 21, 2010",
-  "fullText": "Victor Garber brings welcome gravitas to Noel Coward's 1939 comedy about a vain actor surrounded by adoring women and scheming men.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Victor Garber brings welcome gravitas to Noel Coward's 1939 comedy about a vain actor surrounded by adoring women and scheming men.",
   "originalScore": null,
@@ -16,7 +16,51 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Victor Garber brings welcome gravitas to Noel Coward's 1939 comedy about a vain actor surrounded by adoring women and scheming men.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "textWordCount": 147,
+  "archivePath": "data/archives/reviews/present-laughter-2010/variety--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T00:59:47.030Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 147 (min: 300)"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Prosecutors to file criminal complaint against doctor\n\nDiscovery Communications announced Friday that it would postpone indefinitely the special “Michael Jackson‘s Autopsy: What Really Killed Michael Jackson,” which was scheduled to air Jan. 13 in the U.K.\n\nDiscovery cited the ongoing criminal case against Jackson’s doctor, Conrad Murray, as well as protests from the singer’s estate, as reasons for the postponement.\n\nThe program was purported to be a re-enactment of the deceased singer’s autopsy. It sparked protests from fans, as well as a letter of condemnation from Jackson’s estate co-executors John G. Branca and John McClain.\n\nIn a statement, Branca and McClain said they “are pleased that the Discovery Channel made the correct decision to cancel” the program. “We are hopeful that this show will never run in any market in the future.”\n\nPreliminary hearings in the case of involuntary manslaughter against Murray are scheduled to begin Tuesday."
 }

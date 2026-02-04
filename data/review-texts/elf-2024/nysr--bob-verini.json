@@ -39,7 +39,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('perfect stocking-stuffer', 'subversively funny delight') indicates strong positive recommendation. Single excerpt warning noted, but tone is clearly celebratory. | GPT-4o: The excerpt describes the show as a 'subversively funny delight' and 'perfect stocking-stuffer,' indicating a strong recommendation. The original 4/5 stars rating supports a positive classification, and the language suggests enthusiasm. | Gemini: The review excerpt uses very positive language like \"subversively funny delight\" and \"perfect stocking-stuffer,\" indicating a strong recommendation. Given the single excerpt, I'm scoring towards the higher end of the positive range. | Kimi: The 4/5 star rating combined with enthusiastic praise ('subversively funny delight', 'perfect stocking-stuffer') indicates a clear recommendation in the Positive bucket. Following the single-excerpt guidance for clearly positive quotes, this scores in the 80-84 range, though limited context warrants low confidence.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('subversively funny delight', 'perfect stocking-stuffer') indicates strong positive recommendation. Single excerpt limits confidence but tone is clearly enthusiastic. | GPT-4o: The excerpt describes the show as a 'subversively funny delight' and 'perfect stocking-stuffer,' indicating a strong positive recommendation. The original 4/5 stars rating supports a score in the upper Positive range. | Gemini: The review excerpt uses very positive language like \"subversively funny delight\" and \"perfect stocking-stuffer,\" indicating a strong recommendation. | Kimi: The 4/5 star rating and enthusiastic language ('delight,' 'perfect stocking-stuffer') indicate a strong positive recommendation, though the single-excerpt format limits certainty about potential caveats elsewhere in the review.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -49,7 +49,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:59:02.638Z",
+    "scoredAt": "2026-02-04T01:25:26.837Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0

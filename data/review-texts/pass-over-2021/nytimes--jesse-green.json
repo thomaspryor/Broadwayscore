@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Pass Over is a play that knows exactly what it is: a righteous yell of pain and defiance that doesn't bother to modulate its voice for white comfort.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pass Over is a play that knows exactly what it is: a righteous yell of pain and defiance that doesn't bother to modulate its voice for white comfort.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes the play as 'righteous' and praises its uncompromising artistic vision, suggesting strong approval of its bold approach, though the brief excerpt limits full assessment of the recommendation. | GPT-4o: The review uses strong, definitive language to praise the play's clarity and purpose, indicating a highly positive assessment. | Gemini: The review describes the play as a \"righteous yell of pain and defiance,\" which indicates a positive, albeit potentially challenging, experience. The critic seems to appreciate the play's unapologetic nature. | Kimi: The critic praises the play's clear artistic vision and authentic, uncompromising voice, describing it as a 'righteous yell of pain and defiance.' While the tone is strongly appreciative, the extreme brevity of the excerpt necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:09:51.789Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

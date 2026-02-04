@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-the-lyceum.html",
+  "url": "https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html",
   "publishDate": "April 15, 2013",
-  "fullText": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
-  "isFullReview": false,
+  "fullText": "A spotlight works like a face-lift on Chauncey Miles, the title character of “The Nance,” the strained if heartfelt new play by Douglas Carter Beane, set in the twilight of burlesque. As portrayed with shiny expertise and dark conviction by Nathan Lane in a production that opened on Monday night at the Lyceum Theater, Chauncey looks every year of whatever age he may admit to, and then some, whenever he’s not onstage.\n\nBut put him before an audience in the seedy theater where he plies his trade in the late 1930s, and the haggard Chauncey becomes as bright and rosy as a pink light bulb. The anger and anxiety that creased his face in the wings have been exchanged for a contented, commanding smoothness. Never mind that Chauncey is now playing a mincing caricature of the gay man he is in real life. For as long as the comedy sketch lasts, he’s in charge, at home and at ease.\n\nMr. Beane has said that when he conceived “The Nance,” he envisioned Mr. Lane in the leading role. You can understand why. Among Broadway’s marquee names, Mr. Lane is the sole avatar of a spirited comic tradition that stretches back to vaudeville and is associated with stars like Eddie Cantor, Bert Lahr and Phil Silvers.\n\nLike them, he has a puckish signature persona that automatically makes people smile and reads big, even from the balcony. But before he became a Tony-winning song-and-dance star in shows like “The Producers,” Mr. Lane had demonstrated a brooding dramatic intelligence in plays that included Terrence McNally’s “Lisbon Traviata.” He has since taken on classic angry middle-aged-man roles in Simon Gray’s “Butley” and in Eugene O’Neill’s “Iceman Cometh.”\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,12 +16,56 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Mr. Lane gives what may be the performance of his career, finding the aching soul within the seemingly debased comic stereotype.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "sources": [
     "web-search",
     "playbill-verdict"
   ],
-  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html?pagewanted=all&_r=0"
+  "playbillVerdictUrl": "http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-lyceum-theater.html?pagewanted=all&_r=0",
+  "previousUrl": "https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lane-at-the-lyceum.html",
+  "urlDiscoveredAt": "2026-02-04T01:59:15.575Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 306,
+  "archivePath": "data/archives/reviews/the-nance-2013/nytimes--ben-brantley_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:59:15.577Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "Parse Error: Header overflow"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "brightdata",
+  "wordCount": 306,
+  "tierReason": "Full review text"
 }

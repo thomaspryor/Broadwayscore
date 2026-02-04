@@ -3,7 +3,7 @@
   "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "Adam Feldman",
-  "url": "http://www.timeout.com/newyork/theater/aladdin-1",
+  "url": "https://www.timeout.com/newyork/theater/aladdin-1",
   "publishDate": "March 20, 2014",
   "showScoreExcerpt": "\"Aside from the tonic of Iglehart’s djinn, however, Aladdin is short on magic.\"",
   "showScoreUrl": "https://www.show-score.com/broadway-shows/aladdin",
@@ -11,15 +11,14 @@
   "assignedScore": 61,
   "source": "show-score",
   "dtliThumb": null,
-  "archivePath": "data/archives/reviews/aladdin-2014/timeout--adam-feldman_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T19:15:18.408Z",
+  "archivePath": "data/archives/reviews/aladdin-2014/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:31:08.789Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
+      "success": true
     },
     {
       "tier": 0.5,
@@ -94,6 +93,7 @@
   "sources": [
     "show-score",
     "web-search",
+    "show-score-playwright",
     "bww-roundup",
     "playbill-verdict"
   ],
@@ -114,7 +114,9 @@
   "tierReason": "showNotMentioned — wrong content scraped",
   "contentTier": "excerpt",
   "truncationSignals": [
-    "no_ending_punctuation"
+    "no_ending_punctuation",
+    "shorter_than_excerpt",
+    "possible_mid_word_cutoff"
   ],
   "textIssues": [
     "Word count too low: 89 (min: 300)",
@@ -124,5 +126,10 @@
   "misattributedFullText": true,
   "extractedByline": "Times Sq",
   "expectedCritic": "Adam Feldman",
-  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/aladdin-1"
+  "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/aladdin-1",
+  "_showNotMentionedDiscoveryAttempted": true,
+  "wrongFullText": "Disney unveils its latest cartoon-to-musical project: the orientalist tale of a boy, an uncorked spirit and an aerodynamic rug. Composer Alan Menken adds new tunes to the 1992 original soundtrack, and Chad Beguelin provides a fresh book. Reputed highlights include James Monroe Iglehart's bouncy Genie and the flying-carpet F/X.\n\nNew Amsterdam Theatre\n \n 214 W 42nd St\n \n \n Midtown West\n \n New York\n\nbetween Seventh and Eighth Aves\n\nSubway: A, C, E to 42nd St–Port Authority; N, Q, R, 42nd St S, 1, 2, 3, 7 to 42nd St–Times Sq\n\nTheater. Musicals",
+  "previousUrl": "http://www.timeout.com/newyork/theater/aladdin-1",
+  "urlDiscoveredAt": "2026-02-04T02:31:08.798Z",
+  "urlDiscoveryMethod": "show-not-mentioned-recovery"
 }

@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment stating the show 'works' and 'succeeds' on multiple levels, but lacks enthusiastic language or superlatives that would push it higher in the Positive range. | GPT-4o: The review praises the show for succeeding on multiple levels, indicating a strong recommendation without reservations. The language suggests an enthusiastic endorsement. | Gemini: The review states the show is \"engaging\" and a \"deeply personal story\", indicating a positive recommendation. | Kimi: The critic offers unqualified praise for the show's dual success as entertainment and personal narrative, using words like 'succeeding' and 'engaging' that indicate a solid recommendation.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Clear positive assessment stating the show 'works' and 'succeeds' with specific praise for both theatrical and personal elements, though brief text limits confidence in full verdict. | GPT-4o: The review offers unqualified praise, highlighting the show's success on multiple levels and its engaging and personal nature, indicating a strong recommendation. | Gemini: The review states the show \"works on multiple levels\" and is \"engaging\", indicating a positive recommendation. | Kimi: The critic describes the show as succeeding on multiple levels, praising it as engaging and deeply personal with no reservations mentioned.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,14 +51,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T22:00:13.193Z",
+    "scoredAt": "2026-02-04T02:10:48.578Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 77,
+    "claudeScore": 76,
     "openaiScore": 90,
     "geminiScore": 78,
     "kimiScore": 80,
@@ -66,7 +66,7 @@
     "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 13,
+    "scoreDelta": 14,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

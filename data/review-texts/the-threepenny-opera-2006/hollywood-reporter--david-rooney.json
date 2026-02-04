@@ -17,5 +17,54 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This Threepenny Opera has many virtues, but it lacks the acrid bite and political urgency that should make Brecht's 1928 musical feel vital and dangerous.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "textWordCount": 164,
+  "archivePath": "data/archives/reviews/the-threepenny-opera-2006/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:55:53.399Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 184 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "By Kimberly Nordyke, The Associated Press \n\n \n\n December 28, 2008 12:46pm\n\nThe Season 4 finale of “The Hills” wasn’t able to match the numbers of the show’s third-season closer.\n\nThe latest finale, which aired at 10 p.m. Monday, averaged 2.6 million total viewers, down from 3.8 million for the Season 3 closer. But the Season 4 closer aired during a holiday week — during Hanukkah and three days before Christmas — while the third-season finale aired in May.\n\nOverall, the show’s Season 4 total-viewers average (3 million) was off 25% from its Season 3 average (3.9 million).\n\nMTV premieres “Hills” spinoff “The City,” starring Whitney Port, at 10 p.m. Monday. “Bromance,” a competition series starring “Hills” staple Brody Jenner, debuts at 9 p.m. Monday. New episodes of “Hills” are set to air in the spring.\n\nAlso airing last week was the second-season finale of TBS’ “Frank TV,” which averaged 948,000 viewers at 11 p.m. Tuesday. That’s off 25% from the year-ago time-period average (1.3 million).",
+  "misattributedFullText": true,
+  "extractedByline": "Kimberly Nordyke",
+  "expectedCritic": "David Rooney"
 }

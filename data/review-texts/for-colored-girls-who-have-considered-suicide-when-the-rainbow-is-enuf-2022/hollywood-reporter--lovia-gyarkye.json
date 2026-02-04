@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 898,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Brown's version of the production injects Shange's already electrifying work with a distinctive and vivid energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout with phrases like 'it's a joy to witness,' 'electrifying work,' and 'magic of Brown's version.' The critic appreciates both the direction and performances, with only minor reservations about subtlety in some performances. | GPT-4o: The review is filled with enthusiastic praise for the production, highlighting the dynamic cast, innovative direction, and the emotional impact of the performance. The critic describes the show as a joy to witness and emphasizes its captivating and intimate nature, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the direction, choreography, cast, and overall energy of the production. The critic explicitly states it's a joy to witness. | Kimi: The review overflows with enthusiasm for director Camille A. Brown's revival, describing it as a 'joy to witness' with 'magic' and 'intoxicating' storytelling. While stopping short of 'masterpiece' or 'must-see' declarations, the consistent use of superlatives like 'electrifying' and 'vivid' indicate a strong recommendation without reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:08:40.847Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

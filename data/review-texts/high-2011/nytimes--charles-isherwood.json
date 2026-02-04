@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The musical 'High,' which opened on Tuesday night at the Booth Theater, is a well-intentioned but ultimately earthbound effort to dramatize the struggles of addiction and recovery.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical 'High,' which opened on Tuesday night at the Booth Theater, is a well-intentioned but ultimately earthbound effort to dramatize the struggles of addiction and recovery.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical 'High,' which opened on Tuesday night at the Booth Theater, is a well-intentioned but ultimately earthbound effort to dramatize the struggles of addiction and recovery.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The phrase 'well-intentioned but ultimately earthbound' signals disappointment despite good intentions. However, with only one excerpt available, the full verdict may be different. | GPT-4o: The excerpt describes the musical as 'well-intentioned but ultimately earthbound,' indicating a negative view of its execution. However, due to the single excerpt warning, the confidence is low as the full context of the review is not available. | Gemini: The review excerpt indicates that the show is \"earthbound\", suggesting a negative assessment. Given the limited text, confidence is low. | Kimi: Single excerpt indicates worthy subject matter ('well-intentioned') but criticizes execution ('earthbound effort'), suggesting the show fails to achieve dramatic lift. Without additional context, this lands in Mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:32:57.313Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

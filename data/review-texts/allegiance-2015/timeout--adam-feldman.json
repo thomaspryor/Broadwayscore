@@ -3,9 +3,9 @@
   "outletId": "timeout",
   "outlet": "Time Out New York",
   "criticName": "Adam Feldman",
-  "url": "https://www.timeout.com/newyork/theater/allegiance-review",
+  "url": "https://www.timeout.com/newyork/theater/allegiance",
   "publishDate": "November 9, 2015",
-  "fullText": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
+  "fullText": "Allegiance: Theater review by David Cote Sweetly traditional grandfather Ojii-chan (George Takei) practices Japanese customs, such as hanging wind chimes, tending his garden and origami. As an example of the last, he folds a page from a despised loyalty oath—more humiliation for Japanese-Americans interned in camps circa 1942—into a delicate flower. If only the creative team behind Allegiance could have worked such gentle magic with the raw and painful material of history. This well-intentioned but mawkish musical about a family interned after Pearl Harbor tries to balance romance, humor and tragedy, but crumples things badly.There's no shortage of acting talent onstage (even if Takei's two speeds—wooden and gooey—are broad). Lea Salonga hasn't been on Broadway since the Les Miz revival in 2008, and her glorious singing is so much better than the generic, clunkily worded ballads and anthems Jay Kuo has produced. Telly Leung is all appeal as young Sammy, who ends up going to war to prove his loyalty. And Katie Rose Clarke adds humor and warmth as a camp nurse who falls for Sammy. There's a complex tale of honor, shame and assimilation here, but it's been stretched out to cartoonish billboard size.—David CoteLongacre Theatre (Broadway). Music and lyrics by Jay Kuo. Book by Marc Acito, Kuo and Lorenzo Thione. Directed by Stafford Arima. With Lea Salonga, George Takei, Telly Leung. Running time: 2hrs 20mins. One intermission.",
   "isFullReview": false,
   "dtliExcerpt": "Allegiance is a well-intentioned musical about Japanese-American internment during World War II, but good intentions don't automatically make good theater.",
   "originalScore": 40,
@@ -73,10 +73,40 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/allegiance",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "previousUrl": "https://www.timeout.com/newyork/theater/allegiance-review",
+  "urlDiscoveredAt": "2026-02-04T02:35:42.774Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 41,
+  "textWordCount": 229,
+  "archivePath": "data/archives/reviews/allegiance-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:35:42.776Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20151114070334",
+  "archiveOrgUrl": "http://web.archive.org/web/20151114070334/http://www.timeout.com:80/newyork/theater/allegiance",
+  "wordCount": 229,
+  "tierReason": "Short text (229 words)"
 }

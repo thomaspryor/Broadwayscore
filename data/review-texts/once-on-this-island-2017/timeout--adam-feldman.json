@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This gorgeous revival of the 1990 musical transforms Circle in the Square into a Caribbean paradise, with immersive staging that puts the audience right in the middle of the action.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This gorgeous revival of the 1990 musical transforms Circle in the Square into a Caribbean paradise, with immersive staging that puts the audience right in the middle of the action.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous revival of the 1990 musical transforms Circle in the Square into a Caribbean paradise",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic's own 80 rating aligns with positive territory, and 'gorgeous revival' with praise for immersive staging indicates clear recommendation, though the excerpt is brief. | GPT-4o: The review describes the production as 'gorgeous' and highlights the immersive staging, aligning with the original rating of 80, indicating a strong positive recommendation. | Gemini: The review uses the word \"gorgeous\" and describes the staging as immersive, which indicates a positive recommendation. The original rating of 80 aligns with this assessment. | Kimi: The critic describes the revival as 'gorgeous' and praises the immersive staging that creates a 'Caribbean paradise,' consistent with the provided 80 rating indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:56:56.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

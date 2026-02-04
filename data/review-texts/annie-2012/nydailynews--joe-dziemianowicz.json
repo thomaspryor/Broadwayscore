@@ -3,10 +3,10 @@
   "outletId": "nydailynews",
   "outlet": "New York Daily News",
   "criticName": "Joe Dziemianowicz",
-  "url": "https://www.nydailynews.com/2012/11/09/annie-broadway-review-revival-palace-theatre/",
+  "url": "https://www.nydailynews.com/2012/11/08/theater-review-annie-on-broadway/",
   "publishDate": "November 9, 2012",
-  "fullText": "The sun may come out tomorrow for little Annie, but this revival could use more warmth today. Still, there's enough charm and energy to keep families entertained.",
-  "isFullReview": false,
+  "fullText": "Opt-Out Signal is being honored Your Opt-Out Signal is active and being honored by this site\n\nNew York can always use a dose of optimism. Considering current events, that goes double now.\n\nIn that sense, the enjoyable new production of “Annie” at the Palace Theatre arrives on cue.\n\nSince 1977, when the show won seven Tonys, this well-built, feel-good family musical has trumpeted the power of resilience.\n\nStuck in “a day that’s gray and lonely? The sun’ll come out tomorrow.”\n\nDrawn from Harold Gray’s beloved comic strip, the show, which has been made into big- and small-screen movies, is a classic rags-to-riches story.\n\nIt follows Annie from a Depression-era orphanage to life with billionaire businessman (and big softy at heart) Daddy Warbucks. Along the way, she inspires FDR’s “New Deal for Christmas” for down-and-out Americans. Go, Annie!\n\nEleven-year-old Lilla Crawford makes a feisty Annie and earns points for speaking and singing with a New Yawk accent. In her big solo “Tomorrow,” she channels Ethel Merman and shows off a belt as big and wide as a city bridge.\n\nVeteran Broadway director James Lapine darkens a few moments to convey the gravity of hard times in Hooverville, but otherwise delivers a standard production.\n\nHe lets the book and songs speak for themselves and relies on choreography — sometimes a little too flashy — by Andy Blankenbuehler to keep the musical in motion.\n\nIf this take seldom crosses the line into something must-see special (it doesn’t), even a simply good production of “Annie” offers rewards.\n\nThomas Meehan’s book is funny and touching. Songs by Charles Strouse (music) and Martin Charnin (lyrics) offer nearly wall-to-wall ear-ticklers. “Easy Street” and the chipper “I Think I’m Gonna Like It Here” will have you humming. “You’ve Never Fully Dressed Without a Smile” sparkles with enough wit to make you grin.\n\nAs Annie’s nemesis, the boozy orphanage director Miss Hannigan, Katie Finneran slurs and slumps, as she did in her Tony-winning turn in “Promises, Promises.” Effortlessly hilarious there, she works very hard as Hannigan. It shows and the role shrinks as a result.\n\nAustralian theater star Anthony Warlow brings easygoing sweetness to his acting and singing as a moneybags who learns there’s more to life than cold cash.\n\nLending solid support are Clarke Thorell and J. Elaine Marcos as the ruthless Rooster and Lily. In the talented bunch of orphan girls, Emily Rosenfeld plays the tiniest tot and steals scenes with outsize bravado. She’s like Honey Boo Boo — but with talent. Sunny, the dog, is adorable as Annie’s four-legged best pal.\n\nDavid Korins’ fine scenic design takes the story from rundown tenement and mean streets to glamorous uptown mansion. In other words, from today to tomorrow.",
+  "isFullReview": true,
   "dtliExcerpt": "The sun may come out tomorrow for little Annie, but this revival could use more warmth today. Still, there's enough charm and energy to keep families entertained.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The sun may come out tomorrow for little Annie, but this revival could use more warmth today. Still, there's enough charm and energy to keep families entertained.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 61,
@@ -73,5 +73,46 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "full",
+  "previousUrl": "https://www.nydailynews.com/2012/11/09/annie-broadway-review-revival-palace-theatre/",
+  "urlDiscoveredAt": "2026-02-04T02:08:39.250Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 450,
+  "archivePath": "data/archives/reviews/annie-2012/nydailynews--joe-dziemianowicz_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:08:39.254Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 450,
+  "tierReason": "Full review text"
 }

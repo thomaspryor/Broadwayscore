@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play itself is a disaster - a contrived, unfunny farce that even Twain's wit cannot save from its own theatrical clumsiness.",
   "originalScore": null,
-  "assignedScore": 17,
+  "assignedScore": 16,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -19,11 +19,11 @@
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 17,
+    "score": 16,
     "confidence": "high",
     "range": {
-      "low": 12,
-      "high": 22
+      "low": 11,
+      "high": 21
     },
     "bucket": "Pan",
     "thumb": "Down",
@@ -40,7 +40,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Calls the play 'a disaster' with harsh descriptors like 'contrived, unfunny farce' and 'theatrical clumsiness'. However, this is only a single excerpt which limits confidence in the full review's verdict. | GPT-4o: The excerpt is strongly negative, describing the play as a 'disaster' and 'unfunny,' with no redeeming qualities mentioned. This indicates a clear pan. | Gemini: The review excerpt explicitly calls the play a 'disaster' and 'unfunny farce,' indicating a strong negative assessment. | Kimi: The excerpt deploys devastating language ('disaster', 'unfunny', 'clumsiness') with no redeeming qualities mentioned. While a single excerpt may not capture the full review, the word 'disaster' indicates a strong pan.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Critic calls the play 'a disaster' and 'contrived, unfunny farce' that cannot be saved. Clear pan despite single excerpt warning - language is unambiguously devastating. | GPT-4o: The excerpt is strongly negative, describing the play as a 'disaster' and 'unfunny', with no redeeming qualities mentioned. The language used indicates a deep pan. | Gemini: Extracted from malformed response | Kimi: The excerpt employs devastating language ('disaster,' 'unfunny,' 'clumsiness') to unequivocally condemn the production, placing it in the Pan range. Confidence is low given only a single curated excerpt is available.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -50,14 +50,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:13:04.365Z",
+    "scoredAt": "2026-02-04T01:34:13.274Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 18,
+    "claudeScore": 15,
     "openaiScore": 20,
     "geminiScore": 15,
     "kimiScore": 15,

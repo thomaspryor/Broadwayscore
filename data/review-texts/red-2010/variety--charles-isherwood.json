@@ -5,7 +5,7 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2010/legit/reviews/red-1117942436/",
   "publishDate": "April 1, 2010",
-  "fullText": "John Logan's play about Mark Rothko is a cerebral two-hander that crackles with intelligence and passion, brought to vivid life by Alfred Molina and Eddie Redmayne.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "John Logan's play about Mark Rothko is a cerebral two-hander that crackles with intelligence and passion, brought to vivid life by Alfred Molina and Eddie Redmayne.",
   "originalScore": null,
@@ -16,12 +16,57 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "John Logan's play about Mark Rothko is a cerebral two-hander that crackles with intelligence and passion, brought to vivid life by Alfred Molina and Eddie Redmayne.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2014/legit/reviews/off-broadway-review-tales-from-red-vienna-1201137843/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 196,
+  "archivePath": "data/archives/reviews/red-2010/variety--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:03:00.458Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 196 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Endie auteur Alejandro Adams crafts another distinctive, intriguing no-budget drama.\n\nNorthern California indie auteur Alejandro Adams crafts another distinctive, intriguing no-budget drama in “Babnik.” Though this third feature is both his most conventional and least satisfying, its cryptic narrative about organized crime and entrapment among Russian emigres still sports an arresting quasi-verite flavor. Unlikely to be Adams’ breakout, it should further his fest profile.\n\nProtags are recent Russian immigrants, variably sinking or swimming in sunny California, enriched or victimized by their own criminal underground; their precise relationships, business operations and even names are clarified spottily, if at all. While answerable to bosses of their own, types like creepy Artem (Artem Mishin) and noxious wife Yelena (Yelena Segal) have flourishing dealings in prostitution, drugs and human trafficking. They easily snare angry young Arseniy (Arseniy Arkhipov) in a rigged gambling debt, even as they lure his antagonistic teen sister (Nika Gambarin) toward dubious “modeling” work. Adams’ fresh eye and ear, and his way with mostly non-pro thesps hold attention. But the tale’s surface thriller elements and chilly evasion of character insight or narrative explication ultimately clash rather than complement one another, especially at the violent yet murky close."
 }

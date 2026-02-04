@@ -31,5 +31,60 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 611,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Diana: The Musical, a vacant and vapid royal rehash.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review consistently criticizes the show as 'vacant and vapid,' calls it a 'snoozy chronological approach' with 'limp lyrics,' and concludes 'the show doesn't sing.' Despite acknowledging cast efforts, the overall recommendation is clearly negative. | GPT-4o: The review is overwhelmingly negative, criticizing the show as 'vacant and vapid' with 'limp lyrics' and 'predictable rhymes'. The critic finds little redeeming value, describing the musical as lacking depth and relying on superficial elements. | Gemini: The review is overwhelmingly negative, describing the musical as a \"vacant and vapid royal rehash\" with limp lyrics and predictable rhymes. While the cast maintains their dignity, the show itself \"doesn't sing.\" | Kimi: The critic describes the show as 'vacant and vapid' with 'limp lyrics' and a 'snoozy' approach, criticizing the book, score, and direction as shallow and campy despite acknowledging the cast maintains their dignity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:07:08.748Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

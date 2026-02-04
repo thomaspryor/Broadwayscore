@@ -11,13 +11,13 @@
   ],
   "contentTier": "excerpt",
   "tierReason": "Only aggregator excerpts available",
-  "assignedScore": 77,
+  "assignedScore": 81,
   "llmScore": {
-    "score": 77,
-    "confidence": "medium",
+    "score": 81,
+    "confidence": "high",
     "range": {
-      "low": 72,
-      "high": 82
+      "low": 76,
+      "high": 86
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -29,12 +29,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "To be clear - that's a compliment. Mattress is an exceedingly silly show.",
+        "quote": "Yet at its most joyful highpoints, even this high-class gathering of musical theater's finest feels closer to a bunch of big kids playing dress-up. To be clear - that's a compliment.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic frames the 'big kids playing dress-up' comparison as explicitly positive, praising the 'incredible talents' and 'joyful highpoints.' However, with only one excerpt available, confidence is low as the full verdict may be missing. | GPT-4o: The excerpt praises the cast and describes the show as 'exceedingly silly' in a complimentary way, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Gemini: The review highlights the talented cast and describes the show as \"exceedingly silly,\" which is presented as a compliment. Given the single excerpt, a positive score is appropriate. | Kimi: The excerpt offers clear praise for the 'incredible talents' and describes the show's silly nature as a joyful 'compliment,' indicating a strong recommendation despite limited text availability.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic clearly states 'that's a compliment' about the playful quality, praises the 'incredible talents' and 'high-class gathering of musical theater's finest.' However, confidence is low due to single excerpt limitation. | GPT-4o: The review excerpt praises the cast and describes the show as 'exceedingly silly' in a complimentary way, suggesting a positive tone. However, the single excerpt limits confidence. | Gemini: The review highlights the talented cast and describes the show as \"exceedingly silly,\" which is framed as a compliment. Given the single excerpt, a positive score with medium confidence is appropriate. | Kimi: The critic praises the 'incredible talents' and explicitly frames the show's playful silliness as a compliment, indicating an enjoyable if lightweight production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -44,21 +44,21 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:43:14.866Z",
+    "scoredAt": "2026-02-04T01:58:47.299Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 74,
+    "claudeScore": 81,
+    "openaiScore": 82,
     "geminiScore": 78,
     "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 8,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

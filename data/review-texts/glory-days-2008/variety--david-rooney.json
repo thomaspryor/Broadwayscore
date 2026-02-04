@@ -44,7 +44,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the material 'dramatically inert,' 'bland,' and 'pedestrian' with no redeeming qualities mentioned. | GPT-4o: The review describes the show as 'dramatically inert' and 'pedestrian,' with 'bland songs,' indicating a negative assessment without any redeeming qualities. | Gemini: The review explicitly states that the songs are bland and the material is pedestrian, leading to a negative recommendation. | Kimi: The critic describes the show as dramatically inert with bland songs and pedestrian material, offering a clear verdict against seeing the production despite acknowledging its earnest intentions.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show 'dramatically inert' with 'bland songs' and 'pedestrian material.' No redeeming qualities mentioned beyond being 'earnest.' | GPT-4o: The review describes the musical as 'dramatically inert' and 'bland', indicating a lack of recommendation. The tone is clearly negative with no redeeming qualities mentioned. | Gemini: The review explicitly states the musical is \"dramatically inert\" with \"bland songs\" and \"pedestrian material,\" indicating a negative assessment. | Kimi: The critic offers faint praise ('earnest') but ultimately describes the show as dramatically inert with bland songs and pedestrian material, indicating a clear recommendation against seeing the production.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -54,7 +54,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:07:39.719Z",
+    "scoredAt": "2026-02-04T01:29:28.149Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -64,7 +64,7 @@
     "claudeScore": 42,
     "openaiScore": 40,
     "geminiScore": 45,
-    "kimiScore": 42,
+    "kimiScore": 40,
     "claudeBucket": "Negative",
     "openaiBucket": "Negative",
     "geminiBucket": "Negative",

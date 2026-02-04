@@ -16,61 +16,12 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The musical Once, based on the 2007 Irish film, is a love story that's both heartbreaking and healing, told through songs that seem to emerge naturally from the characters' souls.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (30 words)",
   "textQuality": "truncated",
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "a love story that's both heartbreaking and healing",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Positive descriptors like 'heartbreaking and healing' and praise for natural song integration suggest recommendation, but the excerpt is too brief to assess full critical verdict with confidence. | Gemini: The review describes the musical as \"heartbreaking and healing\" and praises the songs, indicating a positive recommendation. | Kimi: The excerpt offers strong praise for the show's emotional resonance and organic musical integration. The language ('heartbreaking and healing', 'naturally from the characters' souls') indicates a solid recommendation, though the extreme brevity warrants low confidence.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:40:31.689Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": null,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "rejectedAt": "2026-02-04T01:56:20.846Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "not_a_review",
+  "rejectionReasoning": "claude: This appears to be a brief plot description or promotional summary rather than a critical review with evaluation or recommendation.; openai: The text is a brief description of the musical and does not provide any evaluative content or a critical opinion.",
+  "promptVersion": "5.2.0"
 }

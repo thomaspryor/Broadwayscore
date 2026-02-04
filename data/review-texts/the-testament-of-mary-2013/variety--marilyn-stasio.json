@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2013/legit/reviews/the-testament-of-mary-1200334859/",
   "publishDate": "April 22, 2013",
-  "fullText": "Fiona Shaw's performance as Mary is magnificent, a tour de force of theatrical power that transforms Colm Toibin's spare prose into a living, breathing portrait of grief.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Fiona Shaw's performance as Mary is magnificent, a tour de force of theatrical power that transforms Colm Toibin's spare prose into a living, breathing portrait of grief.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,12 +16,57 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Fiona Shaw's performance as Mary is magnificent, a tour de force of theatrical power that transforms Colm Toibin's spare prose into a living, breathing portrait of grief.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (27 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://variety.com/2013/legit/reviews/the-testament-of-mary-1200407773/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 280,
+  "archivePath": "data/archives/reviews/the-testament-of-mary-2013/variety--marilyn-stasio_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:07:12.214Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 280 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Local version of mag suffers slings, arrows of culture war\n\nFilm producer Erwin Arnanda, prexy of Indonesia’s Rex Cinema, pulled off one of the biggest publicity coups of his career with the launch of a local version of Playboy earlier this month.\n\nTrouble is, the mag’s debut ran smack into the middle of Indonesia’s growing culture wars.\n\nIndonesia is officially a secular state, but has the world’s largest Muslim population. New laws on pornography and obscenity are making their way through parliament, and more moderate segments of society fear the laws presage an Islamic cultural clampdown.\n\nWhen the Indonesian Playboy debuted — by subscription only — hundreds of rioters organized by the Islamic Defenders Front (FPI) forced their way into Arnanda’s offices in Jakarta, broke windows and overturned furniture.\n\nSince then, the media has been awash in pro- and anti- commentaries on the subject, and the mag has sold out — although secondhand copies have turned up on newsstands. Arnada says he’s postponed a second edition, citing security concerns.\n\nThe content alone cannot have sparked such a flare-up: The magazine bares less flesh than the local versions of FHM or Maxim and is less racy than many women’s magazines. But Islamic politicians and preachers say the name of the magazine alone is grounds to ban it.\n\nIndonesia’s creative community is fighting back, though. Thousands of actors, filmmakers and other creative types turned out at an April 22 rally against the laws .\n\n“We were very happy to have drawn the support of so many sections of society, artists and regular people,” says Jakarta Film Fest chair Shanty Harmayn. Avoiding provocation, she marched in a combo of jeans and traditional garb."
 }

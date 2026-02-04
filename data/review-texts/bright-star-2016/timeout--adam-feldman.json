@@ -5,7 +5,7 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/bright-star",
   "publishDate": "March 24, 2016",
-  "fullText": "This new musical by Steve Martin and Edie Brickell has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
+  "fullText": "Steve Martin and Edie Brickell make their Broadway debuts as composer-lyricists in this romantic tale set in the American South from the 1920s to the '40s. Walter Bobbie directs an ensemble that includes Paul Alexander Nolan (Doctor Zhivago) and Carmen Cusack.\n\nThis is an amazing show. The music is beautiful and beautifully song, the two female leads are incredible. The story is moving and captivating. You won't be bored at any point. Be preapred to go through every emotion possible, when I say the audience was sniffling and crying during the show I am not kidding and no not tears of joy. It definitely takes you to dark places but will leave you feeling good and moved by the actors and story. A must see show.\n\nFull disclosure - I saw this when it was in previews, so I can't speak to the musical's details (as they might change), BUT the music of \"Bright Star\" is absolutely infectious. The story has its ups and downs (emotionally and quality-wise), though Carmen Cusack (who plays Alice Murphy) anchors the whole show and gives the show a full-hearted, earthy feel. If you don't like bluegrass music, you probably won't like this show, but it's absolutely worth seeing if you love theater.",
   "isFullReview": false,
   "dtliExcerpt": "This new musical by Steve Martin and Edie Brickell has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
   "originalScore": 60,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new musical by Steve Martin and Edie Brickell has a warm heart and a fine bluegrass score, but its storytelling is disappointingly conventional.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
   "llmScore": {
     "score": 61,
@@ -73,5 +73,35 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 208,
+  "archivePath": "data/archives/reviews/bright-star-2016/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:18:58.917Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20160322085656",
+  "archiveOrgUrl": "http://web.archive.org/web/20160322085656/http://www.timeout.com:80/newyork/theater/bright-star",
+  "textIssues": [
+    "Word count too low: 208 (min: 300)"
+  ],
+  "wordCount": 208,
+  "tierReason": "Short but structurally complete review"
 }

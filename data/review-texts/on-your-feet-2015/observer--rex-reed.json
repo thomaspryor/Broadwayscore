@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "On Your Feet! is a crowd-pleasing musical that tells the story of Gloria and Emilio Estefan with infectious energy, though it follows the familiar jukebox musical formula a bit too predictably.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 75,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "On Your Feet! is a crowd-pleasing musical that tells the story of Gloria and Emilio Estefan with infectious energy, though it follows the familiar jukebox musical formula a bit too predictably.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (31 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "On Your Feet! is a crowd-pleasing musical that tells the story of Gloria and Emilio Estefan with infectious energy, though it follows the familiar jukebox musical formula a bit too predictably.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges positive qualities (crowd-pleasing, infectious energy) but criticizes it for being too predictable and formulaic. This balanced assessment with no clear recommendation places it in Mixed territory. | GPT-4o: The review describes the musical as 'crowd-pleasing' and 'infectious', indicating a positive recommendation, but notes predictability as a reservation. | Gemini: The review calls the musical \"crowd-pleasing\" and notes its \"infectious energy,\" but also mentions it follows the jukebox musical formula predictably, indicating a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The critic explicitly calls the show 'crowd-pleasing' with 'infectious energy' while noting it follows a predictable formula, indicating a solid recommendation with mild reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:54:16.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

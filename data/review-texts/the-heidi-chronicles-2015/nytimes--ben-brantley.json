@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ms. Moss brings a persuasive sense of someone caught between what she wants and what she thinks she should want, and her performance grows richer and more complicated as the evening progresses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,60 @@
   "archiveOrgTimestamp": "20250821181842",
   "archiveOrgUrl": "http://web.archive.org/web/20250821181842/https://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisabeth-moss-opens-on-broadway.html",
   "wordCount": 1102,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Moss and her collaborators in this sterling production sing them forth with a revitalizing warmth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Brantley praises the revival as 'vibrant' and 'sterling' with 'revitalizing warmth,' highlighting strong performances especially from Moss. While acknowledging some dated elements, he finds the play's themes remain germane and the production successful. | GPT-4o: The review praises the revival's vibrant nature, Moss's performance, and the production's ability to retain humor and relevance. The critic acknowledges some dated elements but overall recommends the show highly. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play's enduring relevance. The critic uses words like \"vibrant,\" \"sterling,\" and \"revitalizing warmth.\" | Kimi: Brantley praises Elisabeth Moss's 'superb' performance and calls the production 'sterling' and 'vibrant,' though he notes minor concerns about dated material and occasional clichés.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:20:06.684Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

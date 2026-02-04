@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This reimagined Pippin is a theatrical experience that dazzles the senses while touching the heart, a rare combination that makes for truly memorable theater.",
   "originalScore": null,
-  "assignedScore": 90,
+  "assignedScore": 91,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (24 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 90,
+    "score": 91,
     "confidence": "high",
     "range": {
-      "low": 85,
-      "high": 95
+      "low": 86,
+      "high": 96
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -41,7 +41,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Clear rave language with 'dazzles', 'rare combination', and 'truly memorable theater' indicating strong enthusiasm and recommendation. | GPT-4o: The review uses superlative language ('dazzles the senses', 'touching the heart') indicating a strong recommendation. The phrase 'truly memorable theater' suggests a must-see experience. | Gemini: The review uses strong positive language such as \"dazzles the senses\" and \"touching the heart\", and calls it a \"truly memorable theater\" experience, indicating a rave review. | Kimi: Unqualified enthusiastic praise using superlatives ('dazzles', 'truly memorable', 'rare combination') with no reservations mentioned.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise using strong positive language ('dazzles', 'rare combination', 'truly memorable theater') with no reservations expressed. | GPT-4o: The review uses highly positive language, describing the show as 'dazzling' and 'memorable,' indicating a strong recommendation. | Gemini: The review uses strong positive language like \"dazzles the senses\", \"touching the heart\", and \"truly memorable theater\", indicating a rave review. | Kimi: Unqualified enthusiastic praise using words like 'dazzles' and 'truly memorable' indicates an enthusiastic, must-see recommendation without reservations.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,22 +51,22 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T22:02:55.866Z",
+    "scoredAt": "2026-02-04T02:12:32.861Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 89,
+    "claudeScore": 88,
     "openaiScore": 92,
-    "geminiScore": 90,
-    "kimiScore": 90,
+    "geminiScore": 92,
+    "kimiScore": 92,
     "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 3,
+    "scoreDelta": 4,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

@@ -10,10 +10,64 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "Directed by Moritz von Stuelpnagel—who helmed Rebeck’s 2018 backstage drama Bernhardt/Hamlet, also at the Roundabout—I Need That runs only 100 intermission-free minutes, but somehow feels padded. Perhaps in an effort to avoid turning the play into The Danny DeVito Show, Rebeck gives Foster and Ameli...",
   "showScoreExcerpt": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
-  "tierReason": "Only aggregator excerpts available"
+  "tierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I Need That runs only 100 intermission-free minutes, but somehow feels padded.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | GPT-4o: The excerpt suggests that the play feels longer than its runtime, indicating a pacing issue. Without more context, this implies a mixed reception, as the critic points out a significant flaw. | Gemini: The excerpt indicates the play feels padded, suggesting a negative experience. Given the single excerpt and truncated nature, confidence is low, but the negative sentiment is clear enough to place it in the negative bucket. | Kimi: The excerpt criticizes the play's pacing as feeling padded despite its brevity, suggesting dramaturgical issues. However, with only a single truncated excerpt available, the overall verdict is unclear and the positive assessment may have been cut off.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:33:36.634Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

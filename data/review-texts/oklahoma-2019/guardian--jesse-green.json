@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 90,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining of the Rodgers and Hammerstein classic.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (25 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This Oklahoma! is not your grandmother's Oklahoma! – and that's exactly the point of Daniel Fish's stark, brilliant reimagining",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Uses 'brilliant' to describe the production with clear appreciation for the directorial vision and reimagining approach. | GPT-4o: The review uses strong, positive language ('brilliant reimagining') indicating a highly enthusiastic recommendation. The phrase 'not your grandmother's Oklahoma!' suggests a fresh and innovative approach, contributing to a rave classification. | Gemini: The critic uses strong positive language such as \"brilliant reimagining\" which indicates a positive recommendation. | Kimi: The excerpt offers unqualified praise calling the production 'brilliant,' indicating strong enthusiasm for this reimagining, though the brevity of the text requires low confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:49:53.993Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

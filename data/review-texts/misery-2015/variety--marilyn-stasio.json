@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Laurie Metcalf is the real draw in this effectively creepy Broadway adaptation.",
+        "quote": "effectively creepy Broadway adaptation",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'effectively creepy' and identifies Metcalf as 'the real draw,' indicating a positive recommendation despite brevity of the excerpt. | GPT-4o: The review highlights Laurie Metcalf as a standout and describes the adaptation as 'effectively creepy,' indicating a positive recommendation with some focus on individual performance. | Gemini: The review calls the adaptation \"effectively creepy\" and highlights Laurie Metcalf as the \"real draw,\" suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: Brief excerpt praises the lead performance as the 'real draw' and calls the adaptation 'effectively creepy', indicating a solid recommendation despite the truncated length.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'effectively creepy' and highlights strong performances, particularly praising Metcalf as 'the real draw', indicating a positive recommendation despite the brief format. | GPT-4o: The review highlights Laurie Metcalf's performance as a strong point and describes the adaptation as 'effectively creepy,' indicating a positive recommendation with some reservations about Bruce Willis's role. | Gemini: The review highlights Laurie Metcalf's performance as the 'real draw,' suggesting a positive experience despite Bruce Willis's presence. The description of the adaptation as 'effectively creepy' further supports a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The critic identifies Metcalf as the highlight and calls the production 'effectively creepy,' indicating a solid recommendation despite brief length. Confidence is low due to excerpt length.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,7 +56,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:30:21.028Z",
+    "scoredAt": "2026-02-04T01:46:13.498Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,

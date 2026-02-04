@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/",
   "publishDate": "October 14, 2021",
-  "fullText": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
-  "isFullReview": false,
+  "fullText": "Oct 14, 2021 9:07pm PT \n\n \n\n \n \n \n\n \n\n \n ‘The Lehman Trilogy’ Review: A Dazzling Chronicle of the Rise and Fall of American Capitalism\n\nWelcome to America, all ye wretched immigrants from impoverished foreign lands. Watch closely and learn as the three Lehman brothers from Bavaria — Henry the brainy head, Emanuel the powerful arm and Mayer the cushion between them — live the dream and strike it rich!\n\nStefano Massini’s dazzling biodrama “The Lehman Trilogy,” sleekly adapted by Ben Power and brilliantly helmed by Sam Mendes, found an appreciative audience in London’s West End, following its impressive run at the National Theater. After playing locally last year at the Park Avenue Armory, the show was sailing the high seas when Broadway and the entire civilized world shut down in response to COVID. It’s sheer joy to have the show back in all its stately, tragic glory.\n\nThe story is as American as stuffed kishkas. Three Jewish brothers from the Old World come to the New World in 1844 and start at the bottom of the social ladder, which is to say, in Montgomery, Ala. As played by the ever-awesome Simon Russell Beale, eldest son Henry (“Henry Lehman is always right!”) corners the cotton market sustained on the backs of the enslaved. The drygoods store he later opens in Montgomery brings the family wealth, respectability and the first of many well-born brides — all of them depicted by Beale with coy curtseys and endearingly winsome girlishness. (His little Babette is perfectly darling.)\n\nLean and lethally witty Adam Godley plays middle son Mayer, the perfect counterpoint to Beale’s paunchy patriarch. Although Mayer plainly identifies as an intellectual of the Old World, he’s more recognizably American for being neurotic as hell. As the last brother, Emanuel, Adrian Lester embodies both the strength and the recklessness of the eternally youthful.\n\nBy the time the brothers reach mellow maturity, the three actors undertake the roles of their children and, eventually, of their grandchildren, all without missing a beat. But while their domestic lives make the men human, it’s the dramatic changes in their professional fortunes that make them legendary. And by the time the house of Lehman comes crashing down in the stock market collapse that ushers in the Great Depression, the brothers have transcended their humanity altogether and come to epitomize the rise and fall of American capitalism — indeed, of America itself.\n\nVisually, the show is a knockout. In Es Devlin’s futuristic scenic design, the revolving stage presents itself as a boxed frame without walls, the better to reveal the family’s dirty secrets without compromising the stark beauty of their world. All it takes is a bit of chalk to advance the date and transform the contours of history. The lighting by Jon Clark is a study in shades of black and grey, with flashes of red whenever the world goes up in flames, as it does so violently when the family’s banking empire collapses, bringing down the world’s financial markets with it.\n\nThe brothers themselves age well and look positively magisterial in the eternally stylish period costumes designed by Katrina Lindsay. (Dibs on those elegant black boots and magnificent frock coats!) If this is the way the world ends — not with the proverbial whimper, but with a bang heard throughout the universe — we all want to look fashionable, don’t we?",
+  "isFullReview": true,
   "dtliExcerpt": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
   "originalScore": null,
   "assignedScore": 82,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This epic saga of American capitalism, spanning 164 years and three generations of the Lehman family, is both intimate character study and sweeping historical panorama, brought to vivid life by three superb actors.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (33 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 82,
     "confidence": "medium",
@@ -73,5 +73,43 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
+  "textWordCount": 557,
+  "archivePath": "data/archives/reviews/the-lehman-trilogy-2021/variety--charles-isherwood_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:39:29.496Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 557,
+  "tierReason": "Full review text"
 }

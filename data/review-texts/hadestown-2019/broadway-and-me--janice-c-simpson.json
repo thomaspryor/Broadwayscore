@@ -85,5 +85,9 @@
   "rejectionReason": "wrong_show",
   "rejectionReasoning": "claude: This is a multi-show roundup reviewing three different productions (Be More Chill, Hadestown, and Oklahoma!) rather than a single show review that can be scored; openai: The review discusses multiple shows, including 'Be More Chill', 'Hadestown', and 'Oklahoma!', but the focus is on off-Broadway productions that have transferred to Broadway. The review does not clearly focus on a single current Broadway production.",
   "promptVersion": "5.2.0",
-  "textQuality": "full"
+  "textQuality": "full",
+  "sources": [
+    "show-score",
+    "show-score-playwright"
+  ]
 }

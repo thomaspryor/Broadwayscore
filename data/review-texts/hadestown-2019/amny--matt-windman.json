@@ -3,7 +3,7 @@
   "outletId": "amny",
   "outlet": "amNewYork",
   "criticName": "Matt Windman",
-  "url": null,
+  "url": "https://www.amny.com/entertainment/hadestown-review-1.29924932",
   "publishDate": "2019-04-17T20:11:26-04:00",
   "fullText": null,
   "isFullReview": false,
@@ -18,7 +18,7 @@
   "tierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -38,7 +38,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for visual design, direction, performances and production elements. However, as only one curated quote, confidence is low and may not represent full verdict. | GPT-4o: The excerpt praises the visual design, band, performances, and dance, indicating a strong recommendation. However, given the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the direction, visual design, music, performances, and dance. Given the single excerpt and positive tone, I'm placing it in the upper end of the 'Positive' bucket with low confidence. | Kimi: The excerpt offers enthusiastic praise for the production's visual design, performances, and staging with words like 'stunning' and 'rollicking,' indicating a strong recommendation. As a single curated excerpt, confidence is reduced.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with consistent praise for multiple elements (stunning design, bold performances, expressive dance). However, confidence is low due to limited text availability - this could be cherry-picked positive elements from a more mixed review. | GPT-4o: The excerpt uses strong positive language ('stunning visual design', 'bold performances') indicating a highly favorable view of the production. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The excerpt is very positive, praising the direction, visual design, band, performances, and dance. Given that it is only one excerpt, I am scoring it at the higher end of the positive range but with low confidence. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,27 +48,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:09:32.539Z",
+    "scoredAt": "2026-02-04T01:31:39.863Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 82,
+    "claudeScore": 82,
+    "openaiScore": 90,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 3,
+    "scoreDelta": 9,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

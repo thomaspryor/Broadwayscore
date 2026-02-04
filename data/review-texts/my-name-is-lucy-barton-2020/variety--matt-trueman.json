@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 662,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's an incredible performance, never showy, always subtle, keeping big emotions in check in a way that allows quieter undertones to come through.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise throughout for both Linney's performance ('exquisitely performed', 'incredible performance') and the production ('rich, contemplative piece'). The critic appreciates the adaptation's success in translating an unlikely source material to theater and finds deeper meaning in the work. | GPT-4o: The review praises the production's ability to transform stillness into a strength and highlights Laura Linney's performance as 'incredible'. The language used is highly positive, with no reservations, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising Linney's performance, the staging, and the script. It highlights the show's ability to connect a personal story with a broader historical context, making it a worthwhile experience. | Kimi: The reviewer praises Laura Linney's performance as 'incredible' and 'exquisite,' finding the staged adaptation transcends its source material's limitations to become a 'rich, contemplative piece' that successfully reaches 'into America's heart.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:16:59.504Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

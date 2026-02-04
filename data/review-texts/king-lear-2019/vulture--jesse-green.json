@@ -45,7 +45,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Jackson's performance with emotionally impactful language ('heartbreaking and terrifying'), but single excerpt warning requires caution about overall verdict. Scored in upper Positive range due to clear enthusiasm. | GPT-4o: The excerpt praises the performance as 'heartbreaking and terrifying,' suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on a powerful and moving performance, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range, but with low confidence due to the limited context. | Kimi: The excerpt provides strong praise for the lead performance using evocative superlatives ('heartbreaking and terrifying'), indicating a clear recommendation despite the limited single-excerpt context.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performance with emotionally powerful language ('heartbreaking and terrifying'), but confidence is low due to single excerpt limitation - full review verdict unknown. | GPT-4o: The excerpt provides strong praise for Jackson's performance, describing it as 'heartbreaking and terrifying.' Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt focuses on a strong performance, describing it as \"heartbreaking and terrifying.\" While a single excerpt, the positive tone suggests a recommendation, placing it in the positive bucket. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performance using strong positive descriptors ('heartbreaking,' 'terrifying'). Following the single-excerpt guidance for clearly positive quotes, this scores in the upper Positive range, though confidence is low due to limited text availability.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -55,7 +55,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:20:03.729Z",
+    "scoredAt": "2026-02-04T01:38:27.102Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -65,12 +65,12 @@
     "claudeScore": 82,
     "openaiScore": 82,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 1,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

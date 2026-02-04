@@ -16,7 +16,7 @@
   "assignedScore": 82,
   "llmScore": {
     "score": 82,
-    "confidence": "high",
+    "confidence": "medium",
     "range": {
       "low": 77,
       "high": 87
@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('hits as hard as it does', 'heroes we actually need') suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt is clearly positive, highlighting the play's impact and the relatable heroes. Given the single excerpt warning, the score is placed at the higher end of the Positive range. | Gemini: The excerpt praises the play's impact and the relatability of its characters, suggesting a positive overall assessment. Given it's a single excerpt, confidence is low, but the language points to a recommendation. | Kimi: The excerpt offers enthusiastic praise for the play's emotional impact and thematic resonance, calling it hard-hitting and praising its heroes as exactly what audiences need. As a single curated excerpt, the confidence is low, but the language clearly places it in the upper range of Positive.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('hits as hard as it does', 'heroes we actually need') suggests enthusiastic recommendation, but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt presents a strong positive sentiment, emphasizing the impact and relevance of the play's characters. Despite the limited text, the enthusiastic tone suggests a strong recommendation. | Gemini: The excerpt expresses strong positive sentiment, describing the play as impactful and highlighting the relatable and necessary heroes at its core. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the play's emotional impact and relevance, describing it as hitting hard and featuring necessary heroes, though the single-quote limitation reduces confidence in the overall verdict.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,26 +46,26 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:15:26.032Z",
+    "scoredAt": "2026-02-04T01:36:41.404Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0
   },
   "ensembleData": {
     "claudeScore": 82,
-    "openaiScore": 82,
+    "openaiScore": 86,
     "geminiScore": 81,
-    "kimiScore": 83,
+    "kimiScore": 82,
     "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
+    "openaiBucket": "Rave",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 2,
+    "scoreDelta": 5,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
   }
 }

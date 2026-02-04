@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Birbiglia has found a way to make his neuroses not just funny but genuinely moving, spinning his health scare into a meditation on mortality that manages to be both deeply personal and surprisingly universal.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
   "textWordCount": 932,
   "archivePath": "data/archives/reviews/mike-birbiglia-the-old-man-and-the-pool-2022/variety--jesse-green_2026-02-04.html",
@@ -58,5 +58,10 @@
     "Show title not found in text"
   ],
   "wordCount": 932,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-04T01:15:33.475Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This appears to be a website navigation page or aggregated content listing rather than a coherent review. The text contains multiple unrelated headlines, repeated paragraphs about Aretha Franklin, and fragmented content with no clear review structure.; openai: The text provided is a mix of unrelated headlines and content from Variety, not a coherent review of a Broadway show.; gemini: This appears to be a listing of articles and headlines from Variety, not a review of a specific show.; kimi: The text provided is a concatenation of multiple unrelated entertainment news snippets, navigation menus ('Popular on Variety'), and repeated content blocks rather than a single coherent review. It contains fragments about films, TV shows, albums, and various news items, not a focused Broadway theater review.",
+  "promptVersion": "5.2.0"
 }

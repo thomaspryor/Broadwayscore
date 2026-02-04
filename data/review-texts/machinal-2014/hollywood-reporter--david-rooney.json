@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Rebecca Hall gives a riveting performance as a woman trapped by social conventions in Sophie Treadwell's 1928 drama, directed with stark intensity by Lyndsey Turner.",
   "originalScore": null,
-  "assignedScore": 79,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rebecca Hall gives a riveting performance as a woman trapped by social conventions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Very brief excerpt praising Hall's 'riveting performance' and Turner's 'stark intensity' direction. Positive language but insufficient text for full assessment. | GPT-4o: The review praises Rebecca Hall's performance as 'riveting' and the direction as 'stark intensity', indicating a positive recommendation. However, the brevity of the text and lack of broader context or additional evaluative content makes the confidence medium. | Gemini: The review highlights a \"riveting performance\" and \"stark intensity\" in the direction, indicating a positive experience overall. | Kimi: The review offers unqualified praise for both the lead performance ('riveting') and direction ('stark intensity'), indicating a strong recommendation despite the brevity of the text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T01:43:39.165Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 79
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

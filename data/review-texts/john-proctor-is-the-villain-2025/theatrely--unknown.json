@@ -36,7 +36,7 @@
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('thrilling', 'heady rush of glee', 'leaves you happy you came') with enthusiastic tone, but single excerpt warning requires caution about overall verdict scope. | GPT-4o: The excerpt describes the play as a 'heady rush' and 'genuinely thrilling,' leaving the critic 'happy you came,' indicating a strong, positive reaction. Despite the single excerpt warning, the language suggests a rave review. | Gemini: The review describes a moment of catharsis and calls the play a \"heady rush of glee, shock and understanding\" that leaves the reviewer \"happy you came,\" indicating a strong positive recommendation. | Kimi: The excerpt describes the show as 'brilliant' and 'genuinely thrilling' with a 'heady rush of glee' that leaves audiences satisfied, indicating a strong positive recommendation, though confidence is reduced due to the availability of only a single curated excerpt.",
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('brilliantly tied up', 'genuinely thrilling', 'heady rush of glee') culminating in clear recommendation ('leaves you happy you came'). Single excerpt warning applies - using upper end of Positive range due to enthusiastic tone. | GPT-4o: The excerpt describes the play as a 'heady rush of glee, shock and understanding,' and concludes with 'leaves you happy you came,' indicating a strong, enthusiastic recommendation. | Gemini: The review excerpt is overwhelmingly positive, describing the play as a \"heady rush of glee, shock and understanding\" and stating that it \"leaves you happy you came.\" | Kimi: The excerpt uses enthusiastically positive language ('brilliantly', 'genuinely thrilling', 'happy you came') indicating a strong recommendation, though the single-excerpt format warrants caution about the full review's tone.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -46,7 +46,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:18:06.025Z",
+    "scoredAt": "2026-02-04T01:37:46.319Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0

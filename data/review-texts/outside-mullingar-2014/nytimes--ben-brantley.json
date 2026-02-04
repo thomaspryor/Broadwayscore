@@ -51,5 +51,11 @@
   "archiveOrgTimestamp": "20141022084705",
   "archiveOrgUrl": "http://web.archive.org/web/20141022084705/http://www.nytimes.com:80/2014/10/19/nyregion/a-review-of-outside-mullingar-at-the-george-street-playhouse-in-new-brunswick.html?",
   "wordCount": 625,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-04T01:19:12.373Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the George Street Playhouse in New Brunswick, not the current Broadway run.; kimi: This text reviews a production at George Street Playhouse in New Brunswick, not the Broadway production. The text explicitly references the Broadway run in the past tense ('had a limited run on Broadway this year') and evaluates the performances at the New Jersey venue with a different cast.",
+  "promptVersion": "5.2.0"
 }

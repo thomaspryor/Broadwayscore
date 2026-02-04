@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/general-news/visit-theater-review-787600/",
   "publishDate": "April 23, 2015",
-  "fullText": "While the musical has undeniable grandeur and moments of affecting beauty, it never quite achieves the devastating emotional impact that seems within its grasp.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "While the musical has undeniable grandeur and moments of affecting beauty, it never quite achieves the devastating emotional impact that seems within its grasp.",
   "originalScore": null,
   "assignedScore": null,
@@ -16,12 +16,59 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "While the musical has undeniable grandeur and moments of affecting beauty, it never quite achieves the devastating emotional impact that seems within its grasp.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (24 words)",
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://www.hollywoodreporter.com/review/chita-rivera-visit-theater-review-791063",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "textWordCount": 279,
+  "archivePath": "data/archives/reviews/the-visit-2015/hollywood-reporter--david-rooney_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T01:33:34.042Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 279 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Peter Scolari, who plays Hannah Horvath’s dad on HBO’s Girls, previously told The Hollywood Reporter that things would not be getting better for his character, who recently came out as gay, at the end of the show’s fourth season, which wrapped up on March 22.\n\n“Things don’t resolve,” said Scolari. “[But I was told,] ‘Don’t worry, we’re not going to leave you out there in the wind.’ ”\n\nNow that the show is beginning production on its fifth season, has Hannah’s dad been rescued? Scolari wouldn’t say when THR caught up with him at the 35 Most Powerful People in New York Media party Wednesday night.\n\nBut he did reveal that during the first four episodes, which he and the rest of the Girls gang are starting, there are a lot of feelings involved.\n\n“There are great emotional stakes at work,” said Scolari.\n\nAs for the fourth-season finale, Scolari noted that while the four main characters (Hannah, Marnie, Shoshanna and Jessa) seem to be growing up, the parents are struggling.\n\n“Quite a turnabout, a paradigm shift,” Scolari said of the developments at the end of the season. “The young people are coming to grips with rites of passage, adult moments, seminal moments that will shape the next — not just months and years — but decades of their lives. The adults are coming to this place of real difficulty and a real crossroads with no sense of what’s on the other side. We really don’t know.”\n\nAccompanied by his wife, Tracy Shayne, Scolari said they were there as fans of media personalities like Rachel Maddow, Chris Hayes and Anderson Cooper, of whom Scolari said he was a “great admirer.”"
 }

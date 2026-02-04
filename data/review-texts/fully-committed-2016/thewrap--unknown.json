@@ -8,5 +8,35 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "Becky Mode’s “Fully Committed” is that one-person play for theatergoers who hate one-person plays. Which is most theatergoers.\n\n“Fully Committed” receives its first Broadway production, which opened Monday at the Lyceum Theatre, after becoming a surprise Off Broadway hit back in 1999.\n\nFans of this restaurant-reservationist comedy will not be disappointed, and fans of “Modern Family” will be delighted to see Jesse Tyler Ferguson live on stage playing not one character but a few dozen.",
+  "isFullReview": false,
+  "textWordCount": 75,
+  "archivePath": "data/archives/reviews/fully-committed-2016/thewrap--unknown_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:27:49.511Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 81 (min: 300)"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 75,
+  "tierReason": "Short text (75 words)"
 }

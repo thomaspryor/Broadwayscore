@@ -555,11 +555,11 @@ function matchTitleToShow(externalTitle, shows, options) {
 
   // 5. Partial containment (lower confidence) — try all variants (collect all)
   for (const variant of titleVariants) {
-    if (variant.length > 4) {
+    if (variant.length > 2) {
       const containmentMatches = [];
       for (const show of shows) {
         const showTitle = (show.title || '').toLowerCase().trim();
-        if (showTitle.length > 4) {
+        if (showTitle.length > 2) {
           if (showTitle.includes(variant) || variant.includes(showTitle)) {
             containmentMatches.push(show);
           }

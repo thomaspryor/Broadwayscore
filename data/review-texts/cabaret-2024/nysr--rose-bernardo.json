@@ -10,18 +10,18 @@
   "dtliExcerpt": null,
   "bwwExcerpt": "But Frecknall smartly blurs the lines. All we’re really sure of is that we’re in Weimar-era Berlin. When the Emcee sings the echoey, haunting Aryan anthem “Tomorrow Belongs to Me,” he’s wandering through some kind of dreamland populated by wooden doll-size white men. In “Maybe This Time,” while Sall...",
   "showScoreExcerpt": null,
-  "assignedScore": 79,
+  "assignedScore": 76,
   "source": "bww-roundup",
   "dtliThumb": null,
   "contentTier": "excerpt",
   "wordCount": 0,
   "tierReason": "Only aggregator excerpts available",
   "llmScore": {
-    "score": 79,
+    "score": 76,
     "confidence": "medium",
     "range": {
-      "low": 74,
-      "high": 84
+      "low": 71,
+      "high": 81
     },
     "bucket": "Positive",
     "thumb": "Up",
@@ -33,12 +33,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Frecknall smartly blurs the lines.",
+        "quote": "But Frecknall smartly blurs the lines.",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt highlights a positive aspect of the production, specifically the director's smart choices. However, the single excerpt warning and lack of a full review text reduce confidence in the overall sentiment. | Gemini: The excerpt suggests a positive direction with \"smartly blurs the lines\", but without the full review, it's hard to gauge the overall sentiment. I'm placing it in the positive bucket with low confidence. | Kimi: The excerpt offers strong praise for the director's staging choices ('smartly blurs,' 'haunting,' 'dreamland'), indicating a clearly positive assessment of the production's artistic vision. However, as a single truncated excerpt, the overall verdict cannot be fully confirmed.",
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises Frecknall's direction as 'smart,' suggesting a positive view, but the limited text and lack of a full verdict necessitate a cautious, low-confidence score. | Gemini: The excerpt praises the director's choices, suggesting a positive experience, but due to the limited text, confidence is low and the score is in the lower end of the positive range. | Kimi: Extracted from malformed response",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -48,7 +48,7 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T20:50:58.322Z",
+    "scoredAt": "2026-02-04T01:23:29.745Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
@@ -56,13 +56,13 @@
   },
   "ensembleData": {
     "claudeScore": null,
-    "openaiScore": 80,
+    "openaiScore": 72,
     "geminiScore": 75,
     "kimiScore": 82,
     "openaiBucket": "Positive",
     "geminiBucket": "Positive",
     "kimiBucket": "Positive",
-    "scoreDelta": 7,
+    "scoreDelta": 10,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,

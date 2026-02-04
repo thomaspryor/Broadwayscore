@@ -41,12 +41,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy that runs on the reliable fuel of Jewish guilt and the actor's own cringe-inducing neuroses.",
+        "quote": "Larry David's Broadway debut as a playwright-star is a crowd-pleasing family comedy",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly calls it 'crowd-pleasing' and describes it as running on 'reliable fuel,' indicating it works effectively as entertainment, though without superlatives suggesting a higher score. | GPT-4o: The review describes the show as 'crowd-pleasing' and highlights its comedic elements, suggesting a positive reception. However, the brevity of the review limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review describes the play as a \"crowd-pleasing family comedy,\" which indicates a positive recommendation. The phrase \"reliable fuel\" suggests that the humor is somewhat predictable, indicating a reservation. | Kimi: The critic describes the show as 'crowd-pleasing' and running on 'reliable fuel,' indicating a solid, enjoyable production that delivers expected entertainment value, though the excerpt's brevity limits assessment of overall enthusiasm.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Describes the show as 'crowd-pleasing' which is a clear positive assessment, though the brevity of the excerpt and lack of stronger superlatives keeps it in the moderate positive range. | GPT-4o: The review describes the show as 'crowd-pleasing' and highlights its comedic elements, suggesting a positive reception. However, the brevity of the review limits the depth of evaluation, leading to a medium confidence level. | Gemini: The review calls the play a \"crowd-pleasing family comedy,\" which indicates a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: Despite brevity suggesting an excerpt, the text offers clear praise with 'crowd-pleasing' and validates the show's comedic engine, indicating a recommendation for those who enjoy David's humor.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -56,14 +56,14 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:03:23.551Z",
+    "scoredAt": "2026-02-04T01:27:21.596Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": 76
   },
   "ensembleData": {
-    "claudeScore": 76,
+    "claudeScore": 75,
     "openaiScore": 76,
     "geminiScore": 75,
     "kimiScore": 76,

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The new revival of On the Town at the Lyric Theatre is a perfect production that honors the original while bringing fresh energy to this classic musical.",
   "originalScore": null,
-  "assignedScore": 91,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -20,11 +20,11 @@
   "contentTierReason": "Short text (27 words)",
   "textQuality": "truncated",
   "llmScore": {
-    "score": 91,
+    "score": 92,
     "confidence": "medium",
     "range": {
-      "low": 86,
-      "high": 96
+      "low": 87,
+      "high": 97
     },
     "bucket": "Rave",
     "thumb": "Up",
@@ -36,12 +36,12 @@
     },
     "keyPhrases": [
       {
-        "quote": "The new revival of On the Town at the Lyric Theatre is a perfect production that honors the original while bringing fresh energy to this classic musical.",
+        "quote": "a perfect production that honors the original while bringing fresh energy to this classic musical",
         "sentiment": "neutral",
         "strength": 3
       }
     ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Calls it a 'perfect production' with 'fresh energy' - strong positive language but the review text is very brief, limiting confidence in the full assessment. | GPT-4o: The review uses strong positive language ('perfect production') and praises the revival for both honoring the original and adding fresh energy, indicating a highly enthusiastic recommendation. | Gemini: The review uses the word \"perfect\" to describe the production, indicating a very strong positive sentiment and placing it in the Rave bucket. | Kimi: The critic offers unreserved praise with the highest possible commendation ('perfect production'), noting the show honors its source while bringing fresh energy, with no caveats or reservations mentioned.",
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise calling it a 'perfect production' with no reservations or caveats mentioned. | GPT-4o: The review uses strong, unqualified praise, calling the production 'perfect' and highlighting its ability to honor the original while adding fresh energy. This indicates a highly enthusiastic recommendation. | Gemini: The review uses the word \"perfect\" to describe the production, indicating a rave review. | Kimi: The critic unequivocally declares the production 'perfect' and praises its successful balance of honoring the original material with fresh energy, indicating the highest level of recommendation.",
     "flags": {
       "hasExplicitRecommendation": false,
       "focusedOnPerformances": false,
@@ -51,27 +51,27 @@
   },
   "llmMetadata": {
     "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-03T21:37:00.539Z",
+    "scoredAt": "2026-02-04T01:52:31.136Z",
     "promptVersion": "5.2.0",
     "inputTokens": 0,
     "outputTokens": 0,
     "previousScore": null
   },
   "ensembleData": {
-    "claudeScore": 83,
+    "claudeScore": 90,
     "openaiScore": 90,
     "geminiScore": 90,
-    "kimiScore": 94,
-    "claudeBucket": "Positive",
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
     "openaiBucket": "Rave",
     "geminiBucket": "Rave",
     "kimiBucket": "Rave",
-    "scoreDelta": 11,
+    "scoreDelta": 6,
     "thumbsMatch": null,
     "expectedThumb": null,
     "needsReview": false,
     "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Rave"
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
   }
 }

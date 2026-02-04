@@ -8,5 +8,36 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict"
-  ]
+  ],
+  "fullText": "An actor lip syncs not to songs but a taped interview. I’d seen this done only once before. Back in 2005, Lypsinka (John Epperson) performed Off Off Broadway in “The Passion of the Crawford,” taken from taped interviews Joan Crawford did with the legendary publicist John Springer. Perhaps I saw “Passion” too early in the run, but Epperson had problems matching the dead movie star’s voice whenever she started a new paragraph.",
+  "isFullReview": false,
+  "textWordCount": 72,
+  "archivePath": "data/archives/reviews/dana-h-2021/thewrap--robert-hofler_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:26:15.446Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "excerpt",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 78 (min: 300)",
+    "Show title not found in text"
+  ],
+  "contentTier": "truncated",
+  "wordCount": 72,
+  "tierReason": "Short text (72 words)"
 }

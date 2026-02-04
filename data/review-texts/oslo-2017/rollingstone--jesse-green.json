@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This is political theater at its most gripping, a behind-the-scenes look at how the impossible Oslo Accords came to be that manages to be both deeply human and bracingly intellectual.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 85,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "This is political theater at its most gripping, a behind-the-scenes look at how the impossible Oslo Accords came to be that manages to be both deeply human and bracingly intellectual.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (30 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is political theater at its most gripping",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it 'gripping' and highlighting both emotional and intellectual appeal, but very brief excerpt limits confidence in full assessment. | GPT-4o: The review uses strong positive language such as 'gripping', 'deeply human', and 'bracingly intellectual', indicating a highly enthusiastic recommendation. | Gemini: The review uses strong positive language such as \"most gripping\", \"deeply human\", and \"bracingly intellectual\", indicating a strong recommendation. | Kimi: Unqualified superlatives ('most gripping', 'deeply human', 'bracingly intellectual') indicate top-tier enthusiasm with no reservations expressed. Scored as excerpt with reduced confidence due to brevity. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T02:02:18.882Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }
