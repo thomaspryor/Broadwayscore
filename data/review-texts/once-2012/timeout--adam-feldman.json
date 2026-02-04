@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Once is a small-scale musical with a big heart, and it has been transferred to Broadway with unusual care and intelligence.",
   "originalScore": 80,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,60 @@
   "showScoreExcerpt": "Once is a small-scale musical with a big heart, and it has been transferred to Broadway with unusual care and intelligence.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (21 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Once is a small-scale musical with a big heart, and it has been transferred to Broadway with unusual care and intelligence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive assessment praising the show's heart and the quality of the Broadway transfer. The critic's own 80 rating aligns with strong Positive bucket placement. | GPT-4o: The critic's original rating of 80 aligns with a positive recommendation. The review praises the show's heart and the quality of its Broadway transfer, indicating a solid recommendation. | Gemini: The critic explicitly states that the musical has been transferred to Broadway with care and intelligence, indicating a positive assessment. The original rating of 80 aligns with the positive bucket. | Kimi: The critic's 80/100 rating aligns with the text's praise for the show's emotional core and the careful, intelligent Broadway transfer, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:03:42.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 80,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed with intelligence and sensitivity by Bartlett Sher, makes the most of Rogers' sprawling but focused script, which spans more than two hours but rarely feels excessive.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,5 +18,59 @@
   "showScoreExcerpt": "The production, directed with intelligence and sensitivity by Bartlett Sher, makes the most of Rogers' sprawling but focused script, which spans more than two hours but rarely feels excessive.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (29 words)",
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed with intelligence and sensitivity by Bartlett Sher, makes the most of Rogers' sprawling but focused script.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The review praises the direction and script, noting the production rarely feels excessive despite its length, indicating a strong positive recommendation. | Gemini: The review praises the direction and script, stating the production \"makes the most\" of the material and rarely feels excessive, indicating a positive experience. | Kimi: The critic praises Sher's direction as 'intelligent and sensitive' and appreciates the script's focused nature despite its length, indicating a solid recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:10:30.928Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

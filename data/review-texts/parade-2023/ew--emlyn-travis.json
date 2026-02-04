@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“‘Parade’ is much more than just a singular spectacle; it slowly and methodically highlights the ways in which Frank's tragedy isn't an isolated incident, but rather a cog in the wheel of injustice that continues to spin to this day...and it's easy to see why ’Parade’ is the most gut-wrenchingly gorgeous production on Broadway.”\n\nRead more"
+  "showScoreExcerpt": "“‘Parade’ is much more than just a singular spectacle; it slowly and methodically highlights the ways in which Frank's tragedy isn't an isolated incident, but rather a cog in the wheel of injustice that continues to spin to this day...and it's easy to see why ’Parade’ is the most gut-wrenchingly gorgeous production on Broadway.”\n\nRead more",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's easy to see why 'Parade' is the most gut-wrenchingly gorgeous production on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: The superlative 'most gut-wrenchingly gorgeous production on Broadway' indicates exceptional praise placing this in the top tier of current shows. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt uses strong, positive language ('gut-wrenchingly gorgeous') suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"gut-wrenchingly gorgeous\", indicating a strong recommendation. Given it's a single excerpt, confidence is low, but the language suggests a high positive score. | Kimi: The excerpt offers superlative praise calling it the most gorgeous production on Broadway with strong emotional impact, but as a single curated excerpt that may be cherry-picked, it falls in the upper Positive range per instructions. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:16:39.898Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

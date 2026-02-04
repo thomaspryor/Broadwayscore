@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This show is a theatrical feast that engages all the senses, with Josh Groban delivering a performance that's both intimate and grand.",
   "originalScore": null,
-  "assignedScore": 84,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This show is a theatrical feast that engages all the senses, with Josh Groban delivering a performance that's both intimate and grand.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single sentence with clear praise ('theatrical feast', 'intimate and grand') but extremely brief text provides limited context for full assessment. | GPT-4o: The review uses highly positive language describing the show as a 'theatrical feast' and praises Josh Groban's performance as 'intimate and grand', indicating a strong recommendation. | Gemini: The review uses strong positive language like \"theatrical feast\" and praises Josh Groban's performance as both intimate and grand, indicating a positive recommendation. | Kimi: The critic offers enthusiastic praise, describing the production as a 'theatrical feast' that engages all senses and highlighting Josh Groban's performance as both intimate and grand.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:54:24.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 84
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

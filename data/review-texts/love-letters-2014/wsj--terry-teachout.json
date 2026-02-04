@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "What makes 'Love Letters' work so well is that it gives its performers nothing to hide behind—no costumes, no sets, no stage business, just two people sitting at a table reading aloud.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What makes 'Love Letters' work so well is that it gives its performers nothing to hide behind—no costumes, no sets, no stage business, just two people sitting at a table reading aloud.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear positive language ('work so well') praising the show's stripped-down format, but limited text makes full verdict assessment difficult. | GPT-4o: The excerpt praises the simplicity and effectiveness of the production, suggesting a positive view. However, with only one curated quote, the confidence is low. | Gemini: The excerpt suggests a positive aspect of the play, but without more context, it's hard to determine the overall recommendation strength. I'm placing it in the positive bucket with a low score due to the limited information. | Kimi: The excerpt praises the show's minimalist concept, stating it 'work so well,' indicating a clear positive recommendation despite being a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:40:39.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“Platt is one of the reasons to see this grim and doomed musical love story set against the real backdrop of a murder and lynching in Georgia in pre-World War I. Another is Micaela Diamond, who plays his wife. A third reason is the score by Jason Robert Brown, which brilliantly veers from muscular work songs to intricate duets.”\n\nRead more"
+  "showScoreExcerpt": "“Platt is one of the reasons to see this grim and doomed musical love story set against the real backdrop of a murder and lynching in Georgia in pre-World War I. Another is Micaela Diamond, who plays his wife. A third reason is the score by Jason Robert Brown, which brilliantly veers from muscular work songs to intricate duets.”\n\nRead more",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Platt is one of the reasons to see this grim and doomed musical love story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic explicitly lists three 'reasons to see' the show, praising lead performances and calling the score 'brilliant.' However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt highlights strong performances and a brilliant score as reasons to see the show, indicating a positive recommendation despite the grim subject matter. However, with only one excerpt available, the confidence is low. | Gemini: The review excerpt lists multiple reasons to see the show, including the performances and the score, indicating a positive recommendation despite the grim subject matter. The single excerpt and lack of a clear overall verdict lead to medium confidence. | Kimi: The excerpt explicitly identifies multiple 'reasons to see' the production and praises the lead performances and 'brilliant' score with enthusiastic language, indicating a clear recommendation despite the grim subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:15:33.215Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

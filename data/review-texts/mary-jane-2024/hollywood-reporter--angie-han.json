@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "McAdams brings a lived-in naturalism to the role that makes Mary Jane's struggles feel immediate and specific rather than abstract.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McAdams brings a lived-in naturalism to the role that makes Mary Jane's struggles feel immediate and specific rather than abstract.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "McAdams brings a lived-in naturalism to the role that makes Mary Jane's struggles feel immediate and specific rather than abstract.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance with specific, positive language. However, one curated quote cannot reliably indicate the full review's verdict - could be highlighting best element of mixed/negative review. | GPT-4o: The excerpt praises McAdams' performance, suggesting a positive view of her portrayal. However, the lack of a full review and single excerpt warning necessitates a cautious approach, indicating a mild positive sentiment. | Gemini: The excerpt praises McAdams' performance, suggesting a positive aspect of the show. Given that it's a single excerpt, I'm scoring it as positive but with low confidence and a score on the lower end of the range. | Kimi: The excerpt provides clear, specific praise for Rachel McAdams's performance using laudatory terms ('lived-in naturalism,' 'immediate and specific'), placing it in the Positive bucket. Per instructions for single curated excerpts that sound clearly positive, the score falls in the 80-84 range, though confidence is low given the limited context and potential for cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T09:42:23.356Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

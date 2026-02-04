@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,9 +18,59 @@
   "showScoreExcerpt": "“ 'Ohio State Murders' leaves a lasting imprint—I picture a bloody handprint—on what for lack of a better term I’ll call the soul.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "playbillVerdictUrl": "https://www.wsj.com/articles/ohio-state-murders-review-audra-mcdonald-adrienne-kennedy-broadway-11670541293",
-  "sources": [
-    "show-score-playwright",
-    "playbill-verdict"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Ohio State Murders' leaves a lasting imprint—I picture a bloody handprint—on what for lack of a better term I'll call the soul.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic describes the show as leaving a 'lasting imprint' on the soul, which suggests strong emotional impact and memorable theater. However, with only one excerpt available, confidence is low as this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses strong, evocative language suggesting a profound impact, indicating a highly positive evaluation. However, due to the single excerpt warning, confidence is low. | Gemini: The quote suggests a powerful and memorable experience, indicating a positive, though possibly disturbing, impact. Given that it is a single excerpt, I've placed it in the middle of the positive range. | Kimi: The excerpt employs vivid, visceral imagery to praise the production's deep emotional impact and lasting resonance. While clearly indicative of strong admiration, the single-excerpt format carries risk of cherry-picking, warranting a high-positive score with reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:02:09.735Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

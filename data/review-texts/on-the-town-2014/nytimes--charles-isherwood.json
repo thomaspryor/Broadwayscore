@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This buoyant revival of the 1944 musical by Leonard Bernstein, Betty Comden and Adolph Green proves that some shows are just too much fun to resist, even when they're not quite perfect.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This buoyant revival proves that some shows are just too much fun to resist, even when they're not quite perfect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling the show 'buoyant' and 'too much fun to resist,' though acknowledges it's 'not quite perfect' which prevents it from being higher in the Positive range. | GPT-4o: The review describes the revival as 'buoyant' and 'too much fun to resist,' indicating a positive recommendation despite acknowledging imperfections. | Gemini: The review recommends the show, calling it \"too much fun to resist,\" but acknowledges it's \"not quite perfect,\" indicating a positive but not rave review. | Kimi: The critic describes the show as a 'buoyant revival' that is 'too much fun to resist,' indicating clear enthusiasm and recommendation, while the caveat 'not quite perfect' keeps it from rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:02:50.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

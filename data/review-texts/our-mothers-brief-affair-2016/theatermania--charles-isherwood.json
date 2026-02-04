@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The play is a gentle, bittersweet meditation on memory, family secrets, and the ways in which the past continues to shape our present lives.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 73,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is a gentle, bittersweet meditation on memory, family secrets, and the ways in which the past continues to shape our present lives.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The play is a gentle, bittersweet meditation on memory, family secrets, and the ways in which the past continues to shape our present lives.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play appreciatively as a 'gentle, bittersweet meditation,' suggesting positive assessment, but lack of stronger evaluative language or clear recommendation keeps it in lower Positive range. | GPT-4o: The excerpt provides a positive evaluation, describing the play as 'gentle' and 'bittersweet,' indicating a favorable impression. However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt describes the play as a \"gentle, bittersweet meditation,\" suggesting a positive but not overwhelmingly enthusiastic assessment. Given the single excerpt and the instruction to use the lower end of the bucket for mildly positive reviews, a score of 74 seems appropriate. | Kimi: The excerpt uses warm but subdued descriptors ('gentle,' 'bittersweet,' 'meditation') indicating appreciation without enthusiasm, consistent with a mild recommendation. Single excerpt limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T10:11:42.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
