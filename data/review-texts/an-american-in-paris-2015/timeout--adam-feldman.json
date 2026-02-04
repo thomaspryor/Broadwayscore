@@ -5,8 +5,8 @@
   "criticName": "Adam Feldman",
   "url": "https://www.timeout.com/newyork/theater/an-american-in-paris",
   "publishDate": "April 12, 2015",
-  "fullText": "An American in Paris is a show that dances its way into your heart with gorgeous choreography and sumptuous design. Christopher Wheeldon's ballet-influenced staging transforms the Palace Theatre into a dreamscape of postwar Paris.",
-  "isFullReview": false,
+  "fullText": "An American in Paris: Theater review by David Cote\n\nThe arrival of two big musicals derived from classic 1950s movies located in the City of Light (see Gigi) indicates either a resurgent interest in the early film oeuvre of Leslie Caron or a lack of producer imagination. Or maybe it’s just random, unintentionally reflected in the patchwork—if also lavish and classy—quality of An American in Paris. There’s much gorgeous ballet to admire in choreographer Christopher Wheeldon’s Broadway directorial debut, set against attractive, painterly backdrops by Bob Crowley, but the overall effect is of a dance concert with a semiserious musical squeezed into the cracks.\n\nBook writer Craig Lucas takes the bones of Alan Jay Lerner’s 1951 screenplay, which sent the great Gene Kelly leaping through postwar Paris after Caron to the hooting, swooning strains of George Gershwin, and concocts a story tinged by Nazi-occupation guilt and soldiers with PTSD. Adam Hochberg (Brandon Uranowitz) narrates the story of his pal, GI artist Jerry Mulligan (Robert Fairchild), and their shared passion for ballerina-muse Lise (Leanne Cope). The leads are charming and the score’s divine, but mainly there’s middling singing and loads of dance. Hollywood made it look so easy, but simple amour can be hard to translate.—David Cote\n\nPalace Theatre (see Broadway). Music and lyrics by George and Ira Gershwin. Book by Craig Lucas. Directed and choreographed by Christopher Wheeldon. With ensemble cast. Running time: 2hrs 30mins. One intermission.",
+  "isFullReview": true,
   "dtliExcerpt": "An American in Paris is a show that dances its way into your heart with gorgeous choreography and sumptuous design. Christopher Wheeldon's ballet-influenced staging transforms the Palace Theatre into a dreamscape of postwar Paris.",
   "originalScore": 80,
   "assignedScore": 80,
@@ -73,10 +73,41 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "truncated",
+  "textQuality": "partial",
   "playbillVerdictUrl": "http://www.timeout.com/newyork/theater/an-american-in-paris",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "textWordCount": 237,
+  "archivePath": "data/archives/reviews/an-american-in-paris-2015/timeout--adam-feldman_2026-02-04.html",
+  "textFetchedAt": "2026-02-04T02:16:17.791Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20150418212139",
+  "archiveOrgUrl": "http://web.archive.org/web/20150418212139/http://www.timeout.com:80/newyork/theater/an-american-in-paris",
+  "textIssues": [
+    "Word count too low: 243 (min: 300)"
+  ],
+  "wordCount": 237,
+  "tierReason": "Short text (237 words)"
 }
