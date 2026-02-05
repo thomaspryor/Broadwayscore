@@ -1,75 +1,132 @@
 {
-  "updatedAt": "2026-02-05T17:13:10.178Z",
-  "processed": 23,
-  "failed": 74,
-  "successRate": "23.7%",
+  "updatedAt": "2026-02-05T17:19:17.657Z",
+  "processed": 1,
+  "failed": 29,
+  "successRate": "3.3%",
   "tierBreakdown": {
-    "playwright": 16,
-    "browserbase": 5,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "playwright": 1,
+    "browserbase": 7,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archive": 1
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 18,
   "recentActivity": [
     {
-      "t": "2026-02-05T16:28:03.019Z",
+      "t": "2026-02-05T17:00:30.381Z",
       "event": "bb-session",
-      "session": "3c04bddb",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wicked-for-good-review-cy"
+      "session": "2a3e8bb4",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
     },
     {
-      "t": "2026-02-05T16:30:24.821Z",
-      "event": "bb-session",
-      "session": "ac81b853",
-      "url": "https://www.newyorker.com/magazine/2003/11/17/popular-4"
-    },
-    {
-      "t": "2026-02-05T16:30:27.135Z",
+      "t": "2026-02-05T17:00:57.098Z",
       "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-05T16:32:23.001Z",
+      "t": "2026-02-05T17:02:02.767Z",
       "event": "bb-session",
-      "session": "8835f46e",
-      "url": "https://variety.com/2025/film/reviews/wicked-for-good-review-1236581742/"
+      "session": "f13d668f",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     },
     {
-      "t": "2026-02-05T16:33:47.595Z",
+      "t": "2026-02-05T17:03:02.409Z",
       "event": "bb-session",
-      "session": "40f0a634",
-      "url": "https://www.charlotteobserver.com/entertainment/arts-culture/article253972728.ht"
+      "session": "2f94419d",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
     },
     {
-      "t": "2026-02-05T16:35:37.158Z",
+      "t": "2026-02-05T17:03:19.130Z",
       "event": "bb-session",
-      "session": "7db7fb00",
-      "url": "https://www.indiewire.com/criticism/movies/wicked-for-good-review-part-2-1235160"
+      "session": "02b68837",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
     },
     {
-      "t": "2026-02-05T16:36:49.253Z",
+      "t": "2026-02-05T17:03:44.326Z",
       "event": "bb-session",
-      "session": "f73e81a8",
-      "url": "http://observer.com/2003/11/crowe-is-master-of-briny-boys-domain/"
+      "session": "8ebf3014",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/"
     },
     {
-      "t": "2026-02-05T16:37:12.175Z",
+      "t": "2026-02-05T17:04:38.945Z",
       "event": "bb-session",
-      "session": "01506e23",
-      "url": "https://www.theatermania.com/news/review-wicked-for-good-flies-to-epic-heights-w"
+      "session": "afd7d8a3",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
     },
     {
-      "t": "2026-02-05T16:38:14.518Z",
+      "t": "2026-02-05T17:09:24.718Z",
       "event": "bb-session",
-      "session": "42110b29",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
+      "session": "7f908143",
+      "url": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html"
     },
     {
-      "t": "2026-02-05T16:39:00.248Z",
+      "t": "2026-02-05T17:09:26.932Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T17:11:08.171Z",
+      "event": "bb-session",
+      "session": "30643236",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+    },
+    {
+      "t": "2026-02-05T17:14:24.900Z",
+      "event": "bb-session",
+      "session": "91fa2c10",
+      "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html"
+    },
+    {
+      "t": "2026-02-05T17:14:27.342Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T17:14:31.419Z",
+      "event": "bb-session",
+      "session": "d85bc561",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-05T17:15:19.237Z",
       "event": "bb-login-fail",
-      "domain": "wsj.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    15 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770309509038\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/interstitial/?initialCid=AHrlqAAAAAMAOg8jCtmYGuoANA1qtA==&cid=jVAI7rkLW9Y1zMTlhiGp~yUyrgwrhEPjNh0BZcvryWURwQDPJ~tB9~vza2g8pvaN0CI4pxJazit5~dHDVcMZwzdzx9TC6tA0Db6gjZjUoCrzd5JGLWWZfAZKTv5bo7HI&referer=http%3A%2F%2Fsso.accounts.do…></iframe> from <div id=\"ddChallengeContainer1770309509038\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    17 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770311685797\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACcIPKGQvsGkALPhWIg==&cid=QOQxQSGeq~e5X8YYJqQxTcK7zIPAPInUwn56Jx0btMOJ~CYfKxOZt_4A~veIsUSogj_aTkGweDz3MwgH2IQdVQrJtQreuDTKgdZ8hE2PkWqIdYG7sU56SFg~Gpwz22QD&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770311685797\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-05T17:15:21.958Z",
+      "event": "bb-session",
+      "session": "a608273a",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+    },
+    {
+      "t": "2026-02-05T17:15:50.493Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-02-05T17:16:36.184Z",
+      "event": "bb-session",
+      "session": "990234d7",
+      "url": "http://www.variety.com/review/VE1117939837.html?categoryid=33&cs=1&nid=2562"
+    },
+    {
+      "t": "2026-02-05T17:17:32.985Z",
+      "event": "bb-session",
+      "session": "da712ee9",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-05T17:17:59.926Z",
+      "event": "bb-session",
+      "session": "5d1458c8",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-05T17:18:41.355Z",
+      "event": "bb-session",
+      "session": "649823be",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
     }
   ]
 }
