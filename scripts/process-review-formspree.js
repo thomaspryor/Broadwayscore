@@ -8,7 +8,7 @@
  * The existing pipeline then auto-validates, scrapes, and adds reviews.
  *
  * Env vars:
- *   FORMSPREE_TOKEN  - Formspree API token
+ *   FORMSPREE_REVIEW_TOKEN - Formspree API token for review form
  *   GITHUB_TOKEN     - GitHub token (auto-available in Actions)
  *   GITHUB_REPOSITORY - owner/repo (auto-available in Actions)
  *   DRY_RUN          - if "true", log but don't create issues
@@ -49,9 +49,9 @@ function saveTracking(data) {
  * Fetch new review submissions from Formspree
  */
 async function fetchSubmissions() {
-  const token = process.env.FORMSPREE_TOKEN;
+  const token = process.env.FORMSPREE_REVIEW_TOKEN;
   if (!token) {
-    console.log('FORMSPREE_TOKEN not set. Exiting.');
+    console.log('FORMSPREE_REVIEW_TOKEN not set. Exiting.');
     return [];
   }
 
