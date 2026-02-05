@@ -1,62 +1,52 @@
 {
-  "updatedAt": "2026-02-05T02:00:02.353Z",
-  "processed": 10,
-  "failed": 60,
-  "successRate": "14.3%",
+  "updatedAt": "2026-02-05T03:48:24.444Z",
+  "processed": 59,
+  "failed": 221,
+  "successRate": "21.1%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "browserbase": 2,
-    "scrapingbee": 3,
-    "brightdata": 3,
-    "archive": 5
+    "scrapingbee": 11,
+    "brightdata": 13,
+    "archive": 33
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:18.248Z",
+      "t": "2026-02-05T00:53:08.167Z",
       "event": "bb-session",
-      "session": "eb78a2e4",
-      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+      "session": "869e990f",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-05T00:55:00.346Z",
-      "event": "bb-session",
-      "session": "73175745",
-      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
-    },
-    {
-      "t": "2026-02-05T00:55:43.893Z",
+      "t": "2026-02-05T00:53:53.297Z",
       "event": "bb-login-fail",
       "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    26 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252910697\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMACk0TC7gZCxAALPe1oA==&cid=3Cv8NrzjcLw1W7YCjkQ5Q3yJoycUAvTB87GgzINB5q0unvCmD8AlCIkpgTCzGCWulZD3xcXo8NL7HFL6GfUwb0EMksE4BoSOtoD19INT4HQBQxAu~fL2TFwOSJCjoALJ&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252910697\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n    - element is visible, enabled and stable\n    - scrolling into view if needed\n    - done scrolling\n"
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    24 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
     },
     {
-      "t": "2026-02-05T00:59:42.741Z",
+      "t": "2026-02-05T00:54:32.068Z",
       "event": "bb-session",
-      "session": "d32b6b11",
-      "url": "http://www.vulture.com/2017/06/theater-review-how-orwellian-is-1984.html"
+      "session": "60176a5e",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
     },
     {
-      "t": "2026-02-05T00:59:42.748Z",
+      "t": "2026-02-05T00:55:29.735Z",
       "event": "bb-session",
-      "session": "c17692e8",
-      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+      "session": "d21459f1",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
     },
     {
-      "t": "2026-02-05T00:59:44.811Z",
-      "event": "bb-login-uncertain",
-      "domain": "vulture.com"
-    },
-    {
-      "t": "2026-02-05T01:01:56.728Z",
+      "t": "2026-02-05T00:57:08.209Z",
       "event": "bb-session",
-      "session": "ab3876d1",
-      "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html"
+      "session": "334faaa8",
+      "url": "http://www.variety.com/review/VE1117943828.html"
     },
     {
-      "t": "2026-02-05T01:02:03.085Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "t": "2026-02-05T00:58:03.062Z",
+      "event": "bb-session",
+      "session": "78c898b2",
+      "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686"
     }
   ]
 }
