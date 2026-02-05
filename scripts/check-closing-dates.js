@@ -35,9 +35,13 @@ function saveShows(data) {
 // Scraping is now handled by shared lib/scraper.js module
 
 function parseClosingDate(text) {
-  // Try to parse various date formats
-  // "Closes February 8, 2026", "Closing Date: Feb 8, 2026", "through February 8"
+  // Try to parse various date formats:
+  // Broadway.org format: "Through: Mar 8, 2026" (inside <span class="regular">)
+  // Alternative: "Closes February 8, 2026", "Closing Date: Feb 8, 2026"
   const patterns = [
+    /Through:.*?<span[^>]*class="regular"[^>]*>([^<]+)</i,
+    /Through:\s*(?:&nbsp;)?(\w+\s+\d{1,2},?\s*\d{4})/i,
+    /Through:\s*(?:&nbsp;)?(\w+\s+\d{1,2})/i,
     /(?:closes?|closing|through|ends?|final)[:\s]+(\w+\s+\d{1,2},?\s*\d{4})/i,
     /(?:closes?|closing|through|ends?|final)[:\s]+(\w+\s+\d{1,2})/i,
   ];
@@ -95,10 +99,19 @@ async function checkClosingDates() {
   console.log('');
 
   // Create lookup map for ALL open shows (to check for extensions too)
+  // Multiple keys per show to handle title variations (subtitles, short names)
   const showLookup = {};
   for (const show of openShows) {
     const normalized = normalizeTitle(show.title);
     showLookup[normalized] = show;
+    // Also index by title before colon/dash (handles "SIX: The Musical" → "SIX")
+    const beforeColon = show.title.replace(/[:–—].*$/, '').trim();
+    if (beforeColon !== show.title) {
+      showLookup[normalizeTitle(beforeColon)] = show;
+    }
+    // Also index by slug (handles Broadway.org href matching)
+    if (show.slug) showLookup[show.slug] = show;
+    if (show.id) showLookup[show.id] = show;
   }
 
   if (showsWithoutClosingDate.length > 0) {
@@ -126,59 +139,87 @@ async function checkClosingDates() {
 
     console.log(`Fetched ${html.length} bytes (${result.format} from ${result.source})`);
 
-    // Parse for show listings and closing dates
-    // Broadway.org format: <div class="show-card">...<span class="closing-date">Closes Feb 8</span>...
+    // Guard: content must be reasonably sized for a page listing 30+ shows
+    if (html.length < 5000) {
+      console.error(`GUARD: Fetched content suspiciously short (${html.length} bytes). Possible error page.`);
+      console.error('Skipping closing date check to avoid silent failure.');
+      return;
+    }
+
     const newDates = [];      // Shows that didn't have a date
     const extensions = [];    // Shows where the date moved later (extended!)
 
-    // Simple regex to find show names with closing info
-    // This is a simplified approach - a proper HTML parser would be better
-    const showBlocks = html.match(/<article[^>]*class="[^"]*show[^"]*"[^>]*>[\s\S]*?<\/article>/gi) || [];
+    // Track how many shows we find on Broadway.org for validation
+    let showsFoundOnPage = 0;
 
-    for (const block of showBlocks) {
-      // Extract title
-      const titleMatch = block.match(/<h[23][^>]*>([^<]+)<\/h[23]>/i);
-      if (!titleMatch) continue;
+    // Method 1: Parse HTML show listing blocks (only works with HTML content)
+    if (result.format === 'html') {
+      // Broadway.org uses <div class="item filter-data-hook ..."> blocks
+      // with <h4 class="notranslate"> for titles and "Through:" for closing dates
+      const showBlocks = html.match(/<div\s+class="item\s+filter-data-hook[^"]*"[\s\S]*?(?=<div\s+class="item\s+filter-data-hook|$)/gi) || [];
+      console.log(`  HTML parsing: found ${showBlocks.length} show blocks`);
 
-      const title = titleMatch[1].trim();
-      const normalized = normalizeTitle(title);
+      for (const block of showBlocks) {
+        // Try h4.notranslate first (current Broadway.org), fall back to h2/h3
+        const titleMatch = block.match(/<h4[^>]*class="notranslate"[^>]*>([^<]+)<\/h4>/i)
+          || block.match(/name="([^"]+)"\s+class="bgimg"/i)
+          || block.match(/<h[234][^>]*>([^<]+)<\/h[234]>/i);
+        if (!titleMatch) continue;
 
-      // Check if this is one of our open shows
-      const show = showLookup[normalized];
-      if (!show) continue;
+        const title = titleMatch[1].trim()
+          .replace(/&amp;/g, '&')
+          .replace(/&nbsp;/g, ' ')
+          .replace(/&#39;/g, "'");
+        const normalized = normalizeTitle(title);
+        // Also try title before colon (Broadway.org adds ": A New Musical" etc.)
+        const normalizedShort = normalizeTitle(title.replace(/[:–—].*$/, '').trim());
+        // Also try matching via href slug (e.g., /shows/mj-the-musical → mj-the-musical)
+        const hrefMatch = block.match(/href="\/shows\/([^"]+)"/i);
+        const hrefSlug = hrefMatch ? hrefMatch[1] : null;
 
-      // Look for closing date in this block
-      const scrapedDate = parseClosingDate(block);
-      if (scrapedDate) {
-        if (!show.closingDate) {
-          // New closing date
-          newDates.push({
-            id: show.id,
-            title: show.title,
-            closingDate: scrapedDate,
-            type: 'new',
-          });
-        } else if (scrapedDate > show.closingDate) {
-          // Extension! The date moved later
-          extensions.push({
-            id: show.id,
-            title: show.title,
-            oldDate: show.closingDate,
-            closingDate: scrapedDate,
-            type: 'extension',
-          });
+        const show = showLookup[normalized]
+          || showLookup[normalizedShort]
+          || (hrefSlug && showLookup[hrefSlug]);
+        if (!show) continue;
+        showsFoundOnPage++;
+
+        const scrapedDate = parseClosingDate(block);
+        if (scrapedDate) {
+          if (!show.closingDate) {
+            newDates.push({
+              id: show.id,
+              title: show.title,
+              closingDate: scrapedDate,
+              type: 'new',
+            });
+          } else if (scrapedDate > show.closingDate) {
+            extensions.push({
+              id: show.id,
+              title: show.title,
+              oldDate: show.closingDate,
+              closingDate: scrapedDate,
+              type: 'extension',
+            });
+          }
         }
       }
+    } else {
+      console.log(`  Content is ${result.format} (not HTML) — skipping article block parsing`);
     }
 
-    // Also try a broader search for closing announcements
-    const closingMatches = html.matchAll(/([A-Z][^<]{2,50}?)(?:<[^>]+>)*\s*(?:closes?|closing)[:\s]+(\w+\s+\d{1,2},?\s*\d{0,4})/gi);
+    // Method 2: Broader text-based search (works with both HTML and markdown)
+    const closingPattern = result.format === 'markdown'
+      ? /([A-Z][^\n]{2,50}?)\s*(?:closes?|closing|through)[:\s]+(\w+\s+\d{1,2},?\s*\d{0,4})/gi
+      : /([A-Z][^<]{2,50}?)(?:<[^>]+>)*\s*(?:closes?|closing|through)[:\s]+(\w+\s+\d{1,2},?\s*\d{0,4})/gi;
+
+    const closingMatches = html.matchAll(closingPattern);
     for (const match of closingMatches) {
       const title = match[1].replace(/<[^>]+>/g, '').trim();
       const normalized = normalizeTitle(title);
       const show = showLookup[normalized];
 
       if (show && !newDates.find(u => u.id === show.id) && !extensions.find(u => u.id === show.id)) {
+        showsFoundOnPage++;
         const scrapedDate = parseClosingDate(match[0]);
         if (scrapedDate) {
           if (!show.closingDate) {
@@ -199,6 +240,15 @@ async function checkClosingDates() {
           }
         }
       }
+    }
+
+    console.log(`  Matched ${showsFoundOnPage} of ${openShows.length} open shows on page`);
+
+    // Guard: if zero shows matched and we have open shows, warn about possible scraper breakage
+    if (showsFoundOnPage === 0 && openShows.length > 0) {
+      console.warn(`\nWARN: Scraper matched 0/${openShows.length} open shows on Broadway.org.`);
+      console.warn('Possible causes: HTML structure changed, title normalization mismatch, or content format issue.');
+      console.warn(`Content format: ${result.format}, source: ${result.source}, length: ${html.length} bytes`);
     }
 
     // Report and apply new closing dates
