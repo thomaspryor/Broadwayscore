@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Can we please get this straight, Broadway? Sprawling European novels do not make great musicals...Unfortunately, this lesson...has fallen on deaf ears at the Broadway Theatre -- and I don't just mean those forced to endure the overamplified mess that is Doctor Zhivago. I also mean its authors and director, who together have turned Boris Pasternak's 700-page novel into a musical so aggressively awful it is almost sadistic...It's not just the constant noise and gore he hurls about...It's also that he has called forth the same concussive aesthetic from Weller and even the songwriters. Lucy Simon...once again provides well-crafted Romantic Lite tunes, but they are too often whipped into bombast by relentless overproduction...The English actor Tam Mutu...is clearly expert at the romantic bellow; he makes what can only be called an impressive Broadway debut as Zhivago. He pretty much blows everyone else away...The rest of the cast seem like afterthoughts, bits of fluff and color mainly useful for moving around the stage.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a musical so aggressively awful it is almost sadistic",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan calling the show 'aggressively awful' and 'sadistic'. Even praise for the lead actor ('impressive Broadway debut') cannot redeem such harsh overall condemnation. | GPT-4o: The review is overwhelmingly negative, describing the musical as 'aggressively awful' and criticizing the production's noise and overproduction. While there is some praise for Tam Mutu's performance, it does not redeem the overall negative assessment. | Gemini: The review uses extremely negative language such as \"aggressively awful\", \"sadistic\", and \"overamplified mess\". Despite praising the lead actor's debut, the overall assessment is overwhelmingly negative, indicating a pan. | Kimi: The review describes the show as 'aggressively awful' and 'sadistic,' condemning the overamplification, overproduction, and direction while offering only isolated praise for the lead actor, indicating a strong recommendation against attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:47:25.212Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

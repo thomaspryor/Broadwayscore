@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Working in the kitchen at Clyde’s, a roadside sandwich joint in Berks County, Pa., is no fun whatsoever. The beaten-down, formerly incarcerated, staffers, all of whom have had major struggles in life, are forever in fear of the manager, the kind of toxic personality who will get right up in your face on a daily basis and, on occasion, will bruise both your psyche and your physical body.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
@@ -21,5 +21,60 @@
   "sources": [
     "dtli",
     "show-score-playwright"
-  ]
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is a very clever, multi-layered and deliciously self-aware allegory from the writer Lynn Nottage",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises Aduba's performance as 'terrifyingly funny' and calls the work 'very clever, multi-layered and deliciously self-aware.' However, confidence is low due to truncated excerpt ending with 'Read more' - the full verdict may contain additional context or reservations. | GPT-4o: The review excerpt praises the show as 'clever', 'multi-layered', and 'self-aware', indicating a positive view. However, due to the text quality warning and lack of full context, confidence is low. | Gemini: The review excerpt highlights a \"clever\" and \"deliciously self-aware allegory\" and a \"terrifyingly funny performance\" from the lead, suggesting a positive, though possibly qualified, recommendation. The \"dark comedy\" label also indicates it may not be for everyone. | Kimi: The excerpt praises Lynn Nottage's writing as 'very clever, multi-layered and deliciously self-aware' and highlights Uzo Aduba's 'terrifyingly funny' performance, indicating a strong recommendation despite the dark subject matter.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:55:22.219Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

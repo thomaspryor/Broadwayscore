@@ -9,18 +9,71 @@
   "isFullReview": false,
   "dtliExcerpt": "Maybe “best” should mean that actor or director who takes flawed or flimsy material and turns it into something worth watching. That’s the miracle director Kate Whoriskey performs with Lynn Nottage’s sketchy new play, “Clyde’s,” which opened Tuesday at Second Stage’s Helen Hayes Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "dtli",
   "dtliThumb": "MEH",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
-  "bwwExcerpt": "\"Clyde's\" is a battle between the saint and Satan. Rather than treating this extreme contrast as a flaw, Whoriskey embraces it to bring a magical realism to the production. The performances, however, are never as sharp as they are in those first few squabbles over the cutting boards. Only Aduba is a...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CLYDES-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211123",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Maybe “best” should mean that actor or director who takes flawed or flimsy material and turns it into something worth watching. That’s the miracle director Kate Whoriskey performs with Lynn Nottage’s sketchy new play, “Clyde’s,” which opened Tuesday at Second Stage’s Helen Hayes Theater.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli",
-    "show-score-playwright",
-    "bww-roundup"
-  ]
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's the miracle director Kate Whoriskey performs with Lynn Nottage's sketchy new play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Critic calls the direction a 'miracle' that turns 'flawed or flimsy material' into 'something worth watching,' indicating a positive recommendation despite script issues. Low confidence due to truncated excerpt. | Gemini: The review praises the director for making something watchable out of flawed material, suggesting a positive but qualified recommendation. The excerpted nature of the text lowers the confidence. | Kimi: The excerpt praises the director for performing a 'miracle' by elevating 'flawed or flimsy' material into something 'worth watching,' indicating a clear but qualified recommendation. Confidence is low given this is a curated excerpt that may not represent the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:56:28.533Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

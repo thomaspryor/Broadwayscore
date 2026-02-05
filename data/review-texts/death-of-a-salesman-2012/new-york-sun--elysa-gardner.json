@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "New shades of friction and menace also emerge between characters played by black and white actors. I have never found the scene in which Howard humiliates a desperate, pleading Willy, or the one where a teenage Biff discovers his father's infidelity, more excruciating than I did here. Even Loman's interaction with Charley, the mensch of a neighbor who repeatedly tries in vain to help him - movingly played by Delaney Williams, a white actor (and another 'Wire' alum) - seems a little more fraught",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I have never found the scene in which Howard humiliates a desperate, pleading Willy, or the one where a teenage Biff discovers his father's infidelity, more excruciating than I did here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes finding scenes 'more excruciating than I did here' and notes 'new shades of friction and menace' emerging, suggesting this production brings fresh intensity and depth to familiar material. However, with only one excerpt available, confidence is low. | GPT-4o: The excerpt highlights the emotional impact and intensity of the scenes, suggesting a positive evaluation of the production's ability to evoke strong reactions. However, due to the single excerpt warning, the confidence is low, and the score is on the lower end of the Positive range. | Gemini: The excerpt describes the production as impactful and emotionally resonant, suggesting a positive experience, but the lack of a clear recommendation and the single excerpt lowers the confidence. | Kimi: The excerpt demonstrates strong praise for the production's emotional impact and new interpretive dimensions ('new shades of friction and menace'), describing key scenes as more powerful than any previous version the critic has encountered. However, as a single curated excerpt, the overall verdict may not be fully representative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:33:22.258Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

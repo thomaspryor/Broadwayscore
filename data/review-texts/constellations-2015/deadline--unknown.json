@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Gyllenhaal proved himself an irresistible stage actor a few years ago in another Nick Payne play, If There Is I Haven't Found It Yet, playing the rude, crude but immensely sympathetic uncle of a fat girl with uncomprehending parents. Wilson won her Golden Globe for The Affair and she has an off-kilter comic sensibility that works beautifully with her grounded co-star. They have great chemistry and charm here, even when saying and doing preposterous things, frequently at the same time. I was rooting for them all the way. Under Michael Longhurst's timing-is-everything direction, they work very hard at this repeated-scene business, which can't be easy. As an exercise in physical comedy, Constellations is a neat trick. But call it a trick or call it an exercise, it's never much more than either, and a challenge to take seriously.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CONSTELLATIONS-Opens-on-Broadway-Updating-LIVE-20150113"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CONSTELLATIONS-Opens-on-Broadway-Updating-LIVE-20150113",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As an exercise in physical comedy, Constellations is a neat trick.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the chemistry and performances but ultimately dismisses the play as 'never much more than' a trick or exercise that's 'a challenge to take seriously.' This is qualified appreciation without genuine recommendation. | GPT-4o: The review praises the performances and chemistry of the actors but ultimately describes the play as a 'trick' or 'exercise' and 'a challenge to take seriously,' indicating a mixed reception. | Gemini: The review praises the actors' chemistry and direction but ultimately finds the play itself to be more of a trick or exercise than something truly meaningful. The single excerpt and lack of a clear recommendation lead to a 'low' confidence score. | Kimi: The review praises the lead actors' chemistry and charm but ultimately dismisses the play as a slight technical exercise lacking dramatic substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:11:43.919Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

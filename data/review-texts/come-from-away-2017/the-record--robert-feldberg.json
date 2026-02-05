@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Imagine a musical, based on a true story, that celebrates kindness and charity toward distressed foreigners. At a moment in history when certain politicians are telling us to fear and reject immigrants, we're shown ordinary people who act spontaneously out of a concern for others. Come from Away, which opened Sunday at the Gerald Schoenfeld Theatre, doesn't have an ironic or cynical bone in its body. It's a celebration of the best human instincts, and, particularly coming at this time, doesn't seem at all hokey. It's cheering and refreshing.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's cheering and refreshing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language throughout - 'celebration', 'cheering and refreshing', 'doesn't seem at all hokey'. However, single excerpt warning means this could be cherry-picked, so medium confidence. | GPT-4o: The excerpt praises the show as a celebration of kindness and charity, describing it as 'cheering and refreshing' without any irony or cynicism. The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review uses strong positive language like \"celebrates kindness,\" \"cheering and refreshing,\" and \"best human instincts.\" Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise for the show's sincere tone and timely message, calling it 'cheering and refreshing' with no cynical bones, indicating a clear positive recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:05:57.813Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What if I told you that the best acting on Broadway is coming from a woman who doesn't utter a single word? As you might have heard, in Lucas Hnath's Dana H.-now on Broadway after runs in Los Angeles, Chicago, and New York at off-Broadway's Vineyard Theatre-the dynamite Deirdre O'Connell lip-syncs every bit of dialogue. In another ingenious turn, that dialogue itself is cut together from multiple 2015 interviews between Hnath's mother, Dana Higginbotham, and Steve Cosson, artistic director of Th",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DANA-H-Opens-on-Broadway-20211017",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What if I told you that the best acting on Broadway is coming from a woman who doesn't utter a single word?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Excerpt calls O'Connell's performance 'dynamite' and 'the best acting on Broadway,' suggesting strong praise. However, with only one truncated excerpt available, confidence is low as the full critical verdict is unclear. | GPT-4o: The excerpt praises Deirdre O'Connell's performance as the best acting on Broadway, suggesting a highly positive evaluation. Despite the single excerpt warning, the strong language indicates a rave review. | Gemini: The excerpt praises the acting as the \"best on Broadway\" and describes the performance as \"dynamite.\" Given the single excerpt, I'm scoring it as positive with high end score. | Kimi: The excerpt contains superlative praise for the lead performance ('best acting on Broadway', 'dynamite', 'ingenious'), indicating strong enthusiasm. However, as a single curated excerpt, confidence is reduced per the quality warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:22:43.551Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

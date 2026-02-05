@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Christmas has come early to Broadway this year. Previous productions of the family-friendly comedic yuletide fable Elf The Musical, though pleasant enough, have seemed short on the very Christmas spirit—an ineffable sense of animating joy—that the musical is about. Its current revival, however, is another story entirely. To be honest, I wasn’t eager to see Elf get taken down from the shelf yet again. But my grinchiness soon vanished, to be replaced with a big wide grin. For the first time in my experience, this show is really elfin’ good.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the first time in my experience, this show is really elfin' good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive verdict with clear transformation from skepticism to enthusiasm. The critic explicitly states this revival succeeds where previous productions failed, praising its 'animating joy' and declaring it 'really elfin' good' - a playful endorsement that indicates solid recommendation despite being a single excerpt. | GPT-4o: The excerpt indicates a strong positive turnaround from previous productions, with the critic expressing delight and enthusiasm for the current revival. The phrase 'really elfin’ good' suggests a solid recommendation. Given the single excerpt warning, the score is placed on the higher end of the Positive range. | Gemini: The review expresses initial hesitation but ultimately praises the current revival, stating it's \"really elfin' good\" and that the critic's \"grinchiness soon vanished.\" | Kimi: The critic admits initial reluctance ('wasn't eager', 'grinchiness') but reports being completely won over by this revival, praising it for finally capturing the Christmas spirit that previous productions lacked.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:56:20.735Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

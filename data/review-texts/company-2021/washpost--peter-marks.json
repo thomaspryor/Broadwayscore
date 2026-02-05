@@ -12,5 +12,60 @@
   "bwwExcerpt": "The highs are so high in director Marianne Elliott's gender-reversed 'Company' that a Sondheim freak like me can live with aspects that don't quite hit those lofty heights. We'll get to those, but first, let's dwell for a spell on the joys of a Broadway revival that had its official opening Thursday at the Bernard B. Jacobs Theatre - pleasures that make this production a moving, and deeply funny, living memorial to the late Stephen Sondheim.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The highs are so high in director Marianne Elliott's gender-reversed 'Company' that a Sondheim freak like me can live with aspects that don't quite hit those lofty heights.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws but emphasizes the 'highs are so high' and calls it a 'moving, and deeply funny, living memorial.' The phrase 'can live with aspects that don't quite hit' suggests reservations but overall positive recommendation. Single excerpt warning noted - positioned in upper Positive range due to clear praise. | GPT-4o: The excerpt expresses strong enthusiasm for the production, highlighting its high points and overall enjoyment despite some minor shortcomings. The tone suggests a strong recommendation, fitting the Positive bucket at the higher end due to the enthusiastic language. | Gemini: The review indicates high points that are enjoyable, but also mentions aspects that don't quite reach the same level, suggesting a positive but not unqualified recommendation. The single excerpt and lack of a clear conclusion lowers the confidence. | Kimi: While acknowledging some elements don't reach 'lofty heights,' the critic emphasizes 'highs so high' and describes the show as 'moving' and 'deeply funny,' indicating strong enthusiasm for this revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:10:55.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "..two hours and 40 minutes of tireless earnestness...The industriousness expended by all those creators has been, it's a true pity to relate, in the service of a Wikipedia go at Pasternak's brilliant, if occasionally turgid, take on the physician-poet Yuri Zhivago...Yes, it's a couple mouthfuls of love story...Battles rage, conflagrations torture the sky, explosions split the air, rifles spit...Mutu...has a rich baritone he puts to good use. Barrett...has a clear soprano she also employs well. Actually, the singing by everyone--certainly by Gayer, Nolan and Hewitt--is at a praise-worthy level. The catch is that as persuasive as they sound, they'd fare better were they given persuasive songs to sing. Instead, Simon's melodies are unrelentingly derivative. More than anything, they give the impression of being one extremely long song written for Les Miserables...Perhaps worse even than the music are the Michael Korie-Amy Powers lyrics.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The industriousness expended by all those creators has been, it's a true pity to relate, in the service of a Wikipedia go at Pasternak's brilliant, if occasionally turgid, take on the physician-poet Yuri Zhivago.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Review praises vocal performances consistently but finds fundamental flaws in the music ('unrelentingly derivative') and lyrics ('Perhaps worse even than the music'). The 'Wikipedia go' description and 'true pity' language indicate clear disappointment with the overall production despite acknowledging the cast's efforts. | GPT-4o: The review criticizes the show for being derivative and unoriginal, with music and lyrics that fail to impress. Despite some praise for the performers' singing abilities, the overall tone is negative, focusing on the lack of persuasive songs and derivative melodies. | Gemini: Despite praising the singing, the review criticizes the derivative melodies and lyrics, ultimately leading to a negative assessment of the musical's overall quality. The single excerpt and lack of a clear conclusion lowers the confidence. | Kimi: While the critic praises the cast's vocal abilities, the overall verdict criticizes the adaptation as shallow ('Wikipedia go'), the melodies as 'unrelentingly derivative,' and the lyrics as even worse than the music. The tone of regret ('true pity to relate') indicates a recommendation against seeing the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:46:17.599Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

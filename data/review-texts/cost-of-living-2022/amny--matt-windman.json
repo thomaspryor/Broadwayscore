@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,60 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Cost of Living' is a compelling contemporary drama that has enigmatic and vulnerable characters, complex relationships, rising intensity, vigorous argumentation, and an underlying sense of humor and compassion in the midst of endless struggle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows clear positive language ('compelling', 'vigorous', 'humor and compassion') but confidence is low due to extremely limited text and 'Read more' indicating truncation. | GPT-4o: The excerpt provides strong praise for the play's drama, character depth, and emotional complexity, suggesting a highly positive view. However, due to the limited text, confidence is low. | Gemini: The review excerpt uses positive language like \"compelling,\" \"vulnerable,\" and \"compassion.\" Due to the truncated text, confidence is low, but the available information suggests a positive recommendation. | Kimi: The excerpt offers unqualified praise for the play's character depth, dramatic intensity, and emotional nuance, describing it as 'compelling' with no visible caveats, though the full review context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:13:12.224Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

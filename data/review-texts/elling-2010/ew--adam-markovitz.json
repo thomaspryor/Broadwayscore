@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The play certainly has some funny moments, and a few poignant ones too. But like its marquee star, Elling doesn't feel quite ready for the Broadway stage. B-",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELLING-20101121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 66,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 61,
+      "high": 71
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But like its marquee star, Elling doesn't feel quite ready for the Broadway stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: B- grade indicates positive but qualified recommendation. Acknowledges funny and poignant moments but expresses significant reservations about readiness for Broadway. | GPT-4o: The review acknowledges both humorous and poignant moments but ultimately suggests the play isn't fully ready for Broadway. The B- grade aligns with a mixed assessment, indicating some positive elements but overall reservations. | Gemini: The review excerpt mentions funny and poignant moments, but also states that the play doesn't feel quite ready for Broadway, suggesting a mixed assessment. The B- grade further supports this classification. | Kimi: While the critic notes funny and poignant moments, the concluding assessment that the show 'doesn't feel quite ready for the Broadway stage' represents a significant reservation that tempers the mild positivity of the B- grade.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:58:44.642Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 68,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

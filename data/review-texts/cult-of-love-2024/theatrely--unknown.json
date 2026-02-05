@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The template of the family reunion drama springs as eternal as the American myths it continues to address. Joining that lineage at the Broadway level is Leslye Headland’s Cult of Love, first performed in 2018 and now making its New York debut at the Hayes Theatre in a starry, captivating production directed by Trip Cullman. With great wit and gently gestured thematic breadth, it tackles the country’s thrall to its righteous, morally dubious origins through the contentious return of a deeply Christian Connecticut household’s offspring on Christmas Eve.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CULT-OF-LOVE-Opens-On-Broadway-Starring-Zachary-Quinto-Shailene-Woodley-and-More-20241212"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CULT-OF-LOVE-Opens-On-Broadway-Starring-Zachary-Quinto-Shailene-Woodley-and-More-20241212",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a starry, captivating production directed by Trip Cullman",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses clearly positive language ('starry, captivating', 'great wit') but represents only a single curated quote from the full review. Given the single excerpt warning and positive tone, scored at upper end of Positive range. | GPT-4o: The excerpt praises the production as 'starry' and 'captivating', with 'great wit'. However, due to the single excerpt warning, the confidence is low, and the score is at the lower end of the Positive range. | Gemini: The review uses positive language such as \"captivating production\" and \"great wit,\" suggesting a positive experience, but the single excerpt and lack of a clear recommendation lead to a medium confidence level. | Kimi: The excerpt praises the production as 'starry' and 'captivating' with 'great wit,' indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:17:18.828Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "If there's a better, more vital way to honor the late, incomparable Stephen Sondheim than Marianne Elliott's superb production of Company, Broadway hasn't invented it. This gorgeous revival of the Sondheim-George Furth masterwork at the Bernard B. Jacobs Theatre, is, from across-the-board excellent performances and thoughtful revisions to the visual delight of a lovely and ingeniously clever set design, a gift both to and from the genius we lost last month.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This gorgeous revival of the Sondheim-George Furth masterwork is a gift both to and from the genius we lost last month.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Despite being a single excerpt, this contains overwhelming praise: 'superb production', 'gorgeous revival', 'masterwork', 'across-the-board excellent', calling it 'a gift'. The language is unqualified and reverential, clearly indicating a rave review. | GPT-4o: The review excerpt is filled with superlatives ('superb production', 'gorgeous revival', 'excellent performances') and praises the production as a fitting tribute to Sondheim, indicating a strong recommendation. | Gemini: The review uses superlatives like \"superb\" and \"gorgeous\" and states that Broadway hasn't invented a better way to honor Sondheim, indicating a rave review. | Kimi: The excerpt offers unqualified superlative praise ('superb,' 'gorgeous,' 'masterwork') and explicitly positions the production as the definitive way to honor Sondheim, warranting a Rave classification. However, confidence is low as this is a single curated excerpt that may not represent the full review's nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:08:25.850Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Rare indeed are the musicals that begin, in essence, with three consecutive memorial services...but it is emblematic of the problems that beset this new Broadway musical...that love story is lost in a melange of flame, ice, death and frantic characters rushing around a heavily raked stage without ever seeming really to know where they are going...Nolan has an extraordinary singing voice, and Mutu certainly is no slouch in the vocal department, but he's a tad stiff and unyielding. There is a certain poignancy and truth in McAnuff's staging of a marriage rooted in warm affection but not the life force of sexual passion. And a few of Simon's songs are quite beautiful, although they all seem squelched by the conceptual whole, unable to break free. 'Doctor Zhivago' is one of those shows that needed to cut through the icy clutter and find the optimism of love and the sacrifices it spawns. Alas, the poetic leanings of the title character are never fully explored.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DOCTOR-ZHIVAGO-Opens-on-Broadway-Updating-LIVE-20150421",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is emblematic of the problems that beset this new Broadway musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising individual elements like Nolan's voice and some beautiful songs, the critic identifies fundamental structural problems, describes the love story as 'lost,' and concludes the show failed to achieve its potential. The overall assessment is clearly negative. | GPT-4o: The review highlights significant issues with the musical's execution, noting a lack of direction and coherence. While there is some praise for the vocal performances, the overall tone suggests disappointment with the production as a whole. | Gemini: The review identifies several problems, including a lost love story, frantic characters, and squelched songs. While acknowledging some positive aspects like the singing voices and a few beautiful songs, the overall sentiment is negative. | Kimi: While acknowledging strong vocals and some beautiful songs, the critic finds the production fundamentally flawed, with a lost love story, confused staging, and material that is 'squelched by the conceptual whole.' The tone is one of measured disappointment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:45:38.058Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

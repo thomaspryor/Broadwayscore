@@ -12,5 +12,60 @@
   "bwwExcerpt": "While Redgrave barely comes across as a southern Jewish woman, she convincingly stresses Daisy's restless spirit. Jones, on the other hand, provides a congenial counterpart with an undercurrent of pain. Gaines, as Daisy's son, is credibly worn-out and frustrated by his mother's relentless demands.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DRIVING-MISS-DAISY-20101025"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DRIVING-MISS-DAISY-20101025",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jones provides a congenial counterpart with an undercurrent of pain.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt focuses on performance praise with one mild criticism. Limited text suggests qualified positive assessment but insufficient context for confident scoring. | GPT-4o: The excerpt provides a mixed assessment, noting some convincing performances but also highlighting a lack of authenticity in Redgrave's portrayal. The single excerpt and lack of a clear positive or negative verdict suggest a mixed review. | Gemini: The review excerpt focuses on the performances, highlighting both strengths and weaknesses. Given the limited text, it's difficult to gauge the overall recommendation strength, but the positive aspects suggest a mildly positive score. | Kimi: The excerpt offers qualified praise for the cast's work, acknowledging one significant casting limitation while commending the emotional resonance of the performances, suggesting a solid but measured recommendation consistent with the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:49:37.862Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,62 @@
   ],
   "bwwExcerpt": "With his blank expression framed by a stringy wig and an unflattering black ensemble that makes him appear slightly paunchy and derelict, Douglas Hodge brings to Broadway an unprecedented interpretation of the courtly Cyrano de Bergerac as frat boy, in a production that could be an episode of TV’s “Arrested Development.”",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CYRANO-DE-BERGERAC-Opens-on-Broadway-Updating-LIVE-20121011",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "low",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Douglas Hodge brings to Broadway an unprecedented interpretation of the courtly Cyrano de Bergerac as frat boy, in a production that could be an episode of TV's 'Arrested Development.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The excerpt devastatingly compares the lead performance to a 'frat boy' and the entire production to a sitcom, suggesting fundamental misinterpretation of the classic. However, confidence is low due to single excerpt warning - this could be cherry-picked negative commentary from a more balanced review. | GPT-4o: The excerpt describes an 'unprecedented interpretation' but also uses terms like 'frat boy' and compares it to a TV episode, suggesting a mixed or unconventional take. With only one excerpt, the sentiment is unclear, leading to a low confidence mixed score. | Gemini: The review excerpt describes the actor's interpretation as unprecedented and compares the production to \"Arrested Development,\" which is neither explicitly positive nor negative, suggesting a mixed or neutral assessment. | Kimi: The excerpt emphasizes unflattering physical descriptors ('blank expression,' 'stringy wig,' 'paunchy and derelict') and unfavorably compares the production to a TV sitcom, suggesting the interpretation misses the mark. With only one excerpt available, confidence is reduced. | Buckets: claude=Pan, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:18:54.318Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 43,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

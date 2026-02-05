@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\" Tharp doesn't illustrate the lyrics, going instead for mood  inspired by the music itself. The upside is that this avoids  heavy-handed (or is that heavy-footed?) mimicry. Many of the most  compelling moments occur when seduction is coated in ferocity, as in  \"That's Life,\" which feels true to Sinatra's less savory side.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Many of the most compelling moments occur when seduction is coated in ferocity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the choreographer's approach and highlights compelling moments, but limited text and cautious tone suggest qualified positivity rather than strong endorsement. | GPT-4o: The excerpt highlights compelling moments and a positive approach to the material, suggesting a generally favorable view. However, the lack of a full review and the single excerpt warning necessitate a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review excerpt describes compelling moments and avoids heavy-handed mimicry, suggesting a positive but not overwhelmingly enthusiastic assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt praises Tharp's choreographic approach for avoiding heavy-handedness while creating 'compelling moments' that authentically capture the music's mood, indicating clear appreciation for the production despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:02:28.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

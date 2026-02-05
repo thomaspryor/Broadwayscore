@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Under the direction of Mike Nichols, the production overall has an uneven, uninflected quality, without the dramatic solidity or shadings of personality that make a work spring to vivid life. Expectations are sky high when a superb actor like Hoffman takes on a storied role like Willy Loman, the traveling salesman whose delusional pursuit of the American Dream has become a symbol of middle-class tragedy. So, even though Hoffman is never less than capable, and has several impressive scenes – jus",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production overall has an uneven, uninflected quality, without the dramatic solidity or shadings",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes the direction as 'uneven, uninflected' lacking 'dramatic solidity' while acknowledging Hoffman as 'capable' with 'impressive scenes.' Text appears cut off mid-sentence, limiting confidence in the full verdict. | GPT-4o: The review excerpt describes the production as 'uneven' and lacking 'dramatic solidity,' indicating a mixed reception. While Hoffman's performance is noted as 'capable,' the overall tone suggests neither a strong recommendation nor a clear discouragement. | Gemini: The review excerpt notes an \"uneven\" quality and lack of dramatic solidity, suggesting a mixed assessment. However, it also mentions Hoffman's capability and impressive scenes, preventing a fully negative classification. The single excerpt and truncated nature lower confidence. | Kimi: The excerpt criticizes the production as 'uneven' and 'uninflected' lacking dramatic solidity, while acknowledging Hoffman is 'capable' with 'impressive scenes.' This balance of production criticism and performer praise indicates a mixed reception. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:34:26.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

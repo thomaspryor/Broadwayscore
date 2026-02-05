@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Forget the inconsistencies and plot holes; a stage farce can only work if the direction and performances are real and honest within the insane framework...Unfortunately, most of the company in 'Dinner' seems mainly interested in grabbing laughs rather than following objectives...If the whole company had followed Kayden’s lead, or if director John Tillinger had revved up his tepid staging, this could have been a satisfying 'Dinner.' Instead, it’s like being served a tray of meager appetizers when",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DONT-DRESS-FOR-DINNER-Updating-LIVE-20120426",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead, it's like being served a tray of meager appetizers when",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental flaws in direction and most performances, describing the staging as 'tepid' and comparing the result to unsatisfying 'meager appetizers.' Despite acknowledging the show's potential, the overall verdict is clearly negative. | GPT-4o: The excerpt criticizes the performances and direction, suggesting the production fails to deliver a satisfying experience. The negative tone and lack of redeeming qualities place it in the Negative bucket. | Gemini: The review points out inconsistencies and plot holes, and criticizes the direction and performances, ultimately stating that the production is unsatisfying. | Kimi: The critic finds the direction 'tepid' and most performances dishonest, comparing the show to 'meager appetizers' — a clear verdict that the production falls short of satisfying.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:48:03.568Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

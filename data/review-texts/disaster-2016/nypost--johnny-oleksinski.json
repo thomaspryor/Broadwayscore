@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The songs are great, but they can't save this sinking ship of a musical that's more catastrophic than campy.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 33,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The songs are great, but they can't save this sinking ship of a musical that's more catastrophic than campy.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The songs are great, but they can't save this sinking ship of a musical that's more catastrophic than campy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Clear negative verdict calling it a 'sinking ship' and 'catastrophic.' Even praise for songs is immediately negated by 'can't save' qualifier. Single excerpt limits confidence but language is unambiguous. | GPT-4o: The excerpt describes the musical as a 'sinking ship' and 'catastrophic,' indicating a strongly negative view. While the songs are praised, the overall tone suggests a deep pan, but confidence is low due to the single excerpt warning. | Gemini: The review explicitly states that the songs, while good, cannot save the musical, which is described as a \"sinking ship\" and \"catastrophic.\" This indicates a negative overall assessment. | Kimi: The reviewer uses disaster metaphors ('sinking ship,' 'catastrophic') to strongly condemn the show as irredeemable, even while acknowledging the songs are good. As a single excerpt, the confidence is low, but the language indicates a deep pan. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:42:41.717Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

@@ -15,5 +15,60 @@
   "contentTier": "excerpt",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAD-OUTLAW-Opens-on-Broadway-20250427",
-  "showScoreExcerpt": "‘Dead Outlaw’ unearths the corpse of forgotten history to an infectious rockabilly beat — elevating a twisty little yarn into a bizarro-world elegy to how the American Dream can curdle into violence, cruelty, and casual indifference.\n\nRead more"
+  "showScoreExcerpt": "‘Dead Outlaw’ unearths the corpse of forgotten history to an infectious rockabilly beat — elevating a twisty little yarn into a bizarro-world elegy to how the American Dream can curdle into violence, cruelty, and casual indifference.\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Dead Outlaw' unearths the corpse of forgotten history to an infectious rockabilly beat — elevating a twisty little yarn into a bizarro-world elegy",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review uses positive descriptors like 'infectious' and 'elevating,' presenting the show as successfully transforming dark material into compelling theater. However, confidence is low due to limited excerpt availability. | GPT-4o: The excerpt suggests a positive view with phrases like 'infectious rockabilly beat' and 'elevating a twisty little yarn.' However, the text is limited and lacks a full verdict, leading to a 'low' confidence rating. | Gemini: The review excerpt uses positive language like \"infectious\" and \"elevating\", suggesting a positive recommendation. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers unqualified praise for the show's infectious score and thematic ambition, using words like 'elevating' and 'elegy' without any visible reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:25:49.117Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 75,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

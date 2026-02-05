@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Willy Loman should be the focus of Death of a Salesman. It is his flailing death spiral that forms the narrative heart of Arthur Miller's legendary play. But in the latest Broadway revival, starring The Wire and Treme star Wendell Pierce as Willy, which opens tonight (Hudson Theatre, through January 15, 2023)-with the Lomans played by an all-Black lead cast-the production's anchor is Willy's wife Linda, played by the simply stupendous Sharon D Clarke.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the simply stupendous Sharon D Clarke",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises one performance as 'stupendous' but notes the production's focus has shifted from the intended protagonist. Limited text makes full verdict unclear. | GPT-4o: The excerpt praises Sharon D Clarke's performance as 'simply stupendous,' suggesting a positive view of the production. However, the focus on a single performance and the lack of broader evaluative context makes the overall recommendation mild. | Gemini: The review excerpt praises Sharon D Clarke's performance as Linda, calling it \"simply stupendous,\" which indicates a positive assessment of the production. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: While noting the production shifts focus from Willy to Linda, the critic offers 'stupendous' praise for Sharon D Clarke's performance as the anchor, indicating a positive recommendation despite structural reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:40:14.504Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Elling has just enough edge to keep itself from falling into a sugar coma; the story's already mild politics have been muted to a murmur in this adaptation. But its message about the relationship of a civil society (scaled-back, perhaps, but still essentially progressive and humane) with the weird and irreducible individuals who constitute it-namely, that there needn't be an apocalyptic showdown between the two-is nothing short of revolutionary in the current zero",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELLING-20101121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Elling has just enough edge to keep itself from falling into a sugar coma.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows qualified praise - the critic appreciates the show's 'edge' and finds its message 'revolutionary', but notes the politics have been 'muted' and the story is 'mild'. Single excerpt with mixed signals suggests lower end of Positive bucket. | GPT-4o: The excerpt indicates a mixed review, highlighting both positive elements ('just enough edge') and criticisms ('muted to a murmur'). The lack of full context and single excerpt warning suggest a cautious approach. | Gemini: The review excerpt suggests a positive message, but also notes that the politics have been muted. Given the single excerpt and the phrase 'nothing short of revolutionary' I'm placing it in the positive range, but with low confidence. | Kimi: The excerpt offers qualified praise, noting the show avoids excessive sentimentality and carries a revolutionary message about society, though it criticizes the watered-down politics. With only one excerpt available, this suggests a mildly positive, cautious recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:59:47.772Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

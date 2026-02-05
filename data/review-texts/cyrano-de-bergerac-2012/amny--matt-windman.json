@@ -12,5 +12,60 @@
   "bwwExcerpt": "Edmond Rostand's 1897 sentimental fairy tale romance 'Cyrano de Bergerac' is not so much a great play as it is a durable star vehicle for a skilled actor who can handle rhymed verse, swordplay and a giant prosthetic nose...The Roundabout Theatre Company's new production proves to be not as fortunate in its casting of Douglas Hodge, an indulgent English actor.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CYRANO-DE-BERGERAC-Opens-on-Broadway-Updating-LIVE-20121011"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CYRANO-DE-BERGERAC-Opens-on-Broadway-Updating-LIVE-20121011",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Roundabout Theatre Company's new production proves to be not as fortunate in its casting of Douglas Hodge, an indulgent English actor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the lead actor 'indulgent' and says the production is 'not as fortunate' in its casting, clearly negative language about the central performance. However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt criticizes the casting of the lead actor, suggesting the production is not successful. The lack of a full review or additional context makes it difficult to assess the overall tone, but the negative comment on casting is significant. | Gemini: The review excerpt focuses on a negative assessment of the casting, specifically Douglas Hodge, suggesting the production is not successful due to this issue. | Kimi: The critic dismisses the play as merely a 'durable star vehicle' rather than great drama, and specifically faults the lead casting as 'indulgent,' indicating the production fails to deliver the necessary charisma. With only one excerpt available, confidence is reduced, but the sentiment is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:18:18.238Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

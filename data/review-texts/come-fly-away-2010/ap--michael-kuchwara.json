@@ -12,5 +12,60 @@
   "bwwExcerpt": "There's an intense physicality to Tharp's choreography, not to mention a delight in show-biz razzle-dazzle, and both qualities are present in the dancers whose affairs of the heart are examined with astonishing theatricality. The eight marvelous leads all have distinct personalities. Right from the start, you know they are performers to be reckoned with as they take to the floor in a swank nightclub setting designed by James Youmans.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The eight marvelous leads all have distinct personalities.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for choreography ('astonishing theatricality'), performers ('marvelous leads'), and production values ('swank nightclub setting'). Confident positive language despite being only an excerpt. | GPT-4o: The excerpt highlights strong praise for the choreography and performances, using terms like 'intense physicality', 'delight', and 'astonishing theatricality'. Despite the single excerpt warning, the language suggests a strong positive impression. | Gemini: The review excerpt praises the choreography, dancers, and design, using terms like \"intense physicality,\" \"delight in show-biz razzle-dazzle,\" and \"marvelous leads.\" Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the choreography, performances, and design using words like 'marvelous' and 'astonishing theatricality,' suggesting a clear recommendation, though the single-excerpt limitation warrants caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:01:28.094Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

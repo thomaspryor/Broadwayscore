@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In Mr. Esjornson's staging, the final scene—Daisy revealed, alone in a wheelchair—is stunning; it brings a tear to even a hardened theater critic's eye. Throughout, indeed, one's heart is warmed. But there's also nothing in the play that's tough or unexpected or genuinely thrilling. But that's what Miss Daisy likes: a smooth, easy ride.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there's also nothing in the play that's tough or unexpected or genuinely thrilling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The critic acknowledges emotional impact and warmth but explicitly states the production lacks depth and genuine thrills. The final metaphor about a 'smooth, easy ride' suggests competent but unchallenging theater. | GPT-4o: The review praises the emotional impact of the final scene and the overall warmth but criticizes the lack of toughness, unexpectedness, or genuine thrills. The mixed signals and single excerpt lead to a low confidence score. | Gemini: The review notes the emotional impact of the final scene and the heartwarming nature of the play, but also points out the lack of toughness or thrill. Given the limited excerpt, a positive score with reservations seems appropriate. | Kimi: The excerpt praises the emotional impact and staging ('stunning', 'heart is warmed') but criticizes the lack of challenging or unexpected elements, describing it as a 'smooth, easy ride.' This represents a qualified, mild recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:51:23.762Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

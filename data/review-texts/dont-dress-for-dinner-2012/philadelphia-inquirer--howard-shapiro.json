@@ -10,5 +10,62 @@
   ],
   "bwwExcerpt": "I found “Don’t Dress for Dinner” to be head-knockingly convoluted. So do its characters, as they try to explain what’s going on as the two-act moves to resolve itself; part of the gag is that when they attempt to sort everything out, you can’t follow a thing they are saying past the first two sentences...In the end, it didn’t matter, since the situation of the moment becomes clear with a nastily aimed squirt of a seltzer bottle or a shove that has people falling over the side of a couch. It is f",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DONT-DRESS-FOR-DINNER-Updating-LIVE-20120426",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "low",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found 'Don't Dress for Dinner' to be head-knockingly convoluted.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | No bucket consensus - using median score | Claude: The critic finds the show confusing and hard to follow, but acknowledges some effective physical comedy moments. However, with only a truncated excerpt available, the full verdict is unclear. | GPT-4o: The review describes the play as 'head-knockingly convoluted' but notes that the confusion doesn't matter due to comedic physical actions. The single excerpt suggests a mixed experience with some entertaining moments, but the limited text and lack of a clear verdict reduce confidence. | Gemini: The review excerpt describes the play as convoluted and difficult to follow. The critic uses negative language and the ending is cut off, suggesting a negative overall assessment. Given the limited text, confidence is low. | Kimi: While the critic finds the plot 'head-knockingly convoluted' and difficult to follow, they indicate that the physical comedy and slapstick ultimately make the show work ('it didn't matter'), representing a qualified recommendation. Score reflects the single-excerpt, truncated nature of the text. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": true
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:49:07.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 71,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Positive",
+    "scoreDelta": 26,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": true,
+    "needsReviewReasons": [
+      "4-way bucket disagreement (2 bucket gap)"
+    ],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "No bucket consensus - using median score"
+  }
 }

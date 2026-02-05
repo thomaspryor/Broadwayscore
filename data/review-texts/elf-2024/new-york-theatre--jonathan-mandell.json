@@ -12,5 +12,60 @@
   "bwwExcerpt": "The last time “Elf: The Musical” was on Broadway, during the holiday season a dozen years ago, I saw an autism-friendly performance of it. This turned out to be a great way to view this stage adaptation of the 2003 Will Ferrell movie, since my attention was directed almost entirely to the dexterity and decency with which the cast delighted the sometimes-unpredictable audience. That fond memory began fading before the end of the first song of this new revival, which opens tonight at the Marquis Theater for another holiday run.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20241117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20241117",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That fond memory began fading before the end of the first song of this new revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic establishes a positive baseline from the previous production but immediately signals disappointment with the current revival, stating their fond memories 'began fading before the end of the first song.' This suggests a negative verdict, though with only one excerpt available, confidence is low. | GPT-4o: The excerpt suggests a negative impression of the current production, indicating disappointment compared to a previous experience. The fading memory implies a lack of engagement or enjoyment with the revival. | Gemini: The critic states that their fond memory of the show began fading quickly, indicating a negative experience with the current revival. Given the limited text, I am scoring this as a negative review with low confidence. | Kimi: The critic indicates that positive memories of a previous production faded rapidly during this new staging, suggesting the revival fails to meet expectations established by the earlier version.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:57:48.604Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

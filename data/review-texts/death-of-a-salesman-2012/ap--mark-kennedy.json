@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The still-vibrant, still-powerful story of Arthur Miller's Willy Loman returns to a nation now emerging from a Great Recession, awash with consumerism, disgusted by greed and where audience members are striving pointlessly to be \"well liked\" on Facebook. Crisply directed by Mike Nichols and starring a heartbreaking Philip Seymour Hoffman, this \"Death of a Salesman,\" which opened Thursday at the Barrymore Theatre, is now a gloomy 63-year-old mirror – the same age as Loman is in the play – held u",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crisply directed by Mike Nichols and starring a heartbreaking Philip Seymour Hoffman, this 'Death of a Salesman' is now a gloomy 63-year-old mirror.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Text is truncated but shows clear praise for direction ('crisply directed') and lead performance ('heartbreaking'). The contemporary relevance argument suggests the critic finds value in this production, but low confidence due to single incomplete excerpt. | GPT-4o: The excerpt praises the direction and lead performance, describing the production as 'still-vibrant, still-powerful.' The tone suggests a strong recommendation, but confidence is low due to the single excerpt limitation. | Gemini: The excerpt praises the direction and performance, calling it a \"heartbreaking\" performance. The phrase \"still-vibrant, still-powerful\" indicates a positive assessment. Given the limited text, confidence is low, but the positive language suggests a strong recommendation. | Kimi: The excerpt offers clear praise for the production's vitality ('still-vibrant, still-powerful'), direction ('crisply directed'), and lead performance ('heartbreaking Philip Seymour Hoffman'), indicating a strong recommendation despite the truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:31:19.718Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

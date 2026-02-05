@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It is through Eddie and Jess that the two stories in \"Cost of Living\" ultimately intersect, at a very low point for both. \"It's just unfortunate that some people have already lived a lot of life before they meet other people,\" she tells him. Yet part of the beauty of \"Cost of Living\" is something else these disparate characters share: a determination to press on - no matter the price.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COST-OF-LIVING-Opens-On-Broadway-20221003",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet part of the beauty of 'Cost of Living' is something else these disparate characters share: a determination to press on - no matter the price.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic identifies 'beauty' in the show and appreciates its thematic depth about human resilience. However, with only one curated excerpt available, this could be cherry-picked from a more mixed review, so confidence is low. | GPT-4o: The excerpt highlights a positive aspect of the show, focusing on the beauty of the characters' determination. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt highlights a positive aspect of the play, its characters' determination. Given that it's a single excerpt, I'm scoring it as mildly positive. | Kimi: Single excerpt contains explicit praise ('beauty') for the play's thematic resonance and character work, indicating a positive recommendation, though limited context requires reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:13:43.142Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "More than any piece of theatre that has premiered on Broadway in the past few decades, Clyde’s could possibly transform the way that viewers regard their reformed brethren and demand that necessary reforms be passed to allow them to reintegrate into society. Until that time, I’m returning for an in-person encore viewing―Clyde’s is quite simply, that tantalizingly piquant.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
@@ -18,7 +18,59 @@
   "showScoreExcerpt": null,
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "dtli"
-  ]
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clyde's is quite simply, that tantalizingly piquant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite being a single excerpt, the language is unequivocally enthusiastic - calling it transformative, planning to return for another viewing, and describing it as 'tantalizingly piquant.' However, confidence is low due to the single excerpt warning and potential for cherry-picking. | GPT-4o: The excerpt describes the show as transformative and tantalizingly piquant, indicating a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The critic states they are returning for an encore viewing and calls the show \"tantalizingly piquant,\" indicating a strong positive recommendation. However, due to the single excerpt, confidence is low. | Kimi: The critic declares it potentially the most transformative Broadway premiere in decades regarding social reintegration, explicitly commits to an encore viewing, and uses superlatives like 'tantalizingly piquant,' indicating unqualified enthusiasm despite the limited excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:54:38.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

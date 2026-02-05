@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The  characters, superbly acted and ably directed, don't  evolve very much  during two-plus hours onstage. We learn a lot more  about a corrupted  company and America at the turn of the millennium  than we do about the demons driving its main characters.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-ENRON-Review-Roundup-20100427",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The characters, superbly acted and ably directed, don't evolve very much during two-plus hours onstage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Praises performances and direction as 'superb' and 'able' but criticizes fundamental storytelling - characters don't evolve over 2+ hours. Single excerpt with mixed signals requires low confidence. | GPT-4o: The excerpt praises acting and direction but criticizes character development, suggesting a mixed experience. With only one excerpt, the overall sentiment is unclear, leading to a low confidence score. | Gemini: The review praises the acting and direction but notes a lack of character development, suggesting a qualified recommendation. Given that this is a single excerpt, I'm scoring on the lower end of the positive range. | Kimi: The excerpt offers high praise for the acting ('superbly') and direction ('ably') but delivers substantial criticism regarding the lack of character evolution and psychological depth over the runtime. With only one curated excerpt available, this appears to be a qualified assessment that neither fully recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:04:08.974Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 66,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

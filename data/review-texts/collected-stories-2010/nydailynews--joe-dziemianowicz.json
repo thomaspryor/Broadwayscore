@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "MTC head Lynne Meadow directs and skillfully guides the cast through Margulies' conversational and emotionally charged dialogue. Lavin is brilliant. She's a marvel to watch breathe life into Ruth as she goes from standoffish star writer to insecure and heartbreakingly vulnerable wreck. Paulson convincingly shifts from insecure hesitant, unpublished ugly duckling to a confident, if ruthless, literary swan poised to eclipse her hero.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lavin is brilliant. She's a marvel to watch breathe life into Ruth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction and lead performances with superlatives like 'brilliant' and 'marvel,' but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the direction and performances, particularly highlighting Lavin's brilliance and the effective transformation of characters. Despite the single excerpt warning, the language suggests a strong positive impression. | Gemini: The review excerpt uses strong positive language, such as \"brilliant\" and \"marvel,\" and praises the direction and performances. Given the single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: The single excerpt provides enthusiastic praise for both lead performances ('brilliant,' 'marvel,' 'convincingly') and direction ('skillfully guides'), indicating clear recommendation strength in the upper Positive range, though limited context reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:59:44.828Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

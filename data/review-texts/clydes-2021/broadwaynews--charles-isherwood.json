@@ -9,18 +9,72 @@
   "isFullReview": false,
   "dtliExcerpt": "When is a sandwich more than a sandwich? When it becomes a symbol of redemption, aspiration and hope, as in Lynn Nottage’s latest play, “Clyde’s,” a lively and funny if sometimes ham-handed — or should I say ham-on-rye-handed? — comedy-drama at the Helen Hayes Theater.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
-  "bwwExcerpt": "For the most part Nottage establishes her characters and their troubled pasts and uncertain futures economically and with compassionate nuance. But \"Clyde's\" nevertheless also feels schematic, as scenes of confrontation with Clyde (who, incongruously, appears to the both proprietor and the only fron...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CLYDES-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211123",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"When is a sandwich more than a sandwich? \n\nWhen it becomes a symbol of redemption, aspiration and hope, as in Lynn Nottage’s latest play, “Clyde’s,” a lively and funny if sometimes ham-handed — or should I say ham-on-rye-handed? — comedy-drama.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli",
-    "show-score-playwright",
-    "bww-roundup"
-  ]
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a lively and funny if sometimes ham-handed comedy-drama",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the play as 'lively and funny' but notes it's 'sometimes ham-handed,' suggesting a positive but qualified recommendation. However, this is only an excerpt, so confidence is low. | GPT-4o: The review excerpt describes the play as 'lively and funny,' suggesting a positive tone, but also notes it can be 'ham-handed,' indicating some reservations. The lack of full context limits confidence. | Gemini: The review excerpt describes the play as \"lively and funny\" but also \"ham-handed.\" This suggests a positive but qualified recommendation. Confidence is low due to the truncated text. | Kimi: The excerpt offers clear praise ('lively and funny,' 'symbol of redemption') with only a playful caveat about heavy-handedness, indicating a positive recommendation. Confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:53:53.009Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 72,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

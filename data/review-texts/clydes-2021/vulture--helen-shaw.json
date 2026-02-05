@@ -9,18 +9,72 @@
   "isFullReview": false,
   "dtliExcerpt": "In Sweat, poverty and outsourcing rip apart a factory town, and Jason’s crime provides the show’s awful offstage climax. Clyde’s is Sweat’s foil. Sweat was long, grimly realistic, full of argument and instruction; Clyde’s is short, buoyant, and atmospheric. Sweat asks a bleak question about whether work can sustain us; Clyde’s offers a hopeful if fantastical answer.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "dtli",
   "dtliThumb": "UP",
   "dtliUrl": "https://didtheylikeit.com/shows/clydes/",
-  "bwwExcerpt": "Sweat asks a bleak question about whether work can sustain us; Clyde's offers a hopeful if fantastical answer. Many of the things that usually drive a play are absent in Clyde's. It's unclear about its stakes, and I couldn't always follow the way action leads to reaction - but as the play lifts off ...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CLYDES-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211123",
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
   "showScoreExcerpt": null,
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
   "sources": [
     "dtli",
-    "web-search",
-    "bww-roundup"
-  ]
+    "web-search"
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clyde's is short, buoyant, and atmospheric.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes the show positively as 'buoyant' and 'atmospheric' and offers a 'hopeful answer,' but limited text prevents full assessment of critic's overall recommendation. | GPT-4o: The excerpt contrasts 'Clyde’s' positively with 'Sweat', describing it as 'buoyant' and 'atmospheric', and offering a 'hopeful' answer, indicating a positive review. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt compares Clyde's to Sweat, highlighting contrasting qualities. It doesn't offer a clear recommendation, suggesting a mixed or neutral stance. Given only one excerpt, confidence is low. | Kimi: The excerpt favorably contrasts Clyde's with Sweat, praising its concise length, buoyant tone, and atmospheric quality as offering a 'hopeful' theatrical experience, indicating a clear recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:56:53.889Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 62,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

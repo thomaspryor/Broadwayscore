@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The formerly promising young songwriters Pasek and Paul, who created an interesting score for Dogfight and a surprisingly accomplished one for the holiday show A Christmas Story, are promising no more; their talent is thoroughly realized with Dear Evan Hansen, one of the strongest scores in years. The songs are not merely tuneful and funny and touching; Pasek and Paul can plumb the inner depths of their characters and rip through emotions in words and music. And as contemporary as their new score is, it should be added that their three musicals have demonstrated that they are equally adept in varied musical theatre styles.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAR-EVAN-HANSEN-Opens-on-Broadway-Updating-LIVE-20161204"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAR-EVAN-HANSEN-Opens-on-Broadway-Updating-LIVE-20161204",
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Dear Evan Hansen, one of the strongest scores in years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Critic declares this 'one of the strongest scores in years' and says the songwriters' 'talent is thoroughly realized.' Strong superlatives and unqualified praise indicate a rave, though single excerpt warning requires medium confidence. | GPT-4o: The excerpt praises the score as one of the strongest in years, highlighting the depth and emotional impact of the music. Despite the single excerpt warning, the language used is highly enthusiastic. | Gemini: The review excerpt is overwhelmingly positive, praising the songwriting and emotional depth of the score, calling it \"one of the strongest scores in years.\" Given the single excerpt, I am scoring at the higher end of the positive range. | Kimi: Single excerpt contains enthusiastic superlatives about Pasek and Paul's songwriting, calling it 'thoroughly realized' and among the strongest in years, though it assesses only the musical elements. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:26:40.771Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

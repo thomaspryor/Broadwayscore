@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The adaptation is not quite a musical, at least in the sense of selling legit numbers or requiring traditional Broadway voices, but more an underscored play with original music (the poetic lyrics are by Matt Berninger and Carrin Besser) that feels at one with the spoken text. The pervasive mood of most everything about Schmidt's unusual production is melancholy, surely by design; this likely will be the saddest Cyrano you ever have seen. And, frankly, the most emotionally revealing.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CYRANO-Opens-Off-Broadway-Starring-Peter-Dinklage-Read-the-Reviews-20191107",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And, frankly, the most emotionally revealing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the production's emotional impact and uniqueness, calling it 'the most emotionally revealing' Cyrano. The tone suggests appreciation for the artistic choices, though with single excerpt caution applied. | GPT-4o: The excerpt describes the production as unusual and emotionally revealing, suggesting a positive but unconventional take. The lack of traditional musical elements is noted, but the emotional impact is emphasized. Given the single excerpt and potential cherry-picking, a cautious score at the lower end of Positive is appropriate. | Gemini: The review describes the production as emotionally revealing, which is a positive assessment. However, the limited excerpt and the description of the production as melancholy suggest some reservations, placing it in the lower end of the positive range. | Kimi: The excerpt praises the production's emotional depth and artistic integration, describing it as the 'most emotionally revealing' Cyrano despite its melancholy mood, indicating clear appreciation for the show's craft.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:17:39.723Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

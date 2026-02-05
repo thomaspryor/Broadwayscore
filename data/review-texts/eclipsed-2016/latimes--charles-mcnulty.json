@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This is an ensemble piece, not a star vehicle, but Nyong'o can't help standing out even as the girl becomes a fully fledged member of this unenviable community of war-ravaged women. Her plight is terrifying, and Nyong'o makes the tragedy achingly personal.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nyong'o can't help standing out even as the girl becomes a fully fledged member of this unenviable community of war-ravaged women.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises Nyong'o's standout performance and her ability to make the tragedy 'achingly personal,' indicating appreciation for the production quality. However, with only one excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises Nyong'o's performance, highlighting her standout role in an ensemble cast. The positive tone suggests a recommendation, but the limited excerpt and lack of full context lower confidence. | Gemini: The review excerpt focuses on Nyong'o's performance and its emotional impact, suggesting a positive experience, but the limited text makes it difficult to assess the overall recommendation strength. | Kimi: Single excerpt offers strong praise for Lupita Nyong'o's performance, describing it as standing out and making the tragedy achingly personal, indicating a clearly positive assessment of the central acting even while noting the ensemble nature of the piece.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:53:50.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

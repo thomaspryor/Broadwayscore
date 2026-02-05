@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "[Holmes is] charming, natural and, yes, about as fresh-faced as a moisturizer model. But there's only so much that can be done with a Rebeck play that has more topical urgency (greed, ethics and banking funny business) than dramatic finesse. Sharing the stage with Holmes is two-time Tony winner Norbert Leo Butz, who pulls out all the stops in the play's leading role…he delivers a performance of frenetic gusto as Jack...Butz practically ricochets off the walls of the simple Midwestern kitchen that's the setting for 'Dead Accounts,' but not even he can transcend the contrived nature of a character who is really nothing more than a collection of manic playwriting impulses...director Jack O'Brien...isn't able to sort out the problem through his staging. His production draws out the sharpest colors in the cast, magnifying the characters' most salient qualities in an amped-up TV sitcom manner.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 46,
+  "llmScore": {
+    "score": 46,
+    "confidence": "medium",
+    "range": {
+      "low": 41,
+      "high": 51
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But there's only so much that can be done with a Rebeck play that has more topical urgency than dramatic finesse.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Praises individual performances (Holmes 'charming, natural', Butz 'frenetic gusto') but criticizes the play itself as contrived and lacking dramatic finesse. Director can't solve fundamental script problems. | GPT-4o: The review highlights strong performances but criticizes the play's lack of dramatic finesse and contrived character development. The overall tone suggests the production does not overcome its flaws, leading to a negative verdict. | Gemini: The review praises the performances of Holmes and Butz, but criticizes the playwriting and direction. The overall tone suggests a mixed experience, with the performances being the main positive aspect. | Kimi: While praising the performances of Katie Holmes and Norbert Leo Butz, the critic fundamentally criticizes the play's contrived writing and the director's inability to solve its problems, suggesting the production fails to transcend its material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:24:59.942Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Contrary to the vicious ridicule it was greeted with on social media, \"Diana\" is not a disaster - it's just not very good. If anything, it is an example of what the late composer Mary Rodgers called a \"why musical,\" as in a musical that is completely unnecessary. Why did the world need another retelling of the marriage of Diana and Charles, especially after it has been so thoroughly explored in the tabloids and onscreen (i.e. season four of \"The Crown,\" \"Spencer\" with Kristen Stewart)? You don't",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Diana\" is not a disaster - it's just not very good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling it 'not very good' and 'completely unnecessary.' However, single excerpt warning applies - the full review verdict may differ from this curated quote. | GPT-4o: The review suggests the show is unnecessary and not very good, indicating a negative view. However, it avoids calling it a disaster, placing it in the negative range rather than a pan. | Gemini: The review states that the show is \"not very good\" and \"completely unnecessary,\" indicating a negative assessment despite not being a complete disaster. | Kimi: The critic explicitly calls the show 'not very good' and 'completely unnecessary,' labeling it a 'why musical' that has no reason to exist, while conceding it is not an outright disaster.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:41:25.478Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'Constellations' takes a little more work to follow than, say, 'If/Then'...As it turns out, cues aren't so necessary. That's partly because 'Constellations' forsakes any linear quality for sheer chaos...It's also because the actors are so confident and well-paced (and clearly having fun) that you never doubt how they're playing any moment...The actors give true tour-de-force performances...Wilson...duels and parries with her partner to memorable effect, whether she's a sloppily emotional figure out on a first date, or an academic methodically enchanted by the mysteries of the universe. That's a tightrope to walk. Both really have to know this script like a comfortable old sweatshirt, they're wiggling around in it so much...Gyllenhaal and Wilson, with all of their many sides, are a dynamic pairing no matter which direction they're coming at us from.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CONSTELLATIONS-Opens-on-Broadway-Updating-LIVE-20150113"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CONSTELLATIONS-Opens-on-Broadway-Updating-LIVE-20150113",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The actors give true tour-de-force performances.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performances ('tour-de-force', 'dynamic pairing') and confident execution, though acknowledges the play takes work to follow. Single excerpt limits full verdict assessment. | GPT-4o: The excerpt praises the actors' performances as 'tour-de-force' and describes them as a 'dynamic pairing,' indicating a strong recommendation. However, the single excerpt warning suggests caution, so the score is on the higher end of Positive. | Gemini: The review praises the actors' performances as \"tour-de-force\" and highlights their dynamic pairing, indicating a positive experience despite mentioning the non-linear structure of the play. Given the single excerpt, I'm scoring on the higher end of the positive range. | Kimi: The excerpt offers high praise for the lead performances, describing them as 'tour-de-force' and 'dynamic,' though it acknowledges the play's non-linear structure requires effort from the audience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:12:01.303Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "I'm ignorant as to whether or not Jeanna de Waal intends to live in the States, the German-born yet English-raised actress who stars in Diana: The Musical, but she may want to weigh options. If any of her countrymen catch her in this tedious tuner about the trials of Diana Spencer, Princess of Wales, she could be denied reentry. Actually, too late! Last year during lockdown, this Platonic ideal of a Broadway faceplant did an onstage video capture for Netflix. The tacky, bewildering result is the",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this Platonic ideal of a Broadway faceplant",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: The critic calls the show a 'Platonic ideal of a Broadway faceplant' and describes it as 'tedious' and 'tacky, bewildering.' These are devastating criticisms indicating a clear pan, though confidence is medium due to truncated text. | GPT-4o: The excerpt describes the show as a 'tedious tuner' and a 'Platonic ideal of a Broadway faceplant,' indicating a strongly negative view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review uses extremely negative language such as \"tedious tuner\" and \"Broadway faceplant\" to describe the show, indicating a strong pan. | Kimi: The critic deploys sarcastic, devastating language ('tedious tuner,' 'Platonic ideal of a Broadway faceplant,' 'tacky, bewildering result') to condemn the production as an embarrassing failure.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:41:51.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 17,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

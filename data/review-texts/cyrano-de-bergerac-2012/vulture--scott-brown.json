@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Hodge is an enormous talent, and he does excellent work, but it does sometimes look like work.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hodge is an enormous talent, and he does excellent work, but it does sometimes look like work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt praises the performer's talent and work quality but expresses a significant reservation about the performance feeling labored. The 'but' signals mixed feelings rather than clear recommendation. | GPT-4o: The excerpt praises Hodge's talent but suggests a lack of effortlessness in his performance. With only one curated quote, the overall sentiment is unclear, leading to a mixed classification with low confidence. | Gemini: The excerpt acknowledges talent but suggests a lack of naturalness, indicating a mixed assessment. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise for the lead performance ('enormous talent,' 'excellent work'), indicating a clear recommendation despite a minor caveat about visible effort. Single excerpt limits confidence in overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:19:31.908Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 82,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Hodge is an enormous talent, and he does excellent work, but it does sometimes look like work.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CYRANO-DE-BERGERAC-Opens-on-Broadway-Updating-LIVE-20121011",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hodge is an enormous talent, and he does excellent work, but it does sometimes look like work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise - calls the performer an 'enormous talent' doing 'excellent work' but the critical 'but' suggests the performance feels labored or artificial, indicating mixed feelings about the execution. | GPT-4o: The excerpt praises Hodge's talent and work but notes a flaw, indicating a mixed impression. With only one excerpt, confidence is low. | Gemini: The excerpt praises Hodge's talent but suggests his performance feels labored. This indicates a mixed assessment, as it acknowledges skill but implies a lack of naturalness or ease. | Kimi: Single excerpt offers qualified praise for the lead performance—acknowledging excellence while noting it appears effortful—consistent with a mild positive recommendation in the 70-74 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:19:08.565Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

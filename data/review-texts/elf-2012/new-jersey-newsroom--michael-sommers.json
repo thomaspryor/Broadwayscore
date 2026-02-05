@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "New to the role of a disillusioned Macy’s employee who brightens up in Buddy’s presence, Leslie Kritzer delivers the funny “Never Fall in Love (With an Elf”) with wry pizzazz. Other high points in the musical include “Nobody Cares About Santa,” a jazzy, foot-stomping lament for Buddy and crew of disgruntled out of work department store Saint Nicks; “There is a Santa Claus,” a joyous realization of the holiday spirit exuberantly voiced by Leavel with youngster Mitche",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELF-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leslie Kritzer delivers the funny \"Never Fall in Love (With an Elf\") with wry pizzazz.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Single excerpt praises specific performances and highlights musical numbers positively, but limited text makes full verdict unclear. Curated nature suggests positive lean. | GPT-4o: The excerpt highlights positive elements such as Leslie Kritzer's performance and musical numbers. However, due to the single excerpt warning, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt highlights positive aspects of the musical, such as specific musical numbers and performances. Given the limited text, it's difficult to gauge the overall recommendation strength, but the tone is generally positive, suggesting a recommendation with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:55:53.328Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

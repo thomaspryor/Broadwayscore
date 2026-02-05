@@ -12,5 +12,60 @@
   "bwwExcerpt": "Twyla Tharp racked up a major disaster three seasons ago with 'The Times They Are A-Changin',' one of the lamest jukebox musicals ever to stagger onto Broadway. Not surprisingly, she's playing it very, very safe this time around: 'Come Fly Away' is a love-in-a-nightclub fantasy set to the ever-popular music of Frank Sinatra, whose recordings have previously accompanied three of Ms. Tharp's ballets. The songs are familiar, the dancers are pretty, the set is fancy and the band is hot. All that's missing from this recipe for success are a star and a few memorable onstage events.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All that's missing from this recipe for success are a star and a few memorable onstage events.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges positive elements (familiar songs, pretty dancers, fancy set, hot band) but concludes that essential components are missing for actual success. The sarcastic 'recipe for success' setup followed by what's 'missing' indicates disappointment despite the production values. | GPT-4o: The review acknowledges the safe, familiar elements of the show but notes the absence of standout features, suggesting a lack of strong recommendation or discouragement. | Gemini: The review lists positive elements (songs, dancers, set, band) but notes the absence of a star and memorable events, suggesting a lukewarm overall experience. The opening sets up a contrast to a previous disaster, implying this is better but not great. | Kimi: The critic acknowledges competent production values (dancers, set, band) but criticizes the show as 'safe' and fundamentally deficient, lacking the star power and memorable moments necessary for success. The dismissive tone suggests a recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:03:55.439Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 58,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

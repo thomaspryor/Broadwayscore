@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It's a story that sings...The score consists nearly entirely of group numbers. Music is flavored by Celtic folk, gentle rock, foot-stomping rhythms and perhaps a whisper of Gordon Lightfoot. While rousing and rich in harmony, the music suffers from sameness and a sound mix that obscures lyrics. Director Christopher Ashley guides the excellent cast and energizing staging. The show glides along, a nonstop one hour and 40 minute trip. It's a singing reminder that when things are at their worst, people can be at their best.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COME-FROM-AWAY-Lands-on-Broadway-Updating-Live-20170312"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COME-FROM-AWAY-Lands-on-Broadway-Updating-Live-20170312",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a singing reminder that when things are at their worst, people can be at their best.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive elements (excellent cast, energizing staging, rousing music) balanced with specific critiques (sameness, obscured lyrics). The overall tone is appreciative and the final line is emotionally positive, suggesting recommendation despite flaws. | GPT-4o: The review excerpt highlights the show's strengths in music and staging, with an overall positive tone despite noting some issues with the sound mix. The excerpt's positive sentiment suggests a strong recommendation. | Gemini: The review is generally positive, highlighting the story, cast, and staging. However, it notes issues with the music's sameness and sound mix, indicating reservations. | Kimi: The excerpt offers qualified praise—commending the cast, direction, and pacing while criticizing musical sameness and sound mixing issues. As a single curated excerpt, the confidence is low, but the tone suggests a mild recommendation rather than a mixed or negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:05:28.875Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

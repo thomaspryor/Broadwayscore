@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Like the Texas corporation that posted big revenues in  the 1990s without  having assets, \"Enron\" is heavy on sizzle, light on steak.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-ENRON-Review-Roundup-20100427",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like the Texas corporation that posted big revenues in the 1990s without having assets, \"Enron\" is heavy on sizzle, light on steak.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic compares the show to the fraudulent company it depicts, saying it's \"heavy on sizzle, light on steak\" - a clear criticism of style over substance. However, with only one excerpt available, confidence is low as this could be from a mixed review that acknowledges both positives and negatives. | GPT-4o: The excerpt suggests a negative view, implying the show lacks substance despite appearances. However, with only a single excerpt, the confidence is low. | Gemini: The review excerpt uses a metaphor to suggest the show is superficial and lacks substance, indicating a negative assessment. Given the single excerpt, confidence is low. | Kimi: The critic employs a metaphor comparing the theatrical production to the actual Enron corporation, suggesting the show possesses style and production value ('sizzle') but lacks substantive content or dramatic depth ('light on steak'). This indicates a disappointing production that fails to deliver meaningful theatrical assets despite its flash.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:04:35.977Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -17,5 +17,60 @@
   "bwwExcerpt": "If there's an answer, I'm convinced it's here somewhere, buried in this delightfully messy family holiday, waiting to be accessed by the Dahls and all the rest of us held hostage by the promise of our family's enduring love. Grade: B+",
   "bwwScore": 8,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CULT-OF-LOVE-Opens-On-Broadway-Starring-Zachary-Quinto-Shailene-Woodley-and-More-20241212",
-  "nycTheatreExcerpt": "Here, there's a skin-crawling effect to watching the story unfold onstage. The Broadway production capitalizes on discomfort, keeping tension taut and surprises around every corner."
+  "nycTheatreExcerpt": "Here, there's a skin-crawling effect to watching the story unfold onstage. The Broadway production capitalizes on discomfort, keeping tension taut and surprises around every corner.",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If there's an answer, I'm convinced it's here somewhere, buried in this delightfully messy family holiday",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: B+ grade indicates strong positive recommendation. Despite being an excerpt, the language ('delightfully messy', 'I'm convinced it's here') shows enthusiasm and endorsement. | GPT-4o: The review excerpt describes the show as 'delightfully messy' and gives it a B+ grade, indicating a positive recommendation with enthusiasm. However, due to the limited text, confidence is low. | Gemini: The critic gives the show a B+ grade and calls it a \"delightfully messy family holiday,\" indicating a positive recommendation. | Kimi: The B+ grade and phrase 'delightfully messy' indicate a solid, upbeat recommendation that appreciates the show's chaotic charm, placing it in the strong-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:15:29.830Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This critic’s advice is as simple as it was in 2022. Book a ticket right now—an exquisitely written, beautifully acted and mounted one hour and forty-five minutes of theater awaits. At this moment, with immigration—and attacks on immigrants’ rights—at the top of President Trump’s agenda, the play assumes a new, urgent precision.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winning-ENGLISH-Opens-On-Broadway-20250123"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winning-ENGLISH-Opens-On-Broadway-20250123",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Book a ticket right now—an exquisitely written, beautifully acted and mounted one hour and forty-five minutes of theater awaits.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Unqualified enthusiasm with direct action imperative ('Book a ticket right now') plus superlatives ('exquisitely written, beautifully acted'). The urgent recommendation combined with praise across all elements (writing, acting, production) clearly places this in Rave territory. | GPT-4o: The excerpt strongly recommends booking a ticket immediately, highlighting the play's exquisite writing and beautiful acting. The urgency and praise suggest a rave review. | Gemini: The review excerpt gives a strong recommendation to see the show, calling it \"exquisitely written, beautifully acted and mounted.\" The phrase \"book a ticket right now\" indicates a very positive sentiment. | Kimi: The critic issues an explicit directive to book immediately, paired with superlatives ('exquisitely written,' 'beautifully acted'). However, as a single curated excerpt, confidence is reduced pending full review context. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:02:24.104Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

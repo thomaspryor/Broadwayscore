@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While the play raises some pertinent questions about the intersections of life and art, at heart it’s a cozy, bookish West Village version of All About Eve. But the women are unevenly matched: The excerpts that Margulies gives us of Lisa’s supposedly promising work are unimpressive, and Paulson is not a sharp enough foil for the dramatic fencing required. Lavin deserves to be seen, but might be better appreciated elsewhere. Is it perverse to hope for an Off Broadway transfer?",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lavin deserves to be seen, but might be better appreciated elsewhere.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic finds some merit (praising Lavin's performance, noting pertinent questions raised) but identifies significant structural problems with the writing and casting. The suggestion that the star would be 'better appreciated elsewhere' and hoping for an Off Broadway transfer indicates disappointment with this Broadway production specifically. | GPT-4o: The review expresses disappointment with the play's execution and performances, suggesting that Lavin's talent is not fully utilized in this production. The hope for an Off Broadway transfer implies dissatisfaction with the current Broadway run. | Gemini: The review praises Lavin's performance but finds the play itself uneven and the other performances lacking, leading to a mixed recommendation. | Kimi: The critic finds the play's writing unimpressive and the casting mismatched, explicitly suggesting the production would be better suited to an Off-Broadway transfer rather than its current Broadway run. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:00:27.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 40,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

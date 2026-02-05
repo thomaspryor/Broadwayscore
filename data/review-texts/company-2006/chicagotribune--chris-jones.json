@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Which brings us to LuPone. Her visceral, showstopping, rendition of \"The Ladies Who Lunch,\" performed as her character, Joanne, sits perched in a grinding nightclub, is simply extraordinary, filled with angst, hope, cynicism, possibility, vulnerability and all of the qualities you typically and traditionally look for in \"Company.\" Unlike Lenk, who is perfectly charming and perfectly consistent throughout the entire production, LuPone's Joanne actually changes over the course of the number, journ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her visceral, showstopping, rendition of 'The Ladies Who Lunch' is simply extraordinary, filled with angst, hope, cynicism, possibility, vulnerability.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows strong praise for LuPone's performance with superlatives like 'extraordinary' and 'showstopping.' However, this is a single curated excerpt that may not represent the full review verdict, so confidence is low. | GPT-4o: The excerpt praises LuPone's performance as 'extraordinary' and 'showstopping,' indicating a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on a standout performance by LuPone, using strong positive language like \"showstopping\" and \"extraordinary,\" suggesting a positive recommendation despite the limited text. | Kimi: Single excerpt contains enthusiastic praise for lead performances using superlatives like 'showstopping' and 'extraordinary,' warranting upper-positive range, but limited context and truncation prevent Rave classification.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:06:24.363Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

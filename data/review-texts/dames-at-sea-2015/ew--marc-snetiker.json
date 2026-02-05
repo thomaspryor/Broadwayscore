@@ -12,5 +12,60 @@
   "bwwExcerpt": "Boiled down to basic ingredients, the most cheerful tuners often share the same quirky, classic DNA: tap-dancing showstoppers, Broadway chorus lines, and for an inexplicable reason, boats. All are on display in Dames at Sea...but optimism alone can't keep a one-note ship afloat for too long...Under Skinner's uneven direction, the production waffles between a nicely prepared inside joke and the clunky result of its own satire. He vacillates between parody and earnestness, with the former offering genuine moments of humor for the very precise breed of fan who will appreciate them and the latter landing with something of a confusing, elongated thud...Fortunately, the piece's performers are perfectly cast to deliver the very long joke...As this very solid production stands, it's not particularly nautical and not particularly naughty, either. B-",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "optimism alone can't keep a one-note ship afloat for too long",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: B- grade indicates mixed reception. Praises cast as 'perfectly cast' and calls it 'very solid production' but criticizes uneven direction, one-note nature, and confusing execution that lands with a 'thud'. | GPT-4o: The review highlights both positive and negative aspects, noting uneven direction and a mix of parody and earnestness. The B- rating suggests a mixed verdict with some redeeming qualities. | Gemini: The review highlights both positive and negative aspects, describing the direction as \"uneven\" and the production as neither particularly nautical nor naughty. The B- grade further indicates a mixed assessment. | Kimi: The critic assigns a B- grade and calls the production 'very solid' while praising the perfectly cast performers, but offers significant criticism of the uneven direction and clunky tonal execution. The single excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:21:03.657Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 68,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

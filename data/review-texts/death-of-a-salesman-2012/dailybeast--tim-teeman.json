@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Willy Loman should be the focus of Death of a Salesman. It is his flailing death spiral that forms the narrative heart of Arthur Miller's legendary play. But in the latest Broadway revival, starring The Wire and Treme star Wendell Pierce as Willy, which opens tonight (Hudson Theatre, through January 15, 2023)-with the Lomans played by an all-Black lead cast-the production's anchor is Willy's wife Linda, played by the simply stupendous Sharon D Clarke.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production's anchor is Willy's wife Linda, played by the simply stupendous Sharon D Clarke.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises Clarke as 'simply stupendous' and identifies her as the production's anchor, suggesting positive assessment. However, with only one curated excerpt available, confidence is low as the full verdict may differ significantly. | GPT-4o: The excerpt praises Sharon D Clarke's performance as 'simply stupendous,' suggesting a positive view of the production. However, the focus on a single performance and lack of broader context about the production limits confidence. | Gemini: The review excerpt praises Sharon D Clarke's performance as Linda, calling her \"simply stupendous\" and the anchor of the production. Given the limited text, I'm scoring it as positive, erring on the higher end due to the strong praise. | Kimi: The excerpt offers enthusiastic praise for Sharon D Clarke's performance ('simply stupendous'), indicating clear value in the production. However, the single-excerpt warning and the observation that the focus shifts from Willy to Linda suggest possible reservations about the overall staging that cannot be fully assessed from this curated quote alone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:32:28.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Whether it's the right casting, aside from the peerless Clarke in stand-by-your-man mode, is another matter entirely. Pierce overplays Willy's almost-constant anger - at life, at Linda, at his 'disappointing' sons, Biff (Khris Davis) and Happy (an almost too-charismatic McKenley Belcher III) - making him less-than-sympathetic and, at times, almost insufferable. There's some subtext in his physical portrayal that suggests this Willy may be suffering from a brain tumor or dementia, which would explain a lot of his behavior. And one can certainly argue that a Black man in 1949 Brooklyn has a lot to be angry about. But all in all, Pierce's Willy seems to have far too much fighting spirit left for his ultimate decision to make sense.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pierce overplays Willy's almost-constant anger making him less-than-sympathetic and, at times, almost insufferable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt with mixed signals - praises Clarke as 'peerless' but heavily critiques Pierce's central performance as overplayed and unsympathetic. With only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt criticizes the casting and portrayal of the lead character, finding the performance unsympathetic and insufferable, which suggests a negative view of the production. However, due to the single excerpt warning, confidence is low. | Gemini: The review expresses reservations about the casting and Pierce's portrayal of Willy, suggesting he is less sympathetic and his actions less believable. While acknowledging potential subtext and historical context, the overall assessment is mixed. | Kimi: The excerpt praises Sharon D. Clarke as 'peerless' and notes McKenley Belcher III's charisma, but heavily criticizes Wendell Pierce's central performance, suggesting his interpretation undermines the play's tragic logic. As a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:36:23.492Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

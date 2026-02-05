@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There are some topics you just shouldn't discuss at a dinner party. Religion, race, politics -- it's probably good to avoid these controversial matters altogether, and focus on more agreeable subjects. Like the weather. Perhaps if the two couples in 'Disgraced' would have taken that advice, they would have avoided a whole lot of trouble and pain. Then again, if the Pulitzer Prize-winning play by Ayad Akhtar, now open at the Lyceum Theatre, stayed away from such discourse, we wouldn't have been treated to one of the season's most engaging nights of theater...It's easily the most impassioned dinner scenes on Broadway since 'August: Osage County,' and one that playwright Akhtar crafts beautifully. His dialogue is intelligent and superb -- his characters so complex yet well-defined -- that you'll travel along the ride of emotions and ideas not knowing where you're going next. And like any good roller coaster, the final drop will leave your heart in the pit of your stomach.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DISGRACED-Opens-on-Broadway-Updating-LIVE-20141023"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DISGRACED-Opens-on-Broadway-Updating-LIVE-20141023",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the season's most engaging nights of theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'one of the season's most engaging nights of theater' with acclaim for dialogue ('intelligent and superb') and character development. The roller coaster metaphor suggests powerful emotional impact. | GPT-4o: The review excerpt praises the play as one of the season's most engaging nights of theater, with superb dialogue and complex characters. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review uses strong positive language like \"most engaging nights of theater\", \"intelligent and superb\", and compares it favorably to \"August: Osage County\", indicating a strong positive recommendation. | Kimi: The excerpt offers enthusiastic praise for the writing, character development, and emotional impact, comparing it favorably to August: Osage County. However, as a single curated excerpt, it may not represent the full scope of the review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:44:03.870Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

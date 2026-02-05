@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In the present, though, the show is often superb: the scene between Willy and Howard, ruthlessly played by Blake DeLong, is riveting, amplified by unspoken racism as are the scenes with Stanley, played by the same fabulous actor, here taking what's usually a plot functionary and forging a blend of obsequiousness, kindness and racism, all at once. Clarke's monologues are potent, rooted and deeply touching and, as Happy, McKinley Belcher III brings far more to that role than we usually see; in this production, the relationship between Happy and Willy seems more central than between Biff and Willy. And Delaney Williams (also known for 'The Wire') is an honest, earnest Charlie, a decent white guy holding up a Black family in crisis, understanding he's probably next for a cemetery that levels us all.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the present, though, the show is often superb: the scene between Willy and Howard, ruthlessly played by Blake DeLong, is riveting",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows consistent praise ('superb', 'riveting', 'potent', 'deeply touching') for performances and direction. However, single excerpt warning applies - this curated quote may not represent the full review sentiment. | GPT-4o: The excerpt praises performances and scenes as 'superb' and 'riveting,' indicating a strong positive impression. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt uses strong positive language like \"superb\" and \"riveting\" to describe the show and performances, indicating a positive recommendation. Given the single excerpt warning, I'm placing the score at the higher end of the positive bucket. | Kimi: The excerpt describes the show as 'often superb' with 'riveting' scenes and praises multiple performances as 'fabulous' and 'deeply touching,' indicating clear enthusiasm for this production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:33:55.161Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

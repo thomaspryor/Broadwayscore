@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -18,7 +18,59 @@
   "showScoreExcerpt": "As Lynn Nottage has matured and grown as a playwright her focus has narrowed. In plays like her Pulitzer Prize-winning Ruined and Sweat she dazzled with the big panorama; in her recent plays like Mlima’s Tale she dealt with one theme. In her latest Broadway play, Clyde’s, now at The Helen Hayes Theater in a production by The Second Stage Theater, she writes a very entertaining and satisfying comedy-drama about the rehabilitation of formerly incarcerated people now working in the kitchen of a roadside sandwich shop. \n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "sources": [
-    "show-score-playwright"
-  ]
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "she writes a very entertaining and satisfying comedy-drama about the rehabilitation of formerly incarcerated people",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the play as 'very entertaining and satisfying,' which is clear praise. However, this is only a curated excerpt that cuts off mid-sentence, so confidence is low despite the positive language. | GPT-4o: The excerpt describes the play as 'very entertaining and satisfying,' indicating a positive review. However, due to the single excerpt warning, confidence is low and the score is placed at the lower end of the Positive range. | Gemini: The excerpt calls the play \"very entertaining and satisfying,\" which indicates a positive review. However, it is only a single excerpt, so confidence is low. | Kimi: The excerpt offers unambiguous praise ('very entertaining and satisfying') for this Broadway production, warranting a score in the upper Positive range. However, confidence is low due to the single truncated excerpt format, which may not capture the full critical verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:55:40.959Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

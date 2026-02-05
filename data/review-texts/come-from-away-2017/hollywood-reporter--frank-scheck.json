@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The true-life story that inspired the new musical Come From Away would seem like the stuff of a Frank Capra movie. The show relates the tale of how a small Newfoundland town in 2001 found itself unexpectedly hosting 7,000 airline passengers stranded there for days after 9/11. But though the material might have lent itself to sickly sweet sentimentality, creators Irene Sankoff and David Hein have crafted a heartwarming and thoroughly entertaining musical. Especially in these politically fractious times, it should prove a true crowd-pleaser on Broadway following previous hit engagements in San Diego, Washington D.C. and Toronto.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COME-FROM-AWAY-Lands-on-Broadway-Updating-Live-20170312"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COME-FROM-AWAY-Lands-on-Broadway-Updating-Live-20170312",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But though the material might have lent itself to sickly sweet sentimentality, creators Irene Sankoff and David Hein have crafted a heartwarming and thoroughly entertaining musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation calling it 'heartwarming and thoroughly entertaining' and predicting it 'should prove a true crowd-pleaser.' Single excerpt warning suggests using upper end of Positive range. | GPT-4o: The excerpt praises the show as 'heartwarming and thoroughly entertaining' and suggests it will be a 'crowd-pleaser'. The lack of a full review and single excerpt warning lowers confidence, but the positive language supports a strong positive score. | Gemini: The review uses positive language such as \"heartwarming\" and \"thoroughly entertaining musical\". Given the single excerpt, I'm placing it in the upper range of positive. | Kimi: The excerpt offers unambiguous praise, describing the show as 'heartwarming,' 'thoroughly entertaining,' and a 'true crowd-pleaser,' representing a clear recommendation despite the limitation of having only a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:05:00.593Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

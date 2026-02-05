@@ -12,5 +12,60 @@
   "bwwExcerpt": "The dancers are attractive, personable and expert. Sturdy John Selya is the swinger captivated by Holley Farmer's red-headed coquette in a blue dress. A nimble Charlie Neshyba-Hodges and demure Laura Mead cavort through several cute turns. Karine Platadit is the Amazonian vamp who slays a brooding Keith Roberts and Latin lover Matthew Stockwell Dibble, among others. Their energy is high and they really heat up the joint. (An alternate cast of principals including American Ballet Theatre star Ashley Tuttle perform the Wednesday and Saturday matinees. Good thing they're all so hot since 'Come Fly Away' otherwise registers as a rather hazy narrative hitched to Sinatra's disembodied vocals and Tharp's energetic dances. It's got flash but no heart.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's got flash but no heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises the dancers extensively but concludes the show has 'flash but no heart' and 'hazy narrative.' Single excerpt warning applies - this could be cherry-picked from a more complete assessment. | GPT-4o: The review praises the dancers' energy and performance but criticizes the show for lacking heart and having a hazy narrative. The mixed tone suggests neither a strong recommendation nor a strong discouragement. | Gemini: The review praises the dancers' energy and skill but ultimately finds the show lacking heart and having a hazy narrative. This suggests a mixed experience, leaning towards positive due to the praise for the performers, but with significant reservations. | Kimi: While the critic enthusiastically praises the dancers' skill and energy, the final assessment finds the show itself emotionally hollow and narratively weak, suggesting the performers redeem material that otherwise lacks substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:01:55.201Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

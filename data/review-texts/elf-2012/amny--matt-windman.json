@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "While “Elf” can still hardly be considered a great or even good musical (many songs that fail to leave a lasting impression and loads of clunky comic business), the new Broadway production is, I must confess, a crowd-pleasing, feel-good delight that is presented with genuine showmanship, including expansive dance choreography by Liam Steel, whimsical digital projections, and (in a feat reminiscent of the “Back to the Future” musical) Santa’s sleigh flying high above the audience. There are also, of course, obligatory bursts of snow throughout the theater.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the new Broadway production is, I must confess, a crowd-pleasing, feel-good delight that is presented with genuine showmanship",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite explicitly stating the musical isn't 'great or even good' and criticizing songs and comedy, the critic confesses it's a 'crowd-pleasing, feel-good delight' with 'genuine showmanship.' The positive verdict outweighs the setup criticism. Single excerpt limits confidence. | GPT-4o: The review acknowledges significant shortcomings but ultimately describes the production as 'crowd-pleasing' and 'feel-good,' suggesting a mildly positive recommendation despite reservations. | Gemini: The review acknowledges the show isn't great but calls it a \"crowd-pleasing, feel-good delight\" and praises the showmanship, suggesting a positive but not rave recommendation. | Kimi: Single excerpt reveals critic praising the production's entertainment value and technical execution ('crowd-pleasing, feel-good delight', 'genuine showmanship') despite acknowledging the underlying musical material is weak ('clunky', 'fail to leave lasting impression'), resulting in a qualified but clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:54:50.687Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

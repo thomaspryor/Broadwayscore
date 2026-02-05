@@ -12,5 +12,60 @@
   "bwwExcerpt": "Elf: The Musical passes an important test of a seasonal Broadway show. It passes the wide smile/slightly moistened eyes/ridiculous amount of falling snow test, and—more significantly—passes the far more difficult actually-not-annoying-for-kids-and-adults test.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20241117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20241117",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It passes the wide smile/slightly moistened eyes/ridiculous amount of falling snow test, and—more significantly—passes the far more difficult actually-not-annoying-for-kids-and-adults test.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic frames the show as successfully meeting key criteria for family entertainment, suggesting it works for both kids and adults, which is positive recommendation language. However, this is only a single excerpt so confidence is low. | GPT-4o: The excerpt highlights the show's success in appealing to both kids and adults, and its ability to evoke emotional responses, indicating a strong positive recommendation. | Gemini: The review excerpt indicates that the show is enjoyable for both kids and adults, suggesting a positive experience. Given that it's a single excerpt, confidence is low. | Kimi: The excerpt indicates the show successfully delivers seasonal charm and emotional resonance ('wide smile/slightly moistened eyes') while achieving the 'far more difficult' feat of entertaining both children and adults, representing a clear recommendation. Confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:57:06.835Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

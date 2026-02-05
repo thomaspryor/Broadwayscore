@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One must pay attention to a man even as inattentive as the loutishly bewildered Willy Loman, whom Philip Seymour Hoffman portrays so effectively in director Mike Nichols's steel-girded Broadway revival of \"Death of a Salesman,\" which officially opened Thursday night at the Ethel Barrymore Theatre. In concert with Andrew Garfield's embittered Biff, the drifting elder son of the defeat-racked Loman household, Hoffman finds a revealing new way into the psyche of a character Arthur Miller introduced",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hoffman portrays so effectively in director Mike Nichols's steel-girded Broadway revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for lead performance ('so effectively') and production ('steel-girded revival'), but limited text makes full verdict uncertain. | GPT-4o: The excerpt praises Hoffman's effective portrayal and Nichols's direction, suggesting a strong recommendation. However, with only one excerpt, confidence is low. | Gemini: The review praises Philip Seymour Hoffman's performance and the direction, suggesting a positive experience. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt offers unambiguous praise for the lead performance ('so effectively') and direction ('steel-girded'), indicating a clear recommendation. However, as a single truncated excerpt, it may not capture the full scope of the reviewer's assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:35:23.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "There are productions that exist solely to feature a spectacular star. This is one of them. Rush to the Belasco to catch Bennett and revel in her—and Garland’s—glory.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rush to the Belasco to catch Bennett and revel in her—and Garland's—glory.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, the language is unambiguously enthusiastic with the imperative 'Rush' and celebration of 'glory.' This is clear must-see recommendation language that belongs in the Rave category. | GPT-4o: The excerpt strongly recommends seeing the show, highlighting a spectacular star performance and urging the audience to 'rush' to the theater. The language suggests an enthusiastic endorsement. | Gemini: The review explicitly encourages the reader to see the show to see the star's performance. | Kimi: The excerpt contains strong recommendation language ('Rush', 'spectacular star', 'revel in glory'), warranting an upper Positive score. Confidence is low due to the availability of only a single curated excerpt that may not represent the full review. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:00:29.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

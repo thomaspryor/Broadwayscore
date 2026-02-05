@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One understands the desire to goose material that is both potentially dry and well past its sell-by date. (In the wake of AIG and Bernie Madoff and Lehman Brothers' own collapse, doesn't the Enron scandal seem so 2001?) But subtlety gets lost in the process: At one point, Butz's Skilling literally stomps his foot like a petulant 2-year-old when Lay sides with Roe in a corporate dispute — an over-the-top gesture that undercuts any effort by the production to make its characters more than cardboard stand-ins for American Big Business excess and immaturity. Goold further muddles the satire with kitchen-sink showmanship, employing everything from a barbershop quartet of traders to a mini-ballet by lightsaber-wielding execs. He even creates anthropomorphized 'raptors' to represent the shady debt-laden shell companies that led to Enron's ultimate unraveling. We see Fastow and Skilling kill the raptors at the end, but there's no real-world explanation of what they're doing; Goold is too caught up in his theatrical conceit to serve the fact-based story he's trying to tell. Too often, in fact, Enron plays like 60 Minutes on acid.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too often, in fact, Enron plays like 60 Minutes on acid.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds the production heavy-handed and muddled, criticizing the direction as 'over-the-top' and saying subtlety gets lost. However, this is only one excerpt and may not represent the full verdict. | GPT-4o: The review criticizes the production for lacking subtlety and being over-the-top, with theatrical elements that muddle the satire. The overall tone suggests disappointment with the execution, leading to a negative verdict. | Gemini: The review criticizes the production's lack of subtlety and over-the-top theatricality, which muddles the satire and fails to serve the story. The comparison to \"60 Minutes on acid\" further reinforces the negative assessment. | Kimi: The critic finds the production over-the-top and muddled, criticizing directorial choices that undermine subtlety and reduce characters to cardboard stand-ins while failing to serve the fact-based story.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:03:36.581Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

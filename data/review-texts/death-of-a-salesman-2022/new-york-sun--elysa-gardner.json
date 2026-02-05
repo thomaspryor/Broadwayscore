@@ -12,5 +12,60 @@
   "bwwExcerpt": "New shades of friction and menace also emerge between characters played by black and white actors. I have never found the scene in which Howard humiliates a desperate, pleading Willy, or the one where a teenage Biff discovers his father's infidelity, more excruciating than I did here. Even Loman's interaction with Charley, the mensch of a neighbor who repeatedly tries in vain to help him - movingly played by Delaney Williams, a white actor (and another 'Wire' alum) - seems a little more fraught",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I have never found the scene in which Howard humiliates a desperate, pleading Willy...more excruciating than I did here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes heightened emotional impact and new dramatic tensions emerging from the production choices. The phrase 'never found...more excruciating than I did here' indicates this production delivers exceptional dramatic power, suggesting strong artistic merit despite being only a single excerpt. | GPT-4o: The excerpt highlights the emotional impact and effectiveness of certain scenes, suggesting a positive view of the production's intensity and performance. However, without the full review, the overall sentiment is uncertain, leading to a low confidence score. | Gemini: The excerpt highlights the emotional impact and nuanced performances, suggesting a positive experience, but the lack of a clear recommendation and the single excerpt lowers confidence. | Kimi: The excerpt offers clear praise for the production's emotional impact and performances ('movingly played', 'more excruciating'), indicating a recommendation, though the single-excerpt limitation requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:37:13.650Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

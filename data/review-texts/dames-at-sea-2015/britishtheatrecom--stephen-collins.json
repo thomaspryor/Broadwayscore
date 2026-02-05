@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...Dames At Sea may lay claim to being one of the silliest, sweetest, most ridiculous musicals of all time. It makes no real pretence at plot or character, preferring to stay firmly in the world of parody, emphasising great, catchy tunes, swell dance routines, risqué jokes, and gooey love affairs between showgirls and randy sailors which would make Roger de Bris call for a wrist massage. And it's terrific with a capital T...Skinner ensures, with impeccable timing, and just the right level of che",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And it's terrific with a capital T",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being truncated, the excerpt shows clear enthusiasm with 'terrific with a capital T' and praise for multiple elements. Single excerpt warning suggests upper end of Positive bucket, but low confidence due to incomplete text. | GPT-4o: The excerpt describes the show as 'terrific with a capital T' and praises the timing and style, indicating a strong recommendation despite the lack of plot or character depth. | Gemini: The review excerpt uses strong positive language like \"terrific with a capital T\" and describes the musical as \"sweet\" and \"catchy,\" indicating a positive recommendation. The single excerpt suggests a strong positive sentiment. | Kimi: Single excerpt contains enthusiastic superlatives ('terrific with a capital T', 'impeccable timing') indicating a strong recommendation. Per single-excerpt guidelines, placed at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:20:20.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

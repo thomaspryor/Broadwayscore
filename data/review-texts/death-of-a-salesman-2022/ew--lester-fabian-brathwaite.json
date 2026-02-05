@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Nearly 75 years after it first premiered, Death of a Salesman still says more than we care to admit about America, about how one can work their entire life and end up with nothing, how you're worth more dead than you are alive, how the system is rigged against the little guy. Maybe the enduring message of this production is that these themes are universal, that we all suffer the same under the yolk of The American Dream. And that, in spite of the odds, we all aspire to be great.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nearly 75 years after it first premiered, Death of a Salesman still says more than we care to admit about America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt focuses on the play's thematic relevance and universal message rather than this specific production's quality. With only one curated excerpt available, this appears mildly positive but lacks clear recommendation language. | GPT-4o: The excerpt reflects on the universal themes of the production, suggesting a positive view on its relevance and impact. However, the lack of explicit evaluative language about the production itself and the single excerpt warning necessitate a cautious, low-confidence score. | Gemini: The review reflects on the play's enduring themes and their universality, suggesting a positive appreciation for the production's relevance. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers unreserved praise for the production's thematic power and universal relevance, affirming its impact 75 years after the premiere. As a single clearly positive curated excerpt, it warrants the upper end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:36:53.802Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

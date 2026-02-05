@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Director Marianne Elliott puts the fun and the sex back into Stephen Sondheim's \"Company.\" This is the production, first staged in London, where the lead character Bobby is now Bobbie. The switch from male to female works, but more important is the light, sexy touch of Elliott's direction and how it frees the musical from the year of its world premiere, 1970. This very rousing and arousing \"Company\" revival opened Thursday at Broadway's Bernard B. Jacobs Theatre.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This very rousing and arousing 'Company' revival opened Thursday at Broadway's Bernard B. Jacobs Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('puts the fun and the sex back', 'rousing and arousing', 'frees the musical') with praise for direction. Single excerpt limits confidence but clear recommendation. | GPT-4o: The excerpt praises the director's approach as 'fun' and 'sexy,' and describes the production as 'rousing and arousing,' indicating a strong positive recommendation. However, the single excerpt warning suggests caution, so the score is placed in the upper range of Positive. | Gemini: The review uses positive language such as \"fun\", \"sex\", \"light, sexy touch\", and \"rousing and arousing\" to describe the production, indicating a positive recommendation. Given that it is only one excerpt, I am scoring it on the higher end of the positive bucket. | Kimi: The single excerpt provides enthusiastic praise ('rousing', 'arousing', 'fun', 'sexy touch') indicating a strong recommendation for this gender-swapped revival. Given the limited context of one curated excerpt, the score falls in the upper range of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:07:09.123Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

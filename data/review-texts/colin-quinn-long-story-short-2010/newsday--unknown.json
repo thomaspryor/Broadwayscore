@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Colin Quinn is not trying to bring back the ethnic joke, is he? Please, he's much too deep and smart for that, right? And yet, there is a nostalgia -- better, an exasperated, irritated wistfulness -- in his shaggy, fast-moving new 65-minute solo show \"Colin Quinn: The New York Story,\" which contends that false civility has led to \"eggshell walking\" and homogenized identities. Nationalities and races that have come to New York for the \"authenticity\" have been flattened into generics. If anyone ca",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COLIN-QUINN-THE-NEW-YORK-STORY-Opens-Off-Broadway-20150723"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COLIN-QUINN-THE-NEW-YORK-STORY-Opens-Off-Broadway-20150723",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is a nostalgia -- better, an exasperated, irritated wistfulness -- in his shaggy, fast-moving new 65-minute solo show",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt appears cut off mid-sentence and shows ambivalence - acknowledging Quinn as 'deep and smart' but questioning his approach with 'Please, he's much too deep and smart for that, right?' The tone suggests reservation rather than clear recommendation. | GPT-4o: The excerpt suggests a positive tone with phrases like 'fast-moving' and 'exasperated, irritated wistfulness,' indicating engagement and depth. However, the single excerpt and lack of a clear verdict limit confidence. | Gemini: The review excerpt suggests a positive view of Colin Quinn's intelligence and depth, but the truncated nature and single excerpt make it difficult to assess the overall recommendation strength with high confidence. The tone seems generally positive, but the lack of a clear verdict necessitates a score in the lower-middle of the positive range. | Kimi: Single excerpt suggests the show is intellectually substantive ('deep and smart') and well-paced ('fast-moving'), though 'shaggy' implies some rough edges. Without the full review or verdict, this reads as qualified approval.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:58:38.292Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "In lieu of an engaging story, unseen people, including the sibs’ sick dad, are gabbed about while undeveloped thematic strands dangle. Ideas rise up about staying put in one’s hometown vs. leaving, buying into God vs. worshipping money and life in New York vs. the Midwest. After an hour, Jack’s wife, Jenny (Judy Greer, miscast as a model of urbanity), arrives and reveals that her soon-to-be ex has raided neglected bank accounts of dead people to the tune of $27 million. The huge sum is a device to reveal Jenny’s greed and to give Lorna an aria about why she can’t fret about banks getting screwed.\nDirector Jack O’Brien can’t do much with the material, so he puts his energy into moody scene changes. And he cast Butz, who he guided to Best Actor Tony wins in “Dirty Rotten Scoundrels” and “Catch Me If You Can.”",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAD-ACCOUNTS-Opens-on-Broadway-Updating-LIVE-20121129"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAD-ACCOUNTS-Opens-on-Broadway-Updating-LIVE-20121129",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In lieu of an engaging story, unseen people, including the sibs' sick dad, are gabbed about while undeveloped thematic strands dangle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes fundamental structural issues (lack of engaging story, undeveloped themes, miscast actors) and suggests the director 'can't do much with the material.' However, this is only one excerpt so confidence is low. | GPT-4o: The review criticizes the lack of an engaging story and undeveloped themes, indicating a negative assessment. The mention of miscasting and ineffective direction further supports a negative verdict. | Gemini: The review excerpt describes the story as unengaging and the thematic strands as undeveloped. The director is unable to do much with the material. Given the negative tone and lack of positive comments, I am placing it in the negative bucket. However, the confidence is low due to the limited excerpt. | Kimi: The excerpt criticizes the underdeveloped story, miscasting, and ineffective direction, offering no redeeming qualities to counterbalance the significant flaws mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:25:19.691Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

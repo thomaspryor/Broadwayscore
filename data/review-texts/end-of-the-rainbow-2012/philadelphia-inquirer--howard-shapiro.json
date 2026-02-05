@@ -12,5 +12,60 @@
   "bwwExcerpt": "Somewhere over the rainbow, Judy Garland never spotted her pot of gold. But a British actress named Tracie Bennett found hers - in the person of Judy. She is sensational in the erratic Broadway show End of the Rainbow, about Garland's last attempt at a comeback, which opened Monday night.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She is sensational in the erratic Broadway show End of the Rainbow",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt describes Bennett's performance as 'sensational' but calls the show itself 'erratic.' This suggests strong praise for the lead performance but significant reservations about the production overall. | GPT-4o: The excerpt praises Tracie Bennett's performance as 'sensational' but describes the show as 'erratic', indicating a positive but not overwhelmingly strong recommendation. | Gemini: The review excerpt uses the word \"sensational\" to describe the actress's performance, indicating a strong positive sentiment. While the show is described as \"erratic,\" the focus is on the positive performance, suggesting a recommendation with reservations. | Kimi: The excerpt strongly praises Tracie Bennett's performance as 'sensational' while describing the show itself as 'erratic,' suggesting a qualified recommendation based primarily on the star's performance. Given this is a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T23:01:54.635Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

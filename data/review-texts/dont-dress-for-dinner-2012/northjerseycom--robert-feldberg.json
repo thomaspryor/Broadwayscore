@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are few things in the theater more distressing than a labored farce.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DONT-DRESS-FOR-DINNER-Updating-LIVE-20120426",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are few things in the theater more distressing than a labored farce.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic describes the show as a 'labored farce' and finds it 'distressing,' indicating clear disappointment. However, with only one curated excerpt available, the full verdict remains uncertain. | GPT-4o: The excerpt expresses a strong negative sentiment, describing the show as 'distressing' and 'labored'. Given the single excerpt warning, this may not reflect the entire review, but the tone suggests a pan. | Gemini: The single excerpt expresses a negative sentiment about labored farces, suggesting the reviewer did not enjoy the show. | Kimi: The excerpt describes the show as a 'labored farce' that is 'distressing,' indicating the critic found the production painful to watch and ineffective. Given this is a single curated excerpt, confidence is low as the full review may contain additional context or counterpoints.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:48:37.952Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

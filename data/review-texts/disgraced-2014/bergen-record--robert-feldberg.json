@@ -12,5 +12,60 @@
   "bwwExcerpt": "'Disgraced,' which races by in less than 90 minutes, is not a comforting play. It forces us to reflect on who we are, and what we really think about the guy with the different race, religion or ethnicity who lives next door.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DISGRACED-Opens-on-Broadway-Updating-LIVE-20141023"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DISGRACED-Opens-on-Broadway-Updating-LIVE-20141023",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It forces us to reflect on who we are, and what we really think about the guy with the different race, religion or ethnicity who lives next door.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt describes the play as challenging and intellectually engaging ('forces us to reflect'), which suggests appreciation for its provocative content. However, with only one curated excerpt available, confidence is low as the full critical verdict is unclear. | GPT-4o: The excerpt suggests that the play is thought-provoking and impactful, which implies a positive recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt suggests the play is thought-provoking and forces reflection, indicating a positive, albeit potentially challenging, experience. Given it's a single excerpt, confidence is low. | Kimi: The excerpt praises the play's brisk pacing ('races by') and commends its challenging thematic content for provoking meaningful reflection on prejudice and identity, indicating a clear recommendation despite the discomfort it creates.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:43:21.170Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

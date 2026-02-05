@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Observantly dressed by designer Ilona Somogyi, a well-meshed ensemble of seven excellent actors confidently invests their characters of 1959 and 2009 with distinctive personalities under director Pam MacKinnon’s discerning guidance. Designer Daniel Ostling provides a realistic setting that poignantly suffers the passing years. A smartly-written play sure to provoke conversation afterwards, “Clybourne Park” may be too emotionally cool to please sentimental viewers, but many others are sure to enjoy the nasty conflicts that erupt when presumably nice people show their true colors.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A smartly-written play sure to provoke conversation afterwards, 'Clybourne Park' may be too emotionally cool to please sentimental viewers, but many others are sure to enjoy the nasty conflicts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for cast, direction, and writing with clear recommendation ('many others are sure to enjoy'), though acknowledges it won't please all viewers. Single excerpt warning suggests upper-positive range. | GPT-4o: The review praises the play's writing, direction, and performances, suggesting it's a thought-provoking production. However, it notes that the emotional tone may not appeal to all, indicating some reservations. | Gemini: The review praises the writing, acting, and direction, calling it a \"smartly-written play\" with \"excellent actors.\" While noting it may be too emotionally cool for some, it suggests many others will enjoy it, indicating a positive recommendation with reservations. | Kimi: The excerpt praises the excellent ensemble, discerning direction, and smart writing, clearly recommending the show as enjoyable and provocative despite noting it may be too emotionally cool for sentimental viewers.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:52:43.973Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

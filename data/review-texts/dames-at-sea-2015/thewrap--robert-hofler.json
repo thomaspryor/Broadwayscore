@@ -12,5 +12,60 @@
   "bwwExcerpt": "In 2015, how are we supposed to enjoy 'Dames at Sea'...?...With its modest cast of just six, the show doesn't even attempt to replicate Berkeley's big art-deco productions numbers...What we're left with in 'Dames at Sea' are the plots of movies like 'Footlight Parade' and 'The Golddiggers of 1933'...In the new revival of 'Dames at Sea,' Eloise Kropp and Cary Tedder play Ruby and Dick, respectively. Unlike Keeler, Kropp can sing and dance; unlike Powell, Tedder probably won't go on to play Philip Marlowe...Book writers George Haimsohn and Robin Miller make jokes that play on the leading man's name or that rhyme Louis XIV with V.I.P. It's not fun to feel superior to such material; it's numbing. As for Jim Wise's 'Dames at Sea' score, quick: Hum a tune from this nearly 50-year-old musical. The repetition of the music is in a contest only with the repetition of the Dick jokes.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not fun to feel superior to such material; it's numbing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds the material dated and numbing, criticizes the writing as inferior, and implies the score is forgettable. Despite acknowledging some performer abilities, the overall assessment is clearly negative. | GPT-4o: The review criticizes the show for its lack of ambition, dated material, and repetitive score. The tone is dismissive, suggesting the production fails to engage or entertain. | Gemini: The review is consistently negative, criticizing the plot, jokes, and music. The critic finds the material numbing and expresses a sense of superiority over it, indicating a lack of enjoyment. | Kimi: The critic describes the show as 'numbing' with forgettable music and repetitive humor, offering faint praise for individual cast members while clearly discouraging attendance due to the dated, inferior quality of the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:22:09.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

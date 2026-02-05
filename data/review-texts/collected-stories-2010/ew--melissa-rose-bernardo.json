@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Why, you ask, would Manhattan Theatre Club follow its premiere of Donald Margulies' Time Stands Still with a revival of Collected Stories — his crafty 1996 literary drama that's already been done twice in New York City? So we can hear Linda Lavin turn out two hours' worth of delicious bons mots like 'Life's too short for The New Yorker.' Lavin is relishing, but not milking, her role as a writer/professor/reluctant mentor; Deadwood's Sarah Paulson is ever-so-slightly (perhaps appropriately) grating as her sycophantic protégée.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lavin is relishing, but not milking, her role as a writer/professor/reluctant mentor",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with mild praise for Lavin's performance and qualified assessment of Paulson. The opening question about why revive this play suggests some skepticism, but the answer focuses on Lavin's appealing performance. With only one excerpt available, scoring conservatively in lower Positive range. | GPT-4o: The excerpt praises Linda Lavin's performance, describing it as 'relishing' and highlights the appeal of the dialogue. Despite limited text, the tone suggests a positive view, particularly for Lavin's role. | Gemini: The review excerpt praises Linda Lavin's performance and describes the play as a \"crafty literary drama.\" While there are some reservations expressed about the choice of revival, the overall tone is positive, suggesting it's worth seeing for Lavin's performance. | Kimi: While questioning the necessity of reviving a play already produced twice in NYC and noting the co-star is 'grating,' the critic clearly recommends seeing the show for Linda Lavin's 'delicious' performance and 'bons mots,' making this a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T21:59:10.643Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

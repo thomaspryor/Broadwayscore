@@ -12,5 +12,60 @@
   "bwwExcerpt": "So the current big-time revival does what its late creators -- composer Jim Wise, author/lyricists George Haimsohn and Robin Miller -- apparently wanted their modest takeoff to accomplish. The production, directed and choreographed by Randy Skinner, has a hard-tapping, hardworking cast of six and enough varieties of I-love-to-dance smiles to become their own emoticons. What the musical does not have -- in addition to a breakout ingénue to elevate the unrelentingly, cheerfully lame nonsense -- is charm. This is, to put it gently, a one-joke show. And we get the joke -- we get it, we get it -- over and over the tap-happy two hours.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DAMES-AT-SEA-Opens-on-Broadway-Updating-LIVE-20151022",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What the musical does not have -- in addition to a breakout ingénue to elevate the unrelentingly, cheerfully lame nonsense -- is charm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the cast's work ethic, the critic finds the show fundamentally lacking in charm, calls it 'lame nonsense' and 'a one-joke show' that becomes repetitive over two hours. Single excerpt warning noted, but the negative verdict is clear. | GPT-4o: The review criticizes the show for lacking charm and being repetitive, describing it as a 'one-joke show'. Despite acknowledging the hardworking cast, the overall tone is negative. | Gemini: The review acknowledges the hardworking cast but criticizes the lack of charm and repetitive nature of the show. The overall tone suggests a mixed reaction, leaning slightly negative. | Kimi: While praising the hardworking cast's tap-dancing skills, the critic ultimately pans the material as 'unrelentingly, cheerfully lame nonsense' lacking charm, calling it a repetitive one-joke show that grows tedious over its two-hour runtime.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T22:21:34.782Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }
