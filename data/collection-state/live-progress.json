@@ -1,56 +1,52 @@
 {
-  "updatedAt": "2026-02-05T01:18:03.636Z",
-  "processed": 9,
-  "failed": 31,
-  "successRate": "22.5%",
+  "updatedAt": "2026-02-05T01:24:31.301Z",
+  "processed": 11,
+  "failed": 49,
+  "successRate": "18.3%",
   "tierBreakdown": {
     "playwright": 0,
-    "browserbase": 1,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archive": 6
+    "browserbase": 2,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archive": 8
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:54:31.070Z",
+      "t": "2026-02-05T00:53:08.167Z",
       "event": "bb-session",
-      "session": "f36a323b",
-      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+      "session": "869e990f",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
     },
     {
-      "t": "2026-02-05T00:54:58.160Z",
+      "t": "2026-02-05T00:53:53.297Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    24 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+    },
+    {
+      "t": "2026-02-05T00:54:32.068Z",
       "event": "bb-session",
-      "session": "6438e17e",
-      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+      "session": "60176a5e",
+      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
     },
     {
-      "t": "2026-02-05T00:55:41.526Z",
+      "t": "2026-02-05T00:55:29.735Z",
       "event": "bb-session",
-      "session": "8a69af78",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
+      "session": "d21459f1",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
     },
     {
-      "t": "2026-02-05T00:58:09.292Z",
+      "t": "2026-02-05T00:57:08.209Z",
       "event": "bb-session",
-      "session": "e6dfe253",
-      "url": "http://www.newyorker.com/arts/critics/theatre/2010/03/15/100315crth_theatre_als?"
+      "session": "334faaa8",
+      "url": "http://www.variety.com/review/VE1117943828.html"
     },
     {
-      "t": "2026-02-05T00:58:11.698Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-05T01:01:11.360Z",
+      "t": "2026-02-05T00:58:03.062Z",
       "event": "bb-session",
-      "session": "5b9f2d76",
-      "url": "https://www.nytimes.com/2010/04/05/theater/reviews/05behanding.html"
-    },
-    {
-      "t": "2026-02-05T01:01:18.295Z",
-      "event": "bb-login-uncertain",
-      "domain": "nytimes.com"
+      "session": "78c898b2",
+      "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686"
     }
   ]
 }
