@@ -12964,18 +12964,6 @@
     "timestamp": "2026-02-04T20:40:31.389Z"
   },
   {
-    "reviewId": "bridge-and-tunnel-2006/variety--charles-isherwood.json",
-    "showId": "bridge-and-tunnel-2006",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2006/legit/reviews/bridge-tunnel-1200514598/",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): harmony, appropriate, home, the audience, hair...",
-    "textLength": 7020,
-    "timestamp": "2026-02-04T20:42:07.007Z"
-  },
-  {
     "reviewId": "brighton-beach-memoirs-2009/nytimes--charles-isherwood.json",
     "showId": "brighton-beach-memoirs-2009",
     "outlet": "The New York Times",
@@ -13106,18 +13094,6 @@
     "garbageReason": "Multiple shows mentioned (10): into the woods, my fair lady, the audience, the king and i, rocky...",
     "textLength": 9819,
     "timestamp": "2026-02-04T21:13:21.064Z"
-  },
-  {
-    "reviewId": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
-    "showId": "caroline-or-change-2021",
-    "outlet": "The Hollywood Reporter",
-    "critic": "Angie Han",
-    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, company, fun home, rocky...",
-    "textLength": 10477,
-    "timestamp": "2026-02-04T21:13:40.497Z"
   },
   {
     "reviewId": "a-chorus-line-2006/nytimes--ben-brantley.json",
@@ -13562,5 +13538,65 @@
     "garbageReason": "Multiple shows mentioned (9): giant, proof, the audience, hair, once...",
     "textLength": 7287,
     "timestamp": "2026-02-05T01:24:31.292Z"
+  },
+  {
+    "reviewId": "bridge-and-tunnel-2006/variety--charles-isherwood.json",
+    "showId": "bridge-and-tunnel-2006",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2006/legit/reviews/bridge-tunnel-1200514598/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): harmony, appropriate, home, the audience, hair...",
+    "textLength": 6586,
+    "timestamp": "2026-02-05T01:24:53.806Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Angie Han",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, company, fun home, rocky...",
+    "textLength": 10477,
+    "timestamp": "2026-02-05T01:30:49.462Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, company, fun home, rocky...",
+    "textLength": 10477,
+    "timestamp": "2026-02-05T01:31:05.334Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonathan-mandrell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandrell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-05T01:31:14.543Z"
+  },
+  {
+    "reviewId": "caroline-or-change-2021/nyt-theater--jonthan-mandell.json",
+    "showId": "caroline-or-change-2021",
+    "outlet": "New York Theater",
+    "critic": "Jonthan Mandell",
+    "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (14): home, smash, company, girl from the north country, mrs. doubtfire...",
+    "textLength": 10079,
+    "timestamp": "2026-02-05T01:31:23.546Z"
   }
 ]
