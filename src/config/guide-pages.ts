@@ -180,6 +180,181 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     relatedGuides: ['best-broadway-shows', 'best-broadway-musicals'],
     relatedBrowse: ['tony-winners-on-broadway', 'best-broadway-revivals'],
   },
+
+  // === AWARD WINNERS ===
+  'tony-award-winners': {
+    slug: 'tony-award-winners',
+    title: 'Tony Award Winners on Broadway',
+    h1Template: 'Tony Award Winners You Can See on Broadway ({year})',
+    metaTitleTemplate: 'Tony Award Winners on Broadway {year} | See Award-Winning Shows',
+    metaDescriptionTemplate: 'See {count} Tony Award-winning shows currently playing on Broadway in {year}. Best Musical, Best Play, and other award winners.',
+    introFallback: 'Experience Broadway excellence with these {count} Tony Award-winning productions. From Best Musical to Best Play winners, these shows represent the pinnacle of theatrical achievement.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('tony winner') || tags.includes('tony-winner') || tags.includes('award-winner');
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-shows', 'highest-rated-broadway-shows'],
+    relatedBrowse: ['tony-winners-on-broadway', 'pulitzer-prize-plays'],
+  },
+
+  // === DECADE RETROSPECTIVES ===
+  'best-broadway-shows-2010s': {
+    slug: 'best-broadway-shows-2010s',
+    title: 'Best Broadway Shows of the 2010s',
+    h1Template: 'Best Broadway Shows of the 2010s (2010-2019)',
+    metaTitleTemplate: 'Best Broadway Shows of the 2010s | Top Shows 2010-2019',
+    metaDescriptionTemplate: 'The {count} best Broadway shows from the 2010s decade. Hamilton, Dear Evan Hansen, and more legendary productions from 2010-2019.',
+    introFallback: 'The 2010s were a transformative decade for Broadway, bringing groundbreaking productions like Hamilton, Dear Evan Hansen, and Book of Mormon. These {count} shows defined an era of theatrical innovation.',
+    filter: (show) => {
+      const openDate = new Date(show.openingDate);
+      const year = openDate.getFullYear();
+      return year >= 2010 && year <= 2019 && (show.criticScore?.score ?? 0) >= 60;
+    },
+    sort: 'score',
+    limit: 30,
+    relatedGuides: ['best-broadway-shows-2020s', 'highest-rated-broadway-shows'],
+    relatedBrowse: ['best-broadway-revivals'],
+  },
+
+  'best-broadway-shows-2020s': {
+    slug: 'best-broadway-shows-2020s',
+    title: 'Best Broadway Shows of the 2020s',
+    h1Template: 'Best Broadway Shows of the 2020s (So Far)',
+    metaTitleTemplate: 'Best Broadway Shows of the 2020s | Top Shows 2020-Present',
+    metaDescriptionTemplate: 'The {count} best Broadway shows of the 2020s. From pandemic reopening to today, these are the top-rated productions of the decade.',
+    introFallback: "The 2020s have seen Broadway's remarkable comeback. From the pandemic shutdown to triumphant reopening, these {count} shows represent the best of the current decade.",
+    filter: (show) => {
+      const openDate = new Date(show.openingDate);
+      return openDate.getFullYear() >= 2020 && (show.criticScore?.score ?? 0) >= 60;
+    },
+    sort: 'score',
+    limit: 30,
+    relatedGuides: ['best-broadway-shows-2010s', 'best-new-broadway-shows'],
+    relatedBrowse: ['new-broadway-shows-2025'],
+  },
+
+  // === SEASONAL CONTENT ===
+  'broadway-shows-for-christmas': {
+    slug: 'broadway-shows-for-christmas',
+    title: 'Best Broadway Shows for Christmas',
+    h1Template: 'Best Broadway Shows for the Holidays ({year})',
+    metaTitleTemplate: 'Best Broadway Shows for Christmas {year} | Holiday Theater',
+    metaDescriptionTemplate: 'Find the perfect Broadway show for the holidays in {year}. {count} family-friendly and festive shows for your Christmas visit to NYC.',
+    introFallback: 'Celebrate the holidays with a Broadway show! These {count} productions are perfect for a festive night out, from family classics to spectacular musicals that capture the magic of the season.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      // Family-friendly or festive shows work best for holidays
+      return tags.includes('family') ||
+             tags.includes('accessible') ||
+             tags.includes('spectacular') ||
+             show.type === 'musical';
+    },
+    sort: 'score',
+    limit: 15,
+    relatedGuides: ['best-broadway-shows-for-kids', 'best-broadway-musicals'],
+    relatedBrowse: ['broadway-shows-for-kids', 'broadway-shows-for-tourists'],
+  },
+
+  'broadway-shows-for-date-night': {
+    slug: 'broadway-shows-for-date-night',
+    title: 'Best Broadway Shows for Date Night',
+    h1Template: 'Best Broadway Shows for Date Night ({year})',
+    metaTitleTemplate: 'Best Broadway Shows for Date Night {year} | Romantic Theater',
+    metaDescriptionTemplate: 'Plan the perfect date night with these {count} Broadway shows. Romantic musicals and captivating plays perfect for couples.',
+    introFallback: 'Looking for the perfect Broadway show for date night? These {count} productions offer the ideal blend of romance, spectacle, and emotion for an unforgettable evening with your partner.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      // Date night: sophisticated, romantic, or emotionally engaging
+      return tags.includes('romantic') ||
+             tags.includes('sophisticated') ||
+             tags.includes('date-night') ||
+             (show.criticScore?.score ?? 0) >= 75;
+    },
+    sort: 'score',
+    limit: 15,
+    relatedGuides: ['best-broadway-shows', 'best-broadway-musicals'],
+    relatedBrowse: ['broadway-shows-for-date-night'],
+  },
+
+  // === PRICE TIERS ===
+  'broadway-shows-under-100': {
+    slug: 'broadway-shows-under-100',
+    title: 'Broadway Shows Under $100',
+    h1Template: 'Broadway Shows Under $100 ({year})',
+    metaTitleTemplate: 'Broadway Shows Under $100 {year} | Affordable Tickets',
+    metaDescriptionTemplate: 'Find {count} Broadway shows with tickets under $100 in {year}. Quality theater at affordable prices.',
+    introFallback: "Great Broadway doesn't have to mean expensive tickets. These {count} shows offer tickets under $100, proving you can experience world-class theater on a budget.",
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const minPrice = Math.min(...(show.ticketLinks?.filter(l => l.priceFrom).map(l => l.priceFrom!) || [Infinity]));
+      return minPrice < 100;
+    },
+    sort: 'score',
+    relatedGuides: ['cheap-broadway-tickets', 'best-broadway-shows'],
+    relatedBrowse: ['broadway-lottery-shows', 'broadway-rush-tickets'],
+  },
+
+  // === GENRE DEEP-DIVES ===
+  'best-jukebox-musicals': {
+    slug: 'best-jukebox-musicals',
+    title: 'Best Jukebox Musicals on Broadway',
+    h1Template: 'Best Jukebox Musicals on Broadway ({year})',
+    metaTitleTemplate: 'Best Jukebox Musicals {year} | Broadway Song Catalog Shows',
+    metaDescriptionTemplate: 'The {count} best jukebox musicals on Broadway in {year}. Shows featuring hit songs from famous artists and bands.',
+    introFallback: 'Jukebox musicals bring beloved songs to life on the Broadway stage. These {count} shows feature iconic music from legendary artists, creating unforgettable theatrical experiences.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('jukebox') || tags.includes('jukebox-musical');
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-musicals', 'best-broadway-shows'],
+    relatedBrowse: ['jukebox-musicals-on-broadway'],
+  },
+
+  'best-broadway-revivals': {
+    slug: 'best-broadway-revivals',
+    title: 'Best Broadway Revivals',
+    h1Template: 'Best Broadway Revivals ({year})',
+    metaTitleTemplate: 'Best Broadway Revivals {year} | Classic Shows Reimagined',
+    metaDescriptionTemplate: 'The {count} best Broadway revivals in {year}. Classic shows brought back to life with fresh productions.',
+    introFallback: 'Broadway revivals offer a chance to experience beloved classics with fresh perspectives. These {count} productions reimagine iconic shows for contemporary audiences.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      const tags = show.tags?.map(t => t.toLowerCase()) || [];
+      return tags.includes('revival');
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-shows', 'highest-rated-broadway-shows'],
+    relatedBrowse: ['best-broadway-revivals'],
+  },
+
+  // === SHORT SHOWS ===
+  'short-broadway-shows': {
+    slug: 'short-broadway-shows',
+    title: 'Short Broadway Shows (Under 2 Hours)',
+    h1Template: 'Short Broadway Shows Under 2 Hours ({year})',
+    metaTitleTemplate: 'Short Broadway Shows {year} | Under 2 Hours Runtime',
+    metaDescriptionTemplate: 'Find {count} Broadway shows under 2 hours in {year}. Perfect for busy schedules or first-time theatergoers.',
+    introFallback: 'Not everyone has time for a 3-hour epic. These {count} Broadway shows clock in at under 2 hours, perfect for weeknight outings or first-time theatergoers.',
+    filter: (show) => {
+      if (show.status !== 'open') return false;
+      if (!show.runtime) return false;
+      const match = show.runtime.match(/(\d+)\s*(?:hr|hour)/i);
+      const hours = match ? parseInt(match[1], 10) : 0;
+      const minMatch = show.runtime.match(/(\d+)\s*(?:min)/i);
+      const mins = minMatch ? parseInt(minMatch[1], 10) : 0;
+      const totalMins = hours * 60 + mins;
+      return totalMins > 0 && totalMins <= 120;
+    },
+    sort: 'score',
+    relatedGuides: ['best-broadway-shows', 'best-broadway-shows-for-kids'],
+    relatedBrowse: ['short-broadway-shows', 'broadway-shows-for-tourists'],
+  },
 };
 
 // Slugs that have custom static pages (not generated by dynamic route)
