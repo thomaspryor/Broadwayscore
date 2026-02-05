@@ -38,6 +38,7 @@ const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1]; // Comma-separated show IDs/slugs
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
+const includeAll = args.includes('--all');
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const shardArg = args.find(a => a.startsWith('--shard='));
