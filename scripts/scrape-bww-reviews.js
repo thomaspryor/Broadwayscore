@@ -94,7 +94,7 @@ function isGarbageOutlet(outletName) {
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
-async function fetchHtml(url) {
+async function fetchHtmlSingle(url) {
   if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
   const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
   return new Promise((resolve, reject) => {
@@ -110,6 +110,22 @@ async function fetchHtml(url) {
     req.on('error', reject);
     req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+async function fetchHtml(url, maxRetries = 2) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchHtmlSingle(url);
+    } catch (e) {
+      lastError = e;
+      if (attempt < maxRetries) {
+        const delay = 3000 * (attempt + 1);
+        await sleep(delay);
+      }
+    }
+  }
+  throw lastError;
 }
 
 async function googleSearch(query) {
