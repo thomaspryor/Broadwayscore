@@ -45,7 +45,17 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
 - **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
-- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`
+- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`
+- **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
+
+## `opening-night-reviews.yml`
+- **Runs:** Daily at 5 AM UTC (midnight EST), or manually
+- **Does:** Finds shows that opened in the last 2 days (by `openingDate`), triggers `gather-reviews.yml` to catch opening night reviews the same evening they're published
+- **Why:** The morning `update-show-status.yml` (8 AM UTC) fires before reviews exist (~10-11 PM EST). This evening workflow catches reviews after publication.
+- **Options:** `lookback_days` (default 2)
+- **Guards:** Checks if gather-reviews is already running before triggering
+- **No secrets needed** beyond `GITHUB_TOKEN`
+- **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
