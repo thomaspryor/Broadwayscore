@@ -11,5 +11,60 @@
   "bwwExcerpt": "For fans of Diamond, the show has already fully delivered on its musical promise, with songs well-sung and performed mostly by Nick Fradiani as the younger version of Diamond. Fradiani has the sound down, and the charisma.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For fans of Diamond, the show has already fully delivered on its musical promise, with songs well-sung and performed mostly by Nick Fradiani.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - 'fully delivered' and 'well-sung' are positive, but the 'for fans' qualifier suggests limited appeal. Given single excerpt warning and cautious tone, scoring lower end of Positive range. | GPT-4o: The excerpt praises the show's delivery on its musical promise and highlights the performance of Nick Fradiani. However, the recommendation seems targeted towards fans, indicating a positive but somewhat qualified endorsement. | Gemini: The review excerpt indicates a positive experience, particularly for fans of Neil Diamond, with praise for the singing and performance. However, due to the limited text, the confidence is low. | Kimi: The excerpt offers enthusiastic praise for the musical delivery and lead performance, stating the show 'fully delivered on its musical promise,' though the qualification 'for fans of Diamond' and the single-excerpt limitation keep it in the upper Positive range rather than a universal rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:56:09.680Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The musical, which opened Tuesday at the St. James Theatre, is short, some 95 minutes. Just right for an MTV generation weaned on YouTube clips and music videos. 'American Idiot,' in fact, plays like one. Wildly diverting to look it, the show has the barest wisp of a story and minimal character development. At best, its slacker guys are sketchy portraits, prototypes rather than real people.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wildly diverting to look it, the show has the barest wisp of a story and minimal character development.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises the visual spectacle ('wildly diverting to look at') but criticizes fundamental elements like story and character development. With only one excerpt available, this suggests a mixed verdict that acknowledges entertainment value while noting significant flaws. | GPT-4o: The review describes the show as visually engaging but criticizes its lack of story and character depth. The single excerpt suggests a mixed verdict, with entertainment value but significant narrative shortcomings. | Gemini: The review notes the show is visually appealing and short, but criticizes the lack of story and character development, suggesting a mixed experience. | Kimi: The excerpt offers strong praise for the visual spectacle ('wildly diverting') but significant criticism of the story and character development ('barest wisp of a story,' 'sketchy portraits'), creating a mixed assessment that appreciates the style while noting the lack of substance. Confidence is low due to availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:30:04.190Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

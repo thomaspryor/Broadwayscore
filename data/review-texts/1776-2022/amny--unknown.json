@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "I admire the considerable thought and enterprise that went into creating this production, while still finding to be overwhelmingly problematic and frustrating, especially in the over-the-top manner that many songs have been reconceived. It is full of provocative images and questionable choices that are worthy of extended analysis and debate.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I admire the considerable thought and enterprise that went into creating this production, while still finding to be overwhelmingly problematic and frustrating",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly states they find the production 'overwhelmingly problematic and frustrating' despite admiring the effort. This balanced but ultimately disappointed assessment places it in mixed territory, leaning toward the lower end due to 'overwhelmingly' negative language. | GPT-4o: The review acknowledges the thought and enterprise behind the production but finds it problematic and frustrating, suggesting a mixed reception. The excerpt's tone and content indicate a balance of positive and negative elements. | Gemini: The review expresses admiration for the production's thought and enterprise, but also finds it \"overwhelmingly problematic and frustrating.\" This suggests a mixed reaction, making it fall into the Mixed bucket. | Kimi: The excerpt presents a conflicted assessment, acknowledging the production's ambition and 'provocative images' while describing it as 'overwhelmingly problematic and frustrating,' placing it in the mixed category with low confidence due to the limited single-excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:31:36.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

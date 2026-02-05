@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But polished performances, slick choreography (by Sergio Trujillio) and a slate of 31 Motown tunes should satisfy audiences who might not be looking for probing storytelling, as long as the show delivers well-performed hits. That it does, as it centers on the story of the classic quintet of performers singing \"Cloud Nine,\" \"If You Don't Know Me By Now,\" \"My Girl,\" \"I'm Gonna Make You Love Me\" and the title song, among others - including some songs that weren't the group's own. Roma Torre, NY1: T",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "should satisfy audiences who might not be looking for probing storytelling, as long as the show delivers well-performed hits",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges the show delivers what it promises (polished performances, hits) but suggests limited storytelling depth. This is a positive but reserved recommendation. | GPT-4o: The excerpt highlights polished performances and slick choreography, suggesting a positive experience for audiences. However, it also notes that the show may lack probing storytelling, indicating some reservations. The single excerpt and lack of full context lower confidence. | Gemini: The review suggests that the show is enjoyable for those seeking well-performed hits, but implies that it lacks depth in storytelling. Given the single excerpt, I'm scoring it as positive with reservations and low confidence. | Kimi: The excerpt offers qualified praise for the performances and musical numbers while explicitly noting the lack of 'probing storytelling,' indicating a mildly positive recommendation aimed at audiences prioritizing hit songs over narrative depth. With only one excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:02:48.403Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

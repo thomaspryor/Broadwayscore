@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Mays is as funny evoking the characters' often-grisly ends as he is giving them quirky life. The buff, blustering major is undone by his machismo, while poor, delicate Henry - whose particular fondness for Monty informs the side-splitting duet Better with a Man, one of several catchy, clever songs by composer/lyricist Steven Lutvak and lyricist/librettist Robert L. Freedman - finds his beloved little buzzers turned unwittingly against him...The actor who plays Monty, Bryce Pinkham, is pretty of",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mays is as funny evoking the characters' often-grisly ends as he is giving them quirky life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for performances ('as funny', 'side-splitting') and songs ('catchy, clever'), but text cuts off mid-sentence. Given positive language and performance praise, scored in upper Positive range due to single excerpt warning. | GPT-4o: The excerpt praises the performances and the music, highlighting the humor and cleverness of the songs. However, with only one excerpt available, the confidence is low due to potential cherry-picking. | Gemini: The excerpt praises the performances and songs, suggesting a positive experience. However, due to the limited text, confidence is low. | Kimi: The excerpt features clearly positive evaluative language ('side-splitting', 'catchy, clever', 'funny') praising both the performances and the score, indicating a strong recommendation. However, confidence is low due to the single-excerpt limitation and truncated text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:20:45.966Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

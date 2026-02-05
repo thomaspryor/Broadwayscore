@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'A Delicate Balance' proves to be the perfect vehicle for Close...On the surface, Agnes seems like an easy role to play -- a cold, emotionless monster who always appears to be in control. But Close paints a much more complex portrait. Her Agnes is a woman carrying layers of sadness and loss under that strength; A woman who allows herself to breathe through humor and love. It's a transfixing performance. Understated, yet the glue that holds everyone together. And Albee's words -- often presented in long, compound, poignant paragraphs -- will sound like pure poetry coming out of Close's mouth...Lithgow never lets us think that Tobias is a fool. He's just walked away from the battlefield. And when Tobias eventually returns to the fight in a pivotal scene in the play's third act, Lithgow leaves him raw, exposed and completely defenseless. MacKinnon, who won a Tony for directing the 2012 revival of Albee's 'Who's Afraid of Virginia Woolf,' guides these greats through the author's lengthy literature wisely, striking her own delicate balance between pacing and performance.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a transfixing performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Close's 'transfixing' performance and Lithgow's work, plus positive assessment of direction. Single excerpt warning suggests this represents genuine enthusiasm, placing it in upper Positive range. | GPT-4o: The excerpt praises the performances of Close and Lithgow, as well as the direction by MacKinnon, indicating a strong recommendation. However, with only one excerpt available, confidence is low. | Gemini: The review is overwhelmingly positive, praising Glenn Close's performance as \"transfixing\" and the direction as striking a \"delicate balance.\" The excerpt focuses on the strengths of the production and performances, indicating a strong recommendation. | Kimi: The excerpt offers strong praise for the lead performances and direction, describing Close as 'transfixing' and the direction as 'wise,' though as a single curated excerpt it may not represent the full critical assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:14:14.344Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

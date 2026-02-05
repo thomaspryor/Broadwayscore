@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Patrick Stewart and Ian McKellen bring their formidable theatrical gifts to Samuel Beckett's existential masterpiece in a production that finds fresh meaning in familiar territory.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -70,5 +70,60 @@
   "sourceMethod": "brightdata",
   "wordCount": 455,
   "tierReason": "Missing proper ending or other signals",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Patrick Stewart and Ian McKellen bring their formidable theatrical gifts to Samuel Beckett's existential masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praises the lead performances and production as finding 'fresh meaning,' suggesting a positive assessment, but extremely limited text requires low confidence. | GPT-4o: The excerpt praises the performances of Stewart and McKellen and suggests the production finds 'fresh meaning,' indicating a strong positive reception. However, due to the limited text, confidence is low. | Gemini: The review excerpt praises the performances of Stewart and McKellen and notes the production finds fresh meaning. Given the limited text, it's likely a positive review, but confidence is low due to truncation. | Kimi: The excerpt offers clear praise for both the star performances ('formidable theatrical gifts') and the production's interpretive success ('finds fresh meaning'), indicating a recommendation, though the limited excerpt status necessitates conservative scoring.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:15.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 90,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

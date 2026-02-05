@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It's consistently satirical, insistently techno (video projections illustrate the world of protagonist Patrick Bateman) and hyper-raunchy...Alas, there's no drawing blood from a stone. The weak link is Duncan Sheik's inaccessible score, which doesn't come near the level of 'Spring Awakening,' or his underrated 'Whisper House'...we witness a hodgepodge of prosaic production numbers, with surprisingly little gore...Walker's nailed the requisite mix of narcissism, rage and soullessness, even if his Bateman seems a more tender fella than that icicle Christian Bale, from the film...Alice Ripley...deserves better than what she gets here, a one-dimensional part as Patrick's mother...mass killings are routinely reported on our 65-inch flat-screens. This may be why 'American Psycho' failed to stir me: The notion that evil lurks where we may not expect to find it isn't shocking anymore.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This may be why 'American Psycho' failed to stir me: The notion that evil lurks where we may not expect to find it isn't shocking anymore.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising Walker's performance, the critic finds fundamental flaws: 'weak link' score, 'hodgepodge of prosaic production numbers,' and ultimately states the show 'failed to stir me.' The negative elements outweigh the isolated positive notes. | GPT-4o: The review highlights significant issues with the score and production, suggesting disappointment. While there is some praise for performances, the overall tone is negative, focusing on the show's shortcomings and lack of impact. | Gemini: The review has both positive and negative aspects. It praises the lead performance but criticizes the score and overall impact, leading to a mixed classification. | Kimi: The critic explicitly states the show 'failed to stir me,' criticizes Duncan Sheik's score as inaccessible and weaker than his past work, and calls the production numbers 'prosaic' and surprisingly lacking in gore, despite praising some performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:35:56.311Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

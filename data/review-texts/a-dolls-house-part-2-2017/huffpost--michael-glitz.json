@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Now with three of the four roles featuring new performers, you're suddenly not sure who's going to win or how badly the losers will feel. Julie White is - perhaps surprisingly - more vulnerable than Metcalf. (I expected her to double down on the humor, but she pulls a little rope-a-dope on us; you're not quite sure she'll bounce back after every round.) Erin Wilhelmi chooses a less razor sharp and yet more poignant angle on the daughter that Nora left behind. (I never worried for Rashad's charac",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Julie White is - perhaps surprisingly - more vulnerable than Metcalf.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows nuanced praise for new cast performances, suggesting improvements over previous production. Text is clearly truncated mid-sentence, making full verdict uncertain. | GPT-4o: The excerpt praises the performances of the new cast members, highlighting their vulnerability and poignancy. However, without a full review or clear verdict, the positive tone is mild and the confidence is low. | Gemini: The review excerpt focuses on the performances of the new cast members, highlighting their vulnerability and poignancy. While not an overwhelming rave, the positive tone and focus on the actors' interpretations suggest a positive, but reserved, recommendation. Confidence is low due to the limited text. | Kimi: This single excerpt offers clearly positive assessments of the replacement cast, praising White's vulnerability and Wilhelmi's poignant interpretation. Following the single-excerpt protocol for clearly positive quotes, this scores in the upper Positive range (80-84), though confidence remains low given the limited context and truncated ending.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:18:13.459Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

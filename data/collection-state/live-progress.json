@@ -1,27 +1,15 @@
 {
-  "updatedAt": "2026-02-05T16:39:29.344Z",
-  "processed": 3,
-  "failed": 27,
-  "successRate": "10.0%",
+  "updatedAt": "2026-02-05T18:11:10.643Z",
+  "processed": 58,
+  "failed": 62,
+  "successRate": "48.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 7,
     "browserbase": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 28,
     "brightdata": 0,
-    "archive": 1
+    "archive": 23
   },
-  "browserbaseSessions": 1,
-  "recentActivity": [
-    {
-      "t": "2026-02-05T16:30:02.708Z",
-      "event": "bb-session",
-      "session": "3347707f",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
-    },
-    {
-      "t": "2026-02-05T16:30:04.493Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }

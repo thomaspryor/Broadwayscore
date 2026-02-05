@@ -11,5 +11,60 @@
   "bwwExcerpt": "For my first show of 2025, A Beautiful Noise was ‘so good, so good, so good!’ Baby boomers may get the most out of it, but youngsters should still find themselves toe-tapping countless times throughout the night. This not only serves as a nice throwback to a bygone era, but also as an empowering tribute to a music icon.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This not only serves as a nice throwback to a bygone era, but also as an empowering tribute to a music icon.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiasm ('so good, so good, so good!') and broad appeal noted, but single excerpt warning requires caution about full review sentiment. | GPT-4o: The excerpt uses enthusiastic language ('so good, so good, so good!') and highlights both nostalgia and empowerment, indicating a strong positive recommendation. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The critic uses the show's catchphrase and calls it an \"empowering tribute\", suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt is unreservedly positive and enthusiastic, praising the show's appeal to multiple generations and its value as an 'empowering tribute,' warranting a score in the upper Positive range. Confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:53:29.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

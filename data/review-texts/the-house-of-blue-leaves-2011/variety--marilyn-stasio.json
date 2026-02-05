@@ -44,5 +44,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 605,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Guare's iconic play not only holds up, it still sets the bar for smart comic lunacy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise for the revival's faithfulness, the play itself ('iconic', 'sets the bar'), and particularly Falco's 'genius' performance. Despite some reservations about Leigh's interpretation compared to the original, the overall assessment is clearly positive with enthusiastic language about the production's quality. | GPT-4o: The review is filled with praise for the production, performances, and the play itself, describing it as 'transporting' and 'insanely funny'. The critic highlights the successful casting and the enduring quality of the play, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the revival's faithfulness, the performances (especially Stiller and Falco), and the play's enduring quality. The critic clearly recommends seeing it. | Kimi: The review offers enthusiastic praise for the revival as 'transporting' and the play as 'insanely funny' that 'sets the bar', while hailing Falco's performance as 'genius' and Stiller as 'excellently cast', despite one reservation about Leigh's interpretation. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:19:18.756Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 81,
+    "kimiScore": 88,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

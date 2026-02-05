@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "And Washington, despite his fine work, doesn't reach down to reveal the shattering impact on Walter of his dream's destruction. The one performer who allows us inside is Okonedo, a British actress making a superb New York stage debut. Using all the details of the actor's art - small gestures, slight changes in expression - she somehow reveals Ruth's soul. And that makes her longing to establish the family in its own home the most affecting dream of all.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington, despite his fine work, doesn't reach down to reveal the shattering impact on Walter of his dream's destruction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt shows mixed assessment - criticizes lead performance while praising supporting actress. Limited text prevents clear overall verdict determination. | GPT-4o: The excerpt praises Okonedo's performance but criticizes Washington for not fully conveying the impact of his character's dream. The overall tone suggests a mixed review with standout moments. | Gemini: The review praises Okonedo's performance as superb and affecting, while noting Washington's performance doesn't fully reach the emotional depth. Given the single excerpt, it's a positive but qualified recommendation. | Kimi: Single excerpt shows qualified praise for Washington ('fine work' but lacking 'shattering impact') alongside rave reviews for Okonedo's 'superb' debut, suggesting a mildly positive reception centered on standout performances. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:35:17.174Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

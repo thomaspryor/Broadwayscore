@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In the book 'Act One,' as well as its stage adaptation, the producer of 'Once in a Lifetime' tells the very young Hart that he's written a good but 'noisy' play...The Lincoln Center Theater production of 'Act One' boasts 22 actors, most of them playing multiple roles, and there's a constantly revolving set of three tiers that features more than a dozen locales ranging from rooftops to stoops to alleys to theaters to offices to restaurants to speakeasies. Designed by Beowulf Boritt, this cityscape makes the original set for 'Sweeney Todd' at the old Uris Theater look like a kids' jungle gym...The producer in Hart's book wasn't sure about the word 'noisy.' Regarding Lapine's 'Act One,' the word 'fast' is closer to the mark...Shalhoub also does triple duty, playing not only the mature Hart and Hart's father but Kaufman, as well. Watching Shalhoub's many physical transformations is one of the production's greatest pleasures and its major element of suspense...",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Watching Shalhoub's many physical transformations is one of the production's greatest pleasures and its major element of suspense.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the elaborate production design and highlights Shalhoub's performance as a major pleasure. However, with only one curated excerpt available, the full verdict may not be represented. | GPT-4o: The excerpt highlights the impressive set design and Shalhoub's performance as key strengths, suggesting a positive view. However, the limited excerpt and lack of overall verdict make the confidence low. | Gemini: The review highlights the impressive set design and Shalhoub's performance, but the overall tone is mildly positive due to the limited excerpt available. | Kimi: Single excerpt praises Tony Shalhoub's performance as one of the 'greatest pleasures' and admires the elaborate revolving set design, indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:57:37.496Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

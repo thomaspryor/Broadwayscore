@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Nance is a beautifully crafted play about the costs of hiding, and Nathan Lane gives one of his finest performances as Chauncey Miles, a burlesque comic who specializes in effeminate stereotypes while concealing his own homosexuality.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -45,5 +45,59 @@
   "archiveOrgTimestamp": "20240718052630",
   "archiveOrgUrl": "http://web.archive.org/web/20240718052630/https://www.vulture.com/2013/04/theater-review-the-nance.html",
   "wordCount": 1409,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lane, in the apotheosis of his sad clown routine, is sensational throughout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear recommendation with praise for Lane's performance and Beane's writing, but acknowledges significant flaws in supporting elements and structure that prevent it from being a stronger positive. | Gemini: The review is mostly positive, praising Nathan Lane's performance and the play's exploration of gay identity. However, it notes some flaws in the storytelling and direction, leading to a recommendation with reservations. | Kimi: While the review notes significant flaws in the storytelling and supporting cast, it offers unqualified praise for Nathan Lane's lead performance and recommends the production as a showcase for his genius, calling it his best role in years.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:13:20.867Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": ": Directed by three-time Tony winner Jack O'Brien ('Hairspray,' 'Henry IV,' 'The Coast of Utopia'), this revival gets to the heart of Miller's writing and brings out increasingly intense and layered performances, making for highly compelling and confrontational theater. Period costumes, an extensive exterior set design and video projections between scenes further enrich a fine production.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "making for highly compelling and confrontational theater",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, performances, and production values with clear positive language ('highly compelling,' 'fine production'), but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt praises the production for its compelling nature and strong performances, indicating a positive review. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses positive language such as \"highly compelling\", \"intense and layered performances\", and \"fine production\", indicating a positive recommendation. | Kimi: The excerpt praises the direction for bringing out intense, layered performances and describes the show as 'highly compelling' and 'fine,' indicating a clear positive recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:11:16.635Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

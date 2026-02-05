@@ -31,5 +31,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20250727163553/https://www.newyorker.com/magazine/2022/10/31/topdog-underdog-back-on-broadway-still-has-its-eye-on-the-american-long-con",
   "contentTier": "complete",
   "wordCount": 1379,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are both wonderful, but Hawkins gives a sly, peekaboo performance that rolls up next to you like a grenade.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Shaw praises the lead performances as 'wonderful' and 'cinematically fine-grained' while acknowledging the production's limitations. She finds Leon's direction misses some of the play's deeper stylistic elements, but the overall assessment remains positive about the acting and the work itself. | GPT-4o: The review praises the performances and direction, noting the production's engrossing realism and the actors' wonderful performances. Despite some minor critiques, the overall tone is strongly positive. | Gemini: The review is mostly positive, praising the actors and the play's themes, but it also notes some shortcomings in the direction and transitions, leading to a recommendation with reservations. | Kimi: Shaw praises the lead performances as 'wonderful' and calls the revival 'often superb,' but criticizes the direction for missing the play's allegorical and expressionistic elements, resulting in a qualified but firm recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:24:59.226Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

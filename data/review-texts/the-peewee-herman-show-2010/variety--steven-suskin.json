@@ -38,5 +38,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 441,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pee-wee fans will have plenty of that; newcomers are unlikely to be converted, and might just as well stay home.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Clear division between fans who will love it and general audiences who won't connect. The critic acknowledges quality production values but doesn't recommend it broadly, suggesting potential playgoers 'follow their instincts' if in doubt. | GPT-4o: The review suggests that the show is enjoyable for fans of Pee-wee Herman but not for newcomers, who might not appreciate it. The recommendation is conditional, appealing mainly to existing fans, which places it in the Mixed bucket. | Gemini: The review clearly states that the show is enjoyable for fans but not recommended for newcomers, indicating a mixed reception. | Kimi: While the review praises the slick staging and acknowledges that existing fans will have a 'field-day,' it explicitly discourages general audiences from attending and warns that the show often feels tedious, resulting in a qualified, split verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:21:24.932Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

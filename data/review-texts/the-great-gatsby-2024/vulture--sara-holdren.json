@@ -35,5 +35,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20260103203214/https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html",
   "duplicateTextOf": "vulture--helen-shaw.json",
   "wordCount": 1294,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Marc Bruni's jazz-hands-happy direction, this Gatsby feels like it belongs on a cruise or in a theme park.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic consistently criticizes the production as vapid, garish, and missing the novel's deeper meaning, calling it cruise-ship entertainment and criticizing most performances except Zdrojeski's Tom Buchanan. | GPT-4o: The review criticizes the production's direction, design, and adaptation of the source material, suggesting it lacks depth and feels superficial. Despite some praise for individual performances, the overall tone is negative. | Gemini: The review is largely negative, criticizing the direction, set design, and overall feel of the production. While praising one performer, the overall assessment is that the show misses the spirit of the novel. | Kimi: While praising individual performances (particularly Zdrojeski's), the critic heavily criticizes the direction, design, and adaptation for being superficial and missing the spirit of Fitzgerald's novel, calling it a 'vapid musical-shaped-musical' and 'monstrosity' that inflicts suffering on its talented cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:18:07.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

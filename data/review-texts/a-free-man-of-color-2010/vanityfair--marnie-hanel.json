@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Despite the production's clever direction, gorgeous costumes, inventive sets, and skilled cast, it's a toughy. With an original run time of five and a half hours (now coming in at three), one can imagine director George C. Wolfe's trimming Guare's script as a tailor would Cornet's jacket. But there's only so much one can do when given too much fabric.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the production's clever direction, gorgeous costumes, inventive sets, and skilled cast, it's a toughy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises multiple production elements but ultimately calls it 'a toughy' and suggests fundamental structural problems that can't be fixed. Single excerpt warning applies - this balanced negative assessment suggests mixed reception. | GPT-4o: The review acknowledges positive elements like direction, costumes, sets, and cast, but ultimately describes the show as 'a toughy' due to its length and script issues. The single excerpt provides a mixed impression, leading to a low-confidence score. | Gemini: The review acknowledges positive aspects like direction, costumes, sets, and cast, but ultimately suggests the script is too unwieldy, leading to a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt acknowledges strong production elements (direction, design, cast) but uses 'Despite' to signal these are outweighed by the show's excessive length and difficulty, describing it as 'a toughy' with 'too much fabric' to trim.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:17:52.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "With most of its stellar original cast from the Steppenwolf Theatrein Chicago intact, Lisa D'Amour's 'Airline Highway' moves to Broadway as...a gentle, even sentimental, portrait of those who keep New Orleans humming...D'Amour, whose previous works include another Steppenwolf premiere, 'Detroit,' has positioned herself as a chronicler of the souls of American towns and cities...But while much of this play, warmly directed both in Chicago and on Broadway by Joe Mantello, is about the lives of those who form a tight community in their cheap hotel, the other side of D'Amour's protective instincts involves the preservation of New Orleans' distinctively outre counterculture.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "warmly directed both in Chicago and on Broadway by Joe Mantello",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes the play as 'gentle, even sentimental' with 'warm' direction, suggesting positive reception but limited text makes full assessment difficult. | GPT-4o: The excerpt highlights a positive view of the play as a 'gentle, even sentimental, portrait' and mentions 'warmly directed,' suggesting a positive reception. However, the single excerpt warning and lack of a full review text necessitate a cautious approach, placing the score at the lower end of the Positive range. | Gemini: The review describes the play as a 'gentle, even sentimental, portrait'. While not overwhelmingly enthusiastic, it suggests a positive experience. Given the limited excerpt, confidence is low. | Kimi: The excerpt praises the stellar original cast and warm direction by Joe Mantello, offering a clearly positive assessment of the play as a heartfelt community portrait, though the single-excerpt format limits certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:03:46.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

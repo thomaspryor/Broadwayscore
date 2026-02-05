@@ -12,5 +12,60 @@
   "bwwExcerpt": "It all comes together in a stellar, harrowing production that reinforces why Miller's works still endure so many decades later: The world is filled with hardships and horrors, but they can also be lurking in your own backyard.",
   "bwwScore": 10,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It all comes together in a stellar, harrowing production that reinforces why Miller's works still endure so many decades later.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it a 'stellar, harrowing production' and connects it to Miller's enduring legacy. However, with only one excerpt available, confidence is reduced despite the clearly positive language. | GPT-4o: The excerpt uses strong positive language ('stellar', 'harrowing') suggesting a highly favorable view of the production. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt uses the word \"stellar\" to describe the production, and notes that it reinforces the reasons Miller's works endure. This is a strong positive statement, so I scored it as a high positive. | Kimi: The excerpt offers strong praise using words like 'stellar' and emphasizes the production's emotional power and relevance, though the single-excerpt limitation warrants conservative scoring within the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:11:41.822Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 86,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Albee likes his works to be directed by MacKinnon because, I think, she makes no attempt to amplify the angst, but concentrates instead on total veracity in primary colors and on turning her actors -- no small feat here -- into an ensemble of interdependent players...Close, returning to Broadway after many years away, will need more time to fully lubricate her considerable skills in this kind of stage-savvy company, although a note of self-consciousness is hardly inapt for Agnes, and Close is always true. But with Lithgow, everything is always in play. Right now. As Tobias, Lithgow's colors are as ample as his fellow's growing understanding that a drink cart is about all that separates a well-appointed home from an elevator, going down...This is, to say the least, a pleasurable three acts of watching others teeter on the brink, which always helps you last another day on terra firma yourself. Albee's gift to humanity, you might say.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is, to say the least, a pleasurable three acts of watching others teeter on the brink.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises director MacKinnon's approach and Lithgow's performance highly, calls the experience 'pleasurable' and frames it as Albee's 'gift to humanity.' Despite noting Close needs adjustment time, the overall assessment is clearly positive. | GPT-4o: The excerpt describes the production as pleasurable and highlights the performances of Close and Lithgow positively. However, the single excerpt warning suggests caution, so a score at the lower end of the Positive range is appropriate. | Gemini: The review describes the play as \"pleasurable\" and praises Lithgow's performance, but also notes that Close needs more time to fully lubricate her skills. Given the single excerpt and smaller outlet, confidence is low. | Kimi: The critic praises MacKinnon's direction for its 'total veracity,' describes Lithgow's performance as vital and immediate ('everything is always in play'), and calls the experience 'pleasurable' and 'Albee's gift to humanity,' indicating a strong recommendation despite noting Close needs time to adjust to the role.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:13:14.197Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 77,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

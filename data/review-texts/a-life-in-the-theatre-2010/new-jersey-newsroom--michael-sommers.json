@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Wonderfully assured in manner — until later in the story when Robert begins to falter — the craggy-faced Stewart suggests a rather florid artiste of the old school, complete with rich, plummy, vocal accents. Bouncing with youthful energy as John, Knight displays a puppy-dog eagerness that turns more reserved as he matures. The actors' personal interplay backstage might be expressed more intimately than it is here, but apparently director Neil Pepe intends to keep this production on the lighter, brighter side.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wonderfully assured in manner — until later in the story when Robert begins to falter — the craggy-faced Stewart suggests a rather florid artiste of the old school.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt with performance praise ('wonderfully assured', 'bouncing with youthful energy') but notes production limitations ('might be expressed more intimately'). Positive tone but qualified, suggesting lower end of Positive bucket. | GPT-4o: The excerpt provides mixed signals, praising performances but noting a lack of intimacy in the direction. The single excerpt and lack of a clear positive or negative verdict suggest a mixed review. | Gemini: The review praises the actors' performances and suggests the director's choice to keep the production \"on the lighter, brighter side.\" While there are some reservations about the intimacy of the actors' interplay, the overall tone is positive. However, due to the single excerpt and lack of a clear overall recommendation, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the lead performances ('wonderfully assured', 'rich, plummy'), with only a minor reservation about directorial intimacy that is contextualized as intentional, indicating a clearly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:25:19.411Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

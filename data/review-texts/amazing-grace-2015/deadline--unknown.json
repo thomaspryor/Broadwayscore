@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Surefire stories don't write themselves. That's the take-away from Amazing Grace, the epically bad show that opened Thursday at the Nederlander Theatre...If you're going to make a musical about one of the best-known and most-loved songs of all time, you'd better be equal to the task. That, fundamentally, is not the case with the this earnest but cringe-inducing freshman effort by composer-lyricist Christopher Smith...All the principal actors, and particularly Mackey and Cooper, have gorgeous voices...The closing scene is as powerful as it is predictable, as the hymn builds to its climax, sung by the entire company (and many in the audience). Everything that has come before is instantly forgotten.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 35,
+  "llmScore": {
+    "score": 35,
+    "confidence": "medium",
+    "range": {
+      "low": 30,
+      "high": 40
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's the take-away from Amazing Grace, the epically bad show that opened Thursday at the Nederlander Theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic calls it 'epically bad' and 'cringe-inducing' while acknowledging the performers have 'gorgeous voices' and the finale is 'powerful.' This is a negative review where performer praise doesn't redeem the overall poor assessment. | GPT-4o: The review describes the show as 'epically bad' and 'cringe-inducing', indicating a strongly negative verdict. Despite some praise for the actors' voices, the overall tone is dismissive of the production. | Gemini: The review calls the show \"epically bad\" and \"cringe-inducing.\" While praising the actors' voices and the closing scene, the overall assessment is negative. | Kimi: Despite acknowledging gorgeous voices and a powerful closing scene, the critic deems the show 'epically bad' and 'cringe-inducing' with an unqualified negative verdict on the overall production. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:20:58.908Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 28,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

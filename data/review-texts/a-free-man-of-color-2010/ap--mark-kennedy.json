@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The playwright's ambition cannot be denied: It is a geographically sprawling, frantic affair set primarily in New Orleans about the chaotic years at the turn of the 19th century as the Great Powers squabbled and swapped land at a whim. Fictional characters are mixed with historical giants.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is a geographically sprawling, frantic affair",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt describes ambitious scope but uses terms like 'frantic affair' and 'chaotic' that suggest lack of focus. No clear recommendation either way, placing it in mixed range. Low confidence due to limited text. | GPT-4o: The excerpt highlights the ambition of the play but also describes it as 'frantic,' suggesting a mixed impression. The lack of a clear positive or negative verdict and the single excerpt warning lead to a low confidence score in the Mixed bucket. | Kimi: The excerpt offers faint praise regarding the play's scope and ambition while describing it as a 'frantic affair,' suggesting chaotic execution without a clear recommendation. As a single curated excerpt, the overall verdict is ambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:15:43.586Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": null,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

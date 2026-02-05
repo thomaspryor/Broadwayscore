@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But Spokane, which opened Thursday at Broadway's Gerald Schoenfeld Theatre, seems more like an homage to the iconically edgy playwrights who have long inspired McDonagh, or a parody of them. Laden with obscenity, menace and wry humor, this latest effort nods to Harold Pinter and David Mamet, though it doesn't approach the brutal brilliance of their work — or McDonagh's own previous outings.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this latest effort nods to Harold Pinter and David Mamet, though it doesn't approach the brutal brilliance of their work",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic dismisses the play as derivative ('homage' or 'parody') and explicitly states it 'doesn't approach the brutal brilliance' of McDonagh's influences or his own previous work. However, confidence is low due to single excerpt warning - the full review verdict may differ. | GPT-4o: The review excerpt suggests that the play is derivative and does not reach the level of brilliance of McDonagh's previous work or his inspirations. The tone is mixed, acknowledging some qualities like humor but ultimately not recommending it strongly. | Gemini: The review acknowledges some positive aspects (obscenity, menace, wry humor) but ultimately finds the play lacking compared to its inspirations and the playwright's previous work. Given the single excerpt and lack of a clear recommendation, confidence is low. | Kimi: The critic dismisses the play as an imitative homage that fails to achieve the 'brutal brilliance' of its influences or match the quality of McDonagh's earlier work. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:17.807Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

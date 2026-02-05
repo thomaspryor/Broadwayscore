@@ -13,8 +13,8 @@
   "fullText": "George Orwell’s “1984” returned to the best-seller lists earlier this year on the eve of Donald Trump’s inauguration as president of the United States. But Robert Icke and Duncan MacMillan’s new stage adaptation, first staged in the U.K. in 2013 and opening on Broadway Thursday, remains joltingly timely even without a direct nod to current events.",
   "isFullReview": false,
   "textWordCount": 56,
-  "archivePath": "data/archives/reviews/1984-2017/thewrap--thom-geier_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T02:22:45.704Z",
+  "archivePath": "data/archives/reviews/1984-2017/thewrap--thom-geier_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:05:54.338Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -24,15 +24,21 @@
       "error": "Skipped (known-blocked site)"
     },
     {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Paywall detected"
+    },
+    {
       "tier": 2,
       "method": "scrapingbee",
       "success": true
     }
   ],
   "fetchTier": 2,
-  "textQuality": "excerpt",
+  "textQuality": "truncated",
   "truncationSignals": [],
-  "textStatus": "incomplete",
+  "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "textIssues": [
     "Word count too low: 62 (min: 300)"

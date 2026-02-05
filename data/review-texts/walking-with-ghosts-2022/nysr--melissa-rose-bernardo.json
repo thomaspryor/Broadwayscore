@@ -19,5 +19,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "showScoreExcerpt": "\" 'Walking With Ghosts' moves in fits and starts, flickering with imagination before ultimately fading away in a ghostlike haze.\"\n\nRead more",
-  "playbillVerdictUrl": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrnes-book-makes-a-hazy-memory-play/"
+  "playbillVerdictUrl": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrnes-book-makes-a-hazy-memory-play/",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Walking With Ghosts moves in fits and starts, flickering with imagination before ultimately fading away in a ghostlike haze.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The 3/5 star rating and text indicate mixed feelings - praising Byrne's charm and some vivid moments, but criticizing pacing issues and 'dull patches.' The truncated text warning and Show Score excerpt suggest the final verdict may be missing, warranting low confidence. | GPT-4o: The review acknowledges engaging and dramatic moments but also highlights many lackluster stretches, resulting in a mixed assessment. The original 3/5 star rating aligns with a mixed verdict, but the text is truncated, so the confidence is low. | Gemini: The review highlights both engaging and lackluster moments, ultimately suggesting a mixed experience. The truncated text and 3/5 star rating further support this classification. | Kimi: The 3/5 star review praises Gabriel Byrne's stage presence and charm but finds the show uneven with too many lackluster stretches and dull patches for its two-and-a-half-hour runtime, ultimately fading rather than fulfilling its promise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:36:39.659Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 55,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

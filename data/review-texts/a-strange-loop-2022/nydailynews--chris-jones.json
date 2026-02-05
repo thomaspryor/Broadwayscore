@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "As directed by Stephen Brackett, 'A Strange Loop' presents a dilemma for critics. It has many stunning sequences and, more than any musical in years, charts a brave path determined to confront not just the assumptions of the genre but their impact on those who take up the mantle of writing them. But it will not appeal to a broad swath of the theatergoing population. It's not for kids. It likely will offend Black conservatives. And some gay theatergoers will not care for its amplification of self-loathing, nor its determined argument that racism is always in the bedroom.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It has many stunning sequences and charts a brave path but will not appeal to a broad swath of the theatergoing population.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges artistic merit ('stunning sequences', 'brave path') but spends most of the excerpt detailing who won't like it, suggesting mixed reception rather than clear recommendation. | GPT-4o: The review acknowledges 'stunning sequences' and a 'brave path,' suggesting positive elements. However, it also notes limited appeal and potential offense to some audiences, indicating a mixed reception. | Gemini: The review acknowledges the show's strengths and bravery but also points out its potential to offend or alienate certain audiences, suggesting a mixed reception. | Kimi: While the critic praises the show's stunning sequences and artistic bravery, they emphasize significant caveats about its limited appeal and potentially offensive content, framing it as presenting a 'dilemma for critics' rather than issuing a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:42:55.705Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 63,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

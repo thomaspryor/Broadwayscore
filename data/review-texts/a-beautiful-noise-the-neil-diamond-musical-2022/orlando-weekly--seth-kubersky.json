@@ -11,5 +11,60 @@
   "bwwExcerpt": "However, the joyful ebullience of sing-along classics like \"Cherry Cherry\" and \"I'm a Believer\" is repeatedly interrupted by framing scenes of an elderly Diamond (Robert Westenberg) dourly reflecting on his past under the prodding of his psychoanalyst (Lisa Renee Pitts). Although potentially an intriguing premise, Anthony McCarten's book doesn't delve much deeper into Diamond's biography beyond his Wikipedia entry, and its 11th-hour exploration of his foundational generational trauma is given sh",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 58,
+  "llmScore": {
+    "score": 58,
+    "confidence": "medium",
+    "range": {
+      "low": 53,
+      "high": 63
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Although potentially an intriguing premise, Anthony McCarten's book doesn't delve much deeper into Diamond's biography beyond his Wikipedia entry",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed feelings - acknowledges 'joyful ebullience' of songs but criticizes shallow book and interrupting framing device. Text appears cut off mid-sentence, limiting confidence in assessment. | GPT-4o: The review highlights positive elements like the 'joyful ebullience' of the music but criticizes the book for not delving deeper, suggesting a mixed reception. The single excerpt and lack of full context make the confidence low. | Gemini: The review excerpt criticizes the book for not delving deep enough and the exploration of trauma being shallow. The overall tone is negative, suggesting disappointment. | Kimi: The excerpt praises the 'joyful ebullience' of the musical numbers but criticizes the framing device as interruptive and the book as superficial, indicating a split verdict where the performances entertain but the storytelling fails to deliver depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:56:45.337Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 55,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

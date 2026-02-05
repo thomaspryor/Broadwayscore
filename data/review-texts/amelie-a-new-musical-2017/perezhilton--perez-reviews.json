@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Thankfully, Amélie is worth seeing if for no other reason than Phillipa Soo. We first encountered her in 2013 when we saw her off-Broadway in The Great Comet. In this review, we called her \"stunning\". A little show called Hamilton happened since then and she is now a bonafide leading lady of the great white way.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thankfully, Amélie is worth seeing if for no other reason than Phillipa Soo.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation to see the show, but qualification 'if for no other reason than' suggests limited enthusiasm beyond the lead performance. Single excerpt warning applies - this could be cherry-picked positive moment from mixed review. | GPT-4o: The review excerpt provides a positive recommendation based on Phillipa Soo's performance. However, the single excerpt warning and lack of a full review text limit confidence in the overall sentiment. | Gemini: The review excerpt states the show is \"worth seeing\" due to Phillipa Soo's performance, which indicates a positive, but potentially qualified, recommendation. Given the single excerpt, confidence is low. | Kimi: The critic explicitly recommends seeing the show but heavily qualifies the endorsement to the star's performance alone, suggesting limited merit in the production itself. With only one excerpt available, this represents a qualified positive recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:23:14.967Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

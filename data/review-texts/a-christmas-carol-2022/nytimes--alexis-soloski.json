@@ -12,5 +12,59 @@
   "bwwExcerpt": "Creepy and antic, gloomy and giddy, Michael Arden's production capitalizes on every trick in Dickens's story and then pulls a few new ones out of Scrooge's top hat. Peace on earth? Mercy mild? Please. There are moments when you would swear that Mays couldn't possibly be unaccompanied, so raucous is this \"Carol.\" But he is, more or less. (Danny Gardner briefly joins as a wordless specter.) Happily, Mays - who has also triumphed in multiple roles in \"I Am My Own Wife,\" for which he won a Tony Awar",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jefferson-Mays-Brings-One-Man-A-CHRISTMAS-CAROL-To-Broadway-20221121",
   "contentTier": "excerpt",
-  "showScoreExcerpt": "\"This 'Carol,' is a lonelier affair. The script hews closely to the version that Dickens himself toured, with passages of prose narration that cut the goose-fat sentimentality with keen wit and gimlet detail.\"\n\nRead more"
+  "showScoreExcerpt": "\"This 'Carol,' is a lonelier affair. The script hews closely to the version that Dickens himself toured, with passages of prose narration that cut the goose-fat sentimentality with keen wit and gimlet detail.\"\n\nRead more",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The script hews closely to the version that Dickens himself toured, with passages of prose narration that cut the goose-fat sentimentality with keen wit and gimlet detail.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt describes the production as a 'lonelier affair' with a focus on prose narration, suggesting a departure from traditional sentimentality. Without clear praise or criticism, it indicates a mixed impression. | Gemini: The review excerpt suggests a positive assessment, highlighting the script's wit and detail. However, the truncated nature of the text lowers confidence. | Kimi: The excerpt praises the production's 'keen wit' and 'gimlet detail' in adapting Dickens, though noting it is a 'lonelier affair' than other versions, suggesting qualified but genuine appreciation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:04:46.490Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

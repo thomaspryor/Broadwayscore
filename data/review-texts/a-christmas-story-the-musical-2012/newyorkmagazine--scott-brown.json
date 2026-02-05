@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A Christmas Story is what happens when rare respect for source material meets utter sincerity and unimpeachable talent. (Only one moment doesn't stand the test of time: I believe Western culture may be ready to retire the familiar and beloved and, yes, ragingly offensive scene where the waitstaff of a Chinese restaurant serenade the family with \"Deck de harrs with hows of horry!\") Jean Shepherd's America — whether it ever existed or not — is in excellent hands.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Christmas Story is what happens when rare respect for source material meets utter sincerity and unimpeachable talent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise ('rare respect', 'unimpeachable talent', 'excellent hands') with only one dated scene as criticism. Single excerpt warning requires caution, but tone is clearly positive. | GPT-4o: The excerpt praises the show for its respect for the source material and talent, indicating a strong positive sentiment. The mention of a single outdated scene does not significantly detract from the overall positive tone. | Gemini: The review opens with high praise, calling the show a product of \"rare respect\" and \"unimpeachable talent.\" While it notes one potentially outdated scene, the overall tone is very positive and recommends the show. | Kimi: The excerpt offers strong praise for the production's 'unimpeachable talent' and 'excellent' handling of the source material, with only minor criticism regarding one dated scene, indicating a highly favorable assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:07:45.590Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

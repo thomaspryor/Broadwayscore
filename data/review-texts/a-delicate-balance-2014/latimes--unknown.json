@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": ": Director Pam MacKinnon...has paid exquisite attention to surface detail in her handsome revival...The work is overextended, not always dramatically convincing and sometimes too knowingly articulated. Yet there's something intriguing about its puzzling mix of realism and absurdism, which are ultimately reconciled in the dazzling display of Albee's fearless theatricality...This is an ensemble effort...The performances are all sharp -- Higgins' Edna is especially crisp -- but they're still coalescing. This is the kind of work that will deepen over time. As Agnes...Close is all patrician glamour and icy control...Her portrayal reveals the heavy burden Agnes has been carrying of keeping her family -- and her own psyche -- intact...Lithgow movingly depicts the panicked struggle of a man who realizes that he's in danger of being buried alive...If this production of 'A Delicate Balance' teeters unsteadily at moments, it remains always fascinating to behold. The pleasure lies less in the play's profundity than in its carefully coordinated staginess.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If this production of 'A Delicate Balance' teeters unsteadily at moments, it remains always fascinating to behold.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the production 'fascinating to behold' with 'sharp' performances and praises the director's 'exquisite attention to detail,' but acknowledges significant flaws like being 'overextended' and 'not always dramatically convincing.' Single excerpt limits confidence. | GPT-4o: The review acknowledges flaws ('overextended', 'not always dramatically convincing') but finds the production 'fascinating to behold' with 'dazzling' theatricality. The excerpt suggests a positive view with reservations, fitting the lower end of the Positive range. | Gemini: The review acknowledges flaws (\"overextended\", \"not always dramatically convincing\") but ultimately finds the production \"fascinating to behold\" and praises the performances and direction. The overall tone is positive, but with reservations. | Kimi: The critic offers qualified praise, acknowledging the play's overextended structure and occasional dramatic weakness while commending the exquisite direction, sharp ensemble performances, and dazzling theatricality, ultimately recommending the production as fascinating viewing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:10:30.490Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 75,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

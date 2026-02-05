@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20250429060410",
   "archiveOrgUrl": "http://web.archive.org/web/20250429060410/https://ew.com/article/2016/12/01/bronx-tale-ew-stage-review/",
   "wordCount": 764,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chances are this Bronx Tale won't move you to tears, but Trujillo ensures that it will at least move you a little.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review gives a B- grade and delivers a mixed assessment - acknowledging good performances and choreography while criticizing the heavy-handed earnestness, predictable book, and lack of emotional depth. The final verdict is lukewarm but not discouraging. | GPT-4o: The review acknowledges some positive elements like the choreography and performances but criticizes the book and music, leading to an overall mixed impression. The text is truncated, so the final verdict may be missing. | Gemini: The review is mixed, praising some aspects like the choreography and cast while criticizing the book and music. The truncated text and B- grade suggest a lukewarm recommendation. | Kimi: The critic praises the cast and choreography but finds the book heavy-handed and earnest, criticizing the score and lyrics as restrictive and close to 'greeting-card hokum.' The B- grade and lukewarm final assessment indicate a qualified, mixed reception rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:53:05.248Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Kevin Spacey and Eve Best bring commanding performances to Eugene O'Neill's late masterpiece in a revival that honors both the playwright's dark poetry and the characters' wounded humanity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Kevin Spacey and Eve Best bring commanding performances to Eugene O'Neill's late masterpiece in a revival that honors both the playwright's dark poetry and the characters' wounded humanity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kevin Spacey and Eve Best bring commanding performances to Eugene O'Neill's late masterpiece in a revival that honors both the playwright's dark poetry and the characters' wounded humanity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises lead performances as 'commanding' and describes the revival as honoring O'Neill's work. However, confidence is low due to limited text from curated excerpt. | GPT-4o: The excerpt praises the performances and the revival's faithfulness to the playwright's work, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the performances as \"commanding\" and states the revival \"honors\" the playwright's work, indicating a positive assessment. Given the single excerpt warning, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers clear praise for the lead performances as commanding and notes the revival honors O'Neill's poetry and the characters' humanity, indicating a solid recommendation. However, as a single curated excerpt, it may not capture the full review verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:26:04.101Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

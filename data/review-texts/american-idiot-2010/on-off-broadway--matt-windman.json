@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I suspect that I may grow to appreciate 'American Idiot' over time, which is essentially what happened to me with 'Passing Strange.' At first, I was thrown off by the lack of coherent storytelling in 'Passing Strange.' But after listening to the album several times and then watching the filmed performance on DVD, I became able to appreciate the musical on its own terms. I even listened to the original album today on my IPOD. It's also worth pointing out that the Green Day fanbase, by already knowing the lyrics by heart, will be better able to follow the 'Jesus of Suburbia' plotline in spite of its sketchiness and fill in (or ignore entirely) all the gaps. Nevertheless, I need to be true to my gut instincts; and for the time being, will proudly air my initial grievances over the lack of character and story development in 'American Idiot.'",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect that I may grow to appreciate 'American Idiot' over time, which is essentially what happened to me with 'Passing Strange.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show's flaws (lack of coherent storytelling, character development) but suggests it may grow on them over time. This is neither a recommendation nor a dismissal, indicating a mixed response. | GPT-4o: The review expresses initial grievances about the lack of character and story development, suggesting a mixed reaction. The critic notes potential for appreciation over time but currently has reservations. | Gemini: The critic expresses initial grievances but also suggests potential for appreciation over time, indicating a mixed reaction. The single excerpt and lack of a clear recommendation contribute to the medium confidence. | Kimi: The critic explicitly states they have grievances regarding the show's lack of coherent storytelling and character development, indicating a current negative assessment despite acknowledging it may appeal to Green Day fans or improve with familiarity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:33:08.485Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

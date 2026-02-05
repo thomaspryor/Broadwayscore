@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The structural bones of a procedural investigation thriller laced with cinematic flashbacks might be timeworn after years of movies and TV, but Leon invigorates the drama with interludes of song and movement that draw a blistering line connecting the men serving their country during wartime to those working as slave or prison chain-gang labor. Those stylistic flourishes - the first of them emerging out of darkness like increasingly unquiet voices from the past in the production's arresting openi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leon invigorates the drama with interludes of song and movement that draw a blistering line connecting the men serving their country during wartime to those working as slave or prison chain-gang labor.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the director's innovative approach ('invigorates'), artistic vision ('blistering line'), and striking production elements ('arresting opening'). However, confidence is low due to incomplete text and potential cherry-picking of positive quote. | GPT-4o: The excerpt praises the production's stylistic flourishes and invigorating elements, suggesting a positive view. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The review excerpt highlights the show's invigorating interludes and stylistic flourishes, suggesting a positive experience. However, due to the limited text, confidence is low. | Kimi: The critic praises director Leon for invigorating familiar procedural structures with powerful stylistic flourishes and an arresting opening, indicating a clear recommendation despite acknowledging timeworn elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:35:15.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

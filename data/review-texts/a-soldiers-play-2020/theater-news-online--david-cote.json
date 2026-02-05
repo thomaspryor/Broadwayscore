@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Roundabout Theatre Company's lean, suspenseful and entertaining revival of Charles Fuller's A Soldier's Play, while it unfolds during World War II, feels quite relevant. Fuller's murder mystery won the Pulitzer in 1982, was turned into a successful film in 1984, and now makes a belated but momentous Broadway debut thanks to an appealing cast and Kenny Leon's firm directing hand. Why such staying power? Easy: American racism is evergreen.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Roundabout Theatre Company's lean, suspenseful and entertaining revival of Charles Fuller's A Soldier's Play feels quite relevant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls the revival 'lean, suspenseful and entertaining' and notes it has an 'appealing cast' with 'firm directing,' but with only one excerpt available, the full verdict may not be represented. | GPT-4o: The excerpt praises the production as 'lean, suspenseful and entertaining' and highlights its relevance, suggesting a positive recommendation. However, with only one excerpt, confidence is low. | Gemini: The review uses positive language such as \"lean, suspenseful and entertaining\" and mentions an \"appealing cast and Kenny Leon's firm directing hand.\" Given the single excerpt, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers consistent praise for the production as 'entertaining,' 'momentous,' and 'appealing' with 'firm' direction, indicating a clear recommendation despite the limited context of a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:36:11.173Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

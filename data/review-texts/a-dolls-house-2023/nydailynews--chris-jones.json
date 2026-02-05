@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -57,5 +57,60 @@
   "textStatus": "partial",
   "sourceMethod": "scrapingbee",
   "wordCount": 758,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The piece is not boring: it has weight and power and gravitas.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic appreciates the innovative approach and Chastain's performance, calling it 'fascinating' and 'remarkable' with 'weight and power,' but questions whether audiences will be satisfied with the minimalist staging. The recommendation is positive but qualified. | GPT-4o: The review praises the production's intimacy, the strong performances, especially by Chastain, and the innovative approach. While it questions if audiences will appreciate the minimal visual elements, it ultimately finds the show powerful and engaging. | Gemini: The review acknowledges the show's unconventional staging and potential drawbacks, but ultimately recommends it, especially for fans of Jessica Chastain. The critic notes the show's weight, power, and gravitas. | Kimi: The critic praises the intimate, minimalist revival for its 'weight and power' and Chastain's performance, explicitly recommending it for her fans, while noting reservations about whether the sparse staging justifies Broadway ticket prices.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:53:34.934Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

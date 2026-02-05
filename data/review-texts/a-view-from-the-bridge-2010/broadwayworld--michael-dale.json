@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The direction seems to greatly favor those seated on stage, and while Strong is admirably forceful, there seems to be a lack of subtlety that the director imposes throughout evening. Rather than let Eddie's desires slowly reveal themselves, he smacks us on the head with them. Also smacking the audience are the bombastic tones of designer Tom Gibbons' lugubrious soundscape, which is peppered with bits of Fauré's Requiem. Miller's fine play would be better served by allowing the actors to provide such subtext.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rather than let Eddie's desires slowly reveal themselves, he smacks us on the head with them.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Critic finds significant faults with the direction's lack of subtlety and bombastic sound design, calling the original play 'fine' but saying it would be 'better served' differently. This suggests the production falls short of the material's potential. | GPT-4o: The excerpt criticizes the direction and sound design, suggesting a lack of subtlety and bombastic elements that detract from the play. While there is some praise for Strong's performance, the overall tone is negative. | Gemini: The review criticizes the direction and sound design for being unsubtle and overbearing, suggesting a negative experience overall. The single excerpt limits confidence. | Kimi: While the critic praises the source material as 'fine' and the lead actor as 'admirably forceful,' the review heavily criticizes the direction for lacking subtlety and 'smacking' the audience with themes rather than allowing slow revelation, and disparages the sound design as 'bombastic' and 'lugubrious,' indicating this production mishandles the play.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:47:23.953Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

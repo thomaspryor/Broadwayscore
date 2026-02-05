@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This age problem is, at minimum, a distraction, an elephant in the room for a play that deserves no such issue in its way. I'd argue it does some damage to the actual play itself, an issue never more apparent than when Lena 'Mama' Younger (LaTanya Richardson Jackson) turns to her daughter-in-law Ruth (Sophie Okonedo) and marvels at how her immature son, having just kicked out a representative from the white residents' association, played by David Cromer, finally has come into his manhood. One is aware that one just has watched a scene of power and assertion, but the notion of the arrival of some kind of delayed maturity for a young man who has felt like a coiled-up spring is, well, stupid. What was everyone thinking? There is one exceptionally fine performance in this otherwise mostly unremarkable revival, staged on a set by Mark Thompson that feels overly fancy for a Chicago apartment house. Okonedo's world-weary but hopeful Ruth is a beautiful piece of acting, at once determined, kind, hopeful, loving and sad.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This age problem is, at minimum, a distraction, an elephant in the room for a play that deserves no such issue in its way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic identifies a fundamental casting problem that damages the play, calls the revival 'mostly unremarkable,' and criticizes multiple elements including the set design. While praising Okonedo's performance, the overall assessment is clearly negative. | GPT-4o: The review highlights significant issues with the production, such as an 'age problem' and an 'unremarkable revival,' despite praising one performance. The overall tone suggests a negative impression, but the single excerpt limits confidence. | Gemini: The review praises Okonedo's performance but finds the revival mostly unremarkable and criticizes a key plot point. This indicates a mixed assessment. | Kimi: While the critic praises Sophie Okonedo's performance as 'exceptionally fine,' they characterize the revival as 'mostly unremarkable' and heavily criticize the central casting age issue as 'stupid' and damaging to the play, suggesting significant reservations about the production overall. | Buckets: claude=Negative, openai=Negative, gemini=Mixed, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:34:45.128Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

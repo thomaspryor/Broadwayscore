@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Fisher's vulnerability and self-deprecating humor make her an enormously appealing presence, even when the material occasionally feels more like a series of well-honed anecdotes than a cohesive theatrical experience.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,59 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 734,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wishful Drinking packs enough laughs to satisfy on its own terms.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review acknowledges Fisher's wit and humor while criticizing the show's emotional depth. Despite reservations about substance, the critic calls it 'winning and frequently hilarious' and says it 'packs enough laughs to satisfy on its own terms,' indicating a qualified positive recommendation. | Gemini: The review is generally positive, highlighting Fisher's wit and the show's humor, but notes a lack of depth and emotional vulnerability, ultimately recommending it as a \"superior standup act\" rather than a fully realized theatrical experience. | Kimi: The critic consistently praises Fisher's humor and performance ('frequently hilarious', 'winning', 'delicious') and finds the show satisfying as entertainment, but criticizes its lack of emotional vulnerability and theatrical depth, calling it a 'superior standup act, not a full-bodied theatrical experience.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:29:20.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

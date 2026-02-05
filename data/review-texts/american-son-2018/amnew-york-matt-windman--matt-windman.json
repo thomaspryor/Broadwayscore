@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "At its best, 'American Son' is smart, mysterious and engrossing - not to mention an effective star vehicle for Washington, who gives a revealing, sympathetic performance in which her character's professional veneer gives way to surmounting doubt and desperation.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At its best, 'American Son' is smart, mysterious and engrossing - not to mention an effective star vehicle for Washington",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The phrase 'At its best' suggests qualified praise, but calling it 'smart, mysterious and engrossing' with praise for Washington's 'revealing, sympathetic performance' indicates a positive recommendation. Single excerpt warning requires caution, but the tone is clearly positive. | GPT-4o: The excerpt praises the show as 'smart, mysterious and engrossing' and highlights Washington's performance as 'revealing' and 'sympathetic'. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt highlights positive aspects such as being 'smart, mysterious and engrossing' and praises Washington's performance, suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt offers qualified praise ('At its best') describing the show as 'engrossing' with a strong lead performance, suggesting a positive but not unreserved recommendation. Scored conservatively within the Positive range due to the qualification and single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:37:26.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

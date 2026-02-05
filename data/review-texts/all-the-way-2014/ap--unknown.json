@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The Johnson who emerges at the Neil Simon Theatre is ferocious and vulgar, likely to grab you by your throat and toss off a disgusting joke or throw around four-letter words. In Bryan Cranston's hands, he's completely irascible - and one of the highlights of the Broadway season... Cranston, fresh off his triumph as a drug kingpin in 'Breaking Bad,' shows what he can do in a Broadway debut, and it's astonishing... Watching Cranston bully, threaten, feel sorry for himself, compromise, bellow and turn the knife is a hoot, no matter which side of the aisle you sit. Like 'House of Cards,' the play explores the ugly sausage of politics and the gulf between the public and private politician...The other real star here is director Bill Rauch, who keeps this jigsaw puzzle humming along. There are countless scenes and a staggering number of parts, and the action spills out into the aisles. But moments melt into the next flawlessly, and the main actors pivot seamlessly, often not waiting for the actors in the last scene to leave.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cranston, fresh off his triumph as a drug kingpin in 'Breaking Bad,' shows what he can do in a Broadway debut, and it's astonishing",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Cranston's 'astonishing' performance, called 'one of the highlights of the Broadway season,' with additional praise for direction. Clear enthusiasm despite single excerpt warning. | GPT-4o: The excerpt provides high praise for Bryan Cranston's performance and the direction by Bill Rauch, describing the show as one of the highlights of the Broadway season. The language used ('astonishing', 'must-see') suggests a rave review. However, the confidence is low due to the single excerpt warning. | Gemini: The review is overwhelmingly positive, praising Cranston's performance as 'astonishing' and calling him 'one of the highlights of the Broadway season.' The direction is also lauded, and the overall tone is enthusiastic. | Kimi: Single excerpt contains enthusiastic praise for Cranston's 'astonishing' performance and 'flawless' direction, calling it a 'highlight of the Broadway season,' though limited context requires cautious scoring in the high-positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:13:19.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Kenny Leon's lively, broadly staged Roundabout revival, which stars a savvy Blair Underwood and a bold-faced David Alan Grier, plays a kind of sly homage to the erotic legacy of that Oscar-nominated film, the stage being filled with a plethora of stunningly buff and good-looking guys - there are no women in the play, but there were plenty around me in the audience at the American Airlines Theatre on 42nd St.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kenny Leon's lively, broadly staged Roundabout revival, which stars a savvy Blair Underwood and a bold-faced David Alan Grier",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with positive descriptors ('lively', 'savvy', 'bold-faced') suggests recommendation, but limited text and potential cherry-picking warrants lower confidence and conservative scoring within Positive range. | GPT-4o: The excerpt praises the production as 'lively' and 'broadly staged' with positive mentions of the cast. However, due to the single excerpt warning, the confidence is low. | Gemini: The review uses positive language like \"lively\" and \"savvy\" to describe the production and performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt uses clearly positive descriptors ('lively', 'savvy', 'bold-faced') and praises the staging and performances, indicating a solid recommendation despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:37:59.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

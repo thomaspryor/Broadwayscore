@@ -44,5 +44,59 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 527,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show retains the quality of serene simplicity that heightens the poignant beauty of the score",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong praise throughout for performances, staging, and production quality. Gyllenhaal's performance is lauded as passionate and committed, Ashford is called 'stunning' and 'enchanting,' and the staging is described as 'inventive' with 'poignant beauty.' | Gemini: The review is positive, highlighting the beauty of the score, the performances of Gyllenhaal and Ashford, and the inventive staging. The critic clearly recommends seeing the show. | Kimi: The review consistently praises the performances (Gyllenhaal's refreshed voice, Ashford's stunning vocals), inventive staging, and the production's beauty using enthusiastic language like 'dazzling,' 'enchanting,' and 'swimmingly,' with no significant reservations about the current Broadway run.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:07:33.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

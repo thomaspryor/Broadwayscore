@@ -12,5 +12,60 @@
   "bwwExcerpt": "Fully competent and coherent, 'Almost Famous' also has many skilled and engaging performers and a nicely droll visual pallet from the designers Derek McLane, David Zinn and Natasha Katz. But when Penny Lane overdoses, the pain of that moment is brushed over with a nervous joke. That's also true of William's sexual awakening and, ultimately, even the rebellion of sister Anita Miller (Emily Schultheis). Irony and pain only rarely enter the building.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fully competent and coherent, 'Almost Famous' also has many skilled and engaging performers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Acknowledges technical competence and skilled performers but criticizes the show's failure to handle emotional depth, with pain 'brushed over' and lack of genuine feeling. Single excerpt limits confidence. | GPT-4o: The review acknowledges the competence and engaging performances but criticizes the lack of depth and emotional impact, suggesting a mixed reception. The single excerpt and lack of full context reduce confidence. | Gemini: The review acknowledges positive aspects like skilled performers and visual design, but criticizes the show for brushing over serious moments and lacking emotional depth. The overall sentiment is mixed, not strongly positive or negative. | Kimi: While the review praises the show's technical competence, visual design, and engaging performers, it criticizes the production for deflecting serious emotional moments with nervous jokes, resulting in a lack of depth and irony.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:17:32.903Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

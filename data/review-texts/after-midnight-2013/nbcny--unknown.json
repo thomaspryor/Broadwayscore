@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There are gymnastics aplenty, the most memorable coming from Julius 'iGlide' Chisolm, of the dance crew RemoteKontrol, and hip-hop artist Virgil J. Gadson, who does handstands during 'East St. Louis Toodle-oo.' Of the dancers, you'll be particularly taken with Karine Plantadit (a Tony nominee for the Twyla Tharp musical 'Come Fly Away'), who emerges from a coffin and later climbs back atop it during a number that includes the pieces 'The Gal From Joe's' and 'Black and Tan Fantasy.'",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Of the dancers, you'll be particularly taken with Karine Plantadit",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising specific performers with appreciative language ('you'll be particularly taken with', 'most memorable'), suggesting positive assessment, but limited text prevents higher confidence or score. | GPT-4o: The excerpt highlights memorable performances and impressive dance routines, suggesting a positive impression, but lacks a comprehensive verdict. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review excerpt highlights specific performers and their memorable moments, suggesting an enjoyable experience despite the limited context. Given the single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for specific performers and their memorable feats ('most memorable', 'particularly taken with'), indicating a recommendation. However, as a single curated excerpt, the confidence is low regarding the overall show verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:07.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

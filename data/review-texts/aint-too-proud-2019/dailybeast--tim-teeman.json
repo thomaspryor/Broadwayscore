@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Oh no, the heart sinks, another jukebox musical on Broadway. So many-Cher, Donna Summer-have been varying degrees of cringe. But after leaving Ain't Too Proud: The Life and Times of The Temptations, which opened tonight at the Imperial Theatre (to November 24), a happy revelation: This jukebox musical not only has life, it also has wit, intelligence, while also looking stunning and full of energy.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This jukebox musical not only has life, it also has wit, intelligence, while also looking stunning and full of energy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening negativity about jukebox musicals generally, the critic calls this a 'happy revelation' with multiple strong positives (wit, intelligence, stunning, energy). However, confidence is low due to single excerpt warning. | GPT-4o: The excerpt expresses a strong positive reaction to the show, highlighting its wit, intelligence, and energy. Despite the initial skepticism about jukebox musicals, the critic finds this production to be a 'happy revelation.' | Gemini: Despite initial skepticism, the critic expresses a \"happy revelation\" and praises the show's wit, intelligence, visuals, and energy. The single excerpt is strongly positive, suggesting a recommendation. | Kimi: The critic overcomes initial skepticism about jukebox musicals to deliver an enthusiastic verdict praising the show's wit, intelligence, visual design, and energy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:01:41.896Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

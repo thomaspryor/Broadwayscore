@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "No one can accuse 'A Night With Janis Joplin' of not delivering what it is promised in the title. Not unlike the recent Beatles tribute show 'Let It Be,' this marks yet another faux concert in which a performer pretends to be a legendary rock star...But whereas 'Let It Be' featured no acting of any sort, the very talented and dedicated Mary Bridget Davies really digs into the role of Joplin, authentically replicating the Queen of Rock's distinctively raw and raspy voice in every song while bringing an unrelenting intensity...It's easy to tell the Joplin fans, who stand up and cheer after she performs songs such as 'Piece of My Heart' and 'Me and Bobby McGee,' from everyone else. They'll be pleased. But what about those unfamiliar with Joplin, as well as those who never liked her in the first place?",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They'll be pleased. But what about those unfamiliar with Joplin, as well as those who never liked her in the first place?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises the lead performance as 'very talented and dedicated' but explicitly questions the show's appeal beyond existing fans, suggesting limited recommendation. | GPT-4o: The review praises the lead performance but questions the appeal for non-fans of Joplin. The excerpt suggests a mixed reception, with strong elements for fans but limited appeal for others. | Gemini: The review acknowledges a strong performance by Mary Bridget Davies but questions the appeal for those unfamiliar with or uninterested in Janis Joplin. This suggests a mixed experience, leaning towards positive for fans but less so for others. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:31:47.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 66,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

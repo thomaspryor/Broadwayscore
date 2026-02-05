@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Well, so much for hopes about 'A Night With Janis Joplin.' Goodbye to a glimmer of faith that, just maybe, Broadway might restrain itself from flattening this formative rock outlaw into another cheese-ball tribute like the ones that mass-market the singularity of Elvis and The Beatles...Writer-director Randy Johnson and the siblings Joplin left behind in Port Arthur, Texas, have scrubbed her up and domesticated her into just another ordinary '60s chick who idolized black women blues singers, loved literature, sang loud and died fast...Mary Bridget Davies has the lungs, the notes and the screaming moan in the back of the throat to suggest the real thing in 'Cry Baby,' 'Me and Bobby McGee' and 'Ball and Chain.' But the actress, who also toured in a different Janis revue, is too externalized (and badly costumed) to touch the layers of vulnerability, much less the brazen sexuality that helped galvanize the adventures of a generation.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway might restrain itself from flattening this formative rock outlaw into another cheese-ball tribute",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic harshly criticizes the show for sanitizing and domesticating Joplin into a 'cheese-ball tribute,' though acknowledges the lead performer's vocal abilities. The overall assessment is clearly negative despite some performer praise. | GPT-4o: The review criticizes the show for failing to capture the essence of Janis Joplin, describing it as a 'cheese-ball tribute' and 'domesticated.' While there is some praise for Mary Bridget Davies' vocal performance, the overall tone is negative. | Gemini: The review expresses disappointment that the show sanitizes Janis Joplin's image and fails to capture her vulnerability and sexuality. While praising the lead actress's vocal abilities, it criticizes her performance as too externalized and the show overall as a 'cheese-ball tribute.' | Kimi: The critic dismisses the show as a 'cheese-ball tribute' that 'scrubbed her up and domesticated her,' criticizing the direction, book, and lead performance as externalized and badly costumed, despite acknowledging the actress's vocal abilities.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:29:19.497Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

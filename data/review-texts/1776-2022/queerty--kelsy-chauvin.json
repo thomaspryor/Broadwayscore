@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The concept of Paulus and Page's 1776 is thrilling: to behold a diverse company portraying a story that's literally about the ideals and principles of white-cis-male politicians. From the opening curtain, anticipation runs high for a mind-blowing or at least inspiring show - probably, in part, due to the success of Hamilton and the sparse, dramatic, and surprisingly bloody 2019 revival of Oklahoma! But in reality, the onstage talent runs much hotter than the book, music and lyrics, and choreography can sustain. Led by Crystal Lucas-Perry in the lead role of earnest John Adams, along with Patrena Murray as feisty Benjamin Franklin, and two dozen other players representing the signers of the Declaration of Independence, 1776 rarely moves beyond the practical matters printed in our dusty history books to reach - or reveal - new territory.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The onstage talent runs much hotter than the book, music and lyrics, and choreography can sustain.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises the diverse casting concept as 'thrilling' and individual performers, but finds the material itself inadequate and says it 'rarely moves beyond' basic history to 'reach new territory.' This suggests disappointment with execution despite good intentions. Single excerpt limits confidence. | GPT-4o: The review acknowledges a thrilling concept and strong performances but criticizes the book, music, lyrics, and choreography for not living up to the cast's talent. This suggests a mixed reception with no clear recommendation. | Gemini: The review praises the cast's talent but criticizes the book, music, lyrics, and choreography. The overall impression is mixed, with potential but ultimately falling short. | Kimi: While praising the diverse casting concept and performances (particularly Crystal Lucas-Perry and Patrena Murray), the critic finds the book, music, lyrics and choreography fail to sustain the talent or reach new territory beyond 'dusty history books,' resulting in a disappointing execution of a thrilling premise.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:42:39.048Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

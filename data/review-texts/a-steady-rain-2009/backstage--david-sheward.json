@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Jackman and Craig endow Denny and Joey with a deep history, vivifying Huff's backstory. Jackman displays an almost animalistic rage that comes from a different place than Wolverine's. Denny cares deeply for his family, and that provides the justification for his criminal actions. Jackman pulls off an acting miracle in managing to make this violent racist sympathetic. Craig gives Joey the same demons but convincingly portrays his questioning, unsatisfied nature, which f",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-A-STEADY-RAIN-20090929",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackman pulls off an acting miracle in managing to make this violent racist sympathetic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises both lead performances with strong language ('acting miracle', 'deep history', 'convincingly portrays'). However, confidence is low due to truncated text and single excerpt warning - the full verdict may differ. | GPT-4o: The excerpt praises the performances of Jackman and Craig, highlighting their ability to bring depth to their characters. However, due to the single excerpt warning and lack of a full review, the confidence is low, and the score reflects a mildly positive tone. | Gemini: The excerpt focuses on praising Jackman and Craig's performances, with Jackman's performance being described as an \"acting miracle\". Given the single excerpt warning, I'm scoring this as positive, erring on the higher end of the bucket. | Kimi: The excerpt delivers enthusiastic praise for both actors, describing Jackman's work as an 'acting miracle' and Craig's portrayal as convincing. However, as a single curated excerpt cut off mid-sentence, the critic's final verdict on the production as a whole is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:39:50.676Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

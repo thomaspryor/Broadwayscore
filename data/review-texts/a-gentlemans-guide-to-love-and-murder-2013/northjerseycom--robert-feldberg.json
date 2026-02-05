@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"\"A Gentleman's Guide to Love and Murder\" is a musical wild card, a distant relative to \"The Mystery of Edwin Drood,\" perhaps, but entirely its own thing. It's fresh, and it's tremendously entertaining.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's fresh, and it's tremendously entertaining.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('tremendously entertaining', 'fresh') with clear enthusiasm. Single excerpt warning applies, but the tone is clearly positive without reservations. | GPT-4o: The excerpt provides clear positive language, describing the show as 'fresh' and 'tremendously entertaining,' indicating a strong recommendation. Given the single excerpt warning, the score is placed in the upper end of the Positive range. | Gemini: The excerpt uses very positive language such as \"fresh\" and \"tremendously entertaining\", indicating a strong recommendation. | Kimi: The excerpt offers unqualified praise describing the show as 'fresh' and 'tremendously entertaining,' indicating a strong recommendation. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:20:07.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

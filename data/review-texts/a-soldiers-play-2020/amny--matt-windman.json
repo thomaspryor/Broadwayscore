@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Some scenes depicting Davenport's fact-finding and investigation can be dry and clunky. But under Leon's sharp and ensemble-oriented direction, the play's cultural and political dimensions take on extended emphasis, bringing the gap between World War II-era America and the present day in its exploration of the effects of racism and the need to confront uncomfortable facts and arrive at the truth.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But under Leon's sharp and ensemble-oriented direction, the play's cultural and political dimensions take on extended emphasis",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges flaws ('dry and clunky') but emphasizes strengths in direction and thematic impact. Limited text warrants cautious positive score. | GPT-4o: The excerpt acknowledges some scenes as 'dry and clunky' but praises the direction and thematic exploration, suggesting a positive but reserved recommendation. Given the single excerpt warning, the score is on the lower end of the Positive range. | Gemini: The review acknowledges some weaknesses (\"dry and clunky\") but praises the direction and the play's exploration of important themes. Given the single excerpt, confidence is low, but the overall sentiment leans positive. | Kimi: While the excerpt notes some dry scenes, the 'but' pivot signals a clear positive verdict emphasizing sharp direction and strong contemporary relevance, placing it in the upper Positive range despite the curated excerpt limitations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:33:48.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

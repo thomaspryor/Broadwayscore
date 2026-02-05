@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A thrilling cast rise to the challenge of making this entirely believable, fraught and eventually scorching. As matriarch Kate, Annette Bening is devastating as well as devastated: a woman clinging to hope, despite knowing in her heart that it is hopeless. And Tracy Letts -- who is also a playwright who wrote the Tony and Pulitzer Prize-winning August: Osage County -- is equally superb as a man consumed by his secrets.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A thrilling cast rise to the challenge of making this entirely believable, fraught and eventually scorching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the cast with vivid language ('thrilling', 'devastating', 'scorching', 'superb'). Single excerpt warning applies - this sounds clearly positive so scored at upper end of Positive bucket. | GPT-4o: The excerpt praises the cast's performance as 'thrilling' and 'scorching', with specific commendation for Annette Bening and Tracy Letts. The language suggests a strong positive impression, though the single excerpt limits confidence. | Gemini: The excerpt uses strong positive language like \"thrilling,\" \"entirely believable,\" \"devastating,\" and \"superb,\" indicating a positive recommendation. Given that it's a single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt uses strong superlatives like 'thrilling,' 'devastating,' and 'superb' to praise the lead performances, indicating clear enthusiasm. However, as a single curated excerpt focused narrowly on acting, confidence is reduced regarding the overall production verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:10:18.097Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

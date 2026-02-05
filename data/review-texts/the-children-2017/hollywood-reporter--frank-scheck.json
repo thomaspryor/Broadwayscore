@@ -40,5 +40,59 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 782,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Children squanders its provocative premise with dull execution.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | Claude: Clear negative assessment calling the play 'sluggish,' 'willfully slow-paced,' with 'dull execution' and 'tonal problems.' Despite praising the actors' 'impeccable work,' the critic finds their efforts 'not enough to fully breathe life into' the work and describes much of it as 'a trial to sit through.' | Gemini: The review highlights both positive and negative aspects, such as the powerful moments in the second half versus the dull execution and slow pacing. The critic acknowledges the play's potential but ultimately finds it lacking. | Kimi: While praising the three lead performers' impeccable work and acknowledging some powerful atmospheric moments, the critic finds the play willfully slow-paced, the plot delayed, and much of the dialogue a 'trial to sit through.' The verdict is that fine acting cannot redeem this sluggish work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:09:07.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
 }

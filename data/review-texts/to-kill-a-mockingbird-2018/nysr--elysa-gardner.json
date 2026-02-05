@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
   "bwwExcerpt": "Mockingbird's lessons may seem obvious, but like so many on offer at this moment, they also come across as depressingly timely and necessary. By acknowledging that need in a straightforward, utterly unpretentious manner, accompanied by blazing artistry, Sorkin, Sher and their cast and collaborators have given us a production that feels as urgent and eternal as its source.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-See-The-Critics-Verdict-On-TO-KILL-A-MOCKINGBIRD-On-Broadway-20181213",
+  "assignedScore": 95,
+  "llmScore": {
+    "score": 95,
+    "confidence": "high",
+    "range": {
+      "low": 90,
+      "high": 100
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By acknowledging that need in a straightforward, utterly unpretentious manner, accompanied by blazing artistry, Sorkin, Sher and their cast and collaborators have given us a production that feels as urgent and eternal as its source.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with unqualified praise throughout. The critic describes it as 'extraordinary production,' praises 'blazing artistry,' calls performances 'better than perfect' and 'revelatory,' and concludes it's both 'urgent and eternal.' Despite truncation warning, the BWW excerpt confirms the overwhelmingly positive verdict. | GPT-4o: The review is overwhelmingly positive, praising the production's artistry, performances, and relevance. The original 5/5 stars and the language used suggest a strong recommendation, despite the text being truncated. | Gemini: The review is overwhelmingly positive, using phrases like \"extraordinary production\", \"better than perfect; they’re revelatory\", and \"blazing artistry\". The critic also gives the production a 5/5 star rating. | Kimi: The review awards 5/5 stars and offers unqualified praise, calling the production 'extraordinary' with 'magnificent' performances and 'blazing artistry.' Despite the truncated text, the visible verdict and rating clearly indicate a rave recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:23:49.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 96,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

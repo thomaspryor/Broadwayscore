@@ -31,5 +31,11 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 467,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T14:52:06.105Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of the touring production in Chicago ('Broadway In Chicago'), not the current Broadway run in New York; openai: The review is about the production of 'A Beautiful Noise: The Neil Diamond Musical' in Chicago, not the current Broadway run.; kimi: This review covers the Chicago production at the Cadillac Palace Theatre (Broadway In Chicago), not the current Broadway run. The show closed on Broadway in June 2024, and this November 2024 review explicitly discusses the Chicago engagement.",
+  "promptVersion": "5.2.0"
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A paperback copy of John Grisham's novel 'A Time to Kill' will set you back less than $10. The DVD of the film will cost a few bucks more. The new adaptation on Broadway? Tickets at the box office start at $70. Save your money...director Ethan McSweeny and a talented cast that includes standouts Patrick Page, Tom Skerritt and Fred Dalton Thompson can't seem to get any traction with a story about the case of a black father who kills the white men who raped his daughter.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Save your money...director Ethan McSweeny and a talented cast...can't seem to get any traction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative recommendation ('Save your money') despite acknowledging the talented cast. The critic finds the production ineffective even with good performers. | GPT-4o: The review advises readers to 'save your money,' indicating a strong recommendation against seeing the show. Despite acknowledging a talented cast, the overall verdict is clearly negative. | Gemini: The review explicitly tells the reader to save their money and states that the director and cast can't get any traction with the story. | Kimi: The review delivers an explicit recommendation against seeing the show ('Save your money'), comparing the Broadway ticket price unfavorably to cheaper book and DVD alternatives. While acknowledging the cast is talented, the critic finds the production fails to gain traction, resulting in a clear negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:44:47.791Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

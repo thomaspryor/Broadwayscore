@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Now that David Cromer's 'Our Town' has closed, 'A Life in the Theatre' is the New York show to see. I wish that Mr. Stewart had a stronger partner opposite him, but his performance is rich enough to carry the play all by itself.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Now that David Cromer's 'Our Town' has closed, 'A Life in the Theatre' is the New York show to see.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly calls this 'the New York show to see' - a strong endorsement that outweighs the reservation about Stewart's scene partner. This is clear positive recommendation language despite one noted flaw. | GPT-4o: The excerpt strongly recommends the show as 'the New York show to see' despite noting a weaker partner for Mr. Stewart. The praise for Stewart's performance suggests a positive overall impression. | Gemini: The critic recommends the show as the 'show to see' but notes a weakness in Stewart's partner, indicating a reservation. Given the single excerpt, a mid-range positive score seems appropriate. | Kimi: The critic declares this the essential New York production to see and praises Stewart's performance as rich enough to carry the play alone, though with a reservation about his co-star.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:26:41.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

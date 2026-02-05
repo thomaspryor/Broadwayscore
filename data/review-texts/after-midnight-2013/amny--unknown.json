@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "While there is no plot, many of the production numbers have characters and clever concepts and lead-ins. Dulé Hill ('The West Wing') also delivers some poetic lines by Langston Hughes about Harlem's atmosphere during the period. As staged by Warren Carlyle, 'After Midnight' brings lively and snazzy period entertainment to Broadway with phenomenal sound, effervescent movement and a joyous spirit.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'After Midnight' brings lively and snazzy period entertainment to Broadway with phenomenal sound, effervescent movement and a joyous spirit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('phenomenal', 'effervescent', 'joyous') and clear praise for production values, but confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt praises the production's entertainment value, sound, movement, and spirit, suggesting a strong positive impression. However, the single excerpt warning reduces confidence. | Gemini: The review uses positive language like \"lively and snazzy period entertainment,\" \"phenomenal sound,\" \"effervescent movement,\" and \"joyous spirit,\" indicating a positive recommendation. Given it's a single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers enthusiastic praise ('phenomenal', 'joyous', 'effervescent') for the staging and atmosphere, outweighing the minor caveat about lack of plot. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:58:04.198Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

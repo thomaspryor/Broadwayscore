@@ -11,5 +11,60 @@
   "bwwExcerpt": "A stellar supporting cast is assembled here in the first act (this psychological look at the Diamond persona reminded me a bit of the musical MJ) including an affecting quiet performance by Lisa Reneé Pitts as the therapist. A highly captivating performance by Hannah Jewel Kohn steals the show as Ms. Kohn “knocked it out of the park” with magnetic stage presence and a sensational soaring voice. As wife Marcia Murphey, Ms. Kohn delivered a poignant rendition of “Play Me” and a scintillating power",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hannah Jewel Kohn steals the show as Ms. Kohn knocked it out of the park with magnetic stage presence and a sensational soaring voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('stellar', 'captivating', 'knocked it out of the park', 'magnetic', 'sensational') suggests positive recommendation. Single excerpt warning and truncation make confidence low, but praise is enthusiastic enough for upper Positive range. | GPT-4o: The excerpt highlights strong praise for the performances, particularly Hannah Jewel Kohn's, using superlatives like 'knocked it out of the park' and 'sensational.' The positive tone suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt praises the supporting cast, particularly Hannah Jewel Kohn's performance, and uses positive language like \"highly captivating\" and \"sensational.\" While it's just an excerpt, the tone suggests a positive, albeit potentially qualified, recommendation. | Kimi: The excerpt offers enthusiastic praise for the supporting cast using superlatives like 'stellar,' 'steals the show,' and 'sensational,' indicating a strong positive recommendation, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:52:46.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
