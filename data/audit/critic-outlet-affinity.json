@@ -3,11 +3,11 @@
     "description": "Critic-outlet affinity audit report",
     "lastUpdated": "2026-02-05",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 13795,
-    "skippedFiles": 143,
-    "totalCritics": 860,
-    "registryCritics": 268,
-    "flaggedReviews": 28
+    "totalFilesScanned": 14894,
+    "skippedFiles": 191,
+    "totalCritics": 938,
+    "registryCritics": 281,
+    "flaggedReviews": 24
   },
   "flaggedReviews": [
     {
@@ -19,7 +19,7 @@
       "outletShare": 0,
       "primaryOutlet": "nytimes",
       "primaryShare": 100,
-      "totalReviews": 417
+      "totalReviews": 422
     },
     {
       "critic": "David Barbour",
@@ -55,29 +55,7 @@
       "totalReviews": 27
     },
     {
-      "critic": "Howard Miller",
-      "criticSlug": "howard-miller",
-      "outlet": "talkin-boradway",
-      "showId": "cost-of-living-2022",
-      "file": "talkin-boradway--howard-miller.json",
-      "outletShare": 1,
-      "primaryOutlet": "talkinbroadway",
-      "primaryShare": 99,
-      "totalReviews": 105
-    },
-    {
-      "critic": "Frank Rizzo",
-      "criticSlug": "frank-rizzo",
-      "outlet": "the-heart-of-rock-and-roll-review-huey-lewis-and-the-news-jukebox-musical-is-easy-to-like-harder-to-love",
-      "showId": "heart-of-rock-and-roll-2024",
-      "file": "the-heart-of-rock-and-roll-review-huey-lewis-and-the-news-jukebox-musical-is-easy-to-like-harder-to-love--frank-rizzo.json",
-      "outletShare": 2,
-      "primaryOutlet": "variety",
-      "primaryShare": 98,
-      "totalReviews": 64
-    },
-    {
-      "critic": "Marilyn Stasio",
+      "critic": "Marilyn Stasio.",
       "criticSlug": "marilyn-stasio",
       "outlet": "newsday",
       "showId": "the-columnist-2012",
@@ -85,7 +63,7 @@
       "outletShare": 0,
       "primaryOutlet": "variety",
       "primaryShare": 100,
-      "totalReviews": 309
+      "totalReviews": 318
     },
     {
       "critic": "Tulis McCall",
@@ -118,7 +96,7 @@
       "outletShare": 1,
       "primaryOutlet": "vulture",
       "primaryShare": 99,
-      "totalReviews": 116
+      "totalReviews": 126
     },
     {
       "critic": "Jesse Hassenger",
@@ -192,10 +170,10 @@
       "outlet": "the-los-angeles-times-charles-mcnulty",
       "showId": "the-inheritance-2019",
       "file": "latimes--charles-mcnulty.json",
-      "outletShare": 7,
+      "outletShare": 6,
       "primaryOutlet": "latimes",
-      "primaryShare": 93,
-      "totalReviews": 28
+      "primaryShare": 94,
+      "totalReviews": 34
     },
     {
       "critic": "Charles McNulty",
@@ -203,10 +181,10 @@
       "outlet": "the-los-angeles-times-charles-mcnulty",
       "showId": "west-side-story-2020",
       "file": "latimes--charles-mcnulty.json",
-      "outletShare": 7,
+      "outletShare": 6,
       "primaryOutlet": "latimes",
-      "primaryShare": 93,
-      "totalReviews": 28
+      "primaryShare": 94,
+      "totalReviews": 34
     },
     {
       "critic": "Andy Propst",
@@ -242,17 +220,6 @@
       "totalReviews": 21
     },
     {
-      "critic": "Christian Holub",
-      "criticSlug": "christian-holub",
-      "outlet": "thewrap",
-      "showId": "american-buffalo-2022",
-      "file": "thewrap--christian-holub.json",
-      "outletShare": 8,
-      "primaryOutlet": "ew",
-      "primaryShare": 92,
-      "totalReviews": 12
-    },
-    {
       "critic": "Diane Snyder",
       "criticSlug": "diane-snyder",
       "outlet": "the-telegraph-uk",
@@ -261,7 +228,7 @@
       "outletShare": 6,
       "primaryOutlet": "telegraph",
       "primaryShare": 94,
-      "totalReviews": 16
+      "totalReviews": 18
     },
     {
       "critic": "Mark Rifkin",
@@ -284,17 +251,6 @@
       "primaryOutlet": "usatoday",
       "primaryShare": 96,
       "totalReviews": 25
-    },
-    {
-      "critic": "Rose Bernardo",
-      "criticSlug": "rose-bernardo",
-      "outlet": "timeout",
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-      "file": "timeout--rose-bernardo.json",
-      "outletShare": 2,
-      "primaryOutlet": "nysr",
-      "primaryShare": 98,
-      "totalReviews": 44
     },
     {
       "critic": "Joseph Verlezza",
@@ -329,7 +285,7 @@
         "huffpost",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 134
+      "totalReviews": 137
     },
     {
       "critic": "Frank Scheck",
@@ -337,27 +293,28 @@
       "outlets": [
         "nysr",
         "hollywood-reporter",
-        "nypost",
         "scheckontheater",
+        "nypost",
         "nytg",
+        "reuters",
         "theatermania"
       ],
-      "totalReviews": 126
+      "totalReviews": 159
     },
     {
       "critic": "Charles Isherwood",
       "slug": "charles-isherwood",
       "outlets": [
         "wsj",
-        "variety",
         "nytimes",
+        "variety",
         "broadwaynews",
         "theatermania",
         "usatoday",
         "guardian",
         "financialtimes"
       ],
-      "totalReviews": 463
+      "totalReviews": 485
     },
     {
       "critic": "Elysa Gardner",
@@ -368,14 +325,16 @@
         "nysr",
         "the-sun",
         "ew",
+        "nytheatre",
         "newsday"
       ],
-      "totalReviews": 257
+      "totalReviews": 285
     },
     {
       "critic": "Unknown",
       "slug": "unknown",
       "outlets": [
+        "nytimes",
         "newsday",
         "ew",
         "nydailynews",
@@ -384,22 +343,21 @@
         "thewrap",
         "nbcny",
         "hollywood-reporter",
-        "chicagotribune",
         "timeout",
+        "chicagotribune",
         "theatrely",
         "vulture",
         "deadline",
         "huffpost",
         "usatoday",
-        "nypost",
         "wsj",
-        "nytimes",
         "latimes",
+        "nypost",
         "bloomberg-news",
         "washpost",
         "guardian",
-        "variety",
         "dctheatrescene",
+        "variety",
         "njcom",
         "ny1",
         "telegraph",
@@ -421,16 +379,18 @@
         "nbcnews",
         "theater-pizzazz",
         "the-independent",
+        "new-york-theatre",
         "time",
         "boston-herald",
-        "san-jose-mercury-news",
         "the-star-ledger",
         "san-diego-union-tribune",
         "the-globe-and-mail",
         "new-york-sun",
         "berkshire-edge",
         "abc-news",
+        "broadwayworld",
         "culturesauce",
+        "queerty",
         "boston-globe",
         "perez-hilton",
         "washington-times",
@@ -442,13 +402,11 @@
         "village-voice",
         "nyt-theater",
         "frontmezzjunkies",
-        "chauvin-queerty",
-        "mandell-new-york-theater",
+        "new-york-theater",
         "metro-uk",
         "bloomberg",
         "philadelphia-inquirer",
         "the-albany-times-union",
-        "reviewed-its-world-premiere",
         "berkeleyside",
         "contra-costa-times",
         "sfgate",
@@ -457,7 +415,6 @@
         "the-record",
         "thestarcom",
         "britishtheatrecom",
-        "fox-news",
         "npr",
         "rollingstone",
         "tap-into",
@@ -468,7 +425,6 @@
         "south-florida-sun-sentinel",
         "the-prospector",
         "new-york-1",
-        "queerty",
         "artsdesk",
         "the-express",
         "the-mirror",
@@ -487,6 +443,7 @@
         "the-inquirer",
         "stageandcinema",
         "burlington-free-press",
+        "stagebuddy",
         "cnn",
         "mashable",
         "tv-guide",
@@ -495,6 +452,7 @@
         "hartford-courant",
         "newday",
         "shobwiz411",
+        "san-jose-mercury-news",
         "wnyc",
         "dc-theater-arts",
         "metro-source",
@@ -516,16 +474,14 @@
         "tapintonet",
         "the-movie-cricket",
         "the-detroit-news",
-        "saturday-night-live-in-1985",
         "the-los-angeles-times-charles-mcnulty",
-        "garth-drabinsky",
-        "paradise-square",
         "the-recs",
         "theatre-talk-boston",
         "arenastageorg",
         "the-dc-line-dr-lewis",
         "almeidacouk",
-        "new-york-theatre",
+        "lighting-and-sound-america",
+        "theater-news-online",
         "ctv-canada-am",
         "hollywood-life",
         "hypable",
@@ -550,17 +506,18 @@
         "artsatl",
         "atlanta-intown"
       ],
-      "totalReviews": 1749
+      "totalReviews": 1855
     },
     {
       "critic": "Mark Kennedy",
       "slug": "mark-kennedy",
       "outlets": [
         "ap",
+        "abc-news",
         "associated-press-mark-kennedy",
         "washpost"
       ],
-      "totalReviews": 102
+      "totalReviews": 128
     },
     {
       "critic": "Brittani Samuel",
@@ -580,10 +537,9 @@
         "theater-news-online",
         "theatermania",
         "theater-pizzazz",
-        "nytg",
-        "cititourcom"
+        "nytg"
       ],
-      "totalReviews": 134
+      "totalReviews": 145
     },
     {
       "critic": "Greg Evans",
@@ -593,7 +549,7 @@
         "billboard",
         "variety"
       ],
-      "totalReviews": 196
+      "totalReviews": 201
     },
     {
       "critic": "Alexis Soloski",
@@ -601,9 +557,10 @@
       "outlets": [
         "guardian",
         "nytimes",
+        "village-voice",
         "the-guardian-uk"
       ],
-      "totalReviews": 97
+      "totalReviews": 107
     },
     {
       "critic": "David Rooney",
@@ -613,10 +570,9 @@
         "variety",
         "theatermania",
         "usatoday",
-        "timeout",
-        "hollywoodwood-reporter"
+        "timeout"
       ],
-      "totalReviews": 381
+      "totalReviews": 407
     },
     {
       "critic": "Helen Shaw",
@@ -626,7 +582,7 @@
         "newyorker",
         "timeout"
       ],
-      "totalReviews": 101
+      "totalReviews": 102
     },
     {
       "critic": "Michael Dale",
@@ -636,7 +592,7 @@
         "broadwayworldcom",
         "nysr"
       ],
-      "totalReviews": 109
+      "totalReviews": 148
     },
     {
       "critic": "Steven Suskin",
@@ -644,9 +600,10 @@
       "outlets": [
         "nysr",
         "huffpost",
-        "variety"
+        "variety",
+        "nytheatre"
       ],
-      "totalReviews": 97
+      "totalReviews": 121
     },
     {
       "critic": "Jonathan Mandell",
@@ -658,7 +615,7 @@
         "new-york-theatre",
         "newyorktheater"
       ],
-      "totalReviews": 186
+      "totalReviews": 196
     },
     {
       "critic": "Jesse Green",
@@ -675,7 +632,7 @@
         "rollingstone",
         "the-times-uk"
       ],
-      "totalReviews": 571
+      "totalReviews": 578
     },
     {
       "critic": "Joel Benjamin",
@@ -694,10 +651,11 @@
       "outlets": [
         "theatermania",
         "nytg",
+        "nytheatre",
         "theatrely",
         "whatsonstage"
       ],
-      "totalReviews": 74
+      "totalReviews": 77
     },
     {
       "critic": "Adam Feldman",
@@ -707,7 +665,7 @@
         "theatermania",
         "nyt-theater"
       ],
-      "totalReviews": 389
+      "totalReviews": 415
     },
     {
       "critic": "Peter Marks",
@@ -718,7 +676,7 @@
         "the-independent",
         "huffpost"
       ],
-      "totalReviews": 266
+      "totalReviews": 277
     },
     {
       "critic": "Michael Musto",
@@ -730,20 +688,21 @@
         "newnownextcom",
         "chelsea-community-news-michael-musto"
       ],
-      "totalReviews": 54
+      "totalReviews": 60
     },
     {
       "critic": "Matt Windman",
       "slug": "matt-windman",
       "outlets": [
         "amny",
+        "on-off-broadway",
         "am-ny-matt-windman",
         "chicagotribune",
         "dailybeast",
         "deadline",
         "nytimes",
         "amny-matt-windman",
-        "on-off-broadway",
+        "newsday",
         "timeout",
         "variety",
         "vulture",
@@ -755,7 +714,6 @@
         "northjerseycom",
         "theatermania",
         "nbcnews",
-        "newsday",
         "nydailynews",
         "reading-eagle",
         "guardian",
@@ -765,7 +723,17 @@
         "off-script-with-dan-dwyer",
         "towleroad"
       ],
-      "totalReviews": 295
+      "totalReviews": 346
+    },
+    {
+      "critic": "Jason Zinoman",
+      "slug": "jason-zinoman",
+      "outlets": [
+        "nytimes",
+        "bloomberg",
+        "bloomberg-news"
+      ],
+      "totalReviews": 5
     },
     {
       "critic": "Jeremy Gerard",
@@ -773,12 +741,12 @@
       "outlets": [
         "deadline",
         "bloomberg",
+        "bloomberg-news",
         "theater-news-online",
         "theatre-news-online",
-        "bloomberg-news",
         "nypost"
       ],
-      "totalReviews": 116
+      "totalReviews": 148
     },
     {
       "critic": "Robert Kahn",
@@ -788,7 +756,7 @@
         "nbcnews",
         "mbc-new-york"
       ],
-      "totalReviews": 69
+      "totalReviews": 78
     },
     {
       "critic": "Elizabeth Vincentelli",
@@ -807,7 +775,7 @@
         "timeout",
         "nj-advance"
       ],
-      "totalReviews": 46
+      "totalReviews": 50
     },
     {
       "critic": "Joe Dziemianowicz",
@@ -821,17 +789,17 @@
         "variety",
         "amny"
       ],
-      "totalReviews": 249
+      "totalReviews": 299
     },
     {
       "critic": "Thom Geier",
       "slug": "thom-geier",
       "outlets": [
         "culturesauce",
-        "thewrap",
-        "ew"
+        "ew",
+        "thewrap"
       ],
-      "totalReviews": 90
+      "totalReviews": 136
     },
     {
       "critic": "Robert Feldberg",
@@ -841,7 +809,7 @@
         "northjerseycom",
         "the-record"
       ],
-      "totalReviews": 101
+      "totalReviews": 120
     },
     {
       "critic": "Elisabeth Vincentelli",
@@ -853,18 +821,18 @@
         "washpost",
         "newyorker"
       ],
-      "totalReviews": 194
+      "totalReviews": 228
     },
     {
       "critic": "Dave Quinn",
       "slug": "dave-quinn",
       "outlets": [
-        "ew",
         "nbcny",
+        "ew",
         "people",
         "wnbc"
       ],
-      "totalReviews": 15
+      "totalReviews": 17
     },
     {
       "critic": "Chris Jones",
@@ -882,7 +850,7 @@
         "thewrap",
         "timeout"
       ],
-      "totalReviews": 339
+      "totalReviews": 370
     },
     {
       "critic": "David Cote",
@@ -891,26 +859,40 @@
         "timeout",
         "observer",
         "theater-news-online",
-        "4-columns-david-cote",
+        "ny1",
         "theatre-news-online",
         "village-voice",
+        "4-columns-david-cote",
         "4columns",
-        "ny1",
+        "guardian",
         "observer-david-cote",
         "medium",
         "4columns-david-cote"
       ],
-      "totalReviews": 225
+      "totalReviews": 264
     },
     {
       "critic": "Lily Janiak",
       "slug": "lily-janiak",
       "outlets": [
+        "datebook",
         "sfchronicle",
-        "sfgate",
-        "datebook"
+        "sfgate"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
+    },
+    {
+      "critic": "Samuel L. Leiter",
+      "slug": "samuel-l-leiter",
+      "outlets": [
+        "theater-life",
+        "theater-pizzazz",
+        "theatres-leiter-side",
+        "theater-scene",
+        "stageandcinema",
+        "broadway-blog"
+      ],
+      "totalReviews": 65
     },
     {
       "critic": "Jackson McHenry",
@@ -920,7 +902,61 @@
         "theatrely",
         "culture-vulture"
       ],
-      "totalReviews": 68
+      "totalReviews": 69
+    },
+    {
+      "critic": "David Sheward",
+      "slug": "david-sheward",
+      "outlets": [
+        "backstage",
+        "theater-life"
+      ],
+      "totalReviews": 58
+    },
+    {
+      "critic": "John Simon",
+      "slug": "john-simon",
+      "outlets": [
+        "bloomberg-news",
+        "yonkers-tribune",
+        "vulture",
+        "new-york"
+      ],
+      "totalReviews": 30
+    },
+    {
+      "critic": "Michael Sommers",
+      "slug": "michael-sommers",
+      "outlets": [
+        "new-jersey-newsroom",
+        "nysr",
+        "njcom"
+      ],
+      "totalReviews": 90
+    },
+    {
+      "critic": "Scott Brown",
+      "slug": "scott-brown",
+      "outlets": [
+        "vulture",
+        "newyorkmagazine",
+        "new-york"
+      ],
+      "totalReviews": 62
+    },
+    {
+      "critic": "Jesse Oxfeld",
+      "slug": "jesse-oxfeld",
+      "outlets": [
+        "nysr",
+        "observer",
+        "ew",
+        "theatermania",
+        "the-times",
+        "the-jewish-daily-forward",
+        "nytheatre"
+      ],
+      "totalReviews": 67
     },
     {
       "critic": "David NouNou",
@@ -933,16 +969,6 @@
       "totalReviews": 15
     },
     {
-      "critic": "Michael Sommers",
-      "slug": "michael-sommers",
-      "outlets": [
-        "nysr",
-        "new-jersey-newsroom",
-        "njcom"
-      ],
-      "totalReviews": 58
-    },
-    {
       "critic": "Lane Williamson",
       "slug": "lane-williamson",
       "outlets": [
@@ -950,7 +976,7 @@
         "exeunt-magazine",
         "exeunt-nyc"
       ],
-      "totalReviews": 25
+      "totalReviews": 26
     },
     {
       "critic": "Zachary Stewart",
@@ -962,38 +988,6 @@
         "nytg"
       ],
       "totalReviews": 53
-    },
-    {
-      "critic": "John Simon",
-      "slug": "john-simon",
-      "outlets": [
-        "bloomberg-news",
-        "yonkers-tribune",
-        "vulture",
-        "new-york"
-      ],
-      "totalReviews": 10
-    },
-    {
-      "critic": "Jesse Oxfeld",
-      "slug": "jesse-oxfeld",
-      "outlets": [
-        "nysr",
-        "observer",
-        "ew",
-        "theatermania",
-        "the-times"
-      ],
-      "totalReviews": 42
-    },
-    {
-      "critic": "Scott Brown",
-      "slug": "scott-brown",
-      "outlets": [
-        "vulture",
-        "newyorkmagazine"
-      ],
-      "totalReviews": 34
     },
     {
       "critic": "Diep Tran",
@@ -1009,14 +1003,14 @@
       "slug": "matthew-wexler",
       "outlets": [
         "queerty",
-        "oneminutecritic",
         "one-minute-critic",
+        "oneminutecritic",
         "broadway-blog",
         "1minutecritic",
         "1-minute-critic-matthew-wexler",
         "into"
       ],
-      "totalReviews": 44
+      "totalReviews": 45
     },
     {
       "critic": "Naveen Kumar",
@@ -1033,18 +1027,6 @@
       "totalReviews": 114
     },
     {
-      "critic": "Samuel L. Leiter",
-      "slug": "samuel-l-leiter",
-      "outlets": [
-        "theater-pizzazz",
-        "theatres-leiter-side",
-        "theater-scene",
-        "stageandcinema",
-        "broadway-blog"
-      ],
-      "totalReviews": 20
-    },
-    {
       "critic": "Nicole Serratore",
       "slug": "nicole-serratore",
       "outlets": [
@@ -1053,7 +1035,17 @@
         "exeunt-nyc",
         "variety"
       ],
-      "totalReviews": 21
+      "totalReviews": 23
+    },
+    {
+      "critic": "Deb Miller",
+      "slug": "deb-miller",
+      "outlets": [
+        "dc-theater-arts",
+        "dcmetro",
+        "dctheatrescene"
+      ],
+      "totalReviews": 12
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -1063,7 +1055,17 @@
         "ew",
         "timeout"
       ],
-      "totalReviews": 104
+      "totalReviews": 115
+    },
+    {
+      "critic": "Rose Bernardo",
+      "slug": "rose-bernardo",
+      "outlets": [
+        "nysr",
+        "ew",
+        "timeout"
+      ],
+      "totalReviews": 68
     },
     {
       "critic": "Mark Shenton",
@@ -1074,16 +1076,17 @@
         "londontheatre",
         "amny"
       ],
-      "totalReviews": 27
+      "totalReviews": 35
     },
     {
       "critic": "Chris Caggiano",
       "slug": "chris-caggiano",
       "outlets": [
         "zeal-nyc",
+        "artsfuse",
         "about-entertainment"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
     },
     {
       "critic": "Caroline Cao",
@@ -1103,7 +1106,7 @@
         "stageandcinema",
         "vulture"
       ],
-      "totalReviews": 53
+      "totalReviews": 54
     },
     {
       "critic": "Christian Lewis",
@@ -1111,14 +1114,14 @@
       "outlets": [
         "variety",
         "theatermania",
-        "medium",
         "huffpost",
+        "medium",
         "queerty",
         "did-they-like-it",
         "broadwayworld",
         "into-christian-lewis"
       ],
-      "totalReviews": 34
+      "totalReviews": 35
     },
     {
       "critic": "Loren Noveck",
@@ -1129,6 +1132,15 @@
         "thestage"
       ],
       "totalReviews": 10
+    },
+    {
+      "critic": "JK Clarke",
+      "slug": "jk-clarke",
+      "outlets": [
+        "theater-pizzazz",
+        "lavocedinewyork"
+      ],
+      "totalReviews": 8
     },
     {
       "critic": "Chris Rovzar",
@@ -1156,9 +1168,10 @@
       "outlets": [
         "broadway-journal",
         "bloomberg",
-        "stageandcinema"
+        "stageandcinema",
+        "bloomberg-news"
       ],
-      "totalReviews": 8
+      "totalReviews": 9
     },
     {
       "critic": "Erin Strecker",
@@ -1168,7 +1181,7 @@
         "culturesauce",
         "indiewire"
       ],
-      "totalReviews": 10
+      "totalReviews": 11
     },
     {
       "critic": "Michael Appler",
@@ -1198,16 +1211,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Deb Miller",
-      "slug": "deb-miller",
-      "outlets": [
-        "dc-theater-arts",
-        "dctheatrescene",
-        "dcmetro"
-      ],
-      "totalReviews": 10
-    },
-    {
       "critic": "Ayanna Prescod",
       "slug": "ayanna-prescod",
       "outlets": [
@@ -1229,9 +1232,8 @@
       "critic": "Toby Zinman",
       "slug": "toby-zinman",
       "outlets": [
-        "philadelpia-inquirer",
         "philadelphia-inquirer",
-        "phillycom",
+        "philly",
         "philly-stage",
         "the-inquirer"
       ],
@@ -1284,17 +1286,6 @@
       "totalReviews": 3
     },
     {
-      "critic": "Good Night",
-      "slug": "good-night",
-      "outlets": [
-        "and-good-luck",
-        "and-good-luck-promises-the-familiar",
-        "and-good-luck-review",
-        "oscar-review"
-      ],
-      "totalReviews": 4
-    },
-    {
       "critic": "Donna Herman",
       "slug": "donna-herman",
       "outlets": [
@@ -1313,6 +1304,16 @@
       "totalReviews": 3
     },
     {
+      "critic": "Dany Margolies",
+      "slug": "dany-margolies",
+      "outlets": [
+        "los-angeles-daily-news",
+        "oc-register",
+        "latimes"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Gary Naylor",
       "slug": "gary-naylor",
       "outlets": [
@@ -1322,22 +1323,14 @@
       "totalReviews": 3
     },
     {
-      "critic": "Steve Suskin",
-      "slug": "steve-suskin",
-      "outlets": [
-        "variety",
-        "nysr"
-      ],
-      "totalReviews": 3
-    },
-    {
       "critic": "Cameron Kelsall",
       "slug": "cameron-kelsall",
       "outlets": [
         "exeunt-magazine",
-        "exeunt-nyc"
+        "exeunt-nyc",
+        "broadstreetreview"
       ],
-      "totalReviews": 4
+      "totalReviews": 5
     }
   ]
 }
