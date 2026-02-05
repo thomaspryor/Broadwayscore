@@ -7,6 +7,7 @@ import {
   getAllTheaterSlugs,
   getAllBrowseSlugs,
 } from '@/lib/data-core';
+import { getAllGuideSlugs, parseGuideSlug } from '@/config/guide-pages';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -16,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // const directorSlugs = getAllDirectorSlugs();  // excluded for now
   const theaterSlugs = getAllTheaterSlugs();
   const browseSlugs = getAllBrowseSlugs();
+  const guideSlugs = getAllGuideSlugs();
+  const currentYear = new Date().getFullYear();
 
   // Show pages - prioritize open shows higher than closed shows
   const showPages = showSlugs.map((slug) => {
@@ -69,6 +72,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
+    },
+    // Guide pages - editorial SEO landing pages
+    ...guideSlugs.map(slug => {
+      const { year } = parseGuideSlug(slug);
+      const isOldYear = year !== undefined && year < currentYear - 2;
+      // Skip old year pages from sitemap (they're noindexed anyway)
+      if (isOldYear) return null;
+      return {
+        url: `${BASE_URL}/guides/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: year ? 'monthly' as const : 'weekly' as const,
+        priority: year ? 0.7 : 0.85,
+      };
+    }).filter((p): p is NonNullable<typeof p> => p !== null),
+    // Guides index page
+    {
+      url: `${BASE_URL}/guides`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
     },
     // Browse pages - high priority SEO landing pages
     ...browsePages,
