@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     description: 'Recoupment data and investment metrics for industry insiders',
     url: `${BASE_URL}/biz`,
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Investment Tracker',
+    description: 'Recoupment data and investment metrics for Broadway shows.',
+  },
 };
 
 // Format date as "Mon YYYY" or "Mon DD"

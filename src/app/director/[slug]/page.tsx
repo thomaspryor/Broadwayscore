@@ -26,6 +26,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     alternates: {
       canonical: canonicalUrl,
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
     openGraph: {
       title: `${director.name} - Broadway Director`,
       description,
