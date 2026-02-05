@@ -47,5 +47,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Those expecting a traditional take on Charles Dickens' classic holiday perennial may be in for a shock at the new Broadway version of 'A Christmas Carol.' Or at least they might be terribly perplexed by this dour production, whose additions only subtract from the potency of the transformative tale. While there have been many adaptations - from solo shows to musicals to ghostly imaginings - most stick pretty close to the storyline and character arc of the tightly crafted original. But this import from London's Old Vic - here starring Campbell Scott - would certainly have Dickens scratching his noggin.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those expecting a traditional take on Charles Dickens' classic holiday perennial may be in for a shock at the new Broadway version of 'A Christmas Carol.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic systematically dismantles this adaptation, calling it 'dour,' with 'wrong-headed' changes that 'subtract from the potency' of the original. While acknowledging some talent is wasted and offering specific criticisms throughout, this is clearly a negative recommendation that questions the production's fundamental choices. | GPT-4o: The review is overwhelmingly negative, criticizing the production's reinterpretation of the classic story, lack of magic, and unearned transformation of Scrooge. It highlights numerous missteps and concludes with a focus on production gimmicks over meaningful storytelling. | Gemini: The review is largely negative, criticizing the production's misinterpretations, lack of magic, and overall failure to deliver a soul-shaking experience. The critic finds the additions subtract from the original story. | Kimi: The critic consistently criticizes the production as dour, misguided, and lacking emotional impact, with specific complaints about the adaptation's wrong-headed changes, wasted talent, and unearned redemption arc, offering no recommendation to see it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:39:48.637Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

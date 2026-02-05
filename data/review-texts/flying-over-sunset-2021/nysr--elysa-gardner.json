@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "It's the 1950s, and after taking LSD for the first time, the movie legend and one-time vaudevillian is getting psychically re-acquainted with his much younger self through song and tap dance. The tune is impressively catchy, and the routine, as choreographed by Michelle Dorrance and executed by Yazbeck and Ware, is so exhilarating that you may feel chemically enhanced just watching it. I'd love to report that Sunset sustains that high for its roughly two and a half hours, but this long, strange trip-featuring a book by James Lapine, who also directs, music by Tom Kitt and lyrics by Michael Korie-is ultimately an uneven one.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLYING-OVER-SUNSET-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211213"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLYING-OVER-SUNSET-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211213",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The routine is so exhilarating that you may feel chemically enhanced just watching it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates positive recommendation. The excerpt praises specific elements as 'exhilarating' and 'impressively catchy' but notes the show is 'ultimately an uneven one,' suggesting qualified praise typical of lower-positive range. | GPT-4o: The excerpt praises specific elements like choreography and performance but notes the show is 'ultimately an uneven one.' The original 4/5 stars suggests a positive verdict despite reservations, aligning with the lower end of the Positive bucket. | Gemini: The review excerpt praises a specific scene highly, but then states the show is \"ultimately an uneven one.\" Given the 4/5 star rating, it's likely a positive review with reservations, but the single excerpt and \"uneven\" comment lower confidence. | Kimi: The 4/5 star rating indicates a recommendation, but the excerpt emphasizes the show is 'uneven' and fails to sustain its best moments, suggesting a qualified positive verdict rather than an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:45:37.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

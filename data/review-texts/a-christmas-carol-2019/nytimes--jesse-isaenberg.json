@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This 'Christmas Carol' is a gorgeous spectacle that celebrates the power of live theater, even if it sometimes sacrifices story for stunning visual effects.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -57,5 +57,60 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 754,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2025 outside valid range 2016–2021 for show opening 2019"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2025 outside valid range 2016–2021 for show opening 2019",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The heartfelt themes of this incarnation are sharing and community.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the production design, lighting, and performances (particularly Cerveris) while noting some structural weaknesses like rushed pacing and reduced focus on Scrooge's psychological journey. The tone is appreciative of the show's strengths despite acknowledging limitations. | GPT-4o: The review praises the production's uplifting themes, impressive lighting, and strong performances, particularly by Michael Cerveris. However, it notes a lack of depth in Scrooge's character development and a fast-paced approach to the story. Despite these reservations, the overall tone is positive, highlighting the engaging and interactive elements of the show. | Gemini: The review is generally positive, highlighting the lighting, costumes, and some performances, but notes that it lacks psychological depth and is not simply Scrooge's show. It's a qualified recommendation. | Kimi: The review offers substantial praise for the lead performance and technical elements while noting significant reservations about the ensemble approach overshadowing Scrooge's psychological depth and the hasty pacing, ultimately presenting it as a worthwhile if imperfect holiday production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:36:54.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

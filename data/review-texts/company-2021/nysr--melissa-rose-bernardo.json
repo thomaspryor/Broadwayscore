@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Naturally, there have been a few other character gender swaps as well: The aforementioned eligible bachelors our hero is juggling now sing 'You Could Drive a Person Crazy'; it may no longer be an Andrews Sisters-style number, but the three-part harmonies are as groovy as ever. Amy-the reluctant bride who sings 'Getting Married Today'-has become Jamie the reluctant groom; Matt Doyle's take on the warp-speed, tongue-twisting tune is simply marvelous. And Bobbie's impulse proposal to Jamie ('Marry me! And everybody'll leave us alone!') is just as ridiculous as Bobby's impulse proposal to Amy always was. 'It's just that you have to want to marry somebody, not just somebody,' Jamie explains gently, leading to Bobbie's Act 1-ending 'Marry Me A Little'-the stop on the road on the way to the show-ending 'Being Alive.' Even though she proclaims 'I'm ready now,' she's clearly not: 'Love me just enough./ Warm and sweet and easy,/ Just the simple stuff,' she coos. Lenk-a Tony winner for The Band's Visit-really gets to show her range as an actress in Company.",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "high",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Of all the Companys that I've seen—this one makes the strongest case for everything taking place in Bobbie's mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with sustained superlative praise throughout. Critic calls performances 'marvelous,' 'spectacular,' and 'icy perfection,' praises the concept as most effective of all productions seen, and finds deep meaning in the gender-swapped interpretation. No meaningful reservations despite truncation. | GPT-4o: The review is filled with praise for the production's innovative choices, performances, and emotional impact. The original 5/5 stars rating strongly suggests a rave. Despite the truncation warning, the available text and additional excerpts indicate a highly positive assessment. | Gemini: The review is overwhelmingly positive, highlighting the strong performances, innovative staging, and the emotional impact of the gender-bent revival. Despite being truncated, the overall tone and the 5/5 star rating suggest a rave review. | Kimi: The critic awards 5/5 stars and consistently praises the gender-bent revival's concept, performances, and staging, declaring it the strongest Company production they have encountered.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:26:43.253Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

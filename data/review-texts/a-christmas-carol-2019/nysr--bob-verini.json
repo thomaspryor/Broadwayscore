@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/11/20/a-christmas-carol-god-blast-ye-merry-gentlemen/",
   "bwwExcerpt": "The most effective touch by far is the casting of two young actors with cerebral palsy, Sebastian Ortiz (at the performance I caught) and Jai Ram Srinivasan, in alternation as Tiny Tim. It's no stunt. Tootling along in his little walker to investigate Scrooge's bounty the next morning-sorry, can't reveal anything about that either-Ortiz placidly works within his body's limits with fortitude and grace, more movingly than any ordinarily-abled moppet ever could in that role. His encounters with Scrooge bring tears to Scott's eyes and to ours: not tears of pity, but of recognition that there are people all around us who merit our help and at the very least, our respect, and yet look how often we deny both.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His encounters with Scrooge bring tears to Scott's eyes and to ours: not tears of pity, but of recognition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars indicates solid positive. The excerpt shows deep appreciation for a specific casting choice, calling it 'the most effective touch' and describing it as moving rather than a stunt. However, single excerpt limits full assessment. | GPT-4o: The excerpt highlights a powerful and moving performance by the young actor, suggesting a strong emotional impact. The original 4/5 star rating supports a positive classification, and the excerpt's tone aligns with strong praise, justifying a score in the upper range of the Positive bucket. | Gemini: The review excerpt focuses on a particularly moving and effective element of the production, specifically the casting and performance of Sebastian Ortiz as Tiny Tim. The critic describes the performance as bringing tears of recognition and respect, indicating a strong positive emotional impact and a clear recommendation. | Kimi: The critic's 4/5 star rating and praise for the casting as 'the most effective touch by far' with performances 'more movingly than any ordinarily-abled moppet ever could' indicate a strong recommendation. Confidence is low due to the availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:35:19.445Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

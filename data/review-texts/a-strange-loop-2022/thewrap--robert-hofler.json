@@ -44,5 +44,60 @@
   "tierReason": "Short text (59 words)",
   "bwwExcerpt": "This review, minus a few obvious updates, is basically what I wrote about 'A Strange Loop' in 2019. Despite going on to win the Pulitzer Prize, the show has invoked some chat-room gossip that it 'doesn't belong on Broadway.' Yes, that's what they once said about 'Caroline, or Change,' 'Avenue Q,' 'Fun Home' and 'Hamilton' before they hit the big time. Not only does 'Loop' belong on Broadway, it is by far the best new musical to open during this very strange theater season.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not only does 'Loop' belong on Broadway, it is by far the best new musical to open during this very strange theater season.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlative praise calling it 'by far the best new musical' of the season. The critic defends the show against detractors and positions it alongside acclaimed Broadway successes. | GPT-4o: The critic strongly endorses the show, comparing it favorably to other successful musicals and declaring it the best of the season. This indicates a highly positive assessment. | Gemini: The critic states that the show is \"by far the best new musical\" of the season, which is a very strong endorsement. | Kimi: The critic offers unqualified praise, declaring it 'by far the best new musical' of the season and defending its Broadway place alongside Pulitzer-winning classics like Hamilton.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:44:03.177Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 90,
+    "kimiScore": 95,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

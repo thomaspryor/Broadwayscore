@@ -60,5 +60,60 @@
   "wordCount": 464,
   "tierReason": "Missing proper ending or other signals",
   "bwwExcerpt": "From the first moments of 'An American Paris,' two things are clear about this new Gershwin musical. First, it is far more than just another Broadway remake of a Hollywood movie. And the ballet world's choreographer Christopher Wheeldon, in his theater-directing debut, has made something special. Just how extraordinary is unspooled all evening with exuberant, sweeping innovation, dark historical understanding and a big, smart heart. This is the most thrilling dance-driven musical since Twyla Tharp's wordless 'Movin' Out' in 2002. But 'American in Paris,' loosely inspired by the beloved 1951 movie, is also a genuine book musical starring ballet dancers -- Robert Fairchild from New York City Ballet and Leanne Cope from The Royal Ballet -- who can also act and sing.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Just how extraordinary is unspooled all evening with exuberant, sweeping innovation, dark historical understanding and a big, smart heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Strong superlatives ('extraordinary', 'thrilling', 'exuberant') and comparison to acclaimed predecessors indicate a rave, but single excerpt warning requires caution about representativeness. | GPT-4o: The review praises the show as 'extraordinary' with 'exuberant, sweeping innovation' and describes it as the most thrilling dance-driven musical since 2002, indicating a strong recommendation. | Gemini: The review uses strong positive language such as \"something special\", \"extraordinary\", \"exuberant, sweeping innovation\", and \"most thrilling\". Given the single excerpt, I am scoring at the higher end of the positive range. | Kimi: Single excerpt contains enthusiastic praise calling the show 'extraordinary' and 'thrilling' with superlatives comparing it to landmark productions, warranting the upper end of the Positive bucket; confidence is low due to risk of cherry-picking from a single curated quote. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:01:06.619Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 91,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

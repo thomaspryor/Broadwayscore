@@ -33,5 +33,60 @@
   "contentTier": "complete",
   "wordCount": 780,
   "tierReason": "Full review text",
-  "showScoreExcerpt": "\"Both sets are detailed and effective, but to what end? Is there anything to be gained by taking an early intermission for a set change besides showing off, without enhancing the story? We know Pask can design and the Emmy and Academy Award-winning actors are talented... what we don’t know is why they’re all here, in pursuit of further accolades in a production that feels as directionless as its characters' careers.\"\n\nRead more"
+  "showScoreExcerpt": "\"Both sets are detailed and effective, but to what end? Is there anything to be gained by taking an early intermission for a set change besides showing off, without enhancing the story? We know Pask can design and the Emmy and Academy Award-winning actors are talented... what we don’t know is why they’re all here, in pursuit of further accolades in a production that feels as directionless as its characters' careers.\"\n\nRead more",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "what we don't know is why they're all here, in pursuit of further accolades in a production that feels as directionless as its characters' careers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic questions the production's purpose and calls it 'directionless,' despite acknowledging talented performers and design elements. The tone suggests disappointment rather than outright hostility. | GPT-4o: The excerpt criticizes the production for being directionless and questions the purpose of its design choices, suggesting a lack of coherence and purpose. The tone is negative, focusing on the shortcomings rather than redeeming qualities. | Gemini: The review questions the purpose of the production despite acknowledging the talent involved, suggesting a negative overall assessment. The truncated nature lowers confidence. | Kimi: Despite acknowledging the detailed sets and talented cast, the critic fundamentally questions the production's purpose, calling it 'directionless' and suggesting it exists merely for vanity rather than artistic merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:55:57.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

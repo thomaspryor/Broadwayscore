@@ -18,5 +18,59 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "It could be that Good Night, Oscar exists as much as anything for handing Hayes an at-the-ivories tour de force. Otherwise, his Levant portrayal is strong enough. He bumbles and stumbles across Rachel Hauck‘s couple of NBC studios, constantly entrenched in Levant’s havoc, lighting up as obsessively as Levant did. Perhaps aficionados won’t be entirely watching the commanding grouse their guy was, but Hayes adulators will assume they’re getting the real thing. Could be the same for old-time Paar-t",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sean-Hayes-Stars-In-GOOD-NIGHT-OSCAR-On-Broadway-20230424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Sean-Hayes-Stars-In-GOOD-NIGHT-OSCAR-On-Broadway-20230424",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hayes adulators will assume they're getting the real thing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: 3/5 stars with clear mixed assessment: praises Hayes' piano performance as 'stunning' and calls his portrayal 'strong enough', but criticizes Wright's 'heavy-handed' writing and suggests the play exists mainly as a vehicle for Hayes rather than compelling drama. | GPT-4o: The review acknowledges strong performances, particularly by Sean Hayes, and highlights standout moments like the 'Rhapsody in Blue' performance. However, it also notes heavy-handedness in the writing and suggests the play may primarily serve as a showcase for Hayes, indicating a mixed reception. | Gemini: The review is generally positive, highlighting Hayes's performance and the 'Rhapsody in Blue' sequence, but also notes some heavy-handedness in the writing. The 3/5 star rating aligns with a positive but not rave assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:59:15.648Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

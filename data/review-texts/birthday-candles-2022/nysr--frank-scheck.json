@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "For many, Birthday Candles will no doubt prove deeply moving, especially since it inevitably deals with so many relatable issues for both young and old. And if I'm being honest, there were moments that got to me as well, proving that there's still something resembling a heart beneath this curmudgeonly exterior. But then, I've always found cheap music extraordinarily potent.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For many, Birthday Candles will no doubt prove deeply moving, especially since it inevitably deals with so many relatable issues for both young and old.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with significant criticism of the writing as 'manipulative hokiness' and 'half-baked' but acknowledges strong performances and admits moments were emotionally effective. Mixed verdict with qualified recommendation. | GPT-4o: The review presents a mix of criticism and praise. While it highlights the play's manipulative hokiness and lack of depth, it also acknowledges moments that are moving and performances that stand out. The original 3/5 stars and truncated text suggest a mixed reception. | Gemini: The review acknowledges some positive aspects, such as Messing's performance and relatable themes, but ultimately finds the play shallow and lacking in insight. The 3/5 star rating and the critic's overall tone suggest a mixed reaction. | Kimi: The 3/5 star rating reflects a balanced assessment that praises Debra Messing's performance and acknowledges the play's emotional accessibility, while criticizing the shallow writing, pedestrian dialogue, and lack of meaningful insights.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:12:17.229Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

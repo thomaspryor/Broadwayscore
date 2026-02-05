@@ -40,5 +40,60 @@
   "wordCount": 786,
   "tierReason": "Full review text",
   "bwwExcerpt": "There’s a cozy ease that permeates “All In,” in which a rotating cast of celebs narrates, with both flourish and offhandedness, the humorous and offbeat essays of The New Yorker writer Simon Rich.\n\nIt’s the kind of comic comfort that easily fits into the holiday period but also into a Broadway season that is especially welcoming to laughter.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the kind of comic comfort that easily fits into the holiday period but also into a Broadway season that is especially welcoming to laughter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic finds the show pleasant and well-crafted with strong performances, describing it as 'a very good night' and praising the production values. However, the humor is characterized as 'laidback' and 'pleasant' rather than exciting, suggesting solid but not exceptional entertainment. | GPT-4o: The review describes the show as 'laidback, pleasant, and effortless,' with several positive mentions of the cast and production elements. However, it notes some awkwardness and a few stories feeling shoehorned, indicating some reservations. | Gemini: The review is generally positive, describing the show as \"comic comfort\" and \"a very good night.\" While not a rave, it's a clear recommendation with some reservations about the humor being more gentle than laugh-out-loud funny. | Kimi: The review praises the elegant staging by Alex Timbers, strong performances from the rotating cast, and calls the show a 'very good night,' while noting the comedy is gentle and modest rather than uproarious.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:49:36.681Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 77,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -34,5 +34,60 @@
   "wordCount": 703,
   "tierReason": "Full review text",
   "bwwExcerpt": "It’s unnecessary and obvious; shoveling textureless meaning into the troth.     Brian",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This schlep is a project Clooney is clearly very passionate about.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment throughout - calls it 'empty,' 'schlep,' compares to damp log that won't light, says it makes viewers sleepy. Praises individual elements (Clooney's performance, set design) but finds the overall show disappointing and boring. | GPT-4o: The review criticizes the play for being 'attractive but empty' and 'nostalgic,' with a 'milquetoast' performance by Clooney and a lack of engaging drama. The overall tone is negative, suggesting the production fails to captivate or build to a crescendo. | Gemini: The review is overall negative, describing the play as 'empty' and 'sleepy'. While praising the set and Clooney's performance, the critic ultimately finds the production lacking. | Kimi: While the critic acknowledges the impressive set design and confident performances, he ultimately pans the show as boring, empty, and sleep-inducing, criticizing the milquetoast script and lack of dramatic momentum.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:57:33.274Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

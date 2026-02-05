@@ -34,9 +34,10 @@
   "contentTier": "complete",
   "wordCount": 1097,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T05:43:14.256Z",
+  "rejectedAt": "2026-02-05T01:54:03.172Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This is a review of 'Giant' at the Royal Court Theater in London, not a Broadway production. The review clearly states it 'runs at the Royal Court Theater in London through Nov. 16.'; openai: The review is about a production at the Royal Court Theater in London, not a Broadway production.; kimi: The review covers a production at the Royal Court Theater in London, not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "claude: This is a review of 'Giant' at the Royal Court Theater in London, not a Broadway production. The review explicitly states it 'runs at the Royal Court Theater in London through Nov. 16.'; openai: The review is about a production of 'Giant' at the Royal Court Theater in London, not a Broadway production.; kimi: This review covers a production at the Royal Court Theater in London, not a Broadway run.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

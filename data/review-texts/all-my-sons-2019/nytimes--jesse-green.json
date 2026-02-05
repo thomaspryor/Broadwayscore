@@ -40,5 +40,60 @@
   "tierReason": "Short text (291 words)",
   "bwwExcerpt": "Ms. Bening goes deepest of the four leads in exploring the muck at the bottom of her character's personality. She also has terrific technique, both vocal and otherwise. But the opacity of the production overall means we still can't read her with any clarity, and the play acquires a weird wobble at its core.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Too bad, then, that the Roundabout Theater Company revival reaches the play's level only intermittently, like a poorly tuned radio.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the play's continued relevance and praises Bening's performance, but finds the production 'literal-minded' and unable to make a 'resonant case' for the drama, with 'weird wobble at its core.' Clear mixed verdict with both positive and negative elements. | GPT-4o: The review criticizes the production for not making a resonant case for the drama today, despite the relevance of the play's themes. Praise for individual performances is overshadowed by the overall negative assessment of the production's impact. | Gemini: The review acknowledges the play's relevance but finds the production lacking, describing it as \"literal-minded\" and reaching the play's level only intermittently. While praising Bening's performance, the overall assessment is mixed. | Kimi: While praising Annette Bening's technique, the critic finds the production reaches the play's level only 'intermittently' and suffers from 'opacity' and a 'weird wobble at its core,' ultimately failing to justify the revival's relevance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:52:17.554Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

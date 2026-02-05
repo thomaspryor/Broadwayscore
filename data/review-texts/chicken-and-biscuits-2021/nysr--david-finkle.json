@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2021/10/10/chicken-biscuits-dysfunctional-family-becomes-beautifully-functional/",
   "bwwExcerpt": "We all know-don't we?-the phrase Goin' to Church, which means letting religious fervor flow no matter what the context. Dramatist Lyons has written a play about literally goin' to church. He's gotten the church bells reverberantly chiming. If theater lovers are smart, they'll heed the call and go straight to Chicken & Biscuits church.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If theater lovers are smart, they'll heed the call and go straight to Chicken & Biscuits church.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language ('reverberantly chiming') and direct recommendation to 'go straight' to see it. Single excerpt limits confidence despite clear positive verdict. | GPT-4o: The excerpt suggests a strong recommendation with the phrase 'heed the call', and the original rating of 4/5 stars supports a positive classification. Given the single excerpt warning, the score is placed in the upper range of the Positive bucket. | Gemini: The excerpt strongly encourages theater lovers to see the show, using the phrase \"go straight to Chicken & Biscuits church,\" which implies a positive and enthusiastic recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Strong recommendation language combined with 4/5 stars indicates a clearly positive review urging audiences to attend, though the single excerpt format limits certainty about the full review's tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:20:56.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -62,5 +62,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Summer entertainment options do not get more counterintuitive than the Broadway adaptation of George Orwell's '1984' that opened at the Hudson Theatre on Thursday, just as beach season swings into high gear. In truth, to call this almost unrelievedly grim production entertainment may be misleading. If you're in the mood for a meal of pure spinach, to use a now-outmoded food metaphor, this 100-minute immersion in one man's bleak odyssey through a brutally oppressive culture certainly fits the ticket.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're in the mood for a meal of pure spinach, this 100-minute immersion in one man's bleak odyssey certainly fits the ticket.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt describes the show as 'almost unrelievedly grim' and questions whether it's even entertainment, but acknowledges it serves its purpose for those seeking this type of experience. With only one excerpt available, this suggests mixed reception rather than clear recommendation or dismissal. | GPT-4o: The review describes the production as 'almost unrelievedly grim' and suggests it is not entertaining, indicating a negative assessment. The use of 'fits the ticket' for a bleak experience suggests a recommendation against it as entertainment. | Gemini: The review excerpt describes the production as \"almost unrelievedly grim\" and compares it to \"a meal of pure spinach.\" While not explicitly negative, it doesn't offer a strong recommendation, suggesting it's only suitable for a specific mood. | Kimi: The excerpt describes the show as 'unrelievedly grim' and suggests it is misleading to label it entertainment, comparing the experience to 'pure spinach'—intellectually worthy but unenjoyable. While noting it 'fits the ticket' for those seeking bleak material, the overall tone discourages general audiences seeking summer entertainment. With only one curated excerpt available, the full verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:32:24.591Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 40,
+    "geminiScore": 58,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

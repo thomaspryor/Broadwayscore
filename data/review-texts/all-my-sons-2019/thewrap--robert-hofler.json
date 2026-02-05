@@ -48,5 +48,60 @@
   "promptVersion": "5.2.0",
   "bwwExcerpt": "But O'Brien creates two interracial families for the Miller drama, set in an otherwise realistically depicted 1947, without comment. Since 'All My Sons' is an indictment of capitalism, it's odd to have a byproduct of that economic system as practiced in the United States simply ignored here. This revival acts as if racism didn't exist among these kinds of characters at that time, which isn't that far away from Joe Keller's attitude regarding his crime.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracy Letts delivers a Dick Cheney who's every bit as terrifying as Christian Bale's in 'Vice' — but without the need of all those prosthetics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review praises Letts' performance with strong comparison to Bale's acclaimed portrayal, but raises significant concerns about the production's handling of racial casting without addressing historical context. The mix of strong praise for individual elements and substantive criticism of directorial choices indicates a mixed assessment. | GPT-4o: The review praises Tracy Letts' performance but criticizes the revival's handling of racial issues, suggesting a lack of authenticity. The tone is neither fully positive nor negative, indicating a mixed reception. | Gemini: The review highlights Letts' performance positively but criticizes the director's choice to cast interracial families without addressing the racial context of the time, leading to a mixed assessment. | Kimi: The excerpt offers strong praise for Tracy Letts' performance but levels substantive criticism at the director's colorblind casting concept, which the critic argues ignores historical racism and undermines the play's themes. Without a clear concluding verdict, the review appears evenly balanced between these positive and negative elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:53:08.421Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

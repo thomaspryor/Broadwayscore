@@ -17,5 +17,60 @@
   "contentTier": "stub",
   "tierReason": "No text content",
   "wordCount": 0,
-  "playbillVerdictUrl": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/"
+  "playbillVerdictUrl": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice becomes a hodge-podge of events and numbers, some amusing, some not so amusing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with mixed language throughout - praises Brightman and production values but calls it 'watered down,' 'hodge-podge,' and 'hit-or-miss.' Despite truncation warning, enough evaluative content present to score in middle Mixed range. | GPT-4o: The review presents a mixed assessment, highlighting both entertaining elements and shortcomings. The critic praises Alex Brightman's performance and some musical numbers but criticizes the overall coherence and impact of the show. The original 3/5 stars rating aligns with a mixed verdict. | Gemini: The review praises Alex Brightman and the technical aspects but finds the show uneven and not as good as the source material. The truncated text makes the final verdict somewhat unclear, but the overall tone is mixed. | Kimi: The 3/5 star rating and mixed content—praising Brightman's performance and the design elements while criticizing the 'watered down' book as 'at-best-mediocre' with 'hit-or-miss' songs—places this firmly in the Mixed bucket. The truncated ending necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:05:47.676Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

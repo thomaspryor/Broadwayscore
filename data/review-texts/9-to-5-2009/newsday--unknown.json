@@ -44,9 +44,10 @@
   "contentTier": "complete",
   "wordCount": 566,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T10:21:26.022Z",
+  "rejectedAt": "2026-02-05T00:34:25.026Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This is a review of a 2012 Gateway Playhouse production in Patchogue, not a Broadway show. The text mentions it's the '2009 Broadway musical now playing in Patchogue' but this is clearly a regional theater production.; openai: The text reviews an off-Broadway production at the Patchogue Theater, not the current Broadway run.; gemini: This is a review of a 2012 Gateway Playhouse production in Patchogue, not the current Broadway run.; kimi: This review covers a 2012 regional production at Gateway Playhouse/Patchogue Theater on Long Island, not a current Broadway production.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "claude: This review is of a 2012 Gateway Playhouse production in Patchogue, not a current Broadway production; openai: The review is about a Gateway Playhouse production at the Patchogue Theater, not the current Broadway run.; gemini: This is a review of a 2012 Gateway Playhouse production, not the current Broadway run.; kimi: This review covers a 2012 Gateway Playhouse regional production at the Patchogue Theatre on Long Island, not the current Broadway run.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

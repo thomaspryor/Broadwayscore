@@ -47,5 +47,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Don't be fooled by the placid backyard setting, neighborly small talk and father-son joviality at the start of the Roundabout Theatre Company's blistering revival of Arthur Miller's 'All My Sons' starring Annette Bening and Tracy Letts. There are plenty of secrets, resentments and disillusionments ahead, poised to rip this sunny Middle Americana facade to shreds.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It still packs a wallop all its own, especially in this wonderfully cast, honestly staged and beautifully presented production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('blistering revival', 'wonderfully cast', 'stunning performance', 'terrific') with enthusiastic praise for all performances and production elements. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production, performances, and staging. The critic describes the revival as 'blistering' and 'beautifully presented,' with standout performances, particularly from Bening and Letts. | Gemini: The review is overwhelmingly positive, praising the cast, staging, and overall presentation. The critic uses strong positive language like \"stellar cast\", \"harrowing life\", and \"wonderfully cast\". | Kimi: The review offers enthusiastic praise for the cast, staging, and direction, calling the revival 'blistering' and performances 'stunning' and 'enthralling,' while noting the play's occasional structural heavy-handedness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:53:49.122Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

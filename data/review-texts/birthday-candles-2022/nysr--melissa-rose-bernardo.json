@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "There might be life beyond the walls of Ernestine's expansive Grand Rapids, Michigan, kitchen, but Birthday Candles isn't interested in it. (Your first clue that Birthday Candles doesn't take place in the real world as we know it comes from Christine Jones' fantastical set: pots and pans, musical instruments, stuffed animals, and assorted bric-a-brac hanging from above-a lifetime of memories scattered across the sky like stardust.) Ernestine only grows older; she doesn't really grow.",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ernestine only grows older; she doesn't really grow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars indicates mixed reception. The excerpt criticizes the show's limited scope and character development, suggesting significant reservations despite any positive elements not shown in this single quote. | GPT-4o: The excerpt suggests a lack of depth or development in the character, hinting at a mixed reception. The 3/5 stars rating aligns with a mixed verdict, but the single excerpt and lack of full context reduce confidence. | Gemini: The review excerpt is somewhat ambiguous. The critic notes the fantastical set design but also suggests the character doesn't develop much. Given the limited text, a mixed score seems appropriate. | Kimi: The 3/5 star rating anchors this in Mixed territory, supported by praise for the fantastical set design alongside criticism of the show's narrow focus and lack of character development.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:12:42.754Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

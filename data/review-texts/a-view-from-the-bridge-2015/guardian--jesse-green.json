@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Strong's Eddie is a marvel of specificity and restraint, never letting the character's obsessions turn him into a monster, even when his actions become monstrous.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -68,5 +68,60 @@
   "textStatus": "truncated",
   "sourceMethod": "scrapingbee",
   "wordCount": 641,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is an exhilarating production, assured and perilous, abstract and concretely physical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite truncation, the review is overwhelmingly positive with superlatives like 'thrillingly claustrophobic,' 'exhilarating,' 'extraordinary,' and 'genius.' The critic praises van Hove's direction and Strong's performance extensively. Confidence is medium due to truncation, but the tone is clearly rapturous throughout. | GPT-4o: The review uses strong positive language such as 'exhilarating', 'assured', and 'perilous' to describe the production. Despite the text being truncated, the available content suggests a highly favorable view of the show. | Gemini: Despite the truncated text, the review contains strong positive language like \"thrillingly claustrophobic version\", \"exhilarating production\", and \"assured and perilous\". The praise for Mark Strong's performance is also notable. | Kimi: The review offers unqualified praise for Ivo van Hove's direction (calling him a 'genius') and Mark Strong's performance ('extraordinary and visceral'), describing the production as 'thrillingly claustrophobic' and emotionally potent with only a minor quibble about wavering accents.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:46:17.630Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -21,5 +21,60 @@
   "bwwExcerpt": "The cast of eight—all but one of whom fill multiple roles—remains stellar. Andrew Durand (of Shucked, War Horse, Yank!, and other entertainments) heads the cast as the titular desperado, and it is quite a performance. Behind that mostly ever-present scowl lie sweetness, violence, and a burlesque-type vulgarity. The demands of the plot call for him to spend almost half the 100-minute running time playing dead; not sitting immobilized in the shadows like Floyd Collins, that other historical lad presently on Broadway, but standing—dead—in a harsh spotlight’s glare. Durand manages to remain thoroughly and expressively immobile, except when he isn’t.",
   "bwwScore": 10,
   "bwwThumb": "Up",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAD-OUTLAW-Opens-on-Broadway-20250427"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEAD-OUTLAW-Opens-on-Broadway-20250427",
+  "assignedScore": 85,
+  "llmScore": {
+    "score": 85,
+    "confidence": "medium",
+    "range": {
+      "low": 80,
+      "high": 90
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The cast of eight remains stellar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: 5/5 stars with high praise for the stellar cast and lead performance described as 'quite a performance.' Single excerpt warning prevents higher confidence, but the superlative language and perfect rating indicate strong enthusiasm. | GPT-4o: The excerpt praises the cast as 'stellar' and highlights Andrew Durand's performance. The original 5/5 stars rating suggests a strong positive review, and despite the limited text, the available excerpt supports a high score within the Positive bucket. | Gemini: The review excerpt focuses on praising the lead performance, calling it \"quite a performance.\" Given the limited text and the aggregator context, I'm placing it in the upper end of the positive range. | Kimi: The review carries a 5/5 star rating with unqualified praise for the 'stellar' ensemble and Durand's 'quite a performance,' clearly placing it in the Rave bucket despite the limitation of a single excerpt. | Buckets: claude=Rave, openai=Positive, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:32:24.154Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

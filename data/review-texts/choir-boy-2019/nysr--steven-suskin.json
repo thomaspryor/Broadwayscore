@@ -17,5 +17,60 @@
   "textQuality": "partial",
   "playbillVerdictUrl": "http://nystagereview.com/2019/01/08/choir-boy-brave-new-voice-on-broadway/",
   "bwwExcerpt": "Tarell Alvin McCraney's Choir Boy is a knockout tale of music, homophobia, and racism told in rousing and entertaining manner. Manhattan Theatre Club, which first presented the play in a limited run at their smallest stage in the summer of 2013, has now finally moved it to Broadway-and it's about time! Choir Boy was brave and stunning back then. With an expanded production, a strengthened script, and the return of three of the central actors, McCraney's play is even more powerful now at the Frie",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108",
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Choir Boy is a knockout tale of music, homophobia, and racism told in rousing and entertaining manner.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: 5/5 stars with superlative language ('knockout', 'stunning', 'even more powerful now') and enthusiastic recommendation ('it's about time!' for Broadway transfer). Despite truncated text, the verdict is unambiguous. | GPT-4o: The excerpt describes the show as 'a knockout' and 'rousing and entertaining,' with praise for the expanded production and strengthened script. The original 5/5 star rating supports a high score in the Rave bucket. | Gemini: The review excerpt uses strong positive language such as \"knockout\", \"rousing\", and \"entertaining\", and states the play is \"even more powerful now\". Given the 5/5 star rating and the limited excerpt, a score on the higher end of the positive bucket is appropriate. | Kimi: The critic's 5/5 stars and enthusiastic superlatives ('knockout', 'stunning', 'even more powerful') indicate an unqualified rave, though confidence is lowered due to the availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:24:44.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

@@ -32,9 +32,10 @@
   "contentTier": "complete",
   "wordCount": 471,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T05:32:09.813Z",
+  "rejectedAt": "2026-02-05T01:29:35.707Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a production at The Public Theater, not a Broadway production.; kimi: This review covers the Public Theater's Shakespeare in the Park production at the Delacorte Theater (described as 'al fresco' and featuring 'Delacorte players'), which is an outdoor off-Broadway venue, not a Broadway theater production.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about a production at The Public Theater, not the current Broadway run.; kimi: This review covers the Public Theater's Shakespeare in the Park production at the Delacorte Theater, which is an outdoor Off-Broadway venue in Central Park, not a Broadway production.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

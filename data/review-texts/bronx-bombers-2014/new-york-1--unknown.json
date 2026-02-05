@@ -42,5 +42,60 @@
   "wordCount": 408,
   "tierReason": "Full review text",
   "bwwExcerpt": "Eric Simonson's play is a disjointed work divided into four disparate scenes. The first scene, the only one that qualifies as drama, features a notorious episode in Yankee history. In 1977, manager Billy Martin and slugger Reggie Jackson had it out in a Fenway Park dugout, and it was all caught on camera. As the scene unfolds, Yogi Berra, then the coach, tries to diffuse tensions by inviting Martin and Jackson to a hotel room along with team captain Thurman Munson to hash it out.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's just not a very good play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic clearly states 'It's just not a very good play' and concludes 'theatrically speaking, it strikes out.' Despite praising individual performances, the overall verdict is negative. | GPT-4o: The review acknowledges some good performances but ultimately criticizes the play as disjointed and not dramatically effective, suggesting it's only appealing to hardcore fans. | Gemini: The review acknowledges good performances and sentimental value for fans, but ultimately finds the play disjointed and lacking dramatic critique, resulting in a mixed assessment. | Kimi: While praising several performances including Peter Scolari's 'home run' portrayal of Yogi Berra, the critic finds the play 'disjointed' and 'not very good,' concluding that despite working as a 'sentimental tribute' for hardcore fans, it 'strikes out' as theater.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:15:29.476Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

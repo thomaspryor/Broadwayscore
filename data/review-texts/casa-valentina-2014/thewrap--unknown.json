@@ -44,5 +44,60 @@
   "wordCount": 75,
   "tierReason": "Short text (75 words)",
   "bwwExcerpt": "In the Playbill, Fierstein tells us not to call his characters 'drag queens' or 'female impersonators.' And that's not the end of his sermonizing...From 'La Cage aux Folles' to 'Kinky Boots,' Fierstein has created some very sympathetic hero-victims. With 'Casa Valentina,' those victims are looking more pathetic than sympathetic. He's the master of the long, bigoted diatribe that helps make the audience feel superior but leaves the poor character who's the object of all this verbal abuse simply battered and abused. There's much more nuance in Joe Mantello's direction of his actors, although even he doesn't succeed in softening Fierstein's sledgehammer when, late in the play, a transvestite's daughter (Lisa Emery) arrives to tell off the owners of the Catskills resort.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Those victims are looking more pathetic than sympathetic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds Fierstein's characters 'pathetic' rather than sympathetic and criticizes his 'sledgehammer' approach. While acknowledging Mantello's nuanced direction, the overall assessment is clearly negative about the writing and characterization. | GPT-4o: The review criticizes the play for its lack of sympathetic characters and heavy-handed writing, suggesting it is disappointing and not worth seeing. | Gemini: The review is mixed, praising Fierstein's championing of an ignored minority but also criticizing the characters as pathetic rather than sympathetic and the writing as heavy-handed. | Kimi: While the critic acknowledges nuance in Joe Mantello's direction, the review fundamentally criticizes Fierstein's writing as preachy ('sermonizing'), heavy-handed ('sledgehammer'), and creating pathetic rather than sympathetic characters. The overall verdict discourages attendance despite isolated positive elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:19:36.283Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -42,5 +42,11 @@
   "contentTier": "complete",
   "wordCount": 606,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2015 outside valid range 2004–2009 for show opening 2007"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2015 outside valid range 2004–2009 for show opening 2007",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:30:21.771Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production of 'Cymbeline' at Shakespeare in the Park, not a Broadway production.; kimi: This review explicitly covers a production at Shakespeare in the Park (the Delacorte Theater), which is an Off-Broadway/Outdoor venue operated by The Public Theater, not a Broadway theater. The rejection criteria specify that reviews of off-Broadway productions should not be scored.",
+  "promptVersion": "5.2.0"
 }

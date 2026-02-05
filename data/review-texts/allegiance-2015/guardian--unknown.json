@@ -40,5 +40,60 @@
   "wordCount": 591,
   "tierReason": "Full review text",
   "bwwExcerpt": "George Takei, the original Sulu on Star Trek, was one of those interned. The experiences of his family have now inspired Allegiance, an unexceptional though often affecting new Broadway musical. Allegiance should be better served by its book, score and lyrics, most of which tend toward the generic. Stafford Arima's direction does too. Composer and lyricist Jay Kuo and book writers Marc Acito and Lorenzo Thione are striving so hard for stirring nobility that individuality or particular characterization falls by the wayside. The ballads are all sufficiently ballad-y, but none of the melodies linger once the curtain has fallen and the lyrics pile on platitude and cliché.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Allegiance should be better served by its book, score and lyrics, most of which tend toward the generic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the show is 'often affecting' and emotionally powerful in moments, but consistently criticizes it as 'unexceptional,' 'generic,' and 'disappointing.' The review suggests the important subject matter deserves better treatment, indicating a mixed reception that leans slightly negative. | GPT-4o: The review criticizes the show for its generic book, score, and lyrics, and lack of distinctive performances. While there are some positive notes about individual performances, the overall tone suggests disappointment. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review acknowledges the importance of the story but criticizes the generic book, score, and direction. It praises some performances but finds the characters underdeveloped, resulting in a mixed assessment. | Kimi: The review acknowledges the show's emotional impact and important subject matter ('often affecting,' 'stories deserve telling'), but consistently criticizes the execution as generic, workmanlike, and disappointing. The truncated text warrants caution, but the available content suggests a neither-recommend-nor-discourage stance typical of mixed reviews.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:55:40.786Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

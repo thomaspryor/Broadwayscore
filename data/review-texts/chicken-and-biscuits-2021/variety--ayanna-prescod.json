@@ -45,5 +45,60 @@
   "wordCount": 554,
   "tierReason": "Full review text",
   "bwwExcerpt": "The cast is dynamic together, making it nearly impossible to single out any one of them. Mizzelle, however, does an extraordinary job at playing the going-on-16-year-old La'Trice Franklin, a character that could easily be portrayed as a Black female caricature. She's loud, she's bold and she says whatever is on her mind; Mizzelle's performance gives nuance to the young Black woman screaming to be seen, included and understood. Urie, who plays Kenny Mabry's white Jewish boyfriend, also does a phe",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHICKEN-BISCUITS-Opens-on-Broadway-What-Did-the-Critics-Think-20211010",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Chicken & Biscuits\" is a feast of a production, and there is enough sustenance and libation for the entire family.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'feast of a production,' 'brilliant script,' 'extraordinary job,' and 'phenomenal.' The critic celebrates every aspect from performances to creative team, calling it 'much-needed' and ending with religious affirmation. | GPT-4o: The review is filled with superlatives and praises the production as a 'feast', 'brilliant', 'laugh-out-loud funny', and a 'much-needed therapy session'. The critic highlights the strong performances, creative team, and cultural significance, indicating a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the script, direction, performances, and design elements. The critic highlights the play's importance and impact, making it a strong recommendation. | Kimi: The review offers unqualified praise for the script, direction, performances, and design, using superlatives ('brilliant', 'phenomenal', 'feast') throughout and framing the show as essential, joyful viewing for all audiences.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:22:32.381Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

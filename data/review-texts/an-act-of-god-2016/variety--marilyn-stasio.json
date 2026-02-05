@@ -44,14 +44,15 @@
   ],
   "wordCount": 525,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-03T13:37:24.065Z",
+  "rejectedAt": "2026-02-05T01:00:20.666Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is about a production at the Ahmanson Theatre, not the current Broadway run.; kimi: This review covers the production at the Ahmanson Theatre in Los Angeles, not the Broadway production. The text explicitly mentions the 'Ahmanson' venue multiple times and refers to Jim Parsons having done the show on Broadway 'last year,' indicating this is a regional/L.A. production rather than the current Broadway run.",
+  "rejectionReasoning": "openai: The review is about a production at the Ahmanson Theatre, not the current Broadway run.; kimi: This review covers the production at the Ahmanson Theatre in Los Angeles (starring Sean Hayes), not the current Broadway production. It explicitly references the previous Broadway production with Jim Parsons as having occurred 'last year on Broadway,' confirming this is a different production at a different venue.",
   "promptVersion": "5.2.0",
   "playbillVerdictUrl": "http://variety.com/2015/legit/reviews/broadway-review-jim-parsons-in-an-act-of-god-1201506483/",
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "wrongProduction": true
 }

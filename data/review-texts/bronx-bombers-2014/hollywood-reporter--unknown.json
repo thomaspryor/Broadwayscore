@@ -40,5 +40,60 @@
   "wordCount": 604,
   "tierReason": "Full review text",
   "bwwExcerpt": "The third in a series of sports-themed Broadway productions that are as much promotional as dramatic-the Yankees and Major League Baseball are among the presenters--Bronx Bombers offers little for those who are not already ardent fans of the venerable sports franchise...The effective cast of last year's original off-Broadway production is largely intact, with the exception of Scolari, who's touching and funny as the ever-awkward Berra. And the moving final scene, set in the Yankees locker room on the day of the final game at the original stadium, will surely strike a chord with nostalgists. But Bronx Bombers is ultimately too lightweight to score a theatrical home run.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bronx Bombers is ultimately too lightweight to score a theatrical home run.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges some positives (effective cast, touching performance, moving final scene) but concludes the show is 'too lightweight' and appeals mainly to 'ardent fans' rather than general audiences. | GPT-4o: The review notes that the production may appeal to fans of the Yankees but criticizes it as 'too lightweight' for broader appeal. The praise for the cast and a moving final scene is balanced by the overall lack of dramatic impact, leading to a mixed verdict. | Gemini: The review acknowledges some positive aspects (cast, final scene) but ultimately finds the show too lightweight and primarily for ardent fans, indicating a mixed recommendation. | Kimi: While acknowledging effective performances and a moving final scene, the critic ultimately concludes the show is too lightweight and offers little appeal to anyone except ardent Yankees fans, explicitly stating it fails to score a theatrical home run.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:14:54.494Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

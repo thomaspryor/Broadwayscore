@@ -39,9 +39,10 @@
   "contentTier": "truncated",
   "wordCount": 61,
   "tierReason": "Short text (61 words)",
-  "rejectedAt": "2026-02-04T05:35:39.485Z",
+  "rejectedAt": "2026-02-05T00:57:40.088Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This is a review of a Los Angeles production at Mark Taper Forum, not a Broadway show; openai: The review is about a production at Los Angeles' Mark Taper Forum, not the current Broadway run.; gemini: This review is for a Los Angeles production at the Mark Taper Forum, not a Broadway production.; kimi: This review covers a production at Los Angeles' Mark Taper Forum, not the current Broadway run. The text explicitly states it is a Deaf West Theatre and Center Theatre Group co-production in Los Angeles, making it ineligible for Broadway review scoring.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "claude: This review is about a Los Angeles production at the Mark Taper Forum, not a current Broadway production.; openai: This review is about a production in Los Angeles, not the current Broadway run.; gemini: This review is for a Los Angeles production at the Mark Taper Forum, not a Broadway production.; kimi: This review covers a production at Los Angeles' Mark Taper Forum, not the current Broadway run of the show.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

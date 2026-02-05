@@ -18,10 +18,10 @@
   "showScoreExcerpt": "Pierce and Clarke are magnetic together, their chemistry crackling with the kind of lived-in intimacy that makes their eventual breakdown all the more devastating.",
   "contentTier": "complete",
   "contentTierReason": "Short text (24 words)",
-  "rejectedAt": "2026-02-03T15:25:25.986Z",
+  "rejectedAt": "2026-02-05T01:32:37.617Z",
   "rejectedBy": "ensemble-scoreability-check",
-  "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review that can be properly scored; openai: The text provided is a single sentence and does not constitute a full review or provide a clear verdict on the show.",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Royal Exchange in Manchester, not the current Broadway run.; gemini: This review is for a 2017 production of Death of a Salesman at the Royal Exchange in Manchester, not the current Broadway production.; kimi: This review covers the Royal Exchange, Manchester production of Death of a Salesman directed by Sarah Frankcom, not a Broadway production. The text explicitly states the venue as 'Royal Exchange, Manchester' and notes the article is more than 7 years old.",
   "promptVersion": "5.2.0",
   "textQuality": "truncated",
   "previousUrl": "https://www.theguardian.com/stage/2022/oct/10/death-of-a-salesman-review-wendell-pierce-sharon-d-clarke-broadway",
@@ -63,5 +63,6 @@
   "sourceMethod": "scrapingbee",
   "wordCount": 680,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2018 outside valid range 2019–2024 for show opening 2022"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2018 outside valid range 2019–2024 for show opening 2022",
+  "wrongProduction": true
 }

@@ -41,5 +41,59 @@
   "contentTier": "complete",
   "wordCount": 888,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2024 outside valid range 2009–2014 for show opening 2012"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2024 outside valid range 2009–2014 for show opening 2012",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For everyone else – adults anyway – the updated Elf remains as much a mixed bag as it was during its previous two Broadway stagings.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: The critic explicitly calls it a 'mixed bag,' praises individual performances (especially Henson) and final scenes, but finds the overall experience 'wearying' and 'mostly unremarkable.' No clear recommendation either way. | Gemini: The review is mixed, praising some aspects like Henson's performance and the final scenes, but also noting the show's length and unevenness. The phrase \"fitfully successful\" encapsulates the mixed feelings. | Kimi: The critic explicitly labels the show a 'mixed bag' for general audiences and calls it 'fitfully successful,' praising Grey Henson's performance and final scenes while criticizing the 'wearying' length and 'unremarkable' score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:38:32.016Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

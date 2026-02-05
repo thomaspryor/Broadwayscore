@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "This is a play about gentrification and police violence and family dysfunction, but it's also deeply, fundamentally about the way we talk to each other when no one else is listening.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -40,5 +40,60 @@
   "archiveOrgTimestamp": "20250726084027",
   "archiveOrgUrl": "http://web.archive.org/web/20250726084027/https://www.vulture.com/2022/12/theater-review-between-riverside-and-crazy-on-broadway.html",
   "wordCount": 820,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson's Walter belongs on Broadway, and it's a pity it took this long for the production to transfer.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic offers strong praise for Henderson's central performance calling him 'the main attraction' and expressing regret it took so long to transfer to Broadway. While noting some weaknesses (Common's performance, scenes without Walter), the overall assessment is enthusiastically positive with appreciation for Guirgis's writing and the production's strengths. | GPT-4o: The review praises the play's humor, unique qualities, and performances, particularly Henderson's, but notes some weaknesses, such as Common's performance and certain scenes. Overall, it recommends the play for its strengths. | Gemini: The review is generally positive, highlighting Henderson's performance and the play's humor. However, it notes some weaknesses, such as Common's performance and scenes without Walter, leading to a recommendation with reservations. | Kimi: While the critic praises Stephen McKinley Henderson's commanding performance and Guirgis's 'lovelier and weirder' writing as 'fire still intact' from the original production, specific criticisms of Common's less polished performance and wobbling pacing in scenes without the lead character prevent this from being an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:10:47.474Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

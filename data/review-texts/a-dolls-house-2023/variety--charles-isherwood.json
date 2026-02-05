@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Chastain brings a fierce intelligence and emotional authenticity to Nora that makes her journey from sheltered wife to self-determined woman feel both inevitable and startling.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -47,5 +47,60 @@
   "textStatus": "partial",
   "sourceMethod": "brightdata",
   "wordCount": 1157,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is a beautiful, spacious clarity about what this oft-produced play is about, who these characters are, what they mean to one another.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Lloyd's stripped-down directorial approach as creating 'beautiful, spacious clarity' and commends the performances, particularly Chastain and Thornton's chemistry. Despite noting the unconventional staging, the critic finds it effective and meaningful. | GPT-4o: The review praises the production's clarity and the skill of the actors, particularly highlighting the chemistry and performances. The tone is positive and appreciative of the stripped-down approach. | Gemini: The review praises the clarity and skill of the production, highlighting the performances and Herzog's adaptation. While not a rave, it's a clear recommendation with some reservations about the stripped-down nature. | Kimi: Isherwood praises the stripped-down production for its 'beautiful, spacious clarity' and lauds the performances, particularly Jessica Chastain and Michael Patrick Thornton, whose chemistry he describes as 'unmistakable' and 'raw and joyful.' While the review acknowledges the minimalist aesthetic removes traditional theatrical elements, it frames this as a successful interpretive choice rather than a deficiency, resulting in a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:41:58.824Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "What was galvanizing onscreen is curiously lifeless onstage, its airless quality not helped by the lackluster staging from the normally superb David Cromer. Despite running a mere 90 intermission-less minutes, the play feels much longer...",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GOOD-NIGHT-AND-GOOD-LUCK-Brings-George-Clooney-To-Broadway-20250403",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What was galvanizing onscreen is curiously lifeless onstage, its airless quality not helped by the lackluster staging",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: 3/5 stars with clear criticism of the staging as 'lackluster' and the production as 'lifeless' and 'airless.' Despite being a single excerpt, the negative language is unambiguous. | GPT-4o: The excerpt describes the stage production as 'lifeless' and 'lackluster', indicating a negative assessment. The original rating of 3/5 stars suggests a negative but not deeply panned review. | Gemini: The review excerpt is negative, describing the stage adaptation as \"lifeless\" and the staging as \"lackluster.\" Given the 3/5 star rating, this seems like a negative review with some redeeming qualities. | Kimi: The 3/5 star rating indicates a mixed overall verdict, though the single available excerpt emphasizes strongly negative criticism (lifeless, airless, lackluster). Given only one excerpt is available, confidence is low as the full review may contain balancing positive elements not captured here.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:58:54.957Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "And thus is conjured a very enjoyable, very self-aware, very slick, very tuneful, very constructed-to-please-the-crowds new Broadway musical. It opened tonight at the Winter Garden, that frequent home to now-and-forever-running staples, and it's nearly guaranteed to follow suit.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And thus is conjured a very enjoyable, very self-aware, very slick, very tuneful, very constructed-to-please-the-crowds new Broadway musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise throughout - calls it 'very enjoyable,' 'really good tourist show,' 'perfectly wonderfully showbizzy good time.' Despite noting some flaws (weak supporting characters, lacks soul), the overall recommendation is clearly positive. | GPT-4o: The review praises the show as enjoyable and crowd-pleasing, highlighting strong performances and production elements. However, it notes a lack of nuance and soul, suggesting some reservations. The original 4/5 star rating supports a positive classification. | Gemini: The critic clearly enjoyed the show, calling it a \"perfectly, wonderfully, showbizzy good time.\" While noting a lack of nuance, the overall tone is positive and recommends it, especially as a \"really good tourist show.\" | Kimi: The critic awards 4/5 stars and consistently praises the production as 'terrific,' 'hilarious,' and a 'perfectly, wonderfully, showbizzy good time,' predicting it will become a long-running staple despite noting it lacks some emotional nuance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:06:31.389Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

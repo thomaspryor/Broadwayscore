@@ -20,5 +20,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "As for how this production judges Joe, it's hard to ignore that Letts bears an eerie resemblance to capitalist warmonger and former Vice President Dick Cheney. Yet even as Joe is careening toward his inevitable fall, he never loses our sympathy. It seems selfish to want to see Letts do more and more stage roles when he could be writing more plays like August: Osage County and Mary Page Marlowe. But he's so spectacular in All My Sons-even in the simple, speechless act of reading a letter-that you can't help but imagine him (and Bening) in, oh, say...Death of a Salesman. Hey, a theatergoer can dream.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But he's so spectacular in All My Sons-even in the simple, speechless act of reading a letter-that you can't help but imagine him in Death of a Salesman.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with glowing praise for Letts as 'spectacular' and wanting to see him in more stage roles. The excerpt shows strong enthusiasm despite being incomplete. | GPT-4o: The excerpt praises Letts' performance as 'spectacular' and expresses a desire to see him in more roles, indicating a strong positive impression. The original 4/5 star rating supports a high score within the Positive bucket. | Gemini: The review excerpt praises Letts' performance as \"spectacular\" and suggests the reviewer is highly impressed, indicating a strong positive sentiment. The 4/5 star rating further supports this classification. | Kimi: The 4/5 star review delivers enthusiastic praise for Tracy Letts' performance as 'spectacular' and expresses desire to see him and Bening in future stage work, indicating a strong recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:51:42.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

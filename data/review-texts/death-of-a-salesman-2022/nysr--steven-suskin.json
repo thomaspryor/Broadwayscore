@@ -24,5 +24,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2022/10/09/death-of-a-salesman-wendell-pierce-and-sharon-d-clarke-bring-classic-to-broadway/",
   "bwwExcerpt": "It is not until late in the three-hour ten-minute evening that this Salesman finally starts to crackle the way the entire performance did in London. Specifically, in the office scene in which Willy-on the final afternoon of his life-encounters neighbor Charley (Delaney Williams) and his lawyer-son Bernard (Stephen Stocking). But that's an especially long time to wait through otherwise intermittent high spots.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But not yesterday at the Hudson, where there is a good though not exceptional production of Miller's great play on display.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with explicit final verdict of 'good though not exceptional.' Praises Pierce and Clarke but finds the overall production diminished from London, with casting and direction issues preventing it from reaching greatness. | GPT-4o: The review acknowledges the greatness of the play and the performances of Pierce and Clarke but criticizes the overall production for losing impact compared to its London run. The critic's 3/5 star rating and the mixed assessment of the production's effectiveness suggest a mixed verdict. | Gemini: The critic praises the source material and lead performances but finds the overall production diminished compared to the London version, with uneven acting and direction. The truncated text makes the final verdict somewhat unclear, but the overall tone is mixed. | Kimi: The 3/5 star rating and final assessment of 'good though not exceptional' indicate a Mixed verdict. While praising the lead performances of Wendell Pierce and Sharon D. Clarke, the critic finds the Broadway transfer significantly diminished from the 2019 London production, with uneven supporting performances and a loss of dramatic cohesion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:33:42.408Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

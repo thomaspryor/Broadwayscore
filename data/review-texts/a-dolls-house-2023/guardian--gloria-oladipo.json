@@ -39,5 +39,60 @@
   "wordCount": 804,
   "tierReason": "Full review text",
   "bwwExcerpt": "Amid the hangups, all members of the cast excel. Lloyd delivers an ensemble worthy of taking on Ibsen’s masterwork. Moayed intensely spotlights the casual cruelty in Torvald. Skating between sweet quips and eager putdowns, his portrayal emphasizes the disparate nature of violence. Onaodowan is magnetic as Krogstad, bringing a quiet pain and dignity to a character usually colored in blind rage.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd delivers an ensemble worthy of taking on Ibsen's masterwork.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for all cast members with specific performance details, but limited context from single excerpt makes full verdict unclear. | GPT-4o: The excerpt praises the cast's performances and the ensemble's capability to handle Ibsen's work, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt focuses on the excellent performances of the cast, particularly highlighting Lloyd, Moayed, and Onaodowan. While there's a mention of 'hangups,' the overall tone is positive due to the strong emphasis on the actors' portrayals. | Kimi: The excerpt offers strong praise for the cast and direction, describing performances as 'magnetic' and the ensemble as worthy of Ibsen's material, though the mention of 'hangups' suggests minor reservations. As a single clearly positive excerpt, it scores in the 80-84 range per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:41:41.419Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -43,5 +43,60 @@
   "wordCount": 71,
   "tierReason": "Short text (71 words)",
   "bwwExcerpt": "Under Gabriel Barre's direction, 'Amazing Grace' feels like a long adult-ed lecture or a night at 'Parsifal'...Smith ends his musical with a stirring rendition of 'Amazing Grace,' but the rest of the score utterly lacks Newton's simplicity and instead treads heavily in the current Broadway vogue for bombastic anthems coupled with a strong percussive element that's meant to send audiences to their feet applauding...In their final exchange, Mary asks Newton why 'it took you so long' to give up his slave-trader ways. Theatergoers will be asking that question much earlier.",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Gabriel Barre's direction, 'Amazing Grace' feels like a long adult-ed lecture or a night at 'Parsifal'.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic compares the show to tedious experiences (adult-ed lecture, Parsifal), criticizes the score as lacking simplicity and being bombastic, and suggests audiences will be impatient with the pacing. While acknowledging one stirring moment, the overall assessment is clearly negative. | GPT-4o: The review criticizes the production as feeling like a lecture and notes that the score lacks simplicity, instead opting for bombastic anthems. The final question posed by a character is mirrored by the audience, suggesting a lack of engagement. The single excerpt suggests a negative tone, but the limited text reduces confidence. | Gemini: The review criticizes the show's direction and score, finding it lacking in simplicity and overly bombastic. The final line indicates a negative overall impression. | Kimi: The critic finds the show overlong and didactic ('long adult-ed lecture'), criticizes the score as bombastic and lacking subtlety, and suggests the pacing makes the narrative drag. While acknowledging the final number is stirring, the overall verdict clearly discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:56:08.566Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

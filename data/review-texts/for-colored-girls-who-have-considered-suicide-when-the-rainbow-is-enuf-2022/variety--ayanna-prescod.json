@@ -44,5 +44,60 @@
   "wordCount": 661,
   "tierReason": "Full review text",
   "bwwExcerpt": "Still, Shange's work remains as riveting as it was in 1976. Her words have become more than the unspoken and unrealized accounts of Black women's pain and promise; they have evolved into the gift of permission to heal and the agency to be seen and understood. It has become a memo to Black women to embrace their femaleness (no matter what that looks like) while looking to the rainbow as a sign of hope for the future of the collective, because they alone are enough.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOR-COLORED-GIRLS-Opens-On-Broadway-20220420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOR-COLORED-GIRLS-Opens-On-Broadway-20220420",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Shange's work remains as riveting as it was in 1976.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the production, performances, and direction with only one disappointing directorial choice noted. The critic celebrates the authentic storytelling, impressive ensemble work, and calls individual performances 'otherworldly' and 'flawless.' | GPT-4o: The review praises the revival's direction, performances, and design choices, with only minor criticism of one directorial choice. The overall tone is strongly positive, highlighting the production's impact and relevance. | Gemini: The review is largely positive, praising the performances and overall impact of the production, but notes a disappointing directorial choice. This makes it a positive review with reservations. | Kimi: The review offers overwhelming praise for the production's emotional power, direction, and performances, calling Shange's work a 'masterwork' that remains 'riveting,' with only one minor criticism regarding a specific directorial choice.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:47:02.054Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 91,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

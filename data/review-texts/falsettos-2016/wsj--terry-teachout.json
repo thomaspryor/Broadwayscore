@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The 2016 revival of 'Falsettos' is a deeply moving experience that reminds us why this musical has endured. The performances are uniformly excellent, and the staging brings fresh insight to this tale of love, family, and loss.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -29,5 +29,59 @@
     "playbill-verdict",
     "bww-reviews"
   ],
-  "bwwScore": 7
+  "bwwScore": 7,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 2016 revival of 'Falsettos' is a deeply moving experience that reminds us why this musical has endured.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong positive language with 'deeply moving experience' and praise for enduring quality, excellent performances, and insightful staging with no reservations expressed. | Gemini: The review uses strong positive language such as \"deeply moving\" and \"uniformly excellent,\" indicating a positive recommendation. | Kimi: The critic offers strong praise for the performances and staging, calling the production 'deeply moving' and 'uniformly excellent' without any reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:42:32.957Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

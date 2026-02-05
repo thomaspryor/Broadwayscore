@@ -38,5 +38,11 @@
   ],
   "contentTier": "truncated",
   "wordCount": 65,
-  "tierReason": "Short text (65 words)"
+  "tierReason": "Short text (65 words)",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:41:53.500Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This review is of an Evita revival at New York City Center, which is an off-Broadway venue, not a Broadway production; openai: The review is about a production at the New York City Center, not the current Broadway run.; kimi: The review covers a production at New York City Center (an Off-Broadway/Encores! venue), not a Broadway theater. The text explicitly states the show opened at New York City Center for a limited run through November 24.",
+  "promptVersion": "5.2.0"
 }

@@ -43,5 +43,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Aplay about the rancid heart of the American dream, Arthur Miller's early tragedy, All My Sons, is rebirthed on Broadway, looking like it never left. Thrillingly acted - with performances that threaten, tantalizingly, to go over the top, but stop just short - Jack O'Brien's production for the Roundabout is a vigorous anatomy lesson, a show about how guilt and transgression can rot a family from the inside, spoiling everything they touch.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thrillingly acted – with performances that threaten, tantalizingly, to go over the top, but stop just short.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises the performances extensively ('thrilling,' 'note perfect,' 'master class') and calls it an 'excellent production,' but criticizes the lack of urgency and contemporary relevance. The positive elements outweigh the reservations, placing it in solid Positive territory despite the truncated text. | GPT-4o: The review praises the performances as 'thrilling' and 'note perfect' and describes the production as 'excellent'. However, it notes a lack of urgency and contemporary relevance, suggesting some reservations. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review praises the acting and calls the production a \"vigorous anatomy lesson.\" However, it also notes some creakiness and a lack of urgency, suggesting a qualified recommendation. The truncated text lowers confidence. | Kimi: The review offers high praise for the performances (master class, first-class cast, gorgeously calibrated) and calls the production vigorous, but criticizes the staging for lacking urgency and contemporary resonance, keeping it from rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:50:07.115Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -40,5 +40,59 @@
   "wordCount": 687,
   "tierReason": "Full review text",
   "bwwExcerpt": "Director and choreographer Camille A. Brown and her cast of seven female singer-dancer-actors breathe life and vitality into Ntozake Shange's still-potent mid-1970s touchstone for colored girls who have considered suicide/ when the rainbow is enuf. Opening tonight at the Booth Theatre on Broadway, Shange's fantasia of poetry, dance and stories of confession, defiance, sisterhood and, above all, perseverance, holds a power that's not been weakened either by decades or the loss of a once startling",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOR-COLORED-GIRLS-Opens-On-Broadway-20220420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FOR-COLORED-GIRLS-Opens-On-Broadway-20220420",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "holds a power that's not been weakened either by decades or the loss of a once startling newness",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The critic consistently praises the production's vitality, the director's work, and the cast's compelling performances. Despite acknowledging the play's age, Evans emphasizes that it 'retains its power' and celebrates Brown's direction and the cast's performances with specific, enthusiastic details. | Gemini: The review is positive, highlighting the vitality and power of the production, as well as the strength of the cast and direction. While not a rave, it's a clear recommendation. | Kimi: The review offers consistent praise for the revival's vitality, the director's vision, and the ensemble's compelling performances, noting the work retains its emotional power and relevance despite its age.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:45:59.567Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

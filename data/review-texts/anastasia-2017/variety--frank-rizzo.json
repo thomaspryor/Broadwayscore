@@ -44,5 +44,60 @@
   "wordCount": 722,
   "tierReason": "Full review text",
   "bwwExcerpt": "Young women and girls in search of a new Broadway role model need look no further than the title character in 'Anastasia,' the sumptuous fairy tale of a musical that should please the kids, satisfy the sentimental and comfort those who thought the old templates for musical comedy were passé. The broad strokes of the familiar - a romantic young couple, a villain in hot pursuit, comic supporting characters, an endearing family member - can still be irresistible when combined with taste, craftsmanship and a willing suspension of disbelief.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The broad strokes of the familiar can still be irresistible when combined with taste, craftsmanship and a willing suspension of disbelief.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive recommendation with praise for performances, design, and commercial appeal, but acknowledges script issues and 'head-scratchers' that prevent it from being a rave. | GPT-4o: The review praises the production's enchanting appeal, craftsmanship, and ability to satisfy a broad audience. Despite noting some minor issues, the overall tone is highly positive, highlighting strong performances and impressive design elements. | Gemini: The review is generally positive, highlighting the show's appeal to a specific demographic and praising the performances and design elements, while also noting some weaknesses in the script and character development. It's a recommendation with reservations. | Kimi: The reviewer praises the sumptuous production, strong performances from the cast, and enchanting design while acknowledging script weaknesses and 'head-scratching' plot elements, ultimately delivering a solid recommendation for this old-fashioned musical fantasy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:01:53.969Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

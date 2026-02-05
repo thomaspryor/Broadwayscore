@@ -35,5 +35,11 @@
   "contentTier": "complete",
   "wordCount": 611,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2020 outside valid range 2003–2008 for show opening 2006"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2020 outside valid range 2003–2008 for show opening 2006",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:42:05.351Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a review of The Old Vic production in London, not a Broadway show. The review specifically mentions 'Old Vic, London' and describes a livestreamed performance to an empty auditorium.; openai: The review is about a streamed performance at the Old Vic, not the current Broadway run.; kimi: This review covers a production at the Old Vic in London, not a Broadway production.",
+  "promptVersion": "5.2.0"
 }

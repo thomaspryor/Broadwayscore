@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "The show is a bright and boisterous entertainment populated by a delightful ensemble and driven by propulsive music and some frequently frenzied dancing. Neatly shaped along fairly traditional musical comedy lines by book writer Joe Tracz and songwriter Joe Iconis, Be More Chill delivers a cartoon tuner that's as classic as Faust and twice as funny. Melissa",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Be More Chill delivers a cartoon tuner that's as classic as Faust and twice as funny.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic language like 'bright and boisterous entertainment,' 'delightful ensemble,' and 'twice as funny.' Single excerpt warning applied - scoring high in Positive range given the strong praise and star rating. | GPT-4o: The excerpt describes the show as 'bright and boisterous' with a 'delightful ensemble' and 'propulsive music,' indicating a strong positive impression. The original 4/5 stars rating supports a high Positive score. | Gemini: The review excerpt is overwhelmingly positive, describing the show as a \"bright and boisterous entertainment\" with a \"delightful ensemble\" and \"propulsive music.\" The comparison to Faust suggests high praise. | Kimi: The 4/5 star rating and enthusiastic praise ('delightful', 'classic as Faust', 'twice as funny') indicate a strong positive recommendation, placing it in the upper Positive range per the single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:04:44.294Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

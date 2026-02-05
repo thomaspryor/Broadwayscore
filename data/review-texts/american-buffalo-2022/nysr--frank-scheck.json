@@ -19,5 +19,60 @@
   "playbillVerdictUrl": "https://nystagereview.com/2022/04/14/american-buffalo-mamets-classic-is-in-mint-condition/",
   "bwwExcerpt": "The current Broadway revival seems designed to showcase Sam Rockwell, who has often played fast-talking, dim-witted and often racist characters in his illustrious career, as exemplified by his Oscar-winning turn in Three Billboards Outside Ebbing, Missouri. The role of Teach seems tailor-made for him, much as it did for Al Pacino decades earlier, and, not surprisingly, he kills in the part. But what makes this production so successful - unlike its previous, mediocre Broadway revival in 2008, starring John Leguizamo, Cedric the Entertainer and Haley Joel Osment, which only lasted a week - is that his co-stars are equally up to the challenge.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That shouldn't stop anyone from seeing this superbly acted production of one of his most important plays.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for all three lead performances, direction, and production design. Despite discussing Mamet's controversial views, the critic explicitly recommends seeing this 'superbly acted production' and calls it engrossing throughout. | GPT-4o: The review praises the performances, particularly those of Sam Rockwell and Laurence Fishburne, and the direction, while acknowledging some minor issues with the balance of humor and menace. The original 4/5 stars rating aligns with a strong positive recommendation. | Gemini: Despite mentioning the playwright's controversial views, the critic strongly recommends the production due to the superb acting and engrossing staging, giving it a 4/5 star rating. | Kimi: 4/5 star review with strong praise for all three performances ('kills in the part,' 'strongest I've ever seen') and direction ('taut, fast-paced staging'), explicitly recommending the production despite reservations about Mamet's personal views.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:57:33.294Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

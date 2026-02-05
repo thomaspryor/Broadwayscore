@@ -34,5 +34,60 @@
   "wordCount": 885,
   "tierReason": "Full review text",
   "bwwExcerpt": "\"Diana the Musical\" offers no meaningful insights (nor even ones lacking in meaning) into a woman who really should be allowed to rest in much-deserved peace. Dramaturgically speaking, this trashy show makes \"The Crown\" look like Tolstoy's \"War and Peace.\" But director Christopher Ashley has pumped up the energy. The fearless choreographer Kelly Devine (anyone who puts a real Dancing Queen on a Broadway stage gains a lifetime of stories to tell at parties) takes, as her ubertext, revenge served ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway, of course, is supposed to have fun shows and one could see bachelorette parties and the like having a good time here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges serious flaws (calls it 'tawdry,' compares unfavorably to better works) but also recognizes it works as entertainment for certain audiences, has catchy music, and improved performances. Neither recommends nor discourages - classic mixed review. | GPT-4o: The review is largely negative, criticizing the show for its lack of meaningful insights and comparing it unfavorably to other works. While it acknowledges some elements like the catchy melodies and performances, the overall tone is dismissive and critical. | Gemini: The review acknowledges the show's trashiness and lack of meaningful insight, but also points out its potential for entertainment and catchy melodies. It's a mixed bag, not a strong recommendation or condemnation. | Kimi: While the critic condemns the book and lyrics as 'tawdry' and lacking meaningful insight, they simultaneously praise the energetic direction, fearless choreography, catchy melodies, and Jeanna de Waal's improved performance, acknowledging the show will entertain bachelorette parties despite its artistic failures.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:34:51.547Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 40,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

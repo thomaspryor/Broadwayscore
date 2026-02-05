@@ -40,5 +40,60 @@
   "wordCount": 513,
   "tierReason": "Full review text",
   "bwwExcerpt": "Clothes unmake the men in Casa Valentina, Harvey Fierstein's mostly effective period drama about cross-dressers in 1962. Set at a Catskills resort that caters to straight married fellows who secretly dress and act like women, the play delicately traverses a midcentury American subculture at the time represented only in dirty jokes and horror movies. But if you want to know what impels these men to externalize their feminine sides, the play has difficulty peeling away more than a layer or two-it's more about gussying up than stripping bare.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Casa Valentina is mostly effective period drama with impeccably designed production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls it 'mostly effective' and praises the 'impeccably designed production' and 'finest corps of character actors,' but notes significant structural problems with the ending, preventing a higher positive score. | GPT-4o: The review praises the performances and production design but criticizes the play's inability to deliver a satisfying conclusion. The mixed evaluation suggests a recommendation with reservations. | Gemini: The review is mostly positive, highlighting the performances, design, and sharp writing, but notes a weak ending. The overall tone suggests a recommendation with reservations. | Kimi: The critic offers strong praise for the ensemble cast, direction, and design, calling it a 'smart new play,' but deducts points for a weak ending that 'doesn't know how to finish it for maximum impact.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:20:25.386Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

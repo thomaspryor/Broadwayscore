@@ -55,5 +55,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20220117104617/https://www.newsday.com/entertainment/theater/disaster-review-roger-bart-in-silly-1970s-movie-parody-1.11547948",
   "contentTier": "complete",
   "wordCount": 452,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not sharp enough to be so silly.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges genuine pleasures and praises individual performances, but questions why this material merits Broadway prices and finds it only 'sporadically clever.' The verdict is neither recommendation nor discouragement. | GPT-4o: The review acknowledges the talents of the performers and some pleasures in the show but questions the decision to bring this material to Broadway, indicating a mixed reception. | Gemini: The review acknowledges the talented performers and some clever moments, but ultimately suggests the show doesn't quite live up to its potential. The phrase \"sporadically clever\" indicates a mixed assessment. | Kimi: The critic praises the performances ('fantastically performed') and acknowledges genuine pleasures while finding the overall production underwhelming ('we could have used some wow'), questioning its transfer to Broadway, and calling it only 'sporadically clever.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:36:23.098Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -36,5 +36,11 @@
   "contentTier": "complete",
   "wordCount": 730,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2017 outside valid range 2019–2024 for show opening 2022"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2017 outside valid range 2019–2024 for show opening 2022",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:28:04.988Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "claude: This is a 2017 Off-Broadway review at Manhattan Theater Club, not a Broadway production review; openai: The review is about an Off-Broadway production at Manhattan Theater Club, not the current Broadway run.; kimi: This review is explicitly labeled 'Off Broadway Review' and dated June 8, 2017, covering the Off-Broadway premiere at Manhattan Theater Club. It is not a review of the subsequent Broadway production.",
+  "promptVersion": "5.2.0"
 }

@@ -45,5 +45,60 @@
   "bwwExcerpt": "Whatever its deficiencies, Floyd Collins delivers a mighty central character that musically, if not dramatically, is the male equivalent of Rose in Gypsy. Jordan’s magnificent work here is one for the record books, one of the all-time great musical performances. Don’t miss it... The Broadway debut of Floyd Collins makes a good case for the musical without being a revelation... Landau’s book doesn’t really take off until the second act... Her staging calls out the crass American commercialism by giving us a crass Broadway circus-style production number... It is unfortunate that someone with a fresher take wasn’t engaged for this major revival.",
   "bwwScore": 8,
   "bwwThumb": "Up",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FLOYD-COLLINS-Opens-On-Broadway-Starring-Jeremy-Jordan-Lizzy-McAlpine-and-More-20250421",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jordan's magnificent work here is one for the record books, one of the all-time great musical performances. Don't miss it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite criticizing the book and direction, the critic gives an explicit 'Don't miss it' recommendation based on Jordan's 'magnificent' and 'all-time great' performance, calling it 'one for the record books.' | GPT-4o: The review offers praise for Jordan's performance but notes deficiencies in the book and staging. The verdict is mixed, acknowledging strengths but also significant shortcomings. | Gemini: The review recommends seeing it due to Jordan's performance, but also notes deficiencies in the book and staging, resulting in a positive but not rave score. | Kimi: While the critic criticizes the book, direction, and staging as uninspired ('without being a revelation'), the extraordinary praise for the lead performance ('magnificent,' 'don't miss it') drives a clear recommendation to see the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:44:59.499Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": 65,
+    "geminiScore": 78,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

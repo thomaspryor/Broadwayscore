@@ -56,5 +56,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "The show doesn't convincingly bring to life this constant invasion of privacy, but gains traction as soon as the affair is exposed as Winston, screaming like the damned, endures terrifying 're-education' at the hands of O'Brien (Tony winner Reed Birney, most recently of 'The Humans'), whose preternaturally calm demeanor contrasts with his inhuman actions. Even a possibly optimistic coda about the end of the dictatorship fails to reassure. When lies are the norm, how can you tell that they have stopped?",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show doesn't convincingly bring to life this constant invasion of privacy, but gains traction as soon as the affair is exposed",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - criticizes early scenes but praises later dramatic moments with Birney's performance. Limited text prevents clear verdict determination. | GPT-4o: The excerpt indicates some positive elements ('gains traction') but also significant issues ('doesn't convincingly bring to life'). The lack of reassurance from the ending suggests a mixed verdict. | Gemini: The review notes some weaknesses but highlights the show gaining traction and the strong performances, suggesting a qualified positive recommendation. Confidence is low due to the single excerpt. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:34:17.737Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

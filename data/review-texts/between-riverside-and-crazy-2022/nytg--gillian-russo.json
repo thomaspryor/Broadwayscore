@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 659,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson especially delivers a masterclass in saying volumes with a mere expression, and making his every word land perfectly with seemingly no effort.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Consistently positive language throughout with specific praise for performances, direction, and writing. The critic highlights the 'genius' of the playwright and describes multiple standout performances without meaningful caveats. | GPT-4o: The review offers high praise for the performances, direction, and writing, describing it as a masterclass and highlighting the emotional impact and depth of the characters. The critic's tone is enthusiastic and recommends the show as a must-see. | Gemini: The review is overwhelmingly positive, praising the acting, writing, and direction. The critic highlights the genius of the writing and the depth of the characters, ultimately recommending the show. | Kimi: The review offers enthusiastic praise for the performances, direction, and writing, describing the play as having 'aged like wine' and highlighting Henderson's performance as a 'masterclass' with no significant reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:10:23.507Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

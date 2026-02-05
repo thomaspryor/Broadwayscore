@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Ivo van Hove's stripped-down production of Arthur Miller's 1955 tragedy transforms the Lyceum Theatre into a boxing ring where the audience becomes complicit in watching Eddie Carbone's moral destruction.",
   "originalScore": null,
-  "assignedScore": 93,
+  "assignedScore": 92,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -69,5 +69,59 @@
   "sources": [
     "web-search",
     "playbill-verdict"
-  ]
+  ],
+  "llmScore": {
+    "score": 92,
+    "confidence": "high",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show, anchored by a towering performance from Mark Strong, is both visually gorgeous and an emotional wipeout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Rave | Claude: Unqualified praise throughout with superlatives like 'magnificent production,' 'towering performance,' 'electrifying performance of raw power and terrifying beauty.' No reservations expressed about the production quality or recommendation. | Gemini: The review uses highly positive language such as \"magnificent production\", \"towering performance\", \"visually gorgeous\", and \"emotional wipeout\", indicating a rave review. | Kimi: The review overflows with superlatives ('magnificent,' 'towering,' 'electrifying,' 'superb') for Van Hove's direction and Strong's performance, describing the show as 'visually gorgeous and an emotional wipeout' with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:47:06.327Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": 93
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": null,
+    "geminiScore": 92,
+    "kimiScore": 92,
+    "claudeBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Rave"
+  }
 }

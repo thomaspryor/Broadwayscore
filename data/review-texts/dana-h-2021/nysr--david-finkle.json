@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Maybe not the first observation to make about Dana H., playwright Lucas Hnath's new piece, is that it contains an unforgettable feat. All the same, I'm going to observe it. Throughout, Deirdre O'Connell, a New York City actress not nearly as celebrated as she deserves to be, pulls off an unusually astounding accomplishment. (The awards she's already amassed during her career must be near to collapsing a home shelf.) For the overwhelming part of 80 minutes, O'Connell lip-syncs a testimony that playwright Hnath's mother gave some time ago about her life, a life marked dramatically by a terrifying episode from which she still hasn't recovered. For that matter, she isn't entirely convinced it happened.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DANA-H-Opens-on-Broadway-20211017"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DANA-H-Opens-on-Broadway-20211017",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "O'Connell is again offering her audience a tour de force commensurate with the accolades she received",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The 4/5 rating suggests positive territory, but the review is deeply conflicted. While praising O'Connell's 'tour de force' performance as 'astounding,' the critic questions whether this 'doesn't necessarily rise to the level of a play' and finds 'a soupçon of humiliation in Hnath's endeavor.' The mixed verdict balances extraordinary performance against fundamental structural concerns. | GPT-4o: The review praises Deirdre O'Connell's performance as an 'unusually astounding accomplishment' and acknowledges the piece's thought-provoking nature. Despite some reservations about the format, the original 4/5 star rating suggests a positive recommendation. | Gemini: The review praises Deirdre O'Connell's performance and acknowledges the thought-provoking nature of the piece, but questions whether it fully rises to the level of a play and expresses reservations about Hnath's motivations. The 4/5 star rating is misleading given the mixed tone. | Kimi: The 4/5 star rating and enthusiastic praise for O'Connell's 'tour de force' performance drive a positive recommendation, though significant reservations about whether the work constitutes a fully realized play and questions about the playwright's motives keep it from the 'Rave' category. | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:31:19.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 78,
+    "geminiScore": 65,
+    "kimiScore": 79,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

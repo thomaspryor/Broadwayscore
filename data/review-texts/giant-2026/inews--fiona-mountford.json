@@ -29,5 +29,11 @@
   "sourceMethod": "playwright",
   "contentTier": "complete",
   "wordCount": 575,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:53:55.644Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Royal Court Theatre, not a Broadway production.; kimi: This review covers a production at the Royal Court Theatre in London (West End), not a Broadway production. The venue, phone number (020 area code), and reference to David Byrne's artistic directorship of the Royal Court confirm this is the London run.",
+  "promptVersion": "5.2.0"
 }

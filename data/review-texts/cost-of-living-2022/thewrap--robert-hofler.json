@@ -45,5 +45,60 @@
   "tierReason": "Short text (55 words)",
   "bwwExcerpt": "The first time around, I found Jo Bonney's direction a little too measured. Each scene and its revelations unfold at a deliberate, unvaried pace over the course of 100 minutes. She was right, I was wrong. Hers is the right way to direct 'Cost of Living,' but you maybe need to have seen the play twice to realize that.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COST-OF-LIVING-Opens-On-Broadway-20221003"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-COST-OF-LIVING-Opens-On-Broadway-20221003",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You regret not having seen the play twice even before you've finished seeing it once.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses strong appreciation for the play's impact and craft, admitting initial misjudgment of the direction and concluding the director 'was right.' The desire to see it twice before it's even over indicates enthusiastic recommendation. | GPT-4o: The review acknowledges initial reservations about the direction but ultimately concludes that the direction is appropriate. The critic suggests the play benefits from multiple viewings, indicating a positive but qualified recommendation. | Gemini: The critic initially had reservations but ultimately realized the director's approach was correct, indicating a strong positive recommendation. | Kimi: The critic offers strong endorsement by describing the play as one that immediately warrants a second viewing, while thoughtfully validating the directorial approach after initial reservations. The tone is appreciative of the work's complexity, though the text appears truncated.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:27:41.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 76,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

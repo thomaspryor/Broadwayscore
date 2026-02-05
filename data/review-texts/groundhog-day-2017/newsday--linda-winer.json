@@ -52,5 +52,59 @@
   "wordCount": 546,
   "tierReason": "Full review text",
   "bwwExcerpt": "The creative team that deftly balanced the nasty with the comic in 'Matilda' finds at least as much special chemistry in this surreal challenge, a romantic comedy and life lesson that, in the words of one of the characters, 'messes with the space-time continuum.' Tim Minchin's music beguiles with odd phrase lengths and wildly unpredictable, amusing lyrics, while director Matthew Warchus and his first-rate cast take us through the day and its many conflations with a light touch that belies the head-spinning concept and scenic intricacy.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So, in fact, was the show, an ingenious, witty, dark yet joyously offbeat musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise throughout with 'terrific' for both star and show, calling it 'ingenious, witty' with 'special chemistry.' Despite one minor complaint the critic drops, the overall recommendation is enthusiastic. | Gemini: Despite mentioning the star's injury, the review is overwhelmingly positive, using words like \"terrific,\" \"ingenious,\" and \"witty.\" The critic praises the music, direction, and cast, indicating a strong recommendation. | Kimi: The reviewer calls the show 'terrific,' 'ingenious,' and 'joyously offbeat,' praising the music, direction, and performances with minimal reservations, resulting in a strong endorsement despite concerns about the star's injury.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:02:19.946Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 90,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

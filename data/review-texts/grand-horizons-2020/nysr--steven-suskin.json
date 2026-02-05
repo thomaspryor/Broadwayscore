@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Grand Horizons is a new play, but not new in the Broadway sense. This sort of thing abounded in the third quarter of the last century. Some were hits, often major; does anyone remember Never Too Late? (Middle-aged mom gets pregnant to the shock of her husband, pregnant daughter, and son-in-law, for 1,007 performances.) Watching the first act of Grand Horizons, I was swept back to a different old play, a negligible 1972 offering called 6 Rms Riv Vu. This was mostly because that play demonstrated the comic touch of the then-young Alexander, who has spent a good deal of her career playing more serious fare. Her deft performance in Grand Horizons is decidedly reminiscent of that earlier play, which despite her ministrations and those of the equally young Jerry Orbach proved to be a flimsy comedy trying too hard to compete with ol' Doc Simon, a popular gagman of the era.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GRAND-HORIZONS-Opens-On-Broadway-20200123",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a flimsy comedy trying too hard to compete with ol' Doc Simon",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The 2/5 star rating indicates a negative review. The excerpt compares the play unfavorably to dated material and calls it 'flimsy' and 'trying too hard,' despite praising Alexander's performance. | GPT-4o: The excerpt suggests that while there is praise for a performance, the play itself is compared unfavorably to older, flimsy comedies. The original 2/5 star rating aligns with a negative assessment, but the single excerpt limits confidence. | Gemini: The critic compares the play unfavorably to older, 'negligible' plays, and the 2/5 star rating confirms a negative assessment. The excerpt focuses on the play's shortcomings and lack of originality. | Kimi: The 2/5 star rating firmly places this in the Negative bucket. While the critic praises Jane Alexander's performance as 'deft,' they compare the play itself to a 'negligible' and 'flimsy comedy trying too hard,' indicating the production fails despite the cast's efforts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T02:00:11.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

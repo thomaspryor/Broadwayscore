@@ -52,5 +52,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20140114203014/http://www.thewrap.com:80/beautiful-theater-review-carole-king-musical",
   "contentTier": "complete",
   "wordCount": 615,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In this age of Broadway musicals starring women who must belt out an over-amplified, eardrum-splitting 'Defying Gravity' anthem every other number, 'Beautiful' is a refreshing, if not needed, respite on the musical landscape.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the show as a 'refreshing respite' and commends the performances, book, and direction, though notes it's 'amiable without being heart-wrenching.' The truncated text warning requires medium confidence since the final verdict may be missing. | GPT-4o: The review describes 'Beautiful' as a refreshing and amiable show, with praise for Jessie Mueller's performance. However, the text is truncated, and the final verdict may be missing, leading to a low confidence score. | Gemini: The review is mostly positive, calling the show \"refreshing\" and \"amiable.\" However, it also describes it as not \"heart-wrenching\" or \"enthralling,\" indicating some reservations. The truncated text lowers the confidence. | Kimi: While acknowledging the show's undramatic, 'nice' quality, the critic clearly recommends it as a welcome alternative to overwrought Broadway fare, praising Jessie Mueller's performance and the efficient storytelling. The truncated ending warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:05:16.823Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

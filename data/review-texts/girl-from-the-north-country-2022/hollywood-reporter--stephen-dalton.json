@@ -43,5 +43,11 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 1041,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:54:38.703Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Old Vic in London, not the current Broadway run.; kimi: This review is explicitly of the London production at the Old Vic (as indicated by the 'Venue: Old Vic, London' credit at the end), not the current Broadway production. The cast listed (including Shirley Henderson and Ciarán Hinds) reflects the original London ensemble rather than the Broadway transfer.",
+  "promptVersion": "5.2.0"
 }

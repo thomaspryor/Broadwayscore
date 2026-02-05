@@ -34,5 +34,60 @@
   "wordCount": 368,
   "tierReason": "Full review text",
   "bwwExcerpt": "Broadway's 'Doctor Zhivago' is an epic miss...this miscalibrated musical is yet another attempt to bottle page-to-stage lightning a la 'Les Miserables.' But electricity doesn't zap...The score by composer Lucy Simon and lyricists Michael Korie and Amy Powers resonates with occasional Russian-inflected melodies and lots of ardent power ballads. Respectable, but unremarkable, songs hang like wallpaper...Des McAnuff's direction is another issue...he fails to convey what matters most -- intimacy...We do understand that they're separated by revolution...We don't get enough of what's fueling their passion. Or why his writing is so important...As Yuri, London stage star Tam Mutu sings with a manly ardor and has a cleft chin deep as the Volga River. As the staunch Lara, Kelli Barrett's vocals are bright and clear. They're likable together but no fire. Without the inferno, the 'Doctor' remains in guarded condition.",
-  "bwwScore": 4
+  "bwwScore": 4,
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Broadway's 'Doctor Zhivago' is an epic miss.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling it an 'epic miss' with consistent criticism of direction, intimacy issues, and lack of passion. Acknowledges some positive elements like individual performances but overall does not recommend. | GPT-4o: The review consistently criticizes the production, describing it as 'miscalibrated' and lacking intimacy and passion. While there are some acknowledgments of respectable elements, the overall tone is negative, emphasizing the show's failure to capture the essence of the story. | Gemini: The review is largely negative, calling the show an \"epic miss\" and criticizing the direction, intimacy, and overall impact. While praising some individual performances, the lack of fire and passion leads to a negative recommendation. | Kimi: The review opens by calling the show an 'epic miss' and consistently criticizes the lack of intimacy and passion, though it acknowledges competent performances and respectable songs. The closing medical metaphor confirms a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:37:35.792Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

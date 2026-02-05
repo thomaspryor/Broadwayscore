@@ -35,9 +35,10 @@
   "contentTier": "complete",
   "wordCount": 576,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T05:52:45.567Z",
+  "rejectedAt": "2026-02-05T01:41:22.732Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This review is of the La Jolla Playhouse production before the Broadway run, not the current Broadway production that premiered in 2018.; openai: The review is about the production of 'Escape to Margaritaville' at the La Jolla Playhouse, not the current Broadway run.; gemini: This review is for the pre-Broadway run at La Jolla Playhouse, not the Broadway production.; kimi: The review explicitly covers the pre-Broadway tryout at La Jolla Playhouse ('has begun its run at the La Jolla Playhouse'), not the current Broadway production.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "openai: The review is about the production of 'Escape to Margaritaville' at the La Jolla Playhouse, not the Broadway run.; kimi: This review covers the pre-Broadway tryout production at La Jolla Playhouse, not the Broadway run. The text explicitly states the show 'has begun its run at the La Jolla Playhouse' and is 'set to premiere on Broadway in 2018'.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

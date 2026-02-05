@@ -52,5 +52,60 @@
   "wordCount": 493,
   "tierReason": "Full review text",
   "bwwExcerpt": "In perfect sync with that balancing act is Danny Burstein's portrayal of Tevye, the philosopher milkman first defined by the fabulously eccentric Zero Mostel and reconsidered in countless variations. Burstein, heretofore a star only to New York theater lovers, embodies a gentle, sweet yet powerful, profoundly likable man whose debates with God have the bemused inevitability of truth. Burstein also sings the role better than any Tevye in my experience.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Sher's revival is well worth the wait.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation ('well worth the wait', 'worthy') with praise for lead performance and dramatic coherence, but acknowledges significant flaws in choreography and design that prevent it from being a strong positive. | GPT-4o: The review praises the production's dramatic coherence and performances, particularly Danny Burstein's portrayal of Tevye, while noting some reservations about the lack of stunning originality and certain design elements. Overall, it recommends the show, albeit with some reservations. | Gemini: The review states the production is \"worthy\" and \"well worth the wait\" despite some criticisms about the sets and choreography. This indicates a positive, but not rave, assessment. | Kimi: The critic recommends the production as 'well worth the wait' with strong praise for Danny Burstein's performance and the dramatic coherence, but deducts points for lacking visual originality and poor choreography.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:43:36.877Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 75,
+    "geminiScore": 77,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

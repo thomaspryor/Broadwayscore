@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2018/11/04/american-son-ripped-from-the-headlines/",
   "bwwExcerpt": "The production's most impressive feature, in the end, is Derek McLane's scenic design, detailing a bleak, sterile waiting era, surrounded by windows through which we can see a steady downpour of rain, which stops intermittently but never for long. The set reflects Kendra's and her son's tragic conundrum-our nation's, really-more credibly and cannily than American Son, for all its noble aspirations, does overall. Roma Torre, NY1: Enhancing the production is an outstanding company of A-listers: Je",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It feels almost irresponsible to pan a play as well-intentioned and laser-focused on timely and vital subject matter as American Son",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic explicitly states they are panning the play despite its good intentions. The 2/5 star rating confirms this negative assessment. While acknowledging the important subject matter and some strong elements (Washington's monologue, Lee's performance, McLane's set design), the overall verdict criticizes the writing as clichéd, the character development as lacking, and calls it a 'basic-cable TV movie.' | GPT-4o: The review acknowledges the play's noble intentions but criticizes its execution, describing it as clichéd and lacking character development. The critic's original 2/5 star rating supports a negative assessment. | Gemini: The review acknowledges the play's good intentions but criticizes its execution, character development, and reliance on clichés. The 2/5 star rating and overall tone suggest a negative assessment, though the truncated text makes the final verdict less certain. | Kimi: The critic awards 2/5 stars, criticizing the play as contrived and resembling a 'basic-cable TV movie' with clichéd dialogue, though acknowledging strong scenic design and select performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:59:41.549Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

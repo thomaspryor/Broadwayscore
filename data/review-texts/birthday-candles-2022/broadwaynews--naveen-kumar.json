@@ -49,5 +49,60 @@
   "tierReason": "Short text (159 words)",
   "bwwExcerpt": "Despite the play's universe-skimming ambitions, there's also a narrowness to its imagination of what life can and could be. Ernestine follows a path of least resistance; though she has regrets, 'Birthday Candles' isn't a critique of conformity, or the broader social forces that led her there (she is a woman happily baking a cake, year after year, for more than half a century, after all). The play rather reinforces the heteronormative fantasy that fulfillment comes in recognizable forms - just be careful which man you choose. It's a bitter, if obvious, pill served with enough sugar to rot a full mouth of teeth.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But combining staple observations about everyday existence does not guarantee they'll rise into more than mollifying fluff.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the play as 'mollifying fluff' and 'airy clichés,' criticizing its lack of imagination and depth. The final metaphor about sugar rotting teeth reinforces the negative assessment. | GPT-4o: The review criticizes the play for being 'mollifying fluff' and lacking depth, describing it as reinforcing 'heteronormative fantasy' with 'enough sugar to rot a full mouth of teeth.' These negative assessments suggest a recommendation against seeing the show. | Gemini: The review is largely negative, describing the play as \"mollifying fluff\" and criticizing its narrow imagination and reinforcement of heteronormative fantasies. While Messing's performance is acknowledged, the overall assessment is unfavorable. | Kimi: The critic dismisses the play as 'mollifying fluff' and 'airy clichés,' criticizing its narrow imagination and heteronormative messaging, despite acknowledging Debra Messing's earnest performance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:11:31.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

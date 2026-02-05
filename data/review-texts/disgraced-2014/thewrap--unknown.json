@@ -41,5 +41,60 @@
   "wordCount": 68,
   "tierReason": "Short text (68 words)",
   "bwwExcerpt": "The theater might not have entertained such a party gone bad since George and Martha invited Nick and Honey over for drinks in 'Who's Afraid of Virginia Woolf?'...Akhtar comes at every question with guns firing from all four corners. Two minutes into the dinner party, his ethnic construct doesn't seem contrived. It recedes, the Indian -- and African American characters turn out to be the foursomes' bona fide conservatives, and soon there's much more violence on stage than ever entered the heads of George, Martha, and guests. But, and this is a significant 'but,' there's another 30 minutes to 'Disgraced.' Akhtar brackets his dinner party from the Ninth Circle with scenes between Amir and his nephew (Danny Ashok)...It's baffling and more than a little unsatisfying to have a minor character undergo the play's greatest metamorphosis and to do so offstage when the major characters are fighting it out onstage.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's baffling and more than a little unsatisfying to have a minor character undergo the play's greatest metamorphosis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges strong dramatic elements early on but concludes with significant structural criticisms, finding the ending 'baffling and more than a little unsatisfying.' This suggests a mixed experience without a clear recommendation either way. | GPT-4o: The review acknowledges the play's engaging elements but criticizes the structure and character development, leading to a mixed verdict. | Gemini: The review highlights both strengths (guns firing from all four corners) and weaknesses (baffling and unsatisfying ending), leading to a mixed assessment. | Kimi: The review praises the dramatic intensity and authenticity of the central dinner party scene but sharply criticizes the unsatisfying structural choices of the opening and closing scenes, resulting in a conflicted assessment without a clear final recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:37:02.736Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 58,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

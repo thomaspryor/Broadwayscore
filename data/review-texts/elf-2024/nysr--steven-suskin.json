@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Any production of Elf necessarily rests on the shoulder of the fellow in the oversized elf’s costume. (As those familiar with the plot are aware, Buddy the Elf is not really an elf, if there be such a thing as a real elf; rather, he’s a human raised by elves and exiled from the North Pole to midtown Manhattan.) Unlike prior Buddys we’ve seen—drama critics who stick around long enough tend to revisit plays and musicals, like it or not—Grey Henson has the soul of one of those old-fashioned musical-comedy comedians, striving for and achieving laughter on a moment-by-moment basis.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Grey Henson has the soul of one of those old-fashioned musical-comedy comedians, striving for and achieving laughter on a moment-by-moment basis.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with high praise for the lead performance ('achieving laughter on a moment-by-moment basis'). Single excerpt limits full assessment, but the rating and positive language about the central performance suggest solid recommendation. | GPT-4o: The excerpt praises Grey Henson's performance as Buddy, highlighting his comedic talent and ability to generate laughter consistently. The 4/5 star rating suggests a strong positive review, and the excerpt supports this with enthusiastic praise for the lead actor. | Gemini: The review excerpt focuses on praising the lead performer, Grey Henson, suggesting a positive aspect of the production. Given the limited text, and the 4/5 star rating, I'm placing it in the positive bucket with a lower score due to the lack of overall context. | Kimi: The 4/5 star rating and enthusiastic praise for Grey Henson's comedic performance ('achieving laughter on a moment-by-moment basis') indicate a clear recommendation, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:40:19.930Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

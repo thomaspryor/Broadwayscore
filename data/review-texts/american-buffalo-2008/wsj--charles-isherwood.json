@@ -42,10 +42,10 @@
   "contentTier": "needs-rescrape",
   "wordCount": 140,
   "tierReason": "Short text (140 words)",
-  "rejectedAt": "2026-02-04T05:17:50.082Z",
+  "rejectedAt": "2026-02-05T00:57:01.846Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
-  "rejectionReasoning": "claude: This appears to be a subscription paywall message mixed with navigation elements, not a complete review text; openai: This text contains subscription and billing information, not a review.; gemini: This is a truncated article that ends mid-sentence and prompts the user to resume their subscription. It's not a complete, scoreable review.; kimi: The text is primarily subscription resumption prompts and navigation links ('Resume Subscription', billing details) with only a single sentence of the actual review, which contains purely biographical context about David Mamet and no evaluative content about the production itself (performances, direction, staging, or verdict).",
+  "rejectionReasoning": "claude: This appears to be a subscription paywall page with minimal review content - mostly navigation elements and subscription prompts rather than a complete review; openai: The text is mostly subscription prompts and incomplete review content, not a coherent review.; gemini: This is a truncated article with subscription prompts and minimal evaluative content. It lacks a clear recommendation or sufficient critical analysis to score.",
   "promptVersion": "5.2.0",
   "showScoreExcerpt": "\"Mr. Mamet does not write tragedy—his characters are poor pipsqueaks compared to the doomed but majestic figures of the Greeks. 'American Buffalo' ends with a whimpering note of surprising, and touching, grace. For all their fecklessness and desperation, these men intuitively know that their only respite from a world they cannot compete in is the small comfort they can take in each other’s unspoken affection.\"\n\nRead more"
 }

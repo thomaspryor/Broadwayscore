@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/05/30/frankie-and-johnny-in-the-clair-de-lune-acting-brilliance-in-the-light-of-the-moon/",
   "bwwExcerpt": "Terrence McNally's 1987 two-character play observes a pair of mismatched middle-aged misfits who are stunned to discover-in the light (clair) of the Manhattan moon (lune)-that the future they've both long given up on might just be found in the other's imperfect arms. Mismatched characters, yes; played here by the mismatched but equally brilliant Audra McDonald and Michael Shannon, Frankie and Johnny in the Clair de Lune positively soars.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "played here by the mismatched but equally brilliant Audra McDonald and Michael Shannon, Frankie and Johnny in the Clair de Lune positively soars.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with strong praise ('equally brilliant', 'positively soars'). Single excerpt limits confidence, but rating and superlative language indicate strong positive recommendation. | GPT-4o: The excerpt praises the performances of McDonald and Shannon and describes the production as 'positively soars'. The original 4/5 stars rating supports a strong positive classification. Due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"equally brilliant\" and \"positively soars,\" indicating a strong recommendation despite the limited text available. The 4/5 star rating also supports a positive classification. | Kimi: The critic awards 4/5 stars and declares the production 'positively soars' with 'brilliant' lead performances, indicating a strong positive recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:48:20.776Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This review is about 'Fun Home,' not the current Broadway show being reviewed; openai: The text references 'Fun Home' as a musical, not a play, and this review appears to be about a different production or context.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "It's a brilliant restaging, one that seats us just behind Alison's wary adult eye as she remembers life with father. Although there's no showbiz milieu depicted here, 'Fun Home' is to fathers what 'Gypsy' is to mothers, and Kron and Tesori have created a daddy Bruce (Michael Cerveris) who is every bit as vivid and controlling (and ultimately out of control) as Mama Rose.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 92,
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The best new play on Broadway at the moment is Lisa Kron's book for the musical 'Fun Home.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Opens with superlative praise calling it 'the best new play on Broadway' and describes it as a 'brilliant restaging' with vivid characterizations comparable to classic shows like 'Gypsy'. | GPT-4o: The review describes 'Fun Home' as the best new play on Broadway, indicating a strong recommendation. The comparison to 'Gypsy' and praise for the vivid characterizations support a rave classification. | Gemini: The review opens by calling it the best new play on Broadway, and compares it favorably to \"Gypsy\", indicating a strong positive recommendation. | Kimi: The critic declares it the best new play on Broadway, praises the book as brilliant, and favorably compares the work to the classic Gypsy, indicating an unqualified rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:49:51.849Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 93,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

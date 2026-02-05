@@ -41,5 +41,59 @@
   ],
   "contentTier": "truncated",
   "wordCount": 59,
-  "tierReason": "Short text (59 words)"
+  "tierReason": "Short text (59 words)",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Cooper's writing delivers sustained absurdist comedy that comes crashing down at scene's end, only to pick back up again for yet another wild ride through bigoted modern America.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt praises Cooper's writing as delivering 'sustained absurdist comedy' and describes it as a 'wild ride,' suggesting positive evaluation. However, confidence is low due to heavily truncated text and unclear overall verdict. | Gemini: The review excerpt praises the writing as \"sustained absurdist comedy.\" While truncated, this suggests a positive assessment, especially considering the context of the Off-Broadway production. | Kimi: The available text offers strong praise for the playwright's 'sustained absurdist comedy' and compares the production's ominous atmosphere favorably to Rod Serling's Twilight Zone. While the truncation prevents seeing the final verdict, the evaluative language is clearly enthusiastic about the writing and theatrical impact.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:47:39.096Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

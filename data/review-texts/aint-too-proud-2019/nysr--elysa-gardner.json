@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "If none of the virtuosic performances in Ain't Too Proud match the effortless sweetness and soulfulness of the original recordings, the abundance of talent and energy onstage is something to marvel at in its own right. Melissa",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Come-See-About-AINT-TOO-PROUD-On-Broadway-20190321",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical numbers offer more exhilarating entertainment than any delivered in this format since Jersey Boys.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: 3/5 stars with clear praise for performances and musical numbers ('exhilarating entertainment', 'spectacularly talented cast') but significant criticism of the book ('resting heavily on platitudes'). The abundance of positive language about the core appeal outweighs the structural flaws. | GPT-4o: The review praises the musical numbers and performances, highlighting them as the main attraction, despite some criticism of the book and character development. The original 3/5 star rating aligns with a positive but not unqualified recommendation. | Gemini: The review is generally positive, highlighting the talented cast, exhilarating musical numbers, and choreography, but it also notes the book's reliance on platitudes and underdeveloped characters. The 3/5 star rating aligns with a positive but not rave review. | Kimi: 3/5 stars with extensive praise for performances and musical numbers offset by criticism of the book as reliant on platitudes and stereotypes. The critic acknowledges the show succeeds in its primary appeal while faulting its narrative framework.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:48:30.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 76,
+    "geminiScore": 77,
+    "kimiScore": 66,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -34,5 +34,60 @@
   "wordCount": 842,
   "tierReason": "Full review text",
   "bwwExcerpt": "what will impress the audience the most will be Michele's acting chops. She's very touching as her Fanny gets trapped in the net with that same handsome loser and you get the sense, as a young star who has been through the wringers of Twitter and its snap-judgement squeeze, that Michele now knows full well how fame and fortune ain't ever all fun, not least because men usually can't easily handle successful women.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 71,
+  "llmScore": {
+    "score": 71,
+    "confidence": "medium",
+    "range": {
+      "low": 66,
+      "high": 76
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It won't need great reviews. It has Beanie and her fans.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The critic acknowledges Feldstein's vocal struggles but emphasizes the show's strengths (Fierstein's book revision, strong supporting performances, audience connection) and predicts commercial success. The overall tone is supportive despite reservations. | GPT-4o: The review acknowledges the audience's affection for Feldstein and some clever updates to the book, but it also highlights significant vocal struggles and mixed opinions on the overall impact of her performance. | Gemini: The review acknowledges Feldstein's struggles with the vocals but praises her determination and the changes made to the book. It's a mixed assessment with both positive and negative points. | Kimi: The critic acknowledges Feldstein's vocal struggles and some second-act redundancy, but praises her commitment, the clever book revisions by Fierstein, and the production's theatrical energy, ultimately finding the revival enjoyable and commercially viable. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:51:33.052Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

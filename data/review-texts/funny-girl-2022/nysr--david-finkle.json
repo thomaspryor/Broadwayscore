@@ -17,5 +17,60 @@
   "textQuality": "partial",
   "playbillVerdictUrl": "http://nystagereview.com/2022/04/24/funny-girl-beanie-feldstein-easy-peasy-proves-shes-a-funny-girl/",
   "bwwExcerpt": "For the length of this review, I'm plunking down in Feldstein's corner. She strides on stage with full confidence to sit at a dressing table where Brice is about to reflect on her life. In no time flat, she's back in Brooklyn as the young Great White Way wannabe. She's already convinced her name should be in lights, and in a tearing hurry it is-in the Ziegfeld Follies, no less. Feldstein remains in tight control-director Michael Mayer certainly helps greatly-as Brice is romanced by Nick Arnstein",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUNNY-GIRL-Returns-to-Broadway--Updating-Live-20220424",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Paging all musical comedy fans. Have I got news for you!",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic opening and consistent praise for Feldstein's performance and the production team. Despite noting some soft spots and a second-act dip, the critic clearly recommends the show and predicts Feldstein will grow into the role even more. | GPT-4o: The review praises Beanie Feldstein's performance and the overall production, despite noting some flaws. The original 4/5 stars rating aligns with a positive verdict, but the truncated nature of the text and mention of 'soft spots' suggest some reservations. | Gemini: The review is generally positive, highlighting Feldstein's performance and the overall entertainment value, but notes some flaws, especially in the second act. The 4/5 star rating also supports a positive score. | Kimi: 4/5 star review praising Beanie Feldstein's charismatic lead performance and strong supporting cast, while acknowledging second-act weaknesses and occasional flat staging. The critic clearly recommends the show for its star and entertainment value despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:52:53.774Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

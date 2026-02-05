@@ -22,5 +22,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2019/11/20/a-christmas-carol-spooked-by-the-past/",
   "bwwExcerpt": "One gets the impression that Thorne invents such dreary business simply so his version of A Christmas Carol is somewhat different than the countless other stage adaptations before it. A high moral tone that infuses the play as several characters chide Scrooge for his behavior stiffens the drama considerably.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "One gets the impression that Thorne invents such dreary business simply so his version of A Christmas Carol is somewhat different than the countless other stage adaptations before it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: 3/5 stars with criticism of 'dreary business' and drama being 'stiffened considerably.' However, this is only one excerpt and may not represent the full review verdict, so confidence is low. | GPT-4o: The excerpt suggests a negative view of the play's moral tone and dramatic stiffness. The original 3/5 stars rating indicates a negative leaning. However, the single excerpt limits the confidence level. | Gemini: The excerpt describes the production as 'dreary' and 'stiffens the drama considerably,' indicating a negative assessment. The 3/5 stars also suggests a negative leaning. | Kimi: The 3/5 star rating indicates a middle-of-the-road assessment, while the excerpt criticizes the adaptation's 'dreary' additions and preachy tone that 'stiffens the drama,' suggesting significant reservations. | Buckets: claude=Mixed, openai=Negative, gemini=Negative, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:35:57.598Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

@@ -34,5 +34,60 @@
   "wordCount": 1030,
   "tierReason": "Full review text",
   "bwwExcerpt": "Lane is quite spectacularly good here - he's in deeper than I've ever seen him, and I've been watching him for years. He's more vulnerable, too. His ambition - to be the fool, the kind of Stephen Colbert-like figure who speaks truth to power, rather than the clown guy who only offers non-ideological escape - is what drives this performance, remarkable in all kinds of ways.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lane is quite spectacularly good here - he's in deeper than I've ever seen him, and I've been watching him for years.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Lane's performance with superlatives ('spectacularly good', 'remarkable in all kinds of ways'), but single excerpt warning requires caution about overall show verdict. | GPT-4o: The excerpt provides strong praise for Lane's performance, describing it as 'spectacularly good' and 'remarkable in all kinds of ways.' However, the single excerpt warning suggests this may not represent the full review, so the confidence is low. | Gemini: The excerpt focuses on Nathan Lane's performance, describing it as \"spectacularly good\" and \"remarkable in all kinds of ways.\" Given the single excerpt, I am placing it in the positive bucket and using the upper end of the range. | Kimi: The excerpt offers enthusiastic praise for Nathan Lane's performance using superlatives like 'spectacularly good' and 'remarkable,' indicating a strong recommendation driven by the lead actor's work. Following the single-excerpt guidance for clearly positive quotes, this scores at the upper end of the Positive bucket, though confidence remains low without the full review context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:53:38.960Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -38,9 +38,10 @@
   "contentTier": "complete",
   "wordCount": 555,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T05:52:31.233Z",
+  "rejectedAt": "2026-02-05T01:40:27.874Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This is a review of the touring production at San Francisco's Curran Theatre, not the current Broadway run.; openai: The review is about a production of 'Elf' at San Francisco's Curran Theatre, not the current Broadway run.; kimi: This review covers a regional production at San Francisco's Curran Theatre, not the current Broadway run.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "claude: This review is of a touring production at San Francisco's Curran Theatre, not the current Broadway run; openai: The review is about a production of 'Elf' at San Francisco’s Curran Theatre, not the current Broadway run.; kimi: This review covers a production at the Curran Theatre in San Francisco, not the current Broadway run in New York City.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

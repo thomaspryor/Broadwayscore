@@ -34,5 +34,60 @@
   "wordCount": 739,
   "tierReason": "Full review text",
   "bwwExcerpt": "It’s anything but a stagnant affair, at least. As the stars pantoimine and read, their voices inhabit colorful characters. Some beats may land as treacly, but the stories contain plenty of zippy lines and outlandish, cartoon-inspired shenanigans. A short story that grabs hearty laughs is one where a talent agent (Kind) persuades the Grim Reaper (Armisen) to try acting. Projected images illustrated by Emily Flake add additional humorous imagination to the sho",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's anything but a stagnant affair, at least.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows positive elements (colorful characters, zippy lines, hearty laughs) but acknowledges flaws (treacly beats). Single excerpt warning applies - cautious scoring given limited text. | GPT-4o: The excerpt highlights the show's lively and humorous elements, despite some 'treacly' moments. The overall tone suggests a positive view, but the single excerpt limits confidence. | Gemini: The review excerpt suggests an overall positive experience with reservations, citing 'zippy lines' and 'hearty laughs' but also noting some 'treacly' moments. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise, acknowledging some treacly moments but highlighting hearty laughs, zippy writing, and humorous imagination, suggesting a gently positive recommendation despite faint praise in the opening.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:49:09.086Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

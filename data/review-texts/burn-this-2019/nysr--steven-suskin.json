@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "After two years, the revival has finally opened at the same theater but with a different star and different producers; the director behind the project, Michael Mayer (of Spring Awakening), remains. What is revealed is a facile but overdrawn comedy-drama which is highly entertaining much of the time, with too much of that time spent on wild theatrics and glib characters cracking wise.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What is revealed is a facile but overdrawn comedy-drama which is highly entertaining much of the time, with too much of that time spent on wild theatrics and glib characters cracking wise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'highly entertaining much of the time' but criticizes it as 'facile,' 'overdrawn,' with 'too much' time on theatrics and glib characters. The 3/5 rating confirms this mixed assessment with significant reservations. | GPT-4o: The review describes the show as 'highly entertaining much of the time' but criticizes it as 'facile' and 'overdrawn'. The original 3/5 stars rating suggests a mixed verdict. The excerpt provides a balanced view with both positive and negative elements. | Gemini: The review states the show is \"highly entertaining much of the time\" but also \"overdrawn\" with \"wild theatrics.\" Given the 3/5 star rating and the mixed assessment, I've classified it as positive with reservations. Confidence is low due to the single excerpt. | Kimi: The 3/5 star rating and conflicting descriptors ('highly entertaining' versus 'facile,' 'overdrawn') indicate a middle-ground verdict with notable reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:17:32.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 68,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

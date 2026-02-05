@@ -37,9 +37,10 @@
   "contentTier": "complete",
   "wordCount": 428,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T10:13:22.469Z",
+  "rejectedAt": "2026-02-05T01:25:35.459Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "claude: This review is of 'Found' at Atlantic Theater Company (Off Broadway), not a current Broadway production; openai: The review is about an Off-Broadway production at the Atlantic Theater Company, not the current Broadway run.; gemini: This is a review of the Off-Broadway production at the Atlantic Theater Company, not a Broadway production.; kimi: This review is for the Off-Broadway production at Atlantic Theater Company, not a Broadway production.",
-  "promptVersion": "5.2.0"
+  "rejectionReasoning": "claude: This is a review of 'Found' at Atlantic Theater Company (Off Broadway), not a Broadway show review; openai: The review is about an Off-Broadway production at the Atlantic Theater Company, not the current Broadway run.; gemini: This is a review of the Off-Broadway production at the Atlantic Theater Company, not a Broadway production.; kimi: The review explicitly identifies the production as playing at Atlantic Theater Company (Off Broadway), not a current Broadway run.",
+  "promptVersion": "5.2.0",
+  "wrongProduction": true
 }

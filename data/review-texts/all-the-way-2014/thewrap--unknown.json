@@ -61,5 +61,60 @@
   "wordCount": 728,
   "tierReason": "Full review text",
   "bwwExcerpt": "Cranston doesn't look or act much like the real LBJ (at least the one most of us saw on TV), and that's one of the more intriguing aspects of Bill Rauch's direction. Except for a dead-on Lady Bird Johnson (Betsy Aidem) and George Wallace (Rob Campbell), the cast avoids the Madame Tussauds approach to acting that has taken over biopics (and rarely fails to win actors their Oscars). Rauch keeps the focus on telling a complicated story as nimbly as possible, dispensing with the extreme makeup and mannerisms that would only get in the way as Brandon J. Dirden's MLK, Christopher Gurr's Strom Thurmond, Richard Poe's Everett Dirksen, William Jackson Harper's Stokely Carmichael, Robert Petkoff's Hubert Humphrey, Michael McKean's J. Edgar Hoover and Cranston's LBJ do battle with each other in 1964.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the play's huge helping of politics goes down as easily as gravy over pork chops",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises Cranston's performance extensively ('delivers big time', 'doesn't miss a laugh') and appreciates the director's storytelling approach. However, the tone is somewhat analytical rather than enthusiastic, focusing more on craft than emotional impact or must-see appeal. | GPT-4o: The review praises Bryan Cranston's performance and the direction, highlighting the humor and engagement of the play. However, there are some reservations about the portrayal of LBJ and the overall soap opera-like nature of the play. | Gemini: The review is generally positive, highlighting Cranston's performance and the play's ability to make politics palatable. While not a rave, it's a clear recommendation. | Kimi: The review offers strong praise for Bryan Cranston's lead performance ('delivers big time,' 'wily, high-strung and very comic') and Bill Rauch's nimble direction, with the critic noting the political drama 'goes down as easily as gravy over pork chops.' While enthusiastic about the acting and staging, the tone is appreciative rather than ecstatic, falling short of 'masterpiece' or 'must-see' superlatives.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:54:59.315Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 79,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

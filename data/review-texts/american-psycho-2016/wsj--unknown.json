@@ -37,5 +37,60 @@
   "wordCount": 134,
   "tierReason": "Short text (134 words)",
   "bwwExcerpt": "'American Psycho' is slick, sleek and empty, a one-joke show that drowns its message, such as it is, in red sauce and fake emotion...The book sticks fairly faithfully to Mr. Ellis's original ground plan. Es Devlin's projection-intensive minimalist sets are 100% white, silver and gray, and Duncan Sheik, lately of 'Spring Awakening,' has written a score consisting almost exclusively of faux-'80s techno-pop songs with parodistic lyrics...Mr. Walker, who was memorably charismatic in 'Bloody Bloody Andrew Jackson,' plays Bateman as a ripped hipster with a plummy radio-announcer voice, which is just right. Ms. Damiano is good, too-you'll actually feel for her character's plight, unlikely as it may sound-and everybody else in the cast does just what they're supposed to do, which usually means being as irritating as possible. Some of Mr. Sheik's songs are quite harmonically fresh...",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'American Psycho' is slick, sleek and empty, a one-joke show that drowns its message, such as it is, in red sauce and fake emotion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'slick, sleek and empty, a one-joke show' and questions whether audiences can be fooled into liking it. Despite praising individual elements like performances and some songs, the overall verdict is clearly negative. | GPT-4o: The review criticizes the show as 'slick, sleek and empty,' and 'a one-joke show,' indicating a negative overall impression despite some praise for individual performances and elements. | Gemini: The review states the show is \"slick, sleek and empty, a one-joke show\". While acknowledging some positive aspects like the lead actor and some songs, the overall assessment is negative. | Kimi: While the critic praises individual performances (Walker and Damiano) and some songs, the overall verdict dismisses the show as 'empty' with 'fake emotion,' suggesting it fools audiences. The performer praise does not redeem the negative assessment of the production as a whole.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:58:47.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

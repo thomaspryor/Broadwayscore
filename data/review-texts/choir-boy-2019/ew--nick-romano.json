@@ -38,5 +38,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "With Moonlight still looming so presently in our current cultural conscious, McCraney's past work, accompanied by this brief premise, paints a more solemn coming-of-age tale, which makes the joy that bursts forth from this cast of largely budding talents unexpected and well balanced. In addition to low, from-the-gut laughs, largely coming from Pharus' whip-smart comebacks ('I've never missed a key of G since I was 3'), AJ (John Clay III), Pharus' friend and roommate, offers brotherly warmth and acceptance as a tall, jock baseball player.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Sing-The-Praises-Of-CHOIR-BOY-On-Broadway-20190108",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the joy that bursts forth from this cast of largely budding talents unexpected and well balanced",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows positive sentiment about performances and balance, but limited text and curatorial warning require caution - using lower end of Positive range. | GPT-4o: The excerpt highlights the unexpected joy and well-balanced performances, suggesting a positive reception. However, due to the single excerpt and lack of full context, the confidence is low. | Gemini: The review excerpt highlights the positive aspects of the cast's performance and the balance within the story, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the limited text, confidence is low. | Kimi: The excerpt offers clear enthusiasm for the production, praising the 'joy that bursts forth' from the talented cast, 'well balanced' tone, and 'whip-smart' dialogue. As a single curated excerpt, this represents a clearly positive assessment warranting the upper end of the Positive bucket, though confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:23:37.778Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

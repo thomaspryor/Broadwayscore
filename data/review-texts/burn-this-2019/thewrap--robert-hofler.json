@@ -43,5 +43,60 @@
   "tierReason": "Short text (90 words)",
   "bwwExcerpt": "Into all of this terribly 'you're OK, I'm OK, who cares if anyone out there's not gay' world drops Adam Driver. He not only gives a towering performance, he is a tower. If the Ponce Monolith at Tiwanaku ever came to life, it would be Driver's Pale. This guy's not just pre-Colombian, he's downright primordial, and speaks English as if it were a second language coming from a person who never got around to learning a first language. Pale's tirades show Wilson in peak form, and Driver does them full justice as he races from insult to demand to petty concern and then back to insult and demand and concern about his trousers not being properly pressed.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BURN-THIS-Opens-On-Broadway-Starring-Keri-Russell-And-Adam-Driver-20190416",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He not only gives a towering performance, he is a tower.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Despite concerns about the play's structure and character dynamics, the critic enthusiastically praises Adam Driver's performance as 'towering' and says he 'does full justice' to Wilson's writing. The positive assessment of the lead performance and peak writing outweighs structural reservations. | GPT-4o: The review praises Adam Driver's performance and the writing of Pale's tirades but expresses significant concerns about the play's structure and character relationships, suggesting a mixed verdict. | Gemini: While the review has some reservations about the play itself, it heavily praises Adam Driver's performance, suggesting it's a reason to see the show. The overall tone leans positive due to the strength of the praise for Driver. | Kimi: The critic offers significant criticism of the play's structure and milieu ('needs a long third act,' 'terribly... world') while delivering exceptionally strong praise for Adam Driver's performance ('towering,' 'primordial'). Confidence is low due to truncated text without a clear final verdict. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:18:22.566Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

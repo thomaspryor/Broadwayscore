@@ -37,5 +37,11 @@
   "contentTier": "complete",
   "wordCount": 660,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2017 outside valid range 2019–2024 for show opening 2022"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2017 outside valid range 2019–2024 for show opening 2022",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T01:54:14.443Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Old Vic in London, not the current Broadway run.; kimi: This review covers the original London production at the Old Vic, not the Broadway production. The text explicitly states 'Old Vic, London' and notes the article is 'more than 8 years old', referring to the 2017 London premiere rather than the Broadway run.",
+  "promptVersion": "5.2.0"
 }

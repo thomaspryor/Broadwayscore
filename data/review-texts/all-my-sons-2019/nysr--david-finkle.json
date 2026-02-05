@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "In a season where straight plays-often relegated to second-class Broadway status-have been in unusual number, this All My Sons goes a far way, or further, to reminding audiences what perceptive, inspired, engaged playwriting is. If anyone is leaving the Roundabout's American Airlines with a blithe ho-hum, I'll turn in my critic's spurs. If anyone is exiting the auditorium having seen the drama for the first time and wondering what all the fuss over Miller is about, I'm here to recommend a psychotherapist expert in healing emotional blockage.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If anyone is leaving the Roundabout's American Airlines with a blithe ho-hum, I'll turn in my critic's spurs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: 5/5 stars with passionate advocacy language. Critic stakes reputation on audiences being moved and recommends therapy for those unmoved. Despite single excerpt limitation, the extreme commitment level and star rating indicate top-tier rave. | GPT-4o: The excerpt is highly positive, praising the play's ability to remind audiences of 'perceptive, inspired, engaged playwriting.' The critic's challenge to anyone leaving unimpressed reinforces the strong recommendation. The original 5/5 stars rating supports a Rave classification. | Gemini: The critic strongly praises the production, stating it reminds audiences of perceptive and inspired playwriting. The hyperbolic statements about turning in critic's spurs and recommending a psychotherapist indicate a rave review. | Kimi: Awarded 5/5 stars with superlative praise for 'perceptive, inspired, engaged playwriting' and hyperbolic insistence that disappointment would indicate 'emotional blockage,' indicating a rave, though confidence is reduced due to availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:50:58.138Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 90,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

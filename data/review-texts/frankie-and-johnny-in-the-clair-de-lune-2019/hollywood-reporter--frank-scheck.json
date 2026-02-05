@@ -46,5 +46,60 @@
   "wordCount": 674,
   "tierReason": "Full review text",
   "bwwExcerpt": "It's easy to see why Terrence McNally's 1987 romantic two-hander is being presented on Broadway less than 20 years after its last incarnation. Frankie and Johnny in the Clair de Lune, about one very long night in which two lonely souls debate whether or not to take a chance on love, is a veritable feast for actors. And in the new revival directed by Arin Arbus, Audra McDonald and Michael Shannon wolf it down with gusto.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Their superb work proves that Frankie and Johnny in the Clair de Lune offers both timeless themes and eternal catnip to talented performers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges casting issues but praises the actors' 'superb work' and finds the production ultimately successful. The BWW excerpt confirms the positive assessment with 'wolf it down with gusto.' Medium confidence due to truncated text potentially missing final verdict. | GPT-4o: The review praises the performances of McDonald and Shannon, despite some reservations about casting and the production's tone. The critic acknowledges the play's strong writing and the actors' ability to make it work, indicating a positive recommendation with some caveats. | Gemini: Despite reservations about casting, the critic praises the actors' performances and the writing, suggesting it's worth seeing for those elements. The truncated text and casting concerns lower the confidence. | Kimi: While noting reservations about the 'glammed up' production and casting choices, the critic praises McDonald and Shannon's performances as 'superb' and 'brilliant,' concluding that the actors make the revival work. The truncated text warrants caution, but the available conclusion indicates a recommendation based on the strength of the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:47:31.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

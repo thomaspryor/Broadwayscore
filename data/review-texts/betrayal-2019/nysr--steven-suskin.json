@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Harold Pinter's Betrayal has returned to Broadway less than six years after the play's last starry, smashingly successful visit. Don't let that dissuade you: The new production at the Jacobs is equally excellent, equally exciting, and likely to be a premium-ticket sellout for the duration of its 17-week engagement. This thanks to incisive performances from Tom Hiddleston, Charlie Cox, and Zawe Ashton, plus an intriguing and often surprising production from director Jamie Lloyd.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Don't let that dissuade you: The new production at the Jacobs is equally excellent, equally exciting",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives 4/5 stars and uses consistently enthusiastic language throughout: 'equally excellent, equally exciting', 'exceptional performance', 'you literally can't take your eyes off her', and 'holds up exceedingly well'. Despite being truncated, the full review maintains positive assessment with no significant reservations. | GPT-4o: The review praises the performances and direction, calling the production 'equally excellent' and 'exciting'. The 4/5 star rating supports a strong positive classification. Despite the truncated text warning, the available content and aggregator excerpts suggest a clear positive verdict. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and the play itself. The critic explicitly states that the production demonstrates the play holds up exceedingly well. | Kimi: 4/5 star rating with enthusiastic praise for performances and direction, explicitly recommending the production despite recent previous revivals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:07:54.237Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 84,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

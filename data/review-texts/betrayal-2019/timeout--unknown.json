@@ -44,5 +44,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "Director Jamie Lloyd's production, the play's third Broadway revival in 18 years, is capably acted but spare, gray and chilly; there is no set but two wooden chairs, a small folding table and a back wall that sometimes moves forward or backward. In each of the two-person scenes, the absent character lingers onstage like a gloomy ghost, sometimes nursing a drink. Everything seems intended to suggest the very English repression of great passions that the play never actually conveys. At the performance I attended, Hiddleston's icy facade cracked-during the scene in which he discovers his wife's adultery-to release a physical outpouring of fluid so profuse that it seemed like a magic trick, as though the actor had swiftly turned on and off a faucet that was hidden in his face. It was a strange and incongruous moment, and it provided a welcome burst of surprise in a production that is otherwise a chic and dreary affair.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't recommend this event to anyone who loves Pinter or Betrayal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The 3/5 rating and explicit non-recommendation ('I can't recommend this event') clearly place this in Negative territory. The critic acknowledges the cast's appeal but finds the production fundamentally flawed in its interpretation of Pinter, calling it 'glossy, empty' and warning audiences they'll 'feel cheated.' | GPT-4o: The critic expresses disappointment with the production, noting it lacks the necessary tone and fails to capture Pinter's intended menace and tension. The original rating of 3/5 aligns with a negative assessment. | Gemini: Despite praising the cast individually, the reviewer ultimately does not recommend the production, especially for fans of Pinter. The 3/5 rating and negative conclusion support this classification. | Kimi: The 3/5 rating reflects a middle-ground assessment: while praising the 'charming, vibrant' cast and 'indestructible' dramaturgy, the critic ultimately finds the revival 'glossy' and 'empty,' explicitly advising against it for fans of the play due to missed tone and emotional menace.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:08:45.748Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

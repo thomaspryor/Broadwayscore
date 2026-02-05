@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "It is not good. It is not terrible. It is bloodless, procedural, and, in Christopher Ashley's staging, constantly, exhaustingly turned up to 11. It lacks nearly any wit, poetry, or sense of fun-except in the few moments when the tone shifts, briefly and inexplicably, to camp. (The estimable Judy Kaye doubles as both Diana's regal mother-in-law and also her over-the-top step-grandmother, the pulpy romance novelist Barbara Cartland, and in the latter role offers those few goofy moments.) We apprec",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-DIANA-THE-MUSICAL-Opens-on-Broadway-The-Critics-Weigh-In-20211117",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is not good. It is not terrible. It is bloodless, procedural, and constantly, exhaustingly turned up to 11.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: 2/5 stars with consistent criticism of book, music, and lyrics as 'forgettable' and 'equally bad.' While acknowledging committed performances, the overall verdict is clearly negative with no recommendation to see it. | GPT-4o: The review is largely negative, highlighting the lack of wit, poetry, or fun, and describes the production as bloodless and procedural. The 2/5 star rating aligns with a negative verdict. | Gemini: The review is overall negative, despite acknowledging the efforts of the cast. The critic describes the show as \"bloodless, procedural\" and lacking wit, poetry, or fun. | Kimi: The critic awards 2/5 stars and describes the show as 'not good,' 'bloodless,' and 'forgettable,' with particular criticism of the score and book, despite acknowledging the efforts of the cast.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:35:24.698Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

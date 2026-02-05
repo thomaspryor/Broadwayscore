@@ -42,5 +42,60 @@
   "wordCount": 703,
   "tierReason": "Full review text",
   "bwwExcerpt": "Despite a little overeagerness, First Date isn't a bad night out (provided you don't expect deep engagement). If ever there were the platonic ideal of a Broadway summer engagement, this is it: no serious competition, low expectations, emerging talent. There is skill on display in Austin Winsberg's anything-for-a-laugh book and the inoffensive light-rock score by Alan Zachary and Michael Weiner...Bill Berry's jaunty staging keeps the laughs coming, and both leads have charm and vocal chops. Not every hookup has to be forever; First Date aims its love arrow for the middle and hits it with aplomb.",
-  "bwwScore": 6
+  "bwwScore": 6,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "First Date isn't a bad night out (provided you don't expect deep engagement).",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: 3/5 stars with qualified recommendation. Critic acknowledges charm and skill but calls it 'mostly sitcom quirk' and warns against expecting 'deep engagement.' Mixed user comments range from enthusiastic to negative. | GPT-4o: The review presents a mix of positive and negative elements, highlighting charm and humor but also critiquing the material and depth. The original 3/5 rating suggests a middle-ground assessment. | Gemini: The review is generally positive, stating it's \"not a bad night out\" and highlighting the charm of the leads and the jaunty staging, but it also acknowledges the sitcom-like qualities and lack of deep engagement. The 3/5 rating supports a positive but not rave score. | Kimi: The 3/5 star review acknowledges the show's sitcom-level humor and lack of depth while praising the leads' charm and the staging's skill, ultimately deeming it competent summer filler rather than essential viewing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:43:57.396Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

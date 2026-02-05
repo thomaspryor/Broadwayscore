@@ -42,5 +42,59 @@
   "contentTier": "complete",
   "wordCount": 642,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2016 outside valid range 2004–2009 for show opening 2007"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2016 outside valid range 2004–2009 for show opening 2007",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It all makes for an entertaining, if restrained, coming-of-age tale — but it could use a few more killer numbers to make a lasting impression.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: The review finds the show 'entertaining' with 'solid' performances but consistently notes restraint where there should be energy, lacks 'killer numbers,' and describes it as missing 'unrestrained joy.' The final verdict calls it entertaining but flawed. | Gemini: The review acknowledges positive aspects like solid performances and entertaining moments, but also points out shortcomings such as a lack of killer numbers and a restrained approach. This suggests a mixed experience, placing it in the \"Mixed\" bucket. | Kimi: The review consistently praises performances (Cordero 'appealing,' Gotay 'very good,' Colley 'confident brio'), finds the adaptation 'smartly' done, and calls the show 'entertaining.' However, significant reservations about the score lacking 'killer numbers,' the restrained approach, and dull father character keep it from higher praise. The final verdict is qualified but clearly recommends the show.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:34:29.117Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 65,
+    "kimiScore": 74,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Mixed"
+  }
 }

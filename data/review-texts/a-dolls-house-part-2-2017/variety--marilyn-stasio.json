@@ -41,5 +41,60 @@
   "sourceMethod": "brightdata",
   "contentTier": "complete",
   "wordCount": 634,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Metcalf is amazing, uncovering so many facets to Nora — her intelligence, her wit, her pluck, her courage — while retaining the humor to laugh at her idiocies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Metcalf's performance as 'amazing' and 'dazzling,' commends the direction and other performances, and calls the dialogue full of zingers. However, she questions whether it's really a play or just a manifesto, suggesting structural reservations that keep it from being a rave. | GPT-4o: The review praises the performances, particularly Laurie Metcalf's, and highlights the engaging dialogue and humor. The tone is enthusiastic, with strong praise for the production and its execution. | Gemini: The review is generally positive, praising Metcalf's performance and the humor, but notes that it feels more like a manifesto than a play, which is a reservation. | Kimi: While the critic questions whether the work is truly a play or more of a 'biting manifesto' with unbalanced dramatic conflict, they offer unqualified praise for Laurie Metcalf's 'incomparable' performance and strong appreciation for the supporting cast, direction, and humorous dialogue.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T00:42:16.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

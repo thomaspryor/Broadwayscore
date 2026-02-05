@@ -42,5 +42,11 @@
   "contentTier": "complete",
   "wordCount": 563,
   "tierReason": "Full review text",
-  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2015 outside valid range 2004–2009 for show opening 2007"
+  "unflaggedNote": "Previously flagged: Auto-flagged: URL year 2015 outside valid range 2004–2009 for show opening 2007",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T00:42:20.801Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about a production at the Williamstown Theater Festival, not the current Broadway run.; kimi: This review covers the Williamstown Theater Festival production in Massachusetts ('Massachusetts Berkshires' annual stage festival'), not a Broadway production. The text explicitly identifies this as the WTF production staged at the Williamstown Theater Festival, making it a regional theater review rather than a Broadway review.",
+  "promptVersion": "5.2.0"
 }

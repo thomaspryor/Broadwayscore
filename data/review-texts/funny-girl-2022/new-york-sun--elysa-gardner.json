@@ -60,5 +60,60 @@
   "rejectionReasoning": "claude: This appears to be website navigation, promotional copy, and footer content rather than an actual theater review; openai: The text provided is a mix of promotional content and site navigation, not a review of the show.; gemini: This is not a review, but rather website boilerplate and subscription prompts. There is a brief mention of 'Funny Girl' but no actual review content.; kimi: The text consists primarily of website boilerplate, navigation menus, login prompts ('Remember meForgot your password?Sign in'), copyright notices, and publication mission statements. Only one fragment of potential review content is present ('At a recent 'Funny Girl' preview...'), making this non-article content unsuitable for scoring.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "xAs anyone who listened with honest ears to her renditions of 'Don't Rain On My Parade' and 'People' on 'Glee' could attest, Ms. Michele is not the vocal superpower Ms. Streisand was in her prime; very few non-classical singers have possessed that mix of bel canto clarity, dazzling polish, and sheer might. What Ms. Michele does have, aside from lovely tone and an impressive belt, is a natural singer's instinctive musicality. In Ms. Feldstein's resourceful, endearing performance, you could sense the sweat that went into each note and phrase; that effort was, perhaps ironically, part of what made her Fanny convincing - and made the audience's support palpable and contagious.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What Ms. Michele does have, aside from lovely tone and an impressive belt, is a natural singer's instinctive musicality.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on Michele's vocal qualities with measured praise ('lovely tone', 'impressive belt', 'natural musicality') but notes she's not a 'vocal superpower'. Positive assessment but with clear reservations about vocal power compared to Streisand. | GPT-4o: The excerpt praises Ms. Michele's musicality and tone, suggesting a positive view of her performance. However, it acknowledges she is not at Streisand's level, indicating some reservations. The single excerpt and lack of full context lower confidence. | Gemini: The review excerpt compares Michele favorably to Feldstein, suggesting a positive, though qualified, assessment of her performance. Given the single excerpt, confidence is low. | Kimi: The excerpt offers warm praise for both lead performances, highlighting Michele's musicality and Feldstein's endearing resourcefulness, while acknowledging Michele isn't Streisand's equal. Given the single-excerpt limitation, this clearly positive assessment warrants the upper Positive range with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T01:50:41.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
