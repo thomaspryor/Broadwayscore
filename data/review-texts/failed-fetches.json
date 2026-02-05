@@ -12088,42 +12088,6 @@
     "timestamp": "2026-02-04T17:26:28.379Z"
   },
   {
-    "reviewId": "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
-    "showId": "a-view-from-the-bridge-2010",
-    "outlet": "Variety",
-    "critic": "Charles Isherwood",
-    "url": "https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941773/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): betrayal, tina, sweat, betrayal, hair...",
-    "textLength": 6178,
-    "timestamp": "2026-02-04T17:26:52.789Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
-    "textLength": 7831,
-    "timestamp": "2026-02-04T17:29:25.655Z"
-  },
-  {
-    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
-    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-    "outlet": "Vulture",
-    "critic": "Jackson McHenry",
-    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
-    "textLength": 8832,
-    "timestamp": "2026-02-04T17:30:42.502Z"
-  },
-  {
     "reviewId": "act-one-2014/hollywood-reporter--unknown.json",
     "showId": "act-one-2014",
     "outlet": "Hollywood Reporter",
@@ -12194,18 +12158,6 @@
     "garbageReason": "Multiple shows mentioned (8): 1776, chicken & biscuits, the audience, hair, once...",
     "textLength": 6539,
     "timestamp": "2026-02-04T17:41:36.832Z"
-  },
-  {
-    "reviewId": "airline-highway-2015/hollywood-reporter--unknown.json",
-    "showId": "airline-highway-2015",
-    "outlet": "Hollywood Reporter",
-    "critic": "Unknown",
-    "url": "http://www.hollywoodreporter.com/review/airline-highway-theater-review-791031",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (11): chicago, mamma mia!, home, purpose, company...",
-    "textLength": 7380,
-    "timestamp": "2026-02-04T17:44:57.797Z"
   },
   {
     "reviewId": "aladdin-2014/hollywood-reporter--david-rooney.json",
@@ -13562,5 +13514,77 @@
     "garbageReason": "Multiple shows mentioned (17): wicked, appropriate, macbeth, tina, king charles iii...",
     "textLength": 10518,
     "timestamp": "2026-02-05T01:18:03.629Z"
+  },
+  {
+    "reviewId": "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
+    "showId": "a-view-from-the-bridge-2010",
+    "outlet": "Variety",
+    "critic": "Charles Isherwood",
+    "url": "https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941773/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): betrayal, tina, sweat, betrayal, high...",
+    "textLength": 6087,
+    "timestamp": "2026-02-05T01:18:39.835Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): maybe happy ending, chicago, aladdin, buena vista social club, home...",
+    "textLength": 7831,
+    "timestamp": "2026-02-05T01:18:46.776Z"
+  },
+  {
+    "reviewId": "a-wonderful-world-the-louis-armstrong-musical-2024/vulture--jackson-mchenry.json",
+    "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+    "outlet": "Vulture",
+    "critic": "Jackson McHenry",
+    "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): chicago, aladdin, tina, torch song, hello, dolly!...",
+    "textLength": 8832,
+    "timestamp": "2026-02-05T01:20:04.602Z"
+  },
+  {
+    "reviewId": "airline-highway-2015/hollywood-reporter--unknown.json",
+    "showId": "airline-highway-2015",
+    "outlet": "Hollywood Reporter",
+    "critic": "Unknown",
+    "url": "http://www.hollywoodreporter.com/review/airline-highway-theater-review-791031",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): chicago, mamma mia!, home, purpose, company...",
+    "textLength": 7380,
+    "timestamp": "2026-02-05T01:20:24.644Z"
+  },
+  {
+    "reviewId": "airline-highway-2015/vulture--jesse-green.json",
+    "showId": "airline-highway-2015",
+    "outlet": "Vulture",
+    "critic": "Jesse Green",
+    "url": "http://www.vulture.com/2015/04/theater-reviews-the-visit.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (15): chicago, home, tina, summer, the audience...",
+    "textLength": 14824,
+    "timestamp": "2026-02-05T01:20:33.282Z"
+  },
+  {
+    "reviewId": "all-the-way-2014/nytimes--charles-isherwood.json",
+    "showId": "all-the-way-2014",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://www.nytimes.com/2014/03/07/theater/bryan-cranston-as-president-johnson-in-all-the-way.html?_r=0",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, purpose, summer, hair, elling...",
+    "textLength": 7890,
+    "timestamp": "2026-02-05T01:24:31.816Z"
   }
 ]
