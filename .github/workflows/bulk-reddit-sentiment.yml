@@ -249,6 +249,7 @@ jobs:
       github.event.inputs.dry_run != 'true'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Chain next run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
