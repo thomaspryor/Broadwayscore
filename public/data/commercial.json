@@ -3028,6 +3028,182 @@
       },
       "lastUpdated": "2026-02-04",
       "firstAdded": "2026-02-04"
+    },
+    "purlie-victorious": {
+      "designation": "Fizzle",
+      "capitalization": 7125000,
+      "capitalizationSource": "SEC Form D (max $7.5M, min $6.75M)",
+      "weeklyRunningCost": 500000,
+      "weeklyRunningCostNote": "Estimated ~$500K/week; averaged ~$510K gross at ~65% capacity",
+      "costMethodology": "sec-filing",
+      "recouped": false,
+      "notes": "Revival starring Leslie Odom Jr. at Music Box Theatre. Opened Sep 2023, closed Jan 2024 after 19 weeks. SEC Form D shows $6.75-7.5M cap range. Strong reviews and 4-week extension but averaged only ~65% capacity ($510K/week avg). Odom confirmed investment was not fully earned back. Highest weekly gross $706,882 in final extension week. Total gross $11.23M.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "sec",
+          "url": "http://pdf.secdatabase.com/2861/0001943849-23-000002.pdf",
+          "date": "2023-09-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.latimes.com/entertainment-arts/story/2024-05-21/leslie-odom-jr-purlie-victorious-broadway-pbs-ossie-davis",
+          "date": "2024-05-21"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "capitalization",
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: SEC Form D $6.75-7.5M range. ~$500K/week breakeven. Odom confirmed did not recoup. $11.23M total gross over 19 weeks."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "leopoldstadt-2022": {
+      "designation": "Windfall",
+      "capitalization": 8000000,
+      "capitalizationSource": "SEC filing (max $8.75M, min $7.75M, capitalized at $8M)",
+      "weeklyRunningCost": 650000,
+      "weeklyRunningCostNote": "Estimated ~$600-700K/week for large-cast play",
+      "costMethodology": "sec-filing",
+      "recouped": true,
+      "recoupedDate": "2023-07",
+      "notes": "Tom Stoppard play that won the Tony for Best Play. Opened Oct 2022 at Longacre Theatre, ran 313 performances through Jul 2023. SEC filing shows $8M capitalization. Recouped entire investment during the run — one of few post-pandemic straight plays to achieve full recoupment. Record weekly gross of $1.296M in final week at 99.8% capacity. Total gross $32.71M.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "sec",
+          "url": "https://assets.disclosurequest.com/Archives/edgar/data/1932438/000193243822000002/0001932438-22-000002.txt",
+          "date": "2022-01-01"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1g1zw44/which_shows_that_opened_in_2023_and_2024_recouped/",
+          "date": "2024-10-01"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "capitalization",
+          "recouped",
+          "recoupedDate"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: $8M cap (SEC filing). Tony Best Play. Recouped during run. $32.71M total gross. Record $1.296M final week at 99.8% capacity."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "doubt": {
+      "designation": "Nonprofit",
+      "capitalization": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "notes": "Roundabout Theatre Company production at Todd Haimes Theatre. Limited engagement Feb-Apr 2024 (77 performances). Starred Liev Schreiber. Averaged ~93% capacity. Highest weekly gross ~$571K. Total gross $5.73M. As a nonprofit subscription production, no private investors or commercial recoupment applies.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/doubt-broadway-todd-haimes-theatre-2024",
+          "date": "2024-02-01"
+        }
+      ],
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "uncle-vanya": {
+      "designation": "Nonprofit",
+      "capitalization": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "notes": "Lincoln Center Theater production starring Steve Carell at the Beaumont. Limited engagement Apr-Jun 2024. Virtually sold out entire run (~99% capacity). Highest weekly gross ~$1.089M. Total gross $10.22M ($12M+ including previews). As a nonprofit production, no private investor recoupment applies.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/uncle-vanya-broadway-vivian-beaumont-theater-2024",
+          "date": "2024-04-01"
+        }
+      ],
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "mary-jane": {
+      "designation": "Nonprofit",
+      "capitalization": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "notes": "Manhattan Theatre Club production starring Rachel McAdams at Samuel J. Friedman Theatre. Limited engagement Apr-Jun 2024, extended 2 weeks due to demand. Averaged ~92% capacity. Highest weekly gross ~$498K. Total gross $5.29M with ~$92 average ticket. As a nonprofit production, no commercial recoupment applies.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/mary-jane-broadway-samuel-j-friedman-theatre-2024",
+          "date": "2024-04-01"
+        }
+      ],
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
+    },
+    "patriots": {
+      "designation": "Flop",
+      "capitalization": 7000000,
+      "capitalizationSource": "Industry estimate (~$6-8M range for commercial play)",
+      "weeklyRunningCost": null,
+      "weeklyRunningCostNote": "Averaged only 74% capacity with $64 avg ticket; best week only $513.6K",
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "notes": "Commercial play produced by Sonia Friedman, 12-week limited engagement at Barrymore Theatre (Apr-Jun 2024). Struggled to find audience — averaged only 74% capacity with $64 average ticket (very low for Broadway). Best week grossed only $513.6K. Total gross $4.54M against estimated ~$7M budget. Closed without extending. Investors did not recoup.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://chatgpt.com/deep-research",
+          "date": "2026-02-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/patriots-broadway-ethel-barrymore-theatre-2024",
+          "date": "2024-04-01"
+        }
+      ],
+      "deepResearch": {
+        "verifiedFields": [
+          "recouped"
+        ],
+        "verifiedDate": "2026-02-04",
+        "verifiedBy": "chatgpt-deep-research",
+        "notes": "GPT Deep Research: ~$7M estimated cap. 74% avg capacity, $64 avg ticket. $4.54M gross. Did not recoup."
+      },
+      "lastUpdated": "2026-02-04",
+      "firstAdded": "2026-02-04"
     }
   }
 }
