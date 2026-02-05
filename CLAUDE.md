@@ -328,7 +328,7 @@ WSJ/NYT untestable in CI (anti-bot blocks headless Chrome). Use Browserbase tier
 
 ### LLM Ensemble Scoring Constraints
 
-- ~0.66 min/review (4-model), **max safe batch: ~400** (6hr GitHub Actions timeout, NO checkpointing)
+- ~0.66 min/review (4-model), checkpoints every 100 reviews in CI (git commit+push), safe to run batches of 300-500
 - Full rescore: `--rescore --limit=400` then repeated `--outdated --limit=400` batches
 - Cost: ~$0.045/review (~$80 full corpus)
 - **Human review queue:** `data/audit/needs-human-review.json`. Set `humanReviewScore` + `humanReviewNote` on source file. Auto-adjudication daily at 5 AM UTC via Claude Sonnet (3 uncertain attempts → auto-accepts).
