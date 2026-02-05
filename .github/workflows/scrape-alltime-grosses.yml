@@ -61,6 +61,7 @@ jobs:
           npx tsx scripts/scrape-alltime.ts $ARGS
         env:
           NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
 
       - name: Check for changes
         if: inputs.dry_run != 'true'
