@@ -19,8 +19,8 @@
   "contentTier": "truncated",
   "contentTierReason": "Short text (26 words)",
   "textWordCount": 286,
-  "archivePath": "data/archives/reviews/big-fish-2013/variety--marilyn-stasio_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T14:26:51.787Z",
+  "archivePath": "data/archives/reviews/big-fish-2013/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:35:18.743Z",
   "fetchMethod": "brightdata",
   "fetchAttempts": [
     {
@@ -33,7 +33,7 @@
       "tier": 0.5,
       "method": "archive",
       "success": false,
-      "error": "timeout of 15000ms exceeded"
+      "error": "No CDX snapshots found"
     },
     {
       "tier": 1,
@@ -54,11 +54,11 @@
     }
   ],
   "fetchTier": 3,
-  "textQuality": "partial",
+  "textQuality": "truncated",
   "truncationSignals": [
     "no_ending_punctuation"
   ],
-  "textStatus": "incomplete",
+  "textStatus": "truncated",
   "sourceMethod": "brightdata",
   "textIssues": [
     "Word count too low: 286 (min: 300)"
