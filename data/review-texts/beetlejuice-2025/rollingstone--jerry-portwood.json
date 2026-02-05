@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"A joyful musical that celebrates death and the afterlife may seem like an odd mixture for audience entertainment, but black humor has long been an antidote to the venom of reality and Eddie Perfect’s wild and witty lyrics keep returning to existential minefields...The two best songs are reserved for the second act when we finally get a glimpse at the characters in the Netherworld.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Eddie Perfect's wild and witty lyrics keep returning to existential minefields",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the lyrics as 'wild and witty' and identifies strong moments in Act 2, but acknowledges the show as an 'odd mixture.' Single excerpt warning applied - this appears mildly positive but incomplete. | GPT-4o: The excerpt describes the musical as 'joyful' and highlights 'wild and witty lyrics', suggesting a positive tone. However, due to the single excerpt warning, confidence is low and the score is set at the lower end of the Positive range. | Gemini: The review excerpt suggests a positive experience with witty lyrics and black humor, but it's difficult to gauge the overall recommendation strength due to the limited text. I'm placing it in the positive bucket with a score of 75 due to the limited context. | Kimi: The excerpt offers clear praise for the musical's joyful tone, Perfect's 'wild and witty' lyrics, and second-act highlights, indicating a solid recommendation despite the limited text available.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:49:12.444Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

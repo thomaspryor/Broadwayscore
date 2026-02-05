@@ -8,65 +8,12 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "Superbly performed by Laurence Fishburne, Sam Rockwell and Darren Criss, with director (and longtime Mamet collaborator) Neil Pepe finding every comic beat and threatening glare, American Buffalo - opening tonight on Broadway at the Circle in the Square Theatre - retains a vitality that eluded some recent equally starry revivals of works by Mamet's bad-boy contemporaries (here's looking at you, True West).",
   "bwwScore": 8,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Superbly performed by Laurence Fishburne, Sam Rockwell and Darren Criss, with director Neil Pepe finding every comic beat and threatening glare.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for performances ('superbly performed') and direction ('finding every comic beat'), plus positive comparison to other revivals. However, confidence is low due to limited text from curated excerpt. | GPT-4o: The excerpt praises the performances and direction, noting the production's vitality. However, due to the single excerpt warning, the confidence is low, and the score is on the upper end of the Positive range. | Gemini: The review excerpt praises the performances and direction, and contrasts it favorably with other revivals. Given the limited text, I'm scoring it as positive with high end of the range. | Kimi: The excerpt offers strong praise for the 'superbly performed' acting and direction, highlighting that this production retains a vitality missing from comparable revivals. The tone is enthusiastic and clearly recommends the show.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:38:11.914Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 82,
-    "geminiScore": 81,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 2,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Superbly performed by Laurence Fishburne, Sam Rockwell and Darren Criss, with director (and longtime Mamet collaborator) Neil Pepe finding every comic beat and threatening glare, 'American Buffalo' – opening tonight on Broadway at the Circle in the Square Theatre – retains a vitality that eluded some recent equally starry revivals of works by Mamet’s bad-boy contemporaries\"\n\nRead more"
 }

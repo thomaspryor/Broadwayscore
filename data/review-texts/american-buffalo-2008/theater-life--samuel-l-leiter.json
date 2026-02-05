@@ -18,59 +18,7 @@
   "showScoreExcerpt": "Nevertheless, Mr. Rockwell, his mismatched outfit perfectly chosen by costumer Dede Ayite, his greasy, unkempt hair crying out for scissors, makes memorable his seedy punk, wandering the junkshop aisles, keeping his anxious hands restlessly handling prop after prop. Mr. Fishburne uses his husky presence gracefully, every now and then rolling a burly shoulder as if to loosen its kinks before his next sparring match. And Mr. Criss, although not quite on the level of his veteran costars, maintains an appropriate semblance of blessed ignorance that earns him sympathy when, late in the play, a bit of well-timed savagery—created by the great fight director J. David Brimmer—puts him out of commission.\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 74,
-    "confidence": "medium",
-    "range": {
-      "low": 69,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Mr. Rockwell makes memorable his seedy punk, wandering the junkshop aisles.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praising all three lead performances with specific detail, but limited text and 'Read more' suggests truncation, making full verdict unclear. | GPT-4o: The excerpt provides detailed praise for performances but lacks a clear overall recommendation. The text quality warning and single excerpt caution suggest limited context, leading to a low confidence mixed score. | Gemini: The excerpt focuses on praising the performances of the actors, indicating a positive experience overall, but the lack of a clear concluding statement and the limited text lowers the confidence. | Kimi: This excerpt offers specific praise for the lead performances, particularly Rockwell and Fishburne's physical acting and presence, with only minor reservations about Criss. Lacking the full review verdict, the detailed appreciation of the acting suggests a mild positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:36:03.866Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "kimiScore": 72,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

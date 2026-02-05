@@ -73,55 +73,8 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
   },
-  "textQuality": "partial",
-  "previousUrl": "https://www.wsj.com/articles/a-christmas-carol-review-a-handsome-holiday-treat-11574967600",
-  "urlDiscoveredAt": "2026-02-05T17:47:51.053Z",
-  "urlDiscoveryMethod": "google-serp",
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 73,
-  "textWordCount": 89,
-  "archivePath": "data/archives/reviews/a-christmas-carol-2019/wsj--charles-isherwood_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T17:47:51.056Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "No archive snapshot available"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "ScrapingBee error (500): Request failed with status code 500"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "brightdata",
-  "textIssues": [
-    "Word count too low: 138 (min: 300)"
-  ],
-  "wordCount": 89,
-  "tierReason": "Short text (89 words)"
+  "textQuality": "truncated",
+  "sources": [
+    "web-search"
+  ]
 }

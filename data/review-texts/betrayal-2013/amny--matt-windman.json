@@ -7,65 +7,12 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "I am hard-pressed to think of a better production of a Harold Pinter drama to play New York in over a decade than this sharp and absorbing London revival of 1978's 'Betrayal.' Directed by Jamie Lloyd, the relationship drama stars Tom Hiddleston (Loki in the Marvel Cinematic Universe), Charlie Cox ('Daredevil') and Zawe Ashton ('Velvet Buzzsaw'). All three are making their Broadway debuts.",
   "bwwScore": 9,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "assignedScore": 86,
-  "llmScore": {
-    "score": 86,
-    "confidence": "medium",
-    "range": {
-      "low": 81,
-      "high": 91
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "I am hard-pressed to think of a better production of a Harold Pinter drama to play New York in over a decade than this sharp and absorbing London revival.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise calling it the best Pinter production in a decade with 'sharp and absorbing' qualifier. Single excerpt warning suggests caution, but the superlative language indicates upper Positive range. | GPT-4o: The excerpt provides strong praise for the production, describing it as the best Pinter drama in New York in over a decade. Despite the lack of a full review, the language suggests a highly positive evaluation. | Gemini: The critic states that they are \"hard-pressed to think of a better production\" of a Pinter drama in over a decade, which indicates a strong positive recommendation. Given that this is the only excerpt available, the confidence is low. | Kimi: The critic offers superlative praise, declaring this the finest Pinter production in New York in over a decade and describing it as 'sharp and absorbing,' indicating an unambiguously enthusiastic recommendation for this revival. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:57:09.969Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 92,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Rave",
-    "scoreDelta": 11,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  "showScoreExcerpt": "3.5/4 Stars \"Jamie Lloyd, cast triumph with superb Harold Pinter revival on Broadway\"\n\nRead more"
 }

@@ -73,33 +73,7 @@
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
   },
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 69,
-  "textWordCount": 609,
-  "archivePath": "data/archives/reviews/ohio-state-murders-2022/cititour--brian-scott-lipton_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T18:26:37.031Z",
-  "fetchMethod": "scrapingbee",
-  "fetchAttempts": [
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Insufficient text extracted: 0 chars"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": true
-    }
-  ],
-  "fetchTier": 2,
-  "textQuality": "full",
-  "truncationSignals": [
-    "no_ending_punctuation"
-  ],
-  "textStatus": "complete",
-  "sourceMethod": "scrapingbee",
-  "wordCount": 609,
-  "tierReason": "Full review text"
+  "sources": [
+    "show-score-playwright"
+  ]
 }

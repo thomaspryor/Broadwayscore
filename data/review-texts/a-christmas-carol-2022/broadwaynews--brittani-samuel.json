@@ -76,41 +76,5 @@
   "sources": [
     "show-score-playwright",
     "bww-roundup"
-  ],
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 42,
-  "textWordCount": 204,
-  "archivePath": "data/archives/reviews/a-christmas-carol-2022/broadwaynews--brittani-samuel_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T17:49:39.995Z",
-  "fetchMethod": "playwright",
-  "fetchAttempts": [
-    {
-      "tier": 0,
-      "method": "archive-first",
-      "success": false,
-      "error": "timeout of 60000ms exceeded"
-    },
-    {
-      "tier": 0.5,
-      "method": "archive",
-      "success": false,
-      "error": "timeout of 15000ms exceeded"
-    },
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": true
-    }
-  ],
-  "fetchTier": 1,
-  "textQuality": "partial",
-  "truncationSignals": [],
-  "textStatus": "incomplete",
-  "sourceMethod": "playwright",
-  "textIssues": [
-    "Word count too low: 216 (min: 300)"
-  ],
-  "wordCount": 204,
-  "tierReason": "Short text (204 words)"
+  ]
 }

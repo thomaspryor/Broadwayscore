@@ -63,5 +63,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This text appears to be website navigation content, article previews, and repeated promotional content rather than a coherent theater review; openai: The text provided is a mix of unrelated content, including navigation menus and promotional material, not a review of the target show.; gemini: This is a list of headlines and short summaries of various articles, not a review of a specific show.; kimi: This text is a collection of unrelated headlines, news snippets, and excerpts from various Variety articles covering movies, TV shows, albums, and general entertainment news. It is not a coherent review of a specific Broadway show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search"
+  ]
 }

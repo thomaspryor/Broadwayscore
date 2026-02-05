@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"Although 'Beetlejuice' the musical may improve some on the movie, it’s not high quality musical theater. There’s way too much business — via Alex Timbers’s by-the-numbers direction and Connor Gallagher’s pedestrian choreography — and not enough heart...A game cast of Broadway stalwarts struggles to make an impression amid the antic busyness. For some, Brightman’s energetic turn may be enough reason to see the show...It is occasionally humorous and rarely dull.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 61,
-    "confidence": "medium",
-    "range": {
-      "low": 56,
-      "high": 66
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Although 'Beetlejuice' the musical may improve some on the movie, it's not high quality musical theater.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic offers faint praise ('occasionally humorous', 'rarely dull') but clearly states it's 'not high quality musical theater' with 'too much business' and 'not enough heart'. Single excerpt warning requires caution - this appears mixed-to-negative. | GPT-4o: The review acknowledges some positive elements, such as Brightman's performance and occasional humor, but criticizes the direction and choreography as lacking heart. The overall tone is mixed, with no strong recommendation. | Gemini: The review is mixed, noting that it's not high quality but also occasionally humorous and rarely dull. The critic acknowledges a game cast but criticizes the direction and choreography. | Kimi: The review criticizes the direction as by-the-numbers and choreography as pedestrian, finding the show overbusy and lacking heart, but allows that Brightman's energetic performance may justify attendance for some fans.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:35:00.376Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 65,
-    "geminiScore": 62,
-    "kimiScore": 60,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

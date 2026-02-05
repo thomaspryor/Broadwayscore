@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"There is genuine desperation in these characters that is relatable for anyone who has struggled against odds. And each cares what the other two think of him. There are attempts at deception laced heavily with guilt and the ache of having to believe in something just enough to not die without hope or at least some entertainment. We are entertained as every nugget of humor is squeezed out of the writing.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 79,
-    "confidence": "medium",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "We are entertained as every nugget of humor is squeezed out of the writing.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the writing's entertainment value and character depth, but limited text makes full verdict assessment difficult. | GPT-4o: The excerpt suggests the show is entertaining and relatable, with humor effectively extracted from the writing. However, the single excerpt warning and lack of full context necessitate a low confidence rating. | Gemini: The review excerpt suggests the show is entertaining and relatable, but the limited text and the warning about cherry-picked quotes reduce confidence. | Kimi: Single excerpt explicitly states the audience is 'entertained' and praises the character work and writing as 'genuine' and effective, indicating a clear positive recommendation.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:24:23.371Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 80,
-    "openaiScore": 80,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

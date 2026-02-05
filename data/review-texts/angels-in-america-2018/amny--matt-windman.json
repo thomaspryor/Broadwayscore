@@ -8,63 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Taking in the play is not easy. In addition to its length, many sequences are bizarre, didactic and choppy. But there is no denying its theatrical brilliance, literary ambition and cultural relevance. It is often just as romantic and hilarious as it is philosophic and intense.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 77,
-  "llmScore": {
-    "score": 77,
-    "confidence": "medium",
-    "range": {
-      "low": 72,
-      "high": 82
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "But there is no denying its theatrical brilliance, literary ambition and cultural relevance.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws (length, bizarre sequences, choppy) but ultimately affirms the show's 'theatrical brilliance' and finds it romantic and hilarious. The 'but there is no denying' structure signals the positive verdict outweighs the reservations. | GPT-4o: The review acknowledges challenges with the play's length and structure but ultimately praises its brilliance and ambition. The positive elements are emphasized, suggesting a recommendation despite reservations. | Gemini: The review acknowledges flaws but ultimately praises the play's brilliance and relevance, suggesting a qualified recommendation. | Kimi: The review opens with criticism about the play's difficulty and choppy structure, but pivots to strong praise for its theatrical brilliance, literary ambition, and emotional range, ultimately recommending the experience.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:04:27.109Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Kushner’s marathon magnum opus of contemporary American drama is now receiving a splashy, sleek and stunning Broadway revival with an outstanding cast led by Nathan Lane and Andrew Garfield...Taking in the play is not easy. In addition to its length, many sequences are bizarre, didactic and choppy. But there is no denying its theatrical brilliance, literary ambition and cultural relevance. It is often just as romantic and hilarious as it is philosophic and intense.\"\n\nRead more"
 }

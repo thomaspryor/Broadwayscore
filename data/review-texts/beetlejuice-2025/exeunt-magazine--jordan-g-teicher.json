@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“Madcap spectacle, a killer set, and some fine performances dominate this movie-to-musical product of the Broadway-industrial complex...The sort of high-octane thrills you might you might find at a high-end amusement park...’Beetlejuice’ isn’t at its best when it’s trying to tug at the heartstrings. The story is most effective when it’s satirizing America’s out-of-touch bourgeois, and this cast is up to the task.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 78,
-    "confidence": "medium",
-    "range": {
-      "low": 73,
-      "high": 83
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Madcap spectacle, a killer set, and some fine performances dominate this movie-to-musical product",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises spectacle, set design, and performances while acknowledging it's formulaic. Compares to 'high-end amusement park' suggesting quality entertainment despite being derivative. Single excerpt limits confidence. | GPT-4o: The excerpt praises the spectacle, set, and performances, indicating a positive tone. However, it notes the show is less effective when aiming for emotional depth, suggesting some reservations. Given the single excerpt and potential cherry-picking, a lower positive score is appropriate. | Gemini: The review excerpt highlights positive aspects like spectacle, set, and performances, but also implies a formulaic nature ('Broadway-industrial complex') and notes limitations in emotional depth. Given the single excerpt and positive elements, a score in the positive range is appropriate. | Kimi: The excerpt offers enthusiastic praise for the production values ('killer set,' 'high-octane thrills') and cast while noting the material works better as satire than emotional drama, indicating a solid recommendation despite reservations about the book's sentimental moments.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:36:48.783Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 76,
-    "openaiScore": 74,
-    "geminiScore": 78,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

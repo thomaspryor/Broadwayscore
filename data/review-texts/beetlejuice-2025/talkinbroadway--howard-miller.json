@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"Brightman busts a gut as the title character in his unrelenting, used car-salesman effort to sell, sell, sell the show...But for all his efforts, Beetlejuice only occasionally hovers a couple of feet above the ground before it comes crashing back down under its own weight...No one, including director Alex Timbers, has been able to figure out how to bring the dead to life. 'Beetlejuice' the musical is in need of an exorcism.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 43,
-    "confidence": "medium",
-    "range": {
-      "low": 38,
-      "high": 48
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "No one, including director Alex Timbers, has been able to figure out how to bring the dead to life.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Acknowledges the lead's efforts but finds the show fundamentally flawed, 'crashing down under its own weight' and needing 'an exorcism' - clearly negative verdict despite praising Brightman's performance. | GPT-4o: The excerpt criticizes the show for failing to come to life despite the lead's efforts, suggesting it falls short of expectations. The phrase 'in need of an exorcism' indicates a negative verdict. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt indicates that the show fails to take off despite the lead actor's efforts, and ultimately needs an 'exorcism,' suggesting a negative overall assessment. The single excerpt and negative language lead to a negative score with low confidence. | Kimi: While the critic acknowledges the lead actor's effort, the overall verdict is devastating, stating the show fails to take flight and is 'in need of an exorcism.' Single excerpt limits confidence.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:42:51.679Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 45,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 28,
-    "claudeBucket": "Negative",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Pan",
-    "scoreDelta": 17,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

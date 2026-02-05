@@ -8,63 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "At nearly eight hours, unfolding over two parts, the Broadway revival of Tony Kushner's \"Angels in America\" is a significant commitment, temporal and financial. But one of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along, expanding in scale and scope, spinning out one surprise after another. By the time the stage literally cracks open near the end of the second part, and the main character Prior Walter (Andrew Garfield) asce",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "medium",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "one of the countless wonders of this instant-classic production is the way it energizes, instead of enervates",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it an 'instant-classic production' with 'countless wonders' that 'energizes' viewers. However, text appears cut off mid-sentence, limiting full assessment of the verdict. | GPT-4o: The excerpt describes the production as an 'instant-classic' and highlights its ability to energize the audience, suggesting a highly enthusiastic recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt is overwhelmingly positive, using phrases like \"countless wonders\" and describing the production as energizing and expanding. Given the single excerpt and truncated nature, confidence is low, but the language suggests a strong positive recommendation. | Kimi: The critic hails this as an 'instant-classic production' full of 'wonders' that energizes rather than exhausts, despite acknowledging the significant time commitment. However, confidence is low given only one curated excerpt is available and the text appears truncated.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:08:51.070Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 92,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"One of the countless wonders of this instant-classic production is the way it energizes, instead of enervates, as it goes along, expanding in scale and scope, spinning out one surprise after another...As directed beautifully by Marianne Elliot, 'Angels in America' is also a rip-roaring, vastly entertaining melodrama...If there's any complaint here, it's that a few of the actors don't entirely sound American. The performances are all so committed and deeply felt that any initial reservations fade away.\"\n\nRead more"
 }

@@ -7,65 +7,12 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "In a bright stroke, the director dreams up a wordless prologue. Eddie and coworker Alfieri (Michael Gould) wash up after a day on the docks. But the point of the drama is that nobody comes out clean. 'Whatever happened,' says Bea, 'we all done it.' Van Hove sees to it that everyone's dripping in guilt.",
   "bwwScore": 9,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
-  "assignedScore": 76,
-  "llmScore": {
-    "score": 76,
-    "confidence": "medium",
-    "range": {
-      "low": 71,
-      "high": 81
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "In a bright stroke, the director dreams up a wordless prologue.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt praises a specific directorial choice as 'bright stroke' and suggests effective staging ('Van Hove sees to it'), but with only one curated excerpt available, this may not represent the full verdict. Scored conservatively in lower Positive range. | GPT-4o: The excerpt suggests a thematic focus on guilt and a creative directorial choice, but lacks clear positive or negative evaluative language. The single excerpt limits confidence in the overall tone. | Gemini: The review excerpt highlights a \"bright stroke\" in the direction and emphasizes the theme of guilt, suggesting a positive but not overwhelmingly enthusiastic assessment. Given that it is a single excerpt, confidence is low. | Kimi: The excerpt contains clearly positive evaluative language ('bright stroke') praising the director's creative staging choice, placing it in the upper range of the Positive bucket per scoring guidelines for single excerpts.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T16:54:15.471Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 17,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Strong is manly, magnetic and as persuasive as a heart attack…The stark staging by van Hove, a Broadway newcomer who’s known for stripped-back takes on classics, gets straight to the meat of the story…If there’s a quibble it’s that Eddie’s final fate may be somewhat unclear if you don’t know the play. Also, constant underscoring of sacred music, ambient sounds and percussive beats leads to diminishing returns.\"\n\nRead more"
 }

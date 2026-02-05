@@ -52,5 +52,8 @@
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "openai: The review is about 'Sea Wall/A Life' at the Public Theater, which is an off-Broadway production, not the current Broadway run.; kimi: This review is of the off-Broadway production at the Public Theater, not the Broadway run. The text explicitly mentions the show is at 'the Public' and 'Public Theater' multiple times.",
   "promptVersion": "5.2.0",
-  "wrongProduction": true
+  "wrongProduction": true,
+  "sources": [
+    "web-search"
+  ]
 }

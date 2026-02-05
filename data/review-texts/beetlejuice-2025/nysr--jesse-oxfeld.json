@@ -18,58 +18,7 @@
   "showScoreExcerpt": "\"A very enjoyable, very self-aware, very slick, very tuneful, very constructed-to-please-the-crowds new Broadway musical...All of it builds to a perfectly, wonderfully, showbizzy good time...It’s those big performances that work best here — Jill Abramovitz, wonderfully ridiculous in a bit part as an investor’s vacant wife, is a standout — because the whole show is so big.\" \n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "A very enjoyable, very self-aware, very slick, very tuneful, very constructed-to-please-the-crowds new Broadway musical",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Multiple strong positive descriptors ('very enjoyable', 'very tuneful', 'perfectly, wonderfully, showbizzy good time') with enthusiastic tone throughout. Single excerpt warning noted - this sounds clearly positive so scored in upper Positive range. | GPT-4o: The excerpt is highly positive, describing the show as 'very enjoyable' and 'constructed-to-please-the-crowds', with a 'showbizzy good time'. The tone is enthusiastic, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses positive language such as \"very enjoyable\", \"slick\", \"tuneful\", and \"showbizzy good time\", indicating a positive recommendation. The single excerpt available suggests a strong positive leaning.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:37:59.639Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 81,
-    "kimiScore": null,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "scoreDelta": 1,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 3 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

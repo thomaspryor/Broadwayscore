@@ -45,5 +45,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This text contains navigation menus, newsletter signup prompts, and other website interface elements mixed with what appears to be a partial review excerpt, making it unscoreable.; openai: The text contains a mix of review content and unrelated navigation and promotional content, making it not scoreable as a coherent review.; gemini: This is a truncated review with surrounding navigation menus, ad copy, and login prompts. It's not scoreable.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search"
+  ]
 }

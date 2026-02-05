@@ -18,58 +18,7 @@
   "showScoreExcerpt": "“Chess” is not a serious musical. That’s the key to appreciating this show, which is supposed to be about an American and a Russian grandmaster battling over both the game of chess and a woman.\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 63,
-    "confidence": "medium",
-    "range": {
-      "low": 58,
-      "high": 68
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Chess is not a serious musical. That's the key to appreciating this show.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 2/3 models agree: Mixed | Claude: Single excerpt suggests the show requires lowered expectations to be appreciated, implying it's flawed but potentially enjoyable if approached correctly. Very limited text makes confident scoring impossible. | GPT-4o: The excerpt suggests that the show should not be taken seriously, which implies a mixed tone. The lack of seriousness might appeal to some but not others, indicating a neutral stance. The single excerpt limits confidence in the overall verdict. | Kimi: The excerpt suggests the show can be appreciated if not taken seriously, implying a qualified recommendation. However, with only one curated excerpt that cuts off before the final verdict, confidence is low.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T21:36:39.184Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 60,
-    "openaiScore": 65,
-    "geminiScore": null,
-    "kimiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "kimiBucket": "Positive",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "2/3 models agree: Mixed"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

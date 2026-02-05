@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“Under the resourceful direction of Timbers, the principals form a sublime ensemble...They create maximal mayhem...There are moments when relentless exuberance becomes monotonous and it's hard not to ponder all that doesn't add up in the story. Those moments are relatively few and when they occur, the eclectic musical score, the visual humor, and the cast's hijinks soon reassert themselves, distracting us once again from our disbelief.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 79,
-    "confidence": "medium",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Under the resourceful direction of Timbers, the principals form a sublime ensemble.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises direction as 'resourceful' and cast as 'sublime ensemble,' acknowledges some monotonous moments but notes they are 'relatively few' and overcome by the production's strengths. Single excerpt with clear positive language warrants upper end of Positive bucket, but low confidence due to limited text. | GPT-4o: The review praises the direction and ensemble, noting the show's exuberance and musical score. However, it acknowledges moments of monotony and story issues, indicating a positive but qualified recommendation. | Gemini: The review praises the direction and ensemble, but notes moments of monotony and story issues. The overall tone suggests a positive but not rave review, with some reservations. | Kimi: The critic offers strong praise for the 'resourceful' direction and 'sublime' ensemble, and while acknowledging occasional monotony and plot holes, explicitly minimizes these as 'relatively few' and praises the show's ability to overcome them.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:35:38.127Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 81,
-    "openaiScore": 74,
-    "geminiScore": 77,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

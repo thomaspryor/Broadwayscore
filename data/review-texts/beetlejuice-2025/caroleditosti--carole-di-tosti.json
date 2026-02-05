@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"If you are a great fan of Tim Burton’s creative genius and his enlightened vision of the 'Netherworld' and the malevolent, frightful spirits that populate it, you will not be disappointed by this glorious iteration that replicates them with the brilliance of twitting itself in the process...There’s a lot to be thrilled about. The puppetry is spectacular...'Beetlejuice' is a LOL ride and must-see, especially if you saw the film a number of times and appreciate its wit and originality.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 86,
-    "confidence": "medium",
-    "range": {
-      "low": 81,
-      "high": 91
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "'Beetlejuice' is a LOL ride and must-see, especially if you saw the film a number of times and appreciate its wit and originality.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Explicit 'must-see' recommendation with enthusiastic praise ('glorious iteration', 'spectacular puppetry', 'a lot to be thrilled about'). However, confidence is medium due to single excerpt warning and conditional phrasing for Burton fans. | GPT-4o: The excerpt describes the show as a 'must-see' and praises its wit, originality, and spectacular puppetry, indicating a highly enthusiastic recommendation. However, the single excerpt warning suggests caution, so confidence is low. | Gemini: The review explicitly states \"must-see\" and describes the show as a \"LOL ride,\" indicating a strong positive recommendation. The reference to Tim Burton fans suggests a specific audience, but the overall tone is enthusiastic. | Kimi: The excerpt offers enthusiastic praise ('glorious,' 'spectacular') and explicitly calls the show a 'must-see,' indicating a strong recommendation. As a single curated excerpt, confidence is low, but the language warrants the upper end of the Positive range. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:36:02.156Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 88,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

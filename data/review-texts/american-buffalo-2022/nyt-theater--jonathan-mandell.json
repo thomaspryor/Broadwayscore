@@ -8,65 +8,12 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "So, I'll resist analyzing 'American Buffalo,' avoid trying to figure out whether the original interpretations of it still hold up, given what we now know about Mamet's beliefs. That leaves me with a production that feels like little more than an acting exercise.",
   "bwwScore": 4,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "assignedScore": 42,
-  "llmScore": {
-    "score": 42,
-    "confidence": "medium",
-    "range": {
-      "low": 37,
-      "high": 47
-    },
-    "bucket": "Negative",
-    "thumb": "Down",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "That leaves me with a production that feels like little more than an acting exercise.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Critic dismisses the production as 'little more than an acting exercise,' suggesting it lacks substance or theatrical impact. However, this is only one excerpt from a longer review, so the full verdict may differ. | GPT-4o: The excerpt suggests a lack of engagement with the production, describing it as 'little more than an acting exercise,' which implies a negative assessment. However, due to the single excerpt warning, the confidence is low. | Gemini: The critic states the production feels like \"little more than an acting exercise,\" indicating a negative assessment. Given it is a single excerpt, confidence is low. | Kimi: The critic dismisses the production as insubstantial and hollow, describing it as merely an 'acting exercise' rather than a fully realized theatrical work, indicating a clear negative verdict despite the limited excerpt available.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:29:27.962Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 58,
-    "openaiScore": 40,
-    "geminiScore": 45,
-    "kimiScore": 42,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Negative",
-    "geminiBucket": "Negative",
-    "kimiBucket": "Negative",
-    "scoreDelta": 18,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Negative"
-  }
+  "showScoreExcerpt": "the challenge of the roles..is for the actors to master the timing of the street poetry in such a way that their performances are both thrilling and  believable as human beings. And only one of the three came close to doing all that for me: Sam Rockwell. Admittedly, he has it the easiest. With a trigger temper, arias of overreaction and a violent streak, Teach is the flashiest part…\n\nRead more"
 }

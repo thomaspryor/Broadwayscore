@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“The story goes a bit flat, and is harder to follow than the film, Brown and King have fun with the dialog...Aside from Brightman and Kritzer, none of the performances really jump, mostly because the otherwise talented actors bring very little life or dimension to their characters. But the show succeeds...’Beetlejuice’ is a Broadway crowd pleaser that does what it sets out to do: provide a visually pleasing reminder of an old favorite. To look any deeper would be a mistake.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 69,
-    "confidence": "medium",
-    "range": {
-      "low": 64,
-      "high": 74
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "But the show succeeds...'Beetlejuice' is a Broadway crowd pleaser that does what it sets out to do.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The review acknowledges significant flaws (story goes flat, performances don't jump) but concludes the show 'succeeds' as a crowd pleaser. However, with only one excerpt available and text cut off mid-sentence, the full verdict may be incomplete. | GPT-4o: The review acknowledges the show's entertainment value as a 'crowd pleaser' but highlights issues with the story and performances, suggesting a mixed reception. The single excerpt and lack of full context reduce confidence. | Gemini: The review states that the show succeeds as a crowd-pleaser, but notes that the story goes a bit flat and that most performances don't jump. Given the limited excerpt, I'm scoring it as a slightly positive review with reservations. | Kimi: The review acknowledges the show succeeds as a crowd-pleasing spectacle but criticizes the flat story and most performances as lacking dimension. Given significant reservations about the material but an overall verdict that it achieves its entertainment goals, this falls in the lower Positive range. Confidence is low due to the single excerpt warning. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:53:09.203Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 65,
-    "geminiScore": 74,
-    "kimiScore": 72,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 12,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

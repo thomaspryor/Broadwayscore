@@ -18,59 +18,7 @@
   "showScoreExcerpt": "\"The most noteworthy aspect of this revival is that it reminds us of what makes 'American Buffalo' a formidable work in the first place. This is a down-in-the-dumps working-class vision of the American dream, and Mamet invites us to observe these oblivious, hypocritical dreamers with equal parts amusement, empathy, and skepticism. Whether this play has any fresh revelations to offer the more 'woke' world of 2022, however, is a question that this production never really bothers to ask. For better or worse, this new production mostly offers the not-inconsiderable spectacle of a job well done.\"\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 74,
-    "confidence": "medium",
-    "range": {
-      "low": 69,
-      "high": 79
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "For better or worse, this new production mostly offers the not-inconsiderable spectacle of a job well done.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows qualified praise calling it 'a job well done' but questions whether the revival offers fresh insights. The mixed tone and 'for better or worse' qualifier suggests lower end of Positive range. | GPT-4o: The review acknowledges the play's strengths but questions its relevance in 2022, suggesting a lack of fresh insight. The praise for the production as a 'job well done' is tempered by this critique. | Gemini: The review acknowledges the play's strengths and calls the production a \"job well done,\" but raises questions about its relevance in 2022. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: The critic acknowledges the production is well-executed ('job well done') and praises Mamet's play as 'formidable,' but raises significant doubts about whether the revival engages with modern sensibilities ('whether this play has any fresh revelations to offer the more woke world of 2022').",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:36:50.257Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 65,
-    "geminiScore": 75,
-    "kimiScore": 73,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

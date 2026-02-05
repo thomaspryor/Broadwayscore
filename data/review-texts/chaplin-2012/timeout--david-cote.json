@@ -7,65 +7,12 @@
   "source": "bww-reviews",
   "sources": [
     "bww-reviews",
+    "web-search",
     "bww-roundup"
   ],
   "bwwExcerpt": "Charles Chaplin had an amazing first act—a rags-to-riches tale of artistic triumph—and a crummy second one—personal scandal, political exile, and after The Great Dictator, a string of mediocre talkies. Such extremes don’t apply to the spunky, hopeful biomusical Chaplin, but after we see the origin of those iconic silent comedies featuring a bowler-hatted, square-mustachioed clown, the material does shuffle downhill. However, when this generally well-executed and likable piece works (for its first hour), there’s a surprising rush of wonder, excitement and childlike delight.",
   "bwwScore": 6,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CHAPLIN-Opens-on-Broadway-Updating-LIVE-20120910",
-  "assignedScore": 73,
-  "llmScore": {
-    "score": 73,
-    "confidence": "medium",
-    "range": {
-      "low": 68,
-      "high": 78
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "However, when this generally well-executed and likable piece works (for its first hour), there's a surprising rush of wonder, excitement and childlike delight.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic finds the show 'generally well-executed and likable' with moments of 'wonder, excitement and childlike delight,' but notes significant structural problems with the second act 'shuffling downhill.' This is a qualified positive recommendation, placing it at the lower end of the Positive range. | GPT-4o: The review describes the show as generally well-executed and likable but notes a decline in material quality after the first hour. The excerpt suggests mixed feelings with some positive moments, but the single excerpt warning and lack of a full review text lead to a low confidence in the verdict. | Gemini: The review is generally positive, praising the first act and calling the piece \"well-executed and likable.\" However, it notes a decline in quality later on, indicating reservations. Due to the single excerpt, confidence is low. | Kimi: The excerpt praises the first hour as 'well-executed and likable' with a 'surprising rush of wonder,' but explicitly notes the material 'shuffles downhill' thereafter, indicating a qualified recommendation that acknowledges significant flaws.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T21:33:59.966Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 72,
-    "openaiScore": 68,
-    "geminiScore": 74,
-    "kimiScore": 72,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "publishDate": "September 11, 2012"
 }

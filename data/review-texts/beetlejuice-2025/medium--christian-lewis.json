@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“The production as a whole perfectly captures the essence, comedy, and aesthetic of the original...The largest issues of the musical are its music / lyrics and the plotting of the book, which does not make much sense...The other problem...is the translation of Beetlejuice’s crude humor to 2019 and to a Broadway stage...Overall, the bland score and imperfect lyrics do not justify making ‘Beetlejuice’ into a musical...But ‘Beetlejuice’ is undeniably a fun, spooky time.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 64,
-    "confidence": "medium",
-    "range": {
-      "low": 59,
-      "high": 69
-    },
-    "bucket": "Mixed",
-    "thumb": "Flat",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Overall, the bland score and imperfect lyrics do not justify making 'Beetlejuice' into a musical.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows significant structural criticism (bland score, plotting issues, translation problems) but ends with calling it 'undeniably a fun, spooky time.' Mixed signals with no clear recommendation. | GPT-4o: The review acknowledges significant issues with the music, lyrics, and book, but also notes that the production captures the original's essence and is fun. This suggests a mixed verdict with both positive and negative elements. | Gemini: The review praises the production's capture of the original's essence but criticizes the music, lyrics, and plot. It concludes that the score doesn't justify the musical adaptation, but acknowledges it's a fun time. | Kimi: The excerpt offers significant criticism of the score, lyrics, and book ('do not justify making it into a musical'), but ultimately concedes the production is 'undeniably a fun, spooky time.' With only one curated excerpt available, this balance of fundamental artistic criticism against entertainment value places it in the Mixed range.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:47:41.019Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 62,
-    "openaiScore": 68,
-    "geminiScore": 62,
-    "kimiScore": 62,
-    "claudeBucket": "Mixed",
-    "openaiBucket": "Mixed",
-    "geminiBucket": "Mixed",
-    "kimiBucket": "Mixed",
-    "scoreDelta": 6,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Mixed"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

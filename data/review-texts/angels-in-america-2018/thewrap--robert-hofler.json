@@ -8,63 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Angels in America\" returns to Broadway to help remind us why Tony Kushner was the Lin-Manuel Miranda of the 1990s. It's the second Broadway revival for this 1993 marathon AIDS drama, and Marianne Elliott's staging enthralls by putting the fantasy of Kushner's play front and center. Her much-praised National Theatre production opened Sunday at the Neil Simon Theatre.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "medium",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Elliott's staging enthralls by putting the fantasy of Kushner's play front and center.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt uses strong positive language ('enthralls') and frames the production as worthy of comparison to a major theatrical figure. However, this is only one curated excerpt, so confidence is low. | GPT-4o: The excerpt praises Marianne Elliott's staging as 'enthralling' and highlights the significance of the play's return to Broadway. The use of 'enthralls' suggests a strong positive reaction, indicative of a rave review. | Gemini: The review uses strong positive language like \"enthralls\" and compares Kushner to Lin-Manuel Miranda, indicating a favorable opinion. The phrase \"much-praised\" also suggests a positive reception. | Kimi: The excerpt uses strong positive language ('enthralls,' 'much-praised') and favorable comparisons, indicating an enthusiastic recommendation for this revival, though the single-excerpt format limits certainty about the full review's verdict.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:09:16.793Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 90,
-    "geminiScore": 81,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-majority",
-    "modelAgreement": "3/4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Elliott’s staging enthralls by putting the fantasy of Kushner’s play front and center...Whenever Kushner’s pontifications about the cosmos threaten to dominate, there’s Elliott and her designers hard at work to lift the verbal overload...It’s quite a story, and Kushner’s powers of narrative and imagination are prodigious in 'Millennium Approaches.' 'Perestroika,' which Kushner has continued to rewrite over the years, remains something of a fascinating mess.\"\n\nRead more"
 }

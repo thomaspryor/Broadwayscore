@@ -8,65 +8,12 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
   "bwwExcerpt": "All the same, if American Buffalo doesn’t pack the wallop it did then (there is at least one actual unpulled punch), the third Broadway revival of the play contains sufficient deliberately grubby thrills to qualify as a must-see.",
   "bwwScore": 9,
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "assignedScore": 82,
-  "llmScore": {
-    "score": 82,
-    "confidence": "high",
-    "range": {
-      "low": 77,
-      "high": 87
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "the third Broadway revival of the play contains sufficient deliberately grubby thrills to qualify as a must-see.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging the show doesn't match past impact, the critic explicitly calls it a 'must-see,' which is strong recommendation language that pushes this into the higher end of Positive. | GPT-4o: The excerpt describes the show as a 'must-see,' indicating a strong recommendation despite noting it doesn't pack the same punch as before. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review excerpt concludes with \"must-see\", indicating a strong positive recommendation. Confidence is low due to the single excerpt. | Kimi: While noting the production doesn't pack the wallop of previous iterations, the critic explicitly designates it a 'must-see' for its thrills, indicating a strong recommendation. Single excerpt limits confidence.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:38:39.794Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 83,
-    "openaiScore": 82,
-    "geminiScore": 82,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 1,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"Because Rockwell has the showiest role, he rivets attention as he charges around like a bull in a junk shop. He’s an actor unleashed after Marlon Brando broke molds to establish a new one. Rockwell is grand at the volatile tradition. Fishburne and Criss more than hold their own, Fishburne authoritative as a shop owner unable to maintain authority, Criss as a little-boy-lost in a big, ugly city.\"\n\nRead more"
 }

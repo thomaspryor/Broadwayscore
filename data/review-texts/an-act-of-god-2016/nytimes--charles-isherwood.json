@@ -6,64 +6,13 @@
   "url": "http://www.nytimes.com/2016/06/07/theater/review-an-act-of-god-is-back-with-sean-hayes.html?_r=0",
   "source": "bww-roundup",
   "sources": [
-    "bww-roundup"
+    "bww-roundup",
+    "web-search",
+    "show-score-playwright"
   ],
   "bwwExcerpt": "Technically speaking, Mr. Hayes is not portraying God. In his boundless mystery, God has chosen to come before us in the guise of Mr. Hayes. \"For lo, I have endowed him with a winning, likable personality and know of a certainty that your apprehension of my depthless profundities will by aided by his offbeat charm,\" as God-in-the-person-of-Mr.-Hayes says. God later adds, \"He has no idea he's here.\" The Almighty is not wrong about Mr. Hayes's appeal. (How could an all-knowing being be wrong?) Jus",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
   "contentTier": "excerpt",
-  "assignedScore": 79,
-  "llmScore": {
-    "score": 79,
-    "confidence": "medium",
-    "range": {
-      "low": 74,
-      "high": 84
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "The Almighty is not wrong about Mr. Hayes's appeal.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the performer's appeal and charm, but this is only a fragment with truncated text. The positive assessment is present but limited context warrants lower confidence and conservative scoring within the Positive range. | GPT-4o: The excerpt praises Mr. Hayes's performance, highlighting his 'winning, likable personality' and 'offbeat charm.' Despite the limitations of a single excerpt, the tone is clearly positive. | Gemini: The review excerpt focuses on praising the actor Hayes's appeal, suggesting a positive, but potentially limited, aspect of the show. Given the limited text, a score in the lower end of the positive range is appropriate. | Kimi: The single available excerpt offers enthusiastic praise for Sean Hayes's performance as God, describing his 'winning, likable personality' and 'offbeat charm' with witty admiration. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range (80-84), though confidence is reduced due to the limited, truncated text.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:40:36.599Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 74,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 83,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 9,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"God is really killing it up there. How funny is the guy? He’s Jon Stewart funny, plus Stephen Colbert funny. (Mr. Javerbaum has written for both.) More obviously, it might be said that Mr. Parsons as Mr. Javerbaum’s tell-it-like-it-is God is, yes, divinely funny.\"\n\nRead more",
+  "publishDate": "May 28, 2016"
 }

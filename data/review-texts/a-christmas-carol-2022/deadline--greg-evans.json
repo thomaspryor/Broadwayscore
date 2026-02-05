@@ -78,40 +78,5 @@
     "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
-  ],
-  "needsRescore": true,
-  "rescoreReason": "fullText added after excerpt-based scoring",
-  "previousLlmScore": 82,
-  "textWordCount": 697,
-  "archivePath": "data/archives/reviews/a-christmas-carol-2022/deadline--greg-evans_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T17:49:59.470Z",
-  "fetchMethod": "brightdata",
-  "fetchAttempts": [
-    {
-      "tier": 1,
-      "method": "playwright",
-      "success": false,
-      "error": "Skipped (known-blocked site)"
-    },
-    {
-      "tier": 2,
-      "method": "scrapingbee",
-      "success": false,
-      "error": "CAPTCHA detected (premium_proxy)"
-    },
-    {
-      "tier": 3,
-      "method": "brightdata",
-      "success": true
-    }
-  ],
-  "fetchTier": 3,
-  "textQuality": "partial",
-  "truncationSignals": [
-    "has_footer_junk"
-  ],
-  "textStatus": "partial",
-  "sourceMethod": "brightdata",
-  "wordCount": 697,
-  "tierReason": "Full review text"
+  ]
 }

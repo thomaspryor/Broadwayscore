@@ -8,6 +8,7 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-reviews",
     "bww-roundup"
   ],
@@ -49,5 +50,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be only the opening setup/premise description of a review, not evaluative content about the theatrical production itself.; openai: The text provided is a plot summary or description of the show's premise, not an evaluative review of the production.; kimi: The text consists solely of plot summary and premise description without any evaluative content, critical opinion, or recommendation regarding the production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "showScoreExcerpt": "\"Take away the acting tricks, the blocking that puts the agents eyeball to eyeball with Winner, the “Twilight Zone” sound effects, and we’re left with federal agents observing strict protocol that has as much to do with their own personal safety as Winner’s.\"\n\nRead more"
 }

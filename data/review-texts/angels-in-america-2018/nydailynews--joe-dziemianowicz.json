@@ -8,63 +8,10 @@
   "source": "playbill-verdict",
   "sources": [
     "playbill-verdict",
+    "show-score-playwright",
     "bww-roundup"
   ],
   "bwwExcerpt": "Twenty-five years after its Tony- and Pulitzer-winning first Broadway run, the scope and richness of the seven-hour, two-part saga - the taut \"Millennium Approaches,\" followed by the somewhat messier \"Perestroika\" - remain as impressive as ever.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-ANGELS-IN-AMERICA-on-Broadway-20180325",
-  "assignedScore": 80,
-  "llmScore": {
-    "score": 80,
-    "confidence": "medium",
-    "range": {
-      "low": 75,
-      "high": 85
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "the scope and richness of the seven-hour, two-part saga remain as impressive as ever",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive assessment calling the revival 'impressive as ever' with praise for 'scope and richness,' though only one excerpt limits full verdict clarity. | GPT-4o: The excerpt praises the production's scope and richness, noting it remains impressive. Despite the lack of a full review, the positive language suggests a strong recommendation. | Gemini: The excerpt praises the scope and richness of the play, suggesting it's worth seeing. However, the mention of 'somewhat messier' introduces a reservation. Given the single excerpt and lack of a clear recommendation, confidence is low, and a score in the lower-middle of the positive range is appropriate. | Kimi: The excerpt offers clear praise ('impressive as ever,' 'taut') for this revival, though the caveat that Perestroika is 'somewhat messier' prevents it from being an unqualified rave. Given the single-excerpt limitation, this clearly positive assessment warrants an upper-range Positive score.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T17:56:37.802Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 82,
-    "openaiScore": 82,
-    "geminiScore": 75,
-    "kimiScore": 82,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 7,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "showScoreExcerpt": "\"The most electrifying production you’re apt to ever see of the author’s masterwork...The scope and richness of the two-part saga remain as impressive as ever...Direction by Elliott amplifies the play’s powers and wrings out every drop of emotion. Slashes of neon, rotating set pieces, and a seamless restlessness give the staging its own striking distinction...The cast is uniformly very effective...The desire for 'more life' remains constant. Just like the power of this sprawling play.\"\n\nRead more"
 }
