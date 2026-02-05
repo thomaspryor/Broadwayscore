@@ -11,5 +11,54 @@
   "bwwExcerpt": "And it’s a delight. Whether you’re a Neil Diamond fan, just someone who can’t help chiming in whenever you hear 'Sweet Caroline' in a crowd, or even if you roll your eyes at the idea of Adult Contemporary hits, the songs are unassailable. Diamond wrote some brilliant tunes, and Nick Fradiani, the 2015 American Idol winner, channels Diamond’s voice as well as his conflicted spirit. Morose and depressed in his personal life but ebullient as a stage presence, he captures the 'velvet wrapped in grav",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with enthusiastic praise calling the show 'a delight' and praises both the songs as 'unassailable' and lead performance as capturing Diamond's spirit well. However, confidence is low due to truncated single excerpt. | GPT-4o: The excerpt provides a positive assessment of the show, highlighting the delight and appeal of the songs, as well as the strong performance by Nick Fradiani. The use of 'delight' and 'unassailable' suggests a strong recommendation, placing it in the upper range of the Positive bucket. | Gemini: The review excerpt is positive, calling the show \"a delight\" and praising Diamond's songs and Fradiani's performance. Given that it's a single excerpt, I'm scoring it on the higher end of the positive range, but with low confidence. | Kimi: The critic calls the show 'a delight' and praises the 'unassailable' songs and brilliant lead performance, offering a strong endorsement even for skeptics of the genre, though the single excerpt limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:45:58.936Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"A Bronx Tale: The New Musical,\" Chazz Palminteri's semi-autobiographical theatrical coming-of-age story, has been told and retold so many times that it has the ritualized feel of a folk myth - and not in a good way.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it has the ritualized feel of a folk myth - and not in a good way.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic dismisses the show as over-told with a 'ritualized feel...not in a good way,' but this is only one excerpt so the full verdict is uncertain. | GPT-4o: The excerpt suggests a negative view of the show's repetitiveness and lack of originality. However, due to the single excerpt warning, the confidence is low as the full context of the review is not available. | Gemini: The single excerpt expresses a negative sentiment, suggesting the show feels overly familiar and not in a positive way. Given the limited text, confidence is low, but the negative tone is clear. | Kimi: Single excerpt indicates the production feels stale and overdone ('ritualized... not in a good way'), suggesting the show fails to justify its retelling despite the familiar source material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:53:05.708Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -34,5 +34,59 @@
   "archiveOrgTimestamp": "20120604005504",
   "archiveOrgUrl": "http://web.archive.org/web/20120604005504/http://theater.nytimes.com/2010/11/12/theater/reviews/12peewee.html",
   "wordCount": 632,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pee-wee may be playing it safe, but perhaps he's playing it smart too.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The review is warmly positive throughout, celebrating Reubens's faithful recreation of the beloved character and acknowledging the show's appeal to both children and adults. While noting it plays it safe, the critic finds this approach smart and effective. | Gemini: The review is positive, highlighting the nostalgia and recreation of the original series, but it doesn't express overwhelming enthusiasm, suggesting a solid but not exceptional experience. | Kimi: Isherwood appreciates Reubens' committed physical performance and the faithful Broadway recreation of the TV show's off-kilter charm, acknowledging it as a 'bubble bath of nostalgia' that plays it safe but successfully delivers for devotees.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:14:01.872Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

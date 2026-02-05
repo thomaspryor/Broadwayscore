@@ -11,5 +11,59 @@
   "bwwExcerpt": "All in all, it was a tremendous journey through song and story and I’m so glad it is here in Cleveland. Super fan, fan, or maybe you just played all the karaoke tunes on YouTube on the way home from the show to realize your appreciation. A Beautify Noise doesn’t disappoint.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Beautiful Noise doesn't disappoint.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Clear positive verdict with enthusiastic language ('tremendous journey', 'so glad', 'doesn't disappoint'), but low confidence due to single excerpt limitation. | GPT-4o: The excerpt is clearly positive, describing the show as a 'tremendous journey' and stating 'A Beautiful Noise doesn’t disappoint.' The tone suggests strong enthusiasm, aligning with a higher score within the Positive bucket. | Gemini: The review uses very positive language such as \"tremendous journey\" and \"doesn't disappoint\", indicating a strong recommendation. Given the single excerpt warning, I am placing the score towards the higher end of the positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:43:22.746Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "At one point in the return engagement of 700 Sundays, Billy Crystal recalls the first comedian he ever saw: an old-school tummler, circa 1958, prowling the stage at Kutsher's 'like a panther.' All these decades later, Crystal impersonates this creature, with his disowned aggression and tired shtick - 'Good evening, ladies and Jews' - way too well, and not just because he quickly borrowed the material to perform for his family back home in Long Beach. Crystal, now 65, is himself a brilliant repackager of tired material, with the timing of that panther, if a humbler presentation. (He wears, instead of a tux, black jeans and a sweater.) But make no mistake, he will eat you if you let him.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Crystal, now 65, is himself a brilliant repackager of tired material, with the timing of that panther.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls Crystal 'brilliant' with 'panther' timing and uses vivid, admiring language about his prowess ('he will eat you'). However, this is a single curated excerpt which may not represent the full verdict, warranting reduced confidence. | GPT-4o: The excerpt praises Crystal's performance, noting his brilliance and timing, suggesting a positive view. However, due to the single excerpt and lack of full context, the confidence is low. | Gemini: The review acknowledges Crystal's brilliance and timing, but also notes the use of 'tired material,' suggesting a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt admires Crystal's skill and stage presence ('brilliant,' 'timing of that panther,' 'will eat you') while acknowledging the material is recycled ('tired material,' 'borrowed'). This qualified praise indicates a solid recommendation based on the performer's excellence rather than the content's freshness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:39:48.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

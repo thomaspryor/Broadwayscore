@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Washington has such an easygoing way about him that it seems to transfer by osmosis to the other actors -- we experience this in his first scenes on stage, where he seems to bring his own age down by a half-century, cavorting with son Travis (a very good Bryce Clyde Jenkins, in his Broadway debut) after they one-up Ruth over some small change Travis needs for school. Washington switches just as easily to a man simmering with rage that he can't amply provide for his family. But here's the thing: the actor, 59, plays a character on the cusp of 40 -- that age when we realize we might not accomplish all the things we dreamed of doing in our 20s. From the audience, the discrepancy makes a difference. I spent too much time thinking about how Washington is older than his character, and not enough time enjoying his performance.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I spent too much time thinking about how Washington is older than his character, and not enough time enjoying his performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt praises Washington's performance qualities but expresses a significant reservation about age-inappropriate casting that interfered with the critic's enjoyment. Single excerpt warning applies - this appears to be a mixed assessment focusing on a casting issue. | GPT-4o: The excerpt praises Washington's performance but notes a significant distraction due to his age difference with the character, suggesting a mixed experience. | Gemini: The review acknowledges Washington's talent but focuses on the distraction caused by his age relative to the character, leading to a mixed assessment. The single excerpt and truncated nature of the text reduce confidence. | Kimi: While the excerpt praises Washington's acting range and Jenkins' debut, it concludes that the age discrepancy between actor and character was too distracting to fully enjoy the show, suggesting significant reservations about the production's effectiveness.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:54.384Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

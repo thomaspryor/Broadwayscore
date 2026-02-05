@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In spite of inventive touches, satirical humor, fluid production values, and songs full of both spark and sensitivity, 'A Strange Loop' ultimately falls victim to the perils of its own design, becoming so messy, whiny, confrontational, sexually explicit, and theoretical that it will probably turn off many theatergoers while invigorating and thrilling plenty of others.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'A Strange Loop' ultimately falls victim to the perils of its own design, becoming so messy, whiny, confrontational, sexually explicit, and theoretical that it will probably turn off many theatergoers while invigorating and thrilling plenty of others.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges positive elements (inventive touches, satirical humor, fluid production) but concludes the show 'falls victim to its own design' and will be divisive. This is classic mixed territory - neither recommending nor discouraging, but predicting polarized reactions. | GPT-4o: The review acknowledges both positive elements (inventive touches, humor, production values) and significant negatives (messy, whiny, confrontational). The mixed verdict suggests it may appeal to some but not others. | Gemini: The review highlights both positive and negative aspects, suggesting it will appeal to some but not others, indicating a mixed reception. | Kimi: The critic acknowledges strong production values and songs but finds the show's messy, confrontational nature will turn off many viewers while thrilling others, resulting in a genuinely divided verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:38:43.806Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

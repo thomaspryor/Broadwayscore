@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Moises Kaufman's earnest, plot-heavy \"33 Variations\" swirls with big ideas about big subjects - life, death, art to name three - and how they intersect and illuminate each other. Yet the play, which opened Monday at Broadway's Eugene O'Neill Theatre often seems dramatically tepid and slow moving. And this, despite the efforts of a hardworking cast that includes Jane Fonda, returning to the New York after an absence of more than four decades.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "medium",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet the play often seems dramatically tepid and slow moving.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Despite acknowledging big ideas and a hardworking cast including Jane Fonda, the critic finds the play 'dramatically tepid and slow moving.' This suggests neither strong recommendation nor complete dismissal. Single excerpt warning noted - limited text available. | GPT-4o: The review acknowledges the play's ambitious themes but criticizes it for being 'dramatically tepid and slow moving.' The hardworking cast, including Jane Fonda, is noted, but the overall tone suggests a lack of enthusiasm. | Gemini: The review acknowledges big ideas and a hardworking cast, but ultimately finds the play dramatically tepid and slow-moving, suggesting a mixed or neutral assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The critic acknowledges the cast's efforts (including Jane Fonda) but delivers a clear negative verdict describing the play as 'dramatically tepid and slow moving.' The 'despite' framing indicates performer praise does not redeem the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:35:59.969Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

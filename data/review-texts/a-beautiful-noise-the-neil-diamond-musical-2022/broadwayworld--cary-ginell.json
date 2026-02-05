@@ -11,5 +11,60 @@
   "bwwExcerpt": "\"What remains, however, is good enough, thanks to a superb performance by Fradiani as performer/Diamond, perfectly capturing his 'gravel-wrapped-in-velvet' voice and on stage mannerisms, although physically he looks more like the Fonz than the leather-fringed superstar. As the older Diamond, Robert Westenberg doesn't fare as well, totally unrecognizable in physicality or spirit as he exposes his inner self to his therapist, played by Lisa Reneé Pitts. Kohn is especially good as Diamond's second ",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What remains, however, is good enough, thanks to a superb performance by Fradiani",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('good enough') anchored by one 'superb performance' but notes another performer 'doesn't fare as well.' Aggregator context indicates 'Flat' verdict. Low confidence due to incomplete text. | GPT-4o: The excerpt highlights a strong performance by Fradiani but notes issues with Westenberg's portrayal. The overall tone suggests a mixed review with some positive elements, but the single excerpt limits confidence. | Gemini: The review praises Fradiani's performance but criticizes Westenberg's portrayal. The overall sentiment is mixed, with some elements working well and others falling short. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise ('good enough') centered on a 'superb' lead performance, while noting another performer 'doesn't fare as well.' As a single truncated excerpt, the overall verdict is likely mildly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:40:52.087Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

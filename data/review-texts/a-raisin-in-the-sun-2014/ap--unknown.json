@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "The show that opened Thursday night at the Ethel Barrymore Theatre is blistering, beautifully acted and superbly touching...Director Kenny Leon gets a second bite of the apple...and offers a throbbing, vibrant production that is a match for this 55-year-old American masterpiece. There's real humor here, too, both physical and scripted. Washington is startlingly good as Walter Lee Younger, the frustrated chauffeur and dreamer. He has the cadences and the trapped physicality in his bones -- warm and loose until he's cold and volatile...The script says Washington is supposed to be 35 -- the actor is 59 -- but all that matters is a brilliant performance, funny and poignant.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 88,
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show that opened Thursday night at the Ethel Barrymore Theatre is blistering, beautifully acted and superbly touching.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses superlatives throughout ('blistering', 'superbly touching', 'brilliant performance') and calls it a match for an 'American masterpiece'. Unqualified praise for direction, performances, and production. | GPT-4o: The excerpt provides strong praise for the production, acting, and direction, using superlatives like 'blistering', 'beautifully acted', and 'superbly touching'. The performance of Washington is highlighted as 'brilliant'. Despite the single excerpt warning, the language suggests a highly positive review. | Gemini: The review is overwhelmingly positive, using words like \"blistering\", \"beautifully acted\", \"superbly touching\", and \"brilliant performance\". The critic clearly recommends seeing the show. | Kimi: The critic delivers unqualified praise for the direction, performances, and emotional impact, calling Washington's performance 'brilliant' and the production 'vibrant' and a match for the masterpiece script. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:01.845Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 83,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But the main reason Mann's approach works is that Williams was writing about the temporal ebbs and flows of class and wealth, the appeal of fantasy and the pull to the bottom of raw sexual desire. Those themes are hardly race-bound. Nor should Williams' poetry be the province of white actors; at this juncture, this iconic American play should and can, like Shakespeare's masterworks, stand up to multiple styles and conceits.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mann's approach works",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the director's approach and elevates the production to the level of Shakespeare's masterworks, indicating strong artistic approval. However, this is a single curated excerpt which may not represent the full review verdict, warranting low confidence. | GPT-4o: The excerpt highlights the effectiveness of Mann's approach and the timeless, universal themes of Williams' work, suggesting a positive view of the production's interpretation. | Gemini: The excerpt suggests the reviewer believes the play is successful and can be adapted in multiple ways. Given the single excerpt and lack of explicit recommendation, the confidence is low and the score is in the lower end of the positive range. | Kimi: The excerpt explicitly validates the production's conceptual approach, stating it 'works' and defending its artistic choices as valid interpretations of the material, indicating a clear positive recommendation despite the limited excerpt available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:45:05.631Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

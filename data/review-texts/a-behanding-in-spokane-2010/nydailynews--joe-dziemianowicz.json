@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Walken's performance is amazing, the stuff Tony Awards are made of. Using his silky voice and haunting eyes, he's spectacularly spooky and funny as Carmichael, a lone-fisted oddball searching for his hand, which, so he says, was severed by hooligans. As if to add insult to injury, the thugs waved goodbye to him with his own purloined paw. That sickly hilarious image is trademark McDonagh, an Irish writer whose credits include the plays 'The Pillowman' and 'The Lieutenant of Inishmore,' and the film 'In Bruges.' 'Spokane,' like those works, has twists and turns and a sense that something awful is around the next bend. It plays out for 90 minutes in a roach hotel rendered to cracked-plaster perfection by Scott Pask, who also did the shrewd costumes.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Walken's performance is amazing, the stuff Tony Awards are made of.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Walken's 'amazing' Tony-worthy performance and positive assessment of McDonagh's trademark style and Pask's design work. Single excerpt warning suggests this represents a positive verdict, scored in upper Positive range. | GPT-4o: The excerpt praises Walken's performance as 'amazing' and highlights the show's engaging elements like twists and humor. Despite the single excerpt warning, the positive tone suggests a strong recommendation. | Gemini: The review praises Walken's performance as 'amazing' and 'spectacularly spooky and funny'. It also highlights the play's twists and turns, and the set design. This indicates a strong positive recommendation. | Kimi: The excerpt offers unqualified praise for the lead performance and production design, using superlatives like 'amazing,' 'spectacularly,' and 'perfection.' While limited to a single excerpt, the available text indicates a strong recommendation in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:49:04.753Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

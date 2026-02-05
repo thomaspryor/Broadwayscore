@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Albee's 1967 Pulitzer Prize-winner, which takes an upper class, suburban WASP family to the breaking point over a weekend, is superbly directed by Pam MacKinnon and so well performed by a trans-Atlantic ensemble that each actor manages to convince you that they are the focus of the show...Albee has clearly found a soul mate in the examination of how life gets compromised and calcified. MacKinnon has an equally blistering cast this time, with Lithgow as a terribly good ineffective peacemaker, trying to avoid verbal land mines, counseling 'let it be,' and constantly fetching drinks. His story about an old house cat becomes an aria and his eventual collapse into a barking puddle of honesty is gorgeous. Close's Agnes perfectly navigates the role's twin dangers of barking self-righteousness, on the one hand, and nasty bitchiness on the other. She's able to switch from soft and loving to arch and noble to pounce like an alley cat.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Albee's 1967 Pulitzer Prize-winner is superbly directed by Pam MacKinnon and so well performed by a trans-Atlantic ensemble.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction ('superbly directed') and performances ('so well performed', 'blistering cast'), with detailed appreciation of individual actors' work. Single excerpt warning noted, but consistent positive language throughout suggests solid recommendation. | GPT-4o: The excerpt provides strong praise for the direction and performances, using terms like 'superbly directed' and 'blistering cast'. The detailed praise for the actors suggests a highly positive evaluation. | Gemini: The review uses strong positive language such as \"superbly directed\" and \"well performed\" and praises the actors' performances, indicating a positive recommendation. Given the single excerpt, I'm scoring at the higher end of the positive range. | Kimi: The excerpt offers strong praise for direction ('superbly directed') and performances ('blistering cast', 'gorgeous'), indicating a clear recommendation, though confidence is reduced due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:09:08.543Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

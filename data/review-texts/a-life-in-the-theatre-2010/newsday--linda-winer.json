@@ -61,5 +61,60 @@
     "Word count too low: 240 (min: 300)"
   ],
   "wordCount": 240,
-  "tierReason": "Short text (240 words)"
+  "tierReason": "Short text (240 words)",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It is also an exhilarating showcase for two terrific actors, Patrick Stewart and T.R. Knight, and a thrilling joyride back to the days when Mamet was a baby virtuoso in crazy love with the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('exhilarating', 'terrific', 'thrilling joyride') suggests enthusiastic recommendation. However, confidence is low due to single excerpt warning - this may be cherry-picked praise. | GPT-4o: The excerpt provides strong positive language ('exhilarating showcase', 'thrilling joyride') and praises the actors, suggesting a solid recommendation. However, the single excerpt limits confidence in the overall verdict. | Gemini: The excerpt uses strong positive language like \"exhilarating showcase\" and \"thrilling joyride,\" indicating a positive review. Given it's a single excerpt, confidence is low, but the strength of the language suggests a score towards the higher end of the positive range. | Kimi: The excerpt offers strong praise for the performances and production, describing it as an exhilarating and thrilling theatrical experience. Confidence is reduced due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:54:22.778Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

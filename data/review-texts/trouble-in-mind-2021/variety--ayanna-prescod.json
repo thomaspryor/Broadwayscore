@@ -46,5 +46,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "At the center of 'Trouble in Mind' is Wiletta Mayer (LaChanze), a veteran, African American actress who dreams of starring in a role of substance, but has spent her entire career playing stereotypical Black characters. A performer best known for her work in musicals, LaChanze is this production's heartbeat. In her first lead role in a Broadway play, she delicately embodies a middle-aged woman who deeply loves an art form that ignores her. In an instant she transforms from the childlike act Willetta puts on for her white director to the strong façade she projects for her Black castmates.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The work begs to be seen; it's just a shame audiences have to wait until the final moments of Act II to hear the exasperated voice of an actor fed up with a system that has minimized her enormous talent because of her Blackness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation ('The work begs to be seen') with consistent praise for performances and design, but significant criticism of pacing ('takes too long to get to the point', 'draggy'). | GPT-4o: The review praises the acting, direction, and design, and emphasizes the play's relevance and importance. However, it notes that the play takes too long to reach its powerful conclusion, indicating some reservations. | Gemini: The review praises the acting, direction, set design, and costume design. However, it notes the play takes too long to get to the point, making it a qualified recommendation. | Kimi: The critic clearly recommends the show ('The work begs to be seen') and praises the stellar acting, marvelous direction, and design, though notes the play itself is draggy and takes too long to reach its powerful conclusion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:25:52.703Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 77,
+    "geminiScore": 78,
+    "kimiScore": 78,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

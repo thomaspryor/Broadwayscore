@@ -45,5 +45,60 @@
   "sourceMethod": "brightdata",
   "duplicateTextOf": "hollywood-reporter--david-rooney.json",
   "wordCount": 605,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show features one hilarious one-liner after another",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Excerpt shows clear appreciation for the comedy with 'hilarious' and detailed examples of successful humor, but single excerpt warning and truncated text require caution about full verdict. | GPT-4o: The excerpt highlights the show's humor and cleverness, suggesting a positive reception. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt focuses on the humor and cleverness of the show, suggesting a positive, albeit potentially qualified, recommendation. The single excerpt and lack of a clear overall verdict lead to a lower confidence score. | Kimi: The excerpt offers enthusiastic praise for the show's comedic writing, describing 'hilarious one-liner after another' and 'gleefully' skewering theatrical conventions. This unambiguously positive language warrants an upper-range Positive score despite the limited excerpt context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:03:37.089Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

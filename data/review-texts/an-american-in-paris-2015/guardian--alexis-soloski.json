@@ -32,5 +32,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 915,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "high",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "An American in Paris is a fine and fanciful entertainment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Opens with concerns but delivers clear positive verdict calling it 'fine and fanciful entertainment' with 'sublime songs and dexterous dancing.' Acknowledges specific flaws in pacing and storytelling but emphasizes much to enjoy throughout. | GPT-4o: The review acknowledges some flaws in pacing and storytelling but praises the choreography, dancing, and overall entertainment value. The positive aspects outweigh the negatives, leading to a solid recommendation. | Gemini: Despite some reservations about pacing and storytelling, the review is overall positive, praising the songs, dancing, and performances. The critic calls it a \"fine and fanciful entertainment.\" | Kimi: The review opens with acknowledged concerns (jukebox musical, untried director, non-singer leads) but delivers a clear positive verdict: 'fine and fanciful entertainment' with 'sublime songs and dexterous dancing.' The critic praises Wheeldon's choreography as 'simply divine' and Fairchild's storytelling through movement, while noting pacing and storytelling flaws. The closing invitation to 'take her advice' and 'watch your spirits rise' confirms a recommendation, though qualified by 'nearly' and explicit caveats about vocal limitations and structural issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:58:22.102Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 77,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

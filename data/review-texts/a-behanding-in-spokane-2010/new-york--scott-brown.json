@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In A Behanding in Spokane, Martin McDonagh’s latest and lightest abattoir food fight, Christopher Walken is very much himself—which is to say, he’s reliably Walkenesque, a walking Walken impression far superior to the kind your stupid friends do at parties. Playing a vengeful psycho in search of his severed left hand (did I really need to tell you Walken plays a vengeful psycho?), he remains that familiar symphony of jigs and twitches we’ve come to love, burning holes in the fourth wall with anthracite eyes that seem terrifyingly lidless, until he winks. And wink he does, more than once, at his oft-bewildered co-stars—Anthony Mackie and Zoe Kazan as two young hustlers who disastrously attempt to sell him another man’s hand, and Sam Rockwell as Mervyn, the distractible sad-sack hotel clerk who admires him—and, by extension, at us. Watching Walken/Carmichael savor his own cigarette smoke, and his own travel-worn oddness, is like walking in on something autoerotic, then staying to watch. Which we can’t help doing, even if we sense a certain flogging futility in the proceedings. Walken is a little too perfectly matched with McDonagh (The Pillowman, The Lieutenant of Inishmore). They’re two tic-ish synthesists for whom quirk can quickly become an end in itself.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "we sense a certain flogging futility in the proceedings",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic appreciates Walken's performance but expresses concern about the theatrical experience feeling futile and quirk becoming 'an end in itself', indicating entertainment value undermined by deeper reservations. | GPT-4o: The review praises Walken's performance but suggests the play's quirkiness may be excessive, leading to a sense of 'flogging futility'. The excerpt implies a mixed reception with both positive and critical elements. | Gemini: The review focuses heavily on Christopher Walken's performance, praising his unique style. However, it also suggests a sense of \"flogging futility\" and that the collaboration between Walken and McDonagh might be too much of a good thing, with quirk becoming an end in itself. Due to the limited text, confidence is low. | Kimi: The excerpt praises Walken's performance ('reliably Walkenesque,' 'symphony of jigs and twitches') but criticizes the play as 'light' and notes 'flogging futility' and excessive quirk, suggesting style outweighs substance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:48:44.405Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"A Bronx Tale,\" which opened on Thursday night at the Longacre Theatre, isn't a bad musical. It just doesn't seem a necessary one. The story, about a boy's coming of age in an Italian neighborhood in the Bronx in the 1960s, has had a long, chameleon-like existence. Created by actor Chazz Palminteri as a one-man show, he performed it off-Broadway in 1989. It was turned into a film, starring Palminteri, in 1993, and then, in 2007, Palminteri brought the semiautobiographical solo production to Broa",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Bronx Tale isn't a bad musical. It just doesn't seem a necessary one.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's assessment is lukewarm - acknowledging it's 'not bad' but questioning its necessity suggests a mixed verdict that neither recommends nor discourages. However, with only one truncated excerpt available, confidence is low as the full verdict may be cut off. | GPT-4o: The excerpt suggests the show is not bad but questions its necessity, indicating a mixed reception. The lack of a full review and single excerpt warning reduce confidence. | Gemini: The review excerpt states the musical isn't bad, but also not necessary, suggesting a mixed or neutral stance. With only one excerpt available, confidence is low. | Kimi: The critic offers faint praise ('isn't a bad musical') while questioning the show's reason for existence ('doesn't seem a necessary one'), suggesting the musical adaptation is redundant given previous versions. The single excerpt and truncation limit confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:57:01.672Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

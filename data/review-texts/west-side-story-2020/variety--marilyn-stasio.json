@@ -40,5 +40,60 @@
   "tierReason": "Full review text",
   "bwwExcerpt": "There's no doubt that the sensibility has shifted in this revival, but not enough to seem theatrically radical. Although we no longer seem to be in the 50s, the modern elements are mainly structural, like the gigantic scenic projections (designed by Luke Halls) on the back wall. At first they seem intrusive, more aggressive than enlightening because they're competing with, and often overwhelming, the stage action below. They become integral to the show only when they reveal things we can't see for ourselves, like the confidential exchanges between Maria and Anita in the back room of Doc's Drugstore, and the electrifying night run that Tony takes on the rain-slicked streets of Hell's Kitchen.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If this show doesn't entice a young audience into the theater, nothing will.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review offers substantial praise for the performances, particularly the leads and ensemble, and appreciates the modernized choreography. However, it questions some of Van Hove's choices (losing 'I Feel Pretty,' intrusive projections) and the rationale for updating. The overall tone is respectful admiration with thoughtful reservations. | GPT-4o: The review praises the performances, particularly of the leads, and the choreography, while noting some reservations about the modern elements and changes. Overall, it suggests the production is engaging and worth seeing, especially for a younger audience. | Gemini: The review acknowledges changes and some issues with the production, but ultimately finds it worthwhile, especially for attracting a younger audience. The performances are praised, and the choreography is noted as authentic for the era. | Kimi: While the critic questions the rationale for the modernized time setting and mourns the loss of 'I Feel Pretty,' the review offers strong praise for the lead performances, choreography, and youthful ensemble, ultimately recommending the production as a compelling if imperfect revival.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:28:43.240Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

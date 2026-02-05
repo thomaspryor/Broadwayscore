@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "The Irish film and TV star (All of Us Strangers, Normal People) may be the name driving up ticket prices and attendance at BAM, but his performance is carefully integrated into Rebecca Frecknall’s keen, intelligently deconstructed revival. Mescal doesn’t shrink from his role’s indelible association with young Marlon Brando; the actor’s credibly flat accent (urban Midwest dusted with Brooklyn) and unforced physical beauty constitute what you might call a Brando-adjacent reading: not trying to reinvent the wheel but perfectly able to handle the curves.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "his performance is carefully integrated into Rebecca Frecknall's keen, intelligently deconstructed revival",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows clear praise for both Mescal's performance and Frecknall's direction, with positive descriptors like 'keen' and 'intelligently deconstructed'. However, confidence is low due to having only a single excerpt that may not represent the full review verdict. | GPT-4o: The excerpt praises Mescal's performance and the intelligent direction of the revival, suggesting a positive view. However, with only one excerpt available, the confidence is low. | Gemini: The review excerpt focuses on Paul Mescal's performance and its connection to Marlon Brando, suggesting a positive assessment of his acting. However, the limited text and lack of an overall verdict make it difficult to gauge the full recommendation strength, thus a lower end positive score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:43:45.682Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

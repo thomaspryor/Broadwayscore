@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Zeta-Jones is less effective, though, at suggesting Desiree's weary, rueful edges. Her throaty laughter seems almost too emphatic at times, as does her singing, whether she's showing her claws in You Must Meet My Wife or acknowledging defeat in Send in the Clowns. This might owe something to Nunn's direction, as other performances here flirt with overzealousness. Ramona Mallory is particularly shrill as Anne, Fredrik's post-pubescent second wife. To be fair, Music demands a capacity for both broad comedy and pathos, and the director and cast mine and juggle these qualities rigorously and, for the most part, skillfully. None of them, of course, blend wit and poignancy better than Lansbury — or Sondheim's score, for that matter. They are, without question, the two best reasons to see this revival.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are, without question, the two best reasons to see this revival.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite criticisms of some performances and direction, the review concludes by identifying compelling reasons to see the show (Lansbury and Sondheim's score). Single excerpt with mixed content suggests cautious positive recommendation. | GPT-4o: The review acknowledges strong elements like Lansbury and Sondheim's score but criticizes performances and direction as overzealous. The mixed tone suggests some positive aspects but also significant reservations. | Gemini: The review has mixed opinions on the performances and direction, but ultimately recommends seeing the revival due to Lansbury and Sondheim's score. Given the single excerpt, confidence is low. | Kimi: While criticizing Zeta-Jones and other cast members as overzealous or shrill, the reviewer ultimately endorses seeing the production specifically for Lansbury's performance and Sondheim's score.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:25:19.542Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

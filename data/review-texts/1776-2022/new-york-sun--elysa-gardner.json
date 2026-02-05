@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "For starters, '1776' was, and remains, kinder to Adams than Lin-Manuel Miranda's blockbuster, which pretty much reduced our second president and this show's protagonist to a punchline. Like Mr. Miranda, though, co-directors Mr. Page and Ms. Paulus promote inclusivity not through finger-wagging but with a generous, uplifting spirit, and Stone and Edwards have left them the perfect vehicle for that mission.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stone and Edwards have left them the perfect vehicle for that mission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise calling the show 'the perfect vehicle' and highlighting 'generous, uplifting spirit' of the production. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt praises the directors' approach to inclusivity and suggests a positive tone. However, with only one excerpt, the full context is unclear, leading to a low confidence score. | Gemini: The review excerpt suggests a positive view of the production's spirit and inclusivity, indicating a recommendation, though the limited text makes it a low confidence score. | Kimi: Single excerpt presents clearly positive assessment praising the directors' 'generous, uplifting spirit' and calling the show a 'perfect vehicle' for their mission, but limited context requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:32:36.697Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
