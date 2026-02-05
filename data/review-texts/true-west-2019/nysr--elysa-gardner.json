@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/01/24/true-west-shepards-raging-brothers-return/",
   "bwwExcerpt": "In elder brother Lee, a drifter and thief, Hawke has found a vehicle for both his comedic facility (not always mined or guided adroitly, on stage or screen) and his capacity for menace. The character turns up at the house, his mother's, to find Austin, a productive screenwriter with a prestigious education and a family of his own, keeping an eye on the place while Mom is on vacation. As Austin sits dutifully at his typewriter, trying to resist Lee's attempts to distract and goad him, Dano is at ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Ethan-Hawke-And-Paul-Dano-In-TRUE-WEST-On-Broadway-20190124"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Ethan-Hawke-And-Paul-Dano-In-TRUE-WEST-On-Broadway-20190124",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Hawke's and Dano's merits are considerable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with consistent praise for the performances ('considerable merits'), direction ('wittily and unflinchingly'), and production design. Despite truncation, the tone is clearly positive throughout with no significant criticisms. | GPT-4o: The review praises the direction and performances, noting the production's relevance and insight. Despite the truncated text, the 4/5 star rating and positive language suggest a solid recommendation with some reservations. | Gemini: The review praises the performances of Hawke and Dano, and the direction of James Macdonald. While the text is truncated, the overall tone is positive, suggesting a recommendation with some reservations. | Kimi: The 4/5 star rating and consistent praise for the direction, performances, and design indicate a solid recommendation, though the truncated text necessitates lower confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:34:31.007Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 78,
+    "geminiScore": 78,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

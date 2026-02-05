@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While all is not sunshine, lollipops and rainbows in Martin McDonagh's newest gruesome comedy, A Behanding In Spokane, it is, by the playwright's standards, considerably lighter fare. No cats or children are harmed, nobody's shot in the head at point-blank range and there are no pots of urine involved at any time during the playwright's first piece set in America. Yes, there are characters that have gasoline poured on them and are then threatened with a lighter, but in moments like that the real suspense lies in whether or not we're about to see a really cool special effect.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it is, by the playwright's standards, considerably lighter fare",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt describes the play as 'lighter fare' for McDonagh and focuses on what violence it doesn't contain, suggesting qualified approval. However, with only one excerpt available, this may not represent the full verdict, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt suggests a lighter tone compared to McDonagh's usual work, indicating a positive view of the play's comedic elements. However, the single excerpt and lack of a clear verdict necessitate a low confidence score. | Gemini: The review excerpt describes the play as a \"gruesome comedy\" and \"lighter fare\" compared to the playwright's other works. It does not explicitly recommend or discourage seeing the play, suggesting a mixed reaction. | Kimi: The excerpt describes the play as 'considerably lighter fare' by McDonagh's standards and expresses appreciation for the production's special effects, indicating mild approval. However, as a single curated excerpt without an explicit recommendation, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:47:53.399Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

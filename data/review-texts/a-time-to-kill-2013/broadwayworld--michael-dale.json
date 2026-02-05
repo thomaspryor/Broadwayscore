@@ -12,5 +12,60 @@
   "bwwExcerpt": "despite the play's flaws, director Ethan McSweeny turns in a tense and energetic production, featuring a tight ensemble that glosses over the rough patches. James Noone's versatile set, utilizing a tall wood-planked wall and a turntable floor, smoothly glides to multiple locations. Jeff Croiter's lights, Jeff Sugg's projections and Lindsay Jones' sound establish the outside world with visual and audible evidence of Klan rallies, protests and a child's-eye view of the event that sets the story in motion. (The projected epilogue may either warm your heart or make you roll your eyes with its sentimentality.)",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "despite the play's flaws, director Ethan McSweeny turns in a tense and energetic production, featuring a tight ensemble that glosses over the rough patches.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges 'play's flaws' but praises the director's 'tense and energetic production' and 'tight ensemble' that overcomes these issues. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt acknowledges flaws but praises the direction and ensemble, suggesting a positive experience overall. However, the single excerpt warning and lack of a full review text reduce confidence in this assessment. | Gemini: The review acknowledges flaws in the play itself, but praises the direction and ensemble performance. The phrase \"glosses over the rough patches\" suggests a positive, but not overwhelmingly enthusiastic, recommendation. | Kimi: The excerpt praises the direction, performances, and technical elements as strong enough to overcome the play's inherent flaws, suggesting a qualified recommendation. With only one curated excerpt available, this falls in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:35:54.400Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 75,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

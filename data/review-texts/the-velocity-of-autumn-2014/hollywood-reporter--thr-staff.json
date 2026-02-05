@@ -37,5 +37,60 @@
   "sourceMethod": "scrapingbee",
   "contentTier": "complete",
   "wordCount": 574,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a feeble, contrived conceit, albeit one dealing with substantial and sadly relevant issues about the indignities of aging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls the play 'forgettable' and 'schematic' with a 'feeble, contrived conceit,' but praises both lead performances as 'wonderful' and notes they 'fully invested us in their characters.' The truncated text warning suggests caution about the final verdict being cut off. | GPT-4o: The review praises the performances of the actors, particularly Estelle Parsons, but criticizes the play as 'forgettable' and 'schematic'. The text is truncated, so the final verdict may be missing, leading to a low confidence score. | Gemini: The review calls the play itself \"forgettable, schematic\" and the conceit \"feeble, contrived.\" However, it praises the performances of Parsons and Spinella, suggesting they elevate the material. Given the truncated nature of the text, a mixed score seems most appropriate. | Kimi: While criticizing the play as 'forgettable' and 'contrived,' the reviewer praises the lead performances as 'wonderful' and 'memorable,' noting they make the emotional reconciliation effective. The review acknowledges the work is 'slight' but credits the performers for making it work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:20:52.085Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

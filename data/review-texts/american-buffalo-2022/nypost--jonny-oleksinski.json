@@ -30,5 +30,60 @@
   "textStatus": "complete",
   "sourceMethod": "playwright",
   "wordCount": 560,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "You can't take your eyes off him.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review praises the performances consistently, especially Rockwell and Fishburne, notes the play's contemporary relevance, and describes the production as 'entertaining' and 'mesmerizing.' Despite acknowledging the simple premise, the critic finds significant merit in the execution and performances. | GPT-4o: The review praises the performances, particularly highlighting Sam Rockwell and Laurence Fishburne, and describes the play as entertaining and relevant. The positive tone and strong endorsement of the production suggest a solid recommendation. | Gemini: The review is generally positive, highlighting the strong performances of the actors and the engaging dynamic between them. While not a rave, it recommends seeing the show for its acting and the way it captures the essence of Mamet's play. | Kimi: The critic offers enthusiastic praise for all three lead performances, calling them mesmerizing and commanding, while commending the muscular direction and the play's continued relevance, resulting in a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:56:41.530Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

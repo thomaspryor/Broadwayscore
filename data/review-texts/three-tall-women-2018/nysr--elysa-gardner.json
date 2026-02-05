@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The performance [Jackson], in fact, refutes A's theory that life becomes sweetest when we're past mortal cares. Long may Jackson harbor such concerns, and share them with us.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-THREE-TALL-WOMEN-on-Broadway-20180329",
+  "assignedScore": 94,
+  "llmScore": {
+    "score": 94,
+    "confidence": "medium",
+    "range": {
+      "low": 89,
+      "high": 99
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it succeeds gloriously in this staging, thanks to Joe Mantello's simultaneously razor-sharp and tender direction",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic gives 5/5 stars with unqualified praise throughout: 'succeeds gloriously', calls Jackson 'miraculous' and 'simply a marvel', praises all three leads as 'ideally cast' and 'at the top of their game'. Strong superlatives with no reservations indicate a clear rave. | GPT-4o: The review is filled with superlatives and praises the production, direction, and performances highly. Despite the truncation warning, the provided text and 5/5 star rating strongly indicate a rave review. | Gemini: The review is overwhelmingly positive, praising the direction and the performances of the three lead actresses. The critic uses strong language like \"gloriously\" and \"marvel\" to describe the production and Glenda Jackson's performance, indicating a strong recommendation. | Kimi: The 5/5 star rating accompanies unqualified praise throughout, with superlatives like 'gloriously', 'miraculous', and 'marvel' applied to the direction and performances. Despite truncation, the available text presents an enthusiastic recommendation with no reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:13:04.441Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

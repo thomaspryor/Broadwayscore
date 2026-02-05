@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "It's too bad Denzel Washington didn't play Walter Lee, the dissatisfied 35-year-old protagonist of Lorraine Hansberry's monumental 1959 African-American family drama 'A Raisin in the Sun,' 25 years ago. Now at age 59, there is no escaping the reality that Washington is simply too old to convincingly play the role, resulting in a fundamental imbalance and lack of credibility to the new Broadway revival...In addition to the age issue, Washington overplays Walter Lee's moodiness and often adds an inappropriately jocular and hammy tone, encouraging the audience to laugh during some of the play's most heartbreaking moments. Rose, who sparkles in scene after scene, ends up stealing the show. As Walter Lee's wife Ruth, Sophie Okonedo comes off as one-dimensionally plain and stern. Jackson too is disappointing. David Cromer, best known as a director, is out of place as the community representative who tries to bribe the family to not move to a white suburb.",
-  "bwwScore": 5
+  "bwwScore": 5,
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington is simply too old to convincingly play the role, resulting in a fundamental imbalance and lack of credibility.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes Washington's miscasting, overacting, and inappropriate tone choices, plus disappointing performances from other cast members. However, this is only one excerpt and may not reflect the full review's verdict. | GPT-4o: The review criticizes the casting of Denzel Washington as too old for the role, leading to a lack of credibility. It also mentions overacting and inappropriate tone, with other performances described as disappointing. Despite some praise for Rose, the overall tone is negative. | Gemini: The review expresses disappointment with the casting choices and performances, particularly Denzel Washington's age and performance style, leading to a negative overall assessment. The single excerpt and lack of a clear recommendation lower the confidence. | Kimi: While the critic praises Rose's scene-stealing performance, the review emphasizes a fundamental miscasting of the lead that undermines the production's credibility, alongside disappointing work from other cast members.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:19:13.327Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

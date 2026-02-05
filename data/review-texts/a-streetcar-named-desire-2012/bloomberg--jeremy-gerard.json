@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But you want to know about Underwood, and why not? It’s not as though Brando himself didn’t distinguish Stanley as an icon of brute sexual charisma, and on that score Underwood certainly delivers the goods. Just listen to the gasps and sighs emanating from the audience when he strips to an undershirt or less.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "on that score Underwood certainly delivers the goods",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises Underwood's performance as delivering what's expected, but as a single curated quote from a larger review, this may not represent the full verdict. The positive assessment is qualified and measured rather than enthusiastic. | GPT-4o: The excerpt praises Underwood's performance, indicating a positive view of his portrayal of Stanley. However, with only one curated quote available, the overall sentiment of the review is unclear, leading to a low confidence score. | Gemini: The review excerpt focuses on the performance of Underwood and the audience reaction, suggesting a positive aspect of the show. However, without the full review, it's difficult to gauge the overall recommendation, so confidence is low. | Kimi: Single excerpt provides enthusiastic praise for the lead performance, favorably comparing Underwood to Brando and citing strong audience reactions, warranting upper-end Positive score per excerpt-only guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:32:10.636Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

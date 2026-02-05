@@ -61,5 +61,60 @@
     "Word count too low: 265 (min: 300)"
   ],
   "wordCount": 265,
-  "tierReason": "Short text (265 words)"
+  "tierReason": "Short text (265 words)",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arcadia is a heady, aching thrill of a tragicomedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('heady, aching thrill', 'masterwork', 'ravishing romance', 'emotionally exuberant') with enthusiastic recommendation despite minor acoustic caveat. Single excerpt warning noted - scoring toward upper Positive range. | GPT-4o: The excerpt describes the show as a 'heady, aching thrill' and 'ravishing romance,' indicating strong praise. However, the mention of acoustic issues suggests some reservations. Given the single excerpt warning, the score is placed on the higher end of the Positive range. | Gemini: The review uses very positive language such as \"heady, aching thrill\", \"masterwork\", and \"ravishing romance\", indicating a strong recommendation. The caveat about acoustics is a minor reservation. | Kimi: The excerpt contains enthusiastic praise ('masterwork,' 'ravishing romance') and an explicit recommendation to attend, though the single-excerpt format and note about acoustics warrant placement in the upper Positive range rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:59:48.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

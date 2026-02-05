@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "What’s to savor here, then? Two words: Christopher Walken. Who cares whether or not Carmichael was written with his eccentric delivery in mind; Walken can retune any text to his dissonant, syncopated key. Innocuous lines become menacing, and psychotic remarks provoke giggles. Carmichael’s true nature or motive is never revealed, but then no one bothered making him a real character; we’re just enjoying a beloved film star who can get laughs from his zombie stare and demented, wistful phrasing.",
   "bwwScore": 3,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Who cares whether or not Carmichael was written with his eccentric delivery in mind; Walken can retune any text to his dissonant, syncopated key.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Excerpt praises Walken's performance enthusiastically but criticizes the writing ('no one bothered making him a real character'). Single excerpt limits full verdict assessment. | GPT-4o: The excerpt focuses on Christopher Walken's performance, suggesting it's the main highlight. However, it implies the character lacks depth and the play may not be engaging beyond Walken's presence, indicating a mixed reception. | Gemini: The review focuses almost entirely on Christopher Walken's performance, praising his ability to elevate the material. While it acknowledges shortcomings in the character and writing, the emphasis on Walken's captivating performance suggests a positive, albeit qualified, recommendation. | Kimi: The excerpt praises Walken's unique, scene-stealing performance as the primary reason to see the show, while criticizing the underwritten character ('no one bothered making him a real character'), indicating a qualified recommendation based on star power rather than material. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:44:29.042Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 78,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

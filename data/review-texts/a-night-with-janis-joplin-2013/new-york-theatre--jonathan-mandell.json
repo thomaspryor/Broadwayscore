@@ -12,5 +12,59 @@
   "bwwExcerpt": "'A Night With Janis Joplin' is more or less a concert, with some patter in-between the songs that could be called monologues. In these, we learn that Janis's mother was a talented singer in Port Arthur, Texas who decided not to move to New York for a professional career, and thereafter listened incessantly to Broadway albums like West Side Story and My Fair Lady, whose songs Janis memorized. Janis herself at one point wanted to be a painter; her artwork appear behind her. She also read a lot as a child; her favorite was F. Scott Fitzgerald. And she loved the blues, a subject she tells us about with almost scholarly disquisition.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-NIGHT-WITH-JANIS-JOPLIN-Opens-on-Broadway-Updating-LIVE-20131010",
+  "assignedScore": 59,
+  "llmScore": {
+    "score": 59,
+    "confidence": "high",
+    "range": {
+      "low": 54,
+      "high": 64
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'A Night With Janis Joplin' is more or less a concert, with some patter in-between the songs that could be called monologues.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Single excerpt appears descriptive rather than evaluative, providing biographical context without clear judgment. The neutral tone and lack of recommendation language suggests middle-mixed range, but low confidence due to limited text. | Gemini: The review excerpt describes the show as a concert with monologues, providing context about Janis Joplin's background. Without a clear recommendation or strong evaluative language, it's difficult to classify it as definitively positive or negative, suggesting a mixed assessment. The single excerpt and lack of a clear verdict lower the confidence. | Kimi: The excerpt offers purely descriptive content about the show's format and biographical narrative without providing evaluative language regarding quality, performances, or whether the show is worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:18:15.990Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": null,
+    "geminiScore": 58,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

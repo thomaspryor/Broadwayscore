@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Jane Fonda is lanky and wry, with a great chin and a flat, deep voice that, more than once in her return to Broadway, may make you think about her late father, Henry. By opening last night at the Eugene O'Neill Theatre in an ambitious new work - rather than in a brand-name vehicle or a star-driven fluff ball - she is also very brave. This does not make \"33 Variations\" a good play or suggest that the actress, 71, has bounced back onto the stage with all the easygoing confide",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-33-Variations-Review-Roundup-and-More-20090310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This does not make '33 Variations' a good play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt praises Fonda's bravery in choosing an ambitious work but explicitly states this 'does not make 33 Variations a good play.' The truncated text cuts off mid-sentence, making full assessment impossible. | GPT-4o: The excerpt acknowledges Jane Fonda's bravery and presence but stops short of recommending the play, suggesting it is not a 'good play'. The lack of a full verdict and single excerpt warning lead to a low confidence score. | Gemini: The review praises Jane Fonda's bravery and presence, but the excerpt states that this doesn't make the play good. The truncated text and single excerpt make it difficult to determine the overall recommendation, but the negative statement suggests a mixed or slightly negative assessment. | Kimi: While praising Fonda's bravery and physical presence, the critic explicitly states 'This does not make \"33 Variations\" a good play' and suggests her performance lacks confidence. Single excerpt and truncation limit certainty.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:37:06.818Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

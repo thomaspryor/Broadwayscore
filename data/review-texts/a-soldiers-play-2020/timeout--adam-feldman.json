@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Leon's direction emphasizes the beauty of the men's blackness. At the start of the play and during transitions between scenes, the servicemen-played by Nnamdi Asomugha, Rob Demery, Billy Eugene Jones, McKinley Belcher III, Warner Miller and tap dancer Jared Grimes-raise their voices into rich, deep blues.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leon's direction emphasizes the beauty of the men's blackness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single curated excerpt praises the direction and performances but is too limited to determine full verdict. Set at lower end of Positive range due to excerpt limitation. | GPT-4o: The excerpt highlights a positive aspect of the direction, emphasizing beauty and richness. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The excerpt focuses on the positive aspects of the direction and the performances, suggesting a positive, but not overwhelmingly enthusiastic, review. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers clear praise for the director's vision and the cast's vocal performances ('rich, deep blues'), indicating a positive response. However, as a single curated excerpt without a stated verdict or rating, the overall recommendation strength is uncertain.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:24:37.083Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

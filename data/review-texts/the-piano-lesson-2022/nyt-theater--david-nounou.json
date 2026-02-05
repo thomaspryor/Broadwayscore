@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Samuel L. Jackson commands the stage with a performance that is both thunderous and tender, while Danielle Brooks brings remarkable depth to her role as Berniece.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 79,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -51,5 +51,60 @@
   "sourceMethod": "playwright",
   "duplicateTextOf": "nyt-theater--jonathan-mandell.json",
   "wordCount": 1200,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Samuel L. Jackson commands the stage with a performance that is both thunderous and tender, while Danielle Brooks brings remarkable depth to her role as Berniece.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances using vivid descriptors ('commands the stage', 'thunderous and tender', 'remarkable depth'). However, this is a single curated excerpt that may not represent the full review verdict, warranting low confidence and upper-positive scoring given the enthusiastic performance praise. | GPT-4o: The excerpt praises the performances of Samuel L. Jackson and Danielle Brooks, suggesting a positive view of the production. However, due to the single excerpt warning, the overall sentiment is uncertain, leading to a lower score within the Positive range. | Gemini: The excerpt praises the performances of Samuel L. Jackson and Danielle Brooks. Without more context, it is difficult to determine the overall recommendation, but the positive language suggests a positive review. | Kimi: The excerpt provides enthusiastic praise for lead performances using strong positive language ('commands,' 'thunderous,' 'remarkable depth'). While limited to a single curated quote, the clearly positive tone warrants the upper range of the Positive bucket per scoring guidelines for isolated excerpts.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:05:33.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

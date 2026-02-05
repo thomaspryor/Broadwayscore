@@ -56,5 +56,60 @@
   "archiveOrgTimestamp": "20100910112653",
   "archiveOrgUrl": "http://web.archive.org/web/20100910112653/http://www.bloomberg.com:80/news/2010-08-02/sondheim-s-music-shimmers-with-peters-stritch-john-simon.html",
   "wordCount": 750,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The newcomers surpass their predecessors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic gives 3 stars out of 4, calling it 'Excellent' in his rating system. He praises the replacement cast as surpassing the originals, commends Sondheim's score as 'prime quality,' and notes his appreciation for the show has grown over decades. | GPT-4o: The review praises the replacement cast as surpassing the original and highlights strong performances and production qualities. The original rating of *** (Excellent) aligns with a strong positive recommendation. | Gemini: The review is generally positive, highlighting improvements in the cast and appreciating the show more over time. While there are some reservations about Peters' performance, the overall tone is favorable. | Kimi: The critic awards three stars ('Excellent') and enthusiastically praises the replacement cast as surpassing their Tony-winning predecessors, particularly Peters and Stritch, despite minor reservations about supporting performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:54:50.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

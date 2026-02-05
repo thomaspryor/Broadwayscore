@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "John Logan's play about Mark Rothko is a cerebral two-hander that crackles with intelligence and passion, brought to vivid life by Alfred Molina and Eddie Redmayne.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -50,5 +50,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2010/legit/reviews/red-1117942436/",
   "urlDiscoveredAt": "2026-02-05T05:18:11.799Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Scribe John Logan sends American abstract impressionist painter Mark Rothko into battle with his demons in this electrifying play of ideas, and the artist's howls are pure music.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong praise throughout with terms like 'electrifying,' 'majestic,' and 'pure music.' Molina is called 'majestic' and the production 'muscular.' Despite noting it's 'all talk and no action,' the critic frames this positively as brilliant dialogue worth hearing. | GPT-4o: The review is filled with superlatives and praises the performances, production, and script. Descriptions like 'electrifying play of ideas' and 'majestic' indicate a strong recommendation. | Gemini: The review is overwhelmingly positive, praising the writing, performances, and production. The critic uses strong language like \"electrifying\" and \"majestic,\" indicating a strong recommendation. | Kimi: Consistently enthusiastic praise throughout with superlatives like 'electrifying,' 'majestic,' and 'operatic grandeur.' The critic admires the performances, direction, and writing without reservation, calling the experience intense and musically pure. | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:10:24.455Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 82,
+    "kimiScore": 96,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

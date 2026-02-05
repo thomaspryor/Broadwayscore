@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Every year around the holidays, adaptations of Charles Dickens' A Christmas Carol surface like regurgitated eggnog at regional theaters across the country. But Jack Thorne's retelling breathes new life into the old chestnut, creating an enchanting spectacle that really is something special. Staged with an ideal balance of sentiment and showmanship by Matthew Warchus and first seen in 2017 at London's Old Vic, where he is artistic director, the immersive production is infused with period atmosphere and heart-stirring music, fostering an infectious spirit of good cheer that reaches giddy heights with the movable feast of the play's climax.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jack Thorne's retelling breathes new life into the old chestnut, creating an enchanting spectacle that really is something special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language throughout ('enchanting spectacle', 'something special', 'giddy heights') with enthusiastic praise for direction, atmosphere, and overall production. Single excerpt warning noted - this clearly positive tone suggests upper end of Positive bucket. | GPT-4o: The excerpt uses highly positive language such as 'breathes new life', 'enchanting spectacle', and 'something special', indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses phrases like \"breathes new life\", \"enchanting spectacle\", \"something special\", \"infectious spirit of good cheer\", indicating a positive recommendation. Given the single excerpt, I am scoring towards the higher end of the positive range. | Kimi: The excerpt offers strong praise for the production's staging, atmosphere, and emotional resonance, describing it as 'something special' with 'giddy heights' of good cheer, though as a single curated quote, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:40.668Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The musical is a clever, catchy and supremely entertaining 80-minute celebration of female empowerment that gives voice to the six wives of Henry VIII.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -63,5 +63,60 @@
   ],
   "duplicateTextOf": "variety--frank-rizzo.json",
   "wordCount": 811,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Six' is a solid '10' for joy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Rave) - using median score | Claude: Strong positive review with consistent praise throughout ('sharp and shiny', 'dazzling', 'unstoppable performances') and explicit endorsement in the final line calling it a 'solid 10 for joy'. Minor reservations about historical liberties don't diminish the enthusiastic recommendation. | GPT-4o: The review is filled with enthusiastic praise, describing the show as a triumph and a solid '10' for joy. It highlights the show's energy, humor, and creativity, with no reservations or criticisms. | Gemini: The review is overwhelmingly positive, using phrases like \"gloriously revived\", \"spirit-lifting energy\", and \"solid '10' for joy\". While acknowledging potential criticisms, the overall recommendation is strong. | Kimi: The review delivers consistent enthusiasm for performances, design, and direction, culminating in an unqualified verdict calling the show a 'solid \"10\" for joy' with 'much to admire and love.' | Buckets: claude=Positive, openai=Rave, gemini=Positive, kimi=Rave",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:59:38.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 95,
+    "geminiScore": 81,
+    "kimiScore": 94,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
+  }
 }

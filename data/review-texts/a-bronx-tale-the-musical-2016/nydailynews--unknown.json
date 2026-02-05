@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "The main takeaway of the new Broadway musical \"A Bronx Tale\" is that talent is a terrible thing to waste. The show's makers and shapers, including Chazz Palminteri, who adapted his 1989 play, and Robert De Niro, who starred in and helmed the '93 film version and now shares directing credit with theater veteran Jerry Zaks, haven't squandered their gifts.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's makers and shapers haven't squandered their gifts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clearly positive assessment that talent/gifts weren't wasted, suggesting a recommended show. Low confidence due to limited text from curated excerpt only. | GPT-4o: The excerpt suggests a positive evaluation, emphasizing that the creators have effectively utilized their talents. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The excerpt indicates that the creators have not wasted their talents, implying a positive assessment. However, due to the limited text, the confidence is low. | Kimi: The single excerpt offers faint praise suggesting the creative team delivered a competent production without wasting their talent, but lacks the enthusiasm or strong superlatives of a rave review. Given the cherry-pick warning for single excerpts, this mild positive warrants a score at the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:47:50.885Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Van Hove is highly dramatic, but he isn't always very subtle. Some of the performances, though, are both. Strong turns Eddie's tragedy into an utter inability and unwillingness to understand his own motives, even when he turns Rodolpho and his friend Marco (Michael Zegan) over to the immigration authorities to have them deported back to Sicily.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strong turns Eddie's tragedy into an utter inability and unwillingness to understand his own motives",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt praising a specific performance ('strong turns') but noting the director 'isn't always very subtle.' With only one curated quote available, this appears mildly positive but confidence is low due to limited context. | GPT-4o: The excerpt suggests a mix of strong performances and criticism of the director's lack of subtlety. The tone is neither fully positive nor negative, indicating a mixed review. | Gemini: The review praises some of the performances, but also notes that the direction is not always subtle. Given the limited excerpt, I'm scoring it as positive with reservations. | Kimi: Single excerpt offers qualified praise: it criticizes Van Hove's lack of subtlety but commends the performances (specifically Mark Strong's) as dramatic and nuanced. With only one curated quote available, this suggests a mildly positive recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:39:40.416Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

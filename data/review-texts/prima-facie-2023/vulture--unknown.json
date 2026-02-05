@@ -34,5 +34,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20240101205245/https://www.vulture.com/2023/04/theater-review-jodie-comer-prima-facie-broadway.html",
   "contentTier": "complete",
   "wordCount": 1181,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Comer's performance speaks more clearly than all that's going on around her.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review strongly praises Comer's extraordinary performance while critiquing Miller's writing and Martin's direction. Despite calling the play 'unsteady' and 'didactic', the critic finds the overall experience emotionally powerful due to Comer's work, indicating a positive recommendation with reservations. | GPT-4o: The review praises Jodie Comer's performance as a 'thrilling and devastating gravitational force,' despite some reservations about the play's writing and production. The strong endorsement of Comer's performance suggests a solid recommendation. | Gemini: The review is overwhelmingly positive about Jodie Comer's performance, calling it an \"incredible breakneck feat.\" While the reviewer notes some issues with the writing and direction, the strength of Comer's performance makes it a worthwhile experience. | Kimi: The review enthusiastically praises Comer's performance as 'incredible' and 'thrilling' while criticizing the script as 'unsteady' and 'didactic,' but ultimately recommends the show based on the strength of her performance alone, calling it a 'winning case.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:10:01.363Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 79,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

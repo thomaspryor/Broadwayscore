@@ -5,8 +5,8 @@
   "criticName": "David Cote",
   "url": "https://www.timeout.com/newyork/theater/a-catered-affair",
   "publishDate": "April 17, 2008",
-  "fullText": "Harvey Fierstein's book is solid, if predictable, and the cast does admirable work with John Bucchino's pleasant but unmemorable score.",
-  "isFullReview": false,
+  "fullText": "By Adam Feldman \n Wed Apr 23 2008\n\nSTRIFE OF THE PARTY Fierstein, center, complains in a toast.\n\n\"Resigning oneself to small is sad,\" says Harvey Fierstein in A Catered Affair. \"Requesting it is tragic.\" But why, in that case, should anyone seek tickets to the drab, crabby new musical that Fierstein has created with songwriter John Bucchino? Faith Prince plays Aggie, a working-class Bronx woman whose son has recently died in the army, and who wants to use her government-issued bereavement check to give her underappreciated daughter an elaborate wedding. (That the daughter doesn't want such a fuss is secondary.) Dowdy and dogged, Aggie sings her first song while changing the sheets on a bed, which is typical of this show's approach: Nebulously directed by John Doyle, the production goes through its musical motions as though dutifully performing a chore.\n\nIn addition to Prince, the wasted cast includes Tom Wopat as Aggie's sullen cab-driver husband and Fierstein as her hoarse, demanding gay brother; the tremendous gifts of Leslie Kritzer are left unopened in the underwritten role of Aggie's daughter, and Matt Cavenaugh is needlessly good-looking as her wealthy fiancé. Fierstein's book leaves them all to wallow in dourness, passive-aggression and self-pity—cramped emotions that are hardly expanded in Bucchino's anemic score, which marries wishy-washy tunes to bland, awkwardly rhymed lyrics. (It tries for limpid, excises the id and winds up limp.) Here is a wedding in which nothing is inviting: Notwithstanding all the talent involved, has a Broadway musical ever seemed quite so deliberately joyless?",
+  "isFullReview": true,
   "dtliExcerpt": "Harvey Fierstein's book is solid, if predictable, and the cast does admirable work with John Bucchino's pleasant but unmemorable score.",
   "originalScore": 60,
   "assignedScore": 61,
@@ -73,5 +73,33 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 254,
+  "archivePath": "data/archives/reviews/a-catered-affair-2008/timeout--david-cote_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:41:38.747Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20130622050408",
+  "archiveOrgUrl": "http://web.archive.org/web/20130622050408/http://www.timeout.com/newyork/theater/a-catered-affair",
+  "textIssues": [
+    "Word count too low: 254 (min: 300)"
+  ],
+  "misattributedFullText": true,
+  "extractedByline": "Adam Feldman",
+  "expectedCritic": "David Cote",
+  "wordCount": 254,
+  "tierReason": "Short text (254 words)"
 }

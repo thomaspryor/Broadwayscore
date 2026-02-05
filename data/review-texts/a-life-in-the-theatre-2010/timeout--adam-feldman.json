@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Gentleness is not the first quality that leaps to mind when it comes to the work of David Mamet. But the bile master's 1977 two-hander, A Life in the Theatre-now making its Broadway debut in a slight but entertaining production starring Patrick Stewart and T.R. Knight-has little of the rat-a-tat dramatic firepower of Mamet's later and more famous works. It is a knowing, affectionate, faintly nostalgic portrait of actors and the roles they play onstage and off, and Mamet tends to illuminate them not with the glare of a follow spot but rather by the soft glow of a ghost light.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A slight but entertaining production starring Patrick Stewart and T.R. Knight.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic describes the production as 'entertaining' while acknowledging it's 'slight.' This qualified positive recommendation places it in the lower Positive range, especially given this is only a single curated excerpt that may not capture the full verdict. | GPT-4o: The review describes the production as 'slight but entertaining' and 'affectionate,' suggesting a positive but not overwhelmingly enthusiastic recommendation. Given the single excerpt and lack of a full review, the confidence is low. | Gemini: The review calls the production \"slight but entertaining\", which indicates a positive but not overwhelmingly enthusiastic recommendation. Given that it is a single excerpt, the confidence is low. | Kimi: The critic calls the production 'entertaining' and praises its gentle, affectionate tone, but qualifies this with 'slight' and notes it lacks the dramatic firepower of Mamet's better-known works, suggesting a mild rather than enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:25:56.639Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The first Broadway revival of 'A Little Night Music,' the enchanting, moonstruck musical based on the Ingmar Bergman film 'Smiles of a Summer Night,' is a curious affair. There are some lovely moments, most of them supplied by Angela Lansbury, but too much of this adult, sophisticated show, which opened Sunday at the Walter Kerr Theatre, seems forced, boisterous and a little crude.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are some lovely moments, most of them supplied by Angela Lansbury, but too much of this adult, sophisticated show seems forced, boisterous and a little crude.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning applies - this appears mixed with praise for Lansbury but criticism of the overall production as 'forced' and 'crude'. Without the full review, confidence is low. | GPT-4o: The review acknowledges some 'lovely moments' but criticizes the overall production as 'forced, boisterous and a little crude.' The mixed nature of the comments suggests a balanced view with both positive and negative elements. | Gemini: The review acknowledges some positive aspects, particularly Angela Lansbury's performance, but ultimately finds the production to be lacking and somewhat crude. Due to the limited excerpt, confidence is low. | Kimi: The excerpt praises Angela Lansbury's performance and acknowledges 'lovely moments' but strongly criticizes the overall production as 'forced, boisterous and a little crude,' suggesting significant reservations about the revival despite isolated highlights.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:10:34.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "And though one Thought suggests in answer that Usher 'might be overcomplicating,' A Strange Loop relies upon that level of introspective over-complication to make the case that Usher's thoughts deserve a stage to themselves. In proving that they do, and in bringing Usher's vivid and complex inner life all the way to Broadway with such gripping vibrancy, Jackson nudges the musical theater form in a startling, new direction.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson nudges the musical theater form in a startling, new direction.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for innovation and artistic achievement, describing the work as bringing 'gripping vibrancy' and pushing the form forward. Single excerpt warning warrants medium confidence. | GPT-4o: The excerpt praises the show's introspective complexity and its impact on the musical theater form, suggesting a strong, positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt praises the show's introspective nature and its contribution to musical theater, indicating a positive recommendation. Given it is a single excerpt, the confidence is low, but the language is strong. | Kimi: The excerpt offers strong praise for the production's 'gripping vibrancy' and its success in bringing the protagonist's inner life to Broadway, calling it a 'startling, new direction' for the form. Following the single-excerpt guidance for clearly positive quotes, this falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:30:39.149Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

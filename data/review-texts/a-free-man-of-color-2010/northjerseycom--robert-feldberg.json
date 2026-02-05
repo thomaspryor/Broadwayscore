@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "I suspect that \"A Free Man of Color\" was a lot more fun to write than it is to watch.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I suspect that \"A Free Man of Color\" was a lot more fun to write than it is to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic suggests the show is tedious for audiences despite potentially being enjoyable for the writer, indicating a negative experience. However, with only one excerpt available, confidence is low as this could be setup for a more positive verdict. | GPT-4o: The excerpt suggests a negative view, implying the show is less enjoyable to watch than it was to create. However, with only one excerpt, confidence is low. | Gemini: The single excerpt suggests the show is not enjoyable to watch, indicating a negative review. Given the limited context, confidence is low. | Kimi: The excerpt suggests the play is tedious or self-indulgent, privileging the playwright's enjoyment over the audience's experience. With only one curated quote available, this indicates a negative verdict but confidence is reduced due to potential cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:19:28.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20240416133538",
   "archiveOrgUrl": "http://web.archive.org/web/20240416133538/https://nymag.com/arts/theater/reviews/62707/",
   "wordCount": 555,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "medium",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Trevor Nunn's stunning, twilit, devastatingly good new production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Enthusiastic praise throughout with superlatives like 'stunning,' 'devastatingly good,' and 'beautiful.' Praises all elements including direction, performances, and faithful adaptation. No significant reservations expressed. | GPT-4o: The review is filled with superlatives and praises the production as 'stunning' and 'devastatingly good', indicating a strong recommendation to see the show. | Gemini: The review is overwhelmingly positive, using strong language like \"stunning,\" \"devastatingly good,\" and praising the performances and direction. The critic clearly recommends seeing the show. | Kimi: The review lavishes superlatives on the production ('stunning, twilit, devastatingly good'), direction, and performances, calling the show 'among Sondheim's near-perfect creations' and praising Zeta-Jones's 'shattering cry from the void.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:55:36.989Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 94,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

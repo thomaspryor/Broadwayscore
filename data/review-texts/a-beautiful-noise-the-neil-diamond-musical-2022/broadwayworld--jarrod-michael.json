@@ -11,5 +11,60 @@
   "bwwExcerpt": "Neil Diamond - Then, portrayed by Nick Fradiani, proved a remarkable leading man, capturing the essence of Neil Diamond with a presence that was both magnetic and deeply human. His vocals were so uncannily reminiscent of Diamond’s Signature Sound that, at times, one could almost forget it wasn’t the man himself standing center stage. Yet, rather than settling for imitation, Fradiani took subtle, thoughtful liberties with the material. His delicate vocal inflections and interpretive choices honor",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "His vocals were so uncannily reminiscent of Diamond's Signature Sound that, at times, one could almost forget it wasn't the man himself standing center stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performance with specific superlatives ('remarkable', 'magnetic', 'uncannily reminiscent'). Single excerpt limits confidence, but aggregator context confirms positive verdict. | GPT-4o: The excerpt praises Nick Fradiani's performance as 'remarkable' and 'magnetic,' with vocals 'uncannily reminiscent' of Neil Diamond. The tone is clearly positive, suggesting a strong recommendation, but the confidence is low due to the single excerpt limitation. | Gemini: The excerpt focuses on the positive performance of the lead actor, Nick Fradiani, and his portrayal of Neil Diamond. Given the single excerpt and positive tone, I'm scoring it as positive with a higher score in the bucket. | Kimi: The excerpt offers enthusiastic praise for the lead performance using words like 'remarkable,' 'magnetic,' and 'deeply human,' clearly placing it in the Positive bucket. However, confidence is low due to the single-excerpt warning, which indicates this curated quote may not represent the full review's assessment of the entire production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:33:23.509Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -57,5 +57,59 @@
     "Word count too low: 201 (min: 300)"
   ],
   "wordCount": 190,
-  "tierReason": "Short text (190 words)"
+  "tierReason": "Short text (190 words)",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Much as I esteem both women, neither one of them is well cast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Despite praising the performers as 'deservedly beloved,' the critic clearly states they are poorly cast and doubts the show can sustain itself, indicating a negative recommendation. | Gemini: The critic states that neither actress is well cast, and doubts the show will stay open for another six months. | Kimi: The critic explicitly doubts the show's commercial viability and delivers a clear negative verdict on the casting, stating neither star is 'well cast' despite his personal esteem for them. The opening Hollywood comparison frames the production as artistically dubious, and the conclusion reinforces lack of recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:55:29.794Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": null,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }

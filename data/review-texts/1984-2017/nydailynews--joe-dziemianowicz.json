@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "This dramatization of George Orwell's 1949 dystopian classic serves as a reminder. For all its moving set pieces, along with a busy, ear-blasting soundscape, frequent blackouts, blinding lights and live video, it's strangely unmoving and low-impact. The action meanders and jumps in time, so some familiarity with the story is a must. On the plus side, authors and directors Robert Icke and Duncan MacMillan deserve credit for letting Orwell's cautionary story about a world of fake news and government control speak for itself.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all its moving set pieces, it's strangely unmoving and low-impact.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - acknowledges production elements and directorial credit but criticizes the show as 'unmoving and low-impact' with meandering action. Since only one curated quote is available, confidence is low. | GPT-4o: The review highlights both positive and negative aspects, noting impressive elements like set pieces and direction, but ultimately finds the production 'strangely unmoving and low-impact'. The single excerpt suggests a mixed reception. | Gemini: The review notes both positive and negative aspects, ultimately finding the production \"strangely unmoving and low-impact.\" The single excerpt and lack of a clear recommendation lead to a \"low\" confidence score. | Kimi: The excerpt balances praise for the directors' faithful adaptation against significant criticism that the production is emotionally flat and narratively confusing, with the single-quote warning necessitating caution about the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:46:10.240Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

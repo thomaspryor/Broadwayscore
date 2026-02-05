@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It is truly frightening to see the parallels between George Orwell's dystopian novel '1984' and the state of our union today. Orwell wrote of 'doublethink' and 'Newspeak.' We have alternate facts and fake news. Of course, we're not ruled by an authoritarian Big Brother figure - at least not yet - but Robert Icke and Duncan Macmillan's harrowing stage adaptation leaves little doubt we are being watched. This is not an easy play for us to watch. Icke and Macmillan, who also co-directed, employ disorienting effects: light and sound disruptions mess with our heads, the story seems to jump back and forth in non-linear fashion, and the torture sequence at the end is brutally graphic.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is not an easy play for us to watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt focuses on the play's challenging content and disturbing effects rather than recommending or discouraging attendance. With only one excerpt available that emphasizes difficulty without clear recommendation, this appears mixed with cautious scoring due to incomplete information. | GPT-4o: The excerpt describes the adaptation as 'harrowing' and effective in conveying its themes, but also notes the play is 'not easy to watch' and employs 'disorienting effects'. The tone suggests a challenging experience without a clear recommendation. | Gemini: The review highlights the play's unsettling parallels to current events and its disorienting effects, suggesting a powerful and thought-provoking experience, but the single excerpt and lack of a clear recommendation lead to a lower confidence score. | Kimi: The critic describes the production as 'harrowing' and 'truly frightening,' praising its effective use of disorienting effects and brutal intensity to deliver the story's political message, though the single excerpt limits certainty about the overall verdict. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:35:16.713Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

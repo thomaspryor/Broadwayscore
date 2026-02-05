@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "The Present is a comedy of manners that turns into a tragedy of bad manners, and then into something else entirely: a mirror held up to our own social pretenses.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 64,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -46,5 +46,60 @@
   "archiveOrgTimestamp": "20251128213950",
   "archiveOrgUrl": "http://web.archive.org/web/20251128213950/https://www.vulture.com/2017/01/theater-review-cate-blanchett-in-the-present.html",
   "wordCount": 1023,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Blanchett plays quite brilliantly as a wasp trapped in a bottle, boredom and dread are full-time careers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The review praises Blanchett's brilliant performance and Upton's 'fairly successful' adaptation, but identifies fundamental structural problems with the source material that neither Chekhov nor this adaptation could resolve. The critic appreciates elements but doesn't offer a clear recommendation. | GPT-4o: The review praises Cate Blanchett's performance and the adaptation's thematic relevance but notes unresolved issues with the source material and character focus. The overall tone suggests a mixed reception with some positive elements. | Gemini: The review acknowledges flaws in the play itself, but praises Blanchett's performance and Roxburgh's take on his role. The overall impression is mixed, but leaning towards positive due to the strength of the performances. | Kimi: While acknowledging significant structural problems with the source material ('ungainly,' 'hole at the center'), the critic strongly praises Blanchett's brilliant performance and Roxburgh's convincing turn, recommending the production for its acting despite the play's imperfections.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:23:15.249Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 14,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

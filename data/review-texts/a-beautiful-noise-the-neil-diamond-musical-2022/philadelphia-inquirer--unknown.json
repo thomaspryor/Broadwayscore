@@ -11,5 +11,60 @@
   "bwwExcerpt": "Dan DeLuca, Philadelphia Inquirer: The show works partly because Fradiani is believable enough as Diamond goes from wracked-with-doubt — he thinks “Neil Diamond” is a lousy stage name — to being bedazzled with sequins as he earns his “Jewish Elvis” nickname in the 1970s. But the best reason for Diamond fans to see A Beautiful Noise is Fradiani’s booming voice, whether on the schmaltzy “You Don’t Bring Me Flowers,” the rousing immigrant anthem “Coming to America,” or “Sweet Caroline.”",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show works partly because Fradiani is believable enough as Diamond goes from wracked-with-doubt to being bedazzled with sequins.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for lead performance and vocal work, describing show as working and giving fans 'the best reason' to see it. However, limited text and fan-specific recommendation suggests moderate positive rather than strong endorsement. | GPT-4o: The excerpt highlights Fradiani's performance as a key reason to see the show, suggesting a positive recommendation for fans. However, the single excerpt and lack of a full review text limit confidence. | Gemini: The review excerpt focuses on the strength of the lead performer's voice as the primary reason for fans to see the show. Given it's a single excerpt, I'm scoring it as positive but with low confidence. | Kimi: The critic explicitly recommends the show for fans of Neil Diamond, praising the lead's vocal performance as the primary draw, while acknowledging the show only 'partly' works, placing it in the solid positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:38:21.956Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

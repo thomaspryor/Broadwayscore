@@ -42,5 +42,60 @@
   "archiveOrgUrl": "http://web.archive.org/web/20230310013158/https://nypost.com/2023/03/09/a-dolls-house-broadway-review-jessica-chastain-is-trapped/",
   "contentTier": "complete",
   "wordCount": 752,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All things considered, it's a lot of high-minded ideas that never cohere into a riveting whole.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises Chastain's performance and finds moments of intrigue, but criticizes the sterile direction, static tone, and gimmicky ending. The overall assessment is of an 'uneven revival' that doesn't work as a cohesive whole. | GPT-4o: The review criticizes the production's direction and staging as sterile and lacking suspense, despite praising Chastain's performance. The overall tone is negative, focusing on the production's failure to engage and the misguided ending. | Gemini: Despite praising Chastain's performance, the review is overall negative, criticizing the sterile staging, lack of suspense, and misguided ending. The critic finds the production uneven and ultimately disappointing. | Kimi: While praising Jessica Chastain's absorbing performance and Michael Patrick Thornton's excellent turn, the critic finds Jamie Lloyd's staging sterile, clinical, and wrongheaded, particularly criticizing the gimmicky ending that undermines the play's feminist message.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:53:24.456Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 45,
+    "geminiScore": 48,
+    "kimiScore": 43,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

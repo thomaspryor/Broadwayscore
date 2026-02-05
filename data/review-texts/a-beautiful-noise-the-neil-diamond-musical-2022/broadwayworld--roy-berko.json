@@ -11,5 +11,60 @@
   "bwwExcerpt": "Nick Fradiani, the winner of the 2015 American Idol television competition, who effectively stars as Neil-then, carries the majority of the role’s singing, dancing and acting.  He is charismatic, has an excellent voice and looks and sounds like the superstar.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He is charismatic, has an excellent voice and looks and sounds like the superstar.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the lead performer using superlatives like 'excellent' and 'charismatic', but this is only one excerpt so full review verdict is unclear. | GPT-4o: The excerpt praises Nick Fradiani's performance, highlighting his charisma and vocal talent. However, due to the single excerpt warning and lack of a broader context, the score is placed at the lower end of the Positive range. | Gemini: The review excerpt focuses solely on praising the lead actor's performance, indicating a positive but potentially limited endorsement. Given it's a single excerpt, confidence is low. | Kimi: The single excerpt offers strong praise for the lead performer's charisma, voice, and acting, using words like 'excellent' and 'superstar.' While limited to one curated quote, the clearly positive tone and 'Up' aggregator context support a positive classification in the 80-84 range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:35:00.673Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

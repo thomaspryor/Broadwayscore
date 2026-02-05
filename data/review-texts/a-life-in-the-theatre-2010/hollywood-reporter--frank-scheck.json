@@ -15,7 +15,7 @@
   "isFullReview": false,
   "textWordCount": 183,
   "archivePath": "data/archives/reviews/a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T00:56:04.562Z",
+  "textFetchedAt": "2026-02-05T17:46:09.811Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -25,16 +25,10 @@
       "error": "Skipped (known-blocked site)"
     },
     {
-      "tier": 1.5,
-      "method": "browserbase",
-      "success": false,
-      "error": "Insufficient text: 53 chars"
-    },
-    {
       "tier": 2,
       "method": "scrapingbee",
       "success": false,
-      "error": "ScrapingBee error (404): Request failed with status code 404"
+      "error": "ScrapingBee error (500): Request failed with status code 500"
     },
     {
       "tier": 3,
@@ -46,7 +40,7 @@
       "tier": 3.5,
       "method": "archive",
       "success": false,
-      "error": "No CDX snapshots found"
+      "error": "timeout of 15000ms exceeded"
     },
     {
       "tier": 4,

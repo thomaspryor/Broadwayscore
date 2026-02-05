@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The white-hot director Ivo van Hove is not the first to embrace the passionate smolder behind Arthur Miller's 1955 play of forbidden passion in Italian-American Brooklyn...But it is hard to recall another staged production -- beyond this exquisitely profound Broadway import from London's Young Vic Theatre Company starring Mark Strong, Nicola Walker and Phoebe Fox -- that has depicted with such complexity and intensity what Eddie and his niece actually had together, before his infuriatingly effeminate usurper Rodolpho arrives, illegally, from the motherland...this is the very rare production that matches the complexity of the text, with its mixed-messaged collision of the cerebral and the sensual, a dichotomy at the heart of everything Miller ever wrote...Van Hove's brilliance is multifaceted, but much rests on his ability to focus the mind and soul on a work's tiny moments.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this is the very rare production that matches the complexity of the text",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for van Hove's direction as 'brilliant' and the production as 'exquisitely profound' and 'very rare' in matching Miller's text complexity. Single excerpt warning noted, but language suggests strong positive recommendation. | GPT-4o: The excerpt praises the production as 'exquisitely profound' and highlights the director's 'brilliance' in capturing the complexity of the text. The language used suggests a strong recommendation, placing it in the Rave bucket. | Gemini: The review uses phrases like \"exquisitely profound\" and \"Van Hove's brilliance\" to describe the production, indicating a strong positive sentiment. Given the single excerpt, I am scoring at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the production's emotional depth and directorial brilliance, calling it 'exquisitely profound' and highlighting its rare complexity, though as a single curated quote, the full review context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:38:09.729Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

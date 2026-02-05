@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "The relentless misery of the director's gloomy interpretation of the musical scarcely allows for any contrasting moments of joy or sweetness as Tony and Maria discover each other and fall in love. The show's most striking moments are those involving conflict, as when an embracing Tony and Maria literally are torn away from each other by the opposing gangs. Something should be said about the performances, but there's little to mention except that everybody, lead players and ensemble members, render their character's music, motions, and emotions capably enough. The shows that van Hove directs usually are cool in temperature, and this one is no exception. No hot young stars blaze forth in the production's damp firmament here.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's most striking moments are those involving conflict, as when an embracing Tony and Maria literally are torn away from each other by the opposing gangs.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced critique. Acknowledges the enduring masterwork score and suggests younger viewers will appreciate it, but criticizes the gloomy interpretation, video-heavy staging, and lack of joy. Neither recommends nor discourages - classic mixed review. | GPT-4o: The review acknowledges the enduring quality of the original work but criticizes the current production's direction and execution. While the score and some elements are appreciated, the overall tone is mixed, reflecting both positive and negative aspects. | Gemini: The critic acknowledges the enduring quality of the source material but expresses reservations about the director's interpretation. The review is mixed, praising the score while criticizing the gloomy and distracting staging. | Kimi: The 3/5 star review praises Bernstein and Sondheim's masterwork score but criticizes van Hove's grim, video-heavy production as 'harsh treatment' that creates a 'doleful' experience lacking joy, noting the classic material survives despite the 'relentless misery' of the interpretation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:21:24.803Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

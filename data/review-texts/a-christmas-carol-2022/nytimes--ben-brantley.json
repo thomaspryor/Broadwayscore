@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While retaining the jolliness and sentimentality associated with some 170 years' worth of stage versions (including a competitive flock that opened the year after its publication), Thorne and Warchus have polished the story's social conscience to a restored brightness. Be assured, though, that their 'Carol,' which stars Campbell Scott as Ebenezer Scrooge, never sings shrilly.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thorne and Warchus have polished the story's social conscience to a restored brightness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows measured praise for the creative team's work on the adaptation and reassures about tone, but with only one curated excerpt available, the full verdict remains unclear. | GPT-4o: The excerpt suggests a positive view of the production, highlighting the polished social conscience and avoiding negative extremes. However, the single excerpt warning and lack of full context necessitate a cautious approach with a low confidence level. | Gemini: The review excerpt suggests a positive take on the production, highlighting the restoration of the story's social conscience. However, due to the limited text, confidence is low. | Kimi: The excerpt praises the production for balancing traditional jolliness with a newly polished social conscience while avoiding preachiness ('never sings shrilly'), indicating a clear recommendation, though the single-excerpt format limits certainty about the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:09:47.744Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

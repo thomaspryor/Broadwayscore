@@ -10,5 +10,60 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "“When acted as well as it is here, ‘A Doll's House’ remains indestructible, resilient in the face of directorial gimmicks.”\n\nRead more"
+  "showScoreExcerpt": "“When acted as well as it is here, ‘A Doll's House’ remains indestructible, resilient in the face of directorial gimmicks.”\n\nRead more",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "When acted as well as it is here, 'A Doll's House' remains indestructible, resilient in the face of directorial gimmicks.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the acting quality with 'indestructible' suggesting durability and excellence, but single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt praises the acting and suggests the production is strong enough to withstand directorial choices, indicating a positive recommendation. However, due to the single excerpt and lack of full context, confidence is low. | Gemini: The quote praises the acting and suggests the play is good despite potential issues. Given it's a single excerpt, I'm placing it at the higher end of the positive range, but with low confidence. | Kimi: The critic employs the superlative 'indestructible' and praises the acting highly, indicating strong endorsement, though the reference to 'directorial gimmicks' suggests minor reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:17:13.056Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

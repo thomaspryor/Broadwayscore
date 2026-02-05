@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But despite added jokes about Obamacare and Rand Paul, 700 Sundays is a memory piece that pretty much remains the warmhearted, moving and extremely funny night out that it was back in 2004...Additional material is supplied by Alan Zweibel and Des McAnuff's direction keeps the evening moving swiftly and seamlessly, but with all due respect to their contributions you're not likely to leave the theatre thinking of anyone else but Billy Crystal. As a performer who has been welcomed into American homes for decades via television appearances, he's once again returning the favor by inviting you to his home.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "700 Sundays is a memory piece that pretty much remains the warmhearted, moving and extremely funny night out that it was back in 2004",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('warmhearted, moving and extremely funny night out') with praise for Crystal's performance and direction. Single excerpt warning suggests this represents the overall positive sentiment, scoring in upper Positive range. | GPT-4o: The excerpt describes the show as 'warmhearted, moving and extremely funny,' indicating a positive experience. The single excerpt warning suggests using the upper end of the Positive bucket. | Gemini: The review states that the show remains warmhearted, moving, and funny, indicating a positive experience despite being a memory piece. The focus on Billy Crystal also suggests a strong performance element. | Kimi: The excerpt contains clearly positive evaluative language ('warmhearted,' 'moving,' 'extremely funny') and praises the direction as 'swift and seamless,' warranting the upper end of the Positive bucket per the single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:38:46.040Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

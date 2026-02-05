@@ -38,5 +38,60 @@
   "textStatus": "complete",
   "sourceMethod": "scrapingbee",
   "wordCount": 714,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 52,
+  "llmScore": {
+    "score": 52,
+    "confidence": "medium",
+    "range": {
+      "low": 47,
+      "high": 57
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The events of the play are chaotic, but in this production they connect to the chaos of the here and now in ways that left me bewildered and a little frazzled.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: The critic acknowledges the play's relevance and praises individual elements (Beans' performance, set design) but finds the production confusing, lacking cohesion, and emotionally draining rather than enlightening. The overall experience is described as bewildering with little ease between acts. | GPT-4o: The review describes the production as chaotic and bewildering, with a lack of clarity and cohesion. While there are some positive notes about the set design, the overall tone is negative, suggesting disappointment and a lack of recommendation. | Gemini: The review acknowledges the play's relevance but also points out its convoluted nature and the uneven direction. The reviewer found the chaotic events bewildering and struggled to find resonance in the plot. | Kimi: While the review praises the cast and design, the headline explicitly calls the production a 'disaster' and the critic describes being 'bewildered and frazzled' by the chaotic execution, finding the play lacks clarity and cohesion despite its relevant themes. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:25:20.199Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

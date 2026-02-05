@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Alfred Molina and Eddie Redmayne deliver powerhouse performances in John Logan's compelling two-hander about Mark Rothko's artistic process and philosophical struggles.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -69,5 +69,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://www.hollywoodreporter.com/review/red-theater-review-18087/",
   "urlDiscoveredAt": "2026-02-05T05:16:39.020Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This fascinating theatrical depiction should easily make audiences re-evaluate their notions about the artistic process.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for performances ('absolutely superb', 'powerhouse'), production ('riveting'), and material ('fascinating', 'consistently engrossing'). Predicts Broadway success and awards recognition. Confidence is medium due to truncated text, but aggregator excerpt confirms positive assessment. | GPT-4o: The review praises the performances, direction, and production design with strong positive language. Despite the truncation warning, the available text is overwhelmingly positive, suggesting a high recommendation. | Gemini: The review is overwhelmingly positive, praising the performances, direction, and set design. The phrase \"should prove similarly successful here and stands to figure prominently this awards season\" indicates a strong recommendation. The truncated text is a concern, but the overall tone is clear. | Kimi: Despite the truncated text, the review delivers strong praise for the performances ('absolutely superb,' 'tour-de-force'), direction ('riveting'), and production values, predicting awards success and recommending the show as 'fascinating' and 'engrossing' with only minor caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:06:34.789Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

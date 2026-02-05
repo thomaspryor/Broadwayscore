@@ -32,5 +32,59 @@
   "archiveOrgTimestamp": "20130513083657",
   "archiveOrgUrl": "http://web.archive.org/web/20130513083657/http://theater.nytimes.com/2010/10/01/theater/reviews/01pitmen.html",
   "wordCount": 530,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Certainly there is much to admire in 'The Pitmen Painters,' a popular success in its native land",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | Claude: Brantley acknowledges much to admire and praises the well-acted production, but identifies a fundamental dramatic flaw - that characters are 'human talking points' rather than fully defined individuals. The review balances appreciation with significant reservations about the play's effectiveness as drama. | Gemini: The review acknowledges admirable qualities but ultimately finds the characters underdeveloped and the overall impact lacking. It's neither a strong recommendation nor a strong discouragement. | Kimi: The critic acknowledges the production is well-acted and finds merit in the play's ideas about art and class, but fundamentally criticizes the lack of character development, viewing the miners as dramatic devices rather than fully realized individuals. The text appears truncated at the end, creating uncertainty about the final verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:22:41.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": null,
+    "geminiScore": 62,
+    "kimiScore": 65,
+    "claudeBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

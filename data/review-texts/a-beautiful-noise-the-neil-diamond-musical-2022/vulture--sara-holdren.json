@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "A Beautiful Noise is simultaneously overstuffed and undercooked, a jukebox musical that throws everything at the wall in the hope that something will stick.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "A Beautiful Noise is simultaneously overstuffed and undercooked, a jukebox musical that throws everything at the wall in the hope that something will stick.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Beautiful Noise is simultaneously overstuffed and undercooked, a jukebox musical that throws everything at the wall in the hope that something will stick.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic uses clearly negative language ('overstuffed and undercooked') and criticizes the show's desperate, unfocused approach. However, with only one excerpt available, the full verdict may be incomplete, hence low confidence. | GPT-4o: The excerpt describes the show as 'overstuffed and undercooked,' suggesting a lack of cohesion and effectiveness. The tone is negative, indicating a recommendation to skip the show. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses contradictory terms (\"overstuffed and undercooked\") and suggests a lack of cohesion, indicating a mixed or neutral assessment. Given the single excerpt and lack of a clear recommendation, confidence is low. | Kimi: The excerpt uses strongly negative descriptors ('overstuffed and undercooked') and criticizes the show's structural incoherence, indicating the critic does not recommend this production. Confidence is low due to availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:40:53.699Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "The main takeaway of the new Broadway musical \"A Bronx Tale\" is that talent is a terrible thing to waste. The show's makers and shapers, including Chazz Palminteri, who adapted his 1989 play, and Robert De Niro, who starred in and helmed the '93 film version and now shares directing credit with theater veteran Jerry Zaks, haven't squandered their gifts.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's makers and shapers haven't squandered their gifts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows measured praise - acknowledging talent wasn't wasted suggests competent execution. However, the phrasing is qualified rather than enthusiastic, and with only one curated quote available, confidence must be low. | GPT-4o: The excerpt suggests a positive assessment, noting that the creators have not wasted their talents. However, due to the single excerpt warning, the confidence is low, and the score is at the lower end of the Positive range. | Gemini: The excerpt suggests the show is worth seeing because the creators have not wasted their talents. However, it's only one excerpt, so confidence is low. | Kimi: The excerpt offers qualified praise suggesting the creative team delivered competent work without wasting their talents, indicating a solid but not enthusiastic recommendation. With only one curated excerpt available, the score reflects mildly positive sentiment toward the Broadway production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:04:04.156Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

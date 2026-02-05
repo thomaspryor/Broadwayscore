@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "While not always faithful to its source (Young Scrooge, sweetly played by Dan Piering, is given a drunken, abusive father, and old Fezziwig, sympathetically played by Evan Harrington, is an undertaker, among other alterations and additions), Thorne's adaptation pays off in its gambles. If it feels abridged and rushed at first - some secondary characters are melded together, and we're done with the Christmas Present section by intermission - this Carol goes to new places with the inevitability of a clock chime.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-CAROL-Opens-On-Broadway-See-What-The-Critics-Are-Saying-20191120",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Thorne's adaptation pays off in its gambles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges the adaptation takes liberties with the source but concludes these 'gambles' pay off. Despite initial concerns about pacing, the review finds merit in the new directions taken. | GPT-4o: The excerpt indicates that while there are deviations from the source material and some pacing issues, the adaptation ultimately succeeds in its creative choices. However, due to the single excerpt and lack of a full review, confidence is low. | Gemini: The review acknowledges alterations to the source material but ultimately states that the adaptation \"pays off.\" Due to the limited excerpt, confidence is low. | Kimi: While noting significant deviations from Dickens and a rushed first act, the critic concludes the adaptation successfully goes to new places and pays off, suggesting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:57:23.322Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

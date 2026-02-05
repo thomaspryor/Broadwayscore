@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Sondheim being Sondheim, you know that anything he writes is going to be intelligent, sophisticated, witty and lyrical, often self-consciously so. That's all there in the revival of his 1973 musical 'A Little Night Music,' directed by Trevor Nunn whose acclaimed London production made the trip across the pond. As modern musicals go, it's considered by many the gold standard and this production turns out to be beautiful and deeply resonant, hitting every note with stunning honesty.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this production turns out to be beautiful and deeply resonant, hitting every note with stunning honesty",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling the production 'beautiful and deeply resonant' with 'stunning honesty,' though single excerpt limits confidence in full review sentiment. | GPT-4o: The excerpt provides high praise for the production, describing it as 'beautiful and deeply resonant' and 'hitting every note with stunning honesty.' This suggests a strong recommendation, placing it in the Rave bucket. | Gemini: The review is overwhelmingly positive, calling the production \"beautiful and deeply resonant\" and praising its honesty. It also references the show's high reputation. | Kimi: The excerpt offers strong praise describing the production as 'beautiful and deeply resonant' with 'stunning honesty' and the 'gold standard' for modern musicals, indicating a clear recommendation, though the single-excerpt format limits confidence in capturing the full review's sentiment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:23:56.276Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

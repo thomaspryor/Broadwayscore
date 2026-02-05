@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The truth, of course, is they are in the long-lived world of 45th Street, as massaged by skilled practitioners of the sentimental form. \"A Bronx Tale\" is a wildly uneven show - some parts feel just ridiculous in the broadness of their strokes, others entirely charming. The greatest strength of the piece lies in its characterization of Sonny - a far more benign mob boss than we are used to seeing. If Tony Soprano was neuroses and paradox writ large, Sonny, like this show, is a thinly veiled but i",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A Bronx Tale is a wildly uneven show - some parts feel just ridiculous in the broadness of their strokes, others entirely charming.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The text is clearly truncated mid-sentence and represents only one excerpt. The critic describes the show as 'wildly uneven' with parts that are 'ridiculous' and others 'entirely charming,' which indicates a mixed assessment with no clear recommendation either way. | GPT-4o: The review describes the show as 'wildly uneven' with both ridiculous and charming elements, suggesting a mixed reception. The excerpt is limited, so confidence is low. | Gemini: The review excerpt describes the show as \"wildly uneven,\" indicating a mixed reaction. The limited text and lack of a clear recommendation lead to a lower confidence score. | Kimi: The critic explicitly labels the show 'wildly uneven,' balancing criticism ('ridiculous,' 'broadness of their strokes') with praise ('entirely charming,' 'greatest strength'), but offers no clear recommendation to see or skip it. Confidence is low due to the single truncated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:48.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

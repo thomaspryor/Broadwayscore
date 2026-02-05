@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "We've all seen the scene in \"A Christmas Story\" when the kid gets his tongue stuck on a frozen flagpole. Now on Broadway is that very same scene – plus the kid actually singing through it, or at least trying to sing. \"Sthlun luv a...,\" he mumbles at the end. It's just one great touch in a musical that dares to mess with one of the most popular Christmas-time movies of all time and yet manages to not only do the film justice, but top it. The show...is a charming triumph of imagination that direct",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-THE-MUSICAL-Opens-on-Broadway-Updating-LIVE-20121119",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "a charming triumph of imagination that dares to mess with one of the most popular Christmas-time movies of all time and yet manages to not only do the film justice, but top it",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite being truncated, the excerpt clearly shows enthusiastic praise with 'charming triumph' and states the show 'tops' the beloved source material. However, confidence is low due to incomplete text. | GPT-4o: The excerpt praises the musical for being a 'charming triumph of imagination' and states it tops the original film, indicating a highly positive verdict. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"great touch\" and \"charming triumph of imagination\" and states that the musical not only does the film justice but surpasses it, indicating a strong recommendation. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:07:15.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

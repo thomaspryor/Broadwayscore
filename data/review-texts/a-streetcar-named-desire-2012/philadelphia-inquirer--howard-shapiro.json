@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Under Mann’s direction, noisy offstage trolleys clang and rumble by on an erratic schedule (Mark Bennett’s sound), the air seems always very still, and the temperature duly enflames raw nerves. But life also goes on apace. Forget the dreary stagings of “Streetcar,” with intense interpretations at every turn. This one has both life and heart, not just mind; it’s as funny as it is violent and loud...Emily Mann knew Tennessee Williams, and at the end of hi",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This one has both life and heart, not just mind; it's as funny as it is violent and loud.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for the production's vitality and Mann's direction, contrasting favorably with 'dreary stagings' of previous productions. However, confidence is low due to truncated text and single excerpt limitation. | GPT-4o: The excerpt praises the production for having 'both life and heart' and being 'funny as it is violent and loud,' indicating a strong positive reaction. However, due to the single excerpt warning, confidence is low. | Gemini: The review praises the direction and interpretation of the play, highlighting its life, heart, humor, and intensity. Given the limited excerpt, I'm placing it in the positive bucket with a higher score due to the enthusiastic tone. | Kimi: The excerpt offers strong praise for the production's emotional resonance and vitality, explicitly contrasting it with previous 'dreary stagings,' though the single truncated excerpt necessitates lower confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:45:38.904Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

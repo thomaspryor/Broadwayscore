@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "New York's heat wave has apparently swept all the way to Sweden, the locale of 'A Little Night Music.'\nSuddenly, the Stephen Sondheim-Hugh Wheeler musical is aglow with a brilliant and irresistible warmth.\nDon't credit the climate. Thank Bernadette Peters, who's assumed the role of Desiree Armfeldt, the famous but fading actress played to Tony-winning effect by Catherine Zeta-Jones.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Suddenly, the Stephen Sondheim-Hugh Wheeler musical is aglow with a brilliant and irresistible warmth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows clear enthusiasm with 'brilliant and irresistible warmth' and positions Peters' performance as transformative. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt uses strong positive language, describing the production as 'aglow with a brilliant and irresistible warmth,' suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises Bernadette Peters' performance and describes the musical as having a \"brilliant and irresistible warmth,\" indicating a positive recommendation. However, due to the limited text, confidence is low. | Kimi: The excerpt uses superlatives like 'brilliant' and 'irresistible warmth' to praise the production, specifically citing Bernadette Peters' performance as transformative. As a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:28:48.118Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

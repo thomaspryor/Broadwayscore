@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The play is funny in spots, but it's also deeply unpleasant, and not in a good way. Rebeck seems to think that making her characters awful will automatically make them interesting.",
-  "contentTier": "complete",
+  "contentTier": "needs-rescrape",
   "contentTierReason": "Short text (31 words)",
   "textQuality": "truncated",
   "previousUrl": "https://www.vulture.com/2011/10/theater_review_seminar.html",
@@ -40,5 +40,10 @@
   "archiveOrgTimestamp": "20240415123950",
   "archiveOrgUrl": "http://web.archive.org/web/20240415123950/https://www.vulture.com/2011/11/theater-review-writing-about-seminars-writing-about-writing.html",
   "wordCount": 515,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "rejectedAt": "2026-02-05T15:11:36.307Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "garbage_text",
+  "rejectionReasoning": "claude: This text contains navigation menus, newsletter signup prompts, and other website interface elements mixed with what appears to be a partial review excerpt, making it unscoreable.; openai: The text contains a mix of review content and unrelated navigation and promotional content, making it not scoreable as a coherent review.; gemini: This is a truncated review with surrounding navigation menus, ad copy, and login prompts. It's not scoreable.",
+  "promptVersion": "5.2.0"
 }

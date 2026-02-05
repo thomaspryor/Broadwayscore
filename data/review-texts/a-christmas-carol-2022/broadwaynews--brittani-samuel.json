@@ -5,7 +5,7 @@
   "criticName": "Brittani Samuel",
   "url": "https://broadwaynews.com/2022/11/21/broadways-solo-christmas-carol-is-all-dressed-up-with-nowhere-to-go/",
   "publishDate": null,
-  "fullText": null,
+  "fullText": "English scribe Charles Dickens wrote more than 40 characters for his famed novella \"A Christmas Carol.\" In the latest theatrical adaptation playing Broadway's Nederlander Theatre, American actor Jefferson Mays tries his hand at all of them. Ebenezer Scrooge, Tiny Tim and the triad of Christmas ghosts get the Mays treatment in a spirited solo performance. Truncation is the only alteration to Dickens' tale here, which Mays both narrates and occupies. The result is a theatrically ambitious but utterly aimless offering of holiday bah humbug. The motion to physically morph into all of the players in \"A Christmas Carol\" is a proper challenge for Mays. The Tony-winning performer has made a career of character roles and earned that esteemed award in 2004 for playing another 40+ people in Doug Wright's \"I Am My Own Wife.\" Ironically, though, Mays is not. His actual wife, Susan Lyons, is co-adaptor of this current rendition of Dickens' holiday staple, along with Mays and director Michael Arden (scenic and costume designer Dane Laffrey is credited as a co-conceiver). Mays performs \"Carol\" by rote and carries the edited-down version expertly, whipping through the well-known tale with aerobic dexterity and a knack for altering body posture and vocal cadence according to character.",
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Arden moves his subject forward through each of Dickens' staves, but the production arrives nowhere. There is no unique point of view or revelation from this solo \"Carol,\" which puts Mays' malleability to waste. The production skews gloomier than most modern retellings. A casket taunts us from center stage before the show begins. Then, a loud, booming sound (design by Joshua D. Reid) shocks us into action. Courtesy of lighting designer Ben Stanton, deep shadows envelop the stage - an effect whic",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jefferson-Mays-Brings-One-Man-A-CHRISTMAS-CAROL-To-Broadway-20221121",
   "showScoreExcerpt": "\"As luxurious and theatrically adventurous as 'A Christmas Carol' is, there is no substitute for purpose. And sadly, this revival has none.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 42,
@@ -76,5 +76,41 @@
   "sources": [
     "show-score-playwright",
     "bww-roundup"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 42,
+  "textWordCount": 204,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2022/broadwaynews--brittani-samuel_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:49:39.995Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 216 (min: 300)"
+  ],
+  "wordCount": 204,
+  "tierReason": "Short text (204 words)"
 }

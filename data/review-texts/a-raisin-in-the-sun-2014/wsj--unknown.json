@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Mr. Leon is an inspired craftsman who creates the illusion that he's merely staying out of the way of a good script. What he does, of course, isn't nearly that simple, but you'll never catch yourself noticing this or that clever touch. All that's visible is the finished product, a piece of storytelling as plain and true and beautiful as a well-laid brick wall...Mr. Washington, though he looks good, also looks his years, so much so that the script has been quietly and pointlessly altered to make him say he's 40, not 35. (He doesn't look 40, either.) Why does this matter? Because 'A Raisin in the Sun' is a naturalistic kitchen-sink drama played out on a you-are-there Chicago tenement set designed by Mark Thompson that's so faded and worn that you can almost see through the wallpaper. It's supposed to look real.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "All that's visible is the finished product, a piece of storytelling as plain and true and beautiful as a well-laid brick wall.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for Leon's direction ('inspired craftsman', 'plain and true and beautiful') and Thompson's design work, with only minor criticism about Washington's age casting. The beautiful metaphor suggests genuine appreciation for the production quality. | GPT-4o: The excerpt praises the director's craftsmanship and the storytelling, suggesting a positive view. However, the mention of altering the script for Mr. Washington's age introduces a reservation. Given the single excerpt and the caution about cherry-picking, the score is on the lower end of Positive with low confidence. | Gemini: The review praises the director's craftsmanship and the set design but also points out a distracting alteration to the script and the actor's age. The overall sentiment is mixed, with both positive and negative observations. | Kimi: While the excerpt praises the director as an 'inspired craftsman' and the production as 'beautiful,' it raises significant concerns about Denzel Washington's age and script alterations undermining the play's naturalism, suggesting a qualified rather than enthusiastic recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:22:23.408Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

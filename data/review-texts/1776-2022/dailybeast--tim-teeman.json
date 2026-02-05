@@ -12,5 +12,60 @@
   "bwwExcerpt": "The Broadway revival of the Tony-winning '1776' is best as a fascinating history lesson, and at its most dragging when the mostly-not-all unmemorable songs take us away from that.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The Broadway revival of the Tony-winning '1776' is best as a fascinating history lesson, and at its most dragging when the mostly-not-all unmemorable songs take us away from that.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed assessment praising the historical content as 'fascinating' but criticizing the songs as 'mostly unmemorable' and 'dragging'. Single excerpt warning requires caution about incomplete verdict. | GPT-4o: The review excerpt describes the show as fascinating in terms of its historical content but criticizes the songs as mostly unmemorable and dragging. This suggests a mixed review, with both positive and negative elements. | Gemini: The review presents a mixed assessment, praising the historical aspect but criticizing the songs. The single excerpt and lack of a clear recommendation lead to a 'Mixed' classification with low confidence. | Kimi: The excerpt offers qualified praise for the show's historical content while criticizing its musical numbers as unmemorable and dragging, suggesting an uneven reception where the production succeeds as education but falters as entertainment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:32:12.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

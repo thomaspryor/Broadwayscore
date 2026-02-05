@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "This being the first Broadway revival of 'A Little Night Music,' I get the feeling that many felt as if it should have been bigger and brighter and more expensive, rather like the Lincoln Center Theater revival of 'South Pacific.' Nevertheless, on the whole, this is a really beautiful production. And I do believe that many will find great satisfaction in it.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nevertheless, on the whole, this is a really beautiful production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'a really beautiful production' and believes 'many will find great satisfaction in it,' indicating a positive recommendation despite some reservations about scale expectations. Single excerpt limits confidence. | GPT-4o: The excerpt suggests a positive view of the production, noting it as 'really beautiful' and likely to provide 'great satisfaction.' Despite some reservations about its scale, the overall tone is positive. | Gemini: The review states that the production is \"really beautiful\" and that many will find \"great satisfaction in it.\" While there is some reservation about it not being \"bigger and brighter,\" the overall sentiment is positive. | Kimi: The critic offers clear praise calling it a 'really beautiful production' where audiences will find 'great satisfaction,' indicating a recommendation despite reservations about scale. However, with only one excerpt available, confidence in the overall verdict is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:29:13.616Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

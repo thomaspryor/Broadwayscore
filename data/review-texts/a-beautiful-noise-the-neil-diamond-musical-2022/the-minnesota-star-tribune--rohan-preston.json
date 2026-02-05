@@ -11,5 +11,60 @@
   "bwwExcerpt": "But “Noise” would have been better served with a different framing device from playwright Anthony McCarten. If we see a therapist, we expect a rush of breakthroughs. What we get instead in the show is underwhelming piffle — confessional hagiography dressed up as serious introspection. Diamond should have been telling all to Oprah or Barbara Walters.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "high",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What we get instead in the show is underwhelming piffle — confessional hagiography dressed up as serious introspection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'underwhelming piffle' and suggests it would be better suited for daytime TV than Broadway, indicating clear disappointment. However, with only one excerpt available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt criticizes the framing device and describes the show as 'underwhelming piffle,' indicating a negative assessment. However, with only one excerpt available, the confidence is low. | Gemini: The review uses negative language such as \"underwhelming piffle\" and \"confessional hagiography\" to describe the show, indicating a negative assessment. The single excerpt and aggregator context support this classification. | Kimi: The critic dismisses the show's content as trivial 'piffle' and criticizes the playwright's framing device, suggesting the material fails as serious theatrical introspection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:57:45.843Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

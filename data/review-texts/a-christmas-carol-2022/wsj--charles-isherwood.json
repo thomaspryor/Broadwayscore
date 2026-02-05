@@ -5,8 +5,8 @@
   "criticName": "Charles Isherwood",
   "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-many-11669242345",
   "publishDate": null,
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-many-11669242345\n\nJefferson Mays in ‘A Christmas Carol’ Photo: A CHRISTMAS CAROL LIVESolo shows, which proliferate on stages in New York and elsewhere, might seem to share a similar simplicity. After all, with but one actor at work, how much variety can this genre promise?And yet two shows now on stage in New York exemplify how radically different theatrical experiences with just one performer can be. On Broadway, Jefferson Mays is portraying more than three-dozen characters in a sumptuously designed adaptation of Charles Dickens’s beloved “A Christmas Carol.” Downtown, at the Vineyard Theatre, Marjan Neshat is starring in the writer and performer David Cale’s new show, “Sandra,” a sparely presented, twisty tale of a woman in search of a friend who has mysteriously disappeared. And the shows, both worthwhile and expertly executed, illustrate how disparately theater-makers can approach the challenge of captivating audiences with just a sole actor onstage.\n\nNederlander Theatre, 208 W. 41st St., New York\n\n$79.75-$173.50, ticketmaster.com, closes Jan. 1, 2023\n\nVineyard Theatre, 108 E. 15th St., New York\n\n$35-$99, 212-353-0303, closes Dec. 18\n\nDickens is among the greatest delineators of characters who leap from the pages of a novel into our hearts and minds. And there is possibly no American actor more suited than Mr. Mays to shuffling through the dozens of players in Dickens’s celebrated tale with the ease of a cardsharp. In the Tony-winning “A Gentleman’s Guide to Love and Murder”—also set in period England—Mr. Mays played a merry murderer as well as several of the victims, male and female, he dispatched in the pursuit of a fortune.\n\nBiden’s Border Bungling Is a Gift to Trump12 hours ago",
+  "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The staging is almost absurdly—and perhaps unnecessarily—lavish, although children and adults now accustomed to television series and movies that pour on the atmospherics with a ladle must, I suppose, be catered to.\"\n\nRead more",
-  "contentTier": "excerpt",
+  "contentTier": "truncated",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 63,
@@ -72,5 +72,30 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 272,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2022/wsj--charles-isherwood_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:56:22.330Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20230526232837",
+  "archiveOrgUrl": "http://web.archive.org/web/20230526232837/https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-many-11669242345",
+  "wordCount": 272,
+  "tierReason": "Short text (272 words)"
 }

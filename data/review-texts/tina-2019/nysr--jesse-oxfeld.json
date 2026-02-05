@@ -18,5 +18,60 @@
   "tierReason": "No text content",
   "wordCount": 0,
   "bwwExcerpt": "Tina, which opened tonight at the Lunt-Fontanne, is, surprisingly, pretty good. Warren, its star, is spectacular. She sings beautifully and she dances ecstatically. She nails that raspy, growling, wide-vowelled Tina voice. (There is, one notices, something a little Cher-y about Tina's drawl.) And she does the whole thing with a focused ferocity that demonstrates how little Anna Mae Bullock could grow up to a legend. Warren's \"River Deep-Mountain High,\" late in Act One, makes you stop, take notic",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TINA--THE-TINA-TURNER-MUSICAL-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20191107",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tina, which opened tonight at the Lunt-Fontanne, is, surprisingly, pretty good.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with enthusiastic praise for the lead performance ('spectacular', 'nails that voice', 'focused ferocity') and overall positive assessment. Single excerpt limits confidence but star rating and superlatives suggest strong positive. | GPT-4o: The excerpt praises the star's performance as 'spectacular' and highlights her singing and dancing. The original 4/5 stars rating suggests a strong positive review. However, the single excerpt and text quality warning lower confidence. | Gemini: The review excerpt praises the star's performance as spectacular and the show as surprisingly pretty good, indicating a positive recommendation. The 4/5 star rating also supports this classification. | Kimi: The 4/5 star rating and enthusiastic praise for Warren as 'spectacular' with 'focused ferocity' support a strong Positive score, though the show itself is deemed only 'pretty good.' Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:14:38.316Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 82,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

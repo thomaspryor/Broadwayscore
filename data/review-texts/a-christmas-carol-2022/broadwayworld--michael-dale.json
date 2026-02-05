@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While much of the text may be new, the production leans on the traditional side, and attractively so. As audience members enter, music director Michael Gacetta's accordion and string ensemble play holiday favorites while cast members roam about the house offering guests clementines or packaged cookies.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "high",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the production leans on the traditional side, and attractively so",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise with 'attractively so' but describes a traditional approach without strong enthusiasm. Single excerpt warning requires caution - this could be scene-setting rather than verdict. | GPT-4o: The excerpt describes the production as 'attractively' traditional, suggesting a positive view. However, the single excerpt and lack of a full review text limit confidence. | Gemini: The excerpt describes the production as \"attractively\" traditional, which is mildly positive. Given that it is only one excerpt, I am scoring it at the lower end of the positive range with low confidence. | Kimi: The excerpt offers mild praise for the production's traditional approach and pre-show atmosphere ('attractively so'), suggesting a positive but not enthusiastic recommendation. However, with only one curated excerpt available, confidence is low and the score reflects the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:49:59.295Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

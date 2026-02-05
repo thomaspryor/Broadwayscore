@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "War Horse is a triumph of theatrical imagination, a show that makes you believe in the magic of live performance even as it reminds you how rarely that magic is actually achieved.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 89,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -42,5 +42,60 @@
   "archiveOrgTimestamp": "20230329094404",
   "archiveOrgUrl": "http://web.archive.org/web/20230329094404/https://www.vulture.com/2011/04/theater_review_the_fog_of_war.html",
   "wordCount": 771,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 89,
+    "confidence": "medium",
+    "range": {
+      "low": 84,
+      "high": 94
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "War Horse is a triumph of theatrical imagination, a show that makes you believe in the magic of live performance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: The critic calls it a 'triumph' and emphasizes the rare achievement of theatrical magic, indicating strong enthusiasm despite being only one excerpt. | GPT-4o: The excerpt uses strong positive language ('triumph', 'magic of live performance') indicating a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language such as \"triumph of theatrical imagination\" and emphasizes the magic of live performance, indicating a rave review. | Kimi: The excerpt uses rave-level language ('triumph,' 'magic'), but as a single curated quote it may not represent the full review's caveats, warranting the upper Positive range (80-84) rather than Rave.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:27:53.246Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 88,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

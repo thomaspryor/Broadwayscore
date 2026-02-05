@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Director Matthew Warchus wastes no time putting us in a festive mood with the actors handing out cookies and Clementines as the audience enters under hundreds of lanterns strewn throughout the theatre. There is dance and music both original and traditional played sweetly at times with hand bells adding to the merriment. But unlike other versions of the iconic story, which attempt to dazzle with special effects, this one has a more introspective tone adding dimension to the characters that have come to be so familiar to us.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this one has a more introspective tone adding dimension to the characters that have come to be so familiar to us",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear appreciation for the production's approach and atmosphere, praising the director's work and noting positive elements like festive mood and character dimension. However, with only one excerpt available from a curated selection, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt describes a positive and festive atmosphere created by the director, with a focus on an introspective tone that adds dimension to familiar characters. This suggests a strong positive impression, despite the limited text available. | Gemini: The review describes a festive and introspective production, highlighting the director's choices and the added dimension to the characters. While positive, the lack of a clear recommendation and the single excerpt available lowers the confidence. | Kimi: The excerpt offers clear praise for the immersive staging and specifically values the production's introspective character work over flashy effects, indicating a solid recommendation, though the single-excerpt format limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:03:43.268Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

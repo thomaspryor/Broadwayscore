@@ -15,7 +15,7 @@
   "isFullReview": true,
   "textWordCount": 395,
   "archivePath": "data/archives/reviews/a-bronx-tale-the-musical-2016/wsj--terry-teachout_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T05:59:45.842Z",
+  "textFetchedAt": "2026-02-05T17:41:36.043Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -34,5 +34,60 @@
   "archiveOrgTimestamp": "20220625044737",
   "archiveOrgUrl": "http://web.archive.org/web/20220625044737/https://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1480642202",
   "wordCount": 395,
-  "tierReason": "Missing proper ending or other signals"
+  "tierReason": "Missing proper ending or other signals",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But for all its slickness, 'A Bronx Tale' is nothing more than a weightless comic-book adaptation of the movie on which it's based.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic acknowledges professional execution but dismisses the show as 'nothing more than a weightless comic-book adaptation' that lacks the original's dramatic force. However, confidence is low due to truncated text that cuts off mid-sentence. | GPT-4o: The review acknowledges professionalism and potential appeal to fans but criticizes the show as 'weightless' and lacking dramatic force. The single excerpt limits confidence in the overall verdict. | Gemini: The review acknowledges the show's professionalism and potential appeal to fans of similar productions, but ultimately finds it lacking in dramatic force and substance. Given the single excerpt, confidence is low. | Kimi: While the critic acknowledges the production's professional execution, the ultimate verdict dismisses the show as 'weightless' and lacking the dramatic force of the source material, constituting a clear recommendation against seeing it. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:53:20.546Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 23,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }
