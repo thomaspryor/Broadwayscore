@@ -239,10 +239,13 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `process-feedback.yml`
 - **Runs:** Every Monday at 9 AM UTC
-- **Does:** Fetches Formspree submissions, AI-categorizes feedback, creates GitHub issue digest
+- **Does:** Fetches Formspree submissions, AI-categorizes feedback, auto-diagnoses bugs/content errors, creates GitHub issue digest + separate bug-diagnosis issues
 - **User-facing page:** `/feedback`
-- **Script:** `scripts/process-feedback.js`
-- **Requires:** FORMSPREE_TOKEN
+- **Scripts:** `scripts/process-feedback.js`, `scripts/diagnose-feedback-bug.js`
+- **Requires:** FORMSPREE_TOKEN, ANTHROPIC_API_KEY
+- **Bug diagnosis:** For each Bug/Content Error submission (max 5), keyword-matches to relevant file categories, loads code/data within ~30K token budget, calls Claude Sonnet for structured diagnosis. Creates separate GitHub Issue per bug with labels `bug-diagnosis` + `{priority}-priority`.
+- **Cost:** ~$0.15/bug diagnosis, typical week $0-0.45, max $0.75
+- **CLI test:** `node scripts/diagnose-feedback-bug.js --message "score seems wrong" --show "Hamilton"`
 
 ## `update-commercial.yml`
 - **Runs:** Every Wednesday at 4 PM UTC
