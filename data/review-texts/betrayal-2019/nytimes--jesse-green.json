@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This production of Harold Pinter's masterpiece about adultery and friendship features superb performances from Tom Hiddleston, Zawe Ashton and Charlie Cox that make the familiar feel fresh.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Short text (27 words)",
   "llmScore": {
     "score": 81,
@@ -80,8 +80,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 385,
-  "archivePath": "data/archives/reviews/betrayal-2019/nytimes--jesse-green_2026-02-03.html",
-  "textFetchedAt": "2026-02-03T16:27:18.104Z",
+  "archivePath": "data/archives/reviews/betrayal-2019/nytimes--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:01:03.395Z",
   "fetchMethod": "archive",
   "fetchAttempts": [
     {
@@ -108,5 +108,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: Text ends with 'We are having trouble retrieving the article content. Please enable JavaScript in your browser settings' - this is a technical error message, not a complete review; openai: The text includes navigation issues and a request to enable JavaScript, indicating it is not a complete review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "duplicateTextOf": "nytimes--ben-brantley.json"
 }
