@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2010/legit/reviews/next-fall-1117942043/",
   "publishDate": "March 11, 2010",
-  "fullText": "Geoffrey Nauffts has written a touching play about the collision between faith and sexuality, but the Broadway production of 'Next Fall' suffers from uneven direction and performances that don't always rise to the material's emotional demands.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Geoffrey Nauffts has written a touching play about the collision between faith and sexuality, but the Broadway production of 'Next Fall' suffers from uneven direction and performances that don't always rise to the material's emotional demands.",
   "originalScore": null,
   "assignedScore": 62,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Geoffrey Nauffts has written a touching play about the collision between faith and sexuality, but the Broadway production of 'Next Fall' suffers from uneven direction and performances that don't always rise to the material's emotional demands.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (36 words)",
   "llmScore": {
     "score": 62,
@@ -72,5 +72,47 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 62,
+  "textWordCount": 317,
+  "archivePath": "data/archives/reviews/next-fall-2010/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T05:04:36.610Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Feb 1, 2010 11:54am PT \n\n \n\n \n \n \n\n \n\n \n Drones\n \n \n\n \n\n Indie satire mixes droll cubicle comedics with a patently absurd alien-invasion scenario.\n\nBilled as “Close Encounters of the Office Kind,” indie satire “Drones” mixes droll cubicle comedics a la “The Office” and “Office Space” with a patently absurd alien-invasion scenario. Never leaving its nondescript corporate-branch floor, the pic may be a little too small and low-key to attract theatrical bidders. But its deft farcical performances, witty script and sure-footed handling (by two thesps-turned-helmers) could attract a cult following via fest, DVD and possible cable sales.\n\nEncouraged to hit on polite but chilly co-worker Amy (Angela Bettis, taking a break from B-horror pics), guileless type Brian (Jonathan W. Woodward) takes her on a date that leads to instant coupledom. But Brian has already learned that fellow mouse-pusher Clark (Samm Levine) hails from another planet. He’s even more taken aback to discover Amy does, too. Just how many aliens posing as humans are employed here, anyway? Will they enslave, destroy or make peace? (All of the above, it turns out, depending on which planet they’re from.) The usual office romancing and gossip thus interwoven with intergalactic intrigue, “Drones” achieves a deadpan silliness that’s often delightful. Perfs are pitch-perfect, assembly sharp within modest means.\n\nAs a California consumer, you have the right to opt-out from the sale or sharing of your personal information at any time across business platform, services, businesses and devices. You can opt-out of the sale and sharing of your personal information by using this toggle switch. As a Virginia, Utah, Colorado and Connecticut consumer, you have the right to opt-out from the sale of your personal data and the processing of your personal data for targeted advertising. You can opt-out of the sale of your personal data and targeted advertising by using this toggle switch. For more information on your rights as a United States consumer see our privacy notice."
 }
