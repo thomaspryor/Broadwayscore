@@ -12280,42 +12280,6 @@
     "timestamp": "2026-02-04T18:28:52.333Z"
   },
   {
-    "reviewId": "american-son-2018/hollywood-reporter--david-rooney.json",
-    "showId": "american-son-2018",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/american-son-theater-review-1157904",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): harvey, once, evita, rain, elling...",
-    "textLength": 8805,
-    "timestamp": "2026-02-04T18:29:08.327Z"
-  },
-  {
-    "reviewId": "american-son-2018/vulture--sara-holdren.json",
-    "showId": "american-son-2018",
-    "outlet": "Vulture",
-    "critic": "Sara Holdren",
-    "url": "http://www.vulture.com/2018/11/theater-review-the-good-intentions-of-american-son.html",
-    "method": "archive",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): home, frozen, mean girls, the audience, rain...",
-    "textLength": 18291,
-    "timestamp": "2026-02-04T18:29:39.732Z"
-  },
-  {
-    "reviewId": "an-enemy-of-the-people-2024/nyt-theater--jonathan-mandell.json",
-    "showId": "an-enemy-of-the-people-2024",
-    "outlet": "New York Theater",
-    "critic": "Jonathan Mandell",
-    "url": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (9): our town, home, english, hair, elling...",
-    "textLength": 9050,
-    "timestamp": "2026-02-04T18:39:39.209Z"
-  },
-  {
     "reviewId": "anastasia-2017/hollywood-reporter--david-rooney.json",
     "showId": "anastasia-2017",
     "outlet": "The Hollywood Reporter",
@@ -12326,18 +12290,6 @@
     "garbageReason": "Multiple shows mentioned (9): ragtime, chess, home, the audience, once...",
     "textLength": 9009,
     "timestamp": "2026-02-04T18:40:09.497Z"
-  },
-  {
-    "reviewId": "angels-in-america-2018/hollywood-reporter--david-rooney.json",
-    "showId": "angels-in-america-2018",
-    "outlet": "Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/review/angels-america-theater-review-1097127",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (7): home, all the way, hair, once, war horse...",
-    "textLength": 12960,
-    "timestamp": "2026-02-04T18:48:01.221Z"
   },
   {
     "reviewId": "angels-in-america-2018/vulture--sarah-holdren.json",
@@ -13514,5 +13466,89 @@
     "garbageReason": "Multiple shows mentioned (12): home, glengarry glen ross, junk, waiting for godot, glengarry glen ross...",
     "textLength": 8175,
     "timestamp": "2026-02-05T01:33:11.760Z"
+  },
+  {
+    "reviewId": "american-son-2018/hollywood-reporter--david-rooney.json",
+    "showId": "american-son-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/american-son-theater-review-1157904",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): harvey, once, evita, rain, elling...",
+    "textLength": 7771,
+    "timestamp": "2026-02-05T01:33:43.516Z"
+  },
+  {
+    "reviewId": "american-son-2018/vulture--sara-holdren.json",
+    "showId": "american-son-2018",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "http://www.vulture.com/2018/11/theater-review-the-good-intentions-of-american-son.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, frozen, mean girls, the audience, rain...",
+    "textLength": 18291,
+    "timestamp": "2026-02-05T01:33:46.703Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2012/hollywood-reporter--david-rooney.json",
+    "showId": "an-enemy-of-the-people-2012",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/lifestyle/arts/an-enemy-of-the-people-theater-review-jeremy-strong-michael-imperioli-broadway-ibsen-revival-1235854269/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): mamma mia!, home, king lear, rocky, hair...",
+    "textLength": 10475,
+    "timestamp": "2026-02-05T01:34:05.347Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2012/nytg--allison-considine.json",
+    "showId": "an-enemy-of-the-people-2012",
+    "outlet": "New York Theatre Guide",
+    "critic": "Allison Considine",
+    "url": "https://www.newyorktheatreguide.com/reviews/an-enemy-of-the-people-broadway-review-jeremy-strong-michael-imperioli-victoria-pedretti",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): home, macbeth, king lear, fun home, macbeth...",
+    "textLength": 6804,
+    "timestamp": "2026-02-05T01:34:13.804Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2012/vulture--sara-holdren.json",
+    "showId": "an-enemy-of-the-people-2012",
+    "outlet": "Vulture",
+    "critic": "Sara Holdren",
+    "url": "https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (11): our town, home, waiting for godot, once, rain...",
+    "textLength": 10945,
+    "timestamp": "2026-02-05T01:35:27.806Z"
+  },
+  {
+    "reviewId": "an-enemy-of-the-people-2024/nyt-theater--jonathan-mandell.json",
+    "showId": "an-enemy-of-the-people-2024",
+    "outlet": "New York Theater",
+    "critic": "Jonathan Mandell",
+    "url": "https://newyorktheater.me/2024/03/18/enemy-of-the-people-broadway-review/",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (9): our town, home, english, hair, elling...",
+    "textLength": 9050,
+    "timestamp": "2026-02-05T01:39:05.974Z"
+  },
+  {
+    "reviewId": "angels-in-america-2018/hollywood-reporter--david-rooney.json",
+    "showId": "angels-in-america-2018",
+    "outlet": "Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/review/angels-america-theater-review-1097127",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, all the way, hair, once, war horse...",
+    "textLength": 12960,
+    "timestamp": "2026-02-05T01:39:37.495Z"
   }
 ]
