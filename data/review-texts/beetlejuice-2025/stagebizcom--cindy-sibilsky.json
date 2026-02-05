@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 92,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“Fantastic stage adaptation...Its wild antics and grotesque yet glittery depictions of the underworld have restored lightness, cheek-aching laughter and unabashed, over-the-top, go-for-broke fun back to Broadway...A crowd-pleasing wonder...A movie-based musical that is entirely modern, original, stage-worthy and, in some ways, even superior to the film itself...The most devilishly delightful and debaucherously entertaining event on Broadway.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 92,
+    "confidence": "medium",
+    "range": {
+      "low": 87,
+      "high": 97
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The most devilishly delightful and debaucherously entertaining event on Broadway.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified praise with superlatives like 'fantastic', 'crowd-pleasing wonder', and 'most...entertaining event on Broadway'. Claims superiority to source material and promises exceptional entertainment value. | GPT-4o: The excerpt is filled with superlatives and enthusiastic praise, describing the show as 'devilishly delightful' and 'superior to the film itself'. Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review uses extremely positive language such as \"fantastic stage adaptation\", \"crowd-pleasing wonder\", and \"most devilishly delightful and debaucherously entertaining event on Broadway\", indicating a rave review. | Kimi: The excerpt delivers unqualified praise with superlatives ('fantastic', 'superior to the film itself', 'crowd-pleasing wonder'), indicating a rave-level recommendation, though confidence is reduced due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:39:49.338Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 92,
+    "geminiScore": 92,
+    "kimiScore": 88,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

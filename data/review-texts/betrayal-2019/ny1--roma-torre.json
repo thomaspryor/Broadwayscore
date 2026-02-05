@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Charlie Cox as Jerry is oblivious to the collateral damage his affair has caused. So too Zawe Ashton's Emma, who blithely carries on despite the disruption to her marriage and family. As Robert, Tom Hiddleston has his own secrets. Fans of Hiddleston's blockbuster films get the added pleasure of discovering the movie star is even more thrilling to watch on stage.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fans of Hiddleston's blockbuster films get the added pleasure of discovering the movie star is even more thrilling to watch on stage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on positive performer evaluations, particularly praising Hiddleston as 'even more thrilling to watch on stage.' However, confidence is low due to limited text and potential cherry-picking of a positive quote from a longer review. | GPT-4o: The excerpt highlights the performances, particularly Hiddleston's, as a positive aspect of the show. However, the lack of a full review and the single excerpt warning suggest a cautious approach, leading to a lower-end Positive score. | Gemini: The review excerpt focuses on the performances, particularly Hiddleston's, suggesting a positive experience, but the lack of a clear overall recommendation and the single excerpt lowers the confidence. | Kimi: The single available excerpt offers clear praise for Hiddleston's performance ('thrilling'), suggesting a positive recommendation, though the limited context and lack of full verdict warrant low confidence and the upper end of the Positive bucket per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:01:50.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

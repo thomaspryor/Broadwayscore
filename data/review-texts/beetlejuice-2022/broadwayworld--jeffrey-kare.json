@@ -11,5 +11,60 @@
   "bwwExcerpt": "Under Alex Timbers' direction, he successfully stays true to the style of Tim Burton without ever mimicking him. The visuals alone from Kenneth Posner's lighting to David Korins' set to William Ivey Long's costumes are perfectly gothic, moody, and lively. Connor Gallagher's choreography is quite energetic. For those wondering, yes, the giant snake from the original film is included. It's been brought to life by some eye-popping puppet work from Michael Currey. For a show about death, this stage ",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The visuals alone from Kenneth Posner's lighting to David Korins' set to William Ivey Long's costumes are perfectly gothic, moody, and lively.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Text is clearly truncated mid-sentence, but available content shows consistent praise for direction, design elements, and technical work with specific positive adjectives like 'perfectly' and 'eye-popping.' However, aggregator context suggests 'Flat' verdict, creating uncertainty about the full review's conclusion. | GPT-4o: The excerpt highlights strong visual and choreographic elements, suggesting a positive view of the production's style and execution. However, the single excerpt and aggregator context suggest a mild recommendation, placing it at the lower end of the Positive range. | Gemini: The review praises the direction, visuals, choreography, and puppet work, indicating a positive experience. However, due to the truncated nature of the text and only having one excerpt, the confidence is low. | Kimi: The excerpt offers enthusiastic praise for direction, design, and choreography using words like 'perfectly' and 'eye-popping', suggesting a clear recommendation, though the single-excerpt format and truncation warrant reduced confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:25:06.814Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

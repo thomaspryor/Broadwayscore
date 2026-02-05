@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Pity the actors caught in this bastardization, especially Yelland and Sturrock, fighting memories of Celia Johnson and Trevor Howard, unsurpassable in the movie version. Also Alessi, saddled with conspicuously doubling Albert and Fred, Laura’s husband.",
   "bwwScore": 1,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 30,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pity the actors caught in this bastardization, especially Yelland and Sturrock, fighting memories of Celia Johnson and Trevor Howard.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic calls the show a 'bastardization' and expresses pity for the actors. However, this is only one excerpt and may not represent the full review verdict. | GPT-4o: The excerpt uses strong negative language ('bastardization') and expresses sympathy for the actors trapped in a poor production. The lack of redeeming qualities and the comparison to an unsurpassable movie version suggest a deep pan. | Gemini: The review excerpt uses the word \"bastardization\" and expresses pity for the actors, suggesting a negative overall assessment of the production. Given the limited text, confidence is low. | Kimi: The critic employs the devastating term 'bastardization' to condemn the production wholesale while expressing sympathy for the actors trapped in it, indicating a strongly negative verdict despite limited available text. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:25:34.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

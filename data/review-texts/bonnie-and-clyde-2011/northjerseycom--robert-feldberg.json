@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The show's young stars sing powerfully, and give spirited performances, even if they're not provided depths to plumb. Osnes firmly conveys Bonnie's independent streak, while Jordan makes Clyde a persuasive hell-raiser. Director Jeff Calhoun presents a lively sense of the couple's wild spree, which ended with their violent deaths in 1934. Not enough meaningful attention is paid, though, to their celebrity status, which they helped promote and were delighted by...",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The show's young stars sing powerfully, and give spirited performances, even if they're not provided depths to plumb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt balances praise for performances ('sing powerfully', 'spirited performances') with significant reservations about material depth and execution. The phrase 'even if they're not provided depths to plumb' suggests structural problems with the show itself, despite strong individual elements. | GPT-4o: The review acknowledges strong performances and direction but notes a lack of depth and insufficient attention to key themes. The single excerpt suggests a mixed impression. | Gemini: The review praises the performances and direction, but notes a lack of depth and attention to the couple's celebrity status. Given the single excerpt, a score in the lower-middle of the positive range seems appropriate. | Kimi: The excerpt offers strong praise for the lead performances ('sing powerfully,' 'spirited,' 'persuasive') and direction ('lively'), while criticizing the material's lack of depth. Given the single-excerpt warning and dominant performance praise, this falls in the upper Positive range. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:19:42.115Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 80,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

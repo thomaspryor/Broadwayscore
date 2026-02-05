@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'Bloody Bloody Andrew Jackson' is a not-exactly-history play in which the life of America's seventh president is given what might be called the Jon Stewart treatment (i.e., lots and lots of Irony Lite) and set to the style of rock known as 'emo' (i.e., unabashed emotion accompanied by a just-kidding wink that draws the deadly sting of sincerity). And what are the results? Mixed—but also, if a middle-age critic may dare to say so, hugely encouraging.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 66,
+  "llmScore": {
+    "score": 66,
+    "confidence": "medium",
+    "range": {
+      "low": 61,
+      "high": 71
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And what are the results? Mixed—but also, if a middle-age critic may dare to say so, hugely encouraging.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic explicitly states the results are 'Mixed' but adds they're 'hugely encouraging.' Single excerpt warning applies - this appears to be setting up a more positive verdict that may follow. | GPT-4o: The review describes the results as 'mixed' but also 'hugely encouraging,' indicating a balance of positive and negative elements. The single excerpt suggests a mixed verdict, but the encouragement implies some positive aspects. | Gemini: The review excerpt explicitly states the results are \"mixed\" but also \"hugely encouraging.\" Given this mixed assessment, I've placed it in the Mixed bucket. However, due to the limited text, confidence is low. | Kimi: While the critic explicitly labels the results as 'mixed,' the concluding phrase 'hugely encouraging' serves as the final verdict, suggesting a qualified recommendation. Given this is a single excerpt noting mixed qualities, the score falls at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:22:23.816Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 68,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

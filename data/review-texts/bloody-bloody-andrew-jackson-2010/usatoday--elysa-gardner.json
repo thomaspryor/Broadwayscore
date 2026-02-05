@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "And this unabashedly anachronistic musical doesn't just aim to mock Jackson's proto-libertarian views and followers — or, by implication, their generally right-leaning successors. True, leading man Benjamin Walker's Jackson is introduced as a crude, if charismatic, blowhard, his crowd as similarly rowdy and lowbrow. In the post-punk diatribe Populism Yea Yea, they vow to take 'a stand against the elite,' not to mention a laundry list of foreigners.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this unabashedly anachronistic musical doesn't just aim to mock Jackson's proto-libertarian views and followers",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt describes the show's political approach but offers no clear evaluative judgment on quality or recommendation. The tone suggests analytical distance rather than praise or condemnation. | GPT-4o: The excerpt describes the musical's approach and tone but lacks a clear recommendation or discouragement. The tone suggests a critique of the musical's anachronistic style, but without a full review, the overall sentiment is unclear. | Gemini: The excerpt describes the musical's aims and tone, but doesn't offer a clear recommendation. The description of mocking political views suggests a potentially divisive or uneven experience, placing it in the mixed category. | Kimi: The excerpt describes the show's political satire and anachronistic style with acknowledgment of its ambitions ('doesn't just aim to mock'), suggesting mild appreciation, but lacks strong evaluative verdict language. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:21:53.056Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

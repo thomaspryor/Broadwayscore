@@ -11,5 +11,53 @@
   "bwwExcerpt": "All that emotion bubbles beneath a campy, laugh-aloud, cringe-a-little musical with killer sets, wild costumes, and eye-popping effects, choreography, lighting, props, puppetry (hello, Sandworm!) — the whole shebang. It’s just plain fun. And this touring cast is terrific.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Strong positive language ('killer sets', 'terrific cast', 'just plain fun') with unqualified praise for production elements and performances. Single excerpt warning applied - scoring high within Positive bucket. | GPT-4o: The excerpt describes the show as 'just plain fun' with 'terrific' performances, indicating a strong positive impression. However, the text is a single curated excerpt, limiting confidence. | Gemini: The review excerpt is overwhelmingly positive, describing the show as \"just plain fun\" with \"killer sets\" and a \"terrific\" cast. Given the single excerpt and aggregator context, I'm placing it in the upper end of the positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:39:30.449Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

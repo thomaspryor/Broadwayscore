@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With each successive scene, Guirgis peels away layers, and we learn more about Walter: He basically drinks from morning to night. There’s more to his shooting story than we thought. And he has a real mean streak toward the end—truly avaricious and petty. Yet we’re rooting for him despite each disturbing discovery. Henderson, an exceptional stage actor who’s perhaps best known for his roles in August Wilson plays, gives a bravura performance—all the more impressive considering he’s seated for mos",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winner-BETWEEN-RIVERSIDE-AND-CRAZY-Opens-On-Broadway-20221219",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Henderson gives a bravura performance—all the more impressive considering he's seated for most of the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'bravura' and 'exceptional' with engaged character analysis. Text cuts off mid-sentence, limiting confidence in full verdict. | GPT-4o: The excerpt highlights a strong performance by Henderson and suggests a compelling narrative despite the character's flaws. The tone is positive, but with only one excerpt, confidence is low. | Gemini: The review highlights a strong performance and engaging character development, suggesting a positive experience despite the character's flaws. However, due to the limited excerpt, confidence is low. | Kimi: The excerpt delivers enthusiastic praise for the lead actor's 'bravura' turn and the playwright's skillful character development, noting that the audience remains invested in the protagonist despite his dark qualities. As a single truncated excerpt, however, it may not capture the full scope of the critic's assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:47.714Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

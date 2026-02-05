@@ -12,5 +12,60 @@
   "bwwExcerpt": "From its title and marketing campaign, you'd think the new musical Bandstand would simply be an exuberant paean to the joys of big band swing. But there's a gloominess hanging over this thematically ambitious show, written by Broadway newcomers Richard Oberacker and Rob Taylor. And why shouldn't there be, since its troubled main characters include six World War II veterans and the widow of a man killed in combat. Uneasily attempting to be simultaneously a feel-good, swinging musical and a serious depiction of post-traumatic stress, Bandstand is at war with itself.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Uneasily attempting to be simultaneously a feel-good, swinging musical and a serious depiction of post-traumatic stress, Bandstand is at war with itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic describes the show as having fundamental tonal conflicts and being 'at war with itself,' which suggests significant structural problems. However, this is only one excerpt from a larger review, so the full verdict may differ. | GPT-4o: The review highlights a conflict in the show's tone and execution, suggesting it struggles to balance its themes. This indicates a mixed reception, with no clear recommendation or discouragement. | Gemini: The review excerpt highlights the show's thematic ambition but also its struggle to balance contrasting elements, suggesting a mixed or uneven experience. Given the single excerpt, confidence is low. | Kimi: The excerpt identifies fundamental tonal conflicts between the show's entertaining swing elements and its serious PTSD themes, describing the production as 'at war with itself.' While acknowledging thematic ambition, the verdict suggests the dual aims do not successfully cohere. Confidence is low due to the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:10.225Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

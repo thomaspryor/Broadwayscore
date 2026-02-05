@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Ultimately, Rice finds too much of herself and too little of Coward. She deploys his plot and his songs, but her ironic flashiness illustrates rather than penetrates the punishing emotions of the film.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rice finds too much of herself and too little of Coward.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds fundamental flaws in the adaptation - that it prioritizes the director's voice over the source material and fails to penetrate the emotional core. This represents a clear disappointment with the production's approach. | GPT-4o: The excerpt suggests a mixed evaluation, noting a lack of depth in the adaptation. The single excerpt warning and lack of a clear recommendation lead to a low confidence score. | Gemini: The excerpt indicates that the reviewer finds the production lacking in emotional depth and that the adaptation by Rice is not successful in capturing the essence of Coward's work. Given the single excerpt, confidence is low. | Kimi: The critic faults the director for imposing her own style over the source material, finding the production fails to capture the emotional depth of Coward's work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:41:17.447Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

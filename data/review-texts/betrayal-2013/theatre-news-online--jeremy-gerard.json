@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To Lloyd's credit, and that of this spectacular cast, we never lose sight of the ways in which these three lives are ineradicably interwoven, giving more power to the emptiness and emotional wreckage their actions have wrought - despite their best attempts to be so very British about it all. The truth is visible there, in the splintered light glinting off a trail of mucus, loosed by the wrench of unexpected grief.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To Lloyd's credit, and that of this spectacular cast, we never lose sight of the ways in which these three lives are ineradicably interwoven.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises both the director ('To Lloyd's credit') and cast ('spectacular cast') while appreciating the artistic achievement of maintaining narrative coherence. However, this is only one curated excerpt, so confidence is low. | GPT-4o: The excerpt praises the cast and direction, highlighting the emotional impact and depth. However, the single excerpt warning suggests caution, leading to a lower score within the Positive range. | Gemini: The review praises the cast and the director, and highlights the emotional impact of the story. Given the single excerpt and lack of explicit recommendation, confidence is low, but the tone is positive. | Kimi: The excerpt offers enthusiastic praise for both direction ('To Lloyd's credit') and performances ('spectacular cast'), emphasizing the production's emotional power and effective storytelling. As a clearly positive single excerpt, it warrants the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:00:01.792Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

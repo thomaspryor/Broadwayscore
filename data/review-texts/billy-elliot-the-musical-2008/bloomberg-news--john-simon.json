@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A show's claim to offer ``something for everyone' usually signals disaster: the lowest common denominator and the antithesis of art. Well, for once, the exception proves true: ``Billy Elliot' -- London's long-running hit with Elton John's music, finally replicated on Broadway -- really does have something for everyone, and that something is, gloriously, art.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Billy Elliot really does have something for everyone, and that something is, gloriously, art.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, this is clearly enthusiastic praise calling the show 'gloriously, art' and defying expectations to deliver something exceptional. The critic explicitly contradicts their own cynical opening to declare this an exception that succeeds magnificently. | GPT-4o: The excerpt praises the show as an exception to the rule, highlighting it as 'gloriously, art.' Despite the single excerpt warning, the language suggests a strong recommendation. | Gemini: The review states that the show \"really does have something for everyone, and that something is, gloriously, art,\" indicating a strong positive recommendation. | Kimi: The critic overturns the usual negative connotation of populist 'something for everyone' entertainment to praise the show as 'gloriously, art,' indicating strong endorsement. With only a single excerpt available, this warrants the upper end of the Positive bucket. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:08:58.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

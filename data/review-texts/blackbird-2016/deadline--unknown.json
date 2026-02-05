@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Broadway loves a fine romance and nowhere are the sparks showering down more heat and crackle than the ones being thrown off by Jeff Daniels and Michelle Williams in Blackbird...Their rapture is murderous. They want to annihilate each other. This is the electrifying production that this season's revival of Sam Shepard's Fool For Love aspired to be...Daniels and Williams are so devastatingly into David Harrower's stem-winding tale of an illicit conjugation, that by the time the lights came up I f",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is the electrifying production that this season's revival of Sam Shepard's Fool For Love aspired to be",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for the leads ('devastatingly into', 'electrifying production') and favorable comparison to another show, but text is clearly truncated mid-sentence, limiting confidence in the full verdict. | GPT-4o: The excerpt uses strong positive language ('electrifying', 'devastatingly into') and compares it favorably to another production, indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"electrifying production\" and praises the performances of the leads. Given the truncated nature, I'm scoring it as positive but with lower confidence. | Kimi: The excerpt offers enthusiastic praise with superlatives like 'electrifying' and 'devastatingly' to describe the performances, placing it in the strong positive range, though confidence is low as only a single curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:16:34.360Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

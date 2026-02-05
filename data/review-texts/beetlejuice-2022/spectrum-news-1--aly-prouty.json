@@ -11,5 +11,60 @@
   "bwwExcerpt": "Between the jokes, the heartwarming storyline and musical melodies, you can’t help but leave the show smiling. Not to mention, the ensemble is full of a fantastic crew of dancers (choreography by Connor Gallagher). Their skill and flawless technique is masterfully highlighted in “That Beautiful Sound” in Act II, as they perform gravity-defying leaps, impressive turns and acrobatic stunts that only a high-caliber performer could pull off.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Between the jokes, the heartwarming storyline and musical melodies, you can't help but leave the show smiling.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive sentiment with praise for multiple elements (jokes, story, music, choreography, ensemble). However, single excerpt warning applies - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt provides a positive assessment of the show, highlighting enjoyable elements like jokes, storyline, and musical melodies, and praises the ensemble's performance. The tone suggests a strong recommendation, placing it in the upper range of the Positive bucket. | Gemini: The review excerpt expresses a very positive sentiment, highlighting the enjoyable storyline, music, and impressive choreography. The phrase \"you can't help but leave the show smiling\" indicates a strong recommendation. | Kimi: The excerpt offers strong praise for the show's emotional impact and choreography, using words like 'masterfully,' 'flawless,' and 'fantastic' alongside an explicit recommendation that audiences will leave smiling.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:47:18.342Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

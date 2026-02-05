@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "What I admire about this production is that it knows exactly what it is. A monologue at the top of the show states, 'the viewing of too many musical comedies with sentimental and over romantic plots may cause serious and sometimes incurable damage to the playgoer and the critics’ standards. Therefore, what you are about to see is an almost plotless musical.' And boy, do they deliver on that promise.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What I admire about this production is that it knows exactly what it is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses admiration for the production's self-awareness and confirms it successfully delivers on its promise. However, this is only a single excerpt, so confidence is low and the positive assessment could be limited in scope. | GPT-4o: The excerpt shows admiration for the production's self-awareness and fulfillment of its promise. However, the single excerpt warning suggests caution, so a score at the lower end of Positive is appropriate. | Gemini: The critic admires the production's self-awareness and delivery on its promise, suggesting a positive, albeit potentially unconventional, experience. Given the single excerpt, confidence is low. | Kimi: The critic expresses clear admiration for the show's self-awareness and confirms it successfully delivers on its 'almost plotless' premise, indicating solid appreciation. However, as this is a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:18:03.139Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

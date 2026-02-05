@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Bandstand is being promoted as 'a swing musical,' and that's what it joyfully is, as director-choreographer Andy (Hamilton) Blankenbuehler deploys a cast headed by the sparkling and tough Laura Osnes and Corey Cott and boasting some of the most spectacular dancers on Broadway this minute. The brilliant Blankenbuehler keeps his stageful of remarkable performers moving just about constantly in ways that make spectators watch what each of them is doing individually and what all of them are doing as a lithe, athletic team. For that, abundant bravos.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The brilliant Blankenbuehler keeps his stageful of remarkable performers moving just about constantly in ways that make spectators watch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for direction, choreography, and cast with superlatives like 'brilliant,' 'spectacular,' and 'remarkable.' However, this is only one excerpt so confidence is low - the full review verdict could differ. | GPT-4o: The excerpt praises the direction and choreography as 'brilliant' and 'joyful,' with 'abundant bravos' for the performers. This suggests a strong positive recommendation, though the single excerpt limits confidence. | Gemini: The review uses strong positive language such as \"joyfully\", \"sparkling\", \"tough\", \"most spectacular dancers\", and \"remarkable performers\". The critic also praises the director-choreographer's work, indicating a strong recommendation. | Kimi: The excerpt delivers enthusiastic praise for the choreography, direction, and cast, calling the show 'joyfully' successful and offering 'abundant bravos.' As a single curated excerpt, the confidence is low, but the tone is clearly and strongly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:23:02.534Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

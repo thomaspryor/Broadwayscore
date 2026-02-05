@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It's more like Breakfast at Woolworth's: grittier perhaps, but hardly aspirational. Can't a girl be left to her dreams?",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's more like Breakfast at Woolworth's: grittier perhaps, but hardly aspirational.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt with no clear recommendation. The comparison to 'Woolworth's' vs presumably 'Tiffany's' suggests disappointment, and the final question 'Can't a girl be left to her dreams?' reads as wistful criticism, but without full context this could be part of a larger positive or negative assessment. | GPT-4o: The excerpt suggests a mixed tone, comparing the show unfavorably to a less glamorous setting. The lack of aspiration implies a lack of strong recommendation, but without more context, it's unclear if the overall sentiment is more negative or positive. | Gemini: The excerpt suggests the show is not aspirational and gritty, implying a negative assessment. Given the single excerpt and lack of context, confidence is low. | Kimi: The critic employs a dismissive comparison to suggest the show lacks the glamour and aspirational quality expected, instead offering a disappointing, downmarket experience that denies the audience escapist dreams. | Buckets: claude=Mixed, openai=Mixed, gemini=Negative, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:39:49.550Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

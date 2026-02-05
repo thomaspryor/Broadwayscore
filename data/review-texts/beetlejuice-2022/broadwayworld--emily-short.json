@@ -11,5 +11,60 @@
   "bwwExcerpt": "Despite having a difficult time hearing the cast for a majority of the show (This seemed to be fixed after intermission.), it was clear that each cast member was well suited for their role. Justin Collette's raspy and bold voice is exactly what I imagine a loony but somehow loveable demon would sound like. The energy Collette put into each of Beetlejuice’s moods, songs, and jokes was perfect, and he did a great job including the audience in his shenanigans. With an equally or even more powerful ",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "each cast member was well suited for their role",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the lead performance enthusiastically but mentions technical sound issues. Text appears cut off mid-sentence. Single excerpt warning applies - using lower end of Positive bucket due to incomplete verdict and mixed elements. | GPT-4o: The excerpt praises Justin Collette's performance and audience engagement, suggesting a positive view of his role. However, the mention of sound issues and the lack of a full review text suggest some reservations, leading to a lower score within the Positive bucket. | Gemini: The excerpt focuses on a positive performance, but the truncated text and hearing issues mentioned suggest reservations. Given the limited information, a low positive score seems appropriate. | Kimi: The excerpt offers enthusiastic praise for the cast ('perfect', 'great job', 'well suited'), particularly Justin Collette's performance, outweighing the noted sound problems. Per instructions for clearly positive single excerpts, scoring in the 80-84 range with low confidence due to truncation and limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:49.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

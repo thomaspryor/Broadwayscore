@@ -11,5 +11,60 @@
   "bwwExcerpt": "Samara Caplan and Laura Gauthier, Apt. 613: There is no doubt that Beetlejuice is a fun way to spend an evening. All the elements work together to bring a show full of energy that highlights connection, family, grief and love. Grab your handbook for the recently deceased and get ready to catch the show of a lifetime!",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There is no doubt that Beetlejuice is a fun way to spend an evening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with enthusiastic language ('no doubt', 'fun', 'show of a lifetime') and praise for production elements. Single excerpt warning applied - using upper end of Positive bucket. | GPT-4o: The excerpt provides a clear positive recommendation, describing the show as 'fun' and highlighting its energetic elements. The phrase 'show of a lifetime' suggests strong enthusiasm, justifying a score at the upper end of the Positive range. | Gemini: The review states that Beetlejuice is a fun way to spend an evening and calls it the show of a lifetime, indicating a positive recommendation. | Kimi: The excerpt describes the show as a 'fun way to spend an evening' filled with energy and explicitly urges readers to catch the 'show of a lifetime,' indicating a strong positive recommendation despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:36:49.839Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

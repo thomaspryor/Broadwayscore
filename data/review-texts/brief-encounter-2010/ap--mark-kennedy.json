@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "They are part of the reason theatregoers leave the play with a smile. That, and the cast itself waiting for you near the bar at the end, singing modern songs by Beyonce, Cyndi Lauper and Journey while playing accordion, trumpet, double bass and ukulele. Does being serenaded by the actors after the doomed romance on stage ends in tears make sense? Not really, particularly after all the blissful hijinks have evaporated. But if this is what Rice can do with a mere sliver of a story, just imagine what she can do with something more meaty.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They are part of the reason theatregoers leave the play with a smile.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic notes audiences leaving with smiles and praises the cast performances, while acknowledging structural issues. The final line expresses optimism about the creative team's potential, suggesting overall recommendation despite flaws. | GPT-4o: The excerpt suggests a positive experience overall, with theatregoers leaving with a smile. However, there are reservations about the coherence of the post-show serenade. The single excerpt limits confidence in the full verdict. | Gemini: The review indicates that the audience leaves with a smile and praises the cast. However, it also mentions that the ending doesn't quite make sense, suggesting some reservations. Given the single excerpt and the positive but qualified tone, a score of 75 seems appropriate. | Kimi: The critic praises director Rice's ability to elevate thin material, notes audiences leave smiling, and appreciates the cast's energy, despite noting some staging elements don't logically cohere.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:31:15.001Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

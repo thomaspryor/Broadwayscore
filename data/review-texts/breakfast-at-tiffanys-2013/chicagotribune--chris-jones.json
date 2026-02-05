@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The problem here is of simpler vintage: There's no palpable connection between Fred and Holly, the unlikely and surely ill-fated couple of Capote's imagination...The other problem with Mathias' show...is that it misses the exuberance of the \"Breakfast at Tiffany's\" novella...Capote understood the dangers of trying to start from scratch - the past will come out, and all that - but he also knew its appeal...Greenberg tries to underscore this crucial ambivalence in his text, and he tries to set out",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's no palpable connection between Fred and Holly, the unlikely and surely ill-fated couple of Capote's imagination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt focuses on fundamental problems with the show - lack of chemistry between leads and missing the source material's exuberance. However, with only one truncated excerpt available, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt highlights significant issues with the production, such as a lack of connection between characters and missing the novella's exuberance. The tone suggests disappointment, but the single excerpt limits confidence. | Gemini: The review excerpt identifies key problems with the production, including a lack of connection between the leads and a failure to capture the exuberance of the source material. Given the limited text, a negative score seems appropriate. | Kimi: The critic identifies fundamental flaws including a lack of chemistry between the lead characters and a failure to capture the exuberance of Capote's source material, indicating the production falls short of success.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:37:49.293Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

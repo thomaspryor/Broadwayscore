@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Belushi paints all this with size and spirit, but also with sensitivity, a word you might not expect to find applied to the acting of such a role. Loud, crude, and ugly on the surface, this Harry Brock shows a flickering helplessness underneath. Just menacing enough to be genuinely scary, he never lets the hints of pathos soften him into a Damon Runyon cartoon gangster. Staunchly unlovable, he's also clearly a person who needs love, and we can all identify with that.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Belushi paints all this with size and spirit, but also with sensitivity, a word you might not expect to find applied to the acting of such a role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Belushi's nuanced performance with sophisticated analysis of his character work. Single excerpt warning suggests this represents positive sentiment, placed in upper Positive range. | GPT-4o: The excerpt praises Belushi's performance, highlighting his ability to balance size, spirit, and sensitivity. The positive tone suggests a recommendation, but the single excerpt warning and lack of full context necessitate a cautious approach. | Gemini: The review excerpt focuses on the actor's portrayal of the character, highlighting both the negative and sympathetic aspects. While it doesn't explicitly recommend the show, the positive description of the performance suggests a positive, but not rave, experience. | Kimi: The excerpt offers strong, unqualified praise for Belushi's nuanced acting, highlighting unexpected sensitivity beneath the character's crude surface. As a clearly positive single excerpt, it scores in the upper Positive range (80-84) per the single-excerpt guidance, with low confidence due to limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:36:31.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Whether or not it ultimately proves to be a hit, 'Be More Chill,' a sublimely silly, exciting sci-fi teen musical comedy deserves a place in Broadway history as an unlikely comeback story powered by a passionate fan following on social media.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Be More Chill,' a sublimely silly, exciting sci-fi teen musical comedy deserves a place in Broadway history as an unlikely comeback story powered by a passionate fan following on social media.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses clearly positive language ('sublimely silly, exciting') and states the show 'deserves a place in Broadway history,' indicating strong recommendation. Single excerpt warning applied - confident positive language suggests upper end of Positive bucket. | GPT-4o: The excerpt describes the show as 'sublimely silly' and 'exciting,' with a positive tone suggesting it deserves recognition. Despite the lack of a full review, the language indicates a strong positive sentiment. | Gemini: The review excerpt is positive, calling the show \"sublimely silly, exciting sci-fi teen musical comedy\" and noting its passionate fan following. The \"whether or not it proves to be a hit\" suggests some reservations, but overall the tone is positive. | Kimi: The excerpt offers strong praise, calling the show 'sublimely silly' and 'exciting' and arguing it 'deserves a place in Broadway history,' indicating a clear recommendation despite commercial uncertainties.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:24:27.857Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

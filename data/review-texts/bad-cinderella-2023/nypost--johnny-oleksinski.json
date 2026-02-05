@@ -17,5 +17,60 @@
   "publishDate": "March 24, 2023",
   "bwwExcerpt": "It’s a mess with multiple personality disorder. From start to finish during this perplexing and often dull fairytale spin — and, oh, does it spin — you’re never entirely sure what you’re watching or why you’re watching it.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+  "assignedScore": 32,
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a mess with multiple personality disorder.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Strong negative language calling the show 'a mess' and 'perplexing and often dull', but confidence is low due to truncated text with unclear full verdict. | GPT-4o: The review describes the show as a 'mess' and 'perplexing and often dull,' indicating a strong negative opinion. The lack of a clear recommendation and the use of negative descriptors suggest a pan. | Gemini: The review excerpt describes the show as a \"mess\" and \"perplexing\", indicating a negative assessment. The critic questions the purpose of watching it. | Kimi: The excerpt describes the show as a 'mess' that is 'perplexing and often dull,' with the critic questioning the very purpose of the production, indicating a strongly negative verdict. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:21:22.471Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 25,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

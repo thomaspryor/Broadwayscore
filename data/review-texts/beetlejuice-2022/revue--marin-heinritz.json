@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collette’s Beetlejuice is filthy and bawdy but rarely truly loathsome. Part stand-up comedian vying for laughs with a rapid-fire succession of punchlines, and part queer, hyper-sexed Frank-n-Furter, this jagged-up, lonely-hearted prisoner of the underworld does inspire laughter, and his political jokes land especially well (“I’m invisible, powerless, like a gay Republican”); however, he’s everywhere all at once, visually represented in one of the better musical numbers wherein every membe",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this jagged-up, lonely-hearted prisoner of the underworld does inspire laughter",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise for Collette's performance, noting he 'does inspire laughter' and calling jokes effective, but flags that he's 'everywhere all at once.' Single excerpt limits confidence, and the cut-off suggests more critique may follow. | GPT-4o: The excerpt praises Justin Collette's performance as Beetlejuice, noting it inspires laughter and that his political jokes are effective. However, the text quality warning suggests caution, and without a full review, the confidence is low. | Gemini: The review excerpt describes the performance as inspiring laughter and landing political jokes well, but also notes that the character is \"everywhere all at once.\" Given the single excerpt and aggregator context, I'm scoring this as positive with reservations. | Kimi: The excerpt offers qualified praise for Collette's comedic delivery and the musical numbers, noting that while the performance inspires laughter, the characterization lacks the truly loathsome quality expected of the role.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:43:11.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

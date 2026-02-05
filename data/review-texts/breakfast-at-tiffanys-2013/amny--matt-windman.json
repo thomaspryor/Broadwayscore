@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "...there is very little excitement to be found in this drab and dragging stage adaptation, which was penned by Richard Greenberg (\"Take Me Out\") and is directed by Sean Mathias...For the most part, Greenberg simply lifts passages from the book and has the writer (Cory Michael Smith) awkwardly and constantly deliver first-person narrations directly to the audience. Clarke (\"Game of Thrones\") imbues Holly Golightly with the vulnerability of an outspoken but fragile young woman. Her emotionally rev",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "there is very little excitement to be found in this drab and dragging stage adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt clearly criticizes the adaptation as 'drab and dragging' with 'very little excitement' and faults the writing approach as 'awkward.' However, confidence is low due to truncated text and single excerpt warning. | GPT-4o: The review describes the adaptation as 'drab and dragging' with awkward narration, suggesting a negative overall impression. However, there is some praise for Clarke's performance, which slightly tempers the negativity. | Gemini: The review excerpt describes the production as \"drab and dragging\" and states that there is \"very little excitement to be found.\" While Clarke's performance is acknowledged, the overall tone is negative, suggesting a lack of recommendation. | Kimi: The excerpt describes the show as 'drab and dragging' with 'very little excitement,' criticizing the writing and direction despite praising Emilia Clarke's performance. As a single curated excerpt, the full verdict may differ, but the available text indicates a negative assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:37:05.844Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

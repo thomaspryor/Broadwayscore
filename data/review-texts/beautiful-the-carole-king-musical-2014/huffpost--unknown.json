@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"...it should have a long and healthy run, if, that is, the producers can either convince Jessie Mueller to remain in the title role forever or, failing that, if they can find replacements as enormously talented as she is and as cannily cast... Beautiful is snappily moved along by Derek McLane's shifting sets...But while everything mentioned above contributes to Beautiful, Douglas McGrath's libretto pulls it down several notches. Not so many that it threatens irreversible damage, but still.\"",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it should have a long and healthy run",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic recommends a long run and praises performances/design, but identifies significant libretto problems that 'pull it down several notches.' Single excerpt with mixed signals requires caution. | GPT-4o: The review excerpt suggests a positive outlook on the show's potential success and praises the lead performance and production elements. However, it also notes a significant drawback with the libretto. Given the single excerpt and mixed elements, a lower-end Positive score is appropriate. | Gemini: The review praises the lead actress, direction, and sets, but criticizes the libretto. The overall tone suggests a positive but qualified recommendation. | Kimi: The critic predicts a long run and praises Jessie Mueller's performance and the design, but significantly criticizes the libretto, resulting in a qualified recommendation rather than an enthusiastic endorsement.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:32:16.052Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

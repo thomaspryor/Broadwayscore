@@ -11,5 +11,60 @@
   "bwwExcerpt": "As expected, the show is packed with timely jokes and lots of laughter. We highly recommend you jump in the line and get tickets if you still can.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "We highly recommend you jump in the line and get tickets if you still can.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiastic recommendation with urgency ('highly recommend', 'get tickets if you still can'), praising timely humor and audience response. Single excerpt warning noted but language is unambiguously positive. | GPT-4o: The excerpt provides a strong positive recommendation with enthusiastic language ('highly recommend'), suggesting a very positive view of the show. However, due to the single excerpt warning, confidence is low. | Gemini: The review explicitly recommends seeing the show, stating \"We highly recommend you jump in the line and get tickets if you still can.\" | Kimi: The excerpt contains explicit strong recommendation language ('highly recommend') combined with enthusiastic praise for the show's humor ('packed with timely jokes and lots of laughter'), placing it in the upper range of the Positive bucket despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:22:19.053Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 83,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

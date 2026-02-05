@@ -12,5 +12,60 @@
   "bwwExcerpt": "But just as it starts to feel as if watching the 'South Park' guys deconstruct the apparent illogicalities of Mormonism is starting to sound the same, one-sided note, Parker, Stone and Lopez engineer a very savvy twist in the narrative. This re-energizes the show early in the second act, focuses it more acutely on those 'Avenue Q'-like themes of young people seeking out their purpose and propels it to a conclusion that leaves audience members feeling they've attended something weightier than a series of pointed laughs fired into a soft religious target.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-THE-BOOK-OF-MORMON-20110324",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This re-energizes the show early in the second act, focuses it more acutely on those 'Avenue Q'-like themes of young people seeking out their purpose and propels it to a conclusion that leaves audience members feeling they've attended something weightier than a series of pointed laughs fired into a soft religious target.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows the critic praising the show's narrative sophistication and emotional depth, describing it as 'very savvy' and 'weightier' than expected. However, with only one excerpt available from what may be a longer, more nuanced review, confidence is low. | GPT-4o: The excerpt highlights a positive narrative twist that enhances the show, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review describes a positive turnaround in the second act and a satisfying conclusion, suggesting an overall positive experience despite some initial reservations. The phrase \"something weightier\" implies a deeper impact than just laughs. | Kimi: The critic praises the 'savvy twist' that re-energizes the second act and gives the show thematic weight beyond mere comedy, recommending it as substantial entertainment despite an initial concern about repetitive deconstruction.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:31:20.742Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

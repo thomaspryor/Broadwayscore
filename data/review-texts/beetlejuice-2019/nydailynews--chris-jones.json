@@ -12,5 +12,60 @@
   "bwwExcerpt": "The show, at the Winter Garden Theatre, might have a better chance of persuading us to go on some deep satiric dive here if it was using an adult actress. But Caruso is not yet an adult, although a whopping teenage talent and about the only human to really emerge well from this disaster. Except perhaps for Leslie Kritzer, whose comic instincts as Delia are so great that even the less-than-Perfect's lyrics and the Scott Brown book cannot bury them in bad taste.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html"
+  "playbillVerdictUrl": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html",
+  "assignedScore": 34,
+  "llmScore": {
+    "score": 34,
+    "confidence": "medium",
+    "range": {
+      "low": 29,
+      "high": 39
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "about the only human to really emerge well from this disaster",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Pan/Negative) - using median score | Claude: The critic explicitly calls the show 'this disaster' and criticizes the book and lyrics as 'bad taste,' but acknowledges two performers' talents. Single excerpt warning applies - this sounds like a pan that finds isolated redeeming qualities. | GPT-4o: The review describes the show as a 'disaster' and criticizes the book and lyrics, despite some praise for individual performances. The overall tone suggests a negative verdict. | Gemini: The review uses the word \"disaster\" to describe the show, despite praising some of the performers. This indicates a negative overall assessment. | Kimi: The reviewer explicitly labels the production a 'disaster' and criticizes the lyrics, book, and overall taste, praising only two individual performers as surviving the wreckage. The single-excerpt warning necessitates low confidence. | Buckets: claude=Pan, openai=Negative, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:31:03.645Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 28,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 25,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Pan/Negative) - using median score"
+  }
 }

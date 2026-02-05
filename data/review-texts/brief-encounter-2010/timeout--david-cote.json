@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Although Brief Encounter offers plenty of comic embellishments and artful stage business, it is most powerful when it quiets down to give the material’s sorrow full scope. Adapter and director Emma Rice’s use of Coward’s songs—“A Room with a View” and “Mad About the Boy,” to name two—makes structural (if not always tonal) sense, even if you wish the cast included stronger singers. But then again, it’s the whole artful package, not its individual parts, that seems to sweep some people off their feet.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's the whole artful package, not its individual parts, that seems to sweep some people off their feet.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The review acknowledges the show's power and artful qualities while noting flaws like weaker singers. The final assessment suggests it works as a complete experience despite individual shortcomings. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges both strengths and weaknesses, such as the powerful quiet moments and the structural use of songs, but notes the wish for stronger singers. The overall tone suggests a positive view with some reservations, fitting the lower end of the Positive bucket. | Gemini: The review acknowledges flaws (singing) but ultimately suggests the \"artful package\" is effective, leading to a positive but reserved recommendation. Confidence is low due to the single excerpt. | Kimi: The critic praises the production's artful staging and emotional power while noting reservations about the cast's vocal abilities, ultimately acknowledging that the package works as a whole despite uneven elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:33:43.515Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

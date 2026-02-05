@@ -1169,11 +1169,52 @@ function extractDTLIReviews(html, showId, dtliUrl) {
 
 /**
  * Search BroadwayWorld for Review Roundup article
+ * Priority: 1) URL override, 2) Valid archive, 3) Live fetch
  */
 async function searchBWWRoundup(show, year) {
   console.log('  Searching BroadwayWorld Review Roundups...');
+  const showId = show.id;
 
-  // Generate title variations for URL
+  // Priority 1: Check for manual URL override
+  const urlOverridesPath = path.join(__dirname, '..', 'data', 'bww-roundup-urls.json');
+  if (fs.existsSync(urlOverridesPath)) {
+    try {
+      const overrides = JSON.parse(fs.readFileSync(urlOverridesPath, 'utf8'));
+      if (overrides[showId]) {
+        const overrideUrl = overrides[showId];
+        console.log(`    Using URL override: ${overrideUrl}`);
+        if (chromium) {
+          const result = await scrapeBWWRoundupWithPlaywright(overrideUrl);
+          if (result) {
+            console.log(`    ✓ Found at: ${overrideUrl} (override + Playwright)`);
+            return { url: overrideUrl, html: result.html };
+          }
+        }
+        const result = await searchAggregator('BWW', overrideUrl);
+        if (result.found && result.html) {
+          console.log(`    ✓ Found at: ${overrideUrl} (override)`);
+          return { url: overrideUrl, html: result.html };
+        }
+      }
+    } catch (e) { /* ignore override errors */ }
+  }
+
+  // Priority 2: Check for existing valid archive (less than 30 days old)
+  const archivePath = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${showId}.html`);
+  if (fs.existsSync(archivePath)) {
+    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
+    if (age < 30) {
+      const html = fs.readFileSync(archivePath, 'utf8');
+      if (html.includes('Review Roundup') && html.includes('articleBody')) {
+        const urlMatch = html.match(/Source:\s+(https?:\/\/[^\n]+)/);
+        const url = urlMatch ? urlMatch[1].trim() : null;
+        console.log(`    ✓ Using cached archive (${Math.round(age)} days old)`);
+        return { url, html };
+      }
+    }
+  }
+
+  // Priority 3: Live fetch - generate title variations for URL
   const titleVariations = [
     show.title.toUpperCase().replace(/[^A-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
     show.title.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
@@ -1850,6 +1891,44 @@ async function gatherReviewsForShow(showId) {
       if (createReviewFile(showId, review)) {
         created++;
       }
+    }
+  }
+
+  // [3b/4] Merge BWW excerpt-only reviews into existing files
+  // BWW roundups provide excerpts but no individual URLs, so we merge them into existing files
+  const bwwReviews = foundReviews.filter(r => r.source === 'bww-roundup' && !r.url && r.bwwExcerpt);
+  if (bwwReviews.length > 0) {
+    console.log(`\n[3b/4] Merging ${bwwReviews.length} BWW excerpts into existing files...`);
+    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+    if (fs.existsSync(showDir)) {
+      const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+      let merged = 0;
+      for (const bwwReview of bwwReviews) {
+        const criticNorm = normalizeCritic(bwwReview.criticName);
+        const outletNorm = normalizeOutlet(bwwReview.outlet || bwwReview.outletId);
+
+        for (const file of existingFiles) {
+          const expectedPattern = `${outletNorm}--${criticNorm}`;
+          if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-') ||
+              file.includes(`--${criticNorm}.json`) || file.includes(`--${criticNorm}-`)) {
+            const filePath = path.join(showDir, file);
+            const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+            if (!data.bwwExcerpt) {
+              data.bwwExcerpt = bwwReview.bwwExcerpt;
+              data.bwwRoundupUrl = bwwReview.bwwRoundupUrl;
+              if (!data.sources) data.sources = [];
+              if (!data.sources.includes('bww-roundup')) data.sources.push('bww-roundup');
+
+              fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+              console.log(`    [BWW] ${file}`);
+              merged++;
+            }
+            break;
+          }
+        }
+      }
+      console.log(`    Merged BWW data into ${merged} existing files`);
     }
   }
 

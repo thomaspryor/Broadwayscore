@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Superbly acted by Rachel Weisz, Daniel Craig and Rafe Spall, the production sparkles in its simple, powerful beauty. The fact that Craig and Weisz are married in real life adds a dash of spice to performances roiling under the surface...Weisz is luminous - pitiful in a scene when she confesses her affair, toussled and off-kilter when in deep infatuation and yet also coolly disconnected in a scene in her love nest at the end of the secret relationship. Craig still has some 007 swagger about him ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Superbly acted by Rachel Weisz, Daniel Craig and Rafe Spall, the production sparkles in its simple, powerful beauty.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for performances ('superbly acted', 'luminous') and production ('sparkles', 'powerful beauty'). However, single excerpt warning applies - setting confidence to low as this may not represent full verdict. | GPT-4o: The excerpt provides strong praise for the performances and the production's beauty. However, due to the single excerpt warning, confidence is low and the score is placed at the upper end of the Positive range. | Gemini: The review uses strong positive language such as \"superbly acted\" and \"sparkles in its simple, powerful beauty.\" The critic also highlights the actors' performances, especially Weisz's, and mentions the added spice of Craig and Weisz being married in real life. | Kimi: The excerpt offers strong praise for the acting ('superbly', 'luminous') and production quality ('sparkles'), clearly recommending the show on the strength of its performances. However, as a single curated excerpt, the overall verdict may not be fully represented.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:25.232Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

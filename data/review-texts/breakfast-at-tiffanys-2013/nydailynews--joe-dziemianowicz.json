@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Five days before the show's premiere, Sean Mathias sat in front of me at \"Breakfast at Tiffany's.\" The British director had a pen in his hand and a notebook in his lap. By rights, Mathias should've been drafting an apology letter for stirring up this half-baked rehash of Truman Capote's singularly quirky book about Holly Golightly.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 33,
+  "llmScore": {
+    "score": 33,
+    "confidence": "medium",
+    "range": {
+      "low": 28,
+      "high": 38
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By rights, Mathias should've been drafting an apology letter for stirring up this half-baked rehash",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic calls the show a 'half-baked rehash' and suggests the director should apologize, indicating clear disappointment. However, with only one excerpt available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt is strongly negative, suggesting the show is a 'half-baked rehash' and implies it warrants an apology. However, with only one excerpt, the confidence is low. | Gemini: The excerpt is clearly negative, calling the production a \"half-baked rehash.\" Given that this is the only excerpt available, I am scoring it as negative with low confidence. | Kimi: Extracted from malformed response | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:39:13.222Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 25,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

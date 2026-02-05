@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collete, the phenomenal actor who portrayed Beetlejuice, was the highlight of the show. With modern-day quips and political jabs, the audience was in a constant state of laughter as he pranced around the stage in the nostalgic pinstripe suit from the original movie. The Beetlejuice persona is not an easy one to master, but Collete made it look effortless with his movements and vocals.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Justin Collete, the phenomenal actor who portrayed Beetlejuice, was the highlight of the show.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt warning applies - this curated quote focuses solely on praise for the lead actor's performance. While enthusiastic about Collete, it doesn't reveal the critic's overall verdict about the production. | GPT-4o: The excerpt praises Justin Collete's performance as the highlight, suggesting a positive experience. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt focuses almost entirely on the lead actor's performance, calling it phenomenal and the highlight of the show. Given the single excerpt and aggregator context, I'm scoring it as a strong positive. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('phenomenal,' 'highlight,' 'constant state of laughter'), indicating a clear recommendation based on the star turn, though the single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:44:32.076Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

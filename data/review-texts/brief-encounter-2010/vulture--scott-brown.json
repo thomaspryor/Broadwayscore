@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To pin down precisely what Brief Encounter is (a para-cinematic mock-expressionistic play with music? A self-conscious post-Luhrmann meta-movie-musical onstage?) would quickly exhaust the Earth’s dwindling supply of hyphens. I’ll settle for “cabinet of wonders,” which seems to get at the false-bottomed delights of this sui generis theatrical event from director Emma Rice and her eager-to-please Kneehigh Theatre troupe. Ferried more or less intact across the East River from St. Ann’s Warehouse to Studio 54, Brief is built atop filmmaker David Lean’s dour postwar chiaroscuro of the same name, about an impossible affair carried on by two married, decent, highly un-Byronic souls. (The 1945 film was based on Noel Coward’s star-crossed stage melodrama Still Life, and Rice has restored some of Coward’s original dialogue.)",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'll settle for \"cabinet of wonders,\" which seems to get at the false-bottomed delights of this sui generis theatrical event.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic uses highly positive language like 'cabinet of wonders' and 'delights' to describe this 'sui generis theatrical event.' However, with only one excerpt available that focuses on categorization rather than explicit recommendation, confidence is low. | GPT-4o: The critic uses highly positive language, describing the show as a 'cabinet of wonders' and 'sui generis theatrical event,' indicating a strong recommendation. However, the single excerpt warning suggests caution, so the score is placed at the upper end of the Positive range. | Gemini: The review uses the phrase \"cabinet of wonders\" to describe the show, which is positive. Given the limited text and the caution about single excerpts, I'm scoring it as positive with low confidence. | Kimi: The excerpt employs unambiguously positive language ('cabinet of wonders,' 'delights,' 'sui generis theatrical event') to praise the production's unique theatricality and charm, suggesting a strong recommendation despite the limited single-excerpt context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:29:20.704Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

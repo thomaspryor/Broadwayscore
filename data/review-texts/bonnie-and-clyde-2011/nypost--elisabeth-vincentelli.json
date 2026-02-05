@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The first act, where our anti-heroes meet and begin their illegal activities, is the best. Director Jeff Calhoun moves the action swiftly, combining a wood-slate set, projections and moody lighting to create period atmospherics. Things unravel in the overlong second act, which wastes too much time on uninteresting secondary plot lines and characters. Melissa van der Schyff is terrific as Clyde’s sister-in-law, but Blanche’s motivations make no sense.Where is the e",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Things unravel in the overlong second act, which wastes too much time on uninteresting secondary plot lines and characters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Praises first act and direction but criticizes second act as overlong with poor plotting. Text appears cut off mid-sentence, limiting confidence in full verdict. | GPT-4o: The review praises the first act and some production elements but criticizes the second act for being overlong and unfocused. The excerpt suggests a mixed review with both positive and negative elements. | Gemini: The review praises the first act and direction but criticizes the second act as overlong and wasting time. The overall sentiment is mixed, leaning slightly positive due to the praise for the first act. | Kimi: The excerpt offers genuine praise for the first act, direction, and one performance, but delivers substantial criticism of the overlong second act and wasted plotlines, indicating a split verdict without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:26:13.306Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

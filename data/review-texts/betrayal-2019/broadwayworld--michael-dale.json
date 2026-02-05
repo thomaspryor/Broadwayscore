@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The verbal thrills of Pinter's text arise from the fact that his characters are educated, literary people, well versed in the power of words - and the silences in between them - to attack and humiliate. But what is also revealed by the tightly wound ensemble under Lloyd's guidance is that, despite the play's title, this is also a romantic tragedy, though one played out with carefully restrained emotions. One person's act of Betrayal can be another's act of uncontrolled desire.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The verbal thrills of Pinter's text arise from the fact that his characters are educated, literary people, well versed in the power of words.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the 'tightly wound ensemble under Lloyd's guidance' and finds 'verbal thrills' in the production. The analysis is sophisticated and appreciative, suggesting a quality production worth seeing, though limited to one excerpt reduces confidence. | GPT-4o: The excerpt praises the text and the ensemble's performance under Lloyd's guidance, suggesting a positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt highlights the strengths of the ensemble and the director's guidance, suggesting a positive experience, but the limited text and lack of a clear recommendation necessitate a lower confidence and a score on the lower end of the positive range. | Kimi: The excerpt offers clear praise for the direction ('tightly wound ensemble under Lloyd's guidance') and the emotional sophistication of the production, describing 'verbal thrills' and appreciating the restrained performances. As a single clearly positive excerpt, it falls in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:01:05.510Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

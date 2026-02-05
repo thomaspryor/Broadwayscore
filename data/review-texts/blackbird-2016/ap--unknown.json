@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "It turns out there is a place more uncomfortable to be on Broadway than a bullet-ridden hut watching sex slaves try to preserve their humanity. That would be among the audience watching the harrowing -- and absolutely brilliant -- revival of \"Blackbird\"...Michelle Williams plays the spiky, vengeful and still-broken victim, and Jeff Daniels is the stressed-out, humiliated one-time aggressor. With this indisputably superb cast, the play ducks and weaves enough to take your breath away under Joe Ma",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 90,
+  "llmScore": {
+    "score": 90,
+    "confidence": "medium",
+    "range": {
+      "low": 85,
+      "high": 95
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That would be among the audience watching the harrowing -- and absolutely brilliant -- revival of \"Blackbird\"",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Rave | Claude: Despite the uncomfortable subject matter, the critic calls it 'absolutely brilliant' and praises the 'indisputably superb cast.' The juxtaposition of 'harrowing' with 'brilliant' indicates strong artistic merit recognition. | GPT-4o: The excerpt describes the revival as 'absolutely brilliant' with an 'indisputably superb cast', indicating strong praise. Despite the single excerpt warning, the language suggests a highly positive review. | Gemini: The review uses strong positive language like \"absolutely brilliant\" and \"indisputably superb cast\", indicating a rave review. The description of the play as \"harrowing\" suggests a powerful and impactful experience. | Kimi: Single excerpt contains enthusiastic praise ('absolutely brilliant', 'indisputably superb cast') indicating strong recommendation, though limited context requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:08:55.125Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 92,
+    "geminiScore": 90,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Rave"
+  }
 }

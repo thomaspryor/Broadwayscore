@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "What the play doesn't quite manage is balance of a more stylistic bent, moving fitfully between naturalism and a more fabulist approach, the latter marked by some rather twee flourishes (a goldfish or, rather, a 100-year series of goldfishes, all named Atman, which, we're told, is a Sanskrit word for 'the divinity within yourself.' Despite whatever missteps, though, Messing and the rest of the cast nicely convey the spectrum of emotions that a life's sweep encompasses, from happy times to sad (at the reviewed performance, audience sobs and sniffles were as audible as the laughter). Not even a tacked-on final birthday scene that strains credulity can sour the simple, icing-sweet pleasures of Birthday Candles.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Not even a tacked-on final birthday scene that strains credulity can sour the simple, icing-sweet pleasures of Birthday Candles.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges 'missteps' and stylistic issues but concludes with positive verdict about 'icing-sweet pleasures' that overcome the flaws. Low confidence due to limited text available. | GPT-4o: The review notes some stylistic imbalances and a final scene that strains credulity, but overall conveys a positive sentiment with praise for the cast's emotional conveyance. The excerpt suggests a mild recommendation, placing it in the lower end of the Positive range. | Gemini: The review acknowledges missteps and twee elements, but ultimately concludes that the play offers \"simple, icing-sweet pleasures.\" Given the single excerpt and mixed signals, I've opted for a low-end positive score. | Kimi: The review acknowledges stylistic missteps and a strained finale but concludes that the emotional performances and simple pleasures outweigh the flaws, offering a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:10:51.269Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

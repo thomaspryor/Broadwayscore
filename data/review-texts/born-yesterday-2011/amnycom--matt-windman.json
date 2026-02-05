@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The play, which revolves around corruption in big business and politics, couldn't be timelier. And the acting in Doug Hughes' excellent new production couldn't be better or more thrilling, especially from actor Jim Belushi and newcomer Nina Arianda.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the acting in Doug Hughes' excellent new production couldn't be better or more thrilling, especially from actor Jim Belushi and newcomer Nina Arianda.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the production ('excellent') and acting ('couldn't be better or more thrilling'), but limited text warrants low confidence and upper-positive range given clearly enthusiastic language. | GPT-4o: The excerpt praises the production as 'excellent' and highlights the acting as 'thrilling,' suggesting a strong positive recommendation. Given the single excerpt warning, the score is near the upper end of the Positive range. | Gemini: The review excerpt uses strong positive language such as \"excellent\" and \"better or more thrilling,\" indicating a positive recommendation. | Kimi: The excerpt contains superlative praise ('excellent', 'couldn't be better', 'thrilling') indicating a strong recommendation for the production and performances. However, confidence is low due to limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:32:43.275Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

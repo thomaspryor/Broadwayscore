@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Certainly, its prime attraction is the marvellous Jessie Mueller, avoiding impersonation, but otherwise perfectly channeling the contradictions of King (neé Klein), as she goes from precocious 16-year-old tunesmith in the late fifties to singer/songwriter star with the release of her seminal album Tapestry in 1971.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "its prime attraction is the marvellous Jessie Mueller, avoiding impersonation, but otherwise perfectly channeling the contradictions of King",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for the lead performance ('marvellous', 'perfectly channeling'). However, limited text makes overall verdict uncertain - could be praising one element of an otherwise mixed review. | GPT-4o: The excerpt praises Jessie Mueller's performance, highlighting her ability to channel the character effectively. However, with only a single excerpt available, the overall sentiment of the review is uncertain, leading to a low confidence score. | Gemini: The excerpt focuses on the positive performance of Jessie Mueller, calling her \"marvellous.\" Given the single excerpt and positive tone, I've placed it in the positive bucket and towards the higher end. | Kimi: Single excerpt offers clear praise for the lead performance ('marvellous', 'prime attraction'), placing it in the Positive bucket. Score reflects upper range due to strong enthusiasm for Mueller, but confidence is low given only one curated excerpt is available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:32:34.842Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

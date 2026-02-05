@@ -11,5 +11,59 @@
   "bwwExcerpt": "Don’t worry if you don’t remember (or have never seen) Tim Burton’s brilliant Beetlejuice, because book writers Scott Brown & Anthony King retain only the bare bones of Michael McDowell & Larry Wilson’s original screen story, drastically reshuffling plot points and character relationships. But Lydia (Isabella Esler) is still a lonely, afterlife-obsessed teen who befriends Adam (Will Burton) and Barbara (Britney Coleman), a klutzy couple of recently-deceased ghosts. Together, they unwittingly unl",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tim Burton's brilliant Beetlejuice",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: The excerpt shows positive language ('brilliant') about the source material and matter-of-fact description of the adaptation choices. However, with only a single truncated excerpt available, the full verdict is unclear, warranting low confidence and lower-range positive scoring. | Gemini: The excerpt suggests a positive but modified adaptation of the original Beetlejuice. Given the limited text, a score in the lower-middle of the positive range seems appropriate. | Kimi: The excerpt reassures audiences that the musical stands alone from the film, suggesting an accessible, welcoming production. While the text is truncated and primarily descriptive, the reassuring tone and aggregator indication of a positive verdict support a mildly positive score at the lower end of the range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:42:29.299Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": null,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

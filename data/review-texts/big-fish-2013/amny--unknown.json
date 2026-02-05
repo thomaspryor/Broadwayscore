@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"The rich, gothic mise-en-scène and seamless transitions of the film are replaced with poor quality songs, a slow pace, excessive sentimentality, one-liners that consistently fail to land, a clumsy structure and an ugly set where video imagery is projected onto what look like barn doors.\"",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 30,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The rich, gothic mise-en-scène and seamless transitions of the film are replaced with poor quality songs, a slow pace, excessive sentimentality, one-liners that consistently fail to land, a clumsy structure and an ugly set where video imagery is projected onto what look like barn doors.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: Excerpt lists multiple serious criticisms (poor songs, slow pace, failed comedy, clumsy structure, ugly set) comparing unfavorably to source material. However, single excerpt warning requires caution - this could be from a longer mixed review. | GPT-4o: The excerpt provides a strongly negative evaluation of the production, criticizing the songs, pacing, sentimentality, humor, structure, and set design. The tone suggests a deep dissatisfaction with multiple aspects of the show. | Gemini: The review excerpt is overwhelmingly negative, citing poor quality songs, slow pace, clumsy structure, and an ugly set. Given the single excerpt, confidence is low, but the content points to a negative assessment. | Kimi: The single excerpt delivers comprehensive condemnation of the production's music, pacing, humor, structure, and design using harsh descriptors ('ugly', 'clumsy', 'fail to land'), indicating a strongly negative pan. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:42.067Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

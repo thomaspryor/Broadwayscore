@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Daniel Craig, Rachel Weisz and Rafe Spall deliver powerhouse performances in Harold Pinter's masterpiece about love, marriage and deception.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 80,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -23,5 +23,59 @@
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This is a brief promotional blurb or tagline describing the cast and themes, not an actual review with critical evaluation; openai: The review is about a production featuring Daniel Craig, Rachel Weisz, and Rafe Spall, which is not the current Broadway run.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Craig, Rachel Weisz and Rafe Spall deliver powerhouse performances in Harold Pinter's masterpiece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Clear praise for performances calling them 'powerhouse' and the play a 'masterpiece', but extremely brief text limits confidence in overall assessment. | Gemini: The review uses the word \"masterpiece\" and praises the performances as \"powerhouse\", indicating a strong positive recommendation. | Kimi: The excerpt employs maximal critical praise ('masterpiece,' 'powerhouse performances'), which clearly places it in the Rave bucket, though the extreme brevity necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:59:24.505Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 78,
+    "openaiScore": null,
+    "geminiScore": 82,
+    "kimiScore": 95,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"This garishly pandering endeavor to the afterlife...The loose plot, executed with varying degrees of humor ranging from laugh-out-loud to offensive, keeps things moving at a pace befitting a Universal Studios theme park show. Unfortunately, the $21 million spectacle suffers an artistic heart attack from over-exertion...Besides its film fans, it’s unclear for whom 'Beetlejuice' is intended...More disconcerting is its dated and offensive stereotyping of same-sex attraction.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This garishly pandering endeavor to the afterlife...the $21 million spectacle suffers an artistic heart attack from over-exertion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative language throughout: 'garishly pandering,' 'suffers an artistic heart attack,' questions the target audience, and criticizes offensive content. Despite some acknowledgment of humor, the overall assessment is dismissive. | GPT-4o: The excerpt describes the show as 'garishly pandering' and 'suffers an artistic heart attack,' indicating a negative view. However, the single excerpt warning suggests caution, so a low confidence is assigned. | Gemini: The review uses negative language such as \"garishly pandering,\" \"offensive stereotyping,\" and \"artistic heart attack.\" While the pace is described as befitting a theme park show, the overall tone is critical, suggesting a negative experience. | Kimi: The excerpt describes the show as 'garishly pandering' suffering an 'artistic heart attack,' criticizing its offensive stereotyping and unclear intended audience, despite acknowledging some laugh-out-loud humor.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:49:37.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

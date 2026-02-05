@@ -12,5 +12,60 @@
   "bwwExcerpt": "The play, which opened Sunday at the Cort Theatre and is directed with calm elegance by Doug Hughes, is riven with '40s sayings - 'Make it snappy,' 'Don't get excited,' 'So long, kid' - and yet has a very relevant, if somewhat, ham-fisted indictment of politics awash in corrupting money. It has a message campaign finance reformers would find swell.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has a very relevant, if somewhat, ham-fisted indictment of politics awash in corrupting money",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt praises the direction as 'calm elegance' but criticizes the writing as 'ham-fisted.' With only one excerpt available, this mixed assessment suggests qualified appreciation but significant reservations. | GPT-4o: The review excerpt notes the play's relevant message but describes it as 'ham-fisted,' suggesting a mixed reception. The positive note about direction and relevance is tempered by the critique of execution. | Gemini: The review excerpt notes the play's relevance and message, but also mentions a 'somewhat ham-fisted indictment,' suggesting a mixed but overall positive assessment. Due to the single excerpt, confidence is low. | Kimi: The excerpt praises the direction as 'calm elegance' and finds the political themes relevant, though qualified by 'ham-fisted' criticism and faint praise ('swell'). Single excerpt availability limits confidence. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:22:39.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 72,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"Carole King has apparently never seen the musical of her life that has now reached Broadway. She walked out of an early reading at intermission, finding it too tough to take. Anyone not named Carole King may toy with the same idea, but for a different reason: It's just insipid...None of this is the fault of Jessie Mueller, the rising Broadway star who plays King with genuine feeling and a lovely voice. This paint-by-numbers show would have been a whole lot better if it was just turned into a co",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Anyone not named Carole King may toy with the same idea, but for a different reason: It's just insipid.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the show 'insipid' and 'paint-by-numbers' while praising Mueller's performance. This follows the pattern of acknowledging performer merit within an overall negative assessment. | GPT-4o: The review criticizes the show as 'insipid' and suggests it may not be worth seeing, despite praise for Jessie Mueller's performance. The excerpt suggests a negative overall impression. | Gemini: The review excerpt calls the show \"insipid\" despite praising the lead actress, indicating a negative overall assessment. The truncated text and single excerpt lower confidence. | Kimi: While praising lead Jessie Mueller's performance, the critic calls the show 'insipid' and 'paint-by-numbers,' suggesting audiences may consider walking out. The single truncated excerpt indicates a clear negative verdict but warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:31:27.660Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

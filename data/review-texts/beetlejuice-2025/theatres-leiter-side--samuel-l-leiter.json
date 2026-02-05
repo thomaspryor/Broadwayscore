@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 74,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“A succession of inventive visual, comic, and musical delights…The lyrics are often risibly clever but the music is best at creating upbeat rhythmic backgrounds for Connor Gallagher's…acrobatic choreography...Too many…tunes…sound like the generic, big-note numbers that populate so many 21st-century musicals…I can't deny occasionally feeling I was six feet under but that doesn't mean that 'Beetlejuice,' which insists it's about death, isn't very much alive.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't deny occasionally feeling I was six feet under but that doesn't mean that 'Beetlejuice,' which insists it's about death, isn't very much alive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed signals throughout but ends with clever positive verdict. Praises visual/musical delights and choreography, but criticizes generic music. Single excerpt warning requires caution - placing at lower end of Positive bucket. | GPT-4o: The review highlights inventive elements and clever lyrics, suggesting a positive experience. However, it also notes generic tunes and mixed feelings, indicating reservations. The single excerpt limits confidence. | Gemini: The review acknowledges both positive and negative aspects, but ultimately concludes that the show is \"very much alive,\" suggesting a recommendation with reservations. Due to the limited excerpt, confidence is low. | Kimi: The excerpt praises inventive visuals, clever lyrics, and acrobatic choreography, but criticizes generic tunes and admits to occasional boredom; the final verdict that the show is nonetheless 'very much alive' indicates a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:41:25.402Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

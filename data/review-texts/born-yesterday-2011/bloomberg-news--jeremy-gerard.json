@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are two reasons to see the revival of Garson Kanin’s 1946 comedy, “Born Yesterday,” and they’re both named Nina Arianda. This actress, who made a splash last season in the off- Broadway show “Venus in Fur,” just knocks it out of the ballpark as Billie Dawn, the curvy chorus girl who landed a big one with thuggish millionaire junk dealer Harry Brock, played by Jim Belushi.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This actress, who made a splash last season in the off- Broadway show \"Venus in Fur,\" just knocks it out of the ballpark as Billie Dawn",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Nina Arianda's performance (\"knocks it out of the ballpark\") and explicit recommendation (\"two reasons to see\"). However, confidence is low due to single excerpt warning - the full review verdict may differ from this performance-focused quote. | GPT-4o: The excerpt highlights a strong performance by Nina Arianda as the main reason to see the show, suggesting a positive view, but the limited text and lack of broader context result in a lower confidence score. | Gemini: The review excerpt strongly praises Nina Arianda's performance, suggesting it's a primary reason to see the show. Given the single excerpt, I'm placing it in the upper end of the positive bucket. | Kimi: Explicit recommendation to see the show with enthusiastic praise for Nina Arianda ('knocks it out of the ballpark'), though the qualification that she constitutes the sole reasons places it in Positive rather than Rave territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:23:41.438Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

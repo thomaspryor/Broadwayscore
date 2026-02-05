@@ -12,5 +12,60 @@
   "bwwExcerpt": "The title 'Bandstand' is a curveball. So is the subtitle, 'The New American Musical.' For audiences of a certain age, the name of the season's final musical suggests those dopey and adored teen dance shows that began on '50s TV. To audiences of a different certain age, the '40s look of the publicity photos implies a happy story of the bands that entertained the troops in World War II and moviegoers forevermore. Once inside the theater, however, we discover that we are meant to take the word apart and take it seriously. This is a musical - really, more of a musical drama - about a band of damaged war veterans who take a stand while competing in a national radio contest in 1945. The concept is more ambitious, darker and more sophisticated than its name invites theatergoers to enjoy. It is also more than a little shapeless and overly long.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The concept is more ambitious, darker and more sophisticated than its name invites theatergoers to enjoy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the show's ambition and sophistication but criticizes it as 'shapeless and overly long.' With only one excerpt available, this suggests mixed feelings about an overly ambitious production that doesn't quite succeed. | GPT-4o: The excerpt highlights both ambition and sophistication, but also notes issues with shapelessness and length, indicating a mixed review. The single excerpt limits confidence. | Gemini: The review excerpt describes the show as ambitious and sophisticated but also shapeless and overly long, indicating a mixed reaction. The lack of a clear recommendation and the limited text contribute to the low confidence. | Kimi: The excerpt offers genuine praise for the show's sophisticated concept and ambition, but balances this with significant criticisms that it is 'shapeless and overly long,' resulting in a neutral assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:14:05.018Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

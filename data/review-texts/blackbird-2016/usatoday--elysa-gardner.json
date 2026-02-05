@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Williams brings more of that slow-burning, nervous intensity to Una...Part of Blackbird's potency lies in Harrower's refusal to make Una either pathetic or especially likable, even as her utter devastation is revealed. Ray, similarly, is no two-dimensional monster; though he seeks to deny his demons, he has plainly done some battle with them...Daniels' performance, which was superb nine years ago, is better here -- at once more vital and more aching in its weariness, and still beautifully shaded",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniels' performance, which was superb nine years ago, is better here -- at once more vital and more aching in its weariness, and still beautifully shaded",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances with sophisticated analysis of the material's complexity. The critic appreciates both the writing ('potency') and acting ('superb,' 'better here,' 'beautifully shaded'), indicating clear recommendation despite challenging subject matter. | GPT-4o: The excerpt praises the performances, particularly Daniels', as better than before and beautifully shaded. However, the single excerpt warning and lack of a full review text make the confidence low. | Gemini: The review praises the performances of the actors, particularly Daniels, and highlights the potency of the writing. The overall tone is positive, suggesting a recommendation. | Kimi: The excerpt offers enthusiastic praise for the lead performances using superlatives like 'superb' and 'beautifully shaded,' indicating a clear recommendation, though the single-excerpt format limits certainty about the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:09:56.357Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

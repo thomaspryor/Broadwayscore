@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There's much to admire in the final product: The musical is twangy and tightly performed, with a sweeping score. My enjoyment was muted only by the mostly modest character development...Cusack, who reminded me a bit of Donna Murphy, does proud justice to a tough role. Paul Alexander Nolan...has an easygoing confidence as another character we get to know at different stages of life...Martin and Brickell's music is rootsy and most often joyful...Of Martin's book, I felt that too often I was being told what to feel, without being given opportunity to feel it. Connective tissue between the storylines, probably intended to sneak up on us at the end, seemed obvious halfway through the first act...It's not a perfect musical; this 'Star' doesn't always guide the way, but at times it beams brightly enough.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not a perfect musical; this 'Star' doesn't always guide the way, but at times it beams brightly enough.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises performances, music, and production values but notes significant flaws in character development and book structure. The final verdict acknowledges imperfection while finding redeeming brightness - a qualified positive recommendation. | GPT-4o: The review acknowledges several positive aspects like the music and performances but notes significant reservations about character development and storytelling. The single excerpt suggests a positive but qualified recommendation. | Gemini: The review praises the music and performances but notes issues with character development and the book. The overall tone is positive, but with reservations, placing it in the lower end of the Positive bucket. | Kimi: The review offers consistent praise for the score, performances, and production values while expressing reservations about the book's heavy-handedness and obvious plotting. The final verdict 'beams brightly enough' indicates a mild recommendation despite imperfections, placing it in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:44:38.625Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

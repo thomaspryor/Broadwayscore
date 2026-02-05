@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Pinter-and the brilliant trio of actors here-treat this uneasy dance as a particularly British game, where everyone is terrifically polite and sporting when they should be shouting, screaming and throwing suitcases out of windows. Instead, here a life-changing revelation is followed by a clipped inquiry into favorite books and summer holiday destinations.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pinter-and the brilliant trio of actors here-treat this uneasy dance as a particularly British game",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the 'brilliant trio of actors' and shows appreciation for Pinter's theatrical approach, but single excerpt warning applies - this could be from a mixed or negative review that acknowledges strong performances. | GPT-4o: The excerpt praises the actors as 'brilliant' and suggests a positive view of the production's handling of Pinter's style. However, the single excerpt and lack of a clear verdict necessitate a cautious, low-confidence score. | Gemini: The excerpt praises the actors and the production's interpretation of Pinter's work, but the overall sentiment is somewhat muted due to the limited context. I'm placing it in the positive bucket with a lower score due to the single excerpt. | Kimi: Single excerpt offers strong praise for the actors ('brilliant') but ambiguous assessment of the production's restrained tone; scored as mildly positive with low confidence due to limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:59:43.884Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

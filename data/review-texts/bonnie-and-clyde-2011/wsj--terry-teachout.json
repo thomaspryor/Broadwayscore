@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'Bonnie & Clyde' isn't the worst musical to open on Broadway in the past decade. It isn't even the worst Frank Wildhorn musical to open on Broadway in the past decade. (That would be \"Dracula.\") It is, however, quite sufficiently bad enough to qualify for the finals of this year's What-Were-They-Thinking Prize. Why would anyone not obviously deranged put money into a show with music by a composer whose last three Broadway outings tanked? And who thought i",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 23,
+  "llmScore": {
+    "score": 23,
+    "confidence": "medium",
+    "range": {
+      "low": 18,
+      "high": 28
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "quite sufficiently bad enough to qualify for the finals of this year's What-Were-They-Thinking Prize",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic explicitly calls it 'quite sufficiently bad' and questions the sanity of investors. However, with only a truncated excerpt available, the full verdict may be cut off, warranting lower confidence despite the harsh language. | GPT-4o: The excerpt is strongly negative, suggesting the show is very bad and questioning the decision to produce it. The tone is dismissive and critical, indicating a deep Pan rating. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is clearly negative, calling the show \"sufficiently bad\" and questioning the decision to invest in it. Given the limited text, a negative score is appropriate. | Kimi: The excerpt employs sarcastic ridicule ('What-Were-They-Thinking Prize,' 'obviously deranged') to condemn the production as a serious error in judgment, indicating a strong negative verdict despite acknowledging it is not the absolute worst musical produced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:21:02.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 25,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

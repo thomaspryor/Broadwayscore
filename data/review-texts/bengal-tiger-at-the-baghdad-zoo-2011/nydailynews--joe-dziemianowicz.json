@@ -12,5 +12,60 @@
   "bwwExcerpt": "And despite all the ghosts, 'Bengal Tiger' isn't as stirring as it strives to be. It restates a famous 1960s war poster that noted: 'War is not healthy for children and other living things.' Like soldiers, gardeners and tigers.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 54,
+  "llmScore": {
+    "score": 54,
+    "confidence": "medium",
+    "range": {
+      "low": 49,
+      "high": 59
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And despite all the ghosts, 'Bengal Tiger' isn't as stirring as it strives to be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic states the show 'isn't as stirring as it strives to be,' indicating disappointment and failure to achieve its goals. However, this is only one excerpt, so confidence is low. | GPT-4o: The excerpt suggests that the show does not achieve its intended emotional impact, indicating a mixed review. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt suggests the play falls short of its goals, but doesn't explicitly discourage seeing it, indicating a mixed reaction. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt criticizes the production for failing to achieve emotional impact despite its supernatural elements, comparing it unfavorably to a bumper sticker slogan about war. However, given this is a single curated excerpt that may not represent the full review's verdict, confidence is low. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:56:29.807Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 60,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "The script deviates a bit from the film in which Beetlejuice is, essentially, a supporting character—one who steals the show, but a supporting character all the same. In the stage production, he’s introduced in the first few minutes and is Lydia’s co-lead. It’s also been contemporized (Delia was a sculptor in the movie and is now a life coach, for example), and Lydia’s relationship with her father is made more complex, giving both them and the show more heart. The score by Eddie Perfect with a b",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "giving both them and the show more heart",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for script improvements and emotional depth, but text is clearly truncated mid-sentence. Aggregator context suggests positive verdict, so scoring in lower Positive range due to limited evidence. | GPT-4o: The excerpt highlights positive changes from the film to the stage production, such as a more complex relationship and added heart, indicating a positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt describes changes made to the stage production, highlighting a more complex relationship and giving the show more heart. Given the limited text, it leans towards a positive but not overwhelmingly enthusiastic recommendation. | Kimi: The excerpt praises the musical's modernization and character development, noting it adds 'more heart' compared to the film, though the single curated excerpt and truncation warrant conservative scoring.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:24:33.858Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 74,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

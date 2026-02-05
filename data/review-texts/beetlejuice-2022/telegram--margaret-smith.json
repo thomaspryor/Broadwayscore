@@ -11,5 +11,59 @@
   "bwwExcerpt": "All the characters find themselves on a journey that defies all physical and metaphysical dimensions, with a game show, newly-deceased football stars, a disgruntled beauty queen, an underworld hypermanaged by a cantankerous bureaucrat, and breathtaking sets, scenery and effects. Burtonesque-stylized imagery illuminates everything, so get ready for lots of lurid purple, black-and-white geometric patterns and intense neon green, all in morbid whimsy.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Breathtaking sets, scenery and effects. Burtonesque-stylized imagery illuminates everything.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt highlights the impressive visual elements and stylized imagery, suggesting a positive experience. However, due to the single excerpt and lack of a full review, the confidence is low. | Gemini: The review describes the show as having 'breathtaking sets, scenery and effects' and 'Burtonesque-stylized imagery', which suggests a positive experience. However, due to the limited excerpt, the confidence is low. | Kimi: The excerpt offers enthusiastic praise for the production design and visual effects using words like 'breathtaking' and 'illuminates,' indicating a clear positive recommendation for this aspect of the show, though the single-excerpt format limits overall confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:44:08.046Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

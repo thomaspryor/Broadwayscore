@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Even with stars like Michelle Williams and Jeff Daniels in the lead roles, and direction by Joe Mantello, \"Blackbird\" is far from a typical Broadway drama. For some of those attracted by the bold-face names, it surely will come as a sparse shock, a tough, toxic 80-minute ride into the corporate gray of fear and regret...this drama -- which I regard as one of the best pieces of writing of the last decade -- offers the uncompromising actress Williams the rare opportunity to contort body and soul i",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this drama -- which I regard as one of the best pieces of writing of the last decade",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic calls the drama 'one of the best pieces of writing of the last decade' which is strong praise, though warns it's a 'tough, toxic' experience. The text is truncated mid-sentence, limiting confidence. | GPT-4o: The excerpt praises the writing as one of the best of the last decade and highlights the opportunity it provides for the lead actress, suggesting a strong recommendation. However, the single excerpt warning and lack of full context lower confidence. | Gemini: The review excerpt praises the writing and Williams' performance, calling it one of the best pieces of writing of the last decade. However, it also mentions it will be a \"sparse shock\" for some, indicating reservations. Due to the single excerpt, confidence is low, but the positive language suggests a recommendation. | Kimi: The critic hails the play as 'one of the best pieces of writing of the last decade' and praises Michelle Williams as 'uncompromising,' indicating strong enthusiasm despite the work's dark themes. Single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:06:45.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

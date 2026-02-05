@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"It's an aggressive, jack-in-the-box package loaded with loud music, blaring colors, distorted angles, blinder cues, and frat-house jokes...’Beetlejuice’ keeps raising its voice without ever making much of an impression, largely because its creators have been unable to...make one care about its six principals...It substitutes crassness for real humor and its desire to please is so insistent that it quickly becomes grating....A fun house with nothing shoring it up; its attractions provide scant amusement.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A fun house with nothing shoring it up; its attractions provide scant amusement.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the show grating, crass, and providing 'scant amusement.' Despite being a single excerpt, the criticism is comprehensive and unambiguous. | GPT-4o: The review criticizes the show for lacking substance and humor, describing it as grating and insubstantial. The single excerpt suggests a negative tone, but the lack of full context lowers confidence. | Gemini: The review excerpt is largely negative, citing crassness, grating insistence to please, and a lack of emotional connection with the characters. The description of a \"fun house with nothing shoring it up\" further reinforces a negative assessment. | Kimi: The single excerpt delivers unambiguous criticism of the show's crude humor, grating tone, and failure to develop its characters, describing it as providing only 'scant amusement' despite technical spectacle.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:50:51.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 40,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

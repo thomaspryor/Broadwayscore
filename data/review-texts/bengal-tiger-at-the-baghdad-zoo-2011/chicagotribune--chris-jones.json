@@ -12,5 +12,60 @@
   "bwwExcerpt": "The dark, rich and provocative Rajiv Joseph play 'Bengal Tiger at the Baghdad Zoo,' a worthy finalist for the 2010 Pulitzer Prize, has arrived on Broadway with Robin Williams in the title role...Frankly, the tiger could liven up, although the biggest problem with Williams' performance is that it seems to miss much of the amoral ferocity of the beast (a tiger can be depressed or antic, but he is still a tiger). And a bigger problem yet is that Williams' Tiger is, as things go, not so much the protagonist as a sardonic observer of Baghdad ironies.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The biggest problem with Williams' performance is that it seems to miss much of the amoral ferocity of the beast.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows praise for the play itself ('dark, rich and provocative', 'worthy Pulitzer finalist') but significant criticism of Williams' lead performance, calling it the 'biggest problem' and lacking essential qualities. With only one excerpt available, confidence is low. | GPT-4o: The excerpt highlights issues with Robin Williams' performance and suggests the play lacks the necessary ferocity, indicating a mixed review. However, the limited excerpt and lack of a clear positive or negative conclusion lead to a low confidence score. | Gemini: The review acknowledges the play's worthiness but expresses reservations about Robin Williams' performance and his role in the production, suggesting a mixed assessment. | Kimi: The excerpt praises the play as 'dark, rich and provocative' and a 'worthy finalist' for the Pulitzer, but levels significant criticism at Robin Williams' lead performance, citing it as the 'biggest problem' and noting an even 'bigger problem' with the character's role in the narrative. With only one excerpt available, the mixed signals warrant a mid-range Mixed score with low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:52:27.763Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

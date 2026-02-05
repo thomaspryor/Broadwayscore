@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"'Beautiful' is a must-see if you're a King fan, or you're fascinated by the music business during a potent time when chart hits were coming out of cubicles in places like the Brill Building and 1650 Broadway, where King and husband Gerry Goffin set up shop...With an understated performance, Mueller, seen recently in the Roundabout's \"Drood,\" establishes herself among the elite of Broadway leading ladies. The actress, 30, doesn't sound much like King, but she makes each song her own while respec",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beautiful' is a must-see if you're a King fan, or you're fascinated by the music business during a potent time",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Uses 'must-see' language and praises Mueller as among 'elite of Broadway leading ladies', but excerpt cuts off mid-sentence and recommendation seems targeted to specific audiences rather than universal. | GPT-4o: The excerpt suggests a positive recommendation, particularly for fans of Carole King and those interested in the music business. The phrase 'must-see' indicates a strong recommendation, though the context is limited to a single excerpt. | Gemini: The review excerpt calls the show a \"must-see\" for King fans and praises the lead actress's performance, indicating a positive recommendation. Given the single excerpt, I've placed it at the higher end of the positive range. | Kimi: The excerpt contains explicit recommendation language ('must-see') and enthusiastic praise for Jessie Mueller's lead performance ('elite of Broadway leading ladies'), warranting an upper Positive score. Confidence is low due to single-excerpt truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:28:36.609Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

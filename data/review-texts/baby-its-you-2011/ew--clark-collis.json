@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The subjects of race, female empowerment, and the fleeting nature of fame are all touched upon, but often glancingly, and fleshed-out characters are thin on the ground...If you are looking for a night out that is easy on the ear and the brain then, baby, Baby It's You is for you. (B-)",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you are looking for a night out that is easy on the ear and the brain then, baby, Baby It's You is for you.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: B- grade with qualified recommendation. Acknowledges flaws (thin characters, superficial themes) but ultimately recommends for audiences seeking light entertainment. | GPT-4o: The review acknowledges some thematic shortcomings ('glancingly', 'thin on the ground') but suggests it can be enjoyable for a light experience. The B- rating indicates a mixed reception. | Gemini: The review suggests the show is \"easy on the ear and the brain,\" but also notes thin characters and glancingly touched-upon themes, indicating a mixed recommendation. The B- grade also suggests a mixed assessment. | Kimi: B- grade and qualified recommendation for audiences seeking undemanding fare, though critic notes substantial flaws including thin characters and superficial thematic treatment. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:19:26.572Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 66,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

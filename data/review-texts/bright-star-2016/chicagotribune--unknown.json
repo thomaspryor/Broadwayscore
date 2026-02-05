@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "If you had any doubt of the formidable polyglot of talent that makes up one Steve Martin, or you were under the misapprehension that his banjo was primarily the accessory of a stand-up or Hollywood comic, the very conception of 'Bright Star' should be enough to lay that to rest. In collaboration with the folk-rock musician Edie Brickell, Martin forged score, book and story for this wholly original musical -- a piece that, despite its tonal unevenness and frequent, needless diversions from truth, still feels like a significant, distinctive and artful entry into the Broadway repertory. And it comes replete with a beautiful leading performance from Carmen Cusack, an actress who has worked often in musicals in Chicago but here makes a gorgeously authentic Broadway debut that looks likely to change her life.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "still feels like a significant, distinctive and artful entry into the Broadway repertory",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges flaws ('tonal unevenness and frequent, needless diversions') but ultimately calls it 'significant, distinctive and artful' with praise for the lead performance. Single excerpt warning suggests caution about full verdict. | GPT-4o: The excerpt praises the originality and artistry of the musical, despite noting some tonal unevenness. The strong praise for Carmen Cusack's performance and the overall positive tone suggest a strong recommendation. | Gemini: The review acknowledges flaws but ultimately calls the show \"significant, distinctive and artful.\" The positive aspects outweigh the negatives, leading to a positive but not rave score. | Kimi: While the excerpt acknowledges flaws ('tonal unevenness', 'needless diversions'), the overall verdict strongly praises the show as 'significant, distinctive and artful' with a 'beautiful leading performance.' The qualified but clear recommendation places it in the upper Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:44:12.443Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

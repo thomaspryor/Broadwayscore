@@ -12,5 +12,60 @@
   "bwwExcerpt": "Big Fish feels like the show that got away. Adapted by John August from his own 2003 screenplay, the musical is built around the tall-or at least well-stretched-tales of an Alabama-born traveling salesman, Edward Bloom (Butz), who has a penchant for embellishing his life...Yet the show is hobbled by a major flaw: Andrew Lippa's thoroughly mediocre score. The music suggests a cross between familiar, inflated Broadway pop and 1970s AM radio; the lyrics vacillate, sometimes line to line, between banal colloquialism and stiltedness... Big Fish has lovely sequences, and earns some sniffles at the end. But it could have been a real catch",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Big Fish has lovely sequences, and earns some sniffles at the end. But it could have been a real catch",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positive elements (lovely sequences, emotional impact) but identifies a 'major flaw' in the score and suggests the show doesn't reach its potential. The final line 'could have been a real catch' implies disappointment with what it is. | GPT-4o: The review acknowledges some positive aspects, such as 'lovely sequences,' but criticizes the score as 'thoroughly mediocre,' suggesting a mixed verdict with both strengths and weaknesses. | Gemini: The review acknowledges positive aspects like \"lovely sequences\" and emotional impact, but criticizes the score as \"thoroughly mediocre\" and the lyrics as inconsistent. This suggests a mixed experience. | Kimi: The critic acknowledges 'lovely sequences' and an emotional ending but identifies the score as a 'major flaw' that hobbles the show, suggesting it failed to reach its potential.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:06:55.100Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

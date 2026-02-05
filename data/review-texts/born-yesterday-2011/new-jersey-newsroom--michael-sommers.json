@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Cynics may feel they're watching an animated civics lesson, but the play's plentiful humor drowns their doubts in laughter. Kanin’s potent mix of mirth and truth is expertly served by Frank Wood as the glib, self-hating attorney, Terry Beaver as the uneasy Senator up for sale and Patricia Hodges as a sporty Congressional matron. Never removing his fedora in the 'cherce' role of the junkman's cousin and slavey, Michael McGrath lopes around like a guy out of Damon Runyon.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Kanin's potent mix of mirth and truth is expertly served by Frank Wood as the glib, self-hating attorney.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges potential criticisms ('animated civics lesson') but finds the humor overcomes doubts, praising the cast performances as 'expertly served.' However, this is only one excerpt so confidence is low. | GPT-4o: The excerpt highlights the humor and effective performances, suggesting a positive experience despite potential cynicism. The single excerpt warning suggests using the upper end of the positive range. | Gemini: The review acknowledges potential cynicism but counters it with the play's humor and strong performances, suggesting a positive overall experience. | Kimi: The excerpt offers strong praise for the play's plentiful humor and expertly served ensemble performances, dismissing potential concerns about the material being dry. Given this is a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:02.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

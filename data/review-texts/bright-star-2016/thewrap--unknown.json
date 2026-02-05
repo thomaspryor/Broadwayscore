@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The 'Bright Star' bluegrass score features more twangs per dipthong than a whole evening of 'Tobacco Road'...Walter Bobbie directs and Josh Rhodes choreographs 'Bright Star' in a way that brings to mind Agnes de Mille as rendered by Grant Wood. Time will tell if this musical makes the walls of Joe Allen restaurant's gallery of flops. On the walls of my mind, 'Bright Star' has already taken its place between last season's 'Doctor Zhivago' and 1979's 'Got Tu Go Disco.'",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 21,
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Time will tell if this musical makes the walls of Joe Allen restaurant's gallery of flops.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic directly compares the show to famous Broadway flops and places it in their personal 'gallery of flops.' However, this is only one excerpt, so confidence is low. | GPT-4o: The review compares 'Bright Star' to known flops, suggesting a strong negative verdict. The excerpt implies the show is already considered a failure in the critic's view. | Gemini: The review excerpt compares the show to past flops, suggesting a negative assessment. The single excerpt and lack of explicit recommendation lower confidence. | Kimi: The critic explicitly compares the show to notorious Broadway flops and suggests it belongs in the 'gallery of flops,' indicating a complete rejection of the production despite its brief stylistic evocations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:45:48.341Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

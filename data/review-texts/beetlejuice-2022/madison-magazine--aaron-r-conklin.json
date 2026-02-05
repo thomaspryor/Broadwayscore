@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collette is confident and snarky as our titular spook, a supernatural horndog who somehow manages to both charm and repel everyone he encounters. From the get-go, Collette treats his role like a stand-up comedian, pacing the stage, dropping politically charged jokes and playing frequently to the crowd. While he deploys plenty of his character’s familiar mannerisms, he never tries to channel Michael Keaton. He rocks out in 'Fright of Their Lives,' the number where Beetlejuice tries (and fa",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Justin Collette is confident and snarky as our titular spook, a supernatural horndog who somehow manages to both charm and repel everyone he encounters.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows clear praise for the lead performance ('confident and snarky', 'charm and repel', positive description of his approach), but with only one truncated excerpt available and aggregator context suggesting 'Flat' verdict, confidence is low and score stays in lower Positive range. | GPT-4o: The excerpt highlights a mixed portrayal of the character, noting both charm and repulsion. The lack of a full review and the flat aggregator context suggest a mixed overall impression. | Gemini: The excerpt focuses on a positive assessment of the lead actor's performance. Given the limited text and the aggregator's 'Flat' verdict, I'm placing it in the lower end of the Positive range with low confidence. | Kimi: The excerpt offers enthusiastic, unambiguous praise for Justin Collette's lead performance ('confident', 'snarky', 'rocks out'), warranting a score in the upper Positive range per the single-excerpt guidance. Confidence is low due to the limited, curated nature of the text and mid-sentence truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:45:52.861Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

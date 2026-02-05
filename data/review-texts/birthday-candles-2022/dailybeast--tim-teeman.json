@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The stolen moments of the play-Messing letting Ernestine silently imbibe the world and events around her-make the most impact, as well as its affecting denouement (in which Finn, again, is a standout), when Ernestine attempts to finally finish the cake (and my, how you will panic over her lifting a container of flour). As it confronts the big and small questions of existence and time itself, Birthday Candles itself proves simultaneously over-baked and under-baked, but its performers ensure it is served warm.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "high",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birthday Candles itself proves simultaneously over-baked and under-baked, but its performers ensure it is served warm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed verdict with both praise ('stolen moments make impact', 'affecting denouement') and criticism ('over-baked and under-baked'). Single excerpt warning applies - this curated quote balances positive and negative elements. | GPT-4o: The review acknowledges both positive and negative aspects, describing the play as 'over-baked and under-baked' while praising the performers. The excerpt suggests a mixed verdict with some redeeming qualities. | Gemini: The review calls the play \"simultaneously over-baked and under-baked,\" which indicates a mixed assessment. The performers are praised, but the overall impression is lukewarm. | Kimi: The critic praises standout performances by Debra Messing and Finn and cites 'stolen moments' that land well, but delivers a significant structural critique calling the play itself 'over-baked and under-baked,' resulting in a balanced mixed assessment where the cast elevates flawed material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:03.432Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

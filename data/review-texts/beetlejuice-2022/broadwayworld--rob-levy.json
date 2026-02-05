@@ -11,5 +11,60 @@
   "bwwExcerpt": "As for the cast, the ensemble is tremendous. Justin Collette’s improv background allows him to break the fourth wall with panache. His Beetlejuice is an embraceable anti-hero whose skullduggery always works against him. In addition to bringing the comedy, Collette also gives the character a vulnerability that makes him relatable.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As for the cast, the ensemble is tremendous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the ensemble as 'tremendous' and gives detailed positive assessment of the lead performance, calling it 'embraceable' with successful comedy and vulnerability. However, this is only one curated excerpt, so confidence is low. | GPT-4o: The excerpt praises the cast, particularly Justin Collette, highlighting his comedic and relatable performance. Given the positive tone and the aggregator's 'Up' verdict, a score at the upper end of the Positive range is appropriate. | Gemini: The excerpt focuses on the positive aspects of the lead performance, describing it as tremendous and embraceable. Given the single excerpt and aggregator context, I'm scoring it as positive but with low confidence. | Kimi: The excerpt offers strong praise for the ensemble and lead performance, describing Collette as 'embraceable' and 'relatable' with 'panache' and 'tremendous' skill, indicating a clear recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:36:39.538Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

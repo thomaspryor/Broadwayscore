@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "There's a cheeky, open-eyed quality to Be More Chill that knows better than to spill over into archness - because musicals aren't actually chill at all, ever. And no one sums up this mixture of sincerity and worldly mischief better than Christine, who, when things look bleakest, delivers a distressed zinger that might just qualify for best self-own of the current theatrical moment: 'I look around and everyone's hurting. I wish there was something real I could do to make things better but I don't know how. So I guess I'll just do theater.' How do the kids put it? I feel so seen.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There's a cheeky, open-eyed quality to Be More Chill that knows better than to spill over into archness.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic appreciates the show's tonal balance and finds it relatable ('I feel so seen'), but this is only one excerpt so full verdict unclear. | GPT-4o: The excerpt highlights a positive tone, emphasizing the show's sincerity and humor. The critic's personal connection ('I feel so seen') suggests a strong positive reaction. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The review excerpt highlights a positive quality of the show, suggesting a recommendation. The single excerpt and lack of a clear verdict statement lead to a 'medium' confidence. | Kimi: The critic praises the show's self-aware tone and sincere humor, highlighting a standout moment as 'best self-own of the current theatrical moment' and responding enthusiastically with 'I feel so seen.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:15.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

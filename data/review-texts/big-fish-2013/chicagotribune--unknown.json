@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "With the indefatigable, deeply engaged and seemingly irreplaceable Norbert Leo Butz driving its storytelling and willing the show's crucial emotional subtext into being by sheer force of talent and will, 'Big Fish' arrives on Broadway as an earnest, family-friendly, heart-warming and mostly successful new American musical. Modestly and movingly scored by Andrew Lippa, 'Big Fish' is set in the Deep South and honors that region's love of tall tales without exploiting the Southern stereotypes so common to the genre of musical theater.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Big Fish' arrives on Broadway as an earnest, family-friendly, heart-warming and mostly successful new American musical.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Butz's performance ('indefatigable', 'irreplaceable') and clear positive verdict ('mostly successful'), but 'modest' scoring suggests some reservations. Single excerpt limits full assessment. | GPT-4o: The excerpt praises the show as 'heart-warming and mostly successful,' highlighting Norbert Leo Butz's performance and the musical score. The single excerpt suggests a positive view, but the lack of a full review limits confidence. | Gemini: The review uses positive language such as \"earnest, family-friendly, heart-warming and mostly successful.\" The praise for Norbert Leo Butz is also very strong. Given the single excerpt, I am scoring it on the higher end of the positive bucket, but with low confidence. | Kimi: The critic offers strong praise for Norbert Leo Butz's performance and describes the show as 'heart-warming and mostly successful,' indicating a clear recommendation despite modest reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:04:34.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

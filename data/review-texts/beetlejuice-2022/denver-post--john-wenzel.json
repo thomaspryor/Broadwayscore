@@ -11,5 +11,60 @@
   "bwwExcerpt": "Even with its overstuffed libretto and low-reaching songs, “Beetlejuice” honors and expands on its source material, bringing richness to a beloved story about, well, death. As a critic wiser than I once said, Broadway audiences grow more interested in mortality as they age. The fact that the audience at the Sept. 5 opening night looked relatively young and diverse bodes well for the future of this increasingly unaffordable art form. (In other words: Broadway needs more teen goths.)",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Even with its overstuffed libretto and low-reaching songs, \"Beetlejuice\" honors and expands on its source material, bringing richness to a beloved story about, well, death.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges significant flaws ('overstuffed libretto and low-reaching songs') but still finds the show honors and enriches its source material. The positive framing about Broadway's future and young audiences suggests overall approval, but the single excerpt limits confidence in the full verdict. | GPT-4o: The excerpt acknowledges flaws ('overstuffed libretto and low-reaching songs') but ultimately praises the show for honoring and expanding on its source material. The positive aspects are highlighted, suggesting a recommendation with some reservations. The limited excerpt and lack of clear rating reduce confidence. | Gemini: The review acknowledges flaws (\"overstuffed libretto and low-reaching songs\") but ultimately states that the show \"honors and expands on its source material.\" Given the single excerpt and BroadwayWorld aggregator context, I'm scoring it as positive, but with low confidence. | Kimi: The critic acknowledges significant weaknesses ('overstuffed libretto and low-reaching songs') but ultimately praises the production for honoring its source material and bringing richness to the story, indicating a qualified but genuine recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:44:30.075Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

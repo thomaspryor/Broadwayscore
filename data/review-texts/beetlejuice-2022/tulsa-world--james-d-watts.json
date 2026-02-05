@@ -11,5 +11,60 @@
   "bwwExcerpt": "The musical adaptation of 'Beetlejuice,' on the other hand, wisely embraces the fact that it's a musical — which allows for the title character to smash through the 'fourth wall' with glee, skewering everything from the eight-shows-a-week grind of live professional theater to expressing what a good many people think about a show like...oh, say, 'Brigadoon.'",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical adaptation of 'Beetlejuice,' on the other hand, wisely embraces the fact that it's a musical — which allows for the title character to smash through the 'fourth wall' with glee.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise ('wisely embraces') and appreciation for the show's theatrical self-awareness and humor. However, with only one curated excerpt available, confidence must remain low as this may not represent the full review verdict. | GPT-4o: The excerpt praises the show's self-awareness and humor, suggesting a positive reception. However, with only one excerpt available, confidence is low. | Gemini: The excerpt suggests the reviewer found the musical adaptation to be a wise and enjoyable choice. Given the single excerpt and aggregator context, I'm placing it in the positive bucket with a lower score. | Kimi: The excerpt offers clear praise for the show's self-aware approach and fourth-wall breaking, describing the choice as 'wise' and executed 'with glee.' As a single curated excerpt, confidence is low, but the evaluative language suggests a positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:45:24.717Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

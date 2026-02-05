@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Moises Kaufman has staged the play with considerable restraint (despite the fact that the male actors tend, incomprehensibly, to be yelling much of the time). David Lander’s pinpoint lighting throws the players and Derek McLane’s minimalist settings into chiaroscuro tableaux vivants of light and dark, most appropriately.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Moises Kaufman has staged the play with considerable restraint.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt praises the direction as having 'considerable restraint' and lauds the lighting as 'pinpoint' and settings as 'most appropriate', but notes a significant flaw with actors 'yelling much of the time'. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt highlights both positive and negative aspects: restrained staging and effective lighting, but also inexplicable yelling by male actors. The single excerpt provides limited context, leading to a mixed assessment with low confidence. | Gemini: The review notes both positive and negative aspects of the production, with some praise for staging and lighting but criticism of the actors' yelling. Given the limited excerpt, it's difficult to determine a strong recommendation, leading to a mixed score with low confidence. | Kimi: The excerpt offers specific praise for the director's restraint and the production's lighting and design, while including a notable criticism of the acting, suggesting a qualified but positive recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:41.476Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "Collette, an award-winning actor who has been in several Broadway shows, including School of Rock, is captivating and hilarious on stage, from the start. Among the most entertaining songs is Beetlejuice's \"The Whole Being Dead Thing\" 1 and 2.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collette, an award-winning actor who has been in several Broadway shows, including School of Rock, is captivating and hilarious on stage, from the start.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the lead performance ('captivating and hilarious') and highlights entertaining songs, suggesting positive reception. However, confidence is low due to limited text available. | GPT-4o: The excerpt praises Collette's performance as 'captivating and hilarious' and mentions entertaining songs, suggesting a positive view. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language like \"captivating\" and \"hilarious\", suggesting a positive experience. Given the single excerpt and BroadwayWorld aggregator verdict, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('captivating and hilarious') and the musical numbers ('most entertaining'), indicating a clear recommendation despite the limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:40:36.995Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

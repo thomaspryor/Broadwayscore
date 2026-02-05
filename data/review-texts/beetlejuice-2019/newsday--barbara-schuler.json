@@ -12,5 +12,60 @@
   "bwwExcerpt": "This problematic adaptation of Tim Burton's 1988 cult movie hit doesn't really know what to do with itself. In the title role, Alex Brightman gets more stage time than Michael Keaton's 18 minutes on screen, and with an abrasive, gravelly voice that's one stop short of laryngitis, he knocks his socks off trying to sell the show. But the material, especially the far-from-memorable songs by Eddie Perfect, simply doesn't cut it.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947"
+  "playbillVerdictUrl": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But the material, especially the far-from-memorable songs by Eddie Perfect, simply doesn't cut it.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment calling the adaptation 'problematic' and saying the material 'doesn't cut it.' Praises Brightman's effort but criticizes the fundamental material and songs as inadequate. | GPT-4o: The review criticizes the adaptation as 'problematic' and the songs as 'far-from-memorable,' indicating a negative stance. While there is some praise for the lead's effort, the overall tone suggests disappointment with the material. | Gemini: The review states that the adaptation is problematic and the material doesn't cut it, despite Brightman's efforts. This indicates a negative overall assessment. | Kimi: While praising Alex Brightman's committed performance, the critic finds the adaptation problematic and the songs unmemorable, concluding that the material fails to deliver.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:53.627Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

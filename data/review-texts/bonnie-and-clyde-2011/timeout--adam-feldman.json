@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Skillfully directed by Jeff Calhoun, Bonnie & Clyde doesn’t glamorize its subjects, as Arthur Penn’s 1967 film was accused of doing, but it does sentimentalize them; they are introduced to us as children, dreaming of fame, and never grow far beyond that. No matter how many innocent people they kill, this musical’s Bonnie and Clyde remain—like the show itself—not great, but not that bad.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "No matter how many innocent people they kill, this musical's Bonnie and Clyde remain—like the show itself—not great, but not that bad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic's final verdict is explicitly lukewarm: 'not great, but not that bad.' While praising the direction as 'skillful,' the overall assessment places the show in neutral territory with no clear recommendation either way. | GPT-4o: The review suggests a mixed opinion, noting the show is 'not great, but not that bad.' The sentiment is neither strongly positive nor negative, indicating a mixed verdict. | Gemini: The review states the show is \"not great, but not that bad,\" which indicates a mixed or neutral opinion. The lack of a clear recommendation places it in the Mixed bucket. | Kimi: While the critic praises the skillful direction, the final verdict explicitly damns the show with faint praise as 'not great, but not that bad,' indicating a middling, unenthusiastic assessment that neither recommends nor strongly discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:15:13.037Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

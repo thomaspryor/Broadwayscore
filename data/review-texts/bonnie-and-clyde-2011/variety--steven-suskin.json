@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Boy meets girl on a deserted road in Depression-era West Dallas, and sooner than you can say \"Warren Beatty,\" they're rolling in the hay -- or rather, the dust. Seeing as how his name is Clyde and hers is Bonnie, the eventual outcome is no surprise here, and indeed the dead-end story trajectory grows burdensome, as does the fact that unschooled white-trash gunslingers generally aren't loquacious enough to steal the spotlight. For all that, three exciting performances and a",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the dead-end story trajectory grows burdensome",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt shows criticism of the story structure ('burdensome', 'dead-end trajectory') and characters ('unschooled white-trash gunslingers generally aren't loquacious enough') but acknowledges 'three exciting performances'. The text cuts off mid-sentence before the full verdict, suggesting qualified praise may follow. | GPT-4o: The review highlights a burdensome story trajectory and lack of engaging dialogue, but acknowledges 'three exciting performances.' The single excerpt suggests a mixed sentiment, with some positive elements but overall reservations. | Gemini: The review expresses reservations about the story but acknowledges \"three exciting performances.\" The truncated nature makes it difficult to assess the overall verdict with high confidence, but it leans towards mixed. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:30:04.727Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Fans of Martin's wide-ranging gifts as comedian, author, movie star, art collector, playwright (count me in) have seen his avocation as expert picker blossom with the singer-songwriter Brickell. Their work is suffused with an irresistible chemistry of longing and optimism and even a kind of countrified mysticism that divines hope in sorrowful corners of the soul. So my advice is to spend an evening with Love Has Come For You and the new album, So Familiar, and skip Bright Star, the unfortunate musical they have brought to the Cort Theatre...If you can recall the take-no-prisoners lunacy of Martin's play Picasso at the Lapin Agile, you may be doubly disappointed by this earnest but soggy mess.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "skip Bright Star, the unfortunate musical they have brought to the Cort Theatre",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative recommendation with explicit 'skip it' advice. Despite praising Martin's other work, the critic calls the musical an 'unfortunate' and 'soggy mess' and directly advises against seeing it. | GPT-4o: The critic advises skipping the musical 'Bright Star' and describes it as an 'earnest but soggy mess,' indicating a strongly negative assessment with no redeeming qualities. | Gemini: The critic explicitly advises to \"skip Bright Star\" and calls it an \"unfortunate musical\" and \"soggy mess,\" indicating a negative recommendation. | Kimi: The critic explicitly advises audiences to skip the show, calling it an 'unfortunate' and 'soggy mess' despite praising the songwriters' other work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:35:40.228Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

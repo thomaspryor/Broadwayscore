@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Imagine \"Jersey Boys\" without the carefully integrated character development of Frankie Valli and Bob Gaudio, and with a tunestack only one quarter as imperishable. You needn't imagine it; just wander to the Broadhurst for \"Baby It's You!,\" the new jukeboxer outlining the rise and demise of the Shirelles...Leavel (\"Drowsy Chaperone\") does all she can with the leading role, but the authors make impossible demands.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Imagine \"Jersey Boys\" without the carefully integrated character development of Frankie Valli and Bob Gaudio, and with a tunestack only one quarter as imperishable.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic unfavorably compares this show to Jersey Boys, suggesting inferior character development and far weaker songs. However, this is only an excerpt so the full verdict may differ. | GPT-4o: The review compares the show unfavorably to 'Jersey Boys' and criticizes the character development and music. The praise for Leavel is overshadowed by the overall negative tone regarding the show's writing and structure. | Gemini: The review compares the show unfavorably to Jersey Boys, and states that the lead actress is struggling with the material. Given the limited text, it's difficult to be certain, but the overall tone is negative. | Kimi: The critic unfavorably compares the show to Jersey Boys, criticizing the weak character development and inferior music quality, while noting the lead performer struggles with impossible material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:19:54.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

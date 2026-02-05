@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Even if you're not familiar with David Lean's 1946 movie melodrama Brief Encounter, you will find yourself caught up in writer-director Emma Rice's brilliantly reconceived stage adaptation, now playing at Broadway's Studio 54 following a successful run last winter at Brooklyn's St. Ann's Warehouse. (EW's original review). Despite playing in a much-larger theater, the show loses nothing of its considerable wit or charm.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you will find yourself caught up in writer-director Emma Rice's brilliantly reconceived stage adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise with 'brilliantly reconceived' and noting it 'loses nothing of its considerable wit or charm' despite venue change. Single excerpt limits confidence but language suggests enthusiastic recommendation. | GPT-4o: The excerpt praises the adaptation as 'brilliantly reconceived' and notes it retains its 'considerable wit or charm' despite the larger venue. This suggests a strong positive recommendation. However, due to the single excerpt, confidence is low. | Gemini: The review uses strong positive language such as \"brilliantly reconceived\" and states that the show loses nothing of its wit or charm despite playing in a larger theater. Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: The critic describes the adaptation as 'brilliantly reconceived' and praises the production's retention of 'considerable wit or charm' in the transfer to Broadway, indicating strong enthusiasm despite the caveat that this is a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:31:57.708Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

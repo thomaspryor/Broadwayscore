@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There should be -- and I'm guessing there will be -- a place on Broadway this season for \"Bonnie & Clyde.\" Certainly, Arthur Penn's 1967 film masterwork of violence and gorgeous outlaws does not cry out to be a musical. And, if it did, vanilla-pop composer Frank Wildhorn would not appear on most lists of feasible adapters. And yet . . . the show has two of the elements that broad audiences seem to like in a musical: A recognizable story and music that sounds like music we'v",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There should be -- and I'm guessing there will be -- a place on Broadway this season for 'Bonnie & Clyde.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The excerpt shows the critic acknowledging multiple reasons why the show shouldn't work (source material doesn't cry out for musicalization, composer choice questionable) but then expressing belief it will find its place on Broadway and noting audience-pleasing elements. However, with only one truncated excerpt available, confidence must be low as the full verdict is unclear. | GPT-4o: The excerpt suggests some potential for the show on Broadway, but also highlights skepticism about its adaptation into a musical. The tone is neither strongly positive nor negative, indicating a mixed review. | Gemini: The critic states there should be a place for the show on Broadway, which indicates a positive sentiment, but the excerpt also expresses reservations about the adaptation and composer. Given the single excerpt and reservations, I've scored it as positive with low confidence. | Kimi: While the critic expresses skepticism about the film's suitability for musical adaptation and the composer's qualifications, the review pivots with \"And yet\" to endorse the show's commercial viability and audience appeal, suggesting it deserves its Broadway spot. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:25:07.508Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 78,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

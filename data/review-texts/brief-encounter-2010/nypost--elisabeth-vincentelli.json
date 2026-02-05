@@ -12,5 +12,60 @@
   "bwwExcerpt": "The brilliant production of 'Brief Encounter' that opened on Broadway last night should make all but the sourest puss believe in romance again. It's a spirited charm offensive that's just impossible to resist.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929",
+  "assignedScore": 86,
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The brilliant production of 'Brief Encounter' that opened on Broadway last night should make all but the sourest puss believe in romance again.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Clear rave language with 'brilliant production' and 'just impossible to resist,' though confidence is medium due to single excerpt warning. | GPT-4o: The excerpt uses strong positive language ('brilliant', 'impossible to resist') indicating a highly enthusiastic recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review uses strong positive language like \"brilliant,\" \"spirited charm offensive,\" and \"impossible to resist,\" indicating a strong recommendation. | Kimi: The excerpt uses enthusiastic superlatives like 'brilliant' and 'impossible to resist', indicating a clear recommendation in the 80-84 range. Confidence is low per the single-excerpt warning. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:42:22.286Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

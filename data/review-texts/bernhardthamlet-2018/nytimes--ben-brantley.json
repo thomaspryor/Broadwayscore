@@ -16,12 +16,15 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Ms. Metcalf brings a ferocious intelligence and a seasoned professional's command to her portrayal of the 19th-century French actress Sarah Bernhardt, who shocked the theater world by playing Hamlet.",
-  "contentTier": "truncated",
+  "contentTier": "invalid",
   "contentTierReason": "Short text (29 words)",
-  "rejectedAt": "2026-02-03T14:44:08.300Z",
+  "rejectedAt": "2026-02-05T18:45:38.094Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
-  "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment describing a performance, not a complete review with an evaluative verdict.; openai: The text is a brief statement about Laurie Metcalf's performance, lacking an evaluative review of the overall production.; gemini: This is a single sentence, likely an excerpt or blurb, and does not constitute a full review with a recommendation.; kimi: This is a one-sentence excerpt praising a single performance, lacking any evaluation of the overall production, recommendation, or verdict on whether to see the show. It reads like a pull quote or fragment from a larger piece, not a complete review with scorable content.",
+  "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with an evaluative verdict; openai: The text is a brief description of Laurie Metcalf's performance, lacking any evaluative content or overall assessment of the show.; gemini: This is a single sentence about a performance, not a full review with a recommendation.",
   "promptVersion": "5.2.0",
-  "textQuality": "partial"
+  "textQuality": "partial",
+  "sources": [
+    "web-search"
+  ]
 }
