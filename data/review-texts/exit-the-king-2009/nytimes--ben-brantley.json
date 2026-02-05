@@ -13,8 +13,8 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "\"Mr. Rush is not only more entertaining than the usual never-say-die bogeyman but also more frightening. That's not because you're worried that the 400-year-old Berenger might come after you in your dreams, Freddy Krueger style; it's because you know that the seedy, power-addled egomaniac onstage - who's working overtime to dodge his own mortality - is, quite simply, you.\"",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-Exit-the-King-and-More-20090327",
   "showScoreExcerpt": "Mr. Rush brings a sweaty, antic desperation to Berenger that makes his final acceptance of death genuinely moving. This is a performance of such concentrated intensity that it seems to burn calories just watching it.",
   "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
@@ -104,5 +104,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
   "rejectionReasoning": "claude: This is a review of an off-Broadway production at Shakespeare Theater of New Jersey in Madison, not a current Broadway production; openai: The review is about a production at the Shakespeare Theater of New Jersey, not the current Broadway run.; gemini: This review is for a Shakespeare Theater of New Jersey production in Madison, not a Broadway production.; kimi: This review covers the Shakespeare Theater of New Jersey's production in Madison, NJ, not a Broadway production. While it references the 2009 Broadway revival, the critique is explicitly of the regional theater production running at the F.M. Kirby Shakespeare Theater.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "bww-roundup"
+  ]
 }

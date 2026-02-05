@@ -13,8 +13,8 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "\"You can argue all you like, as historians and theologians have for centuries, about which of them has the greater claim to the English throne. But after seeing the terrifically exciting new production of Friedrich Schiller's \"Mary Stuart,\" which opened Sunday night at the Broadhurst Theater, you won't doubt that both the queens it portrays are born to rule. So, I might add, are the actresses who play them.\"",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blogs-Review-Roundup-MARY-STUART-and-More-20090420",
   "showScoreExcerpt": "Ms. Mirren and Ms. Donovan achieve something miraculous here. They make you believe that these two monarchs, for all their political calculation, are also flesh-and-blood women driven by vanity, desire and need.",
   "contentTier": "truncated",
   "contentTierReason": "Short text (32 words)",
@@ -23,5 +23,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a brief excerpt or quote fragment without enough context to determine what show is being reviewed or provide a complete critical assessment; openai: The review text does not specify the show being reviewed, making it impossible to determine if it's about the target show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "bww-roundup"
+  ]
 }
