@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Clarke captures that survivor's drive, as well as the aching vulnerability that bubbles up under the cool, sophisticated exterior. This Holly is still in her teens, after all - a kid who had to grow up fast, she's putting on airs. \"She's such a goddamn liar,\" says her Hollywood agent pal, OJ Berman (Lee Wilkof), \"maybe she don't know herself anymore.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Clarke captures that survivor's drive, as well as the aching vulnerability that bubbles up under the cool, sophisticated exterior.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on praising the lead performance with detailed, appreciative analysis of the characterization. However, this is only one curated quote and may not reflect the full review verdict, so confidence is low and score is in lower Positive range. | GPT-4o: The excerpt highlights a strong performance by Clarke, indicating a positive view of her portrayal. However, the lack of a full review and only a single excerpt limits confidence in the overall sentiment. | Gemini: The excerpt focuses on a positive aspect of the performance. Given that it is the only excerpt, and it is positive, I am scoring it as positive, but with low confidence. | Kimi: The excerpt offers clearly positive evaluative language regarding the lead actress's performance, warranting the upper end of the Positive bucket per scoring guidelines for single excerpts, though confidence is low given limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:30:29.073Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

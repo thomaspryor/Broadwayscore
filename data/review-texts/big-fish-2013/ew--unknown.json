@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "With his stocky build, short stature, and thinning hair, Butz is an unlikely leading man, but he has the loose-limbed energy and charisma of a young Dick Van Dyke. The radiant Kate Baldwin is underused as his sympathetic wife, though she brings her silken voice to the beautiful second-act ballad, 'I Don't Need a Roof' - one of the highlights of the mostly tuneful score by Andrew Lippa (The Addams Family). Steggert is less compelling as their not-so-likable son, particularly in the problematic second act saddled with several superfluous fantasy numbers and an ending that packs less of an emotional wallop than it should...For the most part, though, Big Fish finds theatrically inventive ways to reel audiences into its central love story. In this case, it isn't boy-meets-girl but father-hooks-son. And Edward Bloom is quite a catch.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For the most part, though, Big Fish finds theatrically inventive ways to reel audiences into its central love story.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed review that acknowledges significant flaws (problematic second act, superfluous numbers, weak ending) but concludes positively that the show succeeds 'for the most part' with theatrical invention. Single excerpt limits confidence in overall verdict. | GPT-4o: The review acknowledges some issues, such as an underused Kate Baldwin and a problematic second act, but overall suggests that the show is inventive and engaging. The excerpt is mildly positive, leading to a score at the lower end of the Positive range. | Gemini: The review praises Butz's performance and the score, but notes issues with the second act and Steggert's performance. The overall tone is positive, suggesting it's worth seeing despite flaws. | Kimi: While criticizing the problematic second act and supporting performances, the reviewer praises Norbert Leo Butz's charismatic lead performance and the show's theatrical invention, ultimately calling Edward Bloom 'quite a catch' and suggesting the production successfully reels audiences in.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:45.505Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

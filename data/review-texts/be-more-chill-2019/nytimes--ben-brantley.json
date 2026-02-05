@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "For one thing, it is - by cold critical standards - the worst of the lot, with a repetitive score, painfully forced rhymes, cartoonish acting and a general approach that mistakes decibel level (literally and metaphorically) for emotional intensity. But this ostensible amateurishness may be exactly what sells 'Be More Chill' to its young target audience. Alone among Broadway musicals, 'Be More Chill' feels as if it could have been created by the teenagers it portrays, or perhaps by even younger people imagining what high school will be like. Though its production values have been souped up since I saw it in August, the show's current incarnation - which features the same cast and is again directed by Stephen Brackett - remains a festival of klutziness that you could imagine being put together in the bedrooms and basements of young YouTubers.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For one thing, it is - by cold critical standards - the worst of the lot, with a repetitive score, painfully forced rhymes, cartoonish acting.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Brantley calls it 'the worst' with harsh criticism of score, rhymes, and acting. While he acknowledges it may appeal to young audiences, his professional verdict is clearly negative. Single excerpt warning requires caution - this could be setup for a more positive conclusion. | GPT-4o: The review describes the show as having significant flaws like a repetitive score and cartoonish acting. While it acknowledges appeal to a young audience, the overall tone is negative, indicating it is not recommended for a general audience. | Gemini: The review is largely negative, citing a repetitive score, forced rhymes, cartoonish acting, and a general lack of emotional intensity. While it acknowledges the show's potential appeal to a young audience, the overall assessment is unfavorable. | Kimi: The critic applies harsh standards calling it 'the worst of the lot' with 'painfully forced rhymes' and 'cartoonish acting,' yet acknowledges this 'festival of klutziness' authentically connects with the teenage demographic, resulting in a qualified mixed assessment that neither recommends nor rejects.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:26:25.728Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 58,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

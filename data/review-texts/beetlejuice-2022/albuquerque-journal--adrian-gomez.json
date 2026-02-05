@@ -11,5 +11,60 @@
   "bwwExcerpt": "As the titular character, Justin Collette brings an immense amount of energy to the role. There’s not a moment where he’s not commanding the stage as he’s decked out in a black-and-white outfit and donning green hair. Collette breathes an exuberance into the role — one that shows a different side of Beetlejuice, if even for a moment.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Collette breathes an exuberance into the role — one that shows a different side of Beetlejuice, if even for a moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on praising the lead performance with strong positive language ('immense amount of energy,' 'commanding the stage,' 'breathes an exuberance'). However, this is one curated quote that may not represent the full review sentiment, and the aggregator context suggests a 'Flat' overall verdict, indicating this praise may be isolated within a more mixed assessment. | GPT-4o: The excerpt praises Justin Collette's performance, highlighting his energy and stage presence. However, the single excerpt and flat aggregator context suggest a mildly positive tone overall. | Gemini: The review excerpt focuses solely on praising the lead actor's performance, indicating a positive aspect of the show. Given the single excerpt and aggregator context, a lower positive score is appropriate. | Kimi: The excerpt offers enthusiastic praise for the titular performance with words like 'immense energy' and 'commanding,' placing it in the upper range of the Positive bucket per the single-excerpt guidance, though the limited context prevents higher confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:21:57.415Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In Joseph’s play, death is no release, just an invitation to endless, one-sided parlay with the Infinite. And nobody does one-sided parlay like Robin Williams, who gives a remarkably continent, almost minimalist performance. He’s star casting done right, where the mere presence of the celebrity performs an estranging effect, goading us with something familiar yet out of place. Who let that guy out of his cage? (Next up: Mel Gibson in The Hairy Ape, please.)",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's star casting done right, where the mere presence of the celebrity performs an estranging effect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic praises Robin Williams' performance as 'remarkably continent, almost minimalist' and calls it 'star casting done right,' indicating approval of both the casting choice and execution, though this is only one excerpt. | GPT-4o: The excerpt praises Robin Williams' performance as 'remarkably continent' and highlights the effective use of star casting. However, the single excerpt warning suggests caution, indicating a mildly positive tone. | Gemini: The review praises Robin Williams' performance and describes it as \"star casting done right.\" While the excerpt is limited, the overall tone is positive, suggesting a recommendation with some reservations. | Kimi: The excerpt praises Williams' performance as 'star casting done right' and highlights his restrained, effective acting style, indicating a clear positive recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:46:36.029Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

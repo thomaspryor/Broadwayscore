@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "To Lloyd's credit, and that of this spectacular cast, we never lose sight of the ways in which these three lives are ineradicably interwoven, giving more power to the emptiness and emotional wreckage their actions have wrought - despite their best attempts to be so very British about it all. The truth is visible there, in the splintered light glinting off a trail of mucus, loosed by the wrench of unexpected grief.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "To Lloyd's credit, and that of this spectacular cast, we never lose sight of the ways in which these three lives are ineradicably interwoven.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the director and calls the cast 'spectacular,' describing the production's emotional power and artistic achievement. However, with only one curated excerpt available, confidence is low as this may not represent the full review verdict. | GPT-4o: The excerpt praises the direction and cast, highlighting the emotional impact and complexity of the production. However, the text quality warning and single excerpt caution suggest a lower confidence in the overall sentiment. | Gemini: The review excerpt praises the cast and the director, suggesting a positive experience, but the single excerpt and lack of a clear recommendation necessitates a score in the middle of the positive range with low confidence. | Kimi: The excerpt offers strong praise for the 'spectacular cast' and direction, highlighting the production's emotional power and thematic coherence. As a single curated excerpt with clearly positive language, it scores at the high end of the Positive range per the single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:16.970Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

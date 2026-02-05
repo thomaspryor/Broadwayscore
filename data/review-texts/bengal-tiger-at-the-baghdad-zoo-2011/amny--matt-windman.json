@@ -12,5 +12,60 @@
   "bwwExcerpt": "Staging the play in a large Broadway theater usually reserved for musicals does not work to the play's ultimate advantage. Nevertheless, Rajiv's intelligent drama, as staged by Moisés Kaufman, convincingly captures the chaos of Iraq immediately following the 2003 invasion.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 72,
+  "llmScore": {
+    "score": 72,
+    "confidence": "medium",
+    "range": {
+      "low": 67,
+      "high": 77
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nevertheless, Rajiv's intelligent drama, as staged by Moisés Kaufman, convincingly captures the chaos of Iraq immediately following the 2003 invasion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed assessment - acknowledges staging problems ('does not work to the play's ultimate advantage') but praises the drama as 'intelligent' and 'convincing'. With only one curated quote available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt acknowledges a staging issue but praises the drama's intelligence and effective capture of historical chaos. The single excerpt and text quality warning suggest caution, leading to a lower-end Positive score. | Gemini: The review acknowledges a staging issue but ultimately praises the drama and direction, indicating a slightly positive recommendation. Confidence is low due to the single excerpt. | Kimi: While the critic criticizes the choice of venue as not working to the play's advantage, the 'Nevertheless' signals that the drama itself is praised as 'intelligent' and the staging 'convincingly captures' the subject matter, indicating a qualified but positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:51:39.873Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 72,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It might be time to call for a moratorium on stage adaptations of Truman Capote's Breakfast at Tiffany's...Sean Mathias has taken a blundering stab at turning it into a Broadway play, this time with a page-bound script by Richard Greenberg and a strained Emilia Clarke in the central role. Far more than the casting or writing, however, the insurmountable problem is Mathias' cloddish direction...Ultimately, this translation is an inert substitute for both the written and filmed versions, its centr",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 30,
+  "llmScore": {
+    "score": 30,
+    "confidence": "medium",
+    "range": {
+      "low": 25,
+      "high": 35
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "this translation is an inert substitute for both the written and filmed versions",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The excerpt contains harsh language ('blundering stab', 'cloddish direction', 'inert substitute') and calls for a moratorium on adaptations, indicating clear disapproval. However, with only one truncated excerpt available, confidence is low as the full verdict may not be represented. | GPT-4o: The excerpt criticizes the direction, casting, and script, describing the production as 'inert' and a 'blundering stab'. The negative tone suggests a strong disrecommendation. | Gemini: The review uses negative language such as \"blundering stab\" and \"cloddish direction,\" indicating a negative assessment. Given the limited text, I'm scoring it as negative with low confidence. | Kimi: The excerpt uses devastating language including 'moratorium,' 'blundering,' 'cloddish,' and 'inert,' condemning the direction and adaptation without noting any redeeming qualities. Confidence is low due to single-excerpt availability and truncation. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:23:46.535Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 18,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

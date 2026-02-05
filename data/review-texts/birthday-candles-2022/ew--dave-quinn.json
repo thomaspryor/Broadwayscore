@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "If only the play gave Messing time to settle, we might have been allowed to experience more of the actress' range. The action moves so fast that emotional moments pop up out of nowhere, and Ernestine's responses ring hollow. When she's betrayed by her husband, the bell tolls to the next year before the audience has had enough time to grasp onto what just happened to our heroine and how she feels. Still, judging by the sniffs in the audience by the play's conclusion, it's clear Birthday Candles landed with some. Personally, I was more upset about the cake's fate than Ernestine's.",
   "bwwScore": 5,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 55,
+  "llmScore": {
+    "score": 55,
+    "confidence": "medium",
+    "range": {
+      "low": 50,
+      "high": 60
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I was more upset about the cake's fate than Ernestine's.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: The critic finds fundamental flaws in pacing and emotional development that prevent connection with the story, despite acknowledging Messing's talent and that some audience members responded positively. | GPT-4o: The review highlights issues with pacing and emotional impact, suggesting a lack of depth in character development. However, it acknowledges that the play resonated with some audience members, indicating a mixed reception. | Gemini: The review expresses disappointment with the pacing and emotional impact, but acknowledges that it resonated with some audience members. The critic's personal reaction is lukewarm, suggesting a mixed overall experience. | Kimi: The critic finds the pacing too rushed for emotional moments to land, resulting in hollow character responses. While acknowledging some audience members were moved, the critic's personal verdict dismisses the show's emotional impact in favor of a prop. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:07:18.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

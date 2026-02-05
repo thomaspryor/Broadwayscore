@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A Tony winner for The Drowsy Chaperone, Leavel is a fine singer and gifted musical-comedy performer who deserves better than this stereotypical cutout. For a show about a woman who carved her career on having a great ear for a crisp, catchy hit, it grates that the songs are so carelessly handled...Through his American Pop Anthology production banner, Mutrux is developing other jukebox shows. But on the basis of Baby It's You, artists who care about the way t",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For a show about a woman who carved her career on having a great ear for a crisp, catchy hit, it grates that the songs are so carelessly handled",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Text appears cut off but shows clear criticism of the material ('stereotypical cutout', 'carelessly handled' songs) despite acknowledging the lead performer's talent. Single excerpt limits confidence. | GPT-4o: The excerpt criticizes the handling of the songs and implies the show does not live up to its subject's standards. The performer is praised but the overall production is not recommended. Given the single excerpt, confidence is low. | Gemini: The review excerpt criticizes the songs and the overall quality of the show, despite praising the lead performer. The phrase \"deserves better\" indicates a negative sentiment towards the production itself. | Kimi: While the critic praises lead performer Leavel as a 'gifted musical-comedy performer,' this only serves to emphasize that she 'deserves better than this stereotypical cutout.' The core criticism targets the show's careless handling of its material and stereotypical writing, indicating a clear recommendation against.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:51.545Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

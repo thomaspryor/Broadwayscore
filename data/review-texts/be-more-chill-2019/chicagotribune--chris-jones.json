@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "If all of its overplayed, insecure, overwrought, dial-in-the-red-zone freneticism could have been avoided, we'd actually have an interesting Broadway show that not only reveals just how terrified we all are about the encroachments of digitized technology on our human bodies - and of teenage addiction to medication - but also how difficult it is to pull off weird 'Little Shop of Horrors'-style satire in this moralistic moment when every show has the same thing to teach. Be your nerdy self and let your freak flag fly! They won't love you 'till you love yourself.",
-  "bwwScore": 3
+  "bwwScore": 3,
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If all of its overplayed, insecure, overwrought, dial-in-the-red-zone freneticism could have been avoided, we'd actually have an interesting Broadway show",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Negative) - using median score | Claude: Single excerpt shows critic sees potential ('interesting Broadway show') but is frustrated by execution problems ('overplayed, insecure, overwrought'). Conditional praise suggests mixed reception with significant reservations. | GPT-4o: The excerpt criticizes the show for being overplayed and overwrought, suggesting it fails to achieve its potential. The tone is negative, but the single excerpt limits confidence in the overall verdict. | Gemini: The review suggests the show has potential but is currently hindered by excessive elements. The critic implies it could be interesting if certain aspects were toned down, indicating a mixed assessment. | Kimi: The critic heavily criticizes the production's excessive, insecure style ('dial-in-the-red-zone freneticism') as preventing it from being interesting, suggesting a negative verdict despite acknowledging the show's thematic potential regarding technology and addiction. | Buckets: claude=Mixed, openai=Negative, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:15:50.599Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Negative) - using median score"
+  }
 }

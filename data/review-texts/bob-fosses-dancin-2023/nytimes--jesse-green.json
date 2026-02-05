@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "In the often-thrilling, often-frustrating revival of the 1978 dancical, which reincarnates the spirit and choreography of Bob Fosse, the two possibilities are much the same. Substantially revamped and restaged by Wayne Cilento, a standout in the original production, this 'Dancin’' argues that Fosse’s genius was constrained by the pedestrian storytelling of musical theater, with its 'villains,' 'baritone heroes' and 'Christmas trees.' True Fosseism, it seems, can fully thrive only in the abstract",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In the often-thrilling, often-frustrating revival of the 1978 dancical, which reincarnates the spirit and choreography of Bob Fosse, the two possibilities are much the same.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic explicitly describes the show as both 'often-thrilling' and 'often-frustrating,' indicating a genuinely mixed experience. However, with only one excerpt available, the full verdict remains unclear. | GPT-4o: The review describes the revival as both 'thrilling' and 'frustrating', indicating a mix of positive and negative elements. The excerpt suggests a balance of strengths and weaknesses, fitting a mixed verdict. | Gemini: The review uses both \"thrilling\" and \"frustrating\" to describe the show, indicating a mixed reaction. With only one excerpt available, confidence is low. | Kimi: The excerpt presents competing qualities ('often-thrilling' vs 'often-frustrating') without a clear recommendation, praising the Fosse reincarnation while criticizing the storytelling constraints.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:13:31.255Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

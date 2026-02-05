@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 78,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "“The madcap sprint through the scenes is totally nonsensical, but with flash and dash, wacky visuals, Eddie Perfect’s off-the-deep-end pop score, and the enthusiasm of Alex Brightman driving the show, 'Beetlejuice' is certainly an experience...Expect to follow a plot? Don’t even bother; just watch the effects...The show holds nothing back and all in all, ‘Beetlejuice’ offers sane advice about living life to the fullest.”\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beetlejuice' is certainly an experience...The show holds nothing back and all in all, 'Beetlejuice' offers sane advice about living life to the fullest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Review acknowledges the show is 'totally nonsensical' and advises not to expect plot coherence, but still frames it positively as 'an experience' with 'flash and dash' and concludes with praise about its life advice. Single excerpt warning applies - this appears barely positive with significant reservations. | GPT-4o: The review highlights the show's energetic and visually engaging nature, with a positive tone about its overall experience. However, it also notes the nonsensical plot, suggesting some reservations. | Gemini: The review acknowledges the nonsensical plot but praises the visuals, music, and Brightman's performance, suggesting an enjoyable experience despite its flaws. Due to the single excerpt, the confidence is low. | Kimi: While acknowledging the plot is nonsensical, the critic enthusiastically praises the spectacle, score, and lead performance, framing the show as a worthwhile sensory experience that holds nothing back.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:46:09.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

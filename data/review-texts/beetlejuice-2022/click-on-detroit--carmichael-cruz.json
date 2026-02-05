@@ -11,5 +11,60 @@
   "bwwExcerpt": "Beetlejuice is a wild ride with heart. Based on the 1988 Tim Burton classic starring Michael Keaton, the Broadway adaptation brings the story to life with clever songs, magic and special effects. From the lavish (and ever-changing) set of the Maitland house to the cast of recently deceased characters found in the Netherworld, the show is a fast-paced adventure with surprises around every corner.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is a wild ride with heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise calling it a 'wild ride with heart' with positive descriptors like 'clever songs', 'lavish', and 'fast-paced adventure'. Single excerpt warning applies - using upper end of Positive bucket due to enthusiastic tone. | GPT-4o: The excerpt describes the show as a 'wild ride with heart' and praises its clever songs, magic, and special effects, indicating a strong positive impression. Given the single excerpt and the warning about potential cherry-picking, the score is set at the upper end of the Positive range. | Gemini: The review describes the show as a \"wild ride with heart\" and a \"fast-paced adventure with surprises around every corner,\" indicating a positive experience. However, as it is only a single excerpt, the confidence is low. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:40:02.104Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

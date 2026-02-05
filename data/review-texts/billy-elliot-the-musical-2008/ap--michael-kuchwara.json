@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It's not often that a musical comes along that is as ambitious as it is emotional — and then succeeds on both counts. But 'Billy Elliot,' which opened Thursday at Broadway's Imperial Theatre, is an exceptional work that exemplifies what the best musicals are all about: collaboration. Everything comes together in this impressive, warmhearted adaptation of the 2000 British film about a North Country coal miner's young son who yearns to dance and join the Royal Ballet School in London.",
   "bwwScore": 10,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But 'Billy Elliot' is an exceptional work that exemplifies what the best musicals are all about: collaboration.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Calls the show 'exceptional' and uses superlatives like 'impressive' while praising it as exemplifying 'what the best musicals are all about.' However, confidence is medium due to single excerpt limitation. | GPT-4o: The review excerpt praises the musical as 'exceptional' and successful in its ambition and emotional impact, indicating a strong recommendation. | Gemini: The review excerpt uses strong positive language such as \"ambitious as it is emotional\" and \"exceptional work.\" Given the single excerpt warning, the score is placed on the higher end of the positive range. | Kimi: The excerpt offers unambiguous praise, calling the show 'exceptional' and 'impressive' with strong superlatives, but the single-excerpt limitation necessitates placing it at the upper end of the Positive range (80-84) per scoring guidelines for cherry-picked quotes. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:00:11.989Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 90,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

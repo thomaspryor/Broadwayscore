@@ -12,5 +12,60 @@
   "bwwExcerpt": "The music itself works, but for a show called 'Bandstand,' one might expect to keep humming a tune or two hours after leaving the theater. That doesn't happen here. Act one's big showstopper, 'Love Will Come and Find Me Again,' is as grand as you want it to be - and Osnes completely crushes it - but it also sounds like any other tune from the big band era. The big finale track, 'Welcome Home,' which is about how each band member handles his PTSD, is intentionally awkward and not exactly the kind of track you'll want to sing in the shower.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The music itself works, but for a show called 'Bandstand,' one might expect to keep humming a tune or two hours after leaving the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows qualified praise ('music works', performer 'crushes it') but significant criticism about memorability and song quality. However, with only one excerpt available, the full verdict remains unclear. | GPT-4o: The review acknowledges the effectiveness of the music but criticizes its memorability, suggesting a mixed experience. The praise for specific performances is countered by the overall lack of standout tunes. | Gemini: The review excerpt praises the music and a performance but notes the lack of memorable tunes and awkwardness of the finale, suggesting a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: While acknowledging the music 'works' and praising specific performances, the critic emphasizes disappointment in the score's lack of memorability and distinctiveness, suggesting a middling verdict on this musical.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:14.712Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

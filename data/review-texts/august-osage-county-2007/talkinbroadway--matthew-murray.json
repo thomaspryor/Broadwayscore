@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "August: Osage County is a towering achievement that establishes Tracy Letts as one of our finest contemporary American playwrights and confirms Anna D. Shapiro as a director of enormous skill and sensitivity.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 88,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "August: Osage County is a towering achievement that establishes Tracy Letts as one of our finest contemporary American playwrights and confirms Anna D. Shapiro as a director of enormous skill and sensitivity.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 88,
+    "confidence": "medium",
+    "range": {
+      "low": 83,
+      "high": 93
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "August: Osage County is a towering achievement that establishes Tracy Letts as one of our finest contemporary American playwrights.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Uses superlative language 'towering achievement' and 'finest contemporary American playwrights' - clear rave territory. Medium confidence due to single excerpt warning, but language is unambiguously enthusiastic. | GPT-4o: The excerpt provides strong praise, calling the play a 'towering achievement' and highlighting both the playwright and director's excellence. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses strong positive language like \"towering achievement\" and praises both the playwright and director, indicating a strong recommendation. However, confidence is low due to the limited text available. | Kimi: Single excerpt offers superlative praise calling the show a 'towering achievement' with commendations for both playwright and director, warranting the upper end of the Positive bucket; confidence is low given only one curated excerpt is available. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:06:30.890Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 92,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Bonnie and Clyde were real public enemies. The new Broadway musical Bonnie & Clyde is really its own worst enemy.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new Broadway musical Bonnie & Clyde is really its own worst enemy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic uses a harsh metaphor comparing the show to being 'its own worst enemy,' which is strongly negative language. However, with only one excerpt available, this could be cherry-picked from a longer review with more nuanced assessment. | GPT-4o: The excerpt suggests a negative view by comparing the show unfavorably to its subject, implying it fails to deliver. However, with only one excerpt, the full context is unclear, leading to low confidence. | Gemini: The single excerpt available is clearly negative, stating the musical is its own worst enemy. Given the limited context, confidence is low, but the negative sentiment is clear. | Kimi: The critic's wordplay condemns the production as fundamentally self-sabotaging, clearly advising against attendance despite the historical figures' notoriety.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:20:15.345Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 25,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

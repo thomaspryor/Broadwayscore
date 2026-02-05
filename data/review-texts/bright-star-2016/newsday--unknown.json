@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It doesn't shy away from the cornball or the unapologetically sentimental. And, yes, the plot is implausibly romantic and hinged on coincidence. Along with all that, however, 'Bright Star' is also downright wonderful -- a multichambered sweetheart of an original that Steve Martin and Edie Brickell created for Broadway from little more than a 1902 news item about a lost baby and an unbridled love of American roots music...At first, all the 'sun's gonna shine' and 'a man's gotta do' songs seem awfully simple and self-explanatory...But as the relationships deepen and darken, the show -- directed with a lack of cynicism and lots of rolling wood furniture by Walter Bobbie ('Chicago') -- grows with the complexity of a juicy short story. The large cast is uniformly appealing, with choreography that brings a haunting moodiness to the square dances and jitterbugs. Then there's the score, which builds with rhythmic surprises, melodic complexity and the deep satisfaction of humming and plucking strings.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 83,
+  "llmScore": {
+    "score": 83,
+    "confidence": "high",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Along with all that, however, 'Bright Star' is also downright wonderful -- a multichambered sweetheart of an original",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging flaws (cornball, implausible plot), the critic calls it 'downright wonderful' and praises the cast, direction, choreography, and score with genuine enthusiasm. The positive verdict clearly outweighs the caveats. | GPT-4o: The excerpt praises the show as 'downright wonderful' and highlights its appealing cast, choreography, and score. Despite noting some cornball elements, the overall tone is positive. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review uses strong positive language like \"downright wonderful\" and describes the show as a \"sweetheart of an original.\" The critic also praises the direction, cast, choreography, and score, indicating a strong recommendation. | Kimi: The excerpt offers enthusiastic praise calling the show 'wonderful' and a 'sweetheart of an original' while commending the score and cast, though as a single curated quote it may not represent the full review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:36:41.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

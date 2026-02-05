@@ -11,5 +11,60 @@
   "bwwExcerpt": "If you are a MONTY PYTHON AND THE HOLY GRAIL, ADAMS FAMILY, and THE ROCKY HORROR SHOW fan, you, like the duo of guys sitting near me, who were dressed in costumes that paralleled Beetlejuice's stripped outfit, sang along with the songs, and found the exaggeration and slapstick hysterical, will become 'Bettlejuicers.' If NEXT TO NORMAL, RENT, WEST SIDE STORY and SPRING AWAKENING are your thing, you'll probably find the whole thing trite and ridiculous.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you are a MONTY PYTHON fan, you'll become 'Bettlejuicers.' If WEST SIDE STORY is your thing, you'll probably find the whole thing trite and ridiculous.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic presents a clear division - fans of certain comedic shows will love it, while fans of serious musicals will find it 'trite and ridiculous.' This conditional recommendation with significant caveats places it in Mixed territory. | GPT-4o: The excerpt suggests that enjoyment of the show is highly dependent on the viewer's taste, indicating a mixed reception. Fans of certain styles may enjoy it, while others may find it 'trite and ridiculous.' | Gemini: The review suggests that enjoyment of the show is highly dependent on personal taste, comparing it to other shows and indicating that some viewers will find it enjoyable while others will find it trite. | Kimi: The review presents a conditional verdict: the show works for fans of campy, irreverent musicals but will strike serious musical theater fans as 'trite and ridiculous.' This 'for fans only' assessment with no personal enthusiasm from the critic fits the Mixed bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:36.985Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

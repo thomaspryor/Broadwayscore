@@ -11,5 +11,60 @@
   "bwwExcerpt": "Despite my hangups, Beetlejuice The Musical hits enough of the correct nostalgic notes to make for one electrifying night at the theatre. Not to be missed. The set design by David Korins greatly captures the Tim Burton whimsy from the slight detail of every door and window being more than slightly askew, to the dizzying swirling frames, and the creepy twisted tree in the graveyard. The piece that sold it for me was the inclusion of the multi-limbed sculpture, an iconic part of the original movie",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite my hangups, Beetlejuice The Musical hits enough of the correct nostalgic notes to make for one electrifying night at the theatre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite opening with reservations, the critic delivers a clear positive verdict with 'electrifying night' and 'Not to be missed.' However, confidence is low due to single excerpt warning and potential cherry-picking. | GPT-4o: The excerpt provides a clear positive recommendation with phrases like 'electrifying night' and 'not to be missed.' Despite the warning about potential cherry-picking, the strong positive language suggests a higher score within the Positive range. | Gemini: The review states \"Not to be missed\" and describes the show as \"one electrifying night at the theatre,\" indicating a strong positive recommendation. The description of the set design further supports this positive assessment. | Kimi: The excerpt delivers an enthusiastic recommendation ('electrifying', 'not to be missed') with specific praise for the set design, though the admission of 'hangups' indicates minor reservations. The single-excerpt format limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:23.744Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

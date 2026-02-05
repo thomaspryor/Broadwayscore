@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"Brightman is so good at what he does that bookwriters Brown and King were wise to adjust their script from the one Michael McDowell and Larry Wilson carpentered so that Beetlejuice, wearing his frayed black-and-white striped outfit doesn’t make a late entrance to the shenanigans...'Beetlejuice' becomes a hodge-podge of events and numbers, some amusing, some not so amusing...Alex Timbers directs 'Beetlejuice,' and lives up to his (sometimes overrated) reputation. \"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Beetlejuice' becomes a hodge-podge of events and numbers, some amusing, some not so amusing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed signals: praises lead performer and acknowledges smart script adjustments, but describes show as 'hodge-podge' with uneven quality. Director comment is backhanded ('sometimes overrated'). Low confidence due to single excerpt warning. | GPT-4o: The excerpt describes the show as a 'hodge-podge' with mixed elements, suggesting an uneven experience. The praise for Brightman is countered by the mixed assessment of the production overall. | Gemini: The review notes both amusing and not so amusing moments, suggesting a mixed experience. The truncated nature and single excerpt reduce confidence. | Kimi: The excerpt praises Brightman's performance and the adjusted script but criticizes the show as a structurally messy 'hodge-podge' with inconsistent amusement levels, indicating a mixed assessment rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:29.702Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are very few shows in which the set earns more applause than its top-billed TV stars, but the breezy Broadway revival of the 1946 comedy Born Yesterday is one of them. John Lee Beatty has designed a radiant art deco gem of a hotel suite with gilded fixtures, glimmering onyx woodwork, ruby-red upholstery, and satiny sapphire walls. Topped off by fat swirls of curlicue chalk-white molding, it is - just as playwright Garson Kanin dictated in his stage directions - 'a masterpiece of offensive good taste.' No wonder it trumps Robert Sean Leonard's entrance. And, a few minutes later, Jim Belushi's entrance. But after Nina Arianda slinks her way down the center staircase, curtsies clumsily, and storms back up the steps, the set doesn't seem quite as glossy. As bubble-headed bottle blonde Billie Dawn - a role that won Judy Holliday an Oscar in 1950 - Arianda is giving a performance that could be called breakout, though breakout somehow seems insufficient.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Arianda is giving a performance that could be called breakout, though breakout somehow seems insufficient.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses heavily on praising the set design and Arianda's 'breakout' performance that transcends even 'breakout' description. However, with only one excerpt available, confidence is low as the full verdict may differ. | GPT-4o: The excerpt praises the set design and highlights Nina Arianda's performance as a standout, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review praises the set design and Nina Arianda's performance, suggesting a positive experience overall, but the single excerpt and lack of explicit recommendation warrant a lower confidence and a score in the lower end of the positive range. | Kimi: The excerpt offers enthusiastic praise for both the 'radiant art deco gem' set design and Nina Arianda's star-making turn, calling the revival 'breezy' and implying the lead outshines even the impressive production values.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:19:13.637Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

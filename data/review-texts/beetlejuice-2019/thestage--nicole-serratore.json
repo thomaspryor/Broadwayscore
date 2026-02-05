@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Alex Timbers' production looks suitably Burton-esque while also attempting to give more of a backstory to the characters. Despite lots of solid laughs, some clever fourth-wall-breaking, and some strong performances, the middling rock-pop score and the unwieldy, sorrowful storyline sap some of the vitality from the original.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite lots of solid laughs, some clever fourth-wall-breaking, and some strong performances, the middling rock-pop score and the unwieldy, sorrowful storyline sap some of the vitality from the original.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges positive elements (solid laughs, strong performances) but identifies significant flaws (middling score, unwieldy storyline) that diminish the overall experience. The word 'despite' signals that negatives outweigh positives. Single excerpt warning requires caution about overall verdict. | GPT-4o: The review acknowledges positive elements like laughs and performances but criticizes the score and storyline, leading to a mixed verdict. The single excerpt and lack of a clear overall sentiment lower confidence. | Gemini: The review acknowledges positive aspects like laughs and performances but also points out significant flaws such as the score and storyline, leading to a mixed assessment. | Kimi: The critic acknowledges strong production elements and performances but finds the core score 'middling' and the storyline 'unwieldy,' creating a balanced assessment with significant reservations. Single excerpt limits confidence in overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:21:19.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

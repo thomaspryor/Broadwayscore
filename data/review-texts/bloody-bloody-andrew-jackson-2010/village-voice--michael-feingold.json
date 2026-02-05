@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The clueless public is relevant here, since Bloody/Jackson is, or at least wants to be, political in substance. It presents its title character (Benjamin Walker) as a schmuck-hero, leading a populist movement to 'take this country back,' with guns if necessary, from the 'elite,' who think about things but never get anything done. As presented in Alex Timbers's script and Michael Friedman's songs, Jackson's populism looks a lot like the Tea Party: angry, greedy ignoramuses, petty and vicious toward anyone different, who view any attempt to deal with democracy's complex realities as an elitist conspiracy against the ordinary folk for whom they mistake themselves.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jackson's populism looks a lot like the Tea Party: angry, greedy ignoramuses, petty and vicious toward anyone different.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show's political portrayal as resembling \"angry, greedy ignoramuses\" but this is only one curated quote from a larger review, making the full verdict unclear. | GPT-4o: The excerpt criticizes the portrayal of the title character and the political substance of the show, comparing it unfavorably to the Tea Party. The tone suggests a negative view of the show's message and execution. | Gemini: The review excerpt portrays the musical's depiction of its subject in a negative light, likening it to the Tea Party and describing the characters as \"angry, greedy ignoramuses.\" | Kimi: The excerpt criticizes the show's political substance, describing its portrayal of populism as 'angry, greedy ignoramuses' and its hero as a 'schmuck,' indicating significant disapproval of the script's approach. With only one curated excerpt available, the full context of the review is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:11:33.113Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

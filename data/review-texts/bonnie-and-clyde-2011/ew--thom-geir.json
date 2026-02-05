@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Ivan Menchell's script mostly propels the story forward while never managing to establish why this outlaw duo so seized the public imagination. We see bank patrons ask for Bonnie's autograph during a holdup, for instance, but we never really grasp why — especially since the scene ends with Clyde gunning down the teller. And there's no good explanation for why Clyde's deeply religious sister-in-law (Melissa Van der Schyff, who has a lovely second-act ballad, 'That",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ivan Menchell's script mostly propels the story forward while never managing to establish why this outlaw duo so seized the public imagination.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes fundamental script problems while acknowledging some positives (story propulsion, praising a performer's ballad). Single excerpt warning applies - text appears cut off mid-sentence, making overall verdict unclear. | GPT-4o: The excerpt highlights issues with the script's ability to convey the significance of the characters, suggesting a lack of depth. However, it also notes that the script propels the story forward, indicating some positive aspects. The mixed nature of the critique and the lack of a clear recommendation lead to a Mixed classification. | Gemini: The review excerpt points out a significant flaw in the script, questioning the lack of explanation for the duo's fame. While it acknowledges the story moves forward, it doesn't offer a strong recommendation, suggesting a mixed assessment. The single excerpt and lack of a clear verdict result in low confidence. | Kimi: The excerpt focuses heavily on the script's failure to establish character motivation or logic, which constitutes substantive criticism of the show's core. While there is brief praise for Melissa Van der Schyff's ballad, this single positive note amid fundamental storytelling critiques suggests an uneven, problematic production rather than a clear recommendation. With only one excerpt available, the full verdict remains ambiguous, warranting low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:14:54.655Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

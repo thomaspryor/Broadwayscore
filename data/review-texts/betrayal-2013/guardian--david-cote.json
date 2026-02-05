@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Daniel Craig shucks off his 007 persona to become Robert, a successful book publisher whose wife, Emma (Rachel Weisz) conducts a seven-year affair with Robert's friend Jerry (Rafe Spall), a literary agent. The compact, rugged Craig hasn't shrunken from years behind the camera: he projects himself fully and muscularly to the back stalls. Craig even enlivened vastly inferior material when last he was on the Great White Way, in the 2009 police melodrama A Steady Rain. And he's not emoting in a vac",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The compact, rugged Craig hasn't shrunken from years behind the camera: he projects himself fully and muscularly to the back stalls.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt focuses on praising Daniel Craig's commanding stage presence and notes he 'enlivened vastly inferior material' previously, suggesting positive assessment of his performance. However, with only a single truncated excerpt available, confidence is low as the full review verdict is unclear. | GPT-4o: The excerpt praises Daniel Craig's performance, suggesting he brings energy to the role. However, without a full verdict or more context, the overall sentiment is unclear, leading to a low confidence score in the Positive range. | Gemini: The review excerpt focuses on Daniel Craig's performance and presence, suggesting a positive aspect of the production. However, due to the limited text, it's difficult to determine the overall verdict with high confidence. | Kimi: The excerpt offers strong praise for Daniel Craig's stage presence and performance, comparing him favorably to his previous Broadway work, though the full review context is unavailable.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:55:54.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

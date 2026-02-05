@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The musical is a theme park unto itself and a fun, offbeat roller-coaster ride from start to finish. It stands out as a superior adaptation for so many reasons, but mostly due to Brown and King’s clever book and outrageously effervescent performances by Brightman, Kritzer and Caruso, plus whimsical sets by Korins and over-the-top costumes by William Ivey Long...Director Alex Timbers holds everything together beautifully and gets noteworthy performances from the rest of the cast.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The musical is a theme park unto itself and a fun, offbeat roller-coaster ride from start to finish.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with consistent praise ('superior adaptation', 'outrageously effervescent', 'holds everything together beautifully') but limited text makes full verdict uncertain. | GPT-4o: The excerpt provides strong praise for the show's adaptation, performances, and production elements, indicating a positive review. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt uses very positive language such as \"fun, offbeat roller-coaster ride\", \"superior adaptation\", \"clever book\", and \"outrageously effervescent performances.\" Given the single excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the 'superior adaptation,' 'outrageously effervescent' performances, and beautiful direction. Following the single-excerpt guideline, the score sits at the upper end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:50:21.205Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

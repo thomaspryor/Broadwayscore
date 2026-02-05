@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In short order, this musical vehicle steers straight to the middle of the road.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "In short order, this musical vehicle steers straight to the middle of the road.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The phrase 'steers straight to the middle of the road' is a clear metaphor for mediocrity - neither good nor bad, just average. However, with only one excerpt available, confidence is low as the full review verdict may differ. | GPT-4o: The excerpt suggests a middling opinion, indicating the show is neither particularly good nor bad. The lack of a full review text and the single excerpt warning contribute to the low confidence. | Gemini: The phrase \"middle of the road\" suggests a mixed or neutral assessment, indicating neither strong recommendation nor discouragement. Given the single excerpt and smaller outlet, confidence is low. | Kimi: The critic employs the idiom 'middle of the road' to characterize the musical as mediocre and unexceptional, indicating a production that is neither strongly recommended nor actively discouraged.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:14:36.575Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

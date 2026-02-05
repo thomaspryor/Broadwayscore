@@ -12,5 +12,60 @@
   "bwwExcerpt": "Cott, who segued from college to Broadway when he took over the lead in 'Newsies' a few years ago, learned to play piano for this role. His character is both persuasive, in getting other soldiers to join him, and patient -- there isn't an obvious path to the romance with Julia that we imagine might be coming. Osnes, who starred in 'Cinderella,' brings considerable stage presence to her role as young Gold Star widow Julia, who will become the band's lead singer and writer. Two powerful solos -- the other is 'Love Will Come and Find Me Again,' which the band uses to audition for NBC -- showcase her crystalline voice. Beth Leavel ('The Drowsy Chaperone') is Julia's mother, who has some great comic moments merely serving up deviled eggs to Don; she's also on hand to reinforce to Julia another of the show's themes: Sometimes, 's-it happens,' as she puts it. I wish Blankenbuehler had left a beat for the audience to applaud after her one solo, in the second act.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Two powerful solos showcase her crystalline voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt contains consistent praise for performances and production elements (Cott's preparation, Osnes's voice, Leavel's comic moments), but lacks a clear overall verdict. Given it's a single curated excerpt from a longer review, the positive elements suggest recommendation but confidence is low due to incomplete picture. | GPT-4o: The excerpt highlights strong performances and stage presence, particularly praising Osnes and Leavel. However, the lack of a full review and the single excerpt warning suggest a cautious approach, leading to a mildly positive score. | Gemini: The review praises the performances of the leads and supporting actress, but it is difficult to determine the overall recommendation strength based on the excerpt alone. I am scoring it as positive with low confidence. | Kimi: Single excerpt offers strong praise for lead performances ('considerable stage presence,' 'crystalline voice,' 'persuasive') with only a minor staging quibble, indicating a clear positive recommendation, though limited context reduces confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:15:17.336Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

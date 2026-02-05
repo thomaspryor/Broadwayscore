@@ -11,5 +11,60 @@
   "bwwExcerpt": "Whereas Michael Keaton rendered the film’s title ghoul as a jabbering, hyperkinetic creature — something genuinely otherworldly and fascinating, the way festering wounds fascinate — in the musical, Beetlejuice (Justin Collette) mostly lurches back and forth along the schoolyard-bully-to-sad-sack-comedian pipeline. But we’re asked to care about and psychologize him, too. He had a rough childhood, and he just wants someone to love him, in all his loathsomeness.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "medium",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "in the musical, Beetlejuice (Justin Collette) mostly lurches back and forth along the schoolyard-bully-to-sad-sack-comedian pipeline.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Single excerpt unfavorably compares the musical's title character to the film version, describing the stage performance as less compelling and overly psychologized. However, this is one curated quote that may not reflect the full review verdict. | GPT-4o: The excerpt criticizes the portrayal of Beetlejuice as lacking the fascinating qualities of the film version, suggesting a disappointing adaptation. The tone implies a negative view, but the single excerpt limits confidence. | Gemini: The review excerpt contrasts the musical's portrayal of Beetlejuice unfavorably with the film version, suggesting a less compelling and more generic characterization. The critic also notes the attempt to psychologize him, which seems to be viewed negatively. | Kimi: The excerpt criticizes the musical's interpretation of the title character as inferior to the film version, describing the performance as merely lurching between bully and sad-sack tropes rather than otherworldly, and objects to the psychologizing of the character.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:27.181Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

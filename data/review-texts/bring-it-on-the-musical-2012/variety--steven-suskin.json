@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Neither roses nor brickbats are likely to be thrown at \"Bring It On,\" the new musical at the St. James, but you'll see plenty of cheerleaders tossed up high. With a story drawn not from the 2000 film starring Kirsten Dunst, but rather from one of its four direct-to-video sequels, the tuner remains airborne often enough to overcome several obstacles along the way, starting with overly familiar plotting and characters. Strong performances from a personable cast, athletically impressive staging and",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the tuner remains airborne often enough to overcome several obstacles along the way",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows qualified praise - acknowledges problems (familiar plotting) but says show 'overcomes' them with strong performances and staging. Truncated mid-sentence limits confidence. | GPT-4o: The excerpt suggests a mildly positive review, noting strong performances and impressive staging despite familiar plotting. The single excerpt warning and lack of a full review text limit confidence. | Gemini: The review states that neither roses nor brickbats are likely, indicating a mixed reaction. The excerpt mentions overcoming obstacles but also points out familiar plotting, suggesting a middle-ground assessment. | Kimi: While the critic notes 'overly familiar plotting' and 'obstacles,' the verdict that the show 'remains airborne' and praise for 'strong performances' and 'athletically impressive staging' constitute a qualified recommendation. The single, truncated excerpt warrants cautious scoring at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:41:14.975Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

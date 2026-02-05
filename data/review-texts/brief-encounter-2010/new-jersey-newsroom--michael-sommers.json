@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'Still Life' is a fine play. 'Brief Encounter' is a classic film. Personally, I don't need to see the two texts conflated into some 90-minute seriocomic extravaganza that undermines and mocks the subtle essence of Coward's work while presumably paying homage to it.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Personally, I don't need to see the two texts conflated into some 90-minute seriocomic extravaganza that undermines and mocks the subtle essence of Coward's work.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic clearly states they don't need to see this production and finds it undermines the source material, but this is only one excerpt so the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the production for undermining and mocking the original works, suggesting a negative view. However, due to the single excerpt warning, confidence is low. | Gemini: The critic clearly states that the conflation of the two texts undermines and mocks the essence of Coward's work, indicating a negative assessment. | Kimi: The critic explicitly advises against seeing this production, criticizing it for undermining and mocking the subtle essence of the source material. While acknowledging the original works as 'fine' and 'classic,' the verdict on this adaptation is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:24:43.800Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

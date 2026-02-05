@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 45,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The design of 'Beetlejuice' is the most exciting of the season...It's hard not to wish that the rest of this disappointing new musical were up to their level of creativity. Instead, book writers Scott Brown and Anthony King and composer Eddie Perfect have created a show that's at odds with its own existence...While Timbers and the design team have done a masterful job building the world of this cult classic for a new medium, the writers haven't cracked it even slightly.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's hard not to wish that the rest of this disappointing new musical were up to their level of creativity.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative verdict calling the musical 'disappointing' and criticizing the book and music as failing to match the praised design work. Single excerpt limits confidence but sentiment is unambiguous. | GPT-4o: The review excerpt praises the design but criticizes the musical as disappointing and at odds with itself. The negative assessment of the writing suggests a negative overall verdict. However, the single excerpt warning indicates low confidence. | Gemini: The review praises the design but ultimately finds the musical disappointing, indicating a negative overall assessment. The excerpt focuses on the show's shortcomings despite the strong design elements. | Kimi: While the critic praises the design as 'most exciting of the season' and the direction as 'masterful,' they explicitly call the musical 'disappointing' and state the writers 'haven't cracked it even slightly,' indicating the production fails to cohere despite its visual achievements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:43:40.873Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

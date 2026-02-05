@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But if I seem less than completely enthused about what is undoubted the best anti-Margaret Thatcher musical to hit Broadway since Blood Brothers, it's because, despite an interesting story told through exceptionally vivid, dramatic visuals delivered by director Stephen Daldry and choreographer Peter Darling via a mostly excellent cast, the music of Elton John and the book and lyrics of Lee Hall, while never awful, rarely achieve a quality that surpasses reasonably competent. Now, reasonably competent is nothing to be sneered at these days. I can name a few recent productions that might have welcomed the opportunity to display the quote 'Reasonably Competent!' outside their theatres. And while good direction, impressive production values and fine casting can sometimes make an evening of lesser material somewhat bearable, Messrs. Daldry and Darling skillfully dangle so many pretty, shiny things in front of the audience that if you block out the shoddy jokes, serviceable songs and plethora of moments that screech the evening to a halt you might find yourself convinced you were witnessing high art.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "reasonably competent is nothing to be sneered at these days",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges strong direction, visuals, and casting but finds the music and book merely 'reasonably competent' and criticizes 'shoddy jokes' and moments that 'screech the evening to a halt.' This is a lukewarm assessment that neither recommends nor discourages. | GPT-4o: The review acknowledges strong direction and visuals but criticizes the music and book for being merely competent. The overall tone is mixed, with both positive and negative elements. | Gemini: The review praises the direction, visuals, and cast but criticizes the music and book as only \"reasonably competent\" and containing \"shoddy jokes.\" This indicates a mixed experience. | Kimi: The critic praises the direction, visuals, and cast as excellent but heavily criticizes the book and score as merely competent and serviceable, resulting in a lukewarm overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:05:15.585Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

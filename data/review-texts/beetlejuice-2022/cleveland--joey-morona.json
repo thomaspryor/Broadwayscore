@@ -11,5 +11,60 @@
   "bwwExcerpt": "It’s... a lot. This musical is like that friend who is always “on.” You know the one. So desperate to entertain, they’re a constant stream of consciousness full of ideas and jokes, hoping a few of them actually land. They go off into tangents, don’t always make sense and sometimes you wish they would just relax and take a beat. Still, when they’re good, they’re really good and you remember why you enjoy their company.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "So desperate to entertain, they're a constant stream of consciousness full of ideas and jokes, hoping a few of them actually land.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The analogy to an exhausting friend who tries too hard suggests significant reservations despite acknowledging some good moments. The 'Still, when they're good, they're really good' provides some positivity but doesn't outweigh the criticism of desperation and inconsistency. | GPT-4o: The review describes the show as overwhelming and inconsistent, with moments of enjoyment. This suggests a mixed verdict, acknowledging both positives and negatives. | Gemini: The review uses a mixed metaphor to describe the show, highlighting both its flaws and its enjoyable moments, resulting in a mixed assessment. The single excerpt and aggregator context suggest a lukewarm reception. | Kimi: The excerpt uses a mixed metaphor describing the show as exhausting and desperate to entertain with uneven results ('hoping a few of them actually land'), while acknowledging moments of genuine quality. Combined with the 'Flat' aggregator verdict and single-excerpt limitation, this indicates neither a clear recommendation nor rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:28:21.493Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

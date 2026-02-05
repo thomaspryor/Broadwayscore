@@ -11,5 +11,60 @@
   "bwwExcerpt": "Sebastian Perez-Navarro, The Prospector: Undoubtedly the show stealer is Justin Collette as Beetlejuice. It may be a no-brainer statement considering the show’s title, but the shoes that Collette steps into are no easy feat. Collette blends the character perfectly between play acting and the movie. The comedian follows the model built by Micheal Keaton in the films but manipulates it to best fit a theater setting by overexaggerating his movements, pumping in more vocal power and adding in some s",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Undoubtedly the show stealer is Justin Collette as Beetlejuice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performance as 'show stealer' with detailed positive analysis. Text cuts off mid-sentence making full verdict unclear, warranting low confidence and lower positive range. | GPT-4o: The excerpt praises Justin Collette's performance as Beetlejuice, indicating a positive view of his role in the show. However, without more context or a full verdict, the overall sentiment is unclear, leading to a lower confidence and a score at the lower end of the Positive range. | Gemini: The excerpt strongly praises Justin Collette's performance as Beetlejuice, calling him the \"show stealer.\" Given the single excerpt and BroadwayWorld aggregator context, I'm placing it in the upper end of the positive bucket with low confidence. | Kimi: The excerpt provides enthusiastic praise for Justin Collette's performance as the 'show stealer,' highlighting his successful adaptation of the film role to the stage with 'perfect' blending. As a single truncated excerpt focused primarily on one performance, it indicates a clearly positive review but warrants reduced confidence regarding the full production assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:05.038Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

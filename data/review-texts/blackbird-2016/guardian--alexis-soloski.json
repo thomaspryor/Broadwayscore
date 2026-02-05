@@ -12,5 +12,60 @@
   "bwwExcerpt": "Blackbird...is a distressing two-hander about the dangerous influence and magnetism of traumatic events. It courts ethical dangers, in daring to characterize the bond between abuser and abused as a kind of perverse love story...Under Joe Mantello's direction, there is considerable tension in the opening moments, not all of it calculated or purposeful. Daniels begins the play in such a paroxysm of fear and anger that one worries he will quickly exhaust himself...In Una's self-conscious performati",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLACKBIRD-Starring-Jeff-Daniels-and-Michelle-Williams-Opens-on-Broadway-Updating-LIVE-20160310",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/mar/10/blackbird-review-michelle-williams-and-jeff-daniels-stun-in-abuse-drama"
+  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/mar/10/blackbird-review-michelle-williams-and-jeff-daniels-stun-in-abuse-drama",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Under Joe Mantello's direction, there is considerable tension in the opening moments, not all of it calculated or purposeful.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt shows mixed signals - acknowledging tension and directorial work while raising concerns about ethical dangers and performative elements. The text cuts off mid-sentence, making the full verdict unclear. | GPT-4o: The review excerpt highlights both positive and negative aspects, such as tension in the direction but also concerns about the performance's sustainability. The tone suggests a mixed view, with no clear recommendation or discouragement. | Gemini: The excerpt describes the play as distressing and ethically dangerous, but doesn't offer a clear recommendation. The mention of tension and Daniels' performance suggests some engagement, but the lack of a clear verdict places it in the Mixed category. | Kimi: The excerpt offers qualified praise ('considerable tension') but immediately undercuts it with criticism of the direction ('not all of it calculated or purposeful') and concerns about the lead performance peaking too early. Given the single-excerpt format and abrupt truncation, the full verdict is unclear, but the visible text suggests significant reservations alongside acknowledging the play's intensity.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:09:38.887Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The play, which revolves around corruption in big business and politics, couldn't be timelier. And the acting in Doug Hughes' excellent new production couldn't be better or more thrilling, especially from actor Jim Belushi and newcomer Nina Arianda.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And the acting in Doug Hughes' excellent new production couldn't be better or more thrilling, especially from actor Jim Belushi and newcomer Nina Arianda.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises the production as 'excellent' and says the acting 'couldn't be better or more thrilling.' Strong positive language despite being only an excerpt. | GPT-4o: The excerpt praises the timeliness of the play and the excellence of the production and acting, suggesting a strong positive recommendation. However, due to the single excerpt warning, the confidence is low. | Gemini: The excerpt uses strong positive language like \"excellent\" and \"couldn't be better or more thrilling,\" indicating a strong positive recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:18:07.421Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

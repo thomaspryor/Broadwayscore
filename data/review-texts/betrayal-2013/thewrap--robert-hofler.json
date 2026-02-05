@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Weisz and Spall are so charming and engaging throughout that a palpable sadness settles over the Barrymore Theatre late in the play when we see them so physically and romantically engaged in the flat they've rented...It's a marvel of acting to watch Craig slowly bring the subtext of raging anger to the fore in scene after scene as Spall and Weisz effectively react with knowing silence...\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Weisz and Spall are so charming and engaging throughout that a palpable sadness settles over the Barrymore Theatre late in the play",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances ('charming and engaging', 'marvel of acting') suggests positive recommendation, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the performances as 'charming and engaging' and highlights a 'marvel of acting,' indicating a positive view. However, the single excerpt and lack of full context reduce confidence. | Gemini: The review excerpt focuses on the positive aspects of the performances by Weisz and Spall, describing them as \"charming and engaging\" and a \"marvel of acting.\" Given the single excerpt and positive tone, I placed it in the positive bucket and gave it a higher score. | Kimi: The excerpt offers enthusiastic praise for the lead performances, calling them 'charming and engaging' and a 'marvel of acting', indicating a clear recommendation based on the cast's work.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:57:55.623Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"The show feels like a musical that’s been tampered with—which is the case—as certain characters zoom in and out of focus along with the narration itself. Some songs seem unnecessary and the central couple is kind of dull, even when deceased. But then there will be a flash of inspiration and a burst of sardonic kookiness and this seems like a noble misfire that occasionally comes back from the dead when you thought it was down for the count.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But then there will be a flash of inspiration and a burst of sardonic kookiness and this seems like a noble misfire that occasionally comes back from the dead when you thought it was down for the count.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges significant flaws (tampered with, unnecessary songs, dull characters) but finds redeeming moments of inspiration. The phrase 'noble misfire' captures a mixed assessment - neither recommended nor discouraged. | GPT-4o: The review describes the show as a 'noble misfire' with both dull and inspired moments, indicating a mixed reception. The single excerpt and lack of full context suggest a low confidence in the score. | Gemini: The review highlights both positive and negative aspects, describing the show as a \"noble misfire\" with moments of inspiration but also unnecessary songs and dull characters. The overall tone suggests a mixed experience. | Kimi: The critic lists significant structural flaws including unnecessary songs and dull leads, while acknowledging only brief flashes of inspiration and sardonic kookiness, ultimately characterizing the production as a 'noble misfire' that occasionally recovers but remains fundamentally uneven.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:37:41.343Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

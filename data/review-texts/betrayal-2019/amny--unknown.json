@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "I am hard-pressed to think of a better production of a Harold Pinter drama to play New York in over a decade than this sharp and absorbing London revival of 1978's 'Betrayal.' Directed by Jamie Lloyd, the relationship drama stars Tom Hiddleston (Loki in the Marvel Cinematic Universe), Charlie Cox ('Daredevil') and Zawe Ashton ('Velvet Buzzsaw'). All three are making their Broadway debuts.",
-  "bwwScore": 9
+  "bwwScore": 9,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I am hard-pressed to think of a better production of a Harold Pinter drama to play New York in over a decade",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it the best Pinter production in a decade and describing it as 'sharp and absorbing.' Since this is a single curated excerpt that sounds clearly positive, scoring at upper end of Positive bucket. | GPT-4o: The excerpt provides strong praise, suggesting this is an exceptional production. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt expresses strong positive sentiment, calling it a \"sharp and absorbing\" production and stating it's one of the best Pinter productions in New York in over a decade. Given the single excerpt, confidence is low. | Kimi: Single excerpt contains superlative praise, describing the production as the best Pinter drama in NYC in over a decade and calling it 'sharp and absorbing,' indicating a strong recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:58:46.217Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

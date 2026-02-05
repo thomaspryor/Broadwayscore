@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Lloyd has consummate control of each beat, each micro betrayal, how every truth or lie slices deep or shallow. The staging is stark, the set simple - just three walls of a pinkish fake marble, mostly offering a morose depth of field, occasionally pressing in claustrophobically. Whichever two characters are having their terse, tense interactions, the third lurks or looms. Maybe in the background, watchful even if unseeing; maybe moving past on a revolve, unseen yet accusatory.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Hiddleston-and-Co-in-BETRAYAL-20190314",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lloyd has consummate control of each beat, each micro betrayal, how every truth or lie slices deep or shallow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows strong appreciation for the director's craft and staging choices, using praise like 'consummate control' and detailed analysis of effective theatrical techniques. However, this is a single curated excerpt so confidence is low. | GPT-4o: The excerpt praises the director's control and the effective staging, suggesting a positive view. However, the single excerpt warning and lack of a full review text necessitate a cautious approach, placing it at the lower end of the Positive range. | Gemini: The excerpt praises the actor's control and the staging, suggesting a positive experience, but without a clear recommendation or overall verdict, confidence is low. | Kimi: The excerpt offers strong praise for the director's precise control and the production's atmospheric staging, demonstrating clear admiration for the technical execution despite the limitation of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:53:22.129Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

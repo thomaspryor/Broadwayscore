@@ -11,5 +11,60 @@
   "bwwExcerpt": "“Beetlejuice” revels in being unabashedly juvenile in almost every way, its humor mined from the same sophomore vein that made “The Book of Mormon” a monster hit. The movie carried a gentle PG rating; the f-bombs and sex jokes on stage would earn this a hard PG-13.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Beetlejuice\" revels in being unabashedly juvenile in almost every way, its humor mined from the same sophomore vein that made \"The Book of Mormon\" a monster hit.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt with no clear recommendation. Compares humor to hit show Mormon but emphasizes juvenile/sophomore elements without indicating if this is positive or negative. Aggregator context suggests flat/mixed verdict. | GPT-4o: The excerpt suggests a mixed tone, highlighting the juvenile humor as both a defining feature and a potential drawback. The comparison to a successful show like 'The Book of Mormon' implies some appeal, but the focus on juvenile humor suggests a limited recommendation. | Gemini: The review excerpt describes the show's humor as \"juvenile\" and compares it to \"The Book of Mormon,\" suggesting a mixed bag of entertainment. Given the single excerpt and aggregator verdict, I'm scoring it as mixed with low confidence. | Kimi: The excerpt describes the show's crude, juvenile tone and compares it to the successful 'Book of Mormon,' but offers no clear endorsement or praise for specific production elements. With only one curated excerpt available and aggregator context suggesting a 'flat' reception, the review appears to present the show's appeal without strongly recommending it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:34:03.150Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

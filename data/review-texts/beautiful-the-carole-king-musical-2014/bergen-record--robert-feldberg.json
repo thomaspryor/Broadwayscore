@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"The show's book, by Douglas McGrath, registers mostly as a series of interruptions. While not exactly amateurish, it aims very low, settling for the tried and trite. (\"You know what's so funny about life? Sometimes it goes the way you want and sometimes it doesn't.\") A big boost comes, though, from the warmly natural portrayal of King by Jesse Mueller, who also possesses a lovely, supple singing voice.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "While not exactly amateurish, it aims very low, settling for the tried and trite.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt criticizes the book as interrupting and trite, but praises Mueller's performance. With only one excerpt available, this suggests a mixed verdict with reservations outweighing positives. | GPT-4o: The review excerpt criticizes the book as 'tried and trite' but praises Jesse Mueller's performance, suggesting a mixed verdict with notable positive elements. | Gemini: The review criticizes the book but praises Jesse Mueller's performance. The overall sentiment is mixed, leaning slightly positive due to the praise for the lead actor. | Kimi: While the critic strongly criticizes the book as 'tried and trite,' the description of Jesse Mueller's performance as a 'big boost' indicates the production is recommended primarily on the strength of her portrayal.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:50.790Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

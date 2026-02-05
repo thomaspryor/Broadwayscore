@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Although this production never catches its breath to reveal the slow-burning ashes of the past that the play usually makes vivid, knockout performances from both Craig and Weisz render it a Betrayal on fire. Nichols's crude and chaotic depiction of the love triangle is powerfully compelling theatre - enhanced, one feels, by the real-life frisson supplied by the onstage sparring of Weisz and Craig...the juxtaposition of Pinter's starkly precise dialogue with such a frenzied production reinforces",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "knockout performances from both Craig and Weisz render it a Betrayal on fire",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite production criticisms ('never catches its breath', 'crude and chaotic'), the critic calls it 'powerfully compelling theatre' with 'knockout performances'. Single excerpt limits confidence but tone suggests strong positive recommendation. | GPT-4o: The excerpt praises the performances and describes the production as 'on fire' and 'powerfully compelling theatre,' indicating a strong positive recommendation despite some reservations about the production's pacing. | Gemini: The review praises the performances of Craig and Weisz and calls the depiction \"powerfully compelling theatre.\" Despite the reservation about the production not fully revealing the past, the overall tone is positive. | Kimi: The critic offers strong praise for the 'knockout performances' and 'powerfully compelling' direction, describing the production as 'on fire' despite noting it sacrifices some of the play's usual slow-burning subtlety.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:29.943Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

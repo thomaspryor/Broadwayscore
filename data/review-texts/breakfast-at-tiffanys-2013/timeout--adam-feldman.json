@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "After a long gestation and a difficult labor, including a last-minute funding scare, Breakfast at Tiffany's arrives on Broadway meager and stillborn. Here is a story that-in both Truman Capote's 1958 novella and Blake Edwards's 1961 film-relies on the restive charm of its central figure: Holly Golightly, a beauteous young courtesan in 1940s New York, who conceals her hillbilly roots beneath a blithe, insouciant manner and a cultivated voice flecked with faux French. \"She isn't a phony because sh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 19,
+  "llmScore": {
+    "score": 19,
+    "confidence": "medium",
+    "range": {
+      "low": 14,
+      "high": 24
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After a long gestation and a difficult labor, including a last-minute funding scare, Breakfast at Tiffany's arrives on Broadway meager and stillborn.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The opening sentence delivers a devastating verdict calling the show 'meager and stillborn' - extremely harsh language that indicates a pan. However, confidence is low due to single excerpt warning and text appearing to be cut off mid-sentence. | GPT-4o: The excerpt describes the show as 'meager and stillborn,' indicating a strongly negative assessment. However, the single excerpt warning suggests caution, so the score is set in the lower Pan range with low confidence. | Gemini: The review excerpt describes the production as \"meager and stillborn,\" which is a strongly negative assessment. Given the limited text, confidence is low, but the language points to a negative recommendation. | Kimi: The excerpt employs devastatingly negative language ('stillborn') to characterize the Broadway production as a complete failure, warranting a deep Pan score. Confidence is low due to availability of only a single excerpt, though the evaluative phrasing is unambiguous.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:23:53.859Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 27,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

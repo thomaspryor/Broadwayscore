@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 63,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"If you can tolerate the bombardment, and don’t mind sappy scenes mixed in with the comically macabre plot, 'Beetlejuice the musical' does have its pleasures – principally a few standout performances and especially the vivid visuals...Few of the songs by Eddie Perfect are anything more than serviceable in 'Beetlejuice,' though the lyrics can be clever and funny. They can also be puerile and profane...Yet, one aspect of 'Beetlejuice' does stand out — its design.\"\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you can tolerate the bombardment, and don't mind sappy scenes mixed in with the comically macabre plot, 'Beetlejuice the musical' does have its pleasures",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt presents qualified praise with significant caveats - 'if you can tolerate' suggests reservation, songs are 'serviceable' at best, but acknowledges 'pleasures' and standout design. Single excerpt limits confidence. | GPT-4o: The review acknowledges some pleasures in the show, particularly in performances and visuals, but also notes issues with the songs and overall tone. The excerpt suggests a mixed reception with both positive and negative elements. | Gemini: The review acknowledges both positive and negative aspects, such as standout performances and vivid visuals alongside sappy scenes and serviceable songs. The overall tone suggests a mixed experience. | Kimi: The critic offers a qualified recommendation, praising the standout design and performances while criticizing the songs as merely 'serviceable' and the tone as uneven. The 'low' confidence reflects the limitation of scoring from a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:38:42.827Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

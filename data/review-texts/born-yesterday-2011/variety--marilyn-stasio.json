@@ -12,5 +12,60 @@
   "bwwExcerpt": "So, what does it take to drain the humor from a classic Broadway comedy like 'Born Yesterday?' Garson Kanin's stinging 1946 satire on the unholy (and apparently eternal) business alliances struck by avaricious American entrepreneurs with corrupt Washington politicians can hardly be called dated. But something is decidedly off about the sensibility of helmer Doug Hughes's production, which stars Jim Belushi and Robert Sean Leonard and introduces Nina Arianda as the adorable bubblehead Billie Dawn. Bad enough the leads maintain a wary distance from one another and seem to distrust their own characters; they don't even seem to like the play.",
   "bwwScore": 3,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bad enough the leads maintain a wary distance from one another and seem to distrust their own characters; they don't even seem to like the play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic finds fundamental problems with the production - actors who 'distrust their own characters' and 'don't even seem to like the play' suggests a deeply flawed staging. The phrase 'something is decidedly off' indicates clear disappointment. | GPT-4o: The excerpt criticizes the production's sensibility and the leads' performances, suggesting a lack of chemistry and engagement with the material. Despite the classic nature of the play, the review implies the production fails to capture its humor and impact. | Gemini: The critic clearly states that something is \"off\" about the production, and that the leads seem to distrust their own characters and don't even seem to like the play. Given the single excerpt, I'm scoring it as negative with low confidence. | Kimi: The excerpt offers unambiguous criticism that the production fails comedically, with the director's sensibility described as 'decidedly off' and the lead performances characterized by distance and distrust of the material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:21:05.383Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

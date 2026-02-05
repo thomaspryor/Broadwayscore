@@ -11,7 +11,7 @@
   ],
   "bwwExcerpt": "You can't say John Guare's new play 'A Free Man of Color' isn't ambitious in scope or awash in extravagant eye candy. Or that the huge cast of 33 isn't fully committed. But unfortunately that doesn't add up to a satisfying evening.",
   "bwwScore": 4,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
   "assignedScore": 47,
   "llmScore": {
@@ -67,5 +67,33 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 47,
+  "fullText": "'A Free Man of Color' review: John Guare's new play is beautiful to look at, but unsatisfying\n\nFriday, November 19th 2010, 4:00 AM\n\nYou can't say John Guare's new play \"A Free Man of Color\" isn't ambitious in scope or awash in extravagant eye candy. Or that the huge cast of 33 isn't fully committed. But unfortunately that doesn't add up to a satisfying evening.\n\nThe production, which opened last night at Lincoln Center, suffers from a schizophrenic tone that jerks from light to dark and back again, cartoonlike characterizations and a confusing plot that skitters between the U.S., Spain, France and colonial Haiti. History buffs may have an edge.\n\nA mix of allegory, Restoration comedy and social commentary, the story is seen through the eyes of the fictional Jacques Cornet (Jeffrey Wright). He's a rich, multiracial hedonist who's wired his life so he has everything he wants — access to high fashion, high living and high times with other men's wives. He also has a slave, Murmur (a fine Mos, formerly known as Mos Def) to serve him.\n\nThe setting is New Orleans at the start of the 19th century, where all varieties in sexuality and skin color are cause for celebration. That changes after the territory became part of the United States in 1803 in the Louisiana Purchase.\n\nThere, in a nutshell, is the play's point — all men are not created equal. It comes to light in the homestretch of the 2½-hour production in a conversation between Cornet and President Thomas Jefferson (John McMartin), who is assisted by Meriwether Lewis (Paul Dano). It feels like it takes a lot of play to communicate the obvious message.\n\nCompounding the frustration is the production's exaggerated acting style and frantic little vignettes. At times, there's so much motion the play gets eaten up by all the machinery. The dialogue can even sound like jibberish.\n\nDespite Wright's interesting performance, Cornet is an odd character to tell the story of the difficult march to racism. He's endowed with a sense of only looking out for himself.\n\nGeorge C. Wolfe directs with customary flair and imagination and has assembled a design team that fills the stage with stunning visuals. Ann Hould-Ward's costumes are posh and witty. David Rockwell's sets are beautiful. Jules Fisher and Peggy Eisenhouer's lighting adds drama. One wonders, though, if all the bells and whistles actually enhance the story.\n\nYou can see the money on the stage at the Beaumont, sure.\n\nToo bad it's in a production that's got more style than substance.\n\nRoyal couple will wed next spring in London's famous Westminster Abbey.\n\nKate Middleton captured relaxing on vacation. Who else is in beach shape?\n\nPolitical progeny and her partner. Mark Ballas, receive death threats.\n\nActress outscores the single mom. VOTE: Who will win?\n\n\"Star\" of the Atlanta version of the reality show is pregnant with NFL player's child.\n\nMan is killed - possibly with a baseball bat - after being pulled over for drunk driving.\n\nThe island of Yeonpyeong has become battlefield between 'warring' nations.\n\nWoman's husband carved \"whore\" into her flesh with key.\n\nSinger's daring see-through outfit generates more buzz than the shows' lame performances.\n\nD'oh! Thick-headed thugs thought they got pizza man's earnings, not his ingredients.\n\nLook out, America! Disney darling is now officially an adult.\n\nClaims 22-year-old Capri Anderson shook him down for $1 million payout.\n\nCapri Anderson, 22, found naked in actor's hotel room last month.\n\n\"It's another smack in the face,\" says retired FDNY Deputy Chief.\n\nUse of this website signifies your agreement to the Terms of Service and Privacy Policy. ©",
+  "isFullReview": true,
+  "textWordCount": 599,
+  "archivePath": "data/archives/reviews/a-free-man-of-color-2010/nydailynews--joe-dziemianowicz_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T18:24:22.226Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_junk"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20101123162636",
+  "archiveOrgUrl": "http://web.archive.org/web/20101123162636/http://www.nydailynews.com:80/entertainment/music/2010/11/19/2010-11-19_a_free_man_of_color_review_john_guares_new_play_is_beautiful_to_look_at_but_unsa.html",
+  "wordCount": 599,
+  "tierReason": "Full review text"
 }

@@ -11,5 +11,60 @@
   "bwwExcerpt": "Beetlejuice acts as the narrator of the story, which means Collette addresses the audience with a patter that is crude, lewd, and sporadically devilishly clever. The fact Collette makes it sound spontaneous is just one of his glowing talents. He also has a booming singing voice and nimble feet. He’s the quadruple threat actor this show desperately needs to keep it buoyant. E",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He's the quadruple threat actor this show desperately needs to keep it buoyant.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Collette's performance with multiple superlatives ('glowing talents', 'booming singing voice', 'quadruple threat'). However, single excerpt warning applies - this could be cherry-picked praise from a mixed review, so confidence is low. | GPT-4o: The excerpt praises Collette's performance as a 'quadruple threat' essential to the show, indicating a positive view. However, the single excerpt warning suggests caution, so a score at the lower end of the Positive range is appropriate. | Gemini: The review excerpt focuses on the strength of the lead actor and his importance to the show, indicating a positive experience. Given the single excerpt, I'm placing it on the higher end of the positive range. | Kimi: The excerpt offers strong praise for Collette's performance, describing his 'glowing talents,' 'booming singing voice,' and 'devilishly clever' patter as essential to keeping the show buoyant, indicating a clear recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:27:52.296Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

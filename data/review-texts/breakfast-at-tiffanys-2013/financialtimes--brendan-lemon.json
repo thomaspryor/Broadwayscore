@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In Richard Greenberg's elegant Broadway adaptation of Breakfast at Tiffany's Holly Golightly has morphed into Holly Godarkly. I refer not merely to the tresses of Emilia Clarke, who plays her, which have gone from the porn-star blonde of her Daenerys in Game of Thrones to a lush brunette here. The tone of Tiffany's has also darkened...If the shift is truer to the spirit of Truman Capote's 1958 novella, it also makes for a rather dispiriting evening. So quickly apparent is Holly's phoniness...tha",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it also makes for a rather dispiriting evening",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic calls the evening 'dispiriting' and criticizes Holly's 'quickly apparent phoniness.' However, this is a single truncated excerpt that may not reflect the full verdict, so confidence is low. | GPT-4o: The excerpt suggests a negative tone, describing the evening as 'dispiriting' and highlighting Holly's phoniness. However, due to the single excerpt warning, the confidence is low. | Gemini: The review states that the adaptation makes for a \"rather dispiriting evening,\" indicating a negative experience. The truncated text and single excerpt lower confidence. | Kimi: Single excerpt acknowledges the adaptation's elegance and fidelity to Capote's novella, but explicitly describes the theatrical experience as 'dispiriting'. Truncated text and single-excerpt format create uncertainty about overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:23:05.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 60,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 15,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

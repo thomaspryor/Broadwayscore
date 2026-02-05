@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Jordan, who was in \"Rock of Ages,\" is charisma in person, a ball of swaggering arrogance with a sad boy underneath that's catnip to Bonnie (and many of the women in the audience). Bonnie, we are told, was a ravishing redhead, and Osnes is just that — this \"Anything Goes\" alumna transforms from a girl in need of attention (her sad \"How 'Bout a Dance\" is beautiful) to a stone-cold fox cradling a shotgun. This is a killer combination: They will slay you, literally.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is a killer combination: They will slay you, literally.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for lead performances with vivid, enthusiastic language ('charisma in person', 'transforms', 'killer combination'). However, single excerpt warning requires caution - this could be cherry-picked praise from a mixed review. | GPT-4o: The excerpt praises the performances of the leads, describing them as charismatic and transformative. The phrase 'killer combination' suggests a strong positive impression. Given the single excerpt warning, a score at the upper end of the Positive range is appropriate. | Gemini: The review excerpt is very positive, praising the charisma of Jordan and the transformation of Osnes. The phrase \"killer combination\" suggests a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for both lead performers, using words like 'charisma,' 'beautiful,' and 'killer combination,' indicating a strong positive recommendation despite being limited to one curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:13:49.798Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

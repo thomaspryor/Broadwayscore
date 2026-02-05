@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Pastore is exceedingly funny, as is the delicious Marin Mazzie, who blows her way deliciously and fearlessly through the Dianne Wiest role in the film... Brooks Ashmanskas eats his way through the night as the gourmand-actor Warner Purcell, and Nick Cordero stays sandpaper dry, perhaps to a fault, as Cheech... And Lenny Wolpe holds down the normative character, the agent Julian Marx, whose job is to set up the funny lines of the wackos and keep the narrative moving. There are, for sure, times when 'Bullets' is stymied by its lack of an original score, although the lyrics have been thoroughly subjugated to its comedic purpose, wittily so. The use of standards was not such a problem on film, since part of Allen's cinematic gestalt was to forge a gauzy comic tribute to a golden age of Broadway. But when you translate Allen and Douglas McGrath's backstage comedy to the Main Stem, somehow the Great American Songbook starts to feel a bit like a cop-out.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BULLETS-OVER-BROADWAY-Opens-Updating-LIVE-20140410",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Pastore is exceedingly funny, as is the delicious Marin Mazzie, who blows her way deliciously and fearlessly through the Dianne Wiest role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows strong praise for multiple performers but notes structural issues with the score adaptation. Mixed signals suggest qualified positive recommendation. | GPT-4o: The review praises individual performances but criticizes the lack of an original score and suggests the use of standards feels like a cop-out. The mixed evaluation of the show's elements results in a balanced verdict. | Gemini: The review praises the performances and comedic elements, but notes the lack of an original score as a drawback. Given the single excerpt, I'm scoring it as positive with reservations. | Kimi: The excerpt offers enthusiastic praise for the comic performances ('exceedingly funny,' 'delicious') but criticizes the fundamental choice to use standards instead of an original score, calling it a 'cop-out' on Broadway, suggesting a qualified recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:40:56.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

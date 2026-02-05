@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Repetition can make magic happen: repeat a word or a phrase enough times and it breathes new life, fresh meaning. Or repetition can strip language until all that's left are empty rhythms and sounds. Words are funny like that. Noah Haidle's 'Birthday Candles,' which opened on Broadway Sunday night at the American Airlines Theater, tries to build poignancy and depth through moments that repeat like a record needle stuck in a groove. Instead, this Roundabout Theater Company production gets caught in a superficial cycle of wannabe profundities and emotional pantomimes.",
   "bwwScore": 4,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead, this Roundabout Theater Company production gets caught in a superficial cycle of wannabe profundities and emotional pantomimes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic clearly dismisses the production as 'superficial' with 'wannabe profundities,' indicating the show fails to achieve its artistic goals. However, this is only one excerpt so confidence is medium. | GPT-4o: The excerpt criticizes the production for being superficial and failing to achieve its intended depth, suggesting a negative impression. However, with only one excerpt available, the confidence is low. | Gemini: The review uses negative language such as \"superficial cycle\" and \"emotional pantomimes,\" indicating a negative assessment of the production. Given the single excerpt, confidence is medium. | Kimi: The excerpt clearly states the show's repetitive structure fails to achieve its intended poignancy, resulting in superficiality and hollow emotional gestures rather than genuine depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:14.327Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

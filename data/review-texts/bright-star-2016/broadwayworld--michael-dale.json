@@ -12,5 +12,60 @@
   "bwwExcerpt": "For a musical about literary folk, Bright Star's words never approach the stimulating freshness and intelligence of other current musicals about writers; namely HAMILTON, FUN HOME, the revival of SHE LOVES ME and Off-Broadway's DADDY LONG LEGS. Nice music, fine performances, but other than that, barely a twinkle.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nice music, fine performances, but other than that, barely a twinkle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic acknowledges positive elements (music, performances) but delivers a clear negative verdict by comparing it unfavorably to other musicals and concluding with 'barely a twinkle' - indicating minimal recommendation despite isolated merits. | GPT-4o: The review criticizes the show for lacking freshness and intelligence compared to other musicals, despite acknowledging nice music and fine performances. The overall impression is negative, with the phrase 'barely a twinkle' suggesting a lack of recommendation. | Gemini: The review compares the show unfavorably to other musicals and states that it is \"barely a twinkle,\" indicating a negative assessment. | Kimi: The critic unfavorably compares the show to superior musicals about writers (Hamilton, Fun Home) and dismisses it as lacking freshness and intelligence, offering only faint praise for technical elements while implying it fails to shine.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:29:50.454Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "'Bob Fosse’s Dancin’' is a highly energetic if uneven two hour exploration of the Fosse style — sultry hip rolls, sure, but also athletic leaps. The show has no overall plot, and a stage set that looks designed for a rock concert tour — big, black industrial-looking scaffolding and a back wall that serves as a video screen, mostly for flashes of color. But there are dozens of sometimes dazzling dances performed by twenty-two gorgeously talented and hard-working cast members. They don’t just danc",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Bob-Fosses-DANCIN-Opens-on-Broadway-Updating-Live-20230319",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Bob Fosse's Dancin'' is a highly energetic if uneven two hour exploration of the Fosse style",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: The text is clearly truncated mid-sentence and describes the show as 'highly energetic if uneven' with positive elements (talented cast, dazzling dances) but structural criticisms (no plot, industrial set design). The 'if uneven' qualifier suggests mixed reception. | GPT-4o: The review excerpt describes the show as 'highly energetic' with 'sometimes dazzling dances,' indicating a positive tone. However, it also mentions 'uneven' aspects and lacks a plot, suggesting some reservations. The single excerpt limits confidence. | Gemini: The review describes the show as \"highly energetic if uneven,\" indicating a mixed reaction. The truncated text and single excerpt make it difficult to determine the overall recommendation, but the \"uneven\" nature suggests a score in the Mixed range. | Kimi: The excerpt praises the cast as 'gorgeously talented' and the dances as 'sometimes dazzling,' suggesting a recommendation, while acknowledging flaws (uneven, no plot, industrial set design). Given the single-excerpt warning and truncated text, confidence is low. | Buckets: claude=Mixed, openai=Positive, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:17:37.938Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 72,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

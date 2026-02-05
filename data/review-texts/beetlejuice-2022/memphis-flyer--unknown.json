@@ -11,5 +11,60 @@
   "bwwExcerpt": "Chris McCoy, Memphis Flyer: In retrospect, Beetlejuice was a harbinger of “cozy” horror, and this production leans into it. This being Broadway, Lydia’s mother is now fridged instead of just divorced. The teenager’s pining for her dead mother sands a little bit of the Gen X cynicism off of Lydia’s angst. Beetlejuice, however, remains the crass pervert from the afterlife that never met a fourth wall he didn’t break. I occasionally wondered if the manic proceedings onstage would make any sense at ",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "high",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I occasionally wondered if the manic proceedings onstage would make any sense",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt shows analytical engagement but ends mid-sentence on a questioning note about coherence. The critic seems to appreciate some elements (leaning into cozy horror) but expresses doubt about the show's sense-making. With only a truncated excerpt and 'Flat' aggregator verdict, scoring in lower Mixed range. | GPT-4o: The excerpt provides a mixed view, noting changes to the story and character dynamics without clear praise or criticism. The lack of a full review and the 'Flat' aggregator context suggest a middle-ground verdict. | Gemini: The review excerpt is mostly descriptive, but the phrase \"leans into it\" suggests a slightly positive take. The overall tone is mixed, and the single excerpt makes it difficult to determine a clear recommendation. | Kimi: The excerpt notes changes that soften the source material's edge, questions the coherence of the 'manic proceedings,' and lacks any clear recommendation language. Combined with the 'Flat' aggregator context and truncated text, this suggests a middle-of-the-road assessment rather than a clear endorsement or rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:41:43.959Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

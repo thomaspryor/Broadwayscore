@@ -12,5 +12,60 @@
   "bwwExcerpt": "With their bloody-good 'Bloody Bloody Andrew Jackson,' director-librettist Alex Timbers and composer-lyricist Michael Friedman have woven a scathing and topical satire on matters patriotic and political, and they've done it with the sound of emo rock, which might be hard to swallow for some traditional theatergoers. Downtown hit could prove a tough sell in a Broadway house, but the show's commercial producers have demonstrated keen marketing in the past, with diverse fare including 'Spring Awakening' and 'August: Osage County.' Word of mouth will loom large with this one.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With their bloody-good 'Bloody Bloody Andrew Jackson,' director-librettist Alex Timbers and composer-lyricist Michael Friedman have woven a scathing and topical satire on matters patriotic and political",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'bloody-good' and praises it as a 'scathing and topical satire,' but expresses significant commercial concerns about Broadway viability and traditional theatergoer acceptance. Single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt praises the show as a 'scathing and topical satire,' indicating a positive view. However, it notes potential challenges for traditional theatergoers and Broadway audiences, suggesting some reservations. The single excerpt and lack of full context lower confidence. | Gemini: The review calls the show \"bloody-good\" and praises the satire. However, it also mentions that the emo rock sound might be hard to swallow for some and that it could be a tough sell on Broadway, indicating reservations. Given that this is a single excerpt, confidence is low. | Kimi: The critic offers enthusiastic praise ('bloody-good,' 'scathing and topical satire') for the creative team's work, though with reservations about its commercial viability on Broadway. The evaluative language is clearly positive regarding the show's artistic merit.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:16:19.820Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

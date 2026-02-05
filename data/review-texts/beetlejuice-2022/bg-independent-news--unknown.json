@@ -11,5 +11,60 @@
   "bwwExcerpt": "David DuPont, BG Independent News: This is a show about death. A show that laughs in the face of mortality. A show that shocks the senses. Beetlejuice revels as he seeks to offend as he sings for the first time 'The Whole ‘Being Dead’ Thing,' a piece by composer Eddie Perfect that pops up throughout the show. Yet, the audience knows why they came. They came knowing they would be dared to be offended. They laugh along.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet, the audience knows why they came. They came knowing they would be dared to be offended. They laugh along.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the show's transgressive appeal and audience engagement, but limited text and focus on shock value rather than clear recommendation makes confidence low. | GPT-4o: The excerpt suggests a positive reception, highlighting the show's humor and audience engagement. However, with only one excerpt, the confidence is low, and the score is at the lower end of the Positive range. | Gemini: The review describes the show as shocking and offensive, but notes that the audience laughs along, implying enjoyment. This suggests a positive, albeit potentially controversial, experience. | Kimi: The excerpt describes the show successfully delivering shocks and laughs, with the audience responding positively ('laugh along'). Verbs like 'revels' and the description of the show as one that 'shocks the senses' indicate a clear recommendation, though the limited excerpt prevents a higher confidence rating.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:33:16.773Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

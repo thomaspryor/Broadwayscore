@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There might be life beyond the walls of Ernestine's expansive Grand Rapids, Michigan, kitchen, but Birthday Candles isn't interested in it. (Your first clue that Birthday Candles doesn't take place in the real world as we know it comes from Christine Jones' fantastical set: pots and pans, musical instruments, stuffed animals, and assorted bric-a-brac hanging from above-a lifetime of memories scattered across the sky like stardust.) Ernestine only grows older; she doesn't really grow.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 62,
+  "llmScore": {
+    "score": 62,
+    "confidence": "medium",
+    "range": {
+      "low": 57,
+      "high": 67
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ernestine only grows older; she doesn't really grow.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Single excerpt shows criticism of character development and questions the show's engagement with reality, but also acknowledges 'fantastical' production design. Without full context, appears mixed-to-negative. | GPT-4o: The excerpt suggests a lack of depth in the character's development, implying a mixed view of the play's execution. The fantastical set design is noted, but the overall sentiment seems to lack enthusiasm or strong recommendation. | Gemini: The review excerpt suggests a lack of depth and development in the character, indicating a negative assessment of the play's narrative. | Kimi: The excerpt admires the fantastical set design but explicitly criticizes the protagonist's lack of character development, suggesting a mixed verdict on the production's emotional depth.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:03:44.238Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

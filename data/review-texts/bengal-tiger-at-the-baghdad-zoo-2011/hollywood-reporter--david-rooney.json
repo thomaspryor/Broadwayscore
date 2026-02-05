@@ -12,5 +12,60 @@
   "bwwExcerpt": "Williams has not given a performance this subdued in years. He commits to being part of an ensemble, never ramping up into a star turn. There's no comic shtick in his thoughtful Tiger, yet...the ripples of humor are rich and flavorful. This is not a predigested moral treatise that delivers bite-size conclusions, but a provocative and hauntingly surrealistic play from a distinctive voice.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This is not a predigested moral treatise that delivers bite-size conclusions, but a provocative and hauntingly surrealistic play from a distinctive voice.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Williams' ensemble work and the play's provocative nature with distinctive voice. Single excerpt warning requires caution, but the tone is clearly appreciative. | GPT-4o: The excerpt praises the play as 'provocative and hauntingly surrealistic' with 'rich and flavorful' humor, suggesting a strong positive impression. However, the single excerpt and lack of full context lower confidence. | Gemini: The review praises Williams' performance and describes the play as \"provocative and hauntingly surrealistic.\" While not a rave, it's a positive assessment, suggesting the play is worth seeing. | Kimi: The excerpt offers strong praise for both the lead performance ('subdued,' 'thoughtful') and the play itself ('provocative,' 'hauntingly surrealistic'), indicating a clear recommendation despite being a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:44:34.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

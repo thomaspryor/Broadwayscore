@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Flo herself is a Strong Sassy Lady so plainly traced from type, you can practically see the outline perforations. Leavel bears up and sings well, but there's little to rescue here. The real Flo Greenberg was, in her own words, \"a white woman who was in a black business and who couldn't carry a tune.\" Whereas the stage version sings her heart out - only, whoops! There's nothing in it.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Leavel bears up and sings well, but there's little to rescue here.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Leavel's performance, the critic finds the show fundamentally flawed with a character 'traced from type' and concludes 'there's little to rescue here' and 'there's nothing in it.' | GPT-4o: The excerpt highlights a lack of substance in the show, with a character described as a stereotype and a performance that, despite being well-sung, cannot salvage the production. The tone suggests disappointment, aligning with a negative verdict. | Gemini: The review is negative, stating that there is little to rescue despite the performer's efforts. The critic finds the character to be a stereotype and lacking depth. | Kimi: While praising Beth Leavel's vocal performance, the critic dismisses the lead character as a clichéd type and finds the show emotionally empty with 'nothing in it,' indicating it is not worth seeing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:19:29.209Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -11,5 +11,59 @@
   "bwwExcerpt": "Dear Readers, warning, I’m about to be a bit of a snob here.  I know, big surprise.  But I’m not the biggest fan of the musical, “Beetlejuice”, currently playing at the Paramount Theatre.  I wasn’t a fan when I first heard the cast recording and now having seen it, I can’t say my opinion has changed all that much.  A bit, but not much.",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I'm not the biggest fan of the musical, 'Beetlejuice'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Negative | Claude: Critic explicitly states they are 'not the biggest fan' and that seeing the show didn't change their negative opinion 'much'. However, this is only one excerpt and may not capture the full review verdict. | GPT-4o: The critic expresses a lack of enthusiasm for the show, indicating that seeing it did not significantly improve their opinion. The tone suggests a negative stance, but the single excerpt limits confidence. | Gemini: The critic states they were not a fan of the musical before seeing it, and their opinion hasn't changed much after seeing it. This indicates a negative review.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:26:12.595Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": null,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Negative"
+  }
 }
