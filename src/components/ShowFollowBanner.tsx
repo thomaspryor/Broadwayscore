@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { emailCaptureConfig } from '@/config/email-capture';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
@@ -12,6 +13,9 @@ interface ShowFollowBannerProps {
 }
 
 export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBannerProps) {
+  // Early bail if banner is disabled in config
+  const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
+
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true);
   const [email, setEmail] = useState('');
@@ -27,6 +31,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
 
   // Check dismiss state and subscription
   useEffect(() => {
+    if (!bannerEnabled) return;
     try {
       const wasDismissed = localStorage.getItem(`${DISMISSED_PREFIX}${showId}`);
       const alreadySubscribed = localStorage.getItem(SUBSCRIBED_KEY) === 'true';
@@ -34,7 +39,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
         setDismissed(false);
       }
     } catch { /* noop */ }
-  }, [showId]);
+  }, [showId, bannerEnabled]);
 
   // Scroll-triggered visibility at 60%
   useEffect(() => {
@@ -44,7 +49,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
         const pct = window.scrollY / scrollHeight;
-        if (pct >= 0.6) {
+        if (pct >= emailCaptureConfig.showFollowBanner.scrollThreshold) {
           setVisible(true);
         }
       }
