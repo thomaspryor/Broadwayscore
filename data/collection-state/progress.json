@@ -1,117 +1,47 @@
 {
-  "processed": [
-    "the-lion-king-1997/socal-thrills--maverick-bohn.json",
-    "the-lion-king-1997/kera-news--manuel-mendoza.json",
-    "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-    "the-lion-king-1997/daily-herald--marni-pyke.json",
-    "the-lion-king-1997/fanbolt--emma-loggins.json",
-    "the-lion-king-1997/gephardt-daily--van-valkenburg.json",
-    "the-lion-king-1997/on-stage-colorado--alex-miller.json",
-    "the-lion-king-1997/the-austin-chronicle--richard-whittaker.json",
-    "the-lion-king-1997/the-cap-times--sydney-vasquez.json",
-    "the-lion-king-1997/the-chronicle--howard-gollop.json",
-    "the-lion-king-1997/unknown--stephen-parry.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-lion-king-1997/newyorker--john-lahr.json",
-    "the-lion-king-1997/nytimes--ben-brantley.json",
-    "the-lion-king-1997/vulture--john-simon.json",
-    "the-lion-king-1997/ew--jess-cagle.json",
-    "the-lion-king-1997/new-york--john-simon.json",
-    "the-lion-king-1997/newsday--linda-winer.json",
-    "the-lion-king-1997/timeout--adam-feldman.json",
-    "the-lion-king-1997/timeout--jenna-scherer.json",
-    "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
-    "the-lion-king-1997/albuquerque-journal--adrian-gomez.json",
-    "the-lion-king-1997/ap--michael-kuchwara.json",
-    "the-lion-king-1997/broadwayworld--albert-gutierrez.json",
-    "the-lion-king-1997/broadwayworld--brett-cullum.json",
-    "the-lion-king-1997/broadwayworld--bryan-stanton.json",
-    "the-lion-king-1997/broadwayworld--courtney-castelino.json",
-    "the-lion-king-1997/broadwayworld--jake-bridges.json",
-    "the-lion-king-1997/broadwayworld--jared-fessler.json",
-    "the-lion-king-1997/broadwayworld--jarrod-michael.json",
-    "the-lion-king-1997/broadwayworld--katrina-fageol.json",
-    "the-lion-king-1997/broadwayworld--linda-hodges.json",
-    "the-lion-king-1997/broadwayworld--michael-quintos.json",
-    "the-lion-king-1997/broadwayworld--paul-batterson.json",
-    "the-lion-king-1997/broadwayworld--roy-berko.json",
-    "the-lion-king-1997/broadwayworld--stefani-chudnow.json",
-    "the-lion-king-1997/broadwayworld--timothy-shawver.json",
-    "the-lion-king-1997/broadwayworld--tyler-hinton.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/chicagotribune--richard-christiansen.json",
-    "the-lion-king-1997/columbus-dispatch--michael-grossberg.json",
-    "the-lion-king-1997/denver-post--sandra-brooks-dillard.json",
-    "the-lion-king-1997/milwaukee-journal-sentinel--damien-jaques.json",
-    "the-lion-king-1997/njcom--michael-sommers.json",
-    "the-lion-king-1997/patch--sasso-janis.json",
-    "the-lion-king-1997/post-and-courier--dottie-ashley.json",
-    "the-lion-king-1997/sarasota-herald-tribune--jay-handelman.json",
-    "the-lion-king-1997/seattle-post-intelligencer--jeffrey-eric-jenkins.json",
-    "the-lion-king-1997/syracuse-herald-journal--joan-vadeboncoeur.json",
-    "the-lion-king-1997/talkinbroadway--matthew-murray.json",
-    "the-lion-king-1997/unknown--frank-scheck.json",
-    "the-lion-king-1997/unknown--harry-currie.json",
-    "the-lion-king-1997/unknown--mal-vincent.json",
-    "the-lion-king-1997/unknown--marianne-evett.json",
-    "the-lion-king-1997/unknown--nelson-pressley.json",
-    "the-lion-king-1997/unknown--te-foreman.json",
-    "the-lion-king-1997/unknown--unknown.json",
-    "the-lion-king-1997/washpost--lloyd-rose.json"
+    "110-in-the-shade-2007/theatermania--david-finkle.json",
+    "13-2008/nypost--frank-scheck.json",
+    "13-2008/theatermania--david-finkle.json",
+    "1776-2022/broadwaynews--brittani-samuel.json",
+    "1776-2022/deadline--greg-evans.json",
+    "1776-2022/deadline--pete-hammond.json",
+    "1776-2022/ew--leah-greenblatt.json",
+    "1776-2022/guardian--adrian-horton.json",
+    "1776-2022/guardian--alexis-soloski.json",
+    "1776-2022/mandell-new-york-theater--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "the-lion-king-1997/socal-thrills--maverick-bohn.json",
-      "the-lion-king-1997/kera-news--manuel-mendoza.json",
-      "the-lion-king-1997/daily-herald--marni-pyke.json",
-      "the-lion-king-1997/fanbolt--emma-loggins.json",
-      "the-lion-king-1997/gephardt-daily--van-valkenburg.json",
-      "the-lion-king-1997/the-austin-chronicle--richard-whittaker.json",
-      "the-lion-king-1997/the-cap-times--sydney-vasquez.json"
+    "playwright": [],
+    "browserbase": [
+      "data/review-texts/1776-2022/deadline--greg-evans.json"
     ],
-    "browserbase": [],
-    "scrapingbee": [
-      "the-lion-king-1997/on-stage-colorado--alex-miller.json",
-      "the-lion-king-1997/the-chronicle--howard-gollop.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archive": [
-      "the-lion-king-1997/broadway-voice--gregory-g-allen.json",
-      "the-lion-king-1997/unknown--stephen-parry.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-02-05T16:28:14.457Z",
-  "lastProcessed": "the-lion-king-1997/washpost--lloyd-rose.json",
+  "startTime": "2026-02-05T16:54:28.001Z",
+  "lastProcessed": "1776-2022/mandell-new-york-theater--unknown.json",
   "log": [
     {
-      "t": "2026-02-05T16:30:02.708Z",
+      "t": "2026-02-05T16:54:43.907Z",
       "event": "bb-session",
-      "session": "3347707f",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
+      "session": "61b5cd06",
+      "url": "https://nypost.com/2008/10/06/13-going-on-annoying/"
     },
     {
-      "t": "2026-02-05T16:30:04.493Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-05T16:39:49.553Z",
+      "t": "2026-02-05T16:55:35.909Z",
       "event": "bb-session",
-      "session": "b44c7125",
-      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
+      "session": "ae240f2d",
+      "url": "https://deadline.com/2022/10/1776-broadway-review-1235136437/"
     },
     {
-      "t": "2026-02-05T16:52:35.138Z",
+      "t": "2026-02-05T16:55:56.574Z",
       "event": "bb-session",
-      "session": "788c0a14",
-      "url": "https://www.washingtonpost.com/archive/lifestyle/1997/11/14/the-lion-king-broadw"
-    },
-    {
-      "t": "2026-02-05T16:52:37.436Z",
-      "event": "bb-login-uncertain",
-      "domain": "washingtonpost.com"
+      "session": "811f4f7e",
+      "url": "https://deadline.com/2022/10/1776-broadway-review-roundabout-theatre-company-ame"
     }
   ]
 }
