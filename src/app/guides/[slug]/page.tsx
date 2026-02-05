@@ -22,6 +22,7 @@ import {
 } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBrowsePageConfig } from '@/config/browse-pages';
+import { getLotteryRush } from '@/lib/data-lottery';
 
 export function generateStaticParams() {
   return getAllGuideSlugs().map((slug) => ({ slug }));
@@ -224,14 +225,24 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
         </div>
 
         {/* Year Page Navigation */}
-        {yearPages.length > 0 && !year && (
+        {yearPages.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
             <span className="text-gray-500 text-sm py-1.5">By year:</span>
+            <Link
+              href={`/guides/${config.slug}`}
+              className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                !year ? 'bg-brand text-white' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
+              }`}
+            >
+              All
+            </Link>
             {yearPages.filter(y => y <= currentYear).reverse().map(y => (
               <Link
                 key={y}
                 href={`/guides/${config.slug}-${y}`}
-                className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-400 hover:text-white transition-colors"
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                  year === y ? 'bg-brand text-white' : 'bg-surface-overlay hover:bg-surface-raised text-gray-400 hover:text-white'
+                }`}
               >
                 {y}
               </Link>
@@ -245,6 +256,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
             {shows.map((show, index) => {
               const consensus = getCriticConsensus(show.id);
               const ticketLinks = show.ticketLinks?.filter(Boolean) || [];
+              const lotteryRush = getLotteryRush(show.id);
 
               return (
                 <div key={show.id} className="card p-4 sm:p-5">
@@ -296,10 +308,25 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                     </p>
                   )}
 
-                  {/* Ticket Links */}
-                  {ticketLinks.length > 0 && show.status === 'open' && (
+                  {/* Action Links */}
+                  {(show.officialUrl || (ticketLinks.length > 0 && show.status === 'open') || (lotteryRush && show.status !== 'closed')) && (
                     <div className="mt-3 pt-1 flex flex-wrap gap-2">
-                      {ticketLinks.map((link, i) => (
+                      {/* Official Site */}
+                      {show.officialUrl && (
+                        <a
+                          href={show.officialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors border border-white/10 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          Official Site
+                        </a>
+                      )}
+                      {/* Ticket Sources */}
+                      {show.status === 'open' && ticketLinks.map((link, i) => (
                         <a
                           key={i}
                           href={link.url}
@@ -313,6 +340,18 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
                           {link.platform}{link.priceFrom ? ` from $${link.priceFrom}` : ''}
                         </a>
                       ))}
+                      {/* Lottery/Rush */}
+                      {lotteryRush && show.status !== 'closed' && (
+                        <Link
+                          href={`/show/${show.slug}#discount-tickets`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 text-xs font-medium transition-colors border border-emerald-500/20 min-h-[44px] sm:min-h-0"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                          </svg>
+                          {lotteryRush.lottery ? `$${lotteryRush.lottery.price} Lottery` : lotteryRush.rush ? `$${lotteryRush.rush.price} Rush` : 'Discount Tickets'}
+                        </Link>
+                      )}
                     </div>
                   )}
                 </div>
