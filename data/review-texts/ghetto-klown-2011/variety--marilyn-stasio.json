@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/ghetto-klown-1117946032/",
   "publishDate": "March 22, 2011",
-  "fullText": "Leguizamo's gift for mimicry remains intact, and he's still a master at switching voices, facial expressions and body language to create a small army of characters.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Leguizamo's gift for mimicry remains intact, and he's still a master at switching voices, facial expressions and body language to create a small army of characters.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "There's a lot of nostalgic content to this fast-moving and efficiently mounted (by Fisher Stevens) piece...less familiar is the tone of disappointment and regret that drags down the second act -- a second act that would be unnecessary if the show gets the trim it needs. Although the performer's fan base might be fascinated to get the gory details on his failed TV show (no mention is made of his short-lived Broadway appearance in 'American Buffalo'), much of this material feels like an extension of formal therapy sessions.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Leguizamo's gift for mimicry remains intact, and he's still a master at switching voices, facial expressions and body language to create a small army of characters.",
-  "contentTier": "invalid",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (26 words)",
   "rejectedAt": "2026-02-03T16:18:16.390Z",
   "rejectedBy": "ensemble-scoreability-check",
@@ -27,5 +27,53 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "textWordCount": 221,
+  "archivePath": "data/archives/reviews/ghetto-klown-2011/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:43:33.982Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 221 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Set in a rural village in the state of Minas Gerais, this debut foregrounds local color as it tells of an elderly woman coping with the sudden loss of her husband.\n\nThe patina of picturesque poverty suffuses “Swirl,” Helvecio Marins Jr. and Clarissa Campolina’s attractively lensed debut that’s got “festival art film” written all over it. Set in a rural village in the state of Minas Gerais, the pic foregrounds local color as it tells of an elderly woman coping with the sudden loss of her husband. It’s a formula Euro film funds can’t get enough of: third world country, impoverished locale, elliptical storytelling and aestheticized crumbling walls. Visuals are unquestionably lovely, but “Swirl” feels like artistic photo-reportage in moving image form. That said, fests and streaming sites will pounce.\n\nAn impressive opening at a village dance, with the camera in the heart of the movement, testifies to the skills of d.p. Ivo Lopes Araujo. When her husband dies, Bastu (Maria Sebastiana Martins Alvaro) is looked after by her three grandkids, all close with granny but needing to get on with their lives. Gradually, Bastu clears out hubby’s things: There’s a beautiful scene of clothes floating in the river, the air pockets tenting them out before sinking. Like much of the pic, it pleases the eye but also fetishizes “the other.”"
 }
