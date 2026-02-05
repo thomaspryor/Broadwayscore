@@ -267,12 +267,14 @@ Scraper fallback: Bright Data → ScrapingBee → Playwright (`scripts/lib/scrap
 ### Six Aggregator Sources
 1. **Show Score** — Recent (2015+). URL: `{slug}-broadway` (always try `-broadway` suffix first)
 2. **DTLI** — Historical (2000s+). URL: `didtheylikeit.com/shows/{show-name}/`
-3. **BWW Roundups** — Smaller outlets. Search BroadwayWorld for Review Roundup articles.
-4. **BWW Reviews Pages** — Structured `/reviews/{Title}` pages with 1-10 scores, review URLs, excerpts. Script: `scripts/scrape-bww-reviews.js`. Direct URL construction (no Google needed).
+3. **BWW Roundups** — 10-20+ reviews per show. Two sub-formats: new (~2023+) has thumb images + `Average Rating: XX%`, old (pre-2023) has plain text. Both have review URLs. Search BroadwayWorld.
+4. **BWW Reviews Pages** — `/reviews/{Title}` pages with 1-10 scores per review, review URLs, excerpts. ~74% hit rate across all shows. Direct URL construction with slug variations (no Google). URL slug validation prevents cross-show contamination.
 5. **Playbill Verdict** — Review URL discovery. `--shows=X,Y,Z`, `--no-date-filter`
 6. **NYC Theatre Roundups** — Paywalled excerpts (2023+). `--shows=X,Y,Z`
 
-Sources 1-3 inline in `gather-reviews.js`. Source 4 weekly via `scrape-bww-reviews.yml`. Sources 5-6 run non-blocking after gathering + weekly via `scrape-new-aggregators.yml`. Archives in `data/aggregator-archive/`.
+Sources 1-3 inline in `gather-reviews.js`. Sources 3-4 also via `scrape-bww-reviews.js` (weekly `scrape-bww-reviews.yml`). Sources 5-6 weekly via `scrape-new-aggregators.yml`. Archives in `data/aggregator-archive/`.
+
+**BWW-specific fields:** `bwwScore` (1-10, from /reviews/ pages only — stored separately from `originalRating` to avoid corrupting scoring pipeline), `bwwThumb` (Up/Meh/Down, from new-format roundups), `bwwRoundupUrl`, `bwwExcerpt`.
 
 ### NYSR Scraper
 WordPress API. Star ratings in `excerpt.rendered`. Cross-reference lines stripped at 3 levels.
@@ -292,6 +294,7 @@ Each file in `data/review-texts/{showId}/{outletId}--{criticName}.json`:
   "dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt",
   "assignedScore": 78, "humanReviewScore": 48, "humanReviewNote": "...",
   "source": "dtli|bww-roundup|bww-reviews|playbill-verdict|nyc-theatre|nysr|playwright-scraped|webfetch-scraped|manual",
+  "bwwScore": 8, "bwwRoundupUrl": "https://...",
   "dtliThumb": "Up/Down/Meh", "bwwThumb": "Up/Down/Meh"
 }
 ```
