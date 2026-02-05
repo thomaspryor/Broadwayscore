@@ -3,18 +3,44 @@ name: Process Review Submission
 on:
   issues:
     types: [opened, edited]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub Issue number to process'
+        required: true
+        type: string
 
 jobs:
   validate:
-    # Only run on issues with the review-submission label
-    if: contains(github.event.issue.labels.*.name, 'review-submission')
+    # Run for workflow_dispatch (bridge trigger) or issues with review-submission label
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'review-submission')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       recommendation: ${{ steps.validate.outputs.recommendation }}
       show_id: ${{ steps.validate.outputs.show_id }}
       review_url: ${{ steps.validate.outputs.review_url }}
+      issue_number: ${{ steps.resolve.outputs.issue_number }}
 
     steps:
+      - name: Resolve issue context
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ISSUE_NUM="${{ github.event.inputs.issue_number }}"
+          else
+            ISSUE_NUM="${{ github.event.issue.number }}"
+          fi
+          echo "issue_number=$ISSUE_NUM" >> $GITHUB_OUTPUT
+
+          # Fetch issue body from API (works for both trigger types)
+          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM" --jq '.body' > .issue-body.txt
+          echo "Resolved issue #$ISSUE_NUM"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -30,9 +56,8 @@ jobs:
         id: validate
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          node scripts/validate-review-submission.js
+          ISSUE_BODY="$(cat .issue-body.txt)" node scripts/validate-review-submission.js
         continue-on-error: true
 
       - name: Read validation comment
@@ -47,71 +72,83 @@ jobs:
       - name: Post validation result
         if: steps.read_comment.outputs.comment_body != ''
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               body: `${{ steps.read_comment.outputs.comment_body }}`
             });
 
       - name: Add label - Approved
         if: steps.validate.outputs.recommendation == 'approve'
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               labels: ['validated', 'approved']
             });
             await github.rest.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               name: 'needs-validation'
             }).catch(() => {});
 
       - name: Add label - Rejected
         if: steps.validate.outputs.recommendation == 'reject'
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               labels: ['invalid']
             });
             await github.rest.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               name: 'needs-validation'
             }).catch(() => {});
             // Close rejected issues
             await github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               state: 'closed'
             });
 
       - name: Add label - Needs Manual Review
         if: steps.validate.outputs.recommendation == 'needs-manual-review'
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               labels: ['needs-manual-review']
             });
 
@@ -120,6 +157,7 @@ jobs:
     # Only run if validation passed
     if: needs.validate.outputs.recommendation == 'approve'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -167,6 +205,8 @@ jobs:
 
       - name: Commit and push changes
         if: success()
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -175,7 +215,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Add review from submission #${{ github.event.issue.number }}"
+            git commit -m "Add review from submission #${ISSUE_NUMBER}"
             # Push with robust retry logic
             MAX_RETRIES=5
             RETRY_COUNT=0
@@ -205,9 +245,12 @@ jobs:
       - name: Post success comment
         if: success()
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
             const body = '## ✅ Review Successfully Added!\n\n' +
               'The review has been scraped and added to our database. ' +
@@ -218,7 +261,7 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               body: body
             });
 
@@ -226,7 +269,7 @@ jobs:
             await github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               state: 'closed',
               state_reason: 'completed'
             });
@@ -234,9 +277,12 @@ jobs:
       - name: Post failure comment
         if: failure()
         uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
             const body = '## ⚠️ Scraping Failed\n\n' +
               'The review validation passed, but we encountered an error while scraping the review content.\n\n' +
@@ -246,7 +292,7 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               body: body
             });
 
@@ -254,6 +300,6 @@ jobs:
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               labels: ['scraping-failed']
             });
