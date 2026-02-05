@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useLoopsCapture } from '@/hooks/useLoopsCapture';
+import { emailCaptureConfig } from '@/config/email-capture';
 
 const VISIT_COUNT_KEY = 'bsc_visit_count';
 const BANNER_DISMISSED_KEY = 'bsc_homepage_banner_dismissed';
 const SUBSCRIBED_KEY = 'bsc_email_subscribed';
-const COOLDOWN_DAYS = 30;
+const { visitThreshold, scrollTriggerPx, cooldownDays } = emailCaptureConfig.homepageBanner;
 
 export default function HomepageEmailBanner() {
   const [visible, setVisible] = useState(false);
@@ -27,19 +28,19 @@ export default function HomepageEmailBanner() {
       const count = parseInt(localStorage.getItem(VISIT_COUNT_KEY) || '0', 10) + 1;
       localStorage.setItem(VISIT_COUNT_KEY, String(count));
 
-      // Need 2+ visits
-      if (count < 2) return;
+      // Need N+ visits
+      if (count < visitThreshold) return;
 
       // Check cooldown
       const dismissedAt = localStorage.getItem(BANNER_DISMISSED_KEY);
       if (dismissedAt) {
         const daysSince = (Date.now() - parseInt(dismissedAt, 10)) / (1000 * 60 * 60 * 24);
-        if (daysSince < COOLDOWN_DAYS) return;
+        if (daysSince < cooldownDays) return;
       }
 
-      // Scroll trigger at 200px
+      // Scroll trigger
       const handleScroll = () => {
-        if (window.scrollY >= 200) {
+        if (window.scrollY >= scrollTriggerPx) {
           setVisible(true);
           window.removeEventListener('scroll', handleScroll);
         }
