@@ -12412,30 +12412,6 @@
     "timestamp": "2026-02-04T18:23:11.405Z"
   },
   {
-    "reviewId": "american-idiot-2010/hollywood-reporter--david-rooney.json",
-    "showId": "american-idiot-2010",
-    "outlet": "The Hollywood Reporter",
-    "critic": "David Rooney",
-    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/american-idiot-theater-review-29500/",
-    "method": "brightdata",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (10): company, tina, spring awakening, hair, once...",
-    "textLength": 4596,
-    "timestamp": "2026-02-04T18:26:44.436Z"
-  },
-  {
-    "reviewId": "american-idiot-2010/nytimes--ben-brantley.json",
-    "showId": "american-idiot-2010",
-    "outlet": "The New York Times",
-    "critic": "Ben Brantley",
-    "url": "https://www.nytimes.com/2010/04/21/theater/reviews/21idiot.html",
-    "method": "scrapingbee",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (12): home, tina, spring awakening, misery, elling...",
-    "textLength": 9388,
-    "timestamp": "2026-02-04T18:28:01.786Z"
-  },
-  {
     "reviewId": "american-psycho-2016/hollywood-reporter--unknown.json",
     "showId": "american-psycho-2016",
     "outlet": "Hollywood Reporter",
@@ -13502,5 +13478,65 @@
     "garbageReason": "Multiple shows mentioned (13): english, glengarry glen ross, junk, china doll, the audience...",
     "textLength": 6238,
     "timestamp": "2026-02-05T01:03:21.316Z"
+  },
+  {
+    "reviewId": "american-idiot-2010/hollywood-reporter--david-rooney.json",
+    "showId": "american-idiot-2010",
+    "outlet": "The Hollywood Reporter",
+    "critic": "David Rooney",
+    "url": "https://www.hollywoodreporter.com/movies/movie-reviews/american-idiot-theater-review-29500/",
+    "method": "brightdata",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): company, tina, spring awakening, hair, once...",
+    "textLength": 4596,
+    "timestamp": "2026-02-05T01:06:00.462Z"
+  },
+  {
+    "reviewId": "american-idiot-2010/hollywood-reporter--frank-scheck.json",
+    "showId": "american-idiot-2010",
+    "outlet": "The Hollywood Reporter",
+    "critic": "Frank Scheck",
+    "url": "http://www.reuters.com/article/idUSTRE63J6IO20100420",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "No theater-related keywords found; Show not mentioned: Show \"american idiot\" not mentioned in text; No theater-related keywords in short text",
+    "textLength": 805,
+    "timestamp": "2026-02-05T01:06:09.197Z"
+  },
+  {
+    "reviewId": "american-idiot-2010/nytimes--ben-brantley.json",
+    "showId": "american-idiot-2010",
+    "outlet": "The New York Times",
+    "critic": "Ben Brantley",
+    "url": "https://www.nytimes.com/2010/04/21/theater/reviews/21idiot.html",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (12): home, tina, spring awakening, misery, elling...",
+    "textLength": 9347,
+    "timestamp": "2026-02-05T01:07:07.533Z"
+  },
+  {
+    "reviewId": "american-idiot-2010/nytimes--charles-isherwood.json",
+    "showId": "american-idiot-2010",
+    "outlet": "New York Times",
+    "critic": "Charles Isherwood",
+    "url": "http://theater.nytimes.com/2010/04/21/theater/reviews/21idiot.html?pagewanted=1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (8): home, tina, spring awakening, elling, spring awakening...",
+    "textLength": 5294,
+    "timestamp": "2026-02-05T01:07:10.777Z"
+  },
+  {
+    "reviewId": "american-idiot-2010/variety--steven-suskin.json",
+    "showId": "american-idiot-2010",
+    "outlet": "Variety",
+    "critic": "Steven Suskin",
+    "url": "http://www.variety.com/review/VE1117942595.html?categoryid=33&cs=1",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (18): the who's tommy, home, purpose, company, tina...",
+    "textLength": 4822,
+    "timestamp": "2026-02-05T01:07:44.110Z"
   }
 ]
