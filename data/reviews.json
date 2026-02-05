@@ -4,8 +4,8 @@
     "lastUpdated": "2026-02-05",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 5796,
-      "skippedNoScore": 9328,
+      "totalReviews": 5795,
+      "skippedNoScore": 9327,
       "skippedDuplicate": 38,
       "skippedDuplicateUrl": 342,
       "skippedCrossOutletDuplicateUrl": 160,
@@ -17,15 +17,15 @@
         "explicit-slash": 5,
         "explicit-letterGrade": 1,
         "human-review": 58,
-        "originalScore-priority0": 878,
+        "originalScore-priority0": 880,
         "llmScore": 3141,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1439,
+        "llmScore-lowconf": 1437,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 266
+        "thumb": 265
       }
     }
   },
@@ -277,13 +277,13 @@
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Johnny Oleksinski",
-      "url": "https://nypost.com/2022/09/17/1776-review-broadway-musical-gets-woke-makeover/",
+      "url": "https://nypost.com/2022/10/06/1776-broadway-review-woke-musical-isnt-revolutionary/",
       "publishDate": "September 17, 2022",
       "originalRating": null,
       "pullQuote": "The current revival of '1776' at the Theatre is performed by an all-female, nonbinary and trans cast, which sounds like a stunt but actually works quite well.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "1776-2022",
@@ -477,7 +477,7 @@
       "outletId": "thewrap",
       "outlet": "TheWrap",
       "assignedScore": 30,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Pan",
       "thumb": "Down",
       "criticName": "Robert Hofler",
@@ -487,7 +487,7 @@
       "pullQuote": "There are a couple of problems with giving '1776' the male-drag treatment. First off, at its core the show is terrible. Peter Stone wrote possibly the dullest, longest book scenes ever written for a musical.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "truncated"
     },
     {
       "showId": "1776-2022",
@@ -1422,7 +1422,7 @@
       "pullQuote": "“Noise” shows the toil involved and sugarcoats nothing. The Act I finale has him composing in a broken-down motel room at one of his most down-and-out moments only to stumble upon “Sweet Caroline.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -1650,7 +1650,7 @@
       "outletId": "new-york-sun",
       "outlet": "The New York Sun",
       "assignedScore": 75,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Elysa Gardner",
@@ -1660,7 +1660,7 @@
       "pullQuote": "While 'A Beautiful Noise: The Neil Diamond Musical' has its cringeworthy moments, as can be expected with this sub-genre, the music and the performance win the day.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "truncated"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -1836,18 +1836,18 @@
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "whats-up-newp",
       "outlet": "Whats Up Newp",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
+      "assignedScore": 50,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
       "criticName": "Ken Abrams",
       "url": "https://whatsupnewp.com/2024/09/theater-review-a-beautiful-noise-indeed-neil-diamond-musical-is-a-hit-a-ppac/",
       "publishDate": null,
-      "originalRating": null,
+      "originalRating": "2.5/5",
       "pullQuote": "There were no real weaknesses in the production, although some of the popular songs felt a bit forced at times, a bit perfunctory, while more introspective tunes like “You Don’t Bring Me Flowers,” a duet with Fradiani and Kohn, shined bright.",
       "dtliThumb": null,
       "bwwThumb": "Up",
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "a-behanding-in-spokane-2010",
@@ -3188,23 +3188,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Jessica Chastain’s awesome performance as Nora, director Jamie Lloyd’s vivid modern production, Amy Herzog’s pointed adaptation and a coup de théâtre finale, all make this stripped-down revival of Henrik Ibsen’s A Doll’s House a stimulating and memorable theatrical event.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-dolls-house-2023",
-      "outletId": "theatermania",
-      "outlet": "TheaterMania",
-      "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theatermania.com/broadway/reviews/a-dolls-house-part-2-review_91234.html",
-      "publishDate": "March 9, 2023",
-      "originalRating": null,
-      "pullQuote": "Jessica Chastain brings fierce intelligence and emotional complexity to her portrayal of Nora in this riveting revival that feels urgently contemporary.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "excerpt"
@@ -85055,7 +85038,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 53,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
@@ -85065,7 +85048,7 @@
       "pullQuote": "David Mamet's new play 'The Anarchist' is a talky two-hander that pits a convicted terrorist against her parole officer in a battle of wits that generates more heat than light.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-assembled-parties-2013",
@@ -88125,7 +88108,7 @@
       "pullQuote": "Jessica Chastain brings her luminous screen presence to Broadway in a revival that captures both the cruelty and the compassion of Henry James' source novel.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "the-hills-of-california-2024",
@@ -88302,7 +88285,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 85,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Rave",
       "thumb": "Up",
       "criticName": "Charles Isherwood",
@@ -88312,7 +88295,7 @@
       "pullQuote": "John Guare's 1971 comedy 'The House of Blue Leaves' receives a crackling revival that finds the perfect pitch between pathos and hilarity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-humans-2016",
@@ -91175,7 +91158,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "David Rooney",
@@ -91185,7 +91168,7 @@
       "pullQuote": "Despite the efforts of a committed cast led by Donna Murphy, this earnest but dramatically unwieldy musical about Holocaust survivors lacks the narrative focus and emotional precision to sustain a full evening.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "the-piano-lesson-2022",
@@ -92245,23 +92228,6 @@
       "showId": "the-roommate-2024",
       "outletId": "variety",
       "outlet": "Variety",
-      "assignedScore": 76,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Charles Isherwood",
-      "url": "https://variety.com/2024/legit/reviews/the-roommate-review-broadway-mia-farrow-patti-lupone-1236129890/",
-      "publishDate": "September 13, 2024",
-      "originalRating": null,
-      "pullQuote": "Farrow and LuPone make an odd and oddly affecting pair in this tender two-hander about friendship, loneliness and the courage to change.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "needs-rescrape"
-    },
-    {
-      "showId": "the-roommate-2024",
-      "outletId": "variety",
-      "outlet": "Variety",
       "assignedScore": 78,
       "scoreSource": "llmScore",
       "bucket": "Positive",
@@ -92917,6 +92883,23 @@
       "publishDate": "2022-04-25T21:53:13",
       "originalRating": "4/5 stars",
       "pullQuote": "Go big or go home. Thornton Wilder certainly did with his Pulitzer Prize-winning 1942 play The Skin of Our Teeth, which follows a single family through an ice age, flood, and war-centuries upon centuries of epic catastrophes-only to begin the cycle all over again.",
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "contentTier": "complete"
+    },
+    {
+      "showId": "the-skin-of-our-teeth-2022",
+      "outletId": "nytg",
+      "outlet": "New York Theatre Guide",
+      "assignedScore": 40,
+      "scoreSource": "originalScore-priority0",
+      "bucket": "Negative",
+      "thumb": "Down",
+      "criticName": "Diep Tran",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-skin-of-our-teeth-broadway-review",
+      "publishDate": null,
+      "originalRating": "2/5",
+      "pullQuote": "The dinosaur earned its entrance applause. Thornton Wilder's play The Skin of Our Teeth, a fantastical tragicomedy about the end of the world, calls for a dinosaur and a woolly mammoth. Typical productions have actors donning animal costumes.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -96140,7 +96123,7 @@
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Demetrios Matheou",
@@ -96150,7 +96133,7 @@
       "pullQuote": "Arguably the most difficult aspect of presenting Chekhov is finding the tonal balance in his tragicomedy. The characters' navel-gazing self-pity can be so demanding that sometimes you have to resist the urge to jump on stage and give them a good slap. There is no such issue in Conor McPherson's brilliant, buoyantly accessible adaptation of",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "uncle-vanya-2024",
