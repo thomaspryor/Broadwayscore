@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "In particular, director Neil Pepe and his top-shelf cast of three explore how underclass grifters adopt the language of Big Business, how demonstrations of masculinity and bravado can calcify into toxicity and how individuals can be misled by conspiracy theories and lies into shocking acts of violence. (Scott Pask’s set also helps to underscore the message, as we follow the action in the theater’s in-the-round staging through stalactites and stalagmites of junk-shop objects that suggest the detritus of American excess.)",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "director Neil Pepe and his top-shelf cast of three explore how underclass grifters adopt the language of Big Business",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the 'top-shelf cast' and director's thoughtful exploration of themes, with detailed appreciation for the production design. However, this is a single curated excerpt which may not reflect the full verdict, warranting reduced confidence. | GPT-4o: The excerpt praises the director and cast for their exploration of themes, suggesting a positive view of the production's execution. However, the single excerpt and lack of a clear overall verdict necessitate a cautious, low-confidence score. | Gemini: The review excerpt praises the director, cast, and set design, suggesting a positive experience overall, but the lack of a clear recommendation and the single excerpt available lowers the confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:24:39.484Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

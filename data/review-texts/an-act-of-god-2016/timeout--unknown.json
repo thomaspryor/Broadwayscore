@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "I could say that the return engagement of An Act of God, now with Sean Hayes, is a revelation, a miraculous epiphany or similar \"religious\" experience. Truth to tell, I was already a believer. I thoroughly enjoyed David Javerbaum's theological satire last summer when it starred Jim Parsons, and I could watch Hayes's bratty-campy shtick all night. So what if Hayes and his helpful angels Gabriel and Michael (James Gleason, David Josefsberg) are preaching to the choir? Preach out, Sean!",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ACT-OF-GOD-Is-Back-on-Broadway--Updating-Live-20160606",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I thoroughly enjoyed David Javerbaum's theological satire last summer when it starred Jim Parsons, and I could watch Hayes's bratty-campy shtick all night.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear enthusiasm with phrases like 'thoroughly enjoyed' and 'could watch...all night.' The 'Preach out, Sean!' ending shows strong endorsement. Single excerpt warning applied - using upper Positive range. | GPT-4o: The excerpt shows strong enthusiasm for Sean Hayes's performance and the production overall, suggesting a positive recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The critic states they thoroughly enjoyed the show and could watch the star all night, indicating a strong positive sentiment despite the caveat of already being a 'believer'. | Kimi: The critic expresses thorough enjoyment and strong enthusiasm for both the writing and Hayes's performance, using words like 'revelation' and 'miraculous,' though notes the show preaches to the choir.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:42:57.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

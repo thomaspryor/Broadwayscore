@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Don't be put off by any grumbles about the conversational, tightened two-hour adaptation that the Manhattan Theatre Club uses for the rare Broadway production of this timely classic. Yes, British playwright Rebecca Lenkiewicz tosses off the occasional jarring anachronism -- \"cash cow,\" \"restraining order,\" etc.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Don't be put off by any grumbles about the conversational, tightened two-hour adaptation",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic explicitly tells readers not to be deterred by negative opinions, indicating a positive recommendation. However, with only one excerpt available and mention of 'jarring anachronisms,' this appears to be qualified praise rather than strong enthusiasm. | GPT-4o: The excerpt suggests a recommendation despite some reservations about the adaptation. The phrase 'Don't be put off' indicates an overall positive stance, but the mention of 'grumbles' and 'jarring anachronism' implies some criticism. With only one excerpt, confidence is low. | Gemini: The review excerpt encourages the reader to disregard criticisms, suggesting a positive overall assessment despite some reservations. Given the single excerpt, confidence is low. | Kimi: The excerpt offers a qualified recommendation to see the show despite criticism, while acknowledging flaws like jarring anachronisms. As only a single curated excerpt is available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:45:56.055Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
   ],
   "bwwExcerpt": "Rebecca Frecknall, who directed the recent Broadway revival of “Cabaret” that made a choppy Atlantic crossing, has brought to Brooklyn the best revival of “A Streetcar Named Desire” of my lifetime. The production had two touted West End runs, but I didn’t expect to hear Williams’ play as if for the first time.\"",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 91,
+  "llmScore": {
+    "score": 91,
+    "confidence": "medium",
+    "range": {
+      "low": 86,
+      "high": 96
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "has brought to Brooklyn the best revival of \"A Streetcar Named Desire\" of my lifetime",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Rave | Claude: Calling it 'the best revival of my lifetime' and saying he heard Williams' play 'as if for the first time' indicates extraordinary praise, but confidence is low due to single excerpt limitation. | GPT-4o: The critic describes this production as the best revival of the play in their lifetime, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The critic states this is the best revival of 'A Streetcar Named Desire' of their lifetime, which is very high praise. Given the single excerpt, I'm scoring it as a strong positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:41:57.391Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": null,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Rave"
+  }
 }

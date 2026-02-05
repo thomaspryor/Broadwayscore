@@ -12,5 +12,60 @@
   "bwwExcerpt": "With its stark black and white design, projections, flashing lights and pounding music, 'American Psycho' is insistently modish, and Goold, who staged a memorably headlong production of 'Macbeth' with Patrick Stewart several years ago, is certainly a dynamic director. But while heartless flash might be the perfect style for depicting the empty '80s, it doesn't make for a very fulfilling 2 1/2 hours in the theater.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "medium",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But while heartless flash might be the perfect style for depicting the empty '80s, it doesn't make for a very fulfilling 2 1/2 hours in the theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Despite praising the director and acknowledging stylistic appropriateness, the critic concludes the show 'doesn't make for a very fulfilling' experience. However, confidence is low due to single excerpt warning - this may not represent the full review verdict. | GPT-4o: The review acknowledges the dynamic direction and stylish elements but ultimately criticizes the show for being unfulfilling, suggesting a negative overall impression. | Gemini: The review acknowledges the dynamic direction and stylish design but ultimately finds the experience unfulfilling. Given the limited text, a mixed score seems most appropriate. | Kimi: The critic acknowledges the production's stylish visuals and dynamic direction as appropriate to the material, but explicitly states the show does not provide a fulfilling theatrical experience, recommending against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:34:20.626Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

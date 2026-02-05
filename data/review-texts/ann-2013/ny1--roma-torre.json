@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "One might easily think that a solo show would be swallowed up on Lincoln Center Theatre's largest stage, but given Richards' dynamism and Taylor's outsize talents, the ladies had no problem filling the space.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "given Richards' dynamism and Taylor's outsize talents, the ladies had no problem filling the space.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the performers' ability to command the large theater space. Given the single excerpt warning and clear praise for the leads' talents, scoring in upper positive range but with low confidence due to limited text. | GPT-4o: The excerpt praises the performers' abilities to fill a large stage, suggesting a strong positive impression. Given the single excerpt warning, the score is placed at the upper end of the Positive bucket. | Gemini: The excerpt indicates that the performers were able to overcome the challenge of a solo show on a large stage, suggesting a positive experience. Given the limited text, a score in the middle of the positive range seems appropriate. | Kimi: Single available excerpt offers clear praise for the performers' ability to command the large Broadway stage, with language ('dynamism,' 'outsize talents') indicating strong approval despite the caveat of limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:58:55.084Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "\"Marley was dead,\" booms the commanding voice of stage icon Jefferson Mays, here taking on Scrooge, the narrator and every role besides. (Mays wrote the nearly one-man adaptation alongside Arden and Susan Lyons.) He skulks out of total blackness, barely visible at first, seeming an apparition from the beyond in Ben Stanton's masterful lighting. The stage will barely brighten through all the standard Christmas Carol table setting-\"Bah Humbug,\" etc. Mays' Scrooge drifts through these introductory ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Jefferson-Mays-Brings-One-Man-A-CHRISTMAS-CAROL-To-Broadway-20221121",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 76,
   "llmScore": {
     "score": 76,
@@ -64,5 +64,40 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 76,
+  "fullText": "Jefferson Mays | Photo: A Christmas Carol Live Broadway’s new Christmas Carol kicks off, promisingly, with a good ol’ fashioned jump scare. As you enter the dimly lit, decidedly spooky-feeling Nederlander Theatre, on stage sits an open casket, shrouded by haze. BANG. The casket slams shut; we’re plunged into darkness. Adults wet themselves, children scream in terror. It’s a thrilling start which suggests a fright-tastic, horror theater approach to Charles Dickens’s oft-theatricalized 1843 novella. Only for 30 or so spine-tingling minutes does this new adaptation, co-conceived by director Michael Arden and scenic/costume designer Dane Laffrey, live up to that promise. “Marley was dead,” booms the commanding voice of stage icon Jefferson Mays, here taking on Scrooge, the narrator and every role besides. (Mays wrote the nearly one-man adaptation alongside Arden and Susan Lyons.) He skulks out of total blackness, barely visible at first, seeming an apparition from the beyond in Ben Stanton’s masterful lighting. The stage will barely brighten through all the standard Christmas Carol table setting–”Bah Humbug,” etc. Mays’ Scrooge drifts through these introductory scenes like a ghost himself, all but dead to the world already. Jefferson Mays can be, to put it mildly, a bit of a ham. But here, Mays brings a soft touch to a mammoth assignment. Shifting between multiple characters within the same scene, from ghost to narrator to Tiny Tim, he slides gracefully between personas with little more than a head tilt or the slightest of vocal modulations. There are a few grander moments as well, of course, but for the most part Mays keeps it grounded. His Fezziwig is an especially endearing creation, and his narrator’s open-heartedness is often moving in its own right. Yet while Mays never falters, the production around him soon begins to run out of ideas. Arden and Laffrey mostly drop those promising horror elements after the first ghost’s arrival. From there, an assortment of stage effects are thrown at the audience. Some are impressive, like a doll’s house-like display of Christmas cheer which flies in and out faster than one can even take it in; some less so, like Lucy Mackinnon’s blurry video projections intended to suggest memories of Scrooge’s past. Effective or not, each piece of stagecraft feels divorced from the one before. It becomes clear that Arden and Laffrey lacked a cohesive vision for their Christmas Carol past the arrival of ghost number one. Unsure then of how to shape Scrooge’s transformation from miser to almsgiver, the production leans heavily on sentiment. The scrappy Cratchit family is just so charming, Scrooge is simply won over, as should you be—never mind how abrupt this reversal feels. In one particularly bizarre choice, a melancholy transition is accompanied by a Sufjan Stevens Christmas tune, a baffling needle-drop that sucks what little tension remained out of the room. Many a Christmas Carol adaptation has struggled to shape Scrooge’s change of heart into a gradual arc, but this one barely tries, content at treating it akin to a light switch going off. The conclusion of Dickens’ tale, when Scrooge awakens a new man and spreads joyous cheer across London, can be deeply moving when that arc feels more natural—as in the Old Vic’s excellent adaptation, which played Broadway in 2019. Not so much here. Given its loss of focus and overdose on sentiment, this Christmas Carol feels deflated by the time Scrooge finally awakes, and though Mays’ warm final words are something of a balm, the finale ultimately lands with a thud. ‍A Christmas Carol is currently playing at the Nederlander Theatre through January 1. For tickets and more information, click here. Joey Sims has written at The Brooklyn Rail, TheaterMania, American Theatre Magazine, Culturebot, Exeunt NYC, New York Theatre Guide, No Proscenium, Broadway’s Best Shows, and Extended Play. He was previously Social Media Editor at Exeunt, and a freelance web producer at TodayTix Group. Joey is an alumnus of the Eugene O’Neill Theater Center’s National Critics Institute, and a script reader for The O’Neill and New Dramatists. He runs a theater substack called Transitions.",
+  "isFullReview": true,
+  "textWordCount": 674,
+  "archivePath": "data/archives/reviews/a-christmas-carol-2022/theatrely--joey-sims_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T16:59:34.844Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "playwright",
+  "wordCount": 674,
+  "tierReason": "Full review text"
 }

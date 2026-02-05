@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But all their love and dedication has failed to capture the intrinsic whimsical charm of the film (which made an international star of Audrey Tautou). A little bit of whimsy goes just so far on stage unless it is played full out. The creators haven't committed fully, staying somewhat in a neutral, realistic space that this piece doesn't quite work in. The goldfish, the Notre Dame tourist, the photo booth, The Glass Man and more plot items that were charming and funny in the film mostly don't wor",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMELIE-A-NEW-MUSICAL-Opens-at-the-Ahmanson-Theatre-UPDATED-20161220",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A little bit of whimsy goes just so far on stage unless it is played full out.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt criticizes the show for failing to capture the film's charm and commits to specific failures ('mostly don't work'), but text appears truncated mid-sentence, limiting confidence in the full verdict. | GPT-4o: The excerpt indicates a failure to capture the charm of the original film, with elements that don't work on stage. The tone suggests disappointment, but the limited excerpt means the confidence is low. | Gemini: The review states that the production fails to capture the charm of the film and that plot items that were charming in the film mostly don't work on stage. Given the negative tone and lack of positive comments, I'm classifying this as negative. | Kimi: The excerpt criticizes the production for failing to capture the film's whimsical charm, noting that key plot elements 'mostly don't work' on stage. While acknowledging the creators' 'love and dedication,' the clear verdict is that the adaptation is unsuccessful. Confidence is low due to single excerpt availability and truncation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:22:48.769Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

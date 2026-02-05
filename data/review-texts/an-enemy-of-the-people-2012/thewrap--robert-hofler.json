@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It’s the Covid pandemic all over again at the Circle in the Square, where a radically pared-down version of Henrik Ibsen’s “An Enemy of the People” opened Monday. Best of all is Jeremy Strong’s Dr. Thomas Stockmann, who vividly recalls Dr. Anthony Fauci, especially when this good Norwegian doctor is warning a town about the dangers of an impending epidemic. The only problem with making “Enemy” a blow-by-blow retelling of Trump and Fauci’s battles is that what we all endured in real life a few years ago was so much more dramatic than what’s being offered onstage under the direction of Sam Gold.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only problem with making 'Enemy' a blow-by-blow retelling of Trump and Fauci's battles is that what we all endured in real life a few years ago was so much more dramatic than what's being offered onstage.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt warning applies. While praising Strong's performance as 'best of all' and 'vivid', the critic finds the production dramatically insufficient compared to real events, suggesting the theatrical experience falls short of expectations. | GPT-4o: The review praises Jeremy Strong's performance but criticizes the production for lacking the drama of real-life events. The single excerpt suggests a mixed reception, with strong elements but overall shortcomings. | Gemini: The review praises Jeremy Strong's performance but ultimately finds the production less dramatic than the real-life events it mirrors. The single excerpt and lack of a clear recommendation lead to a \"mixed\" classification with low confidence. | Kimi: The excerpt praises Jeremy Strong's performance as 'best of all' but delivers a significant criticism that the real-life events were 'so much more dramatic than what's being offered onstage,' suggesting the production fails to match its source material's intensity. With only one excerpt available, this balanced praise and criticism places it in the mixed range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:47:45.414Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

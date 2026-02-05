@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Tony winner Kenny Leon (A Raisin in the Sun) directs with the smooth efficiency befitting this procedural-style work, and the cast-Washington and Pasquale are especially fine as parents whose emotions ricochet from angry to anguished to afraid and back again-wrings just about all the drama they can out of the newsprint-thin script. Hopefully they'll both be available for the inevitable small-screen adaptation (Netflix, perhaps?). And expect regional theaters and college campuses to jump at Ameri",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the cast wrings just about all the drama they can out of the newsprint-thin script",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises director and lead performances but criticizes the script as 'newsprint-thin.' The phrase 'wrings just about all the drama they can' suggests performers are working with weak material. Single excerpt warning and truncated text require low confidence. | GPT-4o: The excerpt praises the direction and performances, particularly highlighting the cast's ability to evoke drama from a thin script. However, the mention of the 'newsprint-thin script' suggests some reservations, leading to a lower-end Positive score. The single excerpt and lack of full context reduce confidence. | Gemini: The review praises the direction and performances, but notes the script is \"newsprint-thin.\" This suggests a positive but qualified recommendation. Confidence is low due to the limited excerpt. | Kimi: The excerpt offers qualified praise for the direction ('smooth efficiency') and cast ('especially fine'), but criticizes the script as 'newsprint-thin,' indicating a mildly positive recommendation based on strong execution of weak material.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:11.002Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "And thus “American Idiot,” the show, delivers a thick, gorgeous head rush of a musical soundscape without current Broadway parallel. It turns out to offer the kind of sensual lushness that a lot more traditional musicals would kill to emulate. That's mostly due to the brilliance of Tom Kitt's orchestrations, adding violin, cello, weight and gravitas to the Green Day sound without blunting its aggressive edge. With the gifted director Michael Mayer spreading his eight-member band out across a beautifully cacophonous setting — more a video-filled installation, really — from Christine Jones that evokes a constant blaring of Fox News in an endless sea of 7-Eleven parking lots and crappy urban apartments, you get a stunning musical wash of all corners of human emotion.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-AMERICAN-IDIOT-Review-Roundup-20100420",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "delivers a thick, gorgeous head rush of a musical soundscape without current Broadway parallel",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for musical elements ('gorgeous', 'brilliant', 'stunning') and production values, but single excerpt warning requires caution about representativeness of full review verdict. | GPT-4o: The excerpt is filled with superlatives and praises the musical's unique soundscape and production design, suggesting a highly positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, praising the musical soundscape, orchestrations, and staging. Given the single excerpt and positive tone, I'm placing it in the upper end of the positive range. | Kimi: The excerpt offers unqualified praise for the musical's soundscape, orchestrations, and staging, using superlatives like 'gorgeous,' 'brilliance,' and 'stunning.' However, as a single curated excerpt potentially cherry-picked by aggregators, it may not represent the full review's balance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:28:04.159Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "The drama depends on the sustained pitch of Washington's portrayal of a mother ferociously battling forces larger, though not greater, than herself. The 'Scandal' star could use more modulation in the early going, a fault of the direction as much as the writing. But the anguish of Demos-Brown's play is coiled inside a performance rooted in one character's story but containing real-world multitudes. Washington honors all the shattered loved ones who have gone through Kendra's experience.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Washington honors all the shattered loved ones who have gone through Kendra's experience.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Mixed assessment acknowledging both strengths (Washington's rooted performance, real-world significance) and weaknesses (direction/writing faults), but overall appreciative tone suggests recommendation despite flaws. Single excerpt limits confidence. | GPT-4o: The review excerpt praises Washington's performance and its emotional impact, but notes issues with direction and writing. Given the single excerpt and text quality warning, the score is on the lower end of Positive. | Gemini: The review praises Washington's performance and the play's emotional depth, but notes a need for more modulation early on, suggesting a qualified recommendation. The single excerpt and lack of a clear overall verdict lead to low confidence. | Kimi: The excerpt offers strong praise for Kerry Washington's central performance ('containing real-world multitudes') but explicitly faults the direction and writing ('fault of the direction as much as the writing'), suggesting a qualified recommendation that depends heavily on the lead performance. With only one curated excerpt available, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:38:44.263Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

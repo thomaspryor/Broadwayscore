@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "I have to admit I'm of two minds about Van Hove's A View From the Bridge. My 30-year-old critic self probably would have thrilled to the ballsiness of turning a naturalistic melodrama into a Greek tragedy. Doing so adds a layer of meaning the way the cover of Abbey Road added a layer of meaning to the Beatles mythology. But my older-critic self says, 'Leave the damned play alone.' Leave us to draw the connection from Eddie Carbone to Willie Loman (Death Of A Salesman) and Joe Keller (All My Sons) - men whose sense of their own manhood cannot survive the emasculating pressures of making it in America. In the end, Eddie impotently demands his 'respect' - even though he's committed the ultimate crime of ratting out his countrymen to Immigration. Even sexual congress with Catherine would have been more forgivable than that. Eddie's tragedy, like Willy's and Joe's, is that he is no hero at all, but a victim not only of his own tortured desire (perhaps it's Rodolpho he really wants?) but of his inability to gain entree to that American Dream he's been sold on.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My 30-year-old critic self probably would have thrilled to the ballsiness of turning a naturalistic melodrama into a Greek tragedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic is explicitly 'of two minds' about Van Hove's production approach, praising its boldness while also wishing they would 'leave the damned play alone.' This internal conflict without a clear final recommendation indicates a mixed review. | GPT-4o: The critic expresses ambivalence, appreciating the bold reinterpretation but also wishing the original play was left unchanged. This suggests a mixed reaction, as the critic acknowledges both positive and negative aspects. | Gemini: The critic is of two minds about the production, appreciating its boldness but also questioning the need for such a drastic interpretation. This suggests a mixed reaction, falling into the 'Mixed' bucket. | Kimi: The critic explicitly states being 'of two minds,' praising the 'ballsiness' of the Greek tragedy interpretation while simultaneously wishing the director had 'left the damned play alone,' indicating genuine conflict without a clear recommendation to see or skip.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:41:24.481Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "These aren't small inconsistencies, nor are they rare, and despite Leon's fluid direction and the robust performances, they keep the play from coalescing into the fully realized family drama it might have been. But as a cri de coeur, from a mother, for her child, for others like him, for her country, American Son screams just as loud as it should.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "These aren't small inconsistencies, nor are they rare, and despite Leon's fluid direction and the robust performances, they keep the play from coalescing into the fully realized family drama it might have been.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt acknowledges strong direction and performances but criticizes frequent inconsistencies that prevent the play from fully succeeding. The final praise for its emotional impact as a 'cri de coeur' suggests mixed feelings rather than clear recommendation. | GPT-4o: The review acknowledges strong direction and performances but highlights significant inconsistencies that prevent the play from fully succeeding. The excerpt suggests a mixed verdict with both positive and negative elements. | Gemini: The review acknowledges strong performances and direction, but ultimately states that inconsistencies prevent the play from fully realizing its potential. Given the single excerpt and mixed signals, confidence is low. | Kimi: While the excerpt notes significant dramatic inconsistencies that prevent the play from fully cohering, the final verdict validates the production's emotional power and social impact, suggesting it succeeds as a passionate cry for justice despite its structural issues.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:37:29.536Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

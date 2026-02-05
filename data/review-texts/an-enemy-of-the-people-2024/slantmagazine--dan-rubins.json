@@ -12,5 +12,60 @@
   "bwwExcerpt": "Gold’s sharply accelerating production reveals the horror of hypocrisy, but, without outside assistance, it doesn’t quite challenge the audience’s own complicity. By the time the third Extinction Rebellion protestor arose, most of the crowd met him with vehement boos. Minutes later, Dr. Stockmann was back on his own soapbox demanding that he himself be heard: “Ask yourselves—Is what I’m saying dangerous? Or is ignorance dangerous? You don’t have to agree with me, I just ask that you listen, because I don’t have any reason to be up here, ruining my career, making my family suffer, except that I care about this place.”",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Gold's sharply accelerating production reveals the horror of hypocrisy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt praises the production as 'sharply accelerating' and credits it with revealing important themes, but notes it 'doesn't quite challenge the audience's own complicity' - suggesting positive assessment with reservations. Single excerpt warning requires caution about overall verdict. | GPT-4o: The excerpt highlights both strengths and weaknesses of the production, suggesting it has impactful moments but falls short in engaging the audience fully. The lack of a clear positive or negative tone results in a mixed verdict. | Gemini: The review excerpt highlights both positive aspects (revealing the horror of hypocrisy) and negative aspects (not challenging audience complicity). Given the limited text, it's hard to determine a clear recommendation, so I've classified it as mixed with low confidence. | Kimi: The excerpt offers qualified praise for Gold's direction and the production's thematic achievements while noting a significant shortcoming in its failure to challenge audience complicity, suggesting a mildly positive rather than enthusiastic recommendation. | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:50:56.407Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

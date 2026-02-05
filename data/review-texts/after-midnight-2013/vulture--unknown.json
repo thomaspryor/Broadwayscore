@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "If the ensemble dancing never quite rises to the level of the specialty solos and duets, and if one or two concepts for production numbers fizzle, After Midnightis still an unmitigated pleasure. And it may be the best kind of pleasure: the kind that changes with time. (After Barrino leaves the show in February, scheduled guest stars include k.d. lang, Toni Braxton, and Kenny 'Babyface' Edmonds.) Presumably, theatrical archeologists of the future won't have as hard a time rediscovering After Midnight as our era's transcribers did in rescuing the Ellington material. Because this is one for the record books.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After Midnight is still an unmitigated pleasure.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite acknowledging minor flaws (ensemble dancing, some production numbers), the critic calls it an 'unmitigated pleasure' and 'one for the record books,' indicating strong enthusiasm. | GPT-4o: The excerpt describes the show as an 'unmitigated pleasure' and 'one for the record books', indicating a strong positive sentiment despite some minor reservations about ensemble dancing and production numbers. | Gemini: The review states the show is an \"unmitigated pleasure\" and \"one for the record books,\" indicating a strong positive recommendation. The reservations mentioned are minor compared to the overall praise. | Kimi: Despite noting minor flaws in ensemble dancing and production concepts, the critic calls the show an 'unmitigated pleasure' and 'one for the record books,' indicating strong enthusiasm and a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:37.477Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

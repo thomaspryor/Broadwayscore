@@ -10,7 +10,7 @@
   ],
   "bwwExcerpt": "The matchup of Walken, unpredictably creepy American actor, and Martin McDonagh, virtuosically gruesome Irish playwright, has finally occurred. And it's as perfect a frisson as it always was meant to be - except for one problem. The play is really not good. 'A Behanding in Spokane,' the 90-minute McDonagh world premiere that lured Walken back for a rare stage appearance, is so thin, trivial and underdeveloped that the humor depends on two separate scenes of characters throwing severed hands at one another.",
   "bwwScore": 3,
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "assignedScore": 44,
   "llmScore": {
     "score": 44,
@@ -65,5 +65,59 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "fullText": "Enjoy open access to the new newsday.com until January 11, 2011, courtesy of the Radio City Christmas Spectacular.\n\nOther Traffic Information (UB): Road closed, at SOUTHERN BLVD.\n\nOther Traffic Information (northbound): Accident cleared, at NORTHERN STATE PKWY.\n\nCrss Islnd btwn Brnx-Whtstn - Blt Sthrn (southbound): Delays, between Grand Central Pkwy. and Northern Blvd.\n\nOther Traffic Information (UB): Accident cleared, at BICYCLE PATH.\n\n26&deg;\n Hi 34&deg; Lo 22&deg;\n Overcast\n\nHumidity: 66%\n Wind: North 0 mph\n Barometer: 29.56 Hg\n\nFull forecast\n Hour-by-hour\n Local map\n\nhas 10 reasons why the Jets will win.\n\nNewsday > Entertainment > Theater\n\nOriginally published: March 3, 2010 4:41 PM\n Updated: March 4, 2010 9:00 PM\n \n \n By LINDA WINER\n linda.winer@newsday.com\n\nIf you are mesmerized by \n Christopher Walken (and I don't think I could love anyone who isn't), the sight of him in the ratty hotel room is immediately interesting.\n\nHe is sitting on the edge of a bed in a black coat and a stump where his left hand belongs. Entire essays could be written about his hair, a blond-gray pageboy with an upsweep and a puff. A flicker of unexplained amusement - one of an unknowable number of inexplicable rogue thoughts - passes his reptile eyes. And when he gets up to shoot whatever is making noise in the closet, we notice he wears his pants too high and too short.\n\nPHOTOS: Christopher Walken in \"A Behanding in Spokane\"\n\nThe matchup of Walken, unpredictably creepy American actor, and Martin McDonagh, virtuosically gruesome Irish playwright, has finally occurred. And it's as perfect a frisson as it always was meant to be - except for one problem.\n\nThe play is really not good. \"A Behanding in Spokane,\" the 90-minute McDonagh world premiere that lured Walken back for a rare stage appearance, is so thin, trivial and underdeveloped that the humor depends on two separate scenes of characters throwing severed hands at one another.\n\nAnd yet . . . there is the genuine thrill of watching Walken's feline dancer-grace, his weird jazz rhythms, the way he can snarl his nostrils around McDonagh's odd locutions until we almost believe they are as hilarious as Tuesday's preview audience clearly did.\n\nInstead of writing Gothic satire about the Irish hinterlands, McDonagh puts Walken, Sam Rockwell, Anthony Mackie and Zoe Kazan in a seedy hotel in the American hinterlands. The enticing cast has been directed by John Crowley, with the same design team he used for \"The Pillowman,\" McDonagh's brilliant and truly disturbing political mystery that starred Jeff Goldblum on Broadway in 2006.\n\nThis one is more of an extended sketch for a shaggy-dog cartoon. Walken plays a traveler, a searcher and proud racist who claims six hillbillies cut off his hand 47 years ago, then waved goodbye with his own hand. Mackie and Kazan play a racially mixed couple of losers who try to scam him. All the usual insult words are said, over and over, as if repeating them made them funnier.\n\nRockwell plays the hotel \"receptionist guy\" who loves gibbons too much and, in one intriguing surprise, briefly turns into an emcee/narrator from old-time vaudeville. \"What if a guy checks in who got one hand,\" he asks, \"where's a story like that gonna go?\" Without Walken, nowhere.\n\nPHOTOS: Christopher Walken in \"A Behanding in Spokane\"\n\nSchoenfeld Theatre, 236 W. 45th St., Manhattan\n\n$61.50-$116.50; 212-239- 6200; abehandinginspokane.com\n\nHaving a good time at a very bad play\n\n3/5/10\n | mydaisy01\n | Reply &raquo;\n\n'The Facebook Obsession,' on CNBC",
+  "isFullReview": true,
+  "textWordCount": 575,
+  "archivePath": "data/archives/reviews/a-behanding-in-spokane-2010/newsday--linda-winer_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:32:53.999Z",
+  "originalScore": "3/5",
+  "originalScoreNormalized": 60,
+  "scoreSource": "numeric-stars",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "ScrapingBee error (404): Request failed with status code 404"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": false,
+      "error": "Insufficient text: 183 chars"
+    },
+    {
+      "tier": 3.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "textQuality": "partial",
+  "truncationSignals": [
+    "no_ending_punctuation"
+  ],
+  "textStatus": "partial",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20110107065144",
+  "archiveOrgUrl": "http://web.archive.org/web/20110107065144/http://www.newsday.com:80/entertainment/theater/christopher-walken-in-behanding-in-spokane-1.1791202",
+  "wordCount": 575,
+  "tierReason": "Full review text"
 }

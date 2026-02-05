@@ -14,5 +14,60 @@
   "bwwScore": 6,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
-  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes"
+  "playbillVerdictUrl": "http://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "A bold and perilous artistic endeavor, this musical is also something of a tonal muddle.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges the production's style and excitement but finds it fundamentally confused in tone and purpose, concluding 'It's all and it's nothing, too' - classic mixed review language. | GPT-4o: The review describes the musical as a 'tonal muddle' that doesn't form a 'persuasive whole,' but acknowledges it as 'stylish' and 'sometimes exciting.' This suggests a mixed verdict with both positive and negative elements. | Gemini: The review acknowledges stylishness and excitement but ultimately finds the show a \"tonal muddle\" that doesn't form a \"persuasive whole.\" The final question suggests a lack of clear direction, placing it in the Mixed category. | Kimi: The excerpt praises the stylish direction and galvanic lead performance while criticizing the show as a 'tonal muddle' that fails to cohere into a 'persuasive whole,' ending on an ambiguous note that suggests it succeeds and fails at everything simultaneously.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:34:57.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

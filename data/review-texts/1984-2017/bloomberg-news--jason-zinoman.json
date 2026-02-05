@@ -65,5 +65,41 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 80,
+  "fullText": null,
+  "isFullReview": true,
+  "textWordCount": 356,
+  "archivePath": "data/archives/reviews/1984-2017/bloomberg-news--jason-zinoman_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T17:03:29.302Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Insufficient text extracted: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "no_ending_punctuation",
+    "has_footer_text",
+    "possible_mid_word_cutoff"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "XLinkedInEmailLinkGiftExpandPhotographer: Julieta CervantesFacebookXLinkedInEmailLinkGiftGift this articleContact us:Provide news feedback or report an errorConfidential tip?Send a tip to our reportersSite feedback:Take our SurveyNew WindowFacebookXLinkedInEmailLinkGiftBy Jason ZinomanJune 23, 2017 at 1:00 AM UTCBookmarkSaveTranslateThis article is part of the June 26, 2017 issue of businessweek.Chevron RightIn the ongoing culture war between artists and our ex-­reality-TV-star president, it’s surprising that theater, that famously fragile and fusty art form, has been the tip of the spear.\n\nLess than two weeks after Donald Trump was elected, a cast member of the musical Hamilton delivered a message of concern from the stage to Mike Pence. Never one to ignore a slight, Trump tweeted that the theater must be “a safe and special place.”\n\nLEARN MOREMore From BloombergAnthropic AI Tool Sparks Selloff From Software to Broader Market\n\nTrillion-Dollar Tech Wipeout Ensnares All Stocks in AI’s Path\n\nChina Trader Who Made $3 Billion on Gold Bets Big Against Silver\n\nTrump Says He Wants $1 Billion From Harvard in New Attack\n\nTata’s Outsider CEO Battles Multiple Crises After Bad Year\n\nDivorce, Hedge-Fund Style: Inside the Breakup at Two Sigma\n\nby Hema Parmar and Chris Dolmetsch\n\nUkrainians Defy Russia’s Attempts to Freeze Them Into Submission\n\nby Volodymyr Verbianyi and Daryna Krasnolutska\n\nNYC Real Estate Binge Piles Pressure On a German Pension Plan\n\nby Natalie Wong, Arno Schuetze, Chris Dolmetsch and Karin Matussek\n\nElon Musk’s Nashville Tunneling Venture Has the Mayor Hoping No One Dies\n\nHomeBTV+Market DataOpinionAudioOriginalsMagazineEventsNewsMarketsEconomicsTechnologyPoliticsGreenCryptoAIWork & LifeWealthPursuitsBusinessweekCityLabSportsEqualityManagement & WorkMarket DataStocksCommoditiesRates & BondsCurrenciesFuturesSectorsEconomic CalendarExploreNewslettersExplainersPointed News QuizAlphadots GameThe Big TakeGraphicsSubmit a TipAbout UsTerms of ServiceDo Not Sell or Share My Personal InformationTrademarksPrivacy PolicyCareersAdvertiseAd ChoicesHelp©2026 Bloomberg L.P. All Rights Reserved.\n\nExplore live shows, documentaries, interviews and more – all in one place.\n\nBy accepting, you agree to our updated\n Terms of Service,\n including the arbitration provision and class action waiver. You understand that we process your information as described in the\n Privacy Policy,\n which may include sharing information about your use of\n Bloomberg.com\n with third parties. Accepting does not affect your right to opt-out at any time via the Do Not Sell or Share My Personal Information link in the website footer.\n\nThis page has been blocked by an extension"
 }

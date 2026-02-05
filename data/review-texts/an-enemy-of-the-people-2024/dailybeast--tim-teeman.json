@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "For one, both Succession and this adaptation, directed by Sam Gold (who is married to Herzog) know how to crunchily position drama and wit, profundity and comedy, alongside one another. This brilliant Enemy of the People is notably funny in both its smarts and pacing, and even its later gathering darkness—when Stockmann is viciously trounced and isolated by his townsfolk—is studded with light, and the certainty of his self-preservation.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-Starring-Jeremy-Strong-Opens-On-Broadway-20240318",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This brilliant Enemy of the People is notably funny in both its smarts and pacing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt calls the production 'brilliant' and praises the direction, wit, and pacing. However, this is only one curated excerpt, so confidence is low and the full review verdict may differ. | GPT-4o: The excerpt describes the production as 'brilliant' and highlights its successful blend of drama, wit, and comedy, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses strong positive language like \"brilliant\" and \"notably funny\", suggesting a positive recommendation. Given the single excerpt, I am scoring at the higher end of the positive range but with low confidence. | Kimi: The critic explicitly calls the production 'brilliant' and praises its deft balance of comedy and drama, smart pacing, and tonal control, indicating strong enthusiasm for this adaptation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:50:07.211Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

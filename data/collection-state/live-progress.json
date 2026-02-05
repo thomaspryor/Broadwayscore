@@ -1,33 +1,15 @@
 {
-  "updatedAt": "2026-02-05T16:43:05.400Z",
-  "processed": 7,
-  "failed": 33,
-  "successRate": "17.5%",
+  "updatedAt": "2026-02-05T18:16:43.897Z",
+  "processed": 64,
+  "failed": 66,
+  "successRate": "49.2%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 8,
     "browserbase": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 31,
     "brightdata": 0,
-    "archive": 1
+    "archive": 25
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-02-05T16:30:02.708Z",
-      "event": "bb-session",
-      "session": "3347707f",
-      "url": "https://www.newyorker.com/magazine/1997/12/08/the-visual-thing"
-    },
-    {
-      "t": "2026-02-05T16:30:04.493Z",
-      "event": "bb-login-uncertain",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-02-05T16:39:49.553Z",
-      "event": "bb-session",
-      "session": "b44c7125",
-      "url": "https://www.chicagotribune.com/1997/11/14/the-lion-king-roars-to-life-on-broadwa"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Audiences unfamiliar with Moss Hart's legacy may have a hard time understanding his importance after watching James Lapine's flat adaptation of 'Act One' that just opened at Lincoln Center's Vivian Beaumont Theater. Instead of an inspiring account of talent and tenacity, Lapine's 'Act One' is a bland story that fails to put Hart's life into perspective...Lapine, who both wrote and directed 'Act One,' constructs the story of the show in a linear fashion, narrated by an older version of Hart (Tony Shalhoub, 'Golden Boy,' in one of three roles he plays) and a twentysomething version of Hart (Santino Fontana, 'Cinderella'). The problem with that device is that our narrators often tell us more about our character's emotions than we get to see and feel.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 42,
+  "llmScore": {
+    "score": 42,
+    "confidence": "high",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Instead of an inspiring account of talent and tenacity, Lapine's 'Act One' is a bland story that fails to put Hart's life into perspective.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic calls the adaptation 'flat' and 'bland,' saying it 'fails to put Hart's life into perspective' and criticizes the narrative structure. However, with only one excerpt available, the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the adaptation as 'flat' and 'bland,' suggesting it fails to effectively convey the subject's importance. The tone is negative, but due to the single excerpt warning, confidence is low. | Gemini: The review uses negative language such as \"flat adaptation\" and \"bland story,\" indicating a negative overall assessment. The single excerpt available suggests the critic does not recommend the show. | Kimi: The excerpt unambiguously criticizes the production as 'flat' and 'bland,' stating it fails to convey its subject's importance. The critic identifies specific failures in the writing and direction, with no redeeming qualities mentioned.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:56:47.653Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

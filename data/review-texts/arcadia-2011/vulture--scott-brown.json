@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Sex hangs over Arcadia like a fine English fog, and personally, I’d have preferred it even thicker. Nothing sets off Stoppard’s crystalline intellect like a nice, rude intrusion of carnality and folly. But Leveaux has directed his cast members to turn inward, and perhaps that’s ultimately the better choice. I admit to being a little flummoxed by Crudup’s Bernard; he’s playing a character more or less alien to American audiences, the flibbertigibbet rake, and he bridges the gap with doses of downcast American irony and tics that sometimes come close to clowning. But his approach won me over by Act Two, when Bernard’s limitations as a person and a character come into fuller view. Ditto Williams’ chilly Hannah and Powley’s avid child-prodigy Thomasina — they seem immovable in their typologies until late in the play, when the clockwork clicks into place.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But his approach won me over by Act Two, when Bernard's limitations as a person and a character come into fuller view.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses some reservations about direction and characterization but ultimately finds the performances convincing by the end. The phrase 'won me over' indicates a positive verdict despite initial doubts. | GPT-4o: The review excerpt suggests a positive shift in perception by Act Two, indicating a mild recommendation. However, the single excerpt and lack of full context warrant a low confidence score. | Gemini: The review expresses some reservations about the direction and performances initially, but ultimately indicates that the production improves and wins the critic over. Given the single excerpt warning, I'm scoring cautiously positive. | Kimi: While the critic expresses reservations about the direction and initially finds performances 'immovable' or 'flummoxing,' the excerpt concludes with the critic being 'won over' by Act Two and the 'clockwork clicking into place,' indicating a qualified but genuine recommendation. Given the single-excerpt warning, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:03:49.841Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

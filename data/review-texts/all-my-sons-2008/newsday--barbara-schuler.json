@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "This play is done a lot - What community theater hasn't trotted it out at least once? - so audiences generally know the story. But this cast breathes so much life into Miller's characters it feels like you're watching for the first time. Tracy Letts is compelling as Joe, a man who hides well his heavy guilt. As Kate, Annette Bening is a poignant mix of strength and despair, fighting off a grief she refuses to acknowledge. But it's Benjamin Walker as the tortured son Chris who most commands attention whenever he's on stage, so apparent is the fury he's brewing.",
-  "bwwScore": 8
+  "bwwScore": 8,
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This cast breathes so much life into Miller's characters it feels like you're watching for the first time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for the entire cast with specific, enthusiastic language about performances making familiar material feel fresh. Single excerpt warning suggests this represents positive sentiment, warranting upper-positive range. | GPT-4o: The excerpt praises the cast's performances, highlighting their ability to bring new life to a well-known play. The positive tone and focus on compelling performances suggest a strong recommendation. | Gemini: The review praises the cast for bringing new life to the play, highlighting strong performances from Letts, Bening, and especially Walker. The overall tone is positive, suggesting a worthwhile experience. | Kimi: The excerpt offers enthusiastic praise for the principal performances, describing them as compelling, poignant, and commanding attention. While clearly positive in tone, the single-excerpt format limits confidence in assessing the complete verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:09:34.552Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

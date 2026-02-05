@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Director Jeremy Herrin, best known for his work with grand epics like “Wolf Hall” and Shakespearean dramas, is out of his league here; too many scenes are just a muddle of movement with no center – helped none by Sarah O’Gleby’s almost amateurish choreography. Most shocking of all, the production even defeats the great set designer Derek McLane, who fills a butt-ugly steel cage with cheap-looking furniture and cardboard cutouts, and resorts to giant maps or huge photos to give us a sense of place. Still, the filmmaker, who wrote the musical’s book and lyrics, is primarily to blame. Not only is the script too cinematic in nature to work well on stage, but Crowe also simply fails to understand that great theater is about story, not atmosphere (which was the film’s strongest suit). What we should getting is a deeply moving coming-of-age story more firmly focused on William’s hard-earned life lessons about the dangers of meeting your heroes (even if one turns out to be nice in the end), the actual rigors of professional journalism, and the pain of young love.",
   "bwwScore": 3,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
+  "assignedScore": 32,
+  "llmScore": {
+    "score": 32,
+    "confidence": "medium",
+    "range": {
+      "low": 27,
+      "high": 37
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director Jeremy Herrin is out of his league here; too many scenes are just a muddle of movement with no center.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The excerpt delivers harsh criticism across multiple production elements - direction ('out of his league'), choreography ('almost amateurish'), design ('butt-ugly', 'cheap-looking'), and book ('fails to understand'). While this is only an excerpt, the consistent negative assessment across all mentioned elements suggests a clearly negative review. | GPT-4o: The excerpt is strongly negative, criticizing direction, choreography, set design, and the script. The single excerpt may not represent the full review, but the tone is clearly negative. | Gemini: The review is overwhelmingly negative, criticizing the direction, choreography, set design, and script. The critic clearly does not recommend the show. | Kimi: The critic delivers a comprehensive pan, attacking the direction as 'out of his league,' choreography as 'amateurish,' set design as 'butt-ugly,' and the book as fundamentally misunderstanding theatrical storytelling. No redeeming qualities are mentioned in this excerpt. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:12:48.162Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 22,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

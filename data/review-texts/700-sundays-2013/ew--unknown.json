@@ -14,7 +14,7 @@
   "isFullReview": true,
   "textWordCount": 267,
   "archivePath": "data/archives/reviews/700-sundays-2013/ew--unknown_2026-02-05.html",
-  "textFetchedAt": "2026-02-05T06:34:37.757Z",
+  "textFetchedAt": "2026-02-05T17:15:11.242Z",
   "originalScore": "D",
   "originalScoreNormalized": 35,
   "scoreSource": "letter-grade",
@@ -23,6 +23,24 @@
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "404 - Page not found"
+    },
+    {
+      "tier": 4,
+      "method": "archive",
       "success": true
     }
   ],

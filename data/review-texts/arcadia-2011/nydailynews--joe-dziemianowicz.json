@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "On the plus side, Williams brings believability and ample humor to her role, and Riley is perfection. He provides a calm and steady-beating heart, while at the same time hinting at the heat burning below Septimus' cool surface. Less successful is Powley, who has a high-pitched voice that cuts like a serrated knife and obscures her lines. Margaret Colin, as her landscape-obsessed mother, tends to swallow words, too.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "On the plus side, Williams brings believability and ample humor to her role, and Riley is perfection.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Mixed assessment praising some performances (Williams, Riley) while criticizing others (Powley, Colin). Single excerpt with no clear overall recommendation makes confidence low. | GPT-4o: The review excerpt provides both positive and negative evaluations. While Williams and Riley are praised, Powley's performance and Colin's delivery are criticized. The mixed nature of the feedback suggests a balanced view with no clear recommendation. | Gemini: The review praises two performances but criticizes two others, resulting in a mixed assessment. The single excerpt and lack of an overall recommendation lead to low confidence. | Kimi: The excerpt offers high praise for two performers ('perfection', 'believability and ample humor') but significant criticism of others ('voice that cuts like a serrated knife', 'swallow words'), resulting in a balanced mixed assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:04:00.184Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

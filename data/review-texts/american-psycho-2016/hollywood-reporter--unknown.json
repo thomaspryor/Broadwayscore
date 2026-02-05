@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Director Rupert Goold, composer Duncan Sheik and book writer Roberta Aguirre-Sacasa crank up the satirical volume on Bret Easton Ellis' cult novel in a musical with design to die for and a cool, period-appropriate electro-pop score... the show is a very sharp, distinctly theatrical treatment of its source material, in many ways improving on Mary Harron's movie version from 2000...Goold and Aguirre-Sacasa have been prudent in toning down the book's perceived misogyny and sexual violence while honing its acerbic portrait of late capitalism in a milieu where surface is everything...Walker is charismatic and commanding, but it's the broken, corrosively conflicted aspects of his characterization that make the performance so hypnotic...Helene Yorke, hilarious as Patrick's aggressively superficial fiancée Evelyn...Alice Ripley...can't do much with the role of Patrick's medicated mother...But Jennifer Damiano finds poignancy in the good-girl part of Patrick's smitten secretary Jean...Still, even with its flaws the musical is a bloody good time.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Still, even with its flaws the musical is a bloody good time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict with praise for direction, score, and lead performance, while acknowledging some weaknesses. The concluding 'bloody good time' reinforces the recommendation. | GPT-4o: The excerpt praises the production's design, score, and performances, noting improvements over the film version. Despite acknowledging some flaws, the overall tone is positive, recommending the show as a 'bloody good time.' | Gemini: The review is mostly positive, praising the direction, score, and lead performance, while acknowledging some flaws and weaker supporting roles. The concluding statement indicates a positive overall experience. | Kimi: The excerpt offers consistent praise for the production's design, score, and direction, calling it a 'very sharp' theatrical treatment that improves on the film version, while acknowledging minor weaknesses in secondary roles. The overall tone is appreciative and recommends the show as an entertaining theatrical experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:34:02.693Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,59 @@
     "playbill-verdict",
     "show-score-playwright"
   ],
-  "showScoreExcerpt": "\"It's not hard to guess who will emerge victorious. But in the world of Shakespeare, a surprise ending was never in the cards.\"\n\nRead more"
+  "showScoreExcerpt": "\"It's not hard to guess who will emerge victorious. But in the world of Shakespeare, a surprise ending was never in the cards.\"\n\nRead more",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's not hard to guess who will emerge victorious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Mixed | GPT-4o: The excerpt suggests predictability in the production, implying a lack of surprise or innovation. Without additional context, it neither strongly recommends nor discourages viewing, placing it in the Mixed bucket. | Gemini: The excerpt suggests a predictable outcome, which doesn't lean strongly positive or negative. Given the limited text, a mixed score seems appropriate. | Kimi: The excerpt offers plot analysis noting predictability while contextualizing it within Shakespearean conventions, but provides no clear evaluative stance on the production's quality or a recommendation to see it. As a single curated excerpt, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:54:35.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Mixed"
+  }
 }

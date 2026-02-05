@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "There are two main aesthetic reasons I can think of to justify Mann’s reinterpretation of “A Streetcar Named Desire” through multi-racial casting – – to have the audience look at a classic work in a fresh light, thereby adding to our understanding of it; and to give us the chance to see great actors in roles normally closed to them. The director clearly achieves the first aim. She is only partially successful in the second.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "She is only partially successful in the second.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic acknowledges the director achieves one artistic goal but is 'only partially successful' in the other. This balanced assessment with qualified praise indicates a mixed review, though the single excerpt warning means the full verdict may differ. | GPT-4o: The excerpt provides a balanced view, acknowledging success in offering a fresh perspective but only partial success in casting. The single excerpt and lack of a definitive positive or negative tone suggest a mixed review. | Gemini: The review excerpt indicates that the director achieved one aim but was only partially successful in another, suggesting a mixed assessment. The single excerpt and partial success lean towards the middle of the mixed range. | Kimi: Single excerpt indicates the production succeeds in offering fresh perspective on the classic work but only partially succeeds in showcasing diverse talent, suggesting a mildly positive assessment with reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:42:25.505Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

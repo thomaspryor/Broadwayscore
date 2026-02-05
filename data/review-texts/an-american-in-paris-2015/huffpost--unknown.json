@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Christopher Wheeldon's choreography for An American in Paris, at the Palace, is so spectacular that you have to forgive anything else wrong with the production--and believe you me, there's plenty to forgive... Featuring New York City Ballet soloist Robert Fairchild and the Royal Ballet's Leanne Cope in a thrilling pas de deux that you wish could go on forever, it's one of the highest lights of a 2014-2015 season notable for more and better dancing than has been seen for years.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Christopher Wheeldon's choreography for An American in Paris, at the Palace, is so spectacular that you have to forgive anything else wrong with the production",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic acknowledges 'plenty to forgive' but finds the choreography so spectacular it redeems the production. The dancing is called a highlight of the season. Single excerpt with qualified praise suggests lower end of Positive range. | GPT-4o: The excerpt praises the choreography as 'spectacular' and highlights a 'thrilling pas de deux', suggesting a strong positive recommendation despite acknowledging flaws. Given the single excerpt warning, the score is on the higher end of Positive. | Gemini: The review praises the choreography as spectacular and highlights the thrilling pas de deux, but also acknowledges that there are other issues with the production. This suggests a positive recommendation with reservations. | Kimi: The critic praises Wheeldon's choreography as 'spectacular' and calls the show 'one of the highest lights of the season,' explicitly recommending audiences forgive the production's other flaws to experience the dancing.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:44:37.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

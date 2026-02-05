@@ -12,5 +12,60 @@
   "bwwExcerpt": "For theatergoers who like big casts that are well directed in huge, rambling plays, a visit to see 'Airline Highway,' which opened Thursday at the Samuel J. Friedman Theatre in New York, is recommended. Lisa D'Amour's new play, which had its world premiere last year at Chicago's Steppenwolf Theatre, gives 16 actors the platform to connect with each other, show off their considerable talents, and, most importantly, build an extended family on stage together. What's theatrically indulgent about 'Airline Highway' - and therefore, so appreciated - is how D'Amour could easily have eliminated a few actors in the ensemble, especially the people (Toni Martin, Todd D'Amour, Sekou Laidlow) who inhabit the crack den that is the lower stage-right unit at the Hummingbird Motel, rendered in seedy (almost smelly) detail in Scott Pask's harrowingly realistic set.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AIRLINE-HIGHWAY-Opens-on-Broadway-Updating-LIVE-20150423",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For theatergoers who like big casts that are well directed in huge, rambling plays, a visit to see 'Airline Highway' is recommended.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear recommendation despite some reservations about theatrical indulgence. Single excerpt limits confidence, but the explicit recommendation and praise for direction and performances support positive scoring. | GPT-4o: The excerpt recommends the show for a specific audience, praising the direction and ensemble cast. The positive tone and recommendation suggest a positive review, but the single excerpt limits confidence. | Gemini: The review opens with a recommendation, but then discusses elements that could have been cut, suggesting some reservations. Given the limited excerpt, a score in the lower-middle of the Positive range seems appropriate. | Kimi: The critic explicitly recommends the show for audiences who appreciate large-cast dramas, praising the direction, performances, and set design as 'so appreciated' and 'harrowingly realistic.'",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:59:24.014Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

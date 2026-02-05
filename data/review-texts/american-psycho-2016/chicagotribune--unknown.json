@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "...directed with relentless, sensationalist expediency by Rupert Goold...There is no question that 'American Psycho' is a highly unusual Broadway musical. And one that is cleverly self-protected against the aesthetic police. Goold's staging, and Lynne Page's limb-spewing choreography, evidence little in the way of consistency: Goold, whose work is about as a subtle as Bateman's preferred methods of dissection, switches styles in almost every scene...'American Psycho' thus is a smug show that games its audience, much as Bateman games his lovers and victims...The score, by Duncan Sheik, employs a narrow and familiar range of notes...It's a myopic mess, musically...underused Alice Ripley and Helene Yorke...Of course, there's no denying Walker's literate attractions, buoyed by the actor's disciplined determination to take the deepest of narcissistic dives with the full knowledge that truly competitive narcissists never self-promote.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 41,
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a myopic mess, musically",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The review is consistently critical - calling the direction 'relentless, sensationalist,' the show 'smug,' and the score 'a myopic mess.' However, single excerpt warning applies and some acknowledgment of the show's unusual nature and Walker's performance suggests this isn't a complete pan. | GPT-4o: The review criticizes the show as being 'smug' and a 'myopic mess', with inconsistent staging and a narrow score. While there is some acknowledgment of the actor's performance, the overall tone is negative. | Gemini: The review is largely negative, describing the show as a \"smug show that games its audience\", a \"myopic mess, musically\", and criticizing the direction and choreography. While acknowledging the actor's determination, the overall assessment is unfavorable. | Kimi: While the critic praises Benjamin Walker's committed performance, the review condemns the direction as sensationalist and inconsistent, the score as a 'myopic mess,' and the overall production as smug and game-playing. With only isolated praise for the lead amid sweeping criticism of the show's core elements, the verdict is clearly negative.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:33:15.839Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

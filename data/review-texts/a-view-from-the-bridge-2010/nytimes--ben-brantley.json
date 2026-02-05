@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Mr. Schreiber is such a complete actor that he has often thrown productions into imbalance, highlighting the inadequacy of the performances around him. That is not a problem here. That the excellent stage veteran Ms. Hecht holds her own with Mr. Schreiber is no surprise. That Ms. Johansson does - with seeming effortlessness - is.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Ms. Johansson does - with seeming effortlessness - is.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear praise for all three lead performances with emphasis on how well they work together. Single excerpt warning noted - this reads as solid positive assessment of the acting ensemble. | GPT-4o: The excerpt praises the performances of the cast, particularly highlighting the strong acting of Schreiber, Hecht, and Johansson. The tone suggests a positive view of the production's acting quality. | Gemini: The review excerpt praises the performances of the actors, particularly Scarlett Johansson, suggesting a positive experience, but the lack of full context makes it difficult to assess the overall recommendation strength. | Kimi: The excerpt offers enthusiastic praise for all three lead performances, highlighting Schreiber's complete command and the ability of both Hecht and Johansson to match him. Per the single-excerpt guidelines for clearly positive quotes, this scores in the upper Positive range despite limited context on overall production quality.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:48:32.578Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

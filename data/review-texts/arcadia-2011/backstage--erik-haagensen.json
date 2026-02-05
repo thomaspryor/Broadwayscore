@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Tom Stoppard's eloquent play 'Arcadia' operates much like the iterated algorithm graphs of which it speaks. Individual dots randomly appear, until gradually a shape (e.g., meaning) is revealed. Further, these dots often appear due to understated moments or quiet subtextual inferences. This means that to be successful, the play must be performed with the nuance and precision of a finely conducted piece of orchestral music. Unfortunately, despite several topflight turns, director David Leveaux's production is just fuzzy enough to keep us out of 'Arcadia.'",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 48,
+  "llmScore": {
+    "score": 48,
+    "confidence": "medium",
+    "range": {
+      "low": 43,
+      "high": 53
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, despite several topflight turns, director David Leveaux's production is just fuzzy enough to keep us out of 'Arcadia.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises individual performances ('topflight turns') but finds the overall production fails to achieve the precision needed for Stoppard's complex play. The final verdict clearly states the production keeps audiences 'out of Arcadia' - a negative recommendation despite acknowledging strong elements. | GPT-4o: The excerpt suggests that while there are some good performances, the overall production lacks the necessary clarity and precision, resulting in a negative verdict. The single excerpt warning and lack of a full review text lower the confidence. | Gemini: The review acknowledges \"topflight turns\" but ultimately finds the production \"fuzzy enough\" to be unsuccessful, indicating a mixed assessment. | Kimi: While the critic praises Stoppard's script and the cast's performances ('topflight turns'), the verdict is that David Leveaux's direction fails to deliver the necessary nuance, ultimately preventing the audience from accessing the play's meaning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:02:58.516Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 62,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 17,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

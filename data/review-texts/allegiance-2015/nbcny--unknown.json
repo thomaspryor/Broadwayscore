@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "For its unusual subject matter, 'Allegiance' mirrors the structure of classic musicals, with operatic ballads and humorous diversions ('I Oughta Go' offers one fanciful bit of slapstick). As for Takei, he gets out of his own way here, to potent effect. As Ojii-chan, he helps convey the idea of 'Gaman,' a Zen Buddhist term that means 'endurance with dignity,' a guiding principle pertinent to the daily lives of the interned. In scenes that bookend 'Allegiance,' set a half-century after most of the story, Takei plays Sammy as an elderly man.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-George-Takei-Lea-Salonga-Telly-Leung-on-Broadway-in-ALLEGIANCE-20151109",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As for Takei, he gets out of his own way here, to potent effect.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows measured praise for Takei's performance and structural elements, but lacks clear overall recommendation. Given single-excerpt warning and mildly positive tone, scored at lower end of Positive range. | GPT-4o: The excerpt highlights the show's structure and Takei's performance positively, but lacks a clear overall verdict. The single excerpt and lack of a definitive rating suggest a mildly positive view. | Gemini: The review excerpt highlights positive aspects of the show, particularly George Takei's performance, and mentions the musical's structure mirroring classic musicals. Given it's a single excerpt, I'm scoring it as mildly positive with low confidence. | Kimi: The excerpt offers unreserved praise for the musical's classic structure, songs, and Takei's potent performance, indicating a clearly favorable view despite the limited context of a single curated quote.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:11:51.213Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

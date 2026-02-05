@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "The production, directed by Simon McBurney, is beautifully acted and staged, but it doesn't quite solve the problem of Miller's sometimes heavy-handed symbolism.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 65,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The production, directed by Simon McBurney, is beautifully acted and staged, but it doesn't quite solve the problem of Miller's sometimes heavy-handed symbolism.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The production, directed by Simon McBurney, is beautifully acted and staged, but it doesn't quite solve the problem of Miller's sometimes heavy-handed symbolism.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Balances praise for direction and performances against criticism of the play's symbolic execution. The 'but' structure indicates reservations that prevent a positive recommendation. | GPT-4o: The excerpt praises the acting and staging but notes a significant issue with the symbolism, indicating a mixed review. The single excerpt warning and lack of full context lower confidence. | Gemini: The review excerpt indicates that the production is \"beautifully acted and staged\" but has reservations about the symbolism. Given the limited text, I'm scoring it as a slightly positive review with reservations. | Kimi: While the critic offers strong praise for the acting and staging ('beautifully'), the note that the production fails to solve significant problems with the play's symbolism indicates a mixed verdict rather than a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:03:01.892Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 74,
+    "kimiScore": 68,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

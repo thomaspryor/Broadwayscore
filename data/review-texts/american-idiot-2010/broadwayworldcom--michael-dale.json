@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "While our century began with inane 'jukebox musicals' that crowbarred pre-existing songs that were not written for the stage into makeshift plots (a refresher course in the genre is still being offered at The Winter Garden) American Idiot (along with the still-running Jersey Boys) shows it is possible to intelligently use such material to create a dramatically intriguing theatre piece. American Idiot may not offer an uplifting story, or even especially sympathetic characters, but most likely anyone who has gone through a youthful rebellion can see a bit of their determined, frightened, naïve and somewhat stupid selves on stage at the St. James Theatre.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "shows it is possible to intelligently use such material to create a dramatically intriguing theatre piece",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt praises the show as 'dramatically intriguing' and 'intelligent' use of material, contrasting it favorably with 'inane jukebox musicals.' However, single excerpt from curated quotes limits confidence in overall verdict. | GPT-4o: The excerpt praises the show for its intelligent use of material and dramatic intrigue, despite not having an uplifting story or sympathetic characters. The single excerpt suggests a positive view but lacks full context, leading to a low confidence score. | Gemini: The review acknowledges the lack of an uplifting story but suggests the show is dramatically intriguing and relatable. The comparison to jukebox musicals is positive, indicating a recommendation with reservations. | Kimi: The excerpt offers clear praise for the show's intelligent craftsmanship and dramatic intrigue, acknowledging its lack of sympathetic characters but affirming its emotional resonance with audiences who experienced youthful rebellion.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:30:38.045Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

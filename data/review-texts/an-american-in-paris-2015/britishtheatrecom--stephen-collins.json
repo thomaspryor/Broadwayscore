@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Lucas refashions the movie story in admirably clever ways. It still feels slight and wafer thin in sections, but then so does silk. Silky, smooth and sexy is exactly what Lucas has aimed for and he scores an easy bullseye... We also see the ingenious way Bob Crowley has taken the artwork that Jerry produced earlier in the show and used it as the thematic linking material for the ballet sequence: the colours are vibrant, the physically perfect dancers are hugged by fabrics and part costumes which",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Silky, smooth and sexy is exactly what Lucas has aimed for and he scores an easy bullseye",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the director's execution ('admirably clever', 'easy bullseye') and production design ('ingenious', 'vibrant'). While acknowledging it feels 'slight and wafer thin', the critic frames this positively by comparing it to silk. Single excerpt warning requires caution, but the bullseye metaphor suggests strong approval. | GPT-4o: The excerpt praises the clever adaptation and describes the production as 'silky, smooth and sexy,' achieving its goals with an 'easy bullseye.' Despite noting some thin sections, the overall tone is strongly positive. | Gemini: The review excerpt uses positive language such as \"admirably clever,\" \"silky, smooth, and sexy,\" and \"scores an easy bullseye.\" Given the single excerpt, I am placing the score towards the higher end of the positive range. | Kimi: The excerpt delivers clear praise for the adaptation's cleverness and stylish execution, with the critic calling the artistic goals an 'easy bullseye' and praising the design as 'ingenious' and 'vibrant,' despite noting the material feels 'wafer thin' in sections.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:43:23.651Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

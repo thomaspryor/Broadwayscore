@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "If you judged Anastasia from the excitement from fans both outside and inside the theater leading up to the curtain rising, you'd surmise this was a franchise that carried a generation. In reality, although this is the Broadway debut of the show, the story dates back to the 1997 animated movie that accounts for the nostalgic look back that so many young adults were experiencing. If you missed the sensation at that time, and in the interim decades, it's difficult to imagine what the devotees saw ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
+  "assignedScore": 60,
+  "llmScore": {
+    "score": 60,
+    "confidence": "high",
+    "range": {
+      "low": 55,
+      "high": 65
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you missed the sensation at that time, and in the interim decades, it's difficult to imagine what the devotees saw",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt appears critical of the show's appeal to non-fans, but text is incomplete and may not represent full verdict. Setting confidence to low due to limited and potentially cherry-picked content. | GPT-4o: The excerpt suggests that the show may not resonate with those who are not already fans of the original movie, indicating a mixed reception. The lack of a full review and the single excerpt warning necessitate a cautious approach, leading to a low confidence score. | Gemini: The review excerpt suggests that the show is primarily appealing to fans of the original animated movie, implying that it may not resonate as strongly with newcomers. This suggests a mixed recommendation, leaning towards 'for fans only.' | Kimi: The excerpt suggests the show's appeal depends entirely on nostalgia for the 1997 film, implying it offers little to newcomers. Given only one curated excerpt is available, confidence is low that this represents the full verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:52:50.868Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 60,
+    "kimiScore": 58,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

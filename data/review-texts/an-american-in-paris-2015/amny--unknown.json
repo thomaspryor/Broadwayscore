@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Lucas stresses the cultural tensions in postwar Paris, bringing up the painful stains of Nazi occupation... Though heavy-handed and drawn out, he deserves credit for trying to add depth to the film rather than simply recreating it or sanitizing it (i.e. 'Gigi'). Regardless of the book, the music is glorious, the visuals are innovative and the performances are top-rate.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-AMERICAN-IN-PARIS-Opens-on-Broadway-Updating-LIVE-20150412",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Regardless of the book, the music is glorious, the visuals are innovative and the performances are top-rate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite calling the book 'heavy-handed and drawn out,' the critic praises the music as 'glorious,' visuals as 'innovative,' and performances as 'top-rate.' The 'regardless of' construction suggests these positives outweigh the book issues. Single excerpt warning requires caution - using lower end of Positive range. | GPT-4o: The excerpt acknowledges issues with the book being heavy-handed and drawn out but praises the music, visuals, and performances. The positive elements are emphasized, suggesting a mild recommendation. | Gemini: The review praises the music, visuals, and performances, but notes the book is \"heavy-handed and drawn out.\" Given the single excerpt and positive elements, it's a positive review with reservations. | Kimi: The reviewer strongly praises the production elements ('glorious' music, 'innovative' visuals, 'top-rate' performances) while criticizing the book as 'heavy-handed and drawn out,' suggesting the show is worth seeing despite its script flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:41:28.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 81,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The 1975 play American Buffalo, now onstage in a crackling revival, remains the quintessential Mamet experience, the one that should be seen to fully appreciate what has been lost. Essentially a two-hander masquerading as a three-hander, it's a character study short on plot and long on self-delusion as a couple of small-time crooks imagine themselves as much more than they are while planning an ambitious heist. To say they're all talk gets to the satirical heart of Mamet's play. \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The 1975 play American Buffalo, now onstage in a crackling revival, remains the quintessential Mamet experience, the one that should be seen.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it a 'crackling revival' and states it 'should be seen' - clear recommendation language. However, with only one excerpt available that could be cherry-picked, confidence is low despite the positive tone. | GPT-4o: The excerpt praises the revival as 'crackling' and 'quintessential,' suggesting a strong positive view. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt uses positive language such as \"crackling revival\" and \"quintessential Mamet experience\" and suggests that it \"should be seen.\" Given the single excerpt warning, the score is in the middle of the positive range. | Kimi: The excerpt offers enthusiastic praise ('crackling revival', 'quintessential') and a clear recommendation ('should be seen'), placing it in the upper Positive range despite the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:23:08.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

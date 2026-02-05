@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Others may see trees of green and red roses too as the show ends. What I see is that “A Wonderful World” is a story that might have been best served by one single vision.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-WONDERFUL-WORLD-Opens-On-Broadway-20241111",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What I see is that \"A Wonderful World\" is a story that might have been best served by one single vision.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic suggests the show lacks cohesive vision, implying structural problems. However, with only one excerpt available, the full verdict is unclear, warranting low confidence. | GPT-4o: The excerpt suggests a critique of the show's coherence or direction, indicating a mixed review. The lack of a full review and single excerpt warning necessitate a cautious, low-confidence score. | Gemini: The critic's statement suggests a lack of cohesion or a conflicting vision within the production, indicating a mixed or lukewarm reception. Given the single excerpt, confidence is low. | Kimi: The critic explicitly contrasts their view with positive reception others may have, noting a significant structural flaw regarding the show's creative direction. The measured criticism and acknowledgment of differing opinions suggests a mixed assessment rather than a clear recommendation or rejection.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:43:35.281Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
