@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "Why go on about any of this when the wise thing to do is to advise readers they really ought to stop reading and secure those precious seats. As Langston Hughes insists, nothing good happens to a dream deferred. Therefore, where this dream is concerned, defer no longer. Or as Yip Harburg puts in some crooning mouths during the marvy evening, 'Ain't it de solid truth?",
-  "bwwScore": 10
+  "bwwScore": 10,
+  "assignedScore": 87,
+  "llmScore": {
+    "score": 87,
+    "confidence": "medium",
+    "range": {
+      "low": 82,
+      "high": 92
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the wise thing to do is to advise readers they really ought to stop reading and secure those precious seats",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Clear must-see language urging immediate ticket purchase, calling it a 'marvy evening' with strong enthusiasm. Single excerpt warning noted but tone is unambiguously positive. | GPT-4o: The excerpt strongly encourages readers to see the show immediately, using phrases like 'secure those precious seats' and 'defer no longer', indicating a highly enthusiastic recommendation. However, the confidence is low due to the single excerpt warning. | Gemini: The excerpt strongly encourages readers to see the show, indicating a positive recommendation. Due to the single excerpt, confidence is low. | Kimi: The critic explicitly commands readers to stop reading and buy tickets immediately, calling the show a 'marvy evening' and urging 'defer no longer,' indicating strong enthusiasm. However, as a single curated excerpt, the full context is unknown. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:07:52.200Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 92,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

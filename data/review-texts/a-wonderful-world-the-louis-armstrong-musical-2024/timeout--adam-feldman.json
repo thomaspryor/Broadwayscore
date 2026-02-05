@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -24,5 +24,59 @@
     "nyc-theatre",
     "bww-roundup"
   ],
-  "nycTheatreExcerpt": "At the start of the new biomusical A Wonderful World, each of Armstrong's four wives calls him by a different name, as though to suggest the interior multitudes of a performer who, in public, always wore a famously broad smilepartly as an invitation to joy but partly as a mask of comedy. The musical offers a pleasing depiction of that joy and that mask, if not of those multitudes."
+  "nycTheatreExcerpt": "At the start of the new biomusical A Wonderful World, each of Armstrong's four wives calls him by a different name, as though to suggest the interior multitudes of a performer who, in public, always wore a famously broad smilepartly as an invitation to joy but partly as a mask of comedy. The musical offers a pleasing depiction of that joy and that mask, if not of those multitudes.",
+  "llmScore": {
+    "score": 76,
+    "confidence": "high",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Whether Armstrong is on stage or off, Iglehart infuses him with bluff, buoyant charm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | GPT-4o: The excerpt praises Iglehart's performance, suggesting a positive view of his portrayal. However, due to the limited text, the overall verdict is unclear, resulting in a low confidence score. | Gemini: The excerpt praises the performance of Iglehart, suggesting a positive aspect of the show. However, due to the limited text, the confidence is low, and the recommendation is made with reservations. | Kimi: The excerpt offers warm, specific praise for the lead actor's charismatic performance ('buoyant charm', 'goes beyond expert impersonation'), indicating a positive assessment, though the limited excerpt prevents definitive evaluation of the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:00:25.120Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 75,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

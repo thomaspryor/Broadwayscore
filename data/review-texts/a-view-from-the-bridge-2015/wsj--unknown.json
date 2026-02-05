@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "The actors walk around barefoot for no apparent reason, accompanied by snippets of the Fauré Requiem that are played on an endless loop, with a drum tapping at maddeningly metronomic intervals to signify...what? Only, it seems, that Mr. Van Hove is so determined to put his personal stamp on 'A View From the Bridge' that he doesn't seem to care whether any of his over-familiar avant-garde tricks are organically related to the script. Instead, they're poured over it like a rancid sauce. What I find most puzzling about Mr. Van Hove's method is that when you scrape away the sauce of self-regard, what you find underneath...is a staging that gets to the point of Miller's play with near-naturalistic directness. Not only does he move actors around fluidly, but he also knows how to pick them: Mark Strong is simple and forceful as Eddie Carbone...Unfortunately, [Van Hove] neither trusts them nor the play, which is pretentious in its own way...but can be shatteringly effective when done well.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+  "assignedScore": 53,
+  "llmScore": {
+    "score": 53,
+    "confidence": "medium",
+    "range": {
+      "low": 48,
+      "high": 58
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They're poured over it like a rancid sauce.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Mixed) - using median score | Claude: Critic harshly criticizes the director's choices as pretentious and disconnected from the material, despite praising individual performances. The overall assessment is negative. | GPT-4o: The review criticizes the director's avant-garde approach as overbearing but acknowledges that the core staging effectively conveys the play's essence. The mixed tone and lack of a clear recommendation suggest a middle-ground score. | Gemini: The review praises the actors, especially Mark Strong, and notes that the staging gets to the point of the play. However, it strongly criticizes the director's avant-garde tricks and lack of trust in the play. This indicates a mixed assessment. | Kimi: The reviewer heavily criticizes the director's avant-garde staging choices as disconnected and self-indulgent ('rancid sauce,' 'maddeningly metronomic,' 'self-regard'), while acknowledging Mark Strong's strong performance and the play's inherent power only in spite of the production, not because of it. | Buckets: claude=Negative, openai=Mixed, gemini=Mixed, kimi=Negative",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:57:52.803Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Mixed) - using median score"
+  }
 }

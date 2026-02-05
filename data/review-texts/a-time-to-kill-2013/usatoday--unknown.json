@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Holmes' Kill is more sharply focused than the 1996 film adaptation of the novel, and does a better job of incorporating folksy humor into the disturbing and at times pedantic story...we watch the defendant, Carl Lee Hailey, as a jury would; and since he is played by the magnificent John Douglas Thomson - who delivers the most fully realized performance here - we are moved by his anguish, rage, obstinance and fundamental dignity...Carl Lee is represented by Kill's hero, Jake Brigance, an idealistic young lawyer played on screen by Matthew McConaughey, who imbued him with a slick nobility. In the play, he seems both greener and more ambitious, traits that Sebastian Arcelus' nimble performance emphasizes, without making Jake less appealing or admirable.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-TIME-TO-KILL-Opens-on-Broadway-Updating-Live-20131020",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Holmes' Kill is more sharply focused than the 1996 film adaptation of the novel, and does a better job of incorporating folksy humor into the disturbing and at times pedantic story",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows qualified praise - comparing favorably to the film, praising Thomson's 'magnificent' performance and the 'fully realized' characterization. However, with only one excerpt available and mentions of the story being 'pedantic,' the full review verdict is unclear. Scoring conservatively in lower Positive range due to single excerpt limitation. | GPT-4o: The excerpt praises the play for being more focused and incorporating humor better than the film. It highlights strong performances by the actors, indicating a positive view. However, the single excerpt and lack of full context lead to a low confidence level. | Gemini: The review praises the play as more focused than the film adaptation and highlights strong performances, suggesting a positive but not overwhelmingly enthusiastic recommendation. The single excerpt limits confidence. | Kimi: The excerpt offers clear praise for the adaptation's improvements over the film and delivers strong commendations for both lead performances ('magnificent', 'nimble'), indicating a favorable verdict despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:51:14.423Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

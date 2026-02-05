@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "With its wicked wit, catchy ear candy and sexy cast, 'American Psycho' gives you a killer buzz - for a while. Euphoria sinks once corpses pile up in this glossy new Broadway musical...Roberto Aguirre-Sacasa ('Spider-Man: Turn Off the Dark') and composer-lyricist Duncan Sheik (a Tony winner for 'Spring Awakening') are mostly faithful to the novel. But they heighten the ironic humor and lessen the graphic violence of both the book and the Christian Bale film...The pace and interest slacken in the second act...Walker ('Bloody Bloody Andrew Jackson') hits all the right notes, seemingly without effort...",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 65,
+  "llmScore": {
+    "score": 65,
+    "confidence": "medium",
+    "range": {
+      "low": 60,
+      "high": 70
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "gives you a killer buzz - for a while. Euphoria sinks once corpses pile up",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review praises the opening ('wicked wit, catchy ear candy') and lead performance but clearly states momentum dies ('pace and interest slacken in the second act'), indicating a qualified, ultimately mixed recommendation. | GPT-4o: The review highlights both positive aspects like 'wicked wit' and 'catchy ear candy' but also notes a decline in pace and interest in the second act, suggesting a mixed experience overall. | Gemini: The review starts positively, but notes that the euphoria sinks and the pace slackens in the second act, resulting in a mixed assessment. The single excerpt and truncated nature lower the confidence. | Kimi: The excerpt offers clear praise for the show's wit, music, cast, and lead performance, recommending it as entertaining ('killer buzz'), but tempers enthusiasm with significant second-act criticisms ('for a while', 'pace and interest slacken'). As a single curated excerpt with mixed signals, it falls at the lower end of Positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:48:05.234Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 67,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

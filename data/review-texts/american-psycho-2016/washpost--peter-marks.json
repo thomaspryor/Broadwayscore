@@ -12,5 +12,60 @@
   "bwwExcerpt": "'American Psycho' creates another sub-genre - ersatz horror - an odd variation that fails to tingle your spine with its copious bloodletting or titillate you via the writhing bodies in its mechanical sex scenes (complete with pornographic video illustrations). Director Rupert Goold's shiny production, churning vapidly to the beat of composer Duncan Sheik's surprisingly clunky, characterless songs, charts the homicidal rampage of Patrick (Benjamin Walker) through the cash-engorged precincts of the Manhattan of the decadent '80s; Es Devlin's eye-catchingly sleek sets are the production's best asset. And then, in an odd departure from the novel, Roberto Aguirre-Sacasa's script pulls the blood-soaked rug out from under us, with the suggestion of a Patrick reborn, as a better man.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'American Psycho' creates another sub-genre - ersatz horror - an odd variation that fails to tingle your spine",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Review criticizes core elements (songs are 'clunky, characterless', production 'churning vapidly') while praising only the sets. The 'ersatz horror' that 'fails to tingle' suggests fundamental disappointment. However, single excerpt warning requires caution about overall verdict. | GPT-4o: The review excerpt criticizes the production for failing to deliver effective horror or titillation, describing the songs as 'clunky' and the overall experience as 'vapid'. However, the mention of sleek sets and a narrative twist suggests some redeeming qualities, leading to a negative score rather than a pan. | Gemini: The review uses negative language such as \"fails to tingle your spine\", \"surprisingly clunky, characterless songs\", and \"churning vapidly\". While the sets are praised, the overall tone is negative, leading to a negative classification. | Kimi: Single excerpt criticizes the production as vapid with clunky, characterless songs and ineffective horror, though it acknowledges the set design as an asset. The overall tone suggests a disappointing experience.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:48:41.320Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

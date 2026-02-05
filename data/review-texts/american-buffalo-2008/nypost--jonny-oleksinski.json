@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Rockwell and Fishburne nail the buddy-cop dynamic of these prickly parts. Donny is the cool-headed mediator (who also says \"f - - k\" a lot) and Teach is a furious, distrusting bully whose temper is surely exacerbated by his skintight plaid pants. Fishburne's commanding portrayal reminds me of the best kind of bartender - a sweetheart when he takes your drink order and a hardass when he drags a drunk to the curb by his collar. And although Criss has the least rewarding role of the three, his empt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Rockwell and Fishburne nail the buddy-cop dynamic of these prickly parts.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances with vivid, appreciative descriptions, but text is clearly truncated mid-sentence and may not represent the full verdict. Scored conservatively in lower Positive range due to excerpt warning. | GPT-4o: The excerpt highlights strong performances by Rockwell and Fishburne, suggesting a positive view of the show. However, the single excerpt and lack of full context lower confidence. | Gemini: The review excerpt praises the performances of Rockwell and Fishburne, suggesting a positive experience, but the truncated text and single excerpt lower the confidence. | Kimi: The excerpt delivers enthusiastic praise for the lead actors' chemistry and Fishburne's commanding portrayal, though it qualifies that one role is less rewarding. As a single truncated excerpt, the sentiment appears clearly positive but confidence is reduced due to missing context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:33:51.223Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

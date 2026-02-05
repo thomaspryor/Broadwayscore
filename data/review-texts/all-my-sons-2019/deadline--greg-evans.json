@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "A muddled casting controversy and the resignation of a prominent director no doubt diverted some early public and press attention from the Roundabout Theatre Company's revival of Arthur Miller's All My Sons, but this Broadwayproduction, opening tonight, can handle whatever comes its way. When all's said and done, Jack O'Brien's knock-you-from-behind staging is as powerful and sturdy as Miller's post-war classic itself. And in a shattering performance that adds yet another layer to her quietly remarkable career, Annette Bening finds grace notes in the role of the grieving Gold Star mother that brings the character to vivid, brutalized life.",
   "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Annette-Bening-And-Tracy-Letts-Star-In-ALL-MY-SONS-What-Did-The-Critics-Think-20190422",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Jack O'Brien's knock-you-from-behind staging is as powerful and sturdy as Miller's post-war classic itself.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for direction ('knock-you-from-behind', 'powerful and sturdy') and lead performance ('shattering', 'quietly remarkable'). Single excerpt warning suggests upper Positive range. | GPT-4o: The excerpt praises the production with strong language, describing the staging as 'powerful and sturdy' and highlighting Annette Bening's 'shattering performance'. Despite the text quality warning, the language suggests a highly positive verdict. | Gemini: The review praises the staging as powerful and sturdy, and highlights Annette Bening's shattering performance, indicating a strong positive assessment. | Kimi: Single excerpt shows unqualified praise for both direction ('powerful and sturdy') and lead performance ('shattering'), indicating a clear recommendation despite prior production controversies. Scored at upper end of Positive bucket per single-excerpt guidance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:18:21.575Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It could be observed in terms of the physical production that nothing succeeds like excess. The drop dead gorgeous costumes are by Linda Cho. It is a good thing that the Russian court ensemble featured in the opening of the musical are brought back multiple times in ghostly re-enactments because we needed more than one look at them. This excellent ensemble variously deployed as members of the Ballet Russe, White Russian society and revolutionary thugs execute choreography by Peggy Hickey that is always mood and period appropriate. Alexander Dodge's set creates a multi-purpose gracious framing for extensive projections by Aaron Rhyne. But here once again neither a subtle nor consistent aesthetic applies. Some of the visuals are alluringly abstract while others are hyper realistic. Acres of saturated red backdrop places us in the revolution, in case we had any doubt. Snow falls and stars twinkle and flowers bloom in the eventual spring so copiously it is as though we have detoured to Oz. In aural complement, it often feels as though the show is scored like a film, such as when a chorus helpfully underpins a tense moment with a drawn gun.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But here once again neither a subtle nor consistent aesthetic applies.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Single excerpt focusing on production design with mixed evaluation - praises costumes and ensemble as 'drop dead gorgeous' and 'excellent' but criticizes inconsistent aesthetic and heavy-handed choices. Limited text prevents clear overall verdict assessment. | GPT-4o: The review excerpt praises the visual elements and choreography but notes inconsistency in the aesthetic. The tone suggests mixed feelings about the production, focusing on excess rather than a cohesive experience. | Gemini: The review excerpt focuses on the positive aspects of the production, such as the costumes, ensemble, choreography, and set design, but also notes some inconsistencies in the aesthetic. Given the limited text, I'm scoring it as positive with reservations. | Kimi: The excerpt praises specific technical elements (costumes, ensemble, choreography) as excellent and gorgeous, but offers significant criticism regarding inconsistent aesthetics and excessive visual effects that suggest a qualified rather than enthusiastic endorsement. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:48.435Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

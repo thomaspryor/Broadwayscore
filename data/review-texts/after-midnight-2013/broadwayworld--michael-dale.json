@@ -12,5 +12,59 @@
   "bwwExcerpt": "With all due respect, this is truly an all-star production, and don't you dare think of leaving right after the curtain calls because the biggest stars of the evening are the sensational musicians taki",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With all due respect, this is truly an all-star production, and don't you dare think of leaving right after the curtain calls because the biggest stars of the evening are the sensational musicians taki",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt suggests a highly enthusiastic recommendation, highlighting an 'all-star production' and 'sensational musicians'. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt uses the phrase \"all-star production\" and encourages the audience to stay, suggesting a positive experience. Given the single excerpt and positive tone, I am scoring it as positive with high end of the range. | Kimi: Despite truncation and limited excerpt availability, the critic uses enthusiastic superlatives ('truly an all-star', 'sensational') and strongly urges audiences to stay for the musicians, indicating a clear positive recommendation in the upper range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:05:29.683Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 85,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

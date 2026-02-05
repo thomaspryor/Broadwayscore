@@ -11,5 +11,60 @@
     "bww-reviews"
   ],
   "bwwExcerpt": "The emptiness at the heart of 'American Psycho' is the source of both its originality and its eventual tediousness. What succeeds as satiric comedy falters when the mood turns more serious. But when the show works, it does so with tremendous flair. This isn't another 'Sweeney Todd,' but its sharp style lifts it above the mercenary rung of most musicals spun from pop cultural ephemera.",
-  "bwwScore": 7
+  "bwwScore": 7,
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What succeeds as satiric comedy falters when the mood turns more serious.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: Review acknowledges both strengths (satiric comedy, tremendous flair, sharp style) and significant weaknesses (tediousness, faltering in serious moments). The balanced critique with no clear recommendation indicates mixed reception. | GPT-4o: The review acknowledges both strengths and weaknesses, noting the show's originality and flair but also its tediousness and failure to maintain its satiric edge. The mixed assessment suggests neither a strong recommendation nor a complete dismissal. | Gemini: The review highlights both originality and eventual tediousness, with successes in satiric comedy but failures in more serious moments, suggesting a mixed experience. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt acknowledges significant flaws (tediousness, tonal faltering) but praises the production's 'tremendous flair' and 'sharp style,' suggesting it transcends typical pop-culture adaptations. As a single curated excerpt with mixed signals, it indicates a qualified recommendation in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:47:37.686Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

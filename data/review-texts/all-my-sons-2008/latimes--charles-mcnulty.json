@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "O'Brien's production includes actors of color in important roles. Hampton Fluker plays George and Chinasa Ogbuagu plays Sue Bayliss, a neighbor with sharp opinions on the Keller family's self-deceiving ways. The casting, neither colorblind nor thematic, is part of a theatrical tradition that has become more or less standard. If the company seems unsettled, the issue isn't race but style. O'Brien's ensemble mixes realism with contemporary classicism in a catch-as-catch-can way. It's the acting equivalent of a mixed salad.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's the acting equivalent of a mixed salad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The excerpt criticizes the production's inconsistent style and describes the ensemble as 'unsettled' and 'catch-as-catch-can,' suggesting significant flaws despite praising casting choices. | GPT-4o: The excerpt discusses the casting and acting style, noting a lack of cohesion ('unsettled') and a mix of styles ('catch-as-catch-can'). This suggests a mixed assessment, with no clear recommendation or strong praise. | Gemini: The review excerpt describes the production as an 'acting equivalent of a mixed salad' and 'unsettled,' indicating a mixed or neutral assessment. The lack of a clear recommendation and the negative undertones suggest a score in the mixed range. | Kimi: The excerpt criticizes the ensemble as 'unsettled' and the acting approach as inconsistent ('catch-as-catch-can,' 'mixed salad'), indicating uneven execution rather than complete failure. As this is a single curated excerpt that may not represent the full review's verdict, confidence is low.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:16:25.313Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

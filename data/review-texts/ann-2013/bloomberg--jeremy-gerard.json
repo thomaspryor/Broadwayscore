@@ -12,5 +12,60 @@
   "bwwExcerpt": "“Ann” does honor Richards’s achievements as governor and, later, as advocate of liberal causes. The warm sparring with Clinton and especially their shared reverence for Congresswoman Barbara Jordan is moving. But this meandering hagiography unbecomes the swaggering doyenne who, for a time, outgunned the sharpshooters around her.",
   "bwwScore": 3,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ANN-20130308",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this meandering hagiography unbecomes the swaggering doyenne who, for a time, outgunned the sharpshooters around her.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The review acknowledges the show honors Richards's achievements and has moving moments, but criticizes it as a 'meandering hagiography' that fails to capture her essence. With only one excerpt available, confidence is low as this could be cherry-picked from a more definitive verdict. | GPT-4o: The review acknowledges some positive elements, such as the moving interactions, but criticizes the show as a 'meandering hagiography' that doesn't fully capture the subject's dynamic personality. The single excerpt provides a mixed impression, leading to a cautious score within the Mixed range. | Gemini: The review acknowledges some moving moments but ultimately describes the play as a \"meandering hagiography,\" suggesting a mixed assessment. The single excerpt and lack of a clear recommendation lead to low confidence. | Kimi: The excerpt praises specific emotional moments and acknowledges the play honors its subject, but ultimately characterizes it as a 'meandering hagiography' that fails to capture Richards's essence, indicating a mixed reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:10:02.026Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

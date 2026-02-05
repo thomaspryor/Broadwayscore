@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "In its yearlong journey from Hartford to Broadway, 'Anastasia' has found itself. When this sweet-natured musical of self-discovery premiered a year ago at Hartford Stage, it was just as lush and romantic, but underneath those gorgeous trappings it seemed uneven, insincere, unsure of itself. At the Broadhurst Theatre, where it opened Monday night, the show is now fluid, smooth and clear-headed. 'Anastasia' has not fundamentally changed. But dozens of small fixes have made it a much sharper show. Had the Hartford Stage version hurried to Broadway sooner without these tweaks - or heaven forbid, had not tried out in Hartford at all - the show's stylistic inconsistencies would have doomed it. It speaks and sings now with a stronger voice.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "At the Broadhurst Theatre, where it opened Monday night, the show is now fluid, smooth and clear-headed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive verdict for the Broadway production - describes it as 'fluid, smooth and clear-headed' and 'much sharper' after improvements. Single excerpt warning suggests strong positive sentiment. | GPT-4o: The excerpt indicates a positive transformation from its Hartford run to Broadway, describing the show as 'fluid, smooth and clear-headed' with improvements that make it 'sharper'. The tone suggests a strong recommendation. | Gemini: The review indicates that the Broadway production is significantly improved compared to the Hartford Stage version, describing it as \"fluid, smooth and clear-headed\" and having a \"stronger voice.\" | Kimi: The excerpt offers clear praise for the Broadway transfer, describing it as having found itself through 'dozens of small fixes' that made it 'sharper,' 'fluid,' and possessed of a 'stronger voice,' though the single-excerpt format necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:02:25.716Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "“All In,” which will feature a rotating series of stage and screen stars during its limited run — Mr. Mulaney is currently joined by Fred Armisen, Renée Elise Goldsberry, and Richard Kind — consists of a series of vignettes adapted from Mr. Rich’s stories, and their general sensibility exists at the intersection of “SNL” and the New Yorker. Varying in length from short and sweet to overextended, they’re literate, irreverent, and goofy in that knowing way one associates wit",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "they're literate, irreverent, and goofy in that knowing way one associates wit",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt describes the show positively as 'literate, irreverent, and goofy' but notes some vignettes are 'overextended.' Single excerpt warning applies - this could be cherry-picked, so scoring conservatively in lower Positive range. | GPT-4o: The excerpt describes the vignettes as having both positive qualities ('literate, irreverent, and goofy') and a negative aspect ('overextended'). The mixed nature of the description suggests a balanced view without a strong recommendation. | Gemini: The review describes the show as \"literate, irreverent, and goofy\" which suggests a positive, but not overwhelmingly enthusiastic, recommendation. The mention of some segments being \"overextended\" indicates a reservation. | Kimi: The excerpt praises the show's literate, irreverent humor but qualifies this by noting some vignettes are 'overextended.' Given only one curated excerpt is available, this suggests a mildly positive verdict with caveats.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:15:04.165Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
