@@ -1,52 +1,51 @@
 {
-  "updatedAt": "2026-02-05T05:10:30.391Z",
-  "processed": 87,
-  "failed": 323,
-  "successRate": "21.2%",
+  "updatedAt": "2026-02-05T05:27:45.054Z",
+  "processed": 65,
+  "failed": 355,
+  "successRate": "15.5%",
   "tierBreakdown": {
-    "playwright": 5,
-    "browserbase": 2,
-    "scrapingbee": 14,
-    "brightdata": 21,
-    "archive": 48
+    "playwright": 7,
+    "browserbase": 1,
+    "scrapingbee": 8,
+    "brightdata": 23,
+    "archive": 30
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:08.167Z",
+      "t": "2026-02-05T00:53:28.491Z",
       "event": "bb-session",
-      "session": "869e990f",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+      "session": "30e74c12",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
     },
     {
-      "t": "2026-02-05T00:53:53.297Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    24 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "t": "2026-02-05T00:54:19.467Z",
+      "event": "bb-session",
+      "session": "c2364ec9",
+      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
     },
     {
-      "t": "2026-02-05T00:54:32.068Z",
+      "t": "2026-02-05T00:56:25.060Z",
       "event": "bb-session",
-      "session": "60176a5e",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+      "session": "728af654",
+      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
     },
     {
-      "t": "2026-02-05T00:55:29.735Z",
+      "t": "2026-02-05T00:58:54.288Z",
       "event": "bb-session",
-      "session": "d21459f1",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+      "session": "13d2c5a9",
+      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
     },
     {
-      "t": "2026-02-05T00:57:08.209Z",
-      "event": "bb-session",
-      "session": "334faaa8",
-      "url": "http://www.variety.com/review/VE1117943828.html"
+      "t": "2026-02-05T00:59:13.002Z",
+      "event": "bb-login-uncertain",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-05T00:58:03.062Z",
+      "t": "2026-02-05T01:00:30.978Z",
       "event": "bb-session",
-      "session": "78c898b2",
-      "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686"
+      "session": "9a46df43",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     }
   ]
 }
