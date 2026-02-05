@@ -5,10 +5,10 @@
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
       "totalReviews": 5764,
-      "skippedNoScore": 8593,
-      "skippedDuplicate": 10,
-      "skippedDuplicateUrl": 228,
-      "skippedCrossOutletDuplicateUrl": 90,
+      "skippedNoScore": 8669,
+      "skippedDuplicate": 11,
+      "skippedDuplicateUrl": 271,
+      "skippedCrossOutletDuplicateUrl": 102,
       "skippedWrongProduction": 185,
       "recoveredFromGarbage": 101,
       "scoreSources": {
@@ -20,12 +20,12 @@
         "originalScore-priority0": 878,
         "llmScore": 3157,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1448,
+        "llmScore-lowconf": 1445,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 209
+        "thumb": 212
       }
     }
   },
@@ -17478,23 +17478,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "book-of-mormon-2011",
-      "outletId": "newyorkmagazine",
-      "outlet": "Vulture",
-      "assignedScore": 88,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Rave",
-      "thumb": "Up",
-      "criticName": "Scott Brown",
-      "url": "http://nymag.com/arts/theater/reviews/the-book-of-mormon-brown-review-2011-4/",
-      "publishDate": "2011-03-25T13:49:16-04:00",
-      "originalRating": null,
-      "pullQuote": "The Book of Mormon, arriving after months of hype, somehow delivers even more than its ridiculously felicitous advance buzz promised: It’s an often uproarious, spiritually up-tempo satire not just of Mormonism, and not just religion in general, but of (no kidding) Occidental civilization itself.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
       "showId": "boop-2025",
       "outletId": "amny",
       "outlet": "amNewYork",
@@ -18769,6 +18752,23 @@
       "dtliThumb": "Meh",
       "bwwThumb": null,
       "contentTier": "complete"
+    },
+    {
+      "showId": "bug-2026",
+      "outletId": "4-columns-david-cote",
+      "outlet": "4Columns",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "David Cote",
+      "url": "https://www.4columns.org/cote-david/bug",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "A hardworking and very effective Coon is left to maintain dramatic tension. In her TV triumphs as plucky social climbers (Age and The White Lotus), Coon’s fresh beauty and vivacious yet sensible vigor has elevated so-so scripts. She makes a smart and relatable protagonist either in nineteenth-century bustle or Thai resort muumuu.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "none"
     },
     {
       "showId": "bug-2026",
@@ -21693,8 +21693,25 @@
       "originalRating": null,
       "pullQuote": "As drama, 'Chess' remains a puzzle. As a concert, though, it can be thrilling—and in this production, that's what ultimately wins.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "chess-2025",
+      "outletId": "chicagotribune",
+      "outlet": "Chicago Tribune",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Chris Jones",
+      "url": "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "This is the Broadway show of the fall that some will claim to dislike and yet most everyone will enjoy, even if that has to be in secret. Happily, that’s a match for one of the main themes of a 1980s musical that always saw geopolitics, even the dangers of nuclear proliferation, as games played by those who enjoyed the strategizing.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
     },
     {
       "showId": "chess-2025",
@@ -21727,7 +21744,7 @@
       "originalRating": "C+",
       "pullQuote": "But the eternal contradiction of Chess is that while its flaws are many, it's still a delight to witness.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -21829,7 +21846,7 @@
       "originalRating": null,
       "pullQuote": "Together and apart, the three of them had my audience cheering and whooping after nearly every song.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -21880,7 +21897,7 @@
       "originalRating": null,
       "pullQuote": "The show works in enough fits and starts to cohere, and in a few sung moments to actually thrill.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -21914,7 +21931,7 @@
       "originalRating": null,
       "pullQuote": "In the unending battle between sincerity and snark, I'm afraid I have to call this particular showdown a draw.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -21948,7 +21965,7 @@
       "originalRating": null,
       "pullQuote": "Parts of the show are absolutely thrilling and parts are flat at best, aggressively dumb at worst. At least Mayer’s production, starring Nicholas Christopher, Lea Michele and Aaron Tveit, is not a bland bore.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "excerpt"
     },
     {
@@ -21965,7 +21982,7 @@
       "originalRating": null,
       "pullQuote": "But while the singing is always superb, one still wishes that the starsâ barkâand the showâs as a wholeâhad more dramatic bite.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Down",
       "contentTier": "excerpt"
     },
     {
@@ -21982,7 +21999,7 @@
       "originalRating": null,
       "pullQuote": "If the result is an unwieldy but rousing hot mess with outsize ambitions, maybe now we know how its chess prodigies feel.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -22067,7 +22084,7 @@
       "originalRating": null,
       "pullQuote": "As for Strong's new book, it's even more confusing than Nelson's rewrite, which never quite made sense of the story's love triangle.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -22084,7 +22101,7 @@
       "originalRating": null,
       "pullQuote": "Once again, the show blows its assets; shackled to storytelling that is arguably worse than ever, Chess goes down in forfeit.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -22101,7 +22118,7 @@
       "originalRating": null,
       "pullQuote": "But for all its shortcomings, it’s impossible not to fall under the spell of this powerhouse cast. After swooping in to save the ill-conceived 2022 revival of “Funny Girl,” Michele earned enough critical goodwill and box-office pedigree to pick any show that she wanted to do next.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -22118,7 +22135,7 @@
       "originalRating": null,
       "pullQuote": "Although this 'Chess' match may not have produced a new champion, there’s still some thrilling gameplay, especially from Michele and Christopher, who help provide insight into the magic of 'Chess'",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -22135,7 +22152,7 @@
       "originalRating": null,
       "pullQuote": "When the show is at its best, it hits levels of unironic ludicrousness that are more fun than most things on Broadway.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -53092,7 +53109,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 44,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Aramide Tinubu",
@@ -53102,7 +53119,7 @@
       "pullQuote": "Despite Eden Espinosa's powerhouse performance as the titular artist, this Broadway musical about painter Tamara de Lempicka feels more like a paint-by-numbers affair than a vivid portrait.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "lempicka-2024",
@@ -55133,31 +55150,14 @@
       "outletId": "vulture",
       "outlet": "Vulture",
       "assignedScore": 82,
-      "scoreSource": "llmScore-lowconf",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jackson McHenry",
-      "url": "https://www.vulture.com/2023/03/theater-review-life-of-pi-on-broadway.html",
-      "publishDate": "March 30, 2023",
-      "originalRating": null,
-      "pullQuote": "The Broadway transfer of Life of Pi is a marvel of stagecraft that transforms the Schoenfeld Theatre into a vast ocean.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 75,
       "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
-      "criticName": "Unknown",
+      "criticName": "Jackson McHenry",
       "url": "https://www.vulture.com/2023/03/theater-review-life-of-pi-broadway.html",
-      "publishDate": null,
+      "publishDate": "March 30, 2023",
       "originalRating": null,
-      "pullQuote": "It's a pity that he's stranded in a story awash with platitudes.",
+      "pullQuote": "The Broadway transfer of Life of Pi is a marvel of stagecraft that transforms the Schoenfeld Theatre into a vast ocean.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -59903,7 +59903,7 @@
       "url": "https://www.nytimes.com/2025/12/04/movies/merrily-we-roll-along-review.html",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "“Merrily We Roll Along” is an OK movie of a good production of a great musical: on balance, another worthy addition to the Stephen Sondheim canon, which can always stand to be expanded. The history of “Merrily” is perhaps better-known than the play itself.",
+      "pullQuote": "“Merrily Along” is an OK movie of a good production of a great musical: on balance, another worthy addition to the Stephen Sondheim canon, which can always stand to be expanded. Matt",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -60424,7 +60424,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 77,
-      "scoreSource": "llmScore",
+      "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "David Rooney",
@@ -60434,7 +60434,7 @@
       "pullQuote": "While the show doesn't break new ground dramatically, it delivers what it promises with infectious energy and authentic musical thrills that should keep audiences tapping their feet.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "excerpt"
     },
     {
       "showId": "misery-2015",
@@ -81950,9 +81950,9 @@
       "url": "https://www.amny.com/entertainment/broadway/review-stranger-things-the-first-shadow/",
       "publishDate": "April 22, 2025",
       "originalRating": null,
-      "pullQuote": "The result? A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect. Yes, there are plenty of them: levitations, transformations, and a monstrous spider that hovers over the audience like the Phantom’s chandelier.",
+      "pullQuote": "A three-hour fan wiki brought to life, complete with origin stories, stilted dialogue, lame jokes, and sequences seemingly constructed only to set up the next visual effect.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -82037,7 +82037,7 @@
       "originalRating": "B+",
       "pullQuote": "Immersive, heartfelt, and exhilarating, First Shadow is a must-see spectacle for the Stranger Things obsessive as much as it is for the theater aficionado who wants to see the medium pushed to new heights.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -82071,7 +82071,7 @@
       "originalRating": null,
       "pullQuote": "I thought while watching, this show would be able to breathe more, let the audience feel and care more and that we all suffered together from diminishing technical returns",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -82156,8 +82156,25 @@
       "originalRating": null,
       "pullQuote": "It is astonishing simply for its scale, and never boring, if seldom technically or dramatically satisfying.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outletId": "slantmagazine",
+      "outlet": "Slant Magazine",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Dan Rubins",
+      "url": "https://www.slantmagazine.com/theater/stranger-things-the-first-shadow-review/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Viewers of the series know that Henry will eventually become the demonic Vecna, ruler of the Upside Down and the monsters within, and how this backstory plays out since The First Shadow is ultimately an evening-long adaptation of a flashback sequence from season four.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "none"
     },
     {
       "showId": "stranger-things-2024",
@@ -82224,7 +82241,7 @@
       "originalRating": null,
       "pullQuote": "Because it is locked into an operatic volume, “The First Shadow” never quite finds the grace notes and tonal variations that would bring out the show’s sadness and horror.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -82275,7 +82292,7 @@
       "originalRating": null,
       "pullQuote": "The production is technically impressive in all respects...Although in truth the show itself was already soporific enough.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "excerpt"
     },
     {
@@ -82292,7 +82309,7 @@
       "originalRating": null,
       "pullQuote": "The production’s visual effects, designed by Jamie Harrison and Chris Fisher with video design by 59, are among the most spectacular — and certainly the most frightening — on Broadway.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Down",
       "contentTier": "complete"
     },
     {
@@ -82343,7 +82360,7 @@
       "originalRating": null,
       "pullQuote": "Enough can’t be said that this production doesn’t just change the game of Broadway, it smashes the game board and shoots it into a new dimension.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -82360,7 +82377,7 @@
       "originalRating": null,
       "pullQuote": "Her stage play is a muddled, pedestrian prequel, set in the 1950s, in which a government experiment-gone-wrong unleashes lots of ill effects.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -82394,7 +82411,7 @@
       "originalRating": "3/5",
       "pullQuote": "‘The First Shadow’ suffers from dramatic bloat and tonal inconsistency. The biggest frustration with it is the sense that it might have been show of the year with 30 minutes of really ruthless cuts...It’s not perfect, but it’s as close to the Upside Down as you’re going to get without having your head bitten off by a demogorgon.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete",
       "designation": "Critics_Choice"
     },
@@ -82412,7 +82429,7 @@
       "originalRating": null,
       "pullQuote": "If The First Shadow is purely an act of fan service, at least it’s an unapologetic and, if the audience around me was any judge, satisfying one.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -87061,17 +87078,17 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 45,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Marilyn Stasio",
-      "url": "https://variety.com/2015/legit/reviews/the-gin-game-review-james-earl-jones-cicely-tyson-1201617381/",
+      "url": "https://variety.com/2015/legit/reviews/gin-game-review-cicely-tyson-james-earl-jones-1201618442/",
       "publishDate": "October 14, 2015",
       "originalRating": null,
       "pullQuote": "James Earl Jones and Cicely Tyson bring their considerable star power and professional expertise to this revival of D.L. Coburn's 1977. Pulitzer Prize-winning play, but even these two seasoned performers can't inject much dramatic urgency into this static two-hander.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
+      "contentTier": "complete"
     },
     {
       "showId": "the-glass-menagerie-2017",
@@ -92786,23 +92803,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "the-sound-inside-2019",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 60,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2019/10/theater-review-the-sound-inside-with-mary-louise-parker.html",
-      "publishDate": "October 17, 2019",
-      "originalRating": null,
-      "pullQuote": "There will certainly be an audience for Inside because it's clever, if airless.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
       "showId": "the-terms-of-my-surrender-2017",
       "outletId": "nypost",
       "outlet": "New York Post",
@@ -95330,7 +95330,7 @@
       "url": "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
       "publishDate": "November 20, 2025",
       "originalRating": null,
-      "pullQuote": "Every now and then, an enchanting new musical classic comes along out of nowhere. Two Strangers Carry a Cake Across New York, which opened Thursday at Broadway's Longacre Theatre, is a modern musical romance that has the feel of an old-fashioned movie but also the look and sound of a story that could only take place in 2025.",
+      "pullQuote": "Every now and then, an enchanting new musical classic comes along out of nowhere. Two Strangers Carry a Cake Across New York, which opened Thursday at Broadway’s Longacre Theatre, is a modern musical romance that has the feel of an old-fashioned movie but also the look and sound of a story that could only take place in 2025.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "complete"
@@ -95349,7 +95349,7 @@
       "originalRating": "B+",
       "pullQuote": "Unfortunately, all that momentum is eventually stymied due to the inevitable conflict that by law must arrive between any couple in a romantic comedy.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -95417,7 +95417,7 @@
       "originalRating": null,
       "pullQuote": "This is a twee, two-character rom-com that could easily be a Hallmark holiday musical... So while this show held me for Act One with its considerable charm, by Act Two, it was hitting turbulence.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -95485,7 +95485,7 @@
       "originalRating": null,
       "pullQuote": "But then I thought: It’s symbolic of the unsettled lives of these two young characters. And it shows a bit of resourcefulness: Sometimes the piles of luggage seem to suggest a Manhattan avenue lined with skyscrapers, sometimes a hill in Central Park in a snowy Central Park....",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -95502,7 +95502,7 @@
       "originalRating": null,
       "pullQuote": "For an optimist, this is a rom-com recipe where familiarity is a feature, not a flaw...is like a warm hot chocolate as respite from the snow.",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "complete"
     },
     {
@@ -95517,9 +95517,9 @@
       "url": "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
       "publishDate": "2025-11-20",
       "originalRating": null,
-      "pullQuote": "In fairness, the book offers plenty of laughs, thanks in large part to endearing performances by Tutty and Pitts. Chemistry sparks from Tutty’s charming innocence and quirky comedic timing, countered by Pitts’ deadpan response. Director Tim Jackson, who has them moving at breakneck pace on the ever-revolving set, couldn’t ask for a better pair.",
+      "pullQuote": "Some may find Two Strangers (Carry a Cake Across New York) a pleasant enough holiday confection, but as Robin says to Dougal to squelch his movie fantasy of NYC, “You know how much it costs to go for dinner in midtown Manhattan? To see a Broadway show? New York is just money, that’s all it is.",
       "dtliThumb": null,
-      "bwwThumb": null,
+      "bwwThumb": "Down",
       "contentTier": "complete"
     },
     {
@@ -95534,9 +95534,9 @@
       "url": "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
       "publishDate": "November 20, 2025",
       "originalRating": null,
-      "pullQuote": "“Two Strangers” is funny in places, occasionally moving in others, and just a little off-feeling throughout, as if it is trying too hard to charm across the storytelling and whimsy chasms it creates for itself.",
+      "pullQuote": "The musical packs a more precise punch charting the grittier realities of Dougal and Robin’s emotions. It is very funny when Dougal rightly identifies Robin as his kind-of-new-auntie.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -95553,7 +95553,7 @@
       "originalRating": null,
       "pullQuote": "Critic’s Pick: \"The effervescent new musical comedy...is the most charmingly simple show on Broadway right now — a stellar debut for its authors... and the actor Sam Tutty.\"",
       "dtliThumb": "Up",
-      "bwwThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "excerpt",
       "designation": "Critics_Pick"
     },
@@ -95603,9 +95603,9 @@
       "url": "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
       "publishDate": "November 20, 2025",
       "originalRating": null,
-      "pullQuote": "I felt a disorienting generational whiplash throughout the treacly rom-com Two Strangers (Carry a Cake Across New York). The latest British musical to make it through that country’s off-off ranks and onto our shores, it follows two 20-somethings during a whirlwind wedding weekend in present-day New York.",
+      "pullQuote": "My heart is a generally open one, and I did not walk away from Two Strangers fuming about the state of modern musical theater. It has an agreeableness that will offend no one, and will surely charm many. But I should’ve known from its twee little title that this would not be for me, and I was unfortunately correct.",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -95620,9 +95620,9 @@
       "url": "https://www.thewrap.com/two-strangers-broadway-review/",
       "publishDate": "November 20, 2025",
       "originalRating": null,
-      "pullQuote": "“Two Strangers” is one of those rom-coms where the two lovers are wrong for each other. He’s too boyish, she’s too brittle. It’s a new soul/old soul dynamic. That frisson works initially because, in a story too complicated to tell here, he sets her up with another guy on a dating app. Maybe Dougal and Robin will just become very good friends.",
+      "pullQuote": "Jim Barne and Kit Buchan wrote the songs and the book for this rom-com two-hander, and they begin “Two Strangers” with real promise. The young man Dougal (Tutty) is newly arrived at JFK from London and eager to meet his American father for the very first time. Dad’s getting married and the bride’s sister, Robin (Pitts), picks him up at the airport.",
       "dtliThumb": "Down",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
@@ -95639,7 +95639,7 @@
       "originalRating": null,
       "pullQuote": "This cake isn’t fully baked...For its staging at the Longacre, with an unnecessary intermission that slams the brakes on the action, the director Tim Jackson has slathered the thing in the icing of sentiment and popped his cork",
       "dtliThumb": "Meh",
-      "bwwThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "complete"
     },
     {
