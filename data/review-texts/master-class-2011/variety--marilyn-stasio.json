@@ -5,7 +5,7 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2011/legit/reviews/master-class-1117946316/",
   "publishDate": "July 26, 2011",
-  "fullText": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Opera queens can sniff all they want about Tyne Daly not having the right kind of chops to play Maria Callas in 'Master Class,' Terrence McNally's 1995 tribute to the flamboyant opera diva as she neared the end of her life. But while the dynamic Daly might not possess the air of self-dramatizing tristesse that hovered over Callas after her blazing career came to an end, Daly brings something better to the character -- a sense of vulnerable humanity that makes her courage to survive all the more admirable.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tyne Daly gives a commanding performance as Maria Callas in the Broadway revival of Terrence McNally's 'Master Class,' bringing both the imperious diva's volcanic temperament and her wounded humanity to vivid life.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (32 words)",
   "llmScore": {
     "score": 78,
@@ -76,5 +76,54 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 78,
+  "textWordCount": 205,
+  "archivePath": "data/archives/reviews/master-class-2011/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:29:55.592Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Word count too low: 205 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "\"Rubble Kings\" traces the history of Gotham gangs through the impassioned testimony of former members.\n\n“Rubble Kings” traces the history of Gotham gangs through the impassioned testimony of former members. The film’s lively roster of former Savage Skulls, Black Spades, Assassinators, Ghetto Brothers, Hitmen or Turban Queens, expressively recalling and explaining gang culture, is matched only by its flood of down-and-dirty archival imagery. The kinetic, dynamically edited docu mainly concentrates on New York in the ’70s, vividly evoking the feelings of disenfranchised youth who roamed a then-bankrupt, decaying city, divided the area into turfs and directed their anger against each other. Pic merits further fest exposure before PBS or cable beckons.\n\nHelmer Shan Nicholson, whose “Downtown Calling” evoked the same period from a Lower Manhattan/club-scene perspective, here gives pride of place to the arson-swept South Bronx and its surprisingly articulate ex-warriors. Cramming a lot of anecdotes, urban lore and frenzied movement into a mere 71 minutes, Nicholson’s docu imperceptibly builds to an unexpected, revelatory climax. The gap between the ’70s imagery and the present-day talking-head accounts gradually narrows as several of the key interviewees reappear, 40 years younger, in the archival footage, playing leading roles in the gangs’ transition from violent packs to community peacemakers."
 }
