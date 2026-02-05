@@ -365,10 +365,14 @@ function extractReviewLinksFromArticle(html, showId) {
     if (href.includes('eugeneoneillbroadway.com') || href.includes('2st.com') ||
         href.includes('roundabouttheatre.org') || href.includes('broadwayinhollywood.com') ||
         href.includes('minskoffbroadway.com') || href.includes('shubert.nyc')) return;
-    // Ticketing and aggregator sites (not review sources)
+    // Ticketing, aggregator, and affiliate sites (not review sources)
     if (href.includes('criterionticketing.com') || href.includes('didtheylikeit.com') ||
         href.includes('broadwaybox.com') || href.includes('nbc.com') ||
         href.includes('yahoo.com') || href.includes('people.com')) return;
+    if (href.includes('tidd.ly') || href.includes('bit.ly') || href.includes('tinyurl.com') ||
+        href.includes('stubhub') || href.includes('vividseat') ||
+        href.includes('broadwaydirect.com') || href.includes('luckyseat.com') ||
+        href.includes('rush.todaytix.com') || href.includes('lottery.broadwaydirect.com')) return;
     if (href.length < 20) return;
 
     // Must look like a review URL (contains a path, not just a domain)
