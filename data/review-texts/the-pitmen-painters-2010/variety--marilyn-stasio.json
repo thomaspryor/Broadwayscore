@@ -56,5 +56,59 @@
   "archiveOrgTimestamp": "20101008025922",
   "archiveOrgUrl": "http://web.archive.org/web/20101008025922/http://www.variety.com:80/review/VE1117943767.html?categoryid=33&cs=1&nid=2580",
   "wordCount": 743,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing, actually. Their deeply felt and boldly expressed paintings are proof of Lyon's conviction that culture is not the exclusive preserve of the upper classes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Stasio praises multiple performances as 'devastating,' 'wonderful,' and 'emotionally blistering,' calls the art discussions 'intellectually engaging and rollicking good fun,' and describes the overall experience as treating familiar material 'with less sentimentality' in a compelling way. | Gemini: The review is overwhelmingly positive, highlighting the realism, the performances, and the intellectual engagement of the play. The critic clearly recommends the show. | Kimi: The review offers consistent high praise for the performances (described as 'devastating,' 'emotionally blistering,' and 'wonderful'), the authentic production design, and the intellectually engaging script, with no significant reservations expressed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:18:09.405Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

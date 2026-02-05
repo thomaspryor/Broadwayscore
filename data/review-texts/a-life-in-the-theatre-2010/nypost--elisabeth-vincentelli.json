@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20111204030539",
   "archiveOrgUrl": "http://web.archive.org/web/20111204030539/http://www.nypost.com/p/entertainment/theater/life_worth_reliving_in_humorous_Aq6pCLfrVEoFJ5HR9mq6eP",
   "wordCount": 441,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "high",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a trifle, but one that's dished out by Patrick Stewart and T.R. Knight, two skilled, likable stars with a mellow chemistry and spot-on timing.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic calls it 'a trifle' but consistently praises the performances, chemistry, and entertainment value. Describes it as 'funniest' and 'a hoot,' with actors who 'clearly enjoy themselves.' The tone is warm and recommendatory despite acknowledging the play's lightness. | GPT-4o: The review praises the performances of Stewart and Knight, describing the show as funny and enjoyable, though it acknowledges the play as a 'trifle'. The overall tone is positive, recommending the show for its humor and performances. | Gemini: The review is generally positive, highlighting the performances of Stewart and Knight and the humor of the play. While acknowledging it's a 'trifle,' the critic finds it enjoyable and recommends it. | Kimi: While the critic dismisses the play itself as a 'trifle,' the review overflows with praise for the two leads' chemistry, timing, and committed performances, calling the production 'a hoot' and clearly recommending it on the strength of the acting alone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:54:14.584Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 78,
+    "geminiScore": 77,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

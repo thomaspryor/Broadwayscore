@@ -11,5 +11,60 @@
   "bwwExcerpt": "The songs, the cast, and the staging all save this show, but the book brings it down a bit. A BEAUTIFUL NOISE needs a little more drama, a little more angst to really work as a satisfying theatrical experience. But man, hearing these artists bring these songs to life kept me smiling all night long. If you're a fan of Neil Diamond, this is worth it. If you don’t know who he is, you probably won’t know anything more after the curtain call. But the music? It’s “SO GOOD, SO GOOD!” And “I’m a Believe",
   "bwwThumb": "Meh",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're a fan of Neil Diamond, this is worth it. If you don't know who he is, you probably won't know anything more after the curtain call.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Review has positive elements (songs, cast, staging) but significant reservations (weak book, lacks drama). The conditional recommendation 'worth it if you're a fan' is classic mixed territory, especially with the caveat that newcomers won't gain much. | GPT-4o: The review praises the music, cast, and staging, indicating a positive experience, especially for Neil Diamond fans. However, it notes the book's shortcomings, suggesting some reservations. The single excerpt and lack of a clear original rating lead to a low confidence score. | Gemini: The review is positive overall, especially for fans, but notes the book is weak. Given the single excerpt and aggregator context, I'm scoring it as a slightly positive review. | Kimi: The critic offers a conditional recommendation ('worth it' for fans) and personal enjoyment ('kept me smiling'), but significant reservations about the book and the explicitly conditional nature of the praise place this in the lower Positive range. Single excerpt availability limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:32:48.960Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 74,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

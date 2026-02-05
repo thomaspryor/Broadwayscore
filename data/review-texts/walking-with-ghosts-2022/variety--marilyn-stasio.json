@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 70,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,60 @@
   "textStatus": "complete",
   "sourceMethod": "brightdata",
   "wordCount": 647,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite the abundance of other projects, this polished but informal program seems special.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: Stasio praises Byrne's 'mesmerizing voice' and calls the show 'special' and 'spellbinding,' but notes structural weaknesses and missed opportunities, indicating a solid recommendation with clear reservations. | GPT-4o: The review acknowledges the sincerity and some captivating moments in Byrne's performance but also notes missed opportunities and a lack of follow-through in storytelling. The overall tone suggests a mixed experience with both strengths and weaknesses. | Gemini: The review is generally positive, highlighting Byrne's sincerity and storytelling ability, although it notes some missed opportunities and a somewhat sad ending. The phrase \"mesmerizing voice\" indicates a positive experience. | Kimi: While Stasio praises Byrne's mesmerizing delivery and finds moments spellbinding, she criticizes the uneven childhood anecdotes, missed opportunities in Act Two, and a disappointing ending that lands on too sad a note. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:34:28.186Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 65,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 11,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Even if, like me, you are no great fan of the Irish playwright Martin McDonagh, you will find “A Behanding in Spokane,” in which Christopher Walken makes a triumphant return to the Broadway stage, insane yet also fiendishly funny. McDonagh is a specialist in unleashed violence, in which he shamelessly revels. Here the violence is comical, and we are kept guessing throughout a farce that is as irresistible as it is improbable.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "medium",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "you will find 'A Behanding in Spokane' insane yet also fiendishly funny",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Despite the critic's stated dislike of McDonagh, they find this production 'fiendishly funny' and 'irresistible.' The praise for Walken's 'triumphant return' and calling it 'irresistible' outweighs the initial caveat. Single excerpt requires caution, but the positive language is strong enough for upper Positive range. | GPT-4o: The excerpt describes the show as 'fiendishly funny' and 'irresistible,' with Christopher Walken's performance being a 'triumphant return.' Despite the critic's personal reservations about the playwright, the tone is highly positive. | Gemini: Despite the initial reservation about the playwright, the review praises the show as \"fiendishly funny\" and \"irresistible,\" indicating a positive recommendation. The single excerpt and lack of a rating reduce confidence. | Kimi: The excerpt offers enthusiastic praise for both Christopher Walken's 'triumphant return' and the production itself, calling it 'fiendishly funny' and 'irresistible' despite the critic's usual reservations about the playwright. Scored at the upper end of the Positive range per single-excerpt guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:41:55.260Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 86,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

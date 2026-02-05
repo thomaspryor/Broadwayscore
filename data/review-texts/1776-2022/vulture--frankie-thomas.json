@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "It wins you over in minutes. Though I spent the opening number puzzling over what the nontraditional casting was doing for the show - what statement it was making, how literally we were meant to interpret it, whether it was working too hard against the text - I soon ceased to notice it at all. The talent level is so high that the casting feels less conceptual and more incidental. Led by the charismatic Crystal Lucas-Perry as John Adams, the ensemble cast is a thril",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It wins you over in minutes.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong opening verdict ('wins you over in minutes') and praise for high talent level and charismatic lead performance. Single excerpt limits confidence, but clear positive trajectory from initial puzzlement to enjoyment. | GPT-4o: The excerpt suggests a strong positive impression, with high praise for the talent level and casting. Despite initial reservations, the critic quickly becomes absorbed by the performance, indicating an overall positive verdict. | Gemini: The review states that the show \"wins you over in minutes\" and praises the talent level and charismatic lead, indicating a positive recommendation. The initial reservations are quickly dismissed. | Kimi: Single excerpt shows clear enthusiasm and recommendation ('wins you over', 'charismatic'), but single-source truncation warrants low confidence per instructions.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:26:39.767Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

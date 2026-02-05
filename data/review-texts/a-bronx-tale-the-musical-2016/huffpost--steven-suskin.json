@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "A Bronx Tale is unlikely to work without a strong performance in the central role of the gangster Sonny. (Palminteri played all the roles in the one-man show; he was Sonny in the film version.) Fortunately, Nick Cordero carries the musical with aplomb. This is the actor who appeared out of nowhere in 2014 and practically nabbed a Tony in the Woody Allen-Susan Stroman Bullets on Broadway, as the bodyguard Cheech. (Not incidentally, this role was created in Allen's 1994 film version by: Chazz Palm",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-BRONX-TALE-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20161201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fortunately, Nick Cordero carries the musical with aplomb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising the lead performance as carrying the musical 'with aplomb,' but text is clearly truncated mid-sentence. With only one curated quote available, this represents limited evidence of the full verdict. | GPT-4o: The excerpt praises Nick Cordero's performance as crucial to the musical's success, suggesting a positive view. However, the single excerpt and lack of a full review text limit confidence. | Gemini: The review excerpt focuses on a strong performance by Nick Cordero, suggesting a positive aspect of the show, but the limited text and lack of overall verdict lead to a lower confidence score. | Kimi: The excerpt strongly praises the central performance as carrying the show, implying a recommendation despite the caveat that the musical depends on this strength. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:47:23.059Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

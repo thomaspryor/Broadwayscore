@@ -11,5 +11,60 @@
   "bwwExcerpt": "Joe Caskey leads an outstanding cast as the title role. Caskey's singing is rich and tender, with a gorgeous low range and electric stage presence. Every time Caskey performed a song the audience sat up with rapt attention. This interpretation of Neil Diamond is three-dimensional and full of life. \"Sweet Caroline\", the crowdpleasing Act I finale, was by far one of my favorite moments from the show. It was beautiful to see pathos melt to joy as Neil Diamond discovered his sound and catapulted him",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Joe Caskey leads an outstanding cast as the title role.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Enthusiastic praise for the lead performance with words like 'outstanding,' 'gorgeous,' and 'electric stage presence.' However, this is only one excerpt focusing on one performer, so confidence is low. | GPT-4o: The excerpt provides strong praise for Joe Caskey's performance and the show, highlighting moments of joy and engagement. The language is enthusiastic, suggesting a positive recommendation. Given the single excerpt warning, the score is on the higher end of the Positive range. | Gemini: The review excerpt is overwhelmingly positive, praising the lead actor's performance and stage presence. The description of the audience's reaction and the reviewer's enjoyment of a key moment suggests a strong recommendation. | Kimi: The excerpt offers enthusiastic praise for the lead performance ('outstanding cast', 'electric stage presence', 'rapt attention') and specific musical moments, though as a single curated quote, the full review context is unknown.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:50:46.721Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

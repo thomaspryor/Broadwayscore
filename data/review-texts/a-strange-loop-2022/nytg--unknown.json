@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "'WOW!' I thought to myself as my body leapt to its feet on its own volition to applaud A Strange Loop. 'This must be how people who saw the first performances of Show Boat, Oklahoma!, Company, Rent, or Hamilton felt.' Though I've witnessed and studied the innovations in each of those musicals, none of them are as revolutionary as what Michael R. Jackson has accomplished with his Pulitzer Prize-winning musical, now making its Broadway debut. That is thanks to his splendid writing and craftsmanship, as well as flawless and often shocking performances given by the cast ― including a fresh-out-of-college leading man, Jaquel Spivey, in his Broadway debut.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 93,
+  "llmScore": {
+    "score": 93,
+    "confidence": "high",
+    "range": {
+      "low": 88,
+      "high": 98
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This must be how people who saw the first performances of Show Boat, Oklahoma!, Company, Rent, or Hamilton felt.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Rave | Claude: Unqualified superlatives comparing it to revolutionary musicals, 'WOW!' reaction, calling it more revolutionary than classics, praising 'splendid writing' and 'flawless performances' - clear rave review. | GPT-4o: The excerpt expresses an extremely enthusiastic response, comparing the show to landmark musicals and praising its revolutionary nature. The use of 'WOW!' and the physical reaction of leaping to applaud indicates a strong recommendation. Despite the single excerpt warning, the tone is clearly rave. | Gemini: The review uses strong positive language such as \"revolutionary\", \"splendid\", and \"flawless\", comparing the show to groundbreaking musicals like Show Boat and Hamilton. This indicates a Rave review. | Kimi: The excerpt offers unqualified superlatives, comparing the show to legendary musicals and declaring it more revolutionary, with praise for the 'splendid' writing and 'flawless' performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:29:02.600Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 95,
+    "openaiScore": 95,
+    "geminiScore": 92,
+    "kimiScore": 90,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Rave",
+    "kimiBucket": "Rave",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Rave"
+  }
 }

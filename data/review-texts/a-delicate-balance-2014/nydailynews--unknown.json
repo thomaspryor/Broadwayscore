@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Albee's title applies to virtually any scenario. But Agnes and Toby are keenly concerned with the delicate balance of keeping reality -- or anything, or anyone, unpleasant -- outside their front door...Agnes is tightly wrapped, in terms of both manner and costume, which smartly underscores the sense of insularity. Close, with her aristocratic take on Agnes, comes within inches of coming off as arch. That approach doesn't hurt the character. But Close's unintentional habit of tripping over Albee's dialogue doesn't help. Lithgow, meantime, is riveting every moment he's on stage -- which is a lot -- even when Tobias is silent. As he takes the character from quiet restraint to explosive urgency, he doesn't miss a beat and never for a second loses his equilibrium. His is a delicate -- and distinctive -- balance.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lithgow, meantime, is riveting every moment he's on stage -- which is a lot -- even when Tobias is silent.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt shows mixed assessment: praises Lithgow as 'riveting' but critiques Close's performance issues ('tripping over Albee's dialogue'). Without full review context, this suggests qualified approval rather than clear recommendation. | GPT-4o: The review praises Lithgow's performance as 'riveting' and notes Close's portrayal as effective despite some dialogue issues. The overall tone suggests a positive view of the performances, but the excerpt is limited, leading to a low confidence in the verdict. | Gemini: The review praises Lithgow's performance and the play's themes, but notes Close's struggles with the dialogue. Given the single excerpt, I'm placing it in the positive range with reservations. | Kimi: While the critic notes Close's struggles with dialogue, the excerpt offers strong praise for Lithgow's performance ('riveting every moment') and production elements ('smartly underscores'), suggesting a qualified recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:55:58.989Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 65,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

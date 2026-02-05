@@ -35,5 +35,59 @@
   "archiveOrgTimestamp": "20121019061616",
   "archiveOrgUrl": "http://web.archive.org/web/20121019061616/http://www.nypost.com/p/entertainment/theater/send_in_the_substitutes_UyJILYURqUn7QMH2irKjAK",
   "wordCount": 651,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With everybody firing on all cylinders, Nunn's spare, twilit staging finally makes sense, and even the smallness of the orchestra feels appropriate.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | Claude: Strong praise for Peters' transformative performance ('Medal of Honor? Nobel Prize?'), enthusiasm for the production improvements, and positive assessment of all elements working together. The 'How adult!' exclamation shows clear recommendation despite some opening context about the show's previous state. | Gemini: The review praises Peters' performance as transformative and Stritch as a hoot. The critic states that the newcomers have inspired the original cast to raise its game, and that the staging finally makes sense. | Kimi: The critic celebrates Bernadette Peters' performance as a 'masterpiece' worthy of 'the Nobel Prize' and declares that the previously 'murky' production has become a 'coherent whole' with the new cast. The enthusiastic praise for the staging, ensemble, and Sondheim interpretation indicates an unqualified recommendation despite the text truncation warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:55:36.576Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": null,
+    "geminiScore": 81,
+    "kimiScore": 93,
+    "claudeBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Rave",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

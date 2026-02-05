@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Washington brings a volcanic intensity to the role that makes Hickey's descent into madness both terrifying and heartbreaking.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -53,5 +53,60 @@
   "tierReason": "Full review text",
   "previousUrl": "https://variety.com/2018/legit/reviews/the-iceman-cometh-review-denzel-washington-1202747012/",
   "urlDiscoveredAt": "2026-02-05T05:16:27.836Z",
-  "urlDiscoveryMethod": "show-not-mentioned-recovery"
+  "urlDiscoveryMethod": "show-not-mentioned-recovery",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Denzel Washington shakes up the deadbeat patrons of Harry Hope's saloon in this slick revival of Eugene O'Neill's masterpiece of despair.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Washington's performance and the ensemble cast, with positive assessment of direction and design. The critic acknowledges structural issues (long play, attenuated first act) but emphasizes the payoff and concludes with enthusiastic praise for the theatrical impact. | GPT-4o: The review praises the production's cast, direction, and design, highlighting Denzel Washington's performance and the effective staging. Despite noting the play's length, it concludes with strong enthusiasm for the production. | Gemini: The review is overwhelmingly positive, praising Washington's performance, the ensemble cast, and Wolfe's direction. The critic uses strong language like \"masterpiece of despair\" and concludes with a strong recommendation. | Kimi: Strong praise for Washington's performance and Wolfe's direction, with minor reservations about pacing in early acts, ultimately endorsing this slick revival for its devastating third act.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:16:34.743Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

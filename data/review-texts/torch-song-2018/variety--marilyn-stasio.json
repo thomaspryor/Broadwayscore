@@ -63,15 +63,16 @@
   "sourceMethod": "brightdata",
   "wordCount": 705,
   "tierReason": "Full review text",
-  "rejectedAt": "2026-02-04T06:31:16.954Z",
+  "rejectedAt": "2026-02-05T15:16:37.170Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "wrong_production",
-  "rejectionReasoning": "openai: The review is of the Off Broadway production from 2017, not the current Broadway run.; kimi: This text explicitly identifies itself as a review of the 2017 Off-Broadway production at Second Stage Theater ('The following is Marilyn Stasio's review, dated Oct. 20, 2017, of the Off Broadway production'), not the current Broadway run.",
+  "rejectionReasoning": "openai: The review is of the Off Broadway production from 2017, not the current Broadway run.; kimi: The text explicitly states that the review content which follows is Marilyn Stasio's review dated Oct. 20, 2017, of the Off Broadway production at Second Stage Theater, not the current Broadway run. While the production transferred to Broadway with the same cast, the evaluative text provided is specifically identified as the Off Broadway review.",
   "promptVersion": "5.2.0",
   "bwwScore": 7,
   "sources": [
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "wrongProduction": true
 }

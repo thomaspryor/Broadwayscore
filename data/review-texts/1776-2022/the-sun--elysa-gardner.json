@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "For starters, \"1776\" was, and remains, kinder to Adams than Lin-Manuel Miranda's blockbuster, which pretty much reduced our second president and this show's protagonist to a punchline. Like Mr. Miranda, though, co-directors Mr. Page and Ms. Paulus promote inclusivity not through finger-wagging but with a generous, uplifting spirit, and Stone and Edwards have left them the perfect vehicle for that mission.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-1776-Opens-On-Broadway--Read-the-Reviews-20221006",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Stone and Edwards have left them the perfect vehicle for that mission.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the directors' approach and calls the show 'the perfect vehicle' for their inclusive mission. However, with only one curated quote available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt praises the directors' approach to inclusivity as 'generous' and 'uplifting', suggesting a positive tone. However, the single excerpt warning and lack of a full review text lower the confidence. | Gemini: The review excerpt compares the show favorably to Hamilton and praises the directors' approach to inclusivity. Given that this is the only excerpt available, the confidence is low, and the score is at the lower end of the positive range. | Kimi: The excerpt praises the directors' 'generous, uplifting spirit' and calls the material a 'perfect vehicle' for their inclusive approach, indicating clear enthusiasm for this production despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:26:03.789Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

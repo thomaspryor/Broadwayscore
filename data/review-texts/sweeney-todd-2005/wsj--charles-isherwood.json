@@ -46,5 +46,60 @@
   "rejectionReasoning": "claude: This text is mostly a subscription paywall prompt and navigation menu with only a brief opening sentence about the show before being cut off by subscription content; openai: The text is primarily navigation menus and subscription prompts, not a review.",
   "promptVersion": "5.2.0",
   "bwwExcerpt": "With his boyish good looks, and despite a burly beard,Mr. Groban appears young for the role, looking scarcely older than Anthony ( Jordan Fisher), the sailor who rescued Sweeney when their ship heading to England foundered. More problematically, Mr. Groban has not yet reached deeply enough into the tortured soul of the character, who was separated from his wife and daughter when the corrupt Judge Turpin (Jamie Jackson) had him transported. Returned at",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-SWEENEY-TODD-Opens-on-Broadway-Updating-Live-20230326",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "More problematically, Mr. Groban has not yet reached deeply enough into the tortured soul of the character.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt shows the critic identifying significant problems with Groban's performance, particularly his failure to capture the character's depth. However, this is only one excerpt and appears truncated mid-sentence, making the full verdict unclear. | GPT-4o: The excerpt highlights a significant issue with Mr. Groban's performance, suggesting a lack of depth in portraying the character's tortured soul. The absence of a full review and the single excerpt warning lead to a low confidence in the verdict. | Gemini: The excerpt expresses reservations about Groban's portrayal of Sweeney Todd, suggesting he hasn't fully captured the character's depth. Given the limited text, it's difficult to ascertain the overall recommendation, but the criticism leans towards a mixed assessment. | Kimi: The excerpt offers specific criticism of the lead actor's maturity and emotional depth for the demanding role, suggesting the performance falls short. However, the truncated text and single-excerpt format warrant caution, as positive assessments of other production elements may have been omitted.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:11:48.140Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 52,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

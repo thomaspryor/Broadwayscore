@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"As the Reverend Lord Ezekial D'Ysquith, [Jefferson] Mays is pushed from a church steeple, a bloody scene with Hitchcockian overtones.The murders go on like that, satisfying stand-alone moments that allow Mays to do what he does best: rush backstage, jump into the next costume and play scenes to the hilt. They're delectable schadenfreude. You'll thrill in seeing him bring boundless energy and distinct personalities to his assorted D'Ysquiths of either gender. Pinkham, as well, achieves a tall or",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-GENTLEMANS-GUIDE-TO-LOVE-AND-MURDER-Opens-on-Broadway-Updating-Live-20131117",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "They're delectable schadenfreude. You'll thrill in seeing him bring boundless energy and distinct personalities to his assorted D'Ysquiths.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear enthusiasm for Jefferson Mays' performances, using positive language like 'delectable schadenfreude' and 'you'll thrill.' However, this is only one curated excerpt that may not represent the full review verdict, warranting low confidence. | GPT-4o: The excerpt praises Jefferson Mays's performance and describes the scenes as 'delectable schadenfreude,' suggesting a positive experience. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, using words like \"thrill\", \"boundless energy\", and \"distinct personalities\" to describe Jefferson Mays' performance. Given the single excerpt warning, I'm scoring it on the higher end of the positive bucket. | Kimi: The excerpt provides strong praise for the performances, describing them as 'delectable schadenfreude' and highlighting the 'boundless energy' of the lead actor, though the single-excerpt format and truncated ending limit confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:20:12.401Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

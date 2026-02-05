@@ -22,5 +22,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Smiles and laughs it elicits, true enough, because Hwang writes it as an autobiographical comedy-drama. Wittily, he puts himself, DHH—as impersonated by square-jawed Daniel Dae Kim in a crackerjack performance—at its center. In large part, he insists that in many of the ensuing mishaps the joke’s on him. Smart fellow, this on-stage (and, of course, off-stage) Hwang. He recognizes that a man who can make fun of himself will in turn have audiences laughing simultaneously at and with him.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Daniel-Dae-Kim-More-Star-In-YELLOW-FACE-on-Broadway-20241001"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Daniel-Dae-Kim-More-Star-In-YELLOW-FACE-on-Broadway-20241001",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Daniel Dae Kim in a crackerjack performance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with praise for Hwang's writing ('wittily', 'smart fellow') and Kim's 'crackerjack performance'. Single excerpt limits confidence but rating indicates solid positive recommendation. | GPT-4o: The excerpt highlights the humor and effectiveness of the autobiographical elements, with praise for the lead performance. The original 4/5 star rating suggests a positive review. Given the single excerpt warning, the score is on the lower end of the positive range. | Gemini: The review excerpt praises the writing and the lead performance, suggesting a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The 4/5 star rating and clearly positive excerpt praising the 'crackerjack' lead performance and witty writing warrant a score in the upper Positive range (80-84), though confidence is reduced due to reliance on a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:22:10.210Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

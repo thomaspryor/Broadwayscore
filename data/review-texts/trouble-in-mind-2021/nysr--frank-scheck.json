@@ -20,5 +20,60 @@
   "wordCount": 0,
   "bwwExcerpt": "Director Charles Randolph-Wright doesn't successfully balance the play's comic and dramatic elements, with the result that the evening sometimes feels like a backstage comedy and other times like a polemic on race relations. The performances, too, vary in effectiveness, with the most memorable work coming from the luminous LaChanze, the veteran Cooper, and Dukes, who makes the most of the sardonic Millie.From a historical perspective, Trouble in Mind is an important, groundbreaking work. It's just a shame that it feels so dated now upon its long belated Broadway premiere.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-TROUBLE-IN-MIND-Opens-On-Broadway-Starring-Tony-Winner-LaChanze-20211118",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "medium",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's just a shame that it feels so dated now upon its long belated Broadway premiere.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: 3/5 stars with balanced critique: praises historical importance and some performances (LaChanze, Cooper) but finds the play 'uneven, problematic,' 'frustratingly didactic,' and 'dated.' Clear mixed verdict acknowledging significance while critiquing execution. | GPT-4o: The review acknowledges the historical importance of the play but criticizes its dated feel and uneven execution. The performances are praised, but the direction and presentation are seen as lacking. The original 3/5 stars and the truncated nature of the text suggest a mixed review with some positive elements. | Gemini: The review acknowledges the historical importance but finds the production itself uneven and dated. The critic praises some performances but criticizes the direction and overall impact, resulting in a mixed assessment. | Kimi: While the critic acknowledges the play's historical significance and praises performances by LaChanze and Cooper, the 3/5 star rating reflects significant reservations about the didactic writing, uneven tone, and dated feel of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:17:12.834Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 60,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

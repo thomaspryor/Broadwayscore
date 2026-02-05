@@ -19,5 +19,60 @@
   "playbillVerdictUrl": "http://nystagereview.com/2020/02/20/west-side-story-a-new-time-for-us/",
   "bwwExcerpt": "Watching fog rise off the stage, and listening to what sounded like a faint rumble in between certain songs, I was reminded of a colleague's comment that the Belgian director likes to stage the subtext of plays-and of how I irritated I was by the tics and tricks in some of his previous New York efforts. Not so here. Most notably, scenic and lighting designer Jan Versweyveld, van Hove's longtime collaborator, has teamed with video designer Luke Halls to make the latter aspect central to this production. An enormous screen projects both live and pre-recorded images, threatening to overshadow the actors at times but also providing vivid insights, not all of them dark. During 'The Jet Song,' we see the different individuals in the gang preening and clowning through the streets, even as the young men glower as a collective.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's a tribute to this unsettling, transporting production that its quirks and departures do little to diminish its overall potency.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite extensive analysis of changes from the original, the critic consistently praises the performances ('magnificent cast'), direction, and overall impact. The 4/5 star rating and final recommendation ('I would strongly advise against' missing it) clearly indicate strong endorsement. | GPT-4o: The review praises the cast and the contemporary take on the classic, despite noting some controversial changes and omissions. The 4/5 star rating aligns with a positive recommendation, though the truncated text and mention of issues suggest some reservations. | Gemini: Despite some reservations about changes to the choreography and second act, the review is largely positive, calling the production \"powerful\" and \"transporting.\" The final lines indicate a strong recommendation. | Kimi: The critic awards 4/5 stars and offers enthusiastic praise for the magnificent cast and powerful contemporary staging, acknowledging controversial cuts but ultimately finding the production transporting and potent.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:35:29.421Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 78,
+    "geminiScore": 81,
+    "kimiScore": 80,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

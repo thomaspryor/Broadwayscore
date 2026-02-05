@@ -12,5 +12,60 @@
   "bwwExcerpt": "You can't say John Guare's new play 'A Free Man of Color' isn't ambitious in scope or awash in extravagant eye candy. Or that the huge cast of 33 isn't fully committed. But unfortunately that doesn't add up to a satisfying evening.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
+  "assignedScore": 47,
+  "llmScore": {
+    "score": 47,
+    "confidence": "high",
+    "range": {
+      "low": 42,
+      "high": 52
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But unfortunately that doesn't add up to a satisfying evening.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging positive elements (ambitious scope, committed cast), the critic's final verdict is that it 'doesn't add up to a satisfying evening,' which is a clear negative recommendation. Low confidence due to single excerpt that may not represent full review. | GPT-4o: The excerpt acknowledges ambition and commitment but concludes with dissatisfaction. The single excerpt and lack of full context suggest a negative verdict, but confidence is low due to potential cherry-picking. | Gemini: The review acknowledges ambition and commitment but ultimately concludes the play is not satisfying. This indicates a negative assessment. | Kimi: While acknowledging the production's ambition, visual spectacle, and committed cast of 33, the critic ultimately deems the evening unsatisfying, indicating a clear negative recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:17:37.520Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 50,
+    "geminiScore": 45,
+    "kimiScore": 48,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

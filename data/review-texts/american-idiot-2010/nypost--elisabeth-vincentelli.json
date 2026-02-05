@@ -32,5 +32,60 @@
   "archiveOrgTimestamp": "20120203200153",
   "archiveOrgUrl": "http://web.archive.org/web/20120203200153/http://www.nypost.com/p/entertainment/theater/green_with_frenzy_OYSVpKug8AOrKr86TGVZaL",
   "wordCount": 471,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "By the time it ends, 90 minutes later, you may feel more numbed than stirred.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Review praises individual elements like 'terrific numbers' and 'imaginative staging' but criticizes the relentless pace and thin story, resulting in a qualified, lukewarm assessment without clear recommendation. | GPT-4o: The review acknowledges the impressive staging and music but criticizes the lack of narrative depth and emotional impact, resulting in a mixed impression. | Gemini: The review praises the musical numbers and staging but criticizes the lack of breathing room and thin story, resulting in a mixed overall impression. | Kimi: The critic praises the 'terrific' musical numbers and 'imaginative, punchy' staging while criticizing the show's unrelenting fever pitch that leaves audiences 'numbed rather than stirred' and the thinly developed story, resulting in an ambivalent assessment without clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T14:57:43.779Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

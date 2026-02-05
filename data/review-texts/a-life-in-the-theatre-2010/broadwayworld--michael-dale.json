@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Stewart doesn't hide the large degree of ego-massaging motivating Robert's tutorials, as though he takes special delight in having mastered the role of the wise, old mentor. But his hammyness is cured with a seasoned charm. Knight plays it straight for most of the piece, but succeeds in the subtler job communicating how John's gratitude for veteran's attention gradually dissolves as he recognizes the man behind his off-stage character and grows more distant as his confidence builds and others recognize his own talent.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But his hammyness is cured with a seasoned charm.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows nuanced praise for both lead performances, noting Stewart's 'seasoned charm' and Knight's success in 'subtler job' of character development. However, limited text and single excerpt warning require caution - scoring in lower Positive range. | GPT-4o: The excerpt suggests a positive view of the performances, highlighting seasoned charm and subtlety. However, the single excerpt warning and lack of a clear overall verdict lead to a low confidence score on the lower end of the Positive range. | Gemini: The review excerpt focuses on the performances of Stewart and Knight, highlighting their strengths and contributions to the play. While not overwhelmingly enthusiastic, the positive assessment of the actors suggests a recommendation, albeit with reservations due to the limited context. | Kimi: The excerpt offers qualified praise for both Stewart's charm and Knight's subtle characterization, using mild positive language ('succeeds,' 'seasoned charm') without enthusiasm or superlatives. With only one curated excerpt available, the score reflects mild positivity at the lower end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:07:39.371Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "This new Broadway revival of '1776' brings fresh energy and contemporary relevance to the 1969 musical about the Continental Congress debates leading to the Declaration of Independence.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 77,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This new Broadway revival of '1776' brings fresh energy and contemporary relevance to the 1969 musical about the Continental Congress debates leading to the Declaration of Independence.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new Broadway revival of '1776' brings fresh energy and contemporary relevance to the 1969 musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt describes positive qualities (fresh energy, relevance) but is too brief and potentially cherry-picked to determine full recommendation strength. Low confidence due to limited text. | GPT-4o: The excerpt highlights a positive view of the revival, noting 'fresh energy' and 'contemporary relevance'. However, with only one excerpt available, the confidence is low. | Gemini: The excerpt indicates a positive assessment, highlighting \"fresh energy and contemporary relevance.\" However, due to the limited text, I am scoring it at the lower end of the positive range with low confidence. | Kimi: The excerpt offers clear, unqualified praise for the production's vitality and modern resonance. As a single curated excerpt, confidence is low per instructions, but the language is distinctly positive.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:39:59.675Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 80,
+    "geminiScore": 74,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

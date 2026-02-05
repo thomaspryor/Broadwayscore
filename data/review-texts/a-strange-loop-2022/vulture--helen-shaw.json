@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "At breathtaking speed, for an hour and 45 minutes, Loop continues whirling on like this: the Big Ideas and the petty ones waltzing around in Jackson's profane, hilarious, metamusical carousel. It's less vicariously exhausting than it was Off Broadway, perhaps because the company no longer wrecks itself physically with every performance - but it's still furious, both with the world and itself. The shock of that sharp emotion strikes like a lance. Especially in the Lyceum Theater: It's a red-velvet-and-gilt balloon, and Jackson makes it go pop.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STRANGE-LOOP-Opens-On-Broadway-20220426",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The shock of that sharp emotion strikes like a lance.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong positive language ('breathtaking speed', 'profane, hilarious', 'sharp emotion strikes like a lance') with vivid praise for the production's impact. Single excerpt warning suggests this could be cherry-picked, but the sustained enthusiastic tone warrants upper Positive range. | GPT-4o: The excerpt describes the show as 'profane, hilarious, metamusical' and highlights its emotional impact. The positive tone and vivid imagery suggest a strong recommendation despite the lack of a full review. | Gemini: The review uses strong positive language such as \"breathtaking speed\", \"hilarious\", and \"furious\". The final sentence, \"Jackson makes it go pop\", implies a highly positive experience. Given the single excerpt, confidence is low. | Kimi: The excerpt offers strong praise using words like 'breathtaking,' 'hilarious,' and 'furious,' highlighting the show's sharp emotional impact and energy, which indicates a clear recommendation despite limited available text.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:39:45.174Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

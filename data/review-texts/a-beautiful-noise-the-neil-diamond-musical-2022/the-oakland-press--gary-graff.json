@@ -11,5 +11,59 @@
   "bwwExcerpt": "What the production does have, however, is…well, the “Noise,” and one that’s gloriously rendered by this first national company. If you’re a Diamond fan “A Beautiful Noise” is a welcome stand-in, sequins and all, for what used to be the regular concert tours, with “America’s Got Talent” 2015 winner Nick Fradiani (as Neil (Then)) offering an uncanny vocal impersonation of the star, from the first line of the opening title song to the majestic “Holly Holy” that closes the show. Fradiani isn’t call",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "If you're a Diamond fan 'A Beautiful Noise' is a welcome stand-in, sequins and all, for what used to be the regular concert tours.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 3 models agree: Positive | Claude: Qualified recommendation specifically for Diamond fans, with praise for the lead performance and production values, but the excerpt appears truncated and may not capture the full verdict. | GPT-4o: The excerpt praises the production's rendering and Fradiani's performance, suggesting it is a good substitute for Neil Diamond concerts. However, the recommendation seems particularly aimed at fans, indicating a more qualified positive verdict. | Gemini: The review excerpt praises the production and the lead's impersonation of Neil Diamond, suggesting it's a good substitute for his concerts. Given the limited text, confidence is low, but the positive tone warrants a score in the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:54:00.813Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": null,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 3 models agree: Positive"
+  }
 }

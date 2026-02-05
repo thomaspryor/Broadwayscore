@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "It’s worth noting that linguists generally translate Ibsen’s title — “Et dukkehjem” — as “A Dollhouse” instead of “A Doll’s House.” The prison isn’t just Nora’s; she and Torvald are equally trapped in it. My only real quibble with this compelling, surgically precise revival is that it doesn’t seem to be interested in preserving that unity: in keeping our sympathy for both characters as balanced as Ibsen evidently intended. When the astonishing curtain coup finally comes, you should feel his loss",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DOLLS-HOUSE-Opens-On-Broadway-Starring-Jessica-Chastain-20230309",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "My only real quibble with this compelling, surgically precise revival is that it doesn't seem to be interested in preserving that unity",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Calls the revival 'compelling, surgically precise' with only one 'real quibble.' However, confidence is low due to single excerpt warning and potential for cherry-picking positive language from a more mixed review. | GPT-4o: The review excerpt praises the revival as 'compelling, surgically precise' but notes a quibble about character balance. The positive tone suggests a recommendation, though with some reservations. | Gemini: The review calls the revival \"compelling\" and \"surgically precise,\" but expresses a reservation about its interpretation of Ibsen's intent. This suggests a positive but not rave review. | Kimi: The excerpt offers strong praise ('compelling,' 'surgically precise,' 'astonishing') with a single specific criticism about character sympathy balance, indicating a clear positive recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:58:07.726Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

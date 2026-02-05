@@ -20,5 +20,60 @@
   "wordCount": 0,
   "playbillVerdictUrl": "http://nystagereview.com/2019/01/24/true-west-sam-shepards-brotherhood-of-man/",
   "bwwExcerpt": "The play, about a pair of estranged brothers and their apparent role reversal under pressure, is as funny as it is serious, and this new staging, directed by James Macdonald, a specialist in heavy-hitters, is as entertaining as it is profound. This is not a revelatory new interpretation, but it's a serious and successful look at a seminal modern work.",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Ethan-Hawke-And-Paul-Dano-In-TRUE-WEST-On-Broadway-20190124"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Ethan-Hawke-And-Paul-Dano-In-TRUE-WEST-On-Broadway-20190124",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This new staging is as entertaining as it is profound.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: 4/5 stars with clear praise for the production as 'entertaining', 'profound', and 'successful'. Single excerpt warning applies, but the language is consistently positive without major caveats. | GPT-4o: The excerpt praises the play as both entertaining and profound, with a successful staging. The original 4/5 stars rating supports a positive classification. Given the single excerpt and text quality warning, confidence is low. | Gemini: The review uses strong positive language such as \"as entertaining as it is profound\" and \"serious and successful look.\" The 4/5 star rating also supports a positive classification. | Kimi: 4/5 star review praises the staging as 'entertaining,' 'profound,' and 'successful,' with only minor reservation that it is not revelatory. Single excerpt warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:31:46.504Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With three-time Tony nominee David Alan Grier and a commanding Blair Underwood leading a first-rate, 12-member cast, this Soldier's Play (adapted as A Soldier's Story for the 1984 film) moves with all the precision of a military cadence. The production is not without its missteps - a few self-conscious moments seem like gratuitous elbow jabs to make sure we understand the contemporary relevance - but director Kenny Leon drives the narrative with a solid feel for momentum.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-SOLDIERS-PLAY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200121",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "high",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "moves with all the precision of a military cadence",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the lead performances and cast as 'first-rate' and notes strong direction with good momentum, but acknowledges some missteps. Single excerpt warning applies - this sounds clearly positive so scored at upper end of bucket. | GPT-4o: The review praises the cast and direction, indicating a strong production overall, but notes some missteps. The single excerpt suggests a positive review with some reservations. | Gemini: The review praises the cast and direction, but notes some missteps. Given the limited excerpt, a score in the middle of the Positive range seems appropriate. | Kimi: The excerpt offers strong praise for the first-rate cast and director's skilled pacing, with only minor caveats about self-conscious moments, indicating a clear recommendation despite reservations.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:23:24.017Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 79,
+    "geminiScore": 77,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

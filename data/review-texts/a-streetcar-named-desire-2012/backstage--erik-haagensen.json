@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Sometimes there's yuks so quickly. The latest production of Tennessee Williams' masterwork \"A Streetcar Named Desire\" is an unfathomable misstep from the gifted Emily Mann, whose work I have often admired as both director and playwright. Helmer Mann and her starry cast treat the work as if it were a combination soap opera and sitcom. The result is embarrassing and sad.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-STREETCAR-NAMED-DESIRE-Returns-to-Broadway-Updating-LIVE-20120422",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 16,
+  "llmScore": {
+    "score": 16,
+    "confidence": "medium",
+    "range": {
+      "low": 11,
+      "high": 21
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The result is embarrassing and sad.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating pan calling the production an 'unfathomable misstep' and 'embarrassing and sad.' Despite praising the director's previous work, the verdict for this production is total rejection. | GPT-4o: The review excerpt strongly criticizes the production, describing it as an 'unfathomable misstep' and 'embarrassing and sad'. This indicates a strong negative verdict, placing it in the Pan bucket. | Gemini: The review is overwhelmingly negative, calling the production an \"unfathomable misstep\" and \"embarrassing and sad.\" The critic clearly pans the direction and the performances. | Kimi: Single excerpt contains devastating criticism calling the production an 'unfathomable misstep' that reduces a masterwork to 'soap opera and sitcom,' with the final verdict 'embarrassing and sad.' Even allowing for excerpt bias, this language places it firmly in Pan territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:40:05.229Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 12,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

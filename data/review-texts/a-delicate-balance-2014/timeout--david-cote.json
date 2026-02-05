@@ -12,5 +12,60 @@
   "bwwExcerpt": "...if you don't let in this desolating, resonant piece (via brain or heart), it might indeed seem little else than two talky hours...A stony stare at varieties of moral vacancy, the play itself is full to bursting...I never saw the 1996 Lincoln Center revival, which reportedly struck a more realistic tone. But Pam MacKinnon directs this solid revival with a keen ear for the curling, teasing rhythms of Albee's ornate lines, and the performances are top-notch, including the perfectly deadpan Balaban and a sinister Higgins as the unwelcome guests. Martha Plimpton finds sympathetic notes in the difficult, shrill role of Julia, and Close and Lithgow handle their tricky speeches with grace and nuance. If Close is a touch too frosty, she's thawed by Lithgow's warmth.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-DELICATE-BALANCE-Opens-on-Broadway-Updating-LIVE-20141120",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "MacKinnon directs this solid revival with a keen ear for the curling, teasing rhythms of Albee's ornate lines, and the performances are top-notch.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Critic praises the direction as 'solid' with 'keen ear', calls performances 'top-notch', and provides detailed appreciation of individual actors. Despite acknowledging the challenging nature of the material, the critical assessment is clearly positive. | GPT-4o: The excerpt praises the direction and performances, indicating a positive view of the revival. However, the single excerpt warning suggests caution, so a lower score within the Positive range is appropriate. | Gemini: The review uses positive language such as \"solid revival\" and \"top-notch\" performances, but also includes some reservations, such as Close being \"a touch too frosty.\" This indicates a positive but not rave review. | Kimi: The excerpt offers clear praise for the direction ('solid', 'keen ear') and performances ('top-notch', 'grace and nuance'), while noting minor reservations about Close's frostiness. The single-excerpt warning limits confidence in the overall verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:14:38.324Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

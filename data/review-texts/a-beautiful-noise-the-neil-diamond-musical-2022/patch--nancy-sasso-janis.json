@@ -11,5 +11,60 @@
   "bwwExcerpt": "Fradiani fully embodies the role of Neil Diamond as he navigates his career. The talented actor, the first American Idol winner from the Northeast, replaced Will Swenson in the role on Broadway and was in the national tour of “A Bronx Tale.” He sings Diamond's classic hits perfectly, often playing guitar onstage, and often seems to be singing directly to a member of the audience. In his bio, he thanks his parents for taking him to his first concert at three years old to see Neil Diamond.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fradiani fully embodies the role of Neil Diamond as he navigates his career.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on praising the lead performer with strong language ('fully embodies', 'perfectly', 'talented'). However, this is only one curated quote and may not reflect the full review verdict, so scored at lower end of Positive bucket. | GPT-4o: The excerpt praises Fradiani's performance and his ability to embody Neil Diamond, suggesting a positive view of the show. However, due to the single excerpt warning and lack of a full review, the confidence is low and the score is on the lower end of the Positive range. | Gemini: The review excerpt focuses on praise for the lead actor's embodiment of Neil Diamond and his perfect singing of classic hits, indicating a positive experience. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt offers strong praise for the lead actor, describing him as fully embodying the role and singing the classic hits perfectly. Following the single-excerpt guidance for clearly positive quotes, this scores at the upper end of the Positive bucket, though confidence is low given the limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:52:09.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

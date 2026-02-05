@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Wright furiously tears around as the flamboyant Jacques. Subtly depicting the fop's long-suffering servant Murmur, Mos also blazes for a bit as the fiery Toussaint.John McMartin wryly portrays a pragmatic Jefferson. Reg Rogers is very funny whether as Jacques' vengeful half-brother or the oily French diplomat Talleyrand. Veanne Cox and Peter Bartlettcomically contrast as aristocratic refugees upset by New Orleans' raffish society while Nicole Beharie is winsome as a spunky country girl who soon comes to love it. Paul Dano, Nick Mennelland Arnie Burton brightly materialize as various personages.",
   "bwwScore": 4,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Wright furiously tears around as the flamboyant Jacques.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with consistent praise for all performers using positive descriptors like 'blazes', 'wryly', 'very funny', 'winsome', 'brightly'. However, confidence is low due to limited text from curated excerpt that may not represent full review verdict. | GPT-4o: The excerpt highlights strong performances and comedic elements, suggesting a positive view of the production. However, the single excerpt and lack of overall context limit confidence in the verdict. | Gemini: The review excerpt focuses solely on praising the performances of various cast members. Without a broader context, it's difficult to gauge the overall recommendation, but the positive descriptions suggest a 'Positive' bucket with a low confidence due to the limited text. | Kimi: Single excerpt consists entirely of enthusiastic praise for the cast's performances using words like 'blazes,' 'wryly,' and 'very funny,' indicating a positive recommendation, though the lack of context about overall production quality warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:00:57.918Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

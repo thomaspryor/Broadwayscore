@@ -34,5 +34,11 @@
   "textStatus": "partial",
   "sourceMethod": "playwright",
   "wordCount": 733,
-  "tierReason": "Full review text"
+  "tierReason": "Full review text",
+  "wrongProduction": true,
+  "rejectedAt": "2026-02-05T14:51:52.374Z",
+  "rejectedBy": "ensemble-scoreability-check",
+  "rejectionReason": "wrong_production",
+  "rejectionReasoning": "openai: The review is about the national tour of 'A Beautiful Noise' at the Providence Performing Arts Center, not the current Broadway run.; kimi: This review covers the national tour production kicking off at the Providence Performing Arts Center, not the current Broadway run.",
+  "promptVersion": "5.2.0"
 }

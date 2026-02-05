@@ -9,7 +9,7 @@
   "isFullReview": true,
   "dtliExcerpt": "Hawke and Dano bring a fierce physicality to their roles that makes the violence brewing between these brothers feel genuinely dangerous.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 44,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -59,5 +59,60 @@
     "web-search",
     "bww-reviews",
     "bww-roundup"
-  ]
+  ],
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "That's exactly what director James Macdonald's new Broadway production doesn't have.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Review explicitly calls the revival 'disappointing' and systematically explains how the production fails to capture the essential elements of Shepard's play, particularly the sense that the brothers are 'one person at war with himself.' | GPT-4o: The review criticizes the production for lacking the essential element of the brothers' duality, despite praising individual performances. The overall tone is negative, focusing on the production's failure to capture the play's core themes. | Gemini: The review states that the production is \"disappointing\" and lacks the essential element of the play, which is the brothers being two aspects of the same person. While the actors are praised individually, their performances don't create the necessary dynamic. | Kimi: While acknowledging strong individual performances from Hawke and Dano, the critic deems the revival 'disappointing' and finds it fatally lacks the haunting sense of the brothers being one person at war with himself, which is essential to Shepard's play.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:17:45.082Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 43,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

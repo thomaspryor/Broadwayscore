@@ -10,7 +10,7 @@
   "assignedScore": 82,
   "source": "show-score",
   "needsFullText": true,
-  "sourceMethod": "archive",
+  "sourceMethod": "scrapingbee",
   "scoreSource": "sentiment-strong-positive",
   "scoreConfidence": "medium",
   "llmScore": {
@@ -61,30 +61,50 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
   },
-  "archivePath": "data/archives/reviews/wicked-2003/wsj--terry-teachout_2026-01-29.html",
-  "textFetchedAt": "2026-01-29T02:46:31.267Z",
-  "fetchMethod": "archive",
+  "archivePath": "data/archives/reviews/wicked-2003/wsj--terry-teachout_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T16:39:29.156Z",
+  "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
       "tier": 0,
       "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": true
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 1.5,
+      "method": "browserbase",
+      "success": false,
+      "error": "Insufficient text: 0 chars"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
       "success": true
     }
   ],
-  "fetchTier": 4,
+  "fetchTier": 2,
   "archiveOrgTimestamp": "20241216223846",
   "archiveOrgUrl": "http://web.archive.org/web/20241216223846/https://www.wsj.com/articles/SB106748686155075900",
-  "textIssues": [
-    "Word count too low: 118 (min: 300)"
-  ],
-  "rescoreReason": "scored on brief excerpt, now has fullText",
-  "previousLlmScore": 84,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 82,
   "rescoreCompletedAt": "2026-01-29T14:31:52.159Z",
   "garbageFullText": "https://www.wsj.com/articles/SB106748686155075900\n\nBroadway's got itself a great big expensive new musical, complete with\nsmoke, mirrors and (no fooling) flying monkeys. Kristin Chenoweth finally\nhas a full-fledged star part that's worthy of her. Stephen Schwartz has\nwritten a ballad with legs. And Joel Grey, God bless him, is back on stage.\nSo what's not to like? Not much, really. \"Wicked,\" which opened last night at the Gershwin Theatre,\nisn't perfect, but it's more than good enough to run for a decade or two.\nIf it doesn't please you, you're too tough to please.\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nTop stories chosen by WSJ editors\n\nCopyright ©2024 Dow Jones & Company, Inc. All Rights Reserved",
   "garbageReason": "/©\\s*\\d{4}.*all rights reserved/i",
   "garbageFixedAt": "2026-01-29T22:45:23.519Z",
-  "contentTier": "excerpt",
-  "wordCount": 0,
+  "contentTier": "truncated",
+  "wordCount": 410,
   "_removedDesignation": {
     "designation": "Recommended",
     "removedAt": "2026-02-02T04:23:14.316Z",
@@ -96,5 +116,16 @@
   "sources": [
     "show-score",
     "show-score-playwright"
-  ]
+  ],
+  "needsRescore": true,
+  "fullText": "https://www.wsj.com/articles/SB106748686155075900\n\nBroadway's got itself a great big expensive new musical, complete with\nsmoke, mirrors and (no fooling) flying monkeys. Kristin Chenoweth finally\nhas a full-fledged star part that's worthy of her. Stephen Schwartz has\nwritten a ballad with legs. And Joel Grey, God bless him, is back on stage.\nSo what's not to like? Not much, really. \"Wicked,\" which opened last night at the Gershwin Theatre,\nisn't perfect, but it's more than good enough to run for a decade or two.\nIf it doesn't please you, you're too tough to please.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\nContinue reading your article witha WSJ subscription\n\nThe musician’s anti-ICE comments are sparking backlash ahead of his halftime performance at the Super Bowl.\n\nLeader of Paul Weiss Resigns Over Epstein Ties14 hours ago\n\nNewly released files show Brad Karp exchanged emails about a client with convicted sex offender.\n\nThe White House aide has been an architect of aggressive immigration sweeps in U.S. cities and deadly boat strikes in the Caribbean.\n\nA Wargame Shows Just How Vulnerable Europe Is to a Russian Attack\n\nWith America disengaging, Russia might be ready for a new war much sooner than previously estimated.\n\nFlirty Emails and Chummy Photos Show How Far Epstein Reached Into Business World\n\nLos Angeles scion Casey Wasserman, celebrity doctor Peter Attia and film director Brett Ratner are facing scrutiny over new Epstein files.\n\nThe World’s First Viral AI Assistant Has Arrived, and Things Are Getting Weird\n\nPeople created their own AI agents using an open-source project called OpenClaw. Then the AI agents started talking to one another.\n\nThe Social Security data breach is a national-security disaster that could hurt Americans for the rest of their lives: whistleblower\n\nEvery American’s personal data is at risk of fraud after DOGE’s alleged mismanagement, Social Security’s former chief data officer tells MarketWatch.\n\nManhattan’s Luxury Housing Market Is Nearly Back to Its 2016 Heyday\n\nThat past decade was a rollercoaster ride for the city’s high-end prices, which are fast approaching new heights\n\nMost Popular NewsBad Bunny Isn’t Toning It Down, and MAGA Is FumingLeader of Paul Weiss Resigns Over Epstein TiesHow Stephen Miller Stokes Trump’s Boundary-Pushing ImpulsesA Wargame Shows Just How Vulnerable Europe Is to Russian AttackFlirty Emails and Chummy Photos Show How Far Epstein Reached Into Business WorldMost PopularOPINIONAre Trump’s Tariffs Winning?Trump Hands Democrats a Golden OpportunityRepublicans Have an Economy ProblemIs AI the Next Climate Change?The Epstein Files Fallout Hits the InnocentRecommended Videos",
+  "isFullReview": true,
+  "textWordCount": 410,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "paywall_or_login_prompt",
+    "no_ending_punctuation"
+  ],
+  "textStatus": "truncated",
+  "tierReason": "Truncation detected: paywall_or_login_prompt, no_ending_punctuation"
 }

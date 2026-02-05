@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 76,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -22,5 +22,60 @@
   "sources": [
     "show-score-playwright",
     "bww-reviews"
-  ]
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "most often offer a new emphasis on what's always been the strongest aspects of the musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic acknowledges the show retains the original's strengths ('bright and tuneful songs') and praises how changes emphasize the musical's strongest aspects, though notes some changes 'go too far.' The tone is appreciative of both preservation and innovation, suggesting a positive recommendation despite minor reservations. Confidence is low due to truncated text. | GPT-4o: The review acknowledges positive elements like the original songs and fresh perspectives but also hints at occasional overreach. The lack of a full review and the curated nature of the excerpts lead to a low confidence in the final verdict. | Gemini: The review notes that the show retains positive aspects of the original while also making changes that sometimes provide a fresh perspective. The truncated text makes it difficult to assess the overall recommendation with high confidence. | Kimi: The critic praises the retention of the bright, tuneful original songs and applauds most changes for providing fresh perspective and emphasizing the musical's strengths, noting only minor reservations that changes occasionally go too far.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T15:25:30.541Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 77,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 12,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

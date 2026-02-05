@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "'A Little Night Music' is one of the most delectable musicals ever written, by Stephen Sondheim or anyone else. Angela Lansbury is giving a performance that deserves to be part of theater legend. Catherine Zeta-Jones is earthy and poignant in her confident Broadway debut. With all that, it is easier to live with - if not really forgive - the visual drabness and heavy hand of this gorgeous musical's first revival since its Tony-winning 1973 premiere. Director Trevor Nunn's skimpy production, conceived last year for London's tiny Meniere Chocolate Factory, arrives with another of those scandalously reduced orchestras that Broadway producers try to pass off these days as innovation.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 74,
+  "llmScore": {
+    "score": 74,
+    "confidence": "medium",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Angela Lansbury is giving a performance that deserves to be part of theater legend.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic praises the musical itself as 'delectable' and celebrates Lansbury's legendary performance and Zeta-Jones' debut, but criticizes the production's 'visual drabness' and 'heavy hand.' Single excerpt warning applies - this appears to be a qualified positive recommendation despite significant reservations about the staging. | GPT-4o: The review praises the performances of Angela Lansbury and Catherine Zeta-Jones, calling the musical 'delectable'. However, it criticizes the visual drabness and reduced orchestra of the production. The positive elements outweigh the negatives, but the excerpt's limited scope and mixed elements suggest a lower-end Positive score. | Gemini: The review praises the musical itself and the performances of Angela Lansbury and Catherine Zeta-Jones, but criticizes the visual drabness and reduced orchestra. This suggests a positive but not rave review. | Kimi: While the excerpt praises the source material and lead performances (especially Lansbury) highly, the critic finds the production 'skimpy' with 'visual drabness' and a 'scandalously reduced orchestra' that they cannot forgive. The single excerpt suggests a grudging tolerance ('easier to live with') rather than a recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:12:51.587Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 78,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
