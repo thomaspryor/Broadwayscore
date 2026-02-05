@@ -292,6 +292,8 @@ function parseRuntimesTableHTML(html) {
       broadwayComUrl = linkMatch[1];
       title = linkMatch[2].trim();
     }
+    // Decode HTML entities (e.g., "&amp; Juliet" → "& Juliet")
+    title = title.replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
 
     // Cell 1: Runtime
     const runtimeText = cells[1].replace(/<[^>]+>/g, '').trim();

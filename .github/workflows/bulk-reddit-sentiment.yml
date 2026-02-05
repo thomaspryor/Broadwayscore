@@ -118,7 +118,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          ARGS="--shows=missing --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
+          ARGS="--shows=missing --all --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
           LIMIT=${{ github.event.inputs.limit_per_shard || 0 }}
           if [ "$LIMIT" -gt 0 ]; then
             ARGS="$ARGS --limit=$LIMIT"

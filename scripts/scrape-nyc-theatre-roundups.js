@@ -34,7 +34,7 @@ const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 // HTTP helper — fetch page via ScrapingBee
 // ---------------------------------------------------------------------------
 
-async function fetchHtml(url, renderJs = true) {
+async function fetchHtmlSingle(url, renderJs = true) {
   if (!SCRAPINGBEE_KEY) {
     throw new Error('SCRAPINGBEE_API_KEY required');
   }
@@ -56,6 +56,22 @@ async function fetchHtml(url, renderJs = true) {
     req.on('error', reject);
     req.setTimeout(60000, () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+async function fetchHtml(url, renderJs = true, maxRetries = 2) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchHtmlSingle(url, renderJs);
+    } catch (e) {
+      lastError = e;
+      if (attempt < maxRetries) {
+        const delay = 3000 * (attempt + 1);
+        await sleep(delay);
+      }
+    }
+  }
+  throw lastError;
 }
 
 // Stats
@@ -399,9 +415,9 @@ async function scrapeNYCTheatreRoundups() {
     return opening >= new Date('2023-01-01');
   });
 
-  // Apply --shows filter if provided
+  // Apply --shows filter if provided (check both slug and id)
   if (targetShowIds) {
-    recentShows = recentShows.filter(s => targetShowIds.includes(s.slug || s.id));
+    recentShows = recentShows.filter(s => targetShowIds.includes(s.id) || targetShowIds.includes(s.slug));
   }
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);

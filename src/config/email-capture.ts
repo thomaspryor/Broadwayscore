@@ -6,6 +6,8 @@
  */
 
 interface EmailCaptureConfig {
+  /** Paths where email capture modals should never trigger */
+  excludedPaths: string[];
   /** Exit intent modal (mouse leaves viewport top) */
   exitIntent: {
     enabled: boolean;
@@ -35,6 +37,7 @@ interface EmailCaptureConfig {
 
 const presets: Record<string, EmailCaptureConfig> = {
   soft: {
+    excludedPaths: ['/feedback', '/submit-review', '/methodology'],
     exitIntent: { enabled: false },
     pageViewGate: { threshold: 8 },
     homepageBanner: {
@@ -48,6 +51,7 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
   },
   aggressive: {
+    excludedPaths: ['/feedback', '/submit-review'],
     exitIntent: { enabled: true },
     pageViewGate: { threshold: 2 },
     homepageBanner: {

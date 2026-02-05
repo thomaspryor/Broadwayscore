@@ -4,10 +4,10 @@
     "lastUpdated": "2026-02-05",
     "notes": "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     "stats": {
-      "totalReviews": 5698,
-      "skippedNoScore": 7751,
+      "totalReviews": 5694,
+      "skippedNoScore": 8833,
       "skippedDuplicate": 8,
-      "skippedDuplicateUrl": 166,
+      "skippedDuplicateUrl": 213,
       "skippedWrongProduction": 124,
       "recoveredFromGarbage": 82,
       "scoreSources": {
@@ -17,14 +17,14 @@
         "explicit-letterGrade": 2,
         "human-review": 59,
         "originalScore-priority0": 878,
-        "llmScore": 3043,
+        "llmScore": 3041,
         "thumb-override-llm": 1,
-        "llmScore-lowconf": 1491,
+        "llmScore-lowconf": 1490,
         "llmScore-review": 1,
         "assignedScore": 0,
         "originalScore": 0,
         "bucket": 0,
-        "thumb": 212
+        "thumb": 211
       }
     }
   },
@@ -1222,7 +1222,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "clevelands-star-102",
-      "outlet": "clevelands-star-102",
+      "outlet": "Clevelands Star 102",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1239,7 +1239,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "columbus-underground",
-      "outlet": "columbus-underground",
+      "outlet": "Columbus Underground",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -1256,7 +1256,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "dayton-local",
-      "outlet": "dayton-local",
+      "outlet": "Dayton Local",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1290,7 +1290,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "gephardt-daily",
-      "outlet": "gephardt-daily",
+      "outlet": "Gephardt Daily",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1324,7 +1324,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "houston-chronicle",
-      "outlet": "houston-chronicle",
+      "outlet": "Houston Chronicle",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -1341,7 +1341,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "motif",
-      "outlet": "motif",
+      "outlet": "Motif",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -1351,6 +1351,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "You will hear many of Diamond’s hits throughout the evening and most are sung by Nick Fradiani, though occasionally other cast members will take the lead if the song is used for a particular reason, such as a relationship breakup.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "new-city-stage",
+      "outlet": "New City Stage",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Dennis Polkow",
+      "url": "https://www.newcitystage.com/2024/11/18/diamond-in-the-rough-a-review-of-a-beautiful-noise-at-broadway-in-chicago/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "“Noise” shows the toil involved and sugarcoats nothing. The Act I finale has him composing in a broken-down motel room at one of his most down-and-out moments only to stumble upon “Sweet Caroline.",
       "dtliThumb": null,
       "bwwThumb": "Meh",
       "contentTier": "excerpt"
@@ -1425,23 +1442,6 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "new-city-stage",
-      "outlet": "new-city-stage",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Dennis Polkow",
-      "url": "https://www.newcitystage.com/2024/11/18/diamond-in-the-rough-a-review-of-a-beautiful-noise-at-broadway-in-chicago/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "“Noise” shows the toil involved and sugarcoats nothing. The Act I finale has him composing in a broken-down motel room at one of his most down-and-out moments only to stumble upon “Sweet Caroline.",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "observer",
       "outlet": "Observer",
       "assignedScore": 42,
@@ -1460,7 +1460,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "orlando-weekly",
-      "outlet": "orlando-weekly",
+      "outlet": "Orlando Weekly",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -1477,7 +1477,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "patch",
-      "outlet": "patch",
+      "outlet": "Patch",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1494,7 +1494,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "revue",
-      "outlet": "revue",
+      "outlet": "Revue",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1511,7 +1511,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "seattles-child",
-      "outlet": "seattles-child",
+      "outlet": "Seattles Child",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -1545,7 +1545,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 76,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -1557,6 +1557,40 @@
       "pullQuote": "Maybe Neil Diamond isn't there in person - but he is still present. And his many fans are grateful for that.",
       "dtliThumb": null,
       "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-charlotte-ledger",
+      "outlet": "The Charlotte Ledger",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Larry Toppman",
+      "url": "https://charlotteledger.substack.com/p/a-beautiful-noise-a-diamond-not-much",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The fan in me didn’t mind all that and appreciated the chance to hear a deep and varied songbook performed with skill, energy and new orchestrations. And the people who see the show at Belk Theatre this week in its Broadway Lights incarnation will undoubtedly be fans.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-minnesota-star-tribune",
+      "outlet": "The Minnesota Star Tribune",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Rohan Preston",
+      "url": "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "But “Noise” would have been better served with a different framing device from playwright Anthony McCarten. If we see a therapist, we expect a rush of breakthroughs. What we get instead in the show is underwhelming piffle — confessional hagiography dressed up as serious introspection. Diamond should have been telling all to Oprah or Barbara Walters.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
       "contentTier": "excerpt"
     },
     {
@@ -1578,6 +1612,23 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "the-oakland-press",
+      "outlet": "The Oakland Press",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Gary Graff",
+      "url": "https://www.theoaklandpress.com/2024/12/27/a-beautiful-noise-makes-good-times-seem-so-good-for-neil-diamond-fans/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "What the production does have, however, is…well, the “Noise,” and one that’s gloriously rendered by this first national company.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "philadelphia-inquirer",
       "outlet": "The Philadelphia Inquirer",
       "assignedScore": 80,
@@ -1589,57 +1640,6 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "Dan DeLuca, Philadelphia Inquirer: The show works partly because Fradiani is believable enough as Diamond goes from wracked-with-doubt — he thinks “Neil Diamond” is a lousy stage name — to being bedazzled with sequins as he earns his “Jewish Elvis” nickname in the 1970s.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "the-charlotte-ledger",
-      "outlet": "the-charlotte-ledger",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Larry Toppman",
-      "url": "https://charlotteledger.substack.com/p/a-beautiful-noise-a-diamond-not-much",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The fan in me didn’t mind all that and appreciated the chance to hear a deep and varied songbook performed with skill, energy and new orchestrations. And the people who see the show at Belk Theatre this week in its Broadway Lights incarnation will undoubtedly be fans.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "the-minnesota-star-tribune",
-      "outlet": "the-minnesota-star-tribune",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Rohan Preston",
-      "url": "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "But “Noise” would have been better served with a different framing device from playwright Anthony McCarten. If we see a therapist, we expect a rush of breakthroughs. What we get instead in the show is underwhelming piffle — confessional hagiography dressed up as serious introspection. Diamond should have been telling all to Oprah or Barbara Walters.",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "outletId": "the-oakland-press",
-      "outlet": "the-oakland-press",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Gary Graff",
-      "url": "https://www.theoaklandpress.com/2024/12/27/a-beautiful-noise-makes-good-times-seem-so-good-for-neil-diamond-fans/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "What the production does have, however, is…well, the “Noise,” and one that’s gloriously rendered by this first national company.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "excerpt"
@@ -1783,7 +1783,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "outletId": "whats-up-newp",
-      "outlet": "whats-up-newp",
+      "outlet": "Whats Up Newp",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -2990,7 +2990,7 @@
     {
       "showId": "a-dolls-house-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 45,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
@@ -3213,7 +3213,7 @@
       "outletId": "variety",
       "outlet": "Variety",
       "assignedScore": 80,
-      "scoreSource": "llmScore-lowconf",
+      "scoreSource": "llmScore",
       "bucket": "Positive",
       "thumb": "Up",
       "criticName": "Trish Deitch",
@@ -3223,7 +3223,7 @@
       "pullQuote": "In this revival, what's left is a beautiful, spacious clarity about what this oft-produced play is about.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "complete"
     },
     {
       "showId": "a-dolls-house-2023",
@@ -3849,7 +3849,7 @@
       "url": "https://nystagereview.com/2020/01/21/a-soldiers-play-charles-fullers-pulitzer-winner-in-stunning-revival/",
       "publishDate": "2020-01-21T21:02:09",
       "originalRating": "4/5 stars",
-      "pullQuote": null,
+      "pullQuote": "Leon's demands of the cast are met in full. It's as if every member is a stick of just-lighted dynamite. Grier and Underwood detonate the brightest and account for the most emotional damage inflicted, but everyone is outstanding.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "needs-rescrape"
@@ -5617,7 +5617,7 @@
       "url": "https://nystagereview.com/2019/03/21/aint-too-proud-the-life-and-times-of-the-temptations-with-hits-and-misses/",
       "publishDate": "2019-03-21T21:34:23",
       "originalRating": "3/5 stars",
-      "pullQuote": "As subjects for jukebox musicals go, you could hardly do better than the Temptations. If this commercially driven sub-genre generally provides limited creative opportunities, it can at least be a vehicle for great showmanship, a virtue in which the legendary R&B group remains unsurpassed.",
+      "pullQuote": "If none of the virtuosic performances in Ain't Too Proud match the effortless sweetness and soulfulness of the original recordings, the abundance of talent and energy onstage is something to marvel at in its own right. Melissa",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -7514,7 +7514,7 @@
     {
       "showId": "almost-famous-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 42,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
@@ -8509,7 +8509,7 @@
       "url": "https://nystagereview.com/2018/11/04/american-son-modern-injustice-wrought-as-melodrama/",
       "publishDate": "2018-11-04T22:00:31",
       "originalRating": "2/5 stars",
-      "pullQuote": "This can even be true, Demos-Brown takes pains to show us, when the parents of the dark-skinned youth possibly in police custody are accomplished and well-connected: Kendra is a college professor with a Ph. D, and Scott, who is white, works for the FBI.",
+      "pullQuote": "The production's most impressive feature, in the end, is Derek McLane's scenic design, detailing a bleak, sterile waiting era, surrounded by windows through which we can see a steady downpour of rain, which stops intermittently but never for long.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -10183,7 +10183,7 @@
     {
       "showId": "and-juliet-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 79,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -13220,7 +13220,7 @@
       "url": "https://nystagereview.com/2019/03/10/be-more-chill-desperately-and-delightfully-striving-to-be-cool-in-school/",
       "publishDate": "2019-03-10T20:45:09",
       "originalRating": "4/5 stars",
-      "pullQuote": "Opening on Sunday at the Lyceum Theatre, the show is a bright and boisterous entertainment populated by a delightful ensemble and driven by propulsive music and some frequently frenzied dancing.",
+      "pullQuote": "The show is a bright and boisterous entertainment populated by a delightful ensemble and driven by propulsive music and some frequently frenzied dancing. Neatly shaped along fairly traditional musical comedy lines by book writer Joe Tracz and songwriter Joe Iconis, Be More Chill delivers a cartoon tuner that's as classic as Faust and twice as funny.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -13441,7 +13441,7 @@
       "url": "https://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
       "publishDate": "2019-04-25T20:46:48",
       "originalRating": "4/5 stars",
-      "pullQuote": "It opened tonight at the Winter Garden, that frequent home to now-and-forever-running staples, and it’s nearly guaranteed to follow suit. And the best part is: It’s a really good tourist show. The extravaganza begins well before the curtain goes up.",
+      "pullQuote": "And thus is conjured a very enjoyable, very self-aware, very slick, very tuneful, very constructed-to-please-the-crowds new Broadway musical. It opened tonight at the Winter Garden, that frequent home to now-and-forever-running staples, and it's nearly guaranteed to follow suit.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -13602,7 +13602,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "albuquerque-journal",
-      "outlet": "albuquerque-journal",
+      "outlet": "Albuquerque Journal",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -13619,7 +13619,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "apt-613",
-      "outlet": "apt-613",
+      "outlet": "Apt 613",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -13636,7 +13636,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "arts-knoxville",
-      "outlet": "arts-knoxville",
+      "outlet": "Arts Knoxville",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -13653,7 +13653,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "attractions",
-      "outlet": "attractions",
+      "outlet": "Attractions",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -13669,8 +13669,8 @@
     },
     {
       "showId": "beetlejuice-2022",
-      "outletId": "austincom",
-      "outlet": "austincom",
+      "outletId": "austin",
+      "outlet": "Austin",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -13687,7 +13687,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "bg-independent-news",
-      "outlet": "bg-independent-news",
+      "outlet": "Bg Independent News",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14197,7 +14197,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "calgary-herald",
-      "outlet": "calgary-herald",
+      "outlet": "Calgary Herald",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14214,7 +14214,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "charleston-scene",
-      "outlet": "charleston-scene",
+      "outlet": "Charleston Scene",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14264,8 +14264,8 @@
     },
     {
       "showId": "beetlejuice-2022",
-      "outletId": "clevelandcom",
-      "outlet": "clevelandcom",
+      "outletId": "cleveland",
+      "outlet": "Cleveland",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14282,7 +14282,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "click-on-detroit",
-      "outlet": "click-on-detroit",
+      "outlet": "Click on Detroit",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14299,7 +14299,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "dallas-voice",
-      "outlet": "dallas-voice",
+      "outlet": "Dallas Voice",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14316,7 +14316,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "datebook",
-      "outlet": "datebook",
+      "outlet": "Datebook",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14350,7 +14350,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "el-paso-times",
-      "outlet": "el-paso-times",
+      "outlet": "El Paso Times",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14366,8 +14366,8 @@
     },
     {
       "showId": "beetlejuice-2022",
-      "outletId": "fort-worth-star-telgram",
-      "outlet": "fort-worth-star-telgram",
+      "outletId": "fort-worth-star-telegram",
+      "outlet": "Fort Worth Star Telegram",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14384,7 +14384,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "gephardt-daily",
-      "outlet": "gephardt-daily",
+      "outlet": "Gephardt Daily",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14418,7 +14418,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "hoodline",
-      "outlet": "hoodline",
+      "outlet": "Hoodline",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14435,7 +14435,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "houston-press",
-      "outlet": "houston-press",
+      "outlet": "Houston Press",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14452,7 +14452,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "madison-magazine",
-      "outlet": "madison-magazine",
+      "outlet": "Madison Magazine",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14469,7 +14469,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "memphis-flyer",
-      "outlet": "memphis-flyer",
+      "outlet": "Memphis Flyer",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14486,7 +14486,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "new-city-stage",
-      "outlet": "new-city-stage",
+      "outlet": "New City Stage",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14503,7 +14503,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "northwest-arkansas-democrat-gazette",
-      "outlet": "northwest-arkansas-democrat-gazette",
+      "outlet": "Northwest Arkansas Democrat Gazette",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14520,7 +14520,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "oklahoma-city-free-press",
-      "outlet": "oklahoma-city-free-press",
+      "outlet": "Oklahoma City Free Press",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14537,7 +14537,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "orlando-weekly",
-      "outlet": "orlando-weekly",
+      "outlet": "Orlando Weekly",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14554,7 +14554,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "palm-beach-daily-news",
-      "outlet": "palm-beach-daily-news",
+      "outlet": "Palm Beach Daily News",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14571,7 +14571,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "pittsburgh-city-paper",
-      "outlet": "pittsburgh-city-paper",
+      "outlet": "Pittsburgh City Paper",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14588,7 +14588,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "post-crescent",
-      "outlet": "post-crescent",
+      "outlet": "Post Crescent",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14605,7 +14605,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "revue",
-      "outlet": "revue",
+      "outlet": "Revue",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14639,7 +14639,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "south-florida-sun-sentinel",
-      "outlet": "south-florida-sun-sentinel",
+      "outlet": "South Florida Sun Sentinel",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14656,7 +14656,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "spectrum-news-1",
-      "outlet": "spectrum-news-1",
+      "outlet": "Spectrum News 1",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14673,7 +14673,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "telegram",
-      "outlet": "telegram",
+      "outlet": "Telegram",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14690,7 +14690,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-austin-chronicle",
-      "outlet": "the-austin-chronicle",
+      "outlet": "The Austin Chronicle",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14707,7 +14707,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-buffalo-news",
-      "outlet": "the-buffalo-news",
+      "outlet": "The Buffalo News",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14724,7 +14724,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-daily-gazette",
-      "outlet": "the-daily-gazette",
+      "outlet": "The Daily Gazette",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14741,7 +14741,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-paisano",
-      "outlet": "the-paisano",
+      "outlet": "The Paisano",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14758,7 +14758,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-prospector",
-      "outlet": "the-prospector",
+      "outlet": "The Prospector",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -14775,7 +14775,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "the-virginian-pilot",
-      "outlet": "the-virginian-pilot",
+      "outlet": "The Virginian Pilot",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14809,7 +14809,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "times-union",
-      "outlet": "times-union",
+      "outlet": "Times Union",
       "assignedScore": 60,
       "scoreSource": "thumb",
       "bucket": "Mixed",
@@ -14826,7 +14826,7 @@
     {
       "showId": "beetlejuice-2022",
       "outletId": "tulsa-world",
-      "outlet": "tulsa-world",
+      "outlet": "Tulsa World",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -15455,7 +15455,7 @@
     {
       "showId": "between-riverside-and-crazy-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 73,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -16076,7 +16076,7 @@
       "url": "http://www.newsday.com/entertainment/theater/blackbird-review-jeff-daniels-michelle-williams-in-searing-drama-1.11558700",
       "publishDate": null,
       "originalRating": null,
-      "pullQuote": "We better understand the stakes, but don’t know what she wants. Neither does he and, after her stunning monologue about that night, we still don’t know. advertisement | advertise on newsday But they know each other and we know them with an intimate intensity that’s almost hard to watch.",
+      "pullQuote": "He hulks, but looks more freaked out than scary. She may once have had the delicacy of a forest creature, but the ravages of survival have hardened her into a dried bundle of twigs.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -16097,23 +16097,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "blackbird-2016",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 80,
-      "scoreSource": "llmScore",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Jesse Green",
-      "url": "https://www.theguardian.com/stage/2016/mar/10/blackbird-review-michelle-williams-and-jeff-daniels-stun-in-abuse-drama",
-      "publishDate": "March 11, 2016",
-      "originalRating": null,
-      "pullQuote": "Daniels and Williams are both superb in their roles, bringing a raw intensity to this difficult material that makes for compelling, if deeply uncomfortable, theater.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "blackbird-2016",
@@ -18363,23 +18346,6 @@
     },
     {
       "showId": "bug-2026",
-      "outletId": "4-columns-david-cote",
-      "outlet": "4Columns",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "David Cote",
-      "url": "https://www.4columns.org/cote-david/bug",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A hardworking and very effective Coon is left to maintain dramatic tension. In her TV triumphs as plucky social climbers (Age and The White Lotus), Coon’s fresh beauty and vivacious yet sensible vigor has elevated so-so scripts. She makes a smart and relatable protagonist either in nineteenth-century bustle or Thai resort muumuu.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "none"
-    },
-    {
-      "showId": "bug-2026",
       "outletId": "4columns",
       "outlet": "4Columns",
       "assignedScore": 62,
@@ -20568,7 +20534,7 @@
       "url": "https://nystagereview.com/2018/04/12/carousel-rodgers-hammerstein-jessie-mueller-renee-fleming-sommers/",
       "publishDate": "2018-04-12T19:00:41",
       "originalRating": "4/5 stars",
-      "pullQuote": "The artful simplicity of Hammerstein’s heartfelt text and the lyrical loveliness of Rodgers’ music for Carousel rarely fail to tap into wellsprings of emotion. It is a supreme example of Broadway musical storytelling from its Golden Age. Bringing great works back to Broadway is never easy.",
+      "pullQuote": "The latest rendition of Carousel is scarcely so revelatory. It is smudged visually. Yet, as briskly staged by veteran director Jack O'Brien, this production for the greater part proves satisfying. It is beautifully sung, exuberantly danced and ardently performed.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -21075,13 +21041,13 @@
       "bucket": "Negative",
       "thumb": "Down",
       "criticName": "Ben Brantley",
-      "url": "https://www.nytimes.com/2012/09/11/theater/reviews/chaplin-musical-at-the-ethel-barrymore-theater.html",
+      "url": "https://www.nytimes.com/2012/09/11/theater/reviews/chaplin-the-musical-at-the-ethel-barrymore-theater.html",
       "publishDate": "September 10, 2012",
       "originalRating": null,
       "pullQuote": "The problem with 'Chaplin' is that it never finds a theatrical language that matches the cinematic poetry of its subject.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "chaplin-2012",
@@ -21132,7 +21098,7 @@
       "pullQuote": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "truncated"
+      "contentTier": "complete"
     },
     {
       "showId": "chaplin-2012",
@@ -22013,7 +21979,7 @@
       "url": "https://nystagereview.com/2018/04/11/children-of-a-lesser-god-joshua-jackson-broadway/",
       "publishDate": "2018-04-11T20:55:50",
       "originalRating": "2/5 stars",
-      "pullQuote": "He’s James Leeds, a theoretically charismatic new therapist at a school for the deaf. He is an idealist, we’re made to believe, a sixties wannabe-radical (he burned his Blue Cross card to protest the draft, because he was scared to burn his actual draft card) who served in the Peace Corps.",
+      "pullQuote": "The first act, as James continues to both bully and seduce Sarah, is icky. They fall in love, and they marry, but in a dysfunctional, James-dominated relationship. The lack of any chemistry between the leads doesn't help.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -22302,7 +22268,7 @@
       "url": "https://nystagereview.com/2019/01/08/choir-boy-brave-new-voice-on-broadway/",
       "publishDate": "2019-01-08T21:31:52",
       "originalRating": "5/5 stars",
-      "pullQuote": "Manhattan Theatre Club, which first presented the play in a limited run at their smallest stage in the summer of 2013, has now finally moved it to Broadway—and it’s about time! Choir Boy was brave and stunning back then.",
+      "pullQuote": "Tarell Alvin McCraney's Choir Boy is a knockout tale of music, homophobia, and racism told in rousing and entertaining manner. Manhattan Theatre Club, which first presented the play in a limited run at their smallest stage in the summer of 2013, has now finally moved it to Broadway-and it's about time! Choir Boy was brave and stunning back then.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -23772,7 +23738,7 @@
     {
       "showId": "cost-of-living-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -30047,7 +30013,7 @@
     {
       "showId": "fat-ham-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 74,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -32895,7 +32861,7 @@
       "url": "https://nystagereview.com/2018/08/13/gettin-the-band-back-together-down-the-shore-everythings-all-right/",
       "publishDate": "2018-08-13T21:35:41",
       "originalRating": "3/5 stars",
-      "pullQuote": "In fact, it’s a great distillation of what’s to come. Because everything that follows is sort of dumb and a more than a little confusing. Mom is either still mourning dad or else is a Mrs.",
+      "pullQuote": "The show is too long. It's plot mechanics are creaky. Some of those character numbers should be cut, delightful as they are-darlings waiting to be killed. (Bart's, which is hilarious, is also too dirty for a family show.) And yet it's all just a really good time.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -40226,7 +40192,7 @@
       "url": "https://nystagereview.com/2018/07/26/head-over-heels-a-new-musical-with-plenty-of-surprises/",
       "publishDate": "2018-07-26T21:30:20",
       "originalRating": "3/5 stars",
-      "pullQuote": "Surprises in production, with director Michael Mayer and his team altogether littering the stage with jokes and gags and gimmicks which grow, like a snowball, until just about everything gets a laugh.",
+      "pullQuote": "There are surprises galore on the stage of the",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -43465,7 +43431,7 @@
     {
       "showId": "how-to-dance-in-ohio-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 81,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -44196,7 +44162,7 @@
     {
       "showId": "i-need-that-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 43,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Negative",
@@ -47291,7 +47257,7 @@
     {
       "showId": "jajas-african-hair-braiding-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -49774,7 +49740,7 @@
     {
       "showId": "kimberly-akimbo-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 83,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -50225,7 +50191,7 @@
       "url": "https://nystagereview.com/2018/11/08/king-kong-the-beast-is-us-with-special-effects/",
       "publishDate": "2018-11-08T21:30:37",
       "originalRating": "2/5 stars",
-      "pullQuote": "Years ago, I was reduced to heaving sobs by the Broadway production of War Horse, another show that incorporated puppetry to evoke the suffering of a non-human animal—though there the craftsmanship, while masterful, left more to the imagination (and more to the dialogue). My experience with King Kong was less cathartic, and more sour.",
+      "pullQuote": "Thorne's record of intelligent, nuanced, morally complex work, which includes Harry Potter and the Cursed Child, suggest that his contributions may have been, like Kong, diminished by the forces of commerce.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50242,7 +50208,7 @@
       "url": "https://nystagereview.com/2018/11/08/king-kong-broadway-agape-over-ape/",
       "publishDate": "2018-11-08T21:31:00",
       "originalRating": "2/5 stars",
-      "pullQuote": "But this is a Broadway musical, and the stuffed gorilla—which, once it finally appears late in the first act, has far more stage time than most of the Equity members on hand—does not sing or talk. Kong spends much of his time being sung at, by the damsel Ann Darrow (Christiani Pitts).",
+      "pullQuote": "King Kong-the animated star of the new Broadway extravaganza, and when I say animated I don't mean \"full of life\"-is awesome. The sheer size and range of movement of this 20-foot-tall puppet (although puppet doesn't quite describe it) might well leave you agape, at least for 15 of the 130 minutes you'll spend at the Broadway Theatre.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -50463,7 +50429,7 @@
       "url": "https://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
       "publishDate": "2019-04-04T19:56:36",
       "originalRating": "4/5 stars",
-      "pullQuote": "Let’s start with the leading lady, though, who arrives fresh off her Tony Award-winning turn as a geriatric survivor in last season’s stunning revival of Edward Albee’s Three Tall Women. Jackson’s Lear has something of that character’s imperious air, but otherwise couldn’t be more different.",
+      "pullQuote": "That previous King Lear was staged at London's Old Vic in 2016, under the direction of Deborah Warner, renowned for her innovative interpretations of classic works, including her collaborations with another great actress from across the pond, Ireland's Fiona Shaw.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -52783,7 +52749,7 @@
     {
       "showId": "leopoldstadt-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 78,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -53855,7 +53821,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "city-pulse",
-      "outlet": "city-pulse",
+      "outlet": "City Pulse",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -53888,8 +53854,8 @@
     },
     {
       "showId": "life-of-pi-2023",
-      "outletId": "clevelandcom",
-      "outlet": "clevelandcom",
+      "outletId": "cleveland",
+      "outlet": "Cleveland",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -53906,7 +53872,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "daily-pilot",
-      "outlet": "daily-pilot",
+      "outlet": "Daily Pilot",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -53923,7 +53889,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "dallas-voice",
-      "outlet": "dallas-voice",
+      "outlet": "Dallas Voice",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -53990,8 +53956,8 @@
     },
     {
       "showId": "life-of-pi-2023",
-      "outletId": "fort-worth-star-telgram",
-      "outlet": "fort-worth-star-telgram",
+      "outletId": "fort-worth-star-telegram",
+      "outlet": "Fort Worth Star Telegram",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54025,7 +53991,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "houston-chronicle",
-      "outlet": "houston-chronicle",
+      "outlet": "Houston Chronicle",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54076,7 +54042,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "md-theatre-guide",
-      "outlet": "Maryland Theatre Guide",
+      "outlet": "Md Theatre Guide",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54093,7 +54059,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "md-theatre-guide",
-      "outlet": "Maryland Theatre Guide",
+      "outlet": "Md Theatre Guide",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54178,7 +54144,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "nippertown",
-      "outlet": "nippertown",
+      "outlet": "Nippertown",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54195,7 +54161,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "oregon-artswatch",
-      "outlet": "oregon-artswatch",
+      "outlet": "Oregon Artswatch",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54212,7 +54178,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "pioneer-press",
-      "outlet": "pioneer-press",
+      "outlet": "Pioneer Press",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54245,6 +54211,23 @@
     },
     {
       "showId": "life-of-pi-2023",
+      "outletId": "the-charlotte-ledger",
+      "outlet": "The Charlotte Ledger",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Lawrence Toppman",
+      "url": "https://charlotteledger.substack.com/p/life-of-pi-blends-visual-magic-and?utm_source=substack&utm_medium=email&utm_content=share",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "In fact, the entire show has a fairy-tale quality, initially joyous and then steadily more Grimm. Like the insurance investigator, we stop asking whether Pi’s narrative is true and ask the more important question: Why is he telling it to us? The answer brings a gut punch that reminded me of William Blake’s poem “The Tyger,” a companion piece to ...",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "life-of-pi-2023",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 82,
@@ -54258,6 +54241,23 @@
       "pullQuote": "The production succeeds magnificently at making you believe in the unbelievable, turning Richard Parker into a character as vital as Pi himself through puppetry that is both technically dazzling and emotionally resonant.",
       "dtliThumb": null,
       "bwwThumb": null,
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "outletId": "the-orange-county-register",
+      "outlet": "The Orange County Register",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Christopher Smith",
+      "url": "https://www.ocregister.com/2025/06/05/review-life-of-pi-at-segerstrom-center-is-magically-absorbing/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "A sensory dazzle, ‘Life of Pi’ is the rare non-musical on the Costa Mesa stage, a wonderfully realized mounting propelled by stage craft at its most magically absorbing. Derived in part from a 2001 novel, and the 2012 worldwide hit movie, ‘Life of Pi’ charts a 17-year-old’s perilous journey on a Japanese cargo ship with his zookeeping family.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
       "contentTier": "excerpt"
     },
     {
@@ -54279,6 +54279,23 @@
     },
     {
       "showId": "life-of-pi-2023",
+      "outletId": "the-state-news",
+      "outlet": "The State News",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Victoria Winfield",
+      "url": "https://statenews.com/article/2025/03/life-of-pi-transforms-the-wharton-center-stage?ct=content_open&cv=cbox_latest",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Life of Pi’ is full of philosophical pondering and spiritual exploration in the face of great odds. Mandviwala pointed out the importance of the meaning behind this line from the play.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "life-of-pi-2023",
       "outletId": "wsj",
       "outlet": "The Wall Street Journal",
       "assignedScore": 82,
@@ -54293,57 +54310,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "outletId": "the-charlotte-ledger",
-      "outlet": "the-charlotte-ledger",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Lawrence Toppman",
-      "url": "https://charlotteledger.substack.com/p/life-of-pi-blends-visual-magic-and?utm_source=substack&utm_medium=email&utm_content=share",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "In fact, the entire show has a fairy-tale quality, initially joyous and then steadily more Grimm. Like the insurance investigator, we stop asking whether Pi’s narrative is true and ask the more important question: Why is he telling it to us? The answer brings a gut punch that reminded me of William Blake’s poem “The Tyger,” a companion piece to ...",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "outletId": "the-orange-county-register",
-      "outlet": "the-orange-county-register",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Christopher Smith",
-      "url": "https://www.ocregister.com/2025/06/05/review-life-of-pi-at-segerstrom-center-is-magically-absorbing/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "A sensory dazzle, ‘Life of Pi’ is the rare non-musical on the Costa Mesa stage, a wonderfully realized mounting propelled by stage craft at its most magically absorbing. Derived in part from a 2001 novel, and the 2012 worldwide hit movie, ‘Life of Pi’ charts a 17-year-old’s perilous journey on a Japanese cargo ship with his zookeeping family.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "outletId": "the-state-news",
-      "outlet": "the-state-news",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Victoria Winfield",
-      "url": "https://statenews.com/article/2025/03/life-of-pi-transforms-the-wharton-center-stage?ct=content_open&cv=cbox_latest",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Life of Pi’ is full of philosophical pondering and spiritual exploration in the face of great odds. Mandviwala pointed out the importance of the meaning behind this line from the play.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
     },
     {
       "showId": "life-of-pi-2023",
@@ -54399,7 +54365,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "times-union",
-      "outlet": "times-union",
+      "outlet": "Times Union",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54484,7 +54450,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "weho-times",
-      "outlet": "weho-times",
+      "outlet": "Weho Times",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -54501,7 +54467,7 @@
     {
       "showId": "life-of-pi-2023",
       "outletId": "whats-up-newp",
-      "outlet": "whats-up-newp",
+      "outlet": "Whats Up Newp",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -55122,7 +55088,7 @@
       "url": "http://www.timeout.com/newyork/theater/long-days-journey-into-night",
       "publishDate": null,
       "originalRating": "5/5",
-      "pullQuote": "You can't take your eyes off her; it's a mesmeric performance. But don't look here for the \"simple, unaffected charm\" described in O'Neill's stage directions. Lange's Mary is a desperate fighter, defensive and manipulative, switching in an instant from self-pity to sneak attack.",
+      "pullQuote": "Sometimes shows can buckle under the weight of their own pedigrees. There are big-ticket plays that terrify their actors; famous stars who fluster their colleagues; massive sets that turn environments from living things into monuments.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -58610,7 +58576,7 @@
       "url": "https://nystagereview.com/2018/04/08/mean-girls-tina-feys-little-foxes-slay-broadway/",
       "publishDate": "2018-04-08T21:39:49",
       "originalRating": "4/5 stars",
-      "pullQuote": "No; maybe she should be giving lessons. Because Mean Girls is “fetch.” Which in the parlance might be considered “mean good”; or as Tina might say, but Oscar most assuredly would not, “tits.",
+      "pullQuote": "The supercharged secret weapon of the evening is Kerry Butler, playing three adult roles. Well remembered from Bat Boy and Hairspray, Butler is altogether uproarious here. (While one assumes that no dogs were harmed in the production of Mean Girls, Butler might make your mind momentarily flash to Edward Albee's The Goat.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -62324,23 +62290,6 @@
       "contentTier": "complete"
     },
     {
-      "showId": "my-name-is-lucy-barton-2020",
-      "outletId": "vulture",
-      "outlet": "Vulture",
-      "assignedScore": 41,
-      "scoreSource": "llmScore",
-      "bucket": "Negative",
-      "thumb": "Down",
-      "criticName": "Jesse Green",
-      "url": "https://www.vulture.com/2020/01/theater-review-my-name-is-lucy-barton.html",
-      "publishDate": "January 15, 2020",
-      "originalRating": null,
-      "pullQuote": "If you can't make it to Broadway for this show that I'm not recommending, you can rest assured that in February, the production will be released as a recording.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
-    },
-    {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "outletId": "nypost",
       "outlet": "New York Post",
@@ -62471,7 +62420,7 @@
       "url": "https://nystagereview.com/2018/12/06/network-ivo-van-hove-brings-the-1976-oscar-winning-film-glaringly-to-the-stage/",
       "publishDate": "2018-12-06T21:45:14",
       "originalRating": "3/5 stars",
-      "pullQuote": "(Or maybe they are truly mad as hell: at escalating ticket prices. Maybe not.) So the spectators are having a good time—or think they are.",
+      "pullQuote": "Despite having a brazen on-stage intercourse-to-climax interlude, Goldwyn and, especially, Maslany fail to suggest obligatory sexual chemistry. Bresnahan certainly milks her wronged-wife moment for all it's worth. Among the other scenery chewing personae, restrained Nick Wyman, in two sequences as pragmatic exec Arthur Jensen, looks good.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -64827,7 +64776,7 @@
     {
       "showId": "ohio-state-murders-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 62,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
@@ -66935,7 +66884,7 @@
     {
       "showId": "once-upon-a-one-more-time-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 73,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -69214,7 +69163,7 @@
     {
       "showId": "parade-2023",
       "outletId": "md-theatre-guide",
-      "outlet": "Maryland Theatre Guide",
+      "outlet": "Md Theatre Guide",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -69224,6 +69173,23 @@
       "publishDate": null,
       "originalRating": null,
       "pullQuote": "“Parade” is both a warning and a promise of what America has been, is, and may become. This is musical theater at its most potent. Beautiful music, inspired directing, and a phenomenal cast merge for a once-in-a-lifetime production now in its final days. I doubt we will again see “Parade” so powerfully produced at so devastating a moment.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "parade-2023",
+      "outletId": "new-city-stage",
+      "outlet": "New City Stage",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Dennis Polkow",
+      "url": "https://www.newcitystage.com/2025/08/11/hope-for-the-hopeless-a-review-of-broadway-in-chicagos-parade/",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "The scaled-down ensemble compensates with singing out, as if it’s a grand opera chorus. The small orchestra plays with immense tenderness and expression. Great care is taken so that the sound design is never oppressive but waxes and wanes with the drama. “Parade” is the best touring musical of the year so far, but the run is short.",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "contentTier": "excerpt"
@@ -69315,25 +69281,8 @@
     },
     {
       "showId": "parade-2023",
-      "outletId": "new-city-stage",
-      "outlet": "new-city-stage",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Dennis Polkow",
-      "url": "https://www.newcitystage.com/2025/08/11/hope-for-the-hopeless-a-review-of-broadway-in-chicagos-parade/",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "The scaled-down ensemble compensates with singing out, as if it’s a grand opera chorus. The small orchestra plays with immense tenderness and expression. Great care is taken so that the sound design is never oppressive but waxes and wanes with the drama. “Parade” is the best touring musical of the year so far, but the run is short.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "parade-2023",
       "outletId": "news-herald",
-      "outlet": "news-herald",
+      "outlet": "News Herald",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -69350,7 +69299,7 @@
     {
       "showId": "parade-2023",
       "outletId": "nippertown",
-      "outlet": "nippertown",
+      "outlet": "Nippertown",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -69384,7 +69333,7 @@
     {
       "showId": "parade-2023",
       "outletId": "rough-draft",
-      "outlet": "rough-draft",
+      "outlet": "Rough Draft",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -69401,7 +69350,7 @@
     {
       "showId": "parade-2023",
       "outletId": "scene",
-      "outlet": "scene",
+      "outlet": "Scene",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -69485,6 +69434,23 @@
     },
     {
       "showId": "parade-2023",
+      "outletId": "the-charlotte-ledger",
+      "outlet": "The Charlotte Ledger",
+      "assignedScore": 60,
+      "scoreSource": "thumb",
+      "bucket": "Mixed",
+      "thumb": "Flat",
+      "criticName": "Lawrence Toppman",
+      "url": "https://charlotteledger.substack.com/p/this-parade-is-rousing-colorful-and",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Yet Alfred Uhry’s book hammers home its points and populates the courtroom with hissable villains: the openly smarmy district attorney, the obviously perjured and nearly hypnotized witnesses, the incompetent blowhard of a defense attorney. The trial scene in “To Kill a Mockingbird” looks like a marvel of legal jurisprudence by comparison.",
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "parade-2023",
       "outletId": "hollywood-reporter",
       "outlet": "The Hollywood Reporter",
       "assignedScore": 69,
@@ -69519,6 +69485,23 @@
     },
     {
       "showId": "parade-2023",
+      "outletId": "the-minnesota-star-tribune",
+      "outlet": "The Minnesota Star Tribune",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Rohan Preston",
+      "url": "https://www.startribune.com/review-poignant-and-pungent-parade-launches-its-national-tour-in-minneapolis/601210518",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "Suskauer is the real star of the show, delivering with heart and polish even as Lucille’s powers are diminished and underestimated by her own husband. Suskauer helps Lucille bloom into a quiet and devoted powerhouse.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
+    },
+    {
+      "showId": "parade-2023",
       "outletId": "nytimes",
       "outlet": "The New York Times",
       "assignedScore": 76,
@@ -69533,6 +69516,23 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
+    },
+    {
+      "showId": "parade-2023",
+      "outletId": "the-only-critic",
+      "outlet": "The Only Critic",
+      "assignedScore": 80,
+      "scoreSource": "thumb",
+      "bucket": "Positive",
+      "thumb": "Up",
+      "criticName": "Nate Adams",
+      "url": "https://www.theonlycritic.com/post/parade-review-timely-relevance-brings-powerful-musical-into-the-21st-century",
+      "publishDate": null,
+      "originalRating": null,
+      "pullQuote": "What “Parade” offers, however, is a reflection. It urges us not to shy away from our past, but to confront it, with the hope that understanding it might one day help us break the cycle. This is where Uhry’s book and Brown’s lyrics truly shine, making the show as essential to see as “Wicked” or “Hamilton,” albeit for entirely different reasons.",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "contentTier": "excerpt"
     },
     {
       "showId": "parade-2023",
@@ -69566,57 +69566,6 @@
       "pullQuote": "The new Broadway revival of 'Parade' is a stunning production of a flawed but deeply moving musical that tells the tragic story of Leo Frank with uncommon power and sensitivity.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "parade-2023",
-      "outletId": "the-charlotte-ledger",
-      "outlet": "the-charlotte-ledger",
-      "assignedScore": 60,
-      "scoreSource": "thumb",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Lawrence Toppman",
-      "url": "https://charlotteledger.substack.com/p/this-parade-is-rousing-colorful-and",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Yet Alfred Uhry’s book hammers home its points and populates the courtroom with hissable villains: the openly smarmy district attorney, the obviously perjured and nearly hypnotized witnesses, the incompetent blowhard of a defense attorney. The trial scene in “To Kill a Mockingbird” looks like a marvel of legal jurisprudence by comparison.",
-      "dtliThumb": null,
-      "bwwThumb": "Meh",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "parade-2023",
-      "outletId": "the-minnesota-star-tribune",
-      "outlet": "the-minnesota-star-tribune",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Rohan Preston",
-      "url": "https://www.startribune.com/review-poignant-and-pungent-parade-launches-its-national-tour-in-minneapolis/601210518",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "Suskauer is the real star of the show, delivering with heart and polish even as Lucille’s powers are diminished and underestimated by her own husband. Suskauer helps Lucille bloom into a quiet and devoted powerhouse.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
-      "contentTier": "excerpt"
-    },
-    {
-      "showId": "parade-2023",
-      "outletId": "the-only-critic",
-      "outlet": "the-only-critic",
-      "assignedScore": 80,
-      "scoreSource": "thumb",
-      "bucket": "Positive",
-      "thumb": "Up",
-      "criticName": "Nate Adams",
-      "url": "https://www.theonlycritic.com/post/parade-review-timely-relevance-brings-powerful-musical-into-the-21st-century",
-      "publishDate": null,
-      "originalRating": null,
-      "pullQuote": "What “Parade” offers, however, is a reflection. It urges us not to shy away from our past, but to confront it, with the hope that understanding it might one day help us break the cycle. This is where Uhry’s book and Brown’s lyrics truly shine, making the show as essential to see as “Wicked” or “Hamilton,” albeit for entirely different reasons.",
-      "dtliThumb": null,
-      "bwwThumb": "Up",
       "contentTier": "excerpt"
     },
     {
@@ -69707,7 +69656,7 @@
     {
       "showId": "parade-2023",
       "outletId": "times-union",
-      "outlet": "times-union",
+      "outlet": "Times Union",
       "assignedScore": 80,
       "scoreSource": "thumb",
       "bucket": "Positive",
@@ -72505,7 +72454,7 @@
       "url": "https://nystagereview.com/2018/08/16/pretty-woman-hit-romcom-musicalized-only-pretty-good/",
       "publishDate": "2018-08-16T21:29:20",
       "originalRating": "3/5 stars",
-      "pullQuote": "Not to keep in suspense those begging to know how the transformation has turned out, here’s the skinny: What’s called, natch, Pretty Woman, at the Nederlander, is a solidly mediocre entertainment—its mediocrity making it look like much more in a season so far overloaded with barely speakable Broadway and off-Broadway competition.",
+      "pullQuote": "Not to keep in suspense those begging to know how the transformation has turned out, here's the skinny: What's called, natch, Pretty Woman, at the Nederlander, is a solidly mediocre entertainment-its mediocrity making it look like much more in a season so far overloaded with barely speakable Broadway and off-Broadway competition.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -72522,7 +72471,7 @@
       "url": "https://nystagereview.com/2018/08/16/pretty-woman-lady-liza-of-the-streets-goes-hollywood/",
       "publishDate": "2018-08-16T21:30:42",
       "originalRating": "3/5 stars",
-      "pullQuote": "Lawton (who wrote the screenplay). They would no doubt assert that their musical is pretty nifty; but better than their iconic movie, the whoppingly successful romantic comedy which catapulted Roberts to stardom? The story follows the film, and closely; it seems like a good deal of dialogue is carried over verbatim, and that turns out to be wise.",
+      "pullQuote": "Theatergoers streaming into the new musical Pretty Woman, at the Nederlander, are understandably likely to do so with visions of Julia Roberts in their mind's eye and the strains of the Roy Orbison pop hit-\"Pretty woman, walkin' down the street\"-in their mind's ear.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -76939,7 +76888,7 @@
     {
       "showId": "shucked-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 82,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -78895,7 +78844,7 @@
     {
       "showId": "some-like-it-hot-2022",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 83,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Positive",
@@ -84024,7 +83973,7 @@
       "url": "https://nystagereview.com/2018/05/31/the-boys-in-the-band-parsons-quinto-crowley/",
       "publishDate": "2018-05-31T21:20:48",
       "originalRating": "3/5 stars",
-      "pullQuote": "The play remains compelling viewing, for its wit and its pathos and especially as a slice of historical anthropology. But there’s just no good reason, and there’s never been a good reason, why the miserable men in Michael’s living room don’t simply get up and leave.",
+      "pullQuote": "This game is the central action of The Boys in the Band, newly and extravagantly revived at the Booth Theatre on its 50th anniversatry. It's playwright Mart Crowley's device for getting under the skin of the group of bitchy, quippy gay men gathered at Michael's. It also, as ever, makes no sense.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -84041,7 +83990,7 @@
       "url": "https://nystagereview.com/2018/05/31/the-boys-in-the-band-50-shades-of-gay/",
       "publishDate": "2018-05-31T21:21:36",
       "originalRating": "5/5 stars",
-      "pullQuote": "As a frank, even fearless, time capsule of gay urban life from half a century ago, the work has acquired a certain gravitas today that poignantly underscores its remarkably entertaining qualities. Joe Mantello, one of the top directors around, delivers quite a seductive production.",
+      "pullQuote": "A long-running Off Broadway sensation in 1968 and then a controversial film (featuring its original stage actors) in 1970, The Boys in the Band eventually was dismissed, in the bright light of latter-day social change, as a rather shady depiction of gay men.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -85035,7 +84984,7 @@
     {
       "showId": "the-cottage-2023",
       "outletId": "stagebuddy",
-      "outlet": "stagebuddy",
+      "outlet": "Stagebuddy",
       "assignedScore": 63,
       "scoreSource": "llmScore-lowconf",
       "bucket": "Mixed",
@@ -85724,7 +85673,7 @@
       "url": "https://nystagereview.com/2019/04/11/the-ferryman-brilliant-play-still-blazingly-exciting-with-replacements/",
       "publishDate": "2019-04-11T15:00:16",
       "originalRating": "5/5 stars",
-      "pullQuote": "So there’s only so much to be said for the inherent advantage of seeing the original cast. All of which is to say that The Ferryman, now with American actors in 17 of the 22 roles, is every bit as powerful as it was when it opened on Broadway in October and in London in 2017.",
+      "pullQuote": "Mendes has pulled marvelous performances from them all, and protean contributions from his production team. The scenery by Rob Howell-of Matilda-is almost overpowering, with the farmhouse kitchen monopolized by a staircase which seems to go up into infinity. Howell's costumes are equally impressive, with eons of Irish dirt, mud and bog baked in.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -88393,7 +88342,7 @@
       "url": "https://nystagereview.com/2018/09/27/the-nap-no-farce-please-were-british/",
       "publishDate": "2018-09-27T21:29:31",
       "originalRating": "2/5 stars",
-      "pullQuote": "The Nap, which opens tonight in a Manhattan Theatre Club production at the Samuel J. Friedman, is the staged version of those not-quite-right British sitcoms. It is funny, but less funny than you’d like it to be.",
+      "pullQuote": "The Nap, which opens tonight in a Manhattan Theatre Club production at the Samuel J. Friedman, is the staged version of those not-quite-right British sitcoms. It is funny, but less funny than you'd like it to be. It entertains, but it is instantly forgotten. You can't shake the feeling that you're missing something.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -88410,7 +88359,7 @@
       "url": "https://nystagereview.com/2018/09/27/the-nap-all-balled-up-in-sheffield/",
       "publishDate": "2018-09-27T21:30:34",
       "originalRating": "4/5 stars",
-      "pullQuote": "Richard Bean, who gave us the blissfully funny One Man, Two Guvnors, returns to Broadway with a tale of snooker. Championship snooker, that is, with the action climaxing in what you or at least Bean might call a championship battle of the balls.",
+      "pullQuote": "No, The Nap is not quite as broad as One Man; it would be unreasonable to expect it to be, wouldn't it? But it is easily the funniest new play on Broadway. So go get snookered.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -88444,7 +88393,7 @@
       "url": "https://nystagereview.com/2018/11/11/the-new-one-public-radio-onstage-exactly-as-exciting-as-it-sounds/",
       "publishDate": "2018-11-11T21:29:26",
       "originalRating": "2/5 stars",
-      "pullQuote": "(It’s listed as 80 minutes, but it’s much more than that.) What The New One is not, however, is a play. It’s a limitation which need not necessarily be an obstacle to the success of something playing in a Broadway theater. Springsteen on Broadway is not a play, really.",
+      "pullQuote": "This piece would be a pleasant few minutes on the radio. Apparently it was well-received off-Broadway at the Cherry Lane over the summer. Designer Beowulf Boritt has created an elegantly simple set (and provides the single theatrical moment that I'm not supposed to talk about).",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -88461,7 +88410,7 @@
       "url": "https://nystagereview.com/2018/11/11/the-new-one-and-papa-makes-three-with-nonstop-laughter/",
       "publishDate": "2018-11-11T21:30:32",
       "originalRating": "4/5 stars",
-      "pullQuote": "And talks and talks and talks, about marriage, cats, couches and—most prominently—the effect on a man of offspring. Or the lack thereof, for as long as he can dodge the issue. The fellow just keeps talking, yes; but he grabs us at the beginning and holds our attention and good cheer throughout.",
+      "pullQuote": "This week on Broadway, each and every reference to \"the new one\" no doubt referred to a gargantuan animatronic ape. Now we can wipe that out with Birbiglia's The New One. Not as big and spectacular as King Kong, needless to say, but gargantuanuously more entertaining.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -90144,7 +90093,7 @@
       "url": "https://nystagereview.com/2018/11/15/the-prom-bringing-red-and-blue-together-with-song-and-dance/",
       "publishDate": "2018-11-15T21:25:41",
       "originalRating": "3/5 stars",
-      "pullQuote": "They devised the show in part as a vehicle for a group of veteran performers whose  talents are well-known among theater fans, including Brooks Ashmanskas, Beth Leavel and Christopher Sieber.",
+      "pullQuote": "Indeed, it's hard to imagine a show fueled by more extravagant good will than Prom, which Nicholaw put together with old friends and collaborators Chad Beguelin, Bob Martin and Matthew Sklar, with Martin and Beguelin co-writing the book and the latter crafting lyrics for Sklar's music.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -90161,7 +90110,7 @@
       "url": "https://nystagereview.com/2018/11/15/the-prom-plenty-of-showbiz-gagging-over-some-serious-issues/",
       "publishDate": "2018-11-15T21:20:20",
       "originalRating": "2/5 stars",
-      "pullQuote": "So, for starters, let’s respectfully view this newest Broadway production, which bowed Thursday at the Longacre Theatre, as a good idea for a musical gone terribly wrong.",
+      "pullQuote": "Everyone gamely and capably projects their characters, especially Leavel and Ashmanskas, who probably spit out nails after chewing so much scenery in their outsized roles as Dee Dee and Barry.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -93442,7 +93391,7 @@
       "url": "https://nystagereview.com/2018/12/13/to-kill-a-mockingbird-a-timeless-favorite-revered-and-reborn/",
       "publishDate": "2018-12-13T20:35:01",
       "originalRating": "5/5 stars",
-      "pullQuote": "Lee’s novel, one of the most cherished in American literature, presents him with an entirely different milieu: a small Alabama town in 1934, ravaged by the Great Depression, in which community takes precedence over individual aspiration.",
+      "pullQuote": "Mockingbird's lessons may seem obvious, but like so many on offer at this moment, they also come across as depressingly timely and necessary.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -93459,7 +93408,7 @@
       "url": "https://nystagereview.com/2018/12/13/to-kill-a-mockingbird-harper-lees-classic-makes-magnificent-theater/",
       "publishDate": "2018-12-13T20:40:45",
       "originalRating": "5/5 stars",
-      "pullQuote": "A major part of this Mockingbird’s spell, right from the beginning, is a second conceit: These children are played, openly and unapologetically, by adult actors.",
+      "pullQuote": "The not inconsiderable controversy that has surrounded the Broadway adaptation of Harper Lee's To Kill a Mockingbird since it was authorized by the author shortly before her death in early 2016 has been convincingly resolved at the Shubert.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -93765,7 +93714,7 @@
       "url": "https://nystagereview.com/2018/11/01/torch-song-fiersteins-epic-shorter-but-fierce-and-funny-as-ever/",
       "publishDate": "2018-11-01T19:45:24",
       "originalRating": "4/5 stars",
-      "pullQuote": "Arnold, in bunny slippers, is anxiously awaiting the arrival of a fourth party, his mother—”the Sylvia Sydney of Brighton Beach,” as he refers to her, now widowed and living in Florida, where she can keep her son’s homosexuality at a safe distance for the most part.",
+      "pullQuote": "But Kaufman and Urie's triumph is not simply in making Arnold funny and lovable, foibles and all. The first act of Torch Song certainly milks Urie's strengths as a pure entertainer, segueing from Arnold's delectably witty introductory monologue to the gay bar (based on the actual downtown establishment \"The International Stud,\" as the play's fir...",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -94020,7 +93969,7 @@
       "url": "https://nystagereview.com/2019/01/24/true-west-shepards-raging-brothers-return/",
       "publishDate": "2019-01-24T20:46:51",
       "originalRating": "4/5 stars",
-      "pullQuote": "The scenic designer, notably, is a woman (as are respective costume and lighting designers Kate Voyce and Jane Cox).",
+      "pullQuote": "In elder brother Lee, a drifter and thief, Hawke has found a vehicle for both his comedic facility (not always mined or guided adroitly, on stage or screen) and his capacity for menace.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -94037,7 +93986,7 @@
       "url": "https://nystagereview.com/2019/01/24/true-west-sam-shepards-brotherhood-of-man/",
       "publishDate": "2019-01-24T20:45:48",
       "originalRating": "4/5 stars",
-      "pullQuote": "The play had made several prior off-Broadway appearances, but for its Main Stem debut director Matthew Warchus had his two leads alternate their roles. It wasn’t just a gimmick: The play is about a duality inside men and inside society.",
+      "pullQuote": "The play, about a pair of estranged brothers and their apparent role reversal under pressure, is as funny as it is serious, and this new staging, directed by James Macdonald, a specialist in heavy-hitters, is as entertaining as it is profound.",
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "complete"
@@ -94227,7 +94176,7 @@
       "pullQuote": "What ultimately makes Two Strangers such a winning Broadway arrival is its belief that tenderness is still theatrical currency.",
       "dtliThumb": null,
       "bwwThumb": null,
-      "contentTier": "none"
+      "contentTier": "invalid"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -95215,23 +95164,6 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "contentTier": "truncated"
-    },
-    {
-      "showId": "waitress-2016",
-      "outletId": "guardian",
-      "outlet": "The Guardian",
-      "assignedScore": 63,
-      "scoreSource": "llmScore",
-      "bucket": "Mixed",
-      "thumb": "Flat",
-      "criticName": "Jesse Dorris",
-      "url": "https://www.theguardian.com/stage/2016/apr/25/waitress-review-adrienne-shelly-sara-bareilles-musical",
-      "publishDate": "April 25, 2016",
-      "originalRating": null,
-      "pullQuote": "The resulting musical is both sweet and bitter and only sporadically satisfying.",
-      "dtliThumb": null,
-      "bwwThumb": null,
-      "contentTier": "complete"
     },
     {
       "showId": "waitress-2016",

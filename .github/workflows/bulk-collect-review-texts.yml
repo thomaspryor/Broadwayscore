@@ -439,3 +439,62 @@ jobs:
             -f current_round="$NEXT_ROUND"
 
           echo "Round $NEXT_ROUND dispatched successfully."
+
+      - name: Auto-trigger LLM scoring if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Count reviews needing LLM scoring (have scorable text, no score)
+          UNSCORED=$(node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  const ct = r.contentTier || "";
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const scorable = ["complete", "truncated", "stub"].includes(ct);
+                  const needsScore = !r.assignedScore && !r.humanReviewScore;
+                  const needsRescore = !!r.rescoreReason;
+                  if ((hasText || scorable) && (needsScore || needsRescore)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing LLM scoring: $UNSCORED"
+
+          THRESHOLD=100
+          if [ "$UNSCORED" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
+            exit 0
+          fi
+
+          # Check if LLM scoring is already running
+          RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "LLM scoring already running ($RUNNING active runs). Skipping."
+            exit 0
+          fi
+
+          # Cap batch at 400 (safe under 6-hour timeout)
+          LIMIT=400
+          if [ "$UNSCORED" -lt "$LIMIT" ]; then
+            LIMIT=$UNSCORED
+          fi
+
+          echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
+          gh workflow run "LLM Ensemble Score Reviews" \
+            -f limit=$LIMIT \
+            -f run_calibration=false
+
+          echo "LLM scoring auto-triggered successfully."
