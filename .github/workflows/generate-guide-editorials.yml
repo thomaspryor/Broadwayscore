@@ -1,0 +1,60 @@
+name: Generate Guide Editorials
+
+on:
+  schedule:
+    # Monthly on 1st at 3 AM UTC
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+
+jobs:
+  generate-editorials:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate guide editorials
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/generate-guide-editorials.js
+
+      - name: Validate output file size
+        run: |
+          FILE_SIZE=$(wc -c < data/guide-editorials.json)
+          echo "File size: $FILE_SIZE bytes"
+          if [ "$FILE_SIZE" -gt 512000 ]; then
+            echo "ERROR: guide-editorials.json exceeds 500KB limit"
+            exit 1
+          fi
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/guide-editorials.json
+          if git diff --staged --quiet; then
+            echo "No changes to guide editorials"
+          else
+            git commit -m "chore: Update guide page editorials (automated monthly)"
+            for i in 1 2 3 4 5; do
+              if git push origin main; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              echo "Push failed (attempt $i), pulling and rebasing..."
+              git pull --rebase origin main
+              sleep $((RANDOM % 5 + 2))
+            done
+          fi
