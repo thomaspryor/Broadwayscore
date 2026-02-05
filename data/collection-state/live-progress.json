@@ -1,51 +1,132 @@
 {
-  "updatedAt": "2026-02-05T06:45:05.426Z",
-  "processed": 101,
-  "failed": 449,
-  "successRate": "18.4%",
+  "updatedAt": "2026-02-05T06:49:22.559Z",
+  "processed": 79,
+  "failed": 481,
+  "successRate": "14.1%",
   "tierBreakdown": {
-    "playwright": 12,
-    "browserbase": 1,
-    "scrapingbee": 14,
-    "brightdata": 31,
-    "archive": 47
+    "playwright": 4,
+    "browserbase": 8,
+    "scrapingbee": 13,
+    "brightdata": 17,
+    "archive": 46
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 20,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:28.491Z",
+      "t": "2026-02-05T03:54:10.265Z",
       "event": "bb-session",
-      "session": "30e74c12",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/1776-broadway-review-1235228615"
+      "session": "78e8b382",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
     },
     {
-      "t": "2026-02-05T00:54:19.467Z",
+      "t": "2026-02-05T03:54:46.313Z",
       "event": "bb-session",
-      "session": "c2364ec9",
-      "url": "http://www.hollywoodreporter.com/review/1776-theater-review-879645"
+      "session": "135b7c70",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/"
     },
     {
-      "t": "2026-02-05T00:56:25.060Z",
+      "t": "2026-02-05T03:55:04.929Z",
       "event": "bb-session",
-      "session": "728af654",
-      "url": "https://www.newyorker.com/magazine/2022/10/17/the-revival-of-1776-gets-a-makeove"
+      "session": "7f878da3",
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235421172/"
     },
     {
-      "t": "2026-02-05T00:58:54.288Z",
+      "t": "2026-02-05T03:57:15.078Z",
       "event": "bb-session",
-      "session": "13d2c5a9",
-      "url": "https://www.nytimes.com/2022/09/17/theater/1776-review.html"
+      "session": "71c6318f",
+      "url": "https://www.vulture.com/2022/09/theater-review-1776-broadway.html"
     },
     {
-      "t": "2026-02-05T00:59:13.002Z",
+      "t": "2026-02-05T03:57:17.348Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T03:57:57.898Z",
+      "event": "bb-session",
+      "session": "f2250fde",
+      "url": "https://www.hollywoodreporter.com/news/general-news/1984-theater-review-1013008/"
+    },
+    {
+      "t": "2026-02-05T03:59:00.727Z",
+      "event": "bb-session",
+      "session": "dbdec3b9",
+      "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+    },
+    {
+      "t": "2026-02-05T03:59:23.484Z",
       "event": "bb-login-uncertain",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-02-05T01:00:30.978Z",
+      "t": "2026-02-05T04:01:21.968Z",
       "event": "bb-session",
-      "session": "9a46df43",
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-revival-1235394550/"
+      "session": "7136bd00",
+      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+    },
+    {
+      "t": "2026-02-05T04:02:07.498Z",
+      "event": "bb-login-fail",
+      "domain": "nytimes.com",
+      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770264094220\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsQSgQyEe3ogANA1qtA==&cid=P4r~exQZJvyCz2gxlYvaBI6fCeKGH28spBqR3vW~5hoqQSGyZp~UY9Bv3g~H0MyZf2XDODh8IKVweClpESsBGS9fPc5gRgr6Y~fSxOtjGfbUZAXindZSd5BSIpH~m4sa&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770264094220\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770264094220\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsQSgQyEe3ogANA1qtA==&cid=P4r~exQZJvyCz2gxlYvaBI6fCeKGH28spBqR3vW~5hoqQSGyZp~UY9Bv3g~H0MyZf2XDODh8IKVweClpESsBGS9fPc5gRgr6Y~fSxOtjGfbUZAXindZSd5BSIpH~m4sa&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770264094220\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    22 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770264094220\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAsQSgQyEe3ogANA1qtA==&cid=P4r~exQZJvyCz2gxlYvaBI6fCeKGH28spBqR3vW~5hoqQSGyZp~UY9Bv3g~H0MyZf2XDODh8IKVweClpESsBGS9fPc5gRgr6Y~fSxOtjGfbUZAXindZSd5BSIpH~m4sa&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770264094220\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"
+    },
+    {
+      "t": "2026-02-05T04:02:48.395Z",
+      "event": "bb-session",
+      "session": "611bcf99",
+      "url": "http://www.hollywoodreporter.com/review/700-sundays-theater-review-655699"
+    },
+    {
+      "t": "2026-02-05T04:03:26.866Z",
+      "event": "bb-session",
+      "session": "d8742a36",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-02-05T04:06:57.596Z",
+      "event": "bb-session",
+      "session": "8992736b",
+      "url": "http://www.hollywoodreporter.com/review/little-miss-sunshine-theater-review-6561"
+    },
+    {
+      "t": "2026-02-05T04:07:13.849Z",
+      "event": "bb-session",
+      "session": "32002c78",
+      "url": "http://www.vulture.com/2013/11/theater-review-nostalgia-for-700-sundays.html"
+    },
+    {
+      "t": "2026-02-05T04:07:15.955Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T04:07:47.965Z",
+      "event": "bb-session",
+      "session": "419bf6b2",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-mus"
+    },
+    {
+      "t": "2026-02-05T04:08:06.318Z",
+      "event": "bb-session",
+      "session": "1e670876",
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-the-neil-diamond-musica"
+    },
+    {
+      "t": "2026-02-05T04:10:08.583Z",
+      "event": "bb-session",
+      "session": "413dda3b",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamon"
+    },
+    {
+      "t": "2026-02-05T04:10:10.969Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T04:10:45.677Z",
+      "event": "bb-session",
+      "session": "40d35e53",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
     }
   ]
 }
