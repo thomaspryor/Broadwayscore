@@ -91,6 +91,8 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const triggerGate = useCallback((trigger: GateTrigger) => {
     if (hasEmail) return; // Don't show if already have email
     if (modalOpen) return; // Don't stack modals
+    // Don't trigger on excluded pages (feedback, submit-review, etc.)
+    if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return;
     setModalTrigger(trigger);
     setModalBlocking(BLOCKING_TRIGGERS.includes(trigger));
     setModalOpen(true);
