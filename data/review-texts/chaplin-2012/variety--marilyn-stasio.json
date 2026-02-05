@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/chaplin-1117948646/",
   "publishDate": "September 10, 2012",
-  "fullText": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical that tries to cram too much of Charlie Chaplin's life into one evening.",
-  "isFullReview": false,
+  "fullText": "Uneven, but a striking calling card for many involved, this sexually explicit item is likely to seduce more adventurous fest programmers than distributors.\n\nIf nothing else, “Kelly + Victor” follows an unusual pattern for a boy-meets-girl romance: Its titular lovers meet violently and only then turn cute, before backsliding rather alarmingly. Adapted from an acclaimed 2002 novel by lowlife-fixated Brit novelist Niall Griffiths, this thematically ambitious narrative debut for rock-doc director Kieran Evans looks dirtily chic and boasts an unsurprisingly sharp soundtrack, but is on less sure footing with its credibility-straining delineation of a sadomasochistic relationship. Uneven, but a striking calling card for many involved, this sexually explicit (if deliberately unerotic) item is likely to seduce more adventurous fest programmers than distributors.\n\nCarnal drama is a genre Limey filmmakers visit rarely enough to justify the old “no sex, please, we’re British” quip, so “Kelly + Victor” doesn’t feel derivative as it forges a middle path between the grimy realism of “9 Songs” and the metallic sheen of “Shame.” (Admittedly, the pic is an U.K.-Ireland co-production, but the milieu is entirely Blighty-bound.) However, it doesn’t feel especially authentic, either: The sex scenes push boundaries with too much calculation to convey the characters’ sense of abandon, while appealing leads Antonia Campbell-Hughes and Julian Morris make a distinctly clean-scrubbed pair of despair-driven deviants.\n\nThat said, Griffiths’ story calls for a measure of contrast between bland daylight reality and kinkier behind-closed-doors activity, particularly given that it’s set in Liverpool — a city that, with its endearing native accent and Fab Four associations, is often portrayed in a patronizingly soft light in British films and TV. Evans makes it plain from the opening scene that he’s into harder stuff. After good-looking twentysomethings Kelly and Victor hook up immediately in a throbbing nightclub, their drug-fueled foreplay is intercut, “Don’t Look Now”-style, with shots of intercourse that soon turns asphyxiophilic.\n\nInitially excited by Kelly’s nasty primal urges, Victor recoils after their second sexual encounter in which she incorporates broken glasses into their S&M routine, and he breaks things off. “Psycho women are not your type,” one of his drug-dealing buddies helpfully counsels. Kelly, whose own best friend, Victoria (Claire Keelan), is a professional dominatrix, goes into an emotional tailspin, as it emerges she’s still traumatized by an abusive previous relationship.\n\nWhile Griffiths’ novel was split into two halves, one told from Kelly’s perspective and one from Victor’s, Evans opts for a more conventionally linear structure that feels a touch padded until the leads eventually meet once more. This reshaping slightly favors Kelly, a character with stronger motivations than Victor, a lovelorn soul whose boyish dream of owning a nature reserve runs counter to his taste for rough sex and the widely banned drug mephedrone. (The character is perhaps too prettily cast in Morris, best known for multi-episode arcs in “ER” and “24.”)\n\nVictor’s nature-boy inclinations are of a piece with the stylishly organic digital lensing by Piers McGrail, which makes attractive use of such Liverpudlian landmarks as the historic Sefton Park. Meanwhile, Evans’ background as a chronicler of alternative rock fests such as “Isle of Wight Festival 2008” and “Bestival 2009” is evident in his and musical supervisor Paul Lambden’s rich array of handpicked, narratively integrated musical selections from the likes of Geese and Bill Ryder-Jones, which fills in for a score.",
+  "isFullReview": true,
   "dtliExcerpt": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical that tries to cram too much of Charlie Chaplin's life into one evening.",
   "originalScore": null,
   "assignedScore": 63,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Rob McClure gives a knockout performance as the Little Tramp in this earnest but overstuffed biomusical that tries to cram too much of Charlie Chaplin's life into one evening.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
     "score": 63,
@@ -73,5 +73,52 @@
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "partial",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 63,
+  "textWordCount": 555,
+  "archivePath": "data/archives/reviews/chaplin-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T01:35:40.507Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 555,
+  "tierReason": "Full review text"
 }
