@@ -3,7 +3,7 @@
   "outletId": "wsj",
   "outlet": "The Wall Street Journal",
   "criticName": "Terry Teachout",
-  "url": null,
+  "url": "http://online.wsj.com/article/SB10000872396390443916104578022293994248074.html",
   "publishDate": "2012-09-28T13:08:48-04:00",
   "fullText": null,
   "isFullReview": false,
@@ -20,5 +20,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated text fragment that cuts off mid-sentence with '(Y...' and provides only plot setup without any evaluative content about the production; openai: The text provided is a plot summary and does not contain any evaluative content or critique of the current production.; gemini: The provided excerpt is merely a plot summary and does not contain any evaluative statements or opinions about the production's quality.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AN-ENEMY-OF-THE-PEOPLE-20120928",
+  "sources": [
+    "bww-roundup"
+  ]
 }
