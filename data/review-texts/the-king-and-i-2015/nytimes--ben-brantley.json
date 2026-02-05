@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "Mr. Sher...understands very well what makes the show work, and he delivers it clean-scrubbed and naked, allowing us to see 'The King and I' plain...its most impressive achievement is how it balances epic sweep with intimate sensibility...That Ms. O'Hara, one of our greatest reinterpreters of musical standards, does so is not surprising. (You'll feel you're hearing 'Hello, Young Lovers' for the first time.) But also give full marks to the first-rate Ruthie Ann Miles...who, as the King's chief wife, turns 'Something Wonderful' into an exquisite expression of romantic realism that could be the show's anthem. The person she's singing about with such fond ambivalence...is the King himself, embodied here by Mr. Watanabe with the convincing exasperation of a majesty under siege...his big solos, while attacked with ardor, should become even stronger as his pronunciation improves. But he sure comes across when it really counts...As played by Ms. O'Hara, [Anna's] a smart, scrappy, willful pragmatist who also happens to know that love is often as strange as it is undeniable. That knowledge infuses every note Ms. O'Hara sings, and it is something wonderful indeed.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This revival of Rodgers and Hammerstein's 1951 musical about the culture clash between a British governess and the King of Siam is a handsome, well-sung production that honors the show's considerable virtues while mostly sidestepping its obvious problems.",
   "contentTier": "needs-rescrape",
@@ -22,7 +22,8 @@
   "playbillVerdictUrl": "http://www.nytimes.com/2015/04/17/theater/review-the-king-and-i-back-on-broadway.html",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "llmScore": {
     "score": 76,
@@ -108,5 +109,6 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: The review text is truncated mid-sentence and ends with a technical error message about retrieving content and enabling JavaScript; openai: The text is truncated and includes a technical error message, making it impossible to fully evaluate the review.; gemini: The review is cut off mid-sentence, so the final verdict is unknown.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 8
 }
