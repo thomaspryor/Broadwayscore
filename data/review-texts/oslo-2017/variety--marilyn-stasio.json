@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "What would it take to get you to Lincoln Center Theater to see a three-hour political drama about the 1993 peace treaty between Israel and the Palestine Liberation Organization known as the Oslo Accords? I doubt this review is going to do it, which is really a shame, because 'Oslo,' a new drama by J.T. Rogers, is unequivocally fascinating. Would that some playwright would write as gripping a play about some contemporary political issue.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "J.T. Rogers has written a gripping political thriller that reads like a John le Carré novel, but one based on real events that changed the course of Middle East diplomacy.",
   "contentTier": "invalid",
@@ -22,11 +22,13 @@
   "playbillVerdictUrl": "http://variety.com/2016/legit/reviews/oslo-review-play-1201812346/",
   "sources": [
     "web-search",
-    "playbill-verdict"
+    "playbill-verdict",
+    "bww-reviews"
   ],
   "rejectedAt": "2026-02-04T01:50:42.612Z",
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single promotional sentence or excerpt describing the playwright's work, not a full review with critical evaluation of the Broadway production.; openai: This text is a brief description of the play's genre and style, not an evaluative review of the Broadway production.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 8
 }
