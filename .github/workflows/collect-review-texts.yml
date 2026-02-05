@@ -79,6 +79,7 @@ jobs:
     timeout-minutes: 300
     permissions:
       contents: write
+      actions: write
 
     steps:
       - name: Checkout repository
@@ -204,6 +205,59 @@ jobs:
             }
             git push || true
           fi
+
+      - name: Auto-trigger LLM scoring if needed
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UNSCORED=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  const ct = r.contentTier || "";
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const scorable = ["complete", "truncated", "stub"].includes(ct);
+                  const needsScore = !r.assignedScore && !r.humanReviewScore;
+                  const needsRescore = !!r.rescoreReason;
+                  if ((hasText || scorable) && (needsScore || needsRescore)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing LLM scoring: $UNSCORED"
+
+          THRESHOLD=100
+          if [ "$UNSCORED" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          RUNNING=$(gh run list --workflow="LLM Ensemble Score Reviews" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "LLM scoring already running. Skipping."
+            exit 0
+          fi
+
+          LIMIT=400
+          if [ "$UNSCORED" -lt "$LIMIT" ]; then LIMIT=$UNSCORED; fi
+
+          echo "Triggering LLM scoring (limit=$LIMIT)..."
+          gh workflow run "LLM Ensemble Score Reviews" \
+            -f limit=$LIMIT \
+            -f run_calibration=false
+
+          echo "LLM scoring auto-triggered."
 
       - name: Upload collection report
         uses: actions/upload-artifact@v4
