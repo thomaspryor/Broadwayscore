@@ -7984,18 +7984,6 @@
     "timestamp": "2026-02-03T05:11:57.351Z"
   },
   {
-    "reviewId": "grey-house-2023/cititour--brian-scott-lipton.json",
-    "showId": "grey-house-2023",
-    "outlet": "Cititour",
-    "critic": "Brian Scott Lipton",
-    "url": "https://cititour.com/NYC_News/Review-Grey-House-is-Both-Dark-and-Dull/7381",
-    "method": "playwright",
-    "failureReason": "garbage_content",
-    "garbageReason": "Multiple shows mentioned (3): home, tina, once",
-    "textLength": 932,
-    "timestamp": "2026-02-03T05:12:16.453Z"
-  },
-  {
     "reviewId": "book-of-mormon-2011/financialtimes--brendan-lemon.json",
     "showId": "book-of-mormon-2011",
     "outlet": "Financial Times",
@@ -16886,5 +16874,53 @@
     "garbageReason": "Multiple shows mentioned (8): proof, home, company, once, rain...",
     "textLength": 6981,
     "timestamp": "2026-02-05T17:46:13.550Z"
+  },
+  {
+    "reviewId": "grey-house-2023/cititour--brian-scott-lipton.json",
+    "showId": "grey-house-2023",
+    "outlet": "Cititour",
+    "critic": "Brian Scott Lipton",
+    "url": "https://cititour.com/NYC_News/Review-Grey-House-is-Both-Dark-and-Dull/7381",
+    "method": "playwright",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (3): home, tina, once",
+    "textLength": 932,
+    "timestamp": "2026-02-05T17:47:32.055Z"
+  },
+  {
+    "reviewId": "grey-house-2023/theatrely--kobi-kassal.json",
+    "showId": "grey-house-2023",
+    "outlet": "Theatrely",
+    "critic": "Kobi Kassal",
+    "url": "https://www.theatrely.com/post/grey-house-keeps-us-wondering-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, company, the children, hair, high...",
+    "textLength": 6261,
+    "timestamp": "2026-02-05T17:47:35.403Z"
+  },
+  {
+    "reviewId": "gypsy-2024/cititour--brian-scott-lipton.json",
+    "showId": "gypsy-2024",
+    "outlet": "Cititour",
+    "critic": "Brian Scott Lipton",
+    "url": "https://cititour.com/NYC_Broadway/Gypsy/1271",
+    "method": "scrapingbee",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (10): waitress, tina, waitress, fully committed, act one...",
+    "textLength": 5733,
+    "timestamp": "2026-02-05T17:48:34.489Z"
+  },
+  {
+    "reviewId": "gypsy-2024/theatrely--juan-a-ramirez.json",
+    "showId": "gypsy-2024",
+    "outlet": "Theatrely",
+    "critic": "Juan A. Ramirez",
+    "url": "https://www.theatrely.com/post/audras-spellbinding-turn-in-gypsy-review",
+    "method": "archive",
+    "failureReason": "garbage_content",
+    "garbageReason": "Multiple shows mentioned (7): home, company, summer, race, company...",
+    "textLength": 6000,
+    "timestamp": "2026-02-05T17:48:38.883Z"
   }
 ]
