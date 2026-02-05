@@ -1,0 +1,79 @@
+{
+  "showId": "john-lithgow-stories-by-heart-2018",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/01/11/theater/review-john-lithgow-stories-by-heart-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"To begin with, give Mr. Lithgow a sound effects award. And then give him one for spiritual effects, because 'Stories by Heart' is delightful: illuminating the stories, uplifting us...Though golden enough for any nostalgist, 'Stories by Heart' is neither soporific nor cute. For starters, the two stories that Mr. Lithgow recites are superb, outlandish and, in very different ways, hair-raising.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Stories by Heart' is delightful: illuminating the stories, uplifting us",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong positive language ('delightful', 'superb', 'uplifting') with enthusiastic tone, but single excerpt warning requires caution about representativeness of full review. | GPT-4o: The excerpt praises the performance as 'delightful' and 'uplifting', with strong positive language suggesting a highly favorable view. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, using words like \"delightful\", \"illuminating\", and \"uplifting\". Given the single excerpt warning, I'm scoring at the higher end of the positive range. | Kimi: Single excerpt contains enthusiastic praise ('delightful,' 'superb,' 'uplifting') warranting a high Positive score, though limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:11:37.949Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

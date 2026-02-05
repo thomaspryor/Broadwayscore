@@ -1,17 +1,79 @@
 {
   "showId": "american-psycho-2016",
   "outletId": "nytimes",
-  "outlet": "New York Times",
+  "outlet": "The New York Times",
   "criticName": "Unknown",
-  "url": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html",
-  "playbillVerdictUrl": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html",
-  "source": "playbill-verdict",
+  "url": "http://www.nytimes.com/2016/04/22/theater/review-american-psycho-hits-broadwayso-smooth-so-rich-so-ruthless.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 40,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“‘American Psycho’ is a mess. That’s not because of all that sloppy, sloshy blood, but because of its terminally undecided tone. And it’s not the kind of mess you wallow in, hooting at the glorious chaos of it all. Its conflicts of intention cancel one another out, leaving you numb...Mr. Walker, who oozed charisma in ‘Bloody Bloody Andrew Jackson,’ holds the show together, for sure...Mostly, though, this psycho is neither scary nor sexy, nor is the show in which he appears.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
   "sources": [
-    "playbill-verdict",
-    "bww-reviews",
-    "bww-roundup"
+    "show-score-playwright"
   ],
-  "bwwExcerpt": "Though it often looks as carefully and cosmetically arranged as a window at Barneys, Patrick's favorite store,...'American Psycho' is a mess. That's not because of all that sloppy, sloshy blood, but because of its terminally undecided tone. This latest incarnation...suffers from the weight of having to be a big Broadway musical...Even more than Matt Smith, who originated the role in London, Mr. Walker presents Patrick as an insecure man who deeply needs to fit in and despises himself for doing so...Mr. Walker, who oozed charisma in 'Bloody Bloody Andrew Jackson,' holds the show together, for sure...Mostly, though, this psycho is neither scary nor sexy, nor is the show in which he appears.",
-  "bwwScore": 7,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421"
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'American Psycho' is a mess...leaving you numb.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Clear negative verdict calling the show 'a mess' with 'terminally undecided tone' that leaves audiences 'numb'. While praising Walker's performance, the overall assessment is negative. | GPT-4o: The review describes the show as a 'mess' with a 'terminally undecided tone' and 'neither scary nor sexy.' Despite some praise for Mr. Walker, the overall sentiment is strongly negative. | Gemini: The review states that the show is a \"mess\" due to its \"terminally undecided tone\" and that it's \"neither scary nor sexy.\" While the reviewer acknowledges the lead actor's performance, the overall assessment is negative. | Kimi: While the critic acknowledges the lead actor's charisma, the overall verdict is strongly critical: the show is deemed a 'mess' with a 'terminally undecided tone' that leaves the audience 'numb' and fails to achieve its basic genre goals.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T13:28:57.302Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

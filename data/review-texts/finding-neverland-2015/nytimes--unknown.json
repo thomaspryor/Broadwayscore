@@ -1,0 +1,79 @@
+{
+  "showId": "finding-neverland-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/04/16/theater/review-finding-neverland-a-broadway-musical-with-matthew-morrison.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 42,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The stage version of “Finding Neverland” is no replica of the film, though it might have been better if it were. Instead, it heightens the screenplay’s sentimentality, tidy psychologizing and life-affirming messages by thickening their syrup and corn quotients in ways presumably deemed palatable to theatergoing children and their parents. The show brings to mind those supersize sodas sold in movie theaters. Like such drinks, “Finding Neverland” is largely made up of empty calories.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 42,
+    "confidence": "medium",
+    "range": {
+      "low": 37,
+      "high": 47
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like such drinks, 'Finding Neverland' is largely made up of empty calories.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic clearly disapproves, calling the show overly sentimental with 'empty calories' and suggesting it might have been better as a film replica. However, this is only an excerpt so the full verdict may be more nuanced. | GPT-4o: The excerpt criticizes the show for being overly sentimental and lacking substance, comparing it to 'empty calories'. The tone is clearly negative, suggesting the show is not worth seeing. | Gemini: The review excerpt uses negative language such as \"empty calories\", \"thickening their syrup and corn quotients\" to describe the show, indicating a negative assessment. Given that it is a single excerpt, the confidence is low. | Kimi: The critic employs a damning metaphor comparing the show to a supersize soda made of empty calories, criticizing its excessive sentimentality and syrup-thick life-affirming messages as vapid and unsatisfying.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:01:07.218Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
+}

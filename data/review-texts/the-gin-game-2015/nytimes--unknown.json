@@ -1,0 +1,79 @@
+{
+  "showId": "the-gin-game-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/10/15/theater/review-james-earl-jones-and-cicely-tyson-shuffle-emotions-in-the-gin-game.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 79,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Despite its comic overtones, 'The Gin Game' presents a clarifying portrait of the loneliness that may come with age, and the difficulties of forging a relationship when our personalities have quite naturally become calcified by experience. As the moving performances of Mr. Jones and Ms. Tyson bear out, playing the hands we are dealt with equanimity is much easier when we are still sure that there will be many more hands to play.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "As the moving performances of Mr. Jones and Ms. Tyson bear out, playing the hands we are dealt with equanimity is much easier when we are still sure that there will be many more hands to play.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praises the 'moving performances' and finds the play presents a 'clarifying portrait' of aging themes. Positive language but limited sample, so upper end of Positive bucket with low confidence due to single excerpt warning. | GPT-4o: The excerpt highlights the moving performances of the lead actors and provides a thoughtful reflection on the themes of the play. The tone suggests a positive view, but the single excerpt limits confidence in the overall sentiment. | Gemini: The review praises the performances and suggests the play offers a clarifying portrait of loneliness and aging. Due to the limited excerpt, confidence is low, but the tone is generally positive. | Kimi: The excerpt offers clear praise for the lead performances ('moving') and the production's thematic depth ('clarifying portrait'), with no visible caveats. Following the single-excerpt warning for clearly positive quotes, this falls in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T03:55:58.230Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 74,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

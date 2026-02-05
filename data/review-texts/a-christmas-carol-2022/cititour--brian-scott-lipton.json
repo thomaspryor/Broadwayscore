@@ -1,0 +1,76 @@
+{
+  "showId": "a-christmas-carol-2022",
+  "outletId": "cititour",
+  "outlet": "Cititour",
+  "criticName": "Brian Scott Lipton",
+  "url": "https://cititour.com/NYC_Broadway/A-Christmas-Carol/1112",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 63,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Admittedly, I feel a bit like Scrooge himself not to be fully embracing this production.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I feel a bit like Scrooge himself not to be fully embracing this production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt suggests the critic has reservations about fully embracing the show, implying mixed feelings. However, with only one curated quote available, confidence is low as this may not represent the full verdict. | GPT-4o: The excerpt suggests a lack of full enthusiasm for the production, indicating a mixed sentiment. The critic implies some hesitation or reservation, which aligns with a mixed review. Given the single excerpt and potential cherry-picking, the confidence is low. | Gemini: The single excerpt suggests the reviewer is not fully embracing the production, indicating a mixed or slightly negative sentiment. Given the limited context, a score in the middle of the Mixed bucket seems appropriate. | Kimi: The critic admits to not fully embracing the production, suggesting a lukewarm or withholding response rather than enthusiastic recommendation. With only a single curated excerpt available, the overall verdict remains unclear.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T06:44:23.894Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "showId": "beetlejuice-2019",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"This show so overstuffs itself with gags, one-liners and visual diversions that you shut down from sensory overload...Brightman and 'Beetlejuice' can indeed sustain this anything-for-a-laugh intensity. And it is not a trait that benefits from prolonged exposure...Here, everybody, including every member of the support cast, has already gone so far over the top that there’s no room for comic contrast. The disheartening moral of 'Beetlejuice' is that when anything goes, nothing much registers.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "high",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The disheartening moral of 'Beetlejuice' is that when anything goes, nothing much registers.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Review criticizes the show for sensory overload, lack of comic contrast, and ultimately finds it 'disheartening' that nothing registers. Despite acknowledging Brightman can sustain the intensity, the overall assessment is negative. | GPT-4o: The review criticizes the show for being overwhelming and lacking comic contrast, suggesting a negative experience. However, due to the single excerpt warning, the confidence is low. | Gemini: The review describes the show as suffering from \"sensory overload\" and states that \"nothing much registers,\" indicating a negative experience. The excerpt suggests the reviewer does not recommend the show. | Kimi: While acknowledging the cast's ability to sustain high energy, the critic finds the show suffers from sensory overload and lacks comic contrast, concluding that 'nothing much registers'—a clear recommendation against seeing it.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:43:21.239Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 40,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "showId": "farinelli-and-the-king-2017",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2017/12/17/theater/farinelli-and-the-king-review-mark-rylance.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 80,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Strangely enchanting...The language of the script doesn’t always flow melodically. But van Kampen has an illuminating appreciation not only for period music but also for the gap between artists and their art...Watching Rylance’s Philippe experience Farinelli’s voice, we hear what he hears. And an actor and a singer temporarily turn a night at the theater in an anxious city into an Eden beyond worldly care, all the more precious for its evanescence.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Strangely enchanting...an actor and a singer temporarily turn a night at the theater in an anxious city into an Eden beyond worldly care.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting script flow issues, the review uses strong positive language ('strangely enchanting', 'illuminating', 'Eden beyond worldly care') and describes a transcendent theatrical experience. Single excerpt warning applied - using upper Positive range. | GPT-4o: The excerpt describes the show as 'strangely enchanting' and highlights a transformative experience, suggesting a positive impression despite noting some script issues. Given the single excerpt warning, the score is set towards the upper end of the Positive range. | Gemini: The review uses phrases like \"strangely enchanting\" and describes the experience as turning the theater into an \"Eden beyond worldly care.\" Although there is a mention of the script's language not always flowing melodically, the overall tone is positive and enthusiastic. | Kimi: While noting the script's occasional lack of melodic flow, the critic praises the production as 'strangely enchanting' and highlights how the performances create a precious, transcendent theatrical experience that transcends its flaws.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:55:36.512Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

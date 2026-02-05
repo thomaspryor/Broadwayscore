@@ -3,9 +3,9 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2015/04/20/theater/review-fun-home-brings-an-authentic-musical-voice-to-broadway.html",
+  "url": "https://www.nytimes.com/2015/04/20/theater/review-fun-home-at-the-circle-in-the-square-theater.html",
   "publishDate": "April 19, 2015",
-  "fullText": "This touching and forceful musical adaptation of Alison Bechdel's graphic memoir brings an authentic new voice to Broadway, one that manages to be both deeply personal and widely accessible.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "This touching and forceful musical adaptation of Alison Bechdel's graphic memoir brings an authentic new voice to Broadway, one that manages to be both deeply personal and widely accessible.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "But most important is the music, a career high for Ms. Tesori ('Violet,' 'Caroline, or Change'), which captures both the nagging persistence of memory and its frustrating insubstantiality, with leitmotifs that tease and shimmer. (John Clancy did the nuanced orchestrations.) The music is woven so intricately into Ms. Kron's time-juggling script that you'll find yourself hard pressed to recall what exactly was said and what was sung.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
   "showScoreExcerpt": "This touching and forceful musical adaptation of Alison Bechdel's graphic memoir brings an authentic new voice to Broadway, one that manages to be both deeply personal and widely accessible.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
     "score": 80,
@@ -80,5 +80,45 @@
     "bww-reviews",
     "bww-roundup"
   ],
-  "bwwScore": 9
+  "bwwScore": 9,
+  "previousUrl": "https://www.nytimes.com/2015/04/20/theater/review-fun-home-brings-an-authentic-musical-voice-to-broadway.html",
+  "urlDiscoveredAt": "2026-02-05T02:36:44.396Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/fun-home-2015/nytimes--ben-brantley_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:36:44.404Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "textQuality": "truncated",
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

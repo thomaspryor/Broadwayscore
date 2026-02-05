@@ -1,0 +1,76 @@
+{
+  "showId": "spamalot-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Paulanne Simmons",
+  "url": "https://theaterlife.com/monty-pythons-spamalot-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“As ‘Spamalot’ is brimming with production numbers, it is really the principals performing alongside the ensemble that contribute most to the brilliance of the show. There’s lots of glitz in this production, mainly thanks to the colorful costumes...The only problem with ‘Spamalot’ is that it has to end.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The only problem with 'Spamalot' is that it has to end.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear enthusiasm - praising the 'brilliance of the show' and ending with the classic positive reviewer line that the only flaw is it ends. However, confidence is medium due to single excerpt limitation. | GPT-4o: The excerpt praises the brilliance of the show, highlighting the principals and ensemble, and expresses a desire for the show not to end, indicating a strong positive sentiment. | Gemini: The review excerpt praises the production numbers, principals, ensemble, and costumes, concluding that the only problem is that it ends. Given the single excerpt, I'm scoring it as positive with high end of the range. | Kimi: Single excerpt demonstrates strong enthusiasm with praise for the production's 'brilliance' and a classic positive verdict indicating the show is thoroughly enjoyable, though limited context requires caution.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:53:40.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

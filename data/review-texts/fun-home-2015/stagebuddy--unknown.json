@@ -1,0 +1,79 @@
+{
+  "showId": "fun-home-2015",
+  "outletId": "stagebuddy",
+  "outlet": "Stage Buddy",
+  "criticName": "Unknown",
+  "url": "http://stagebuddy.com/reviews/fun-home-review",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 76,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"The truth is that as personal as Bechdel’s tragic tale can be, it’s also a universal story of children refusing to believe that, hard as they try, they might never have the last word when it comes to their parents. It’s fitting that the show closes with a small moment in which little Alison and her father were as close as they ever would be. Sometimes it’s surprising to realize which things we remember vividly and which fade away.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's fitting that the show closes with a small moment in which little Alison and her father were as close as they ever would be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Single excerpt focuses on thematic resonance and emotional impact, suggesting appreciation for the show's universal story and poignant ending. However, with only one curated quote available, confidence is low and score stays in lower Positive range. | GPT-4o: The excerpt provides a thematic reflection rather than a clear evaluative judgment. It suggests a thoughtful but not necessarily enthusiastic or critical stance, indicating a mixed review. | Gemini: The review excerpt suggests a positive sentiment, highlighting the universality of the story and a poignant closing moment. However, due to the limited text, the confidence is low. | Kimi: The excerpt praises the show's universal emotional themes and effective ending, indicating a warm recommendation despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:06:55.628Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

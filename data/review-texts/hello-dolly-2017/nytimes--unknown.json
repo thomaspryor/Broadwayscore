@@ -1,0 +1,79 @@
+{
+  "showId": "hello-dolly-2017",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/02/22/theater/hello-dolly-review-bernadette-peters.html?partner=rss&emc=rss",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 80,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Peters makes it clear that Dolly is talking about real hardships...She sings the Jerry Herman songs thrillingly, of course...I don’t mean that she isn’t funny; she is...The other new principals match the bright polish of the original cast, which has grown a bit zany with time...Ms. Peters goes along with all this, to a point. But sometimes I felt she would rather observe the parade than be in it. Personally, I’m a sucker for that: I think it gives this 'Dolly' a fascinating new valence.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I think it gives this 'Dolly' a fascinating new valence.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear appreciation for Peters' performance and the production's new interpretation. The critic finds it 'fascinating' and praises the singing as 'thrilling' and cast as having 'bright polish.' However, confidence is low due to limited text and potential cherry-picking of positive quotes. | GPT-4o: The review excerpt praises Peters' performance and the cast, suggesting a positive experience overall. However, it notes some reservations about her engagement, indicating a positive but not unqualified recommendation. | Gemini: The review praises Bernadette Peters' performance and the songs, but notes a certain detachment. Given the single excerpt and the mixed signals, I've rated it as positive with reservations. | Kimi: The reviewer praises Peters' thrilling vocals and comedic timing, ultimately endorsing her more observational interpretation as a 'fascinating new valence' for the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:51:03.131Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

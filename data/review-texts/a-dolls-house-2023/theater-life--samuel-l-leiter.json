@@ -1,0 +1,76 @@
+{
+  "showId": "a-dolls-house-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/a-dolls-house-1-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "Chastain’s performance is superbly constructed, the cracks in its veneer sometimes visible but, until there’s no recourse, never threatening to bring the structure down. When Nora finally succumbs, she does so with deep power mingled with restraint...Ms. Chastain...has met the role’s challenges and left her indelible mark on it. \n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Chastain's performance is superbly constructed, the cracks in its veneer sometimes visible but, until there's no recourse, never threatening to bring the structure down.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Chastain's performance with sophisticated analysis ('superbly constructed', 'deep power', 'left her indelible mark'). Single excerpt warning requires caution, but the language suggests genuine admiration rather than qualified praise. | GPT-4o: The excerpt praises Chastain's performance as 'superbly constructed' and highlights her ability to meet the role's challenges, suggesting a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt focuses on praising Chastain's performance, using terms like \"superbly constructed\" and stating she \"has met the role’s challenges and left her indelible mark on it.\" Given the single excerpt, I am scoring it at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for Chastain's performance, describing it as 'superbly constructed' leaving an 'indelible mark,' which indicates a strong positive verdict despite the limited context of a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T11:22:33.272Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

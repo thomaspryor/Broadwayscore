@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Paula Vogel's Pulitzer Prize-winning memory play receives a faithful, expertly acted revival that honors both its delicate handling of trauma and its unsettling insights into the grooming process.",
-  "contentTier": "needs-rescrape",
+  "contentTier": "complete",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 81,
@@ -77,8 +77,8 @@
   "rescoreReason": "fullText added after excerpt-based scoring",
   "previousLlmScore": 81,
   "textWordCount": 941,
-  "archivePath": "data/archives/reviews/how-i-learned-to-drive-2022/variety--peter-marks_2026-02-04.html",
-  "textFetchedAt": "2026-02-04T15:52:55.127Z",
+  "archivePath": "data/archives/reviews/how-i-learned-to-drive-2022/variety--peter-marks_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:37:57.594Z",
   "fetchMethod": "scrapingbee",
   "fetchAttempts": [
     {
@@ -91,7 +91,7 @@
       "tier": 0.5,
       "method": "archive",
       "success": false,
-      "error": "No CDX snapshots found"
+      "error": "timeout of 15000ms exceeded"
     },
     {
       "tier": 1,

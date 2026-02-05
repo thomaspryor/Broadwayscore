@@ -5,7 +5,7 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2011/legit/reviews/follies-1117946136/",
   "publishDate": "September 12, 2011",
-  "fullText": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The lavish Broadway revival of Stephen Sondheim's 'Follies' is a sumptuous treat for the eyes and ears, even if it doesn't quite capture the show's elusive emotional core.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (28 words)",
   "llmScore": {
     "score": 77,
@@ -72,5 +72,48 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-majority",
     "modelAgreement": "3/4 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 77,
+  "textWordCount": 209,
+  "archivePath": "data/archives/reviews/follies-2011/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:23:31.649Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "scrapingbee",
+  "textIssues": [
+    "Word count too low: 209 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Sep 17, 2011 12:43pm PT \n\n \n\n \n \n \n\n \n\n \n Man on Ground\n \n \n\n \n\n A cross-hybridization of BBC police thriller and Bergmanesque meditation on intra-African immigration.\n\nA cross-hybridization of BBC police thriller and Bergmanesque meditation on intra-African immigration, “Man on Ground” boasts some literally fantastic visual flourishes as well as a bewildering inability to find narrative traction. Helmer Akin Omotoso is a stylist of considerable flair, but the pic’s storytelling is too obscure and indulgent to catch on in foreign markets, despite an attractive a cast and moments of brilliance.\n\nThe tale is essentially a missing person’s story about estranged Nigerian brothers: Ade (Hakeem Kae-Kazim), a London-based banker, and Femi (Fabian Adeoye Lojede), a political radical who’s been imprisoned, tortured, run out of his home country, and is last seen living the street life in Johannesburg. When Femi goes missing, Ade tries to find him, and the search — as elliptical and blind-alleyed as anything by Bunuel — provides the bulk of the storyline. Ultimately, “Man on Ground” is a mismatch of content and directorial panache: Omotoso is inclined to long, lingering takes and slo-mo action, which only punctuates the point that so little is going on. The film’s brightest spot is Thisiwe Ziqubu, who plays Femi’s fiancee, Zodwa, and is a talent to watch."
 }

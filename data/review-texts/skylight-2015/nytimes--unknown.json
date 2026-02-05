@@ -1,0 +1,79 @@
+{
+  "showId": "skylight-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/04/03/theater/review-skylight-with-carey-mulligan-and-bill-nighy-opens-on-broadway.html?_r=0",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"As you watch Ms. Mulligan and Mr. Nighy move magnetically toward and away from each other in Stephen Daldry’s exquisitely balanced London-born production, you can’t help thinking that on some profound level these two were made to be together...Tear-stained stories of impossible love have been a staple of theater for centuries. And Mr. Hare’s 1995 drama, his tightest and quite possibly his best, delivers big on the rueful pleasures of that genre.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Hare's 1995 drama, his tightest and quite possibly his best, delivers big on the rueful pleasures of that genre.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it Hare's 'tightest and quite possibly his best' work that 'delivers big,' plus acclaim for the 'exquisitely balanced' production. Single excerpt warning noted, but language is clearly enthusiastic. | GPT-4o: The excerpt praises the production as 'exquisitely balanced' and highlights the strong performances of the lead actors. This suggests a strong positive recommendation, but the confidence is low due to the single excerpt limitation. | Gemini: The excerpt praises the performances and the play itself, calling it possibly the best work of the playwright. Given the single excerpt, I'm scoring it as positive but with low confidence. | Kimi: The excerpt provides enthusiastic praise for the production ('exquisitely balanced'), performances ('magnetically'), and script ('possibly his best'), indicating a clear recommendation. However, confidence is low due to the availability of only a single curated excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:39:36.716Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

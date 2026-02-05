@@ -1,0 +1,79 @@
+{
+  "showId": "china-doll-2015",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "http://www.nytimes.com/2015/12/04/theater/review-in-david-mamets-china-doll-al-pacino-as-an-urban-warrior-in-winter.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 39,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Christopher Denham is the most underpaid actor on Broadway…He is onstage for almost the entire show. So is — pause for ominous silence — Al Pacino. Now please cue sound effects of chalk scratching on countless blackboards and the ping, ping, ping of an endlessly dripping faucet, and you have some idea of what Mr. Denham must be going through...Mr. Pacino’s lurching, stammering performance is not easy to follow in terms of content, character or subtext.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 39,
+    "confidence": "medium",
+    "range": {
+      "low": 34,
+      "high": 44
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Pacino's lurching, stammering performance is not easy to follow in terms of content, character or subtext.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The review harshly criticizes Al Pacino's performance using vivid negative metaphors (chalk on blackboards, dripping faucet) and describes it as difficult to follow. While praising Denham, the overall assessment of the production appears negative. | GPT-4o: The excerpt is strongly negative about Al Pacino's performance, using vivid negative imagery. However, due to the single excerpt warning, the confidence is low. | Gemini: The review excerpt describes Pacino's performance negatively and suggests the experience is unpleasant. Given the single excerpt, confidence is low, but the tone is clearly negative. | Kimi: The excerpt harshly criticizes Al Pacino's performance as incoherent and irritating, using metaphors of chalk scratching on blackboards to describe the painful experience, indicating a negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:08:05.558Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 40,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
+}

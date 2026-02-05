@@ -1,0 +1,76 @@
+{
+  "showId": "harmony-2023",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Samuel L. Leiter",
+  "url": "https://theaterlife.com/harmony-a-new-musical-1-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 74,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "There’s no question that, in the vibrant staging of Tony-winning director choreographer Warren Carlyle (The Music Man), it’s often powerful and enthralling. Still, even though presented by a distinctively talented ensemble, Harmony continues to fall a bit short of the comedic, musical, or emotional heights it needs to qualify as great, rather than merely good, or even very good, theatre.\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 74,
+    "confidence": "high",
+    "range": {
+      "low": 69,
+      "high": 79
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's often powerful and enthralling",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Acknowledges the production as 'powerful and enthralling' with praise for direction and ensemble, but clearly states it falls short of greatness. Single excerpt warning applied - this sounds like qualified praise placing it in lower Positive range. | GPT-4o: The review excerpt praises the staging as 'powerful and enthralling' but notes the show falls short of being great. The tone suggests a positive recommendation with reservations, fitting the lower end of the Positive bucket. | Gemini: The review states that the show is \"good, or even very good, theatre\" but falls short of being great. This indicates a positive but not rave review. | Kimi: The excerpt praises the 'vibrant staging' and 'distinctively talented ensemble' as 'powerful and enthralling,' but explicitly states the show falls short of being great, settling for 'merely good, or even very good, theatre.' Given the single-excerpt warning, this qualified positive assessment lands in the lower Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T12:07:52.340Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

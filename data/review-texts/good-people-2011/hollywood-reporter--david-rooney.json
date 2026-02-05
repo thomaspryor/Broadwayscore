@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/news/good-people-theater-review-154033/",
   "publishDate": "March 4, 2011",
-  "fullText": "Director Daniel Sullivan keeps the combustible drama simmering at just the right temperature, drawing superb performances from his entire cast.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Director Daniel Sullivan keeps the combustible drama simmering at just the right temperature, drawing superb performances from his entire cast.",
   "originalScore": null,
   "assignedScore": 81,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "Following up on his masterful work earlier this season on The Merchant of Venice, Sullivan connects to the heart of each of the play's six pithy scenes in his brisk, no-nonsense direction. His scene changes are a marvel of economy, accompanied by bursts of Pogues-style Irish jigs as the masking shrinks into an iris and reopens on a new setting. One such transition -- in which designer John Lee Beatty's chic, spacious living room for Mike and Kate gives way to the shabby walls and overhead crucifix of a church hall on bingo night -- is a gorgeous stroke of stage magic that speaks volumes. The same goes for every aspect of this terrific play in what must surely be its ideal production.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Director Daniel Sullivan keeps the combustible drama simmering at just the right temperature, drawing superb performances from his entire cast.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (20 words)",
   "llmScore": {
     "score": 81,
@@ -76,5 +76,53 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 81,
+  "textWordCount": 298,
+  "archivePath": "data/archives/reviews/good-people-2011/hollywood-reporter--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:58:24.664Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "showNotMentioned": true,
+  "wrongFullText": "By Ayala Ben-Yehuda, The Associated Press \n\n \n\n November 2, 2007 5:00am\n\nFor Wendy Melvoin and Lisa Coleman, aka Wendy & Lisa, working with Prince in the 1980s as members of his band the Revolution was the perfect preparation for a career in composing for film and television.\n\nThe duo, who work together scoring NBC’s “Heroes” and “Bionic Woman” and worked on “Crossing Jordan,” spoke about their experiences during the Billboard/Hollywood Reporter Film & TV Music Conference on Thursday at the Beverly Hilton.\n\n“Our experience as touring musicians helped us score live to picture,” Coleman said. Prince would “give us little hand gestures and signals and dance moves, and we would know what each little thing meant. It became a game sometimes. If you missed it, believe me, you heard about it later.\n\n“It was great training for me in scoring because I can watch the screen go by and ... hit (scenes) with musical punctuation and accents,” she added.\n\nHaving worked with the Purple One brought opportunities but also baggage when it came to getting work and “whether we really had the goods or whether we were just performers with Prince,” Coleman said.\n\nTrying to start a film and television scoring career 20 years ago in a male-dominated field — and as women who were associated with fishnets and heavy breathing onstage — also “gave us a certain amount of notoriety that wasn’t necessarily good,” she said.\n\nBut the two now have as much work as they can possibly handle — and unlike many Hollywood composers, they don’t use ghostwriters to do work for them.\n\n“Scoring is the gossamer art,” Coleman said. “You really have to not be there, but if you weren’t there, the scene would suddenly be just a play.”\n\nAyala Ben-Yehuda is a correspondent for Billboard.",
+  "misattributedFullText": true,
+  "extractedByline": "Ayala Ben-Yehuda",
+  "expectedCritic": "David Rooney"
 }

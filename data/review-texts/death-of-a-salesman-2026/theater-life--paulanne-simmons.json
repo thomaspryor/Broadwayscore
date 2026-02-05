@@ -1,0 +1,79 @@
+{
+  "showId": "death-of-a-salesman-2026",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Paulanne Simmons",
+  "url": "https://theaterlife.com/death-of-a-salesman-4/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"This 'Death of a Salesman' may indeed be a crowd pleaser. Its humor makes the medicine go down quite smoothly, and the medicine is exactly the kind that makes us feel a lot better.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This 'Death of a Salesman' may indeed be a crowd pleaser.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive assessment calling it a 'crowd pleaser' that 'makes us feel a lot better.' However, confidence is low due to limited text availability - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt describes the production as a 'crowd pleaser' with humor that enhances the experience, suggesting a positive reception. Given the single excerpt warning, the score is placed at the upper end of the Positive range. | Gemini: The excerpt is clearly positive, stating the show is a 'crowd pleaser' and 'makes us feel a lot better.' Given it's a single excerpt, I'm scoring it on the higher end of the positive range. | Kimi: The excerpt describes the production as a 'crowd pleaser' with effective humor that delivers a satisfying theatrical experience, indicating a clear positive recommendation despite having only a single curated quote available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T08:07:50.666Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  },
+  "sources": [
+    "show-score-playwright"
+  ]
+}

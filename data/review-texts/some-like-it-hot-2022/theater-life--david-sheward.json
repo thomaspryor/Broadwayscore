@@ -1,0 +1,76 @@
+{
+  "showId": "some-like-it-hot-2022",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "David Sheward",
+  "url": "https://theaterlife.com/some-like-it-hot-2/",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 81,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“...Natasha Katz’s warm lighting create the perfect atmosphere for this joyfully ridiculous show. Despite its occasional lapses into preachiness, it’s a really Hot time.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Despite its occasional lapses into preachiness, it's a really Hot time.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear positive recommendation calling it 'joyfully ridiculous' and 'a really Hot time' despite minor reservation about preachiness. Given excerpt-only warning and positive tone, scored in upper Positive range. | GPT-4o: The excerpt praises the show's atmosphere and describes it as 'joyfully ridiculous,' indicating a positive experience. The mention of 'occasional lapses into preachiness' suggests minor reservations, but the overall tone is positive. | Gemini: The review excerpt indicates a positive experience, describing the show as \"joyfully ridiculous\" and a \"really Hot time,\" but acknowledges some \"lapses into preachiness,\" suggesting a recommendation with reservations. | Kimi: The excerpt offers strong praise for the production's atmosphere and tone ('perfect atmosphere', 'joyfully ridiculous', 'really Hot time'), with only a minor reservation about occasional preachiness, indicating a clear positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-04T13:48:31.379Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 81,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
+}

@@ -3,10 +3,10 @@
   "outletId": "variety",
   "outlet": "Variety",
   "criticName": "Marilyn Stasio",
-  "url": "https://variety.com/2019/legit/reviews/frankie-and-johnny-in-the-clair-de-lune-review-audra-mcdonald-michael-shannon-1203225540/",
+  "url": "https://variety.com/2019/legit/reviews/frankie-and-johnny-in-the-clair-de-lune-broadway-review-1203229828/",
   "publishDate": "May 30, 2019",
-  "fullText": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
-  "isFullReview": false,
+  "fullText": "May 30, 2019 7:56pm PT \n\n \n\n \n \n \n\n \n\n \n Broadway Review: ‘Frankie and Johnny in the Clair de Lune’\n \n \n\n \n\n Isn’t it romantic? Audra McDonald and Michael Shannon play downbeat, but lovable lovers, in this simpatico mainstem revival of Terrence McNally’s 1987 play.\n\nA sentimental reading would mean death for this surprisingly delicate two-hander about the tentative one-night stand of two restaurant workers in Hell’s Kitchen during the plague years of the AIDS epidemic. (“Are we really killing each other?” one asks the other, after they’ve done the dangerous deed.) But helmer Arin Arbus (associate director of Theater for a New Audience) and her high-toned cast of two – Michael Shannon, who can do anything, and Audra McDonald, who can do anything while looking gorgeous – bring this historical artifact to warm-blooded life.\n\nFrankie (McDonald) is a waitress at the hash joint in Hell’s Kitchen where Johnny (Shannon) is “the knight of the grill,” and they both seem surprised at having spent the night together. (Credit Riccardo Hernandez’s set and Natasha Katz’s lighting for the desperate dreariness of Frankie’s one-room apartment.) But neither of them has any regrets, and once they get past those awkward morning-after moments, they settle into the nice-and-easy rhythms of strangers who discover they speak the same language.\n\n“You are a very intense person,” says Frankie, who wants this one-night stand to remain a one-night stand and is unnerved by Johnny’s craving for something more than that.\n\n“You want too much,” she intuits. Indeed, he does, and he admits it. “I want you,” he tells her, “and I’m coming after you.”\n\nHow sexy a line is that? And sexy is exactly what other actors (Michelle Pfeiffer and Al Pacino among them) have made of Frankie and Johnny in various revivals of the play. If memory serves, Kathy Bates and Kenneth Welsh, who originated the roles in 1987, were entirely faithful to McNally’s own vision. And despite the fact that McDonald in the raw is physically stunning, she and Shannon make an earnest attempt to give the characters the commonplace quality that makes them so disturbingly endearing.\n\nMcDonald makes something palpable – a sudden, trapped look of panic – of Frankie’s fear of commitment. And Shannon is positively electrifying when he turns downstage and reveals Johnny’s aching need to reach out and hold someone very, very close.\n\nWhile it may seem shallow to make such a big deal about physical beauty, the characters’ relative ordinariness is vital to the play. After all, McNally was writing about the essential need to make human connections in an era when sexual unions were a life-and-death matter. In that context, physical allure is beside the point when the sexual act itself is a life-affirming act of bravery.\n\nIn 1987, the play’s sub-textual message was a no-brainer. Everyone knew then that playing at sex was playing with fire, and McNally had no reason to spell it out. But because there’s no need-to-know subtext to a modern-day production like this one, there’s always the danger that the story of Frankie and Johnny might seem shallow because nothing more than a love story is at stake. Nothing more, perhaps, than a love story, but my, how those lovers can love.",
+  "isFullReview": true,
   "dtliExcerpt": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
   "originalScore": null,
   "assignedScore": 44,
@@ -16,7 +16,7 @@
   "bwwExcerpt": "In 1987, the play's sub-textual message was a no-brainer. Everyone knew then that playing at sex was playing with fire, and McNally had no reason to spell it out. But because there's no need-to-know subtext to a modern-day production like this one, there's always the danger that the story of Frankie and Johnny might seem shallow because nothing more than a love story is at stake. Nothing more, perhaps, than a love story, but my, how those lovers can love.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "McDonald and Shannon are both accomplished actors who know how to handle Terrence McNally's demanding dialogue, but they never find the emotional core that would make this fractured romance feel urgent or even particularly moving.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (35 words)",
   "llmScore": {
     "score": 44,
@@ -77,5 +77,47 @@
   "sources": [
     "web-search",
     "bww-reviews"
-  ]
+  ],
+  "previousUrl": "https://variety.com/2019/legit/reviews/frankie-and-johnny-in-the-clair-de-lune-review-audra-mcdonald-michael-shannon-1203225540/",
+  "urlDiscoveredAt": "2026-02-05T02:31:21.354Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 531,
+  "archivePath": "data/archives/reviews/frankie-and-johnny-in-the-clair-de-lune-2019/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:31:21.360Z",
+  "fetchMethod": "scrapingbee",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": true
+    }
+  ],
+  "fetchTier": 2,
+  "textQuality": "full",
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "scrapingbee",
+  "wordCount": 531,
+  "tierReason": "Full review text"
 }

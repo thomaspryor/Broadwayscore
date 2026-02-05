@@ -1,0 +1,78 @@
+{
+  "showId": "escape-to-margaritaville-2018",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2018/03/15/theater/escape-to-margaritaville-review-jimmy-buffett-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"Awfully lowbrow…Dopey fun is one thing, but ‘Escape to Margaritaville,’ a paean to the pleasures of zipless debauchery, is pitched so low it will temporarily extinguish your IQ...A coherent aesthetic experience, in that laziness is not just its method but its message...The score is beautifully sung...It’s the songs themselves that are problematic. They may work well enough on the radio or in concert but, conscripted for theatrical service, grow quickly monotonous.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Awfully lowbrow…Dopey fun is one thing, but ‘Escape to Margaritaville,’ a paean to the pleasures of zipless debauchery, is pitched so low it will temporarily extinguish your IQ.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Negative | GPT-4o: The review describes the show as 'awfully lowbrow' and 'pitched so low it will temporarily extinguish your IQ,' indicating a negative view. While the score is praised for being beautifully sung, the songs are criticized as monotonous in a theatrical setting. | Gemini: The review uses phrases like \"awfully lowbrow\" and \"grow quickly monotonous,\" but also notes that the score is \"beautifully sung.\" Due to the limited excerpt, it's difficult to determine the overall recommendation, but it leans towards mixed. | Kimi: The excerpt criticizes the show as 'awfully lowbrow,' lazy, and monotonous, warning it will 'extinguish your IQ' despite acknowledging the score is beautifully sung, indicating an overall negative verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T15:53:57.448Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 45,
+    "geminiScore": 58,
+    "kimiScore": 40,
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Negative"
+  }
+}

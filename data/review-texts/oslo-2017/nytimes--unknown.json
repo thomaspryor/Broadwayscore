@@ -1,0 +1,79 @@
+{
+  "showId": "oslo-2017",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2017/04/13/theater/oslo-broadway-review.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 83,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"This rich drama of quixotic politics fills to the bursting point its capacious new home...'Oslo' has now become the colossus it was always meant to be, while giving an even sharper focus to the urgent behind-the-scenes intimacy at its fast-beating heart...A marvel of both expository efficiency and exciting showmanship...'Oslo' features a vast cast of characters...Yet somehow, by the end, this production’s vital ensemble makes you feel you have come to know every single one of them.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 83,
+    "confidence": "medium",
+    "range": {
+      "low": 78,
+      "high": 88
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Oslo' has now become the colossus it was always meant to be, while giving an even sharper focus to the urgent behind-the-scenes intimacy at its fast-beating heart.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with superlatives ('marvel', 'colossus', 'vital ensemble') and no caveats in the excerpt. However, confidence is low due to single excerpt warning - this could be cherry-picked from a more mixed review. | GPT-4o: The excerpt uses superlative language ('colossus', 'marvel', 'exciting showmanship') and praises the production's ensemble and dramatic impact, indicating a strong recommendation. However, confidence is low due to the single excerpt warning. | Gemini: The excerpt uses strong positive language like \"rich drama\", \"colossus\", \"marvel\", and praises the ensemble cast. Given the single excerpt warning, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt offers unqualified praise ('colossus,' 'marvel,' 'exciting showmanship'), but per the single-excerpt warning, the score is placed at the upper end of the Positive bucket rather than Rave due to the risk of cherry-picking.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T21:44:45.289Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 84,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

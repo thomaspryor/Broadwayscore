@@ -5,8 +5,8 @@
   "criticName": "Marilyn Stasio",
   "url": "https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/",
   "publishDate": "April 26, 2012",
-  "fullText": "Despite the star power of Raul Esparza and a slick production, this musical about a con-man evangelist never finds its spiritual center or comic groove.",
-  "isFullReview": false,
+  "fullText": null,
+  "isFullReview": true,
   "dtliExcerpt": "Despite the star power of Raul Esparza and a slick production, this musical about a con-man evangelist never finds its spiritual center or comic groove.",
   "originalScore": null,
   "assignedScore": 44,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Despite the star power of Raul Esparza and a slick production, this musical about a con-man evangelist never finds its spiritual center or comic groove.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 44,
@@ -72,5 +72,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Negative"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 44,
+  "textWordCount": 626,
+  "archivePath": "data/archives/reviews/leap-of-faith-2012/variety--marilyn-stasio_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:00:33.844Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "Between the architectural pillars of Renaissance Italy and Kate Bosworth, helmer Kat Coiro hangs a gossamer tale of ruined love and liberation with \"While We Were Here.\"\n\nBetween the architectural pillars of Renaissance Italy and Kate Bosworth, helmer Kat Coiro hangs a gossamer tale of ruined love and liberation with “While We Were Here.” An homage to neorealism, the French New Wave and the cinematic power of faces, as well as a lark of sorts for Coiro and Bosworth after their collaboration on “Life Happens,” this black-and-white, anti-romantic feature might also be seen as a retort to that earlier pic. Theatrical odds seem long, but specialty/festival play will give film the scope it needs to showcase d.p. Doug Chamberlain’s odd but affecting widescreen cinematography.\n\nRelated Stories \n \n\n \n \n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n YouTube Revenue for Full-Year 2025 Topped $60 Billion, Making Video Platform Bigger Than Netflix \n \n \n\n \n \n \n \n \n\n \n\n \n\n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n \n Apple Revenue Pops 16% to Nearly $144 Billion in Year-End 2025 Quarter on iPhone 17 Sales Blitz, Services Biz Hits $30 Billion\n\nAn antipasto platter of film references, “While We Were Here” bends the conventions of its various inspirations, which include De Sica, Rossellini, “Roman Holiday” and (although the central location is Naples) Godard, because Bosworth so strongly evokes Jean Seberg in “Breathless.” Bosworth’s Jane — a troublingly thin, visibly depressed American tourist — has arrived in Italy with her husband, Leonard (Iddo Goldberg), a classical viola player in town for concert rehearsals. There are no overt hostilities between the two, but there’s no evident love, either.\n\nJane is a writer who has long struggled with a project she can’t quite wrap her head around: Through her ever-present headphones, she listens to hours of interviews she conducted with her English grandmother, whose recollections of having lived through two world wars, Jane hopes, will provide the inspiration for a book. As Jane’s grandma, Claire Bloom delivers a vocal performance so deft that her character seems to take palpable form, her words arriving at perfect intervals throughout the film.\n\nPic is initially shot with what seems to be an unnecessarily wide lens, and a jagged palette of shadows and light that are meant to reflect Jane’s psychological conflict. It comes to light that she’s had a miscarriage, an essential part of this portrait that nonetheless feels like a too-easy device. And as American movie women tend to do when visiting Italy, Jane experiences a sensual awakening.\n\nContrary to expectations, said arousal is provided not by an Italian but by a footloose 19-year-old American, Caleb (Jamie Blackley), who is a bit taken with himself but amuses the 30-ish Jane, especially when he tells her viola jokes. The flaw here is that any wife of a professional viola player would have heard them all before. (What’s the definition of an optimist? A violist with a beeper.)\n\nWhile Caleb never becomes a figure of crucial significance, he does throw Jane’s marital problems into high relief. Leonard exhibits all the signs of being out of love: He doesn’t really listen, and he responds wearily when Jane attempts conversational intimacy. During sex, when Jane asks him, “Is there anything you want?” he responds, “Just you, Jane.” What Jane herself wants isn’t sex, or even love, but spontaneity, which Caleb provides.\n\nCoiro’s script provides all manner of understated clues as to Jane’s problems and resolutions, while lenser Chamberlain delivers a portrait in light that is not exactly understated — Bosworth blossoms gloriously as Jane finds her erotic footing — but is precise and moving, much like the film itself. “While We Were Here” does have a hint of Chanel advertising about it, and one sequence of Jane and Caleb romping about the island of Ischia seems almost a parody of love-in-bloom moments, but the emotions feel otherwise genuine.\n\nThesping and tech credits are topnotch."
 }

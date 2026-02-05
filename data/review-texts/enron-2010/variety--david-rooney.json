@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://variety.com/2010/legit/reviews/enron-1117942378/",
   "publishDate": "April 27, 2010",
-  "fullText": "This ripped-from-the-headlines musical about corporate greed and corruption has enough theatrical firepower to light up Times Square, but it burns out before generating sustained heat.",
-  "isFullReview": false,
+  "fullText": "Dutch newlyweds share the same home but not much else in \"Hunting & Son,\" an initially slow-burning but pretty effective slice of Euro miserablism.\n\nDutch newlyweds share the same home but not much else in “Hunting & Son,” an initially slow-burning but pretty effective slice of Euro miserablism. After helmer Sander Burger’s largely overlooked debut feature, “Olivier etc.,” thesps and real-life couple Dragan Bakema and Maria Kraakman again collaborated with Burger on the screenplay and here come up with another fascinating if somewhat lopsided dual character study. Though this low-budget pic was but a blip on the local commercial radar, its international premiere at New Directors/New Films in New York should jumpstart a tour of the fest circuit.\n\nThirtyish Tako Hunting (Bakema) runs a bike store in a Dutch village, and lives over the shop with his frail-looking but hard-working wife, Sandra (Kraakman). Before the film opens, Tako happily studied economics in Amsterdam. But after the death of his father, he decided to return to his place of birth to take over the eponymous family business and marry his high school sweetheart.\n\nIt’s never spelled out what exactly made Tako come back, but it’s soon clear it wasn’t a very good idea. Coldly observing them in their daily behavior, Burger shows the two newlyweds simply go through the motions of being a married couple, even though their nuptials happened so recently that Sandra’s dad (Hans Hoes) is still editing their wedding video during pic’s opening.\n\nIn the film’s early going, the fixed and lingering shots often at least partially conceal the protags’ faces, with d.p. Sal Kroonenberg’s visuals mirroring the characters’ emotional detachment by keeping them at a certain distance. Obsessed with everyday details and outward appearances, the two pretty much incompatible adults are either unable or simply too afraid to see the bigger picture.\n\nBurger and his talented actors shift gears when the Huntings discover that one of their perfunctory sack sessions has left Sandra pregnant. A hospital visit unexpectedly throws the couple’s problems into relief. Desperation grows as the characters try to adhere to their established but now meaningless routines and the pic moves into darker territory that could have used a bit more motivation. Shots become handheld and the camera moves closer to the actors, suggesting the story is moving into more unpredictable terrain while literally offering a closer look at who these people really are.\n\nBut though the second half contains some impressive scenes — notably a spaghetti dinner Tako has prepared — the film also increasingly sides with Bakema’s extremely worried future father, leaving Sandra somewhat undernourished. Perhaps helmer Burger, who also shortchanged Kraakman’s character in “Olivier etc.,” isn’t quite sure how to handle female protags, though the actress (“Guernsey”) generally convinces. As her hubby, Bakema (“Vox Populi”) impresses in yet another vanity-free performance, with the scar tissue on his throat adding to the mystery about his past.\n\nTech package is in line with the film’s modest budget; art director Karijn van Brink’s soulless interiors further underline the couple’s preference for the impersonal. Absence of music and lensing on 16mm add to the bleak verite feel.",
+  "isFullReview": true,
   "dtliExcerpt": "This ripped-from-the-headlines musical about corporate greed and corruption has enough theatrical firepower to light up Times Square, but it burns out before generating sustained heat.",
   "originalScore": null,
   "assignedScore": 61,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "This ripped-from-the-headlines musical about corporate greed and corruption has enough theatrical firepower to light up Times Square, but it burns out before generating sustained heat.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (25 words)",
   "llmScore": {
     "score": 61,
@@ -71,5 +71,53 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Mixed"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 61,
+  "textWordCount": 521,
+  "archivePath": "data/archives/reviews/enron-2010/variety--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:07:10.254Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "incomplete",
+  "sourceMethod": "brightdata",
+  "textIssues": [
+    "Show title not found in text"
+  ],
+  "wordCount": 521,
+  "tierReason": "Full review text"
 }

@@ -3,9 +3,9 @@
   "outletId": "vulture",
   "outlet": "Vulture",
   "criticName": "Jesse Green",
-  "url": "https://www.vulture.com/2018/04/theater-review-carousel-on-broadway.html",
+  "url": "https://www.vulture.com/2018/04/theater-review-can-carousel-be-brought-around.html",
   "publishDate": "April 13, 2018",
-  "fullText": "The new Broadway revival of Carousel, directed by Jack O'Brien, is a handsome, well-sung, and mostly well-acted production that nonetheless feels oddly tentative about its own reason for being.",
+  "fullText": null,
   "isFullReview": false,
   "dtliExcerpt": "The new Broadway revival of Carousel, directed by Jack O'Brien, is a handsome, well-sung, and mostly well-acted production that nonetheless feels oddly tentative about its own reason for being.",
   "originalScore": null,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new Broadway revival of Carousel, directed by Jack O'Brien, is a handsome, well-sung, and mostly well-acted production that nonetheless feels oddly tentative about its own reason for being.",
-  "contentTier": "truncated",
+  "contentTier": "excerpt",
   "contentTierReason": "Short text (29 words)",
   "llmScore": {
     "score": 63,
@@ -73,5 +73,44 @@
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 4 models agree: Mixed"
   },
-  "textQuality": "truncated"
+  "textQuality": "truncated",
+  "previousUrl": "https://www.vulture.com/2018/04/theater-review-carousel-on-broadway.html",
+  "urlDiscoveredAt": "2026-02-05T02:13:13.513Z",
+  "urlDiscoveryMethod": "google-serp",
+  "textWordCount": 118,
+  "archivePath": "data/archives/reviews/carousel-2018/vulture--jesse-green_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T02:13:13.531Z",
+  "fetchMethod": "playwright",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "timeout of 60000ms exceeded"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "timeout of 15000ms exceeded"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": true
+    }
+  ],
+  "fetchTier": 1,
+  "truncationSignals": [
+    "has_paywall_text",
+    "has_footer_text"
+  ],
+  "textStatus": "truncated",
+  "sourceMethod": "playwright",
+  "textIssues": [
+    "Word count too low: 118 (min: 300)",
+    "Show title not found in text"
+  ],
+  "showNotMentioned": true,
+  "wrongFullText": "This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. There was an error. Please try again later. There was an error please try again later. Does not meet password requirements Password must be at least 12 characters. This email will be used to sign into all New York sites. By submitting your email, you agree to our Terms and Privacy Policy to receive email correspondence from us. You can log in with the Vox Media account you created on We’ve sent an email with instructions for setting a new password. Sign in with your new password below."
 }

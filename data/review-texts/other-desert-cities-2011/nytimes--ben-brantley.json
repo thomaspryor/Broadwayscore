@@ -3,10 +3,10 @@
   "outletId": "nytimes",
   "outlet": "The New York Times",
   "criticName": "Ben Brantley",
-  "url": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-lincoln-center-theater-review.html",
+  "url": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-booth-theater-review.html",
   "publishDate": "November 3, 2011",
-  "fullText": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
-  "isFullReview": false,
+  "fullText": "All family reunions should be this satisfying. Having spent months apart and suffered losses that might have leveled a less resilient clan, the Wyeths of “Other Desert Cities” have reassembled on Broadway at the Booth Theater, and absence and adversity (as they’re supposed to but so seldom do) have made them closer than ever. This means they have even more power to nurture, delight and wound one another and, not incidentally, move to tears anyone who visits them.\n\nThere was much rejoicing when this Jon Robin Baitz play had its premiere Off Broadway at Lincoln Center in January. It was not only the most thoroughly integrated and sustained work from Mr. Baitz, who had been regarded as a promising wunderkind for long past his sell-by date. This witty, deeply enjoyable family drama also had a five-member cast of top-flight virtuosos. Expectations were that the show would beat a fast path to Broadway with its marvelous cast intact.\n\nBut the wheels of New York show business grind slow. And by the time little details like a theater to appear in had been worked out for a transfer, the production had lost its flashiest stars, Elizabeth Marvel and Linda Lavin. And there were worries the show might also have lost its momentum and the accumulated interest on all that buzz from last season.\n\nYet “Cities,” directed with a masterly combination of shadow and shimmer by Joe Mantello, emerges as stronger, more sincere and more credible in its Broadway reincarnation. There were whispers last winter (though not from me) that as pleasurable as “Cities” was, it had more sparkle than substance, and that the members of the affluent, fractious family it portrayed didn’t seem to share the same performance styles, let alone the same blood.\n\nThis new version should silence those objections. With Rachel Griffiths and Judith Light assuming the roles originally played by Ms. Marvel and Ms. Lavin — and Stacy Keach, Thomas Sadoski and a peerless Stockard Channing having only grown in theirs — “Cities” is now less of a showoff than it was, and its ensemble more of a piece. It has, in other words, settled comfortably into its own skin, which makes its characters’ discomfort all the more palpable.\n\nWe are having trouble retrieving the article content.\n\nPlease enable JavaScript in your browser settings.\n\nThank you for your patience while we verify access.",
+  "isFullReview": true,
   "dtliExcerpt": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
   "originalScore": null,
   "assignedScore": 85,
@@ -16,9 +16,9 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Jon Robin Baitz has written a family drama that crackles with the electricity of old wounds being picked at until they bleed afresh. This is a smart, savage and ultimately moving portrait of a family whose love for one another is both their salvation and their curse.",
-  "contentTier": "truncated",
+  "contentTier": "complete",
   "contentTierReason": "Short text (47 words)",
-  "textQuality": "truncated",
+  "textQuality": "full",
   "llmScore": {
     "score": 85,
     "confidence": "medium",
@@ -73,5 +73,30 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-no-consensus",
     "modelAgreement": "Adjacent bucket split (Positive/Rave) - using median score"
-  }
+  },
+  "previousUrl": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-lincoln-center-theater-review.html",
+  "urlDiscoveredAt": "2026-02-05T03:41:51.024Z",
+  "urlDiscoveryMethod": "google-serp",
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 85,
+  "textWordCount": 394,
+  "archivePath": "data/archives/reviews/other-desert-cities-2011/nytimes--ben-brantley_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:41:51.028Z",
+  "fetchMethod": "archive",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": true
+    }
+  ],
+  "fetchTier": 4,
+  "truncationSignals": [],
+  "textStatus": "complete",
+  "sourceMethod": "archive",
+  "archiveOrgTimestamp": "20241217141810",
+  "archiveOrgUrl": "http://web.archive.org/web/20241217141810/https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-booth-theater-review.html",
+  "wordCount": 394,
+  "tierReason": "Full review text"
 }

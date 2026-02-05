@@ -5,8 +5,8 @@
   "criticName": "David Rooney",
   "url": "https://www.hollywoodreporter.com/lifestyle/arts/here-lies-love-broadway-review-1235519822/",
   "publishDate": "July 20, 2023",
-  "fullText": null,
-  "isFullReview": false,
+  "fullText": "Since 2015, when the Emmys broke the category formerly known as outstanding variety series into two — variety talk and variety sketch — two shows have dominated. In variety talk, Last Week Tonight With John Oliver has won for seven consecutive years. In variety sketch, Saturday Night Live has taken it six times.\n\nBut in 2023, these two juggernauts will be competing against each other thanks to yet another rule change. Now both fall under the banner of outstanding scripted variety series, described as shows that “are primarily scripted or feature loosely scripted improv and consist of discrete scenes, musical numbers, monologues, comedy stand-ups, sketches, etc.” So who will prevail? For years, it seems like voters have simply shrugged and cast their ballots for Last Week Tonight and SNL without really thinking. Now, they’ll have to choose in a category that features an erratic array of choices.\n\n \n \n \n\n \n \n \n\n \n \n\n \n\n \n \n \n Related Stories \n \n\n \n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n TV\n \n \n \n \n\n \n \n \n \n 'Heated Rivalry' Star Connor Storrie Sets 'Saturday Night Live' Debut \n \n \n\n \n \n \n \n\n \n \n\n \n\n \n \n \n \n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n TV\n \n \n \n \n\n \n \n \n \n Pete Davidson Joins 'Saturday Night Live' Cold Open to \"Tighten Up\" ICE Agents in Minneapolis\n\nIn many ways, Last Week Tonight still has the upper hand, even though it’s in a new category. When it was in variety talk, it beat out the biggest names in late night, including The Late Show With Stephen Colbert, Jimmy Kimmel Live! and The Daily Show With Trevor Noah.\n\nSNL, admittedly, has had a much smaller field to conquer. In 2022 and 2021, variety sketch had only two nominees: SNL and A Black Lady Sketch Show. And while it would have been thrilling if voters had picked Robin Thede’s HBO series, instead they went for Lorne Michaels’ long-running star-maker.\n\nComparing Last Week Tonight and SNL feels like a case of apples versus oranges. This season, the former featured segments about cryptocurrency, farmworkers and artificial intelligence. SNL‘s breakout sketch this year was Ego Nwodim’s brilliant “Lisa From Temecula” in which she declares about her restaurant steak, “Cook my meat” and tells Pedro Pascal she’s not “giving up the butt tonight.” Oliver’s pieces are deeply researched essays with jokes; SNL relies mostly on silliness.\n\nAnd, of course, they aren’t the only two shows competing in this category, which is actually, in a bizarre way, robust. In addition to the most recent season of A Black Lady Sketch Show, the category could also contain the return of Inside Amy Schumer, Mel Brooks’ long-teased History of the World: Part II, the delightfully confrontational Ziwe, former writing category nominee The Amber Ruffin Show and esoteric cinema parody enterprise Documentary Now! The musical comedy series Schmigadoon! also attempted to crash the category, but the Television Academy reportedly denied its petition, and the show is staying put in the comedy race.\n\nEven without Jane Krakowski belting and doing the splits in a Schmigadoon! courtroom scene, the contenders include a truly vast selection of comedic styles — from the Borscht Belt stylings of History of the World to Ziwe‘s savvy gotcha questions. It would perhaps be a little disappointing if there is just another Oliver or SNL win. At the same time, it’s hard to imagine one of those two not emerging victorious. The Emmys love an institution, and those shows have proven their mettle.\n\nWith the heavyweights dueling in scripted variety, what becomes of variety talk, now devoid of Oliver’s insights? The last time Oliver didn’t win in that category, the trophy went to the final season of Jon Stewart’s The Daily Show run. Trevor Noah’s Daily Show swan song could draw a nomination, but his departure was more fraught than Stewart’s; Noah left midseason, putting a string of guest hosts in charge, while Stewart was offered a farewell as a hero of the medium. (Stewart, for what it’s worth, has another show in the running, his Apple TV+ program, The Problem With Jon Stewart.)\n\nThe category could always go to one of the stalwarts of late night — Stephen Colbert or Jimmy Kimmel, neither of whom has won a Primetime Emmy for his present talk show. Or the 12:35 a.m. hour could finally receive its due with Late Night With Seth Meyers making a run for it.\n\nBoth talk and scripted variety are categories that will feel the impact of the WGA strike. SNL and Last Week Tonight cut their seasons short. The late night shows — with the notable exception of Fox News’ Gutfeld! — are dark. This doesn’t, of course, negate what made it to screens before the work stoppage, but it highlights that this is a corner of the industry that was immediately forced into limbo.\n\nEven without the strike interruption, the TV Academy has, for a while, struggled to know what to do with these shows, which have evolved beyond the typical monologue-interview-musical guest or monologue-sketch-musical guest formats over time. Yes, it is weird to try to compare Last Week Tonight with SNL, but the Emmys are forcing their voters to try. It’s a battle between goofy for the sake of goofiness and goofy for the sake of education.",
+  "isFullReview": true,
   "dtliExcerpt": "The immersive staging transforms the Broadway Theatre into a gleaming dance club, with audience members standing on the floor and moving around as the story unfolds around them.",
   "originalScore": null,
   "assignedScore": 72,
@@ -16,7 +16,7 @@
   "bwwExcerpt": null,
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The immersive staging transforms the Broadway Theatre into a gleaming dance club, with audience members standing on the floor and moving around as the story unfolds around them.",
-  "contentTier": "excerpt",
+  "contentTier": "complete",
   "contentTierReason": "Only aggregator excerpts available",
   "llmScore": {
     "score": 72,
@@ -71,5 +71,50 @@
     "needsReviewReasons": [],
     "ensembleSource": "ensemble-unanimous",
     "modelAgreement": "All 3 models agree: Positive"
-  }
+  },
+  "needsRescore": true,
+  "rescoreReason": "fullText added after excerpt-based scoring",
+  "previousLlmScore": 72,
+  "textWordCount": 834,
+  "archivePath": "data/archives/reviews/here-lies-love-2023/hollywood-reporter--david-rooney_2026-02-05.html",
+  "textFetchedAt": "2026-02-05T03:09:21.636Z",
+  "fetchMethod": "brightdata",
+  "fetchAttempts": [
+    {
+      "tier": 0,
+      "method": "archive-first",
+      "success": false,
+      "error": "No archive snapshot available"
+    },
+    {
+      "tier": 0.5,
+      "method": "archive",
+      "success": false,
+      "error": "No CDX snapshots found"
+    },
+    {
+      "tier": 1,
+      "method": "playwright",
+      "success": false,
+      "error": "Skipped (known-blocked site)"
+    },
+    {
+      "tier": 2,
+      "method": "scrapingbee",
+      "success": false,
+      "error": "CAPTCHA detected (premium_proxy)"
+    },
+    {
+      "tier": 3,
+      "method": "brightdata",
+      "success": true
+    }
+  ],
+  "fetchTier": 3,
+  "textQuality": "partial",
+  "truncationSignals": [],
+  "textStatus": "partial",
+  "sourceMethod": "brightdata",
+  "wordCount": 834,
+  "tierReason": "Full review text"
 }

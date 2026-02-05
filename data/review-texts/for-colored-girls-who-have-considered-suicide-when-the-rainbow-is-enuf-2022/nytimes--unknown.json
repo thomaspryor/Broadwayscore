@@ -1,0 +1,79 @@
+{
+  "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 82,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "\"“For Colored Girls” is an assertion of the right to own all of the feelings and all of the colors of experience. It pulses and pulses with life, singing a Black girl’s song. And in Brown’s sublime and supple channeling, we hear Shange with exquisite clarity.\"\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It pulses and pulses with life, singing a Black girl's song.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise with vivid imagery ('pulses with life') and 'sublime' performance descriptions, but single excerpt limits confidence in overall verdict. | GPT-4o: The excerpt uses highly positive language ('pulses with life', 'sublime and supple channeling') suggesting a strong recommendation. However, confidence is low due to the single excerpt limitation. | Gemini: The excerpt is highly positive, using words like \"sublime\" and \"exquisite clarity\", and describing the show as pulsing with life. Given that this is the only excerpt available, I'm scoring it as a strong positive, but with low confidence due to the limited text. | Kimi: The excerpt uses superlatives like 'sublime,' 'exquisite,' and 'pulses with life,' indicating strong enthusiasm for the production, though the single-excerpt limitation warrants conservative scoring at the high end of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T16:09:12.854Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
+}

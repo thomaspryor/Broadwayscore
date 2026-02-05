@@ -1,0 +1,79 @@
+{
+  "showId": "bandstand-2017",
+  "outletId": "nytimes",
+  "outlet": "The New York Times",
+  "criticName": "Unknown",
+  "url": "https://www.nytimes.com/2017/04/26/theater/bandstand-review-broadway.html",
+  "publishDate": null,
+  "fullText": null,
+  "isFullReview": false,
+  "dtliExcerpt": null,
+  "originalScore": null,
+  "assignedScore": 43,
+  "source": "show-score-playwright",
+  "dtliThumb": null,
+  "dtliUrl": null,
+  "bwwExcerpt": null,
+  "bwwRoundupUrl": null,
+  "showScoreExcerpt": "“An undercooked slice of apple pie, served with a dollop of anguish…It’s respectful of veterans, but not of itself, ultimately quitting on its own ambitions...Mr. Cott has a crushing charisma…Ms. Osnes, a brunette with a silvery voice, puts real feeling behind Julia’s loss…But even fine actors can’t make this story more persuasive. If ‘Bandstand’ really worked, the finale would find you laughing and crying. Instead, you might just make like the dancers and shrug.”\n\nRead more",
+  "contentTier": "excerpt",
+  "contentTierReason": "Only aggregator excerpts available",
+  "sources": [
+    "show-score-playwright"
+  ],
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But even fine actors can't make this story more persuasive.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic praises individual performances (Cott's 'crushing charisma', Osnes's 'silvery voice') but finds the show fundamentally flawed ('undercooked', 'quitting on its own ambitions'). The finale test metaphor and shrugging dancers image suggest clear disappointment with the overall production. | GPT-4o: The review criticizes the show for not fulfilling its ambitions and failing to be persuasive, despite praising individual performances. The overall tone suggests disappointment, aligning with a negative verdict. | Gemini: The review praises the actors but ultimately finds the story unpersuasive and the overall effect lacking, suggesting a mixed to negative assessment. The truncated text and single excerpt lower confidence. | Kimi: While praising the lead performances (Cott's 'crushing charisma' and Osnes's 'silvery voice'), the critic finds the show 'undercooked,' criticizes its lack of ambition, and notes the finale induces only a 'shrug' rather than emotional investment. The performer praise does not redeem the overall negative verdict on the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-03T14:30:17.081Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 40,
+    "geminiScore": 62,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 22,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
+}
