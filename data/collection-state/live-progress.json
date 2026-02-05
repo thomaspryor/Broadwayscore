@@ -1,52 +1,56 @@
 {
-  "updatedAt": "2026-02-05T05:13:51.393Z",
-  "processed": 89,
-  "failed": 331,
-  "successRate": "21.2%",
+  "updatedAt": "2026-02-05T05:18:45.180Z",
+  "processed": 62,
+  "failed": 278,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 5,
-    "browserbase": 2,
-    "scrapingbee": 15,
+    "playwright": 4,
+    "browserbase": 3,
+    "scrapingbee": 11,
     "brightdata": 21,
-    "archive": 49
+    "archive": 29
   },
   "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-02-05T00:53:08.167Z",
+      "t": "2026-02-05T00:55:29.767Z",
       "event": "bb-session",
-      "session": "869e990f",
-      "url": "https://www.nytimes.com/2009/03/10/theater/reviews/10vari.html"
+      "session": "35d2802e",
+      "url": "https://www.vulture.com/2019/12/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-05T00:53:53.297Z",
-      "event": "bb-login-fail",
-      "domain": "nytimes.com",
-      "error": "elementHandle.click: Timeout 30000ms exceeded.\nCall log:\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    24 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <iframe border=\"0\" width=\"100%\" height=\"100%\" frameborder=\"0\" scrolling=\"yes\" title=\"Verification system\" id=\"ddChallengeBody1770252800062\" allow=\"accelerometer; gyroscope; magnetometer\" sandbox=\"allow-scripts allow-same-origin allow-forms\" src=\"https://geo.captcha-delivery.com/captcha/?initialCid=AHrlqAAAAAMAEipxClCLlfEALPhWIg==&cid=wlziAOBbX0awxVyQiGL93mC~RDme~6bcDY3DgeSVCF37oooKwC0d8Z~IdSfFWxVV5V5KCD15XAEEMLRuA9~Gadyn582Rr78Z_D~i~~rC2M_4tPHffkkDvxR_kuCCz8lj&referer=https%3A%2F%2Fmyaccount.nytimes.c…></iframe> from <div id=\"ddChallengeContainer1770252800062\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n    - waiting for element to be visible, enabled and stable\n"
+      "t": "2026-02-05T00:55:31.846Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
     },
     {
-      "t": "2026-02-05T00:54:32.068Z",
+      "t": "2026-02-05T00:56:04.862Z",
       "event": "bb-session",
-      "session": "60176a5e",
-      "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401"
+      "session": "69122a91",
+      "url": "http://www.hollywoodreporter.com/review/a-christmas-carol-theater-review-1256271"
     },
     {
-      "t": "2026-02-05T00:55:29.735Z",
+      "t": "2026-02-05T00:56:37.918Z",
       "event": "bb-session",
-      "session": "d21459f1",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+      "session": "3fe3b6e5",
+      "url": "https://variety.com/2019/legit/reviews/christmas-carol-review-broadway-campbell-"
     },
     {
-      "t": "2026-02-05T00:57:08.209Z",
+      "t": "2026-02-05T00:58:23.128Z",
       "event": "bb-session",
-      "session": "334faaa8",
-      "url": "http://www.variety.com/review/VE1117943828.html"
+      "session": "0d32c0ce",
+      "url": "https://www.vulture.com/2022/12/theater-review-a-christmas-carol-on-broadway.htm"
     },
     {
-      "t": "2026-02-05T00:58:03.062Z",
+      "t": "2026-02-05T00:58:25.186Z",
+      "event": "bb-login-uncertain",
+      "domain": "vulture.com"
+    },
+    {
+      "t": "2026-02-05T01:00:12.173Z",
       "event": "bb-session",
-      "session": "78c898b2",
-      "url": "http://www.hollywoodreporter.com/review/a-time-kill-theater-review-649686"
+      "session": "0c9798c2",
+      "url": "http://www.hollywoodreporter.com/review/a-raisin-sun-theater-review-693457"
     }
   ]
 }
