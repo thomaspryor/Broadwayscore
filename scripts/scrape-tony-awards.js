@@ -95,16 +95,59 @@ function normalizeTitle(title) {
     .toLowerCase()
     .replace(/['']/g, "'")
     .replace(/[""]/g, '"')
+    .replace(/,/g, '')  // Remove commas for better matching
+    .replace(/:/g, '')  // Remove colons for better matching
+    .replace(/&/g, 'and')  // Normalize ampersand to "and"
     .replace(/\s+/g, ' ')
     .replace(/^the\s+/i, '')
     .trim();
 }
 
+// Title aliases for Wikipedia names that don't match our shows.json titles
+// Keys should be normalized (lowercase, no colons/commas, & → and, no leading "the")
+const TITLE_ALIASES = {
+  // Full titles on Wikipedia vs. shortened in our data
+  "sweeney todd the demon barber of fleet street": "sweeney todd",
+  "25th annual putnam county spelling bee": "25th annual putnam county spelling bee",
+  "a gentleman's guide to love and murder": "a gentleman's guide to love and murder",
+  "beautiful the carole king musical": "beautiful the carole king musical",
+
+  // Slash/spacing variations
+  "topdog/underdog": "topdog / underdog",
+  "sea wall/a life": "sea wall / a life",
+
+  // Article variations
+  "an american in paris": "american in paris",
+  "a raisin in the sun": "raisin in the sun",
+
+  // Billy Elliot (colon in ours, not in Wikipedia)
+  "billy elliot the musical": "billy elliot the musical",
+
+  // The Band's Visit
+  "band's visit": "band's visit",
+
+  // Moulin Rouge variations
+  "moulin rouge! the musical": "moulin rouge! the musical",
+  "moulin rouge!": "moulin rouge! the musical",
+
+  // POTUS - abbreviation vs full title
+  "potus": "potus or behind every great dumbass are seven women trying to keep him alive",
+
+  // Shows that should match with articles handled
+  "an enemy of the people": "an enemy of the people",
+  "a strange loop": "a strange loop",
+};
+
 /**
  * Match a Tony nominee to our shows.json
  */
 function matchShow(showName, year) {
-  const normalized = normalizeTitle(showName);
+  let normalized = normalizeTitle(showName);
+
+  // Check aliases first
+  if (TITLE_ALIASES[normalized]) {
+    normalized = TITLE_ALIASES[normalized];
+  }
 
   // Direct title match
   const candidates = showsByTitle.get(normalized) || [];
