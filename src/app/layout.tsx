@@ -7,7 +7,7 @@ import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
 import { getAllShows, getDataStats } from '@/lib/data-core';
-import { Analytics } from '@vercel/analytics/react';
+import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 
 // Static OG image (API routes don't work with static export)
@@ -238,7 +238,7 @@ export default function RootLayout({
           </div>
         </footer>
         <ScrollToTop />
-        <Analytics />
+        <AnalyticsWrapper />
       </body>
     </html>
   );
