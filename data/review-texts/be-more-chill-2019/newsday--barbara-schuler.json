@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Much has been written about this heartfelt musical's unlikely road to Broadway, the tiny production in New Jersey, the album that went viral (more than 200 million downloads and counting), the Off-Broadway run that sold out before it opened. And everything's been spruced up for Broadway - the cool computer-screen set by Beowulf Boritt, the outlandish costumes by Bobby Frederick Tilley II, the slick projections by Alex Bosco Koch. As the squip sings near the end of the first act, 'you gotta get an upgrade.' And with this one, 'Be More Chill' gets a fighting chance to stand out in a capacity crowd of musicals about kids who don't feel like they belong.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "And with this one, 'Be More Chill' gets a fighting chance to stand out in a capacity crowd of musicals about kids who don't feel like they belong.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows qualified praise for Broadway upgrades and suggests the show now has potential to succeed, but the measured tone ('fighting chance') indicates cautious optimism rather than enthusiasm. | GPT-4o: The excerpt highlights improvements and upgrades for the Broadway production, suggesting a positive outlook. However, the single excerpt and lack of explicit praise or strong recommendation necessitate a cautious, lower-end Positive score. | Gemini: The review highlights the show's upgrades for Broadway and suggests it now has a \"fighting chance\" to succeed, indicating a positive but not overwhelmingly enthusiastic recommendation. Confidence is low due to the single excerpt. | Kimi: The excerpt praises the 'heartfelt' musical's upgraded production design and concludes it has a 'fighting chance to stand out,' indicating clear approval of the Broadway transfer despite the competitive landscape.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:18:19.002Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

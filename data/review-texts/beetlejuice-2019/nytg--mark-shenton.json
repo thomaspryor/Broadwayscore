@@ -12,5 +12,60 @@
   "bwwExcerpt": "The score by Eddie Perfect -- who also provided songs for this season's King Kong -- is full of wit and grit, and Scott Brown and Anthony King's book propels it forward smartly. There are also hilarious performances from Leslie Kritzer and Sophia Anne Caruso as the mistress and daughter respectively of the house's new buyer Charles (Adam Dannheisser). Beetlejuice is the last new show to open this season -- but could be haunting Broadway for a long while.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
   "contentTier": "excerpt",
-  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway"
+  "playbillVerdictUrl": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Beetlejuice is the last new show to open this season -- but could be haunting Broadway for a long while.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for score ('wit and grit'), book ('propels it forward smartly'), and performances ('hilarious'). Final line suggests longevity prediction. However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt praises the score, book, and performances, suggesting a strong positive impression. The final sentence implies a lasting impact, indicating an enthusiastic recommendation. Given the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the score, book, and performances, and suggests the show could be a long-running hit. Given it's a single excerpt, I'm scoring it as positive with medium confidence. | Kimi: The excerpt offers enthusiastic praise for the score, book, and performances, and explicitly predicts a lengthy Broadway run. Following the guidance for single excerpts that sound clearly positive, this falls in the upper range of the Positive bucket.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:23:48.049Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

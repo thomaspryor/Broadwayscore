@@ -15,5 +15,60 @@
   "showScoreExcerpt": "“Book writer Emerald Fennell may think she’s flipped the script on the story of an abused stepdaughter, a fairy godmother, glass slippers and a fateful ball. But her fable of spunky iconoclasm versus glam conformity makes little sense and inspires zero sympathy.”\n\nRead more",
   "bwwExcerpt": "The fact that Genao is a poor actor with a grating, nasal voice, and negative comic timing makes Cinderella less appealing than the gyrating cartoons around her. Pairing Fennell’s quippy and shallow book with lyricist David Zippel’s strenuously slangy lyrics and Andrew Lloyd Webber’s lugubrious, syrupy music might have screamed cross-generational synergy on paper, but it’s a woeful marriage: TikTok meets grandfather clock.",
   "bwwScore": 2,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+  "assignedScore": 29,
+  "llmScore": {
+    "score": 29,
+    "confidence": "medium",
+    "range": {
+      "low": 24,
+      "high": 34
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Her fable of spunky iconoclasm versus glam conformity makes little sense and inspires zero sympathy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Negative/Pan) - using median score | Claude: The critic finds the book fundamentally flawed ('makes little sense') and emotionally unengaging ('inspires zero sympathy'). However, confidence is low due to truncated text - this appears to be only the opening criticism and the full verdict may be cut off. | GPT-4o: The excerpt criticizes the story as making little sense and failing to inspire sympathy, indicating a strongly negative view. However, the text is limited, so confidence is low. | Gemini: The review excerpt expresses a negative opinion about the book, stating it \"makes little sense and inspires zero sympathy.\" | Kimi: The critic delivers a devastating assessment of the book using absolute negative language ('zero sympathy', 'little sense'), suggesting the show fails on fundamental storytelling levels. However, given this is a curated excerpt of a truncated review, confidence is reduced. | Buckets: claude=Negative, openai=Pan, gemini=Negative, kimi=Pan",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:11:48.366Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 38,
+    "openaiScore": 20,
+    "geminiScore": 45,
+    "kimiScore": 20,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Pan",
+    "scoreDelta": 25,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Negative/Pan) - using median score"
+  }
 }

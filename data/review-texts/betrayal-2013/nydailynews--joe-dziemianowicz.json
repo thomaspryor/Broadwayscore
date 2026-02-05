@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Like cheaters slinking around in the night, Nichols' production moves quietly and purposefully. During his long career, Nichols has proven himself a master of intricate intimacy. He knows how to zero in on humor and pain and make it all burrow deep into your skin. And into your brain. It's a play in which everyone loses - except the audience.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He knows how to zero in on humor and pain and make it all burrow deep into your skin.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for Nichols' direction as 'master of intricate intimacy' and positive final line about audience being winners, but low confidence due to limited text from curated quote. | GPT-4o: The excerpt praises Nichols' mastery of 'intricate intimacy' and highlights the emotional impact on the audience, suggesting a strong positive impression. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt is overwhelmingly positive, praising the production and Nichols' direction. The final line, \"It's a play in which everyone loses - except the audience,\" suggests a rewarding experience. | Kimi: The excerpt offers unqualified praise for Nichols' direction as 'a master of intricate intimacy' and emphasizes the production's powerful emotional impact, warranting an upper-range Positive score despite limited context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:48:43.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 2,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

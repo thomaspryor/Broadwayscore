@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "It would have been easy to simply plug in 1940s pop standards. But instead Richard Oberacker and Robert Taylor created a swinging original score that not only captures the period style but also digs deep into the characters. The music is so tightly integrated into the script that 'Bandstand' becomes unusually powerful musical theater. Its reinterpretation of the traditional 11 o'clock number is both smart and electrifying. Andy Blankenbuehler, who rose to prominence as the choreographer of 'In the Heights' and then 'Hamilton,' does a stunning job as both director and choreographer.",
   "bwwScore": 10,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The music is so tightly integrated into the script that 'Bandstand' becomes unusually powerful musical theater.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise for score, direction, and choreography with superlatives like 'stunning' and 'electrifying.' Describes show as 'unusually powerful musical theater.' Single excerpt warning noted - this appears strongly positive. | GPT-4o: The excerpt praises the original score and its integration into the script, calling the musical 'unusually powerful'. The choreography and direction are described as 'stunning', indicating a strong positive sentiment. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt praises the original score, its integration with the script, and the direction/choreography, indicating a strong positive assessment. Given the single excerpt, the score is placed at the higher end of the positive range. | Kimi: The excerpt offers enthusiastic praise for the original score's integration with the book and the direction, describing the result as 'unusually powerful' and 'electrifying,' indicating a strong recommendation despite the limited text available.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:12:27.436Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 88,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

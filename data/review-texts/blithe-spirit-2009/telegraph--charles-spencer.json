@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The whole show is a treat and Blakemore's production, elegantly designed by Simon Higlett with spookily billowing curtains, splendidly captures the bracing heartlessness of the comedy. Charles Edwards brings out both the urbane wit and the vanity of Condomine, who doesn't love either of his wives nearly as much as he loves himself, and gets maximum value from the comedy's disconcertingly bitter ending.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BLITHE-SPIRIT-with-Angela-Lansbury-20140319",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The whole show is a treat and Blakemore's production splendidly captures the bracing heartlessness of the comedy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language ('treat', 'splendidly', 'elegantly designed') with praise for production, design, and lead performance. Single excerpt warning suggests this represents the overall positive verdict. | GPT-4o: The excerpt provides a positive evaluation of the show, describing it as a 'treat' and praising the production and performances. However, due to the single excerpt warning, the confidence is low. | Gemini: The review uses positive language such as \"a treat\" and \"splendidly captures\", indicating a positive recommendation. Given the single excerpt, the score is placed on the higher end of the positive range. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:06:05.329Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 0,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

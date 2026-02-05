@@ -11,5 +11,60 @@
   "bwwExcerpt": "Standby Andrew Kober commands the stage with winking brashness as the title character, which he plays on Tuesdays, Wednesdays, and Thursdays (otherwise played by Justin Collette).\n\nIsabella Esler’s performance as Lydia is poignant and potent.  Will Burton is a delightful Adam and Britney Coleman a wonderful partner as Barbara. \n\nOther memorable performers include Jesse Sharp as Charles, Kate Marilley as Delia, Abe Goldfarb as Otho, Jackera Davis as Girl Scout, and Danielle Marie Gonzalez as Miss",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Standby Andrew Kober commands the stage with winking brashness as the title character",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on praising cast performances with positive descriptors like 'commands,' 'poignant and potent,' 'delightful,' and 'wonderful.' However, with only performance praise and no broader show assessment, confidence is low and score stays in lower Positive range. | GPT-4o: The excerpt highlights strong performances from multiple cast members, suggesting a positive view of the production. However, due to the single excerpt warning and lack of a full review, the confidence is low. | Gemini: The review praises several performances, indicating a positive experience, but it's difficult to determine the overall recommendation strength based on the limited excerpt. | Kimi: The excerpt offers enthusiastic praise for multiple cast performances using words like 'commands', 'poignant and potent', 'delightful', and 'wonderful'. Following the single-excerpt guidance for clearly positive quotes, this falls in the 80-84 Positive range, though confidence is low given the limited and truncated context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:28:08.364Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

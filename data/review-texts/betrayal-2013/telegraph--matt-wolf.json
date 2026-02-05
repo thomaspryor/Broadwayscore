@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"YOU have to applaud Daniel Craig, a film icon (thank you, James Bond) who began in the theatre and returns there still. Across the Atlantic, he's been the best thing about his two New York stage ventures to date, and when Craig is allowed to feast on the emotionally famished world of Harold Pinter's Betrayal, audiences at this Broadway season's most-anticipated offering are unlikely to feel let down.\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "audiences at this Broadway season's most-anticipated offering are unlikely to feel let down",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive recommendation with praise for Craig's performance and assurance that audiences won't be disappointed. Single excerpt limits full context but the verdict is clearly favorable. | GPT-4o: The excerpt praises Daniel Craig's performance and suggests that audiences will not be disappointed, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The review praises Daniel Craig's performance and suggests audiences are unlikely to be disappointed, indicating a positive recommendation. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The critic praises Daniel Craig as the production's highlight and assures readers they won't be let down, indicating a solid recommendation. Score reflects the clearly positive but measured tone of this single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:49:34.918Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

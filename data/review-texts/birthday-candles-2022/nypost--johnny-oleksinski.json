@@ -12,5 +12,60 @@
   "bwwExcerpt": "Haidle's plays (his better 'Smokefall' did not receive the production it deserved when it played New York back in 2016) have a way of convincing every audience member they've been written just for them. 'Birthday Candles,' at its best, bubbles up our own cherished and difficult memories of the people in our lives who've come and gone.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIRTHDAY-CANDLES-on-Broadway--Updating-Live-20220410",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "medium",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Birthday Candles, at its best, bubbles up our own cherished and difficult memories of the people in our lives who've come and gone.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows appreciation for the playwright's ability to connect emotionally with audiences, but the qualifier 'at its best' suggests some limitations. Low confidence due to limited excerpt that may not reflect full verdict. | GPT-4o: The excerpt suggests a positive view of the play's ability to resonate with audiences on a personal level, but the lack of a full review and the single excerpt warning suggest caution in assigning a higher score. | Gemini: The review excerpt indicates that the play is good 'at its best' and evokes cherished memories, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers warm praise for the play's emotional impact and universal relatability. While the phrase 'at its best' and the comparison to the playwright's 'better' work suggest minor reservations, the overall tone is clearly appreciative rather than mixed.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:02:52.848Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 79,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "The resonant original musical Bandstand dances a delicate line between nostalgia and disillusion. What it seems to promise, and often delivers, is Broadway escapism: a tale of soldiers returning from World War II into a lively world of big-band music, boogie-woogie dancing and a booming American economy. Donny (the very engaging Corey Cott) assembles a music combo composed entirely of fellow veterans, hoping to win a competition in New York and earn a shot at Hollywood. Sounds like a happy old movie, right? But these soldiers, we soon learn, have trouble getting into the swing of things. Try though they may-through work, repression, copious drinking-they can't shake off the horror of war.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "What it seems to promise, and often delivers, is Broadway escapism",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows measured praise - 'often delivers' suggests qualified success, and calling Cott 'very engaging' is positive. However, this is a single curated excerpt that may not reflect the full verdict, requiring caution in scoring. | GPT-4o: The excerpt describes the musical as delivering 'Broadway escapism' while acknowledging the underlying themes of nostalgia and disillusion. The tone suggests a positive view with some complexity, but without the full review, the confidence is low. | Gemini: The review highlights both the escapism and the underlying struggles of the characters, suggesting a positive experience with some reservations. Given the single excerpt, confidence is low. | Kimi: The excerpt uses clearly positive evaluative language ('resonant', 'very engaging', 'delivers') praising both the production's emotional depth and performances, suggesting a firm recommendation despite the single-excerpt limitation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:15:42.349Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

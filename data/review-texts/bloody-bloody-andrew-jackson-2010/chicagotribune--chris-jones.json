@@ -12,5 +12,60 @@
   "bwwExcerpt": "But this is still one of those shows that capture a moment, an old moment, a new moment. The young cast looks atypical and, at times, as if its members can't believe their luck. Jackson probably thought much the same.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But this is still one of those shows that capture a moment, an old moment, a new moment.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt shows qualified appreciation ('still one of those shows that capture a moment') but with only one curated quote available, the full verdict is unclear. Single excerpt warning applies - this could be cherry-picked from a more mixed or negative review. | GPT-4o: The excerpt suggests the show captures a moment but lacks strong evaluative language indicating a clear recommendation. The single excerpt and lack of full context lead to a mixed classification with low confidence. | Gemini: The excerpt suggests the show captures a moment and the cast is good, but it's a single excerpt, so confidence is low and the score is in the lower end of the positive bucket. | Kimi: The excerpt clearly praises the show's cultural resonance and the cast's enthusiastic, disbelieving energy, suggesting a worthwhile experience despite the limited available context.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:07:39.606Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 81,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

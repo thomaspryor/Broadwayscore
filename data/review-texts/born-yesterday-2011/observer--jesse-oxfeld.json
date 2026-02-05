@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Smoothly directed by Doug Hughes on a sumptuous hotel suite of a set by John Lee Beatty, Born Yesterday is a perfectly pleasant, perfectly pretty, perfectly tidy and perfectly forgettable three-acter. The one thing you won't forget is its Billie—who shows that there can be a lot lurking behind a vacant, pretty face.",
   "bwwScore": 5,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Born Yesterday is a perfectly pleasant, perfectly pretty, perfectly tidy and perfectly forgettable three-acter.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic uses 'perfectly pleasant' but immediately undercuts with 'perfectly forgettable.' The praise is qualified and lukewarm, suggesting mild entertainment value without strong recommendation. | GPT-4o: The review describes the production as 'pleasant' and 'pretty' but ultimately 'forgettable', suggesting a mixed verdict. The praise for the performance of Billie is noted but does not elevate the overall impression beyond mixed. | Gemini: The review describes the production as \"perfectly pleasant\" but also \"perfectly forgettable,\" indicating a mixed reaction. The praise for Billie suggests a slightly positive lean. | Kimi: While the critic praises the smooth direction, sumptuous design, and lead performance, the decisive word 'forgettable' indicates the production lacks lasting impact or compelling reason to see it, landing in mixed territory.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:20:40.987Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

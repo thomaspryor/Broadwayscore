@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Bengal Tiger also marks the first Broadway outing for Joseph, whose previous works include the origami-themed Animals Out of Paper and the masochistic two-hander Gruesome Playground Injuries, which opened Off Broadway in February. He writes sharply and economically, and he certainly earns points for creating another original premise. I can't think of another Iraq-War play that involves a jungle animal eating a soldier's hand. However, I'm still waiting for one in which the soldiers are three-dimensional characters.",
   "bwwScore": 6,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "He writes sharply and economically, and he certainly earns points for creating another original premise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic praises the playwright's writing style and originality but expresses disappointment that the soldiers lack dimensional characterization. The excerpt suggests qualified appreciation with significant reservations. Single excerpt warning applies - reduced confidence due to potentially incomplete picture. | GPT-4o: The excerpt praises the originality and writing style but criticizes the lack of three-dimensional characters, suggesting a mixed evaluation. The single excerpt and lack of full context reduce confidence. | Gemini: The review praises the writing and originality but expresses a desire for more developed characters, suggesting a mixed but somewhat positive assessment. Given the single excerpt, confidence is low. | Kimi: While the critic praises Joseph's sharp, economical writing and original premise, the significant criticism that the soldiers lack three-dimensionality creates a balanced, mixed assessment without a clear recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:45:27.368Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

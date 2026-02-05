@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But in practice, some of the captivating coziness is lost, and Laura and Alec's romance seems to get swallowed up. It feels a little off.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 61,
+  "llmScore": {
+    "score": 61,
+    "confidence": "high",
+    "range": {
+      "low": 56,
+      "high": 66
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But in practice, some of the captivating coziness is lost, and Laura and Alec's romance seems to get swallowed up.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows clear criticism about lost intimacy and romance being 'swallowed up', concluding 'it feels a little off'. With only one curated quote available and no positive counterbalance visible, this suggests a mixed-to-negative assessment. | GPT-4o: The excerpt suggests a loss of impact and an 'off' feeling, indicating mixed sentiments. However, without a full review or clear positive or negative language, the score is set in the middle of the Mixed range. | Gemini: The excerpt indicates a loss of charm and a romance that doesn't quite work, suggesting a mixed or lukewarm reception. Given that this is the only excerpt available, the confidence is low. | Kimi: Single excerpt indicates specific staging issues dampen the central romance, suggesting a mixed reception where production flaws undermine the material's intimacy.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:25:12.697Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 58,
+    "openaiScore": 60,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

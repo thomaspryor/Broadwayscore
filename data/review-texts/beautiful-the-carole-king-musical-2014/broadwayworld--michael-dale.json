@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Unfortunately, Cynthia Weil and Barry Mann are the secondary couple in Beautiful, a musical biography of Carole King that frequently pushes its central character aside for more interesting and entertaining moments played out by its skilled and talented supporting ensemble. It's no fault of top-billed star Jessie Mueller, who grabbed Broadway's attention for her jazzy stylings in On A Clear Day You Can See Forever and displayed crack comical chops in The Mystery of Edmund Drood, that her first o",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 64,
+  "llmScore": {
+    "score": 64,
+    "confidence": "medium",
+    "range": {
+      "low": 59,
+      "high": 69
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Unfortunately, Cynthia Weil and Barry Mann are the secondary couple in Beautiful, a musical biography of Carole King that frequently pushes its central character aside for more interesting and entertaining moments played out by its skilled and talented supporting ensemble.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The excerpt reveals structural criticism of the show - it pushes its lead character aside and has more interesting supporting elements. The word 'Unfortunately' signals disappointment. However, this is truncated text with only one excerpt, making a full verdict assessment impossible. | GPT-4o: The excerpt suggests a mixed review, highlighting the supporting ensemble as more interesting than the central character. However, it acknowledges the talent of the cast, indicating some positive aspects. | Gemini: The review excerpt suggests the musical focuses too much on secondary characters, overshadowing the main character, Carole King. This implies a flaw in the show's structure and focus, leading to a negative assessment. | Kimi: The critic acknowledges entertaining moments and skilled performances from the supporting cast but criticizes the show's structure for sidelining the central character, suggesting a divided response. Single excerpt and truncation limit confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:20:50.309Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 45,
+    "kimiScore": 64,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

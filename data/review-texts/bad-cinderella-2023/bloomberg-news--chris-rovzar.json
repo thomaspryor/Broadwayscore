@@ -12,5 +12,60 @@
   "bwwExcerpt": "The creators behind the new musical Bad Cinderella were at least clever about one thing: They claimed the word “bad” as their own before it could be used against them. Handily, there are many other useful terms to describe the production: “prurient,” “ill-conceived,” “non­sensical,” “overlong” and “icky.”",
   "bwwScore": 2,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Handily, there are many other useful terms to describe the production: 'prurient,' 'ill-conceived,' 'nonsensical,' 'overlong' and 'icky.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: The critic uses overwhelmingly negative descriptors like 'ill-conceived,' 'nonsensical,' and 'icky' to describe the production. However, confidence is low since this is only a single curated excerpt that may not represent the full review's verdict. | GPT-4o: The excerpt uses strongly negative terms to describe the production, suggesting a deep pan. However, with only one excerpt, the confidence is low. | Gemini: The review uses extremely negative language to describe the production, such as \"prurient,\" \"ill-conceived,\" \"nonsensical,\" \"overlong,\" and \"icky.\" | Kimi: The review offers exclusively condemnatory language, labeling the show 'prurient,' 'ill-conceived,' 'nonsensical,' and 'icky,' which clearly places it in the Pan category. Confidence is low due to the single-excerpt limitation, but the sentiment is unambiguously hostile.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:11:06.975Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 20,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

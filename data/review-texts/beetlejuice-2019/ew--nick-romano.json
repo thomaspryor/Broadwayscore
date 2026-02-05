@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Beetlejuice, with music and lyrics from Eddie Perfect (King Kong: The Musical) and a book by Scott Brown and Anthony King, was crafted from a group of creative minds who clearly love the source material, though not all of it works. There are still second act problems and a song list void of any real bops, but it's a fun time for the Burton novice and pure fan service for the Burton stans, thanks in large part to the titular puckish undead spirit breathing life into a Broadway experiment that cou",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "it's a fun time for the Burton novice and pure fan service for the Burton stans",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt acknowledges significant flaws ('second act problems', 'void of any real bops') but concludes it's 'a fun time' for audiences. The truncated text and single excerpt warning require caution - the positive verdict may be qualified further in the missing conclusion. | GPT-4o: The review acknowledges enjoyment for fans but highlights significant issues with the second act and music, suggesting a mixed reception overall. The single excerpt limits confidence. | Gemini: The review notes flaws (second act, songs) but also highlights the fun and fan service aspects. The overall tone suggests a mixed experience, leaning slightly positive. | Kimi: Extracted from malformed response | Buckets: claude=Positive, openai=Mixed, gemini=Mixed, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:23:23.220Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 65,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

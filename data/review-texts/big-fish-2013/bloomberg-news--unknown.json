@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "I doubt Broadway has ever seen a prettier, more sensuously kinetic musical than Susan Stroman's adaptation of 'Big Fish' set to music by Andrew Lippa ('The Addams Family.') It's enchanting, especially once it slows down a bit to catch its breath. That doesn't happen until the second act, but it won't matter much, even to fans of the Tim Burton movie (or the Daniel Wallace novel that started it all). When the brooding trees begin their laconic dance before morphing into swamp witches, you know you're watching a Stroman show. By then, we've already fallen under the spell of Edward Bloom, Alabama homeboy, teller of tall tales and creaky jokes, absentee husband and father.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BIG-FISH-Opens-on-Broadway-Updating-Live-20131006",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I doubt Broadway has ever seen a prettier, more sensuously kinetic musical than Susan Stroman's adaptation of 'Big Fish.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise calling it the prettiest musical Broadway has ever seen, describes it as 'enchanting,' and notes audiences will fall 'under the spell.' Despite being a single excerpt, the language is consistently positive with superlatives. | GPT-4o: The excerpt praises the production as 'enchanting' and highlights its visual and kinetic appeal, suggesting a strong positive impression. However, the single excerpt warning and lack of a full review text reduce confidence. | Gemini: The review excerpt is overwhelmingly positive, calling the show \"enchanting\" and praising Stroman's adaptation. The mention of it slowing down in the second act suggests a minor reservation, but the overall tone is enthusiastic. | Kimi: The critic offers superlative praise for the visual and kinetic elements ('prettier, more sensuously kinetic', 'fallen under the spell'), treating the first-act pacing issues as insignificant.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:57:24.816Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

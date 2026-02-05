@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collette's performance as Beetlejuice garnered praise, with FOX 5 Atlanta noting his 'gravelly-voiced' portrayal was a standout. The role of Lydia was played by Jackera Davis, who stepped in for Isabella Esler, and was lauded for her confidence. The cast was rounded out with seasoned Broadway performers such as Megan McGinnis and Will Burton as the endearing deceased couple, Barbara and Adam Maitland.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Justin Collette's performance as Beetlejuice garnered praise, with FOX 5 Atlanta noting his 'gravelly-voiced' portrayal was a standout.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses entirely on cast praise ('garnered praise', 'standout', 'lauded', 'seasoned Broadway performers'). However, this reads more like cast description than strong critical evaluation. With only one excerpt and uncertainty about full verdict, scoring conservatively in lower Positive range. | GPT-4o: The excerpt highlights positive remarks about the performances of the cast, particularly Justin Collette and Jackera Davis. However, the single excerpt and lack of a full review text limit the ability to gauge the overall sentiment, resulting in a cautious, mildly positive score. | Gemini: The review excerpt focuses on praising the performances of the cast, suggesting a positive experience overall, but without a clear overall verdict, it's a tentative positive. | Kimi: Single excerpt contains mild praise for specific performances ('standout', 'lauded', 'endearing') but lacks an explicit overall recommendation. Per single-excerpt guidelines for mildly positive text, scored at lower end of Positive bucket (70-74).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:30:38.444Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

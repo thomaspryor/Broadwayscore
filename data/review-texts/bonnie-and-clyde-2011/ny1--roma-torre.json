@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Director Jeff Calhoun stages the projection-rich production with great efficiency even if it takes awhile to get off the ground. \"Bonnie and Clyde\" has many virtues but also enough flaws to keep it from blowing you away.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bonnie and Clyde has many virtues but also enough flaws to keep it from blowing you away.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic acknowledges 'many virtues' but emphasizes 'enough flaws to keep it from blowing you away,' indicating a balanced but ultimately lukewarm assessment. Single excerpt warning applies - this could be cherry-picked from a longer review. | GPT-4o: The review acknowledges both strengths and weaknesses, indicating a balanced view without a strong recommendation. The text quality warning and single excerpt suggest caution, leading to a low confidence score. | Gemini: The review notes both virtues and flaws, indicating a mixed assessment. The phrase \"keep it from blowing you away\" suggests it doesn't fully succeed. | Kimi: The excerpt acknowledges positive qualities like 'great efficiency' and 'many virtues' but emphasizes notable flaws and a slow start that prevent the production from being truly impressive, resulting in a balanced assessment that neither recommends nor discourages attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:15:34.449Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 63,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "When Kneehigh Theatre's multimedia stage adaptation of the classic Noël Coward-penned film 'Brief Encounter' played St. Ann's Warehouse this past December, this Coward fan attended with great trepidation, only to fall head over heels for it. I felt similar trepidation when I heard that Roundabout Theatre Company would bring the show to Broadway at Studio 54. St. Ann's is a decidedly intimate space. Would the show fill a much larger house? Happily, the answer is ringingly affirmative.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Happily, the answer is ringingly affirmative.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The critic expresses strong enthusiasm ('fall head over heels', 'ringingly affirmative') about both the previous and Broadway productions. However, confidence is low due to single excerpt limitation. | GPT-4o: The critic expresses strong enthusiasm for the Broadway production, overcoming initial trepidation with a 'ringingly affirmative' verdict, indicating a highly positive experience. | Gemini: The critic expresses initial trepidation but ultimately finds the production successful and filling the larger Broadway house, indicating a positive experience. | Kimi: The critic expresses strong enthusiasm for the Broadway transfer, using phrases like 'fall head over heels' and 'ringingly affirmative' to indicate the production successfully makes the jump to a larger venue.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:24:13.390Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

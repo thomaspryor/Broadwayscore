@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But for all its irreverence - and there's enough off-color insouciance to offend church ladies of every denomination - 'The Book of Mormon' has the old-fashioned musical comedy heart of adults who spent much of their adolescence lip-syncing to original cast albums in their finished basements.",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'The Book of Mormon' has the old-fashioned musical comedy heart of adults who spent much of their adolescence lip-syncing to original cast albums",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt acknowledges potential offense but emphasizes the show's authentic musical theater heart and nostalgic appeal. However, with only one curated excerpt available, the full verdict is unclear - this could be from a more positive or mixed review. | GPT-4o: The excerpt describes the show as having an 'old-fashioned musical comedy heart,' suggesting a positive view despite its irreverence. The tone implies a strong recommendation, but confidence is low due to the single excerpt limitation. | Gemini: The review acknowledges the show's irreverence but ultimately suggests it has a classic musical comedy heart, implying a positive experience. However, due to the single excerpt and lack of a clear recommendation, confidence is low. | Kimi: The excerpt validates the show's musical comedy credentials while acknowledging its edgy humor, indicating appreciation. However, as a single curated excerpt, it may not capture the full scope of the critic's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:17:03.618Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "The final musical of the 2016-2017 Broadway season, Bandstand opened tonight at the Bernard B. Jacobs Theatre with a swinging look back at 1946. It's about the post-WWII era and the conflicted welcome rolled out for returning veterans (think William Wyler's The Best Years of Their Lives) and the music that swept across the U.S. during that period. Bandstand, staged with breathtaking originality by director-choreographer Andy Blankenbuehler (Hamilton), swings in a different way, as well: between the soft-focus lens of nostalgia and the jarring clarity that a contemporary view demands.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "staged with breathtaking originality by director-choreographer Andy Blankenbuehler",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with strong praise for the staging ('breathtaking originality') and positive framing, but limited text makes full verdict unclear. Scored at upper end of Positive range due to clearly positive language. | GPT-4o: The excerpt praises the originality of the staging and suggests a positive view with the phrase 'breathtaking originality'. However, due to the single excerpt warning, the confidence is low and the score is at the lower end of the Positive range. | Gemini: The review praises the originality of the staging and highlights the show's exploration of a conflicted historical period. However, the excerpt also suggests a tension between nostalgia and contemporary perspective, indicating a qualified recommendation. Given the single excerpt, confidence is low. | Kimi: The excerpt offers enthusiastic praise for the director-choreographer's 'breathtaking originality' and describes the production as swinging and ambitious, indicating a clearly positive assessment, though the single-excerpt format warrants caution about the full review's verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:13:00.625Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

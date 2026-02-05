@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Guirgis’ play is full of these piercing, inconclusive sub-plots and character portraits—an intricately composed feast of voices where everyone is more than an easy definition of good or bad, and the chorus of views and competing interests is really the melting pot of the city outside the theater, sieved and delivered with sharpened brio on stage. As New York gets quieter in these Christmas weeks, it may be the perfect time to hear those voices at full volume.",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winner-BETWEEN-RIVERSIDE-AND-CRAZY-Opens-On-Broadway-20221219"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Pulitzer-Prize-Winner-BETWEEN-RIVERSIDE-AND-CRAZY-Opens-On-Broadway-20221219",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "an intricately composed feast of voices where everyone is more than an easy definition of good or bad",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt uses appreciative language ('intricately composed feast', 'sharpened brio') and suggests it's worth experiencing ('perfect time to hear those voices'), but with only one curated quote available, confidence is low about the full review's verdict. | GPT-4o: The excerpt praises the play's complexity and engaging character portraits, suggesting a strong recommendation. The context implies a positive view, but the single excerpt limits confidence. | Gemini: The review excerpt praises the play's complexity and the richness of its characters, suggesting a positive experience overall. The final sentence implies that it is a good time to see the show. | Kimi: Single excerpt offers strong praise for the play's intricate writing ('intricately composed feast,' 'sharpened brio') and explicitly recommends attending, though limited text warrants low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:54:45.939Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 80,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

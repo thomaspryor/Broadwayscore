@@ -11,5 +11,60 @@
   "bwwExcerpt": "The book by Brown and King packs in belly laughs, pop cultural references and clever quips, along with a fair number of probably intentional groaners, and Eddie Perfect's bouncy, catchy, hyperactively wordy score perpetually propels the show along at its addictive breakneck speed. There are only a few moments where it slows down and gets serious, mostly involving Lydia's grief. Through all of this crowded and zany two and a half hours, Alex Timbers's design-heavy production (with costumes by Wil",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Eddie Perfect's bouncy, catchy, hyperactively wordy score perpetually propels the show along at its addictive breakneck speed.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows clear praise for the book ('belly laughs', 'clever quips') and score ('bouncy, catchy', 'addictive'), with consistent positive language throughout. However, low confidence due to truncated text and only one excerpt available. | GPT-4o: The excerpt highlights the show's humor, catchy score, and fast pace, suggesting a positive experience. The lack of full context and single excerpt warning lead to a low confidence score. | Gemini: The excerpt praises the book and score, calling the show \"addictive.\" Given the single excerpt and aggregator context, I'm placing it in the positive range, but with low confidence. | Kimi: The excerpt praises the book's humor and the score's infectious energy with enthusiastic descriptors like 'belly laughs,' 'clever,' and 'addictive.' Despite noting some 'groaners,' the overall tone is decidedly upbeat and recommends the show's lively entertainment value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:25:40.333Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 82,
+    "geminiScore": 79,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

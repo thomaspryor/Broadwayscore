@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"No one ever thinks of Pinter as a chronicler of romance. But this is the most devastating, clear-eyed examination of the arc of a love affair as I've seen\"",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BETRAYAL-Opens-on-Broadway-Updating-Live-20131027",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "No one ever thinks of Pinter as a chronicler of romance. But this is the most devastating, clear-eyed examination of the arc of a love affair as I've seen",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong superlative praise calling it the most 'devastating, clear-eyed examination' the critic has seen suggests high recommendation. However, confidence is low due to single excerpt limitation - this could be cherry-picked from a more mixed overall review. | GPT-4o: The excerpt provides high praise, calling it the 'most devastating, clear-eyed examination' the critic has seen, indicating a strong recommendation. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt expresses strong praise, calling the play \"the most devastating, clear-eyed examination of the arc of a love affair as I've seen.\" Given the single excerpt, I'm placing it in the upper end of the positive range. | Kimi: The single excerpt offers strong superlative praise for the production's emotional impact and clarity, warranting a high-positive score, though the limited context necessitates low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:47:24.202Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }
