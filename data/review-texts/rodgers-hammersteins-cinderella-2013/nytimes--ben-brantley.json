@@ -13,8 +13,8 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
-  "bwwRoundupUrl": null,
+  "bwwExcerpt": "To my surprise the Academy Awards came to mind quite often as I watched this glittery patchwork of a show...It wasn't just the parade of big-skirted, Technicolor dresses in the ball sequence that inspired such reflections, or the presence of a fairy godmother (poor Victoria Clark) in a humped, sparkly number that would have sent Joan Rivers into overdrive. No, the main and most affecting parallel is how these two productions were confronting the knotty problem of being both traditional and up to",
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-Opens-on-Broadway-Updating-LIVE-20130303",
   "showScoreExcerpt": "This new version of the musical, which opened Sunday night at the Broadway Theater, turns out to be a satisfying piece of old-fashioned musical theater that has been given just enough contemporary touches to feel fresh without losing its essential sweetness.",
   "contentTier": "needs-rescrape",
   "contentTierReason": "Only aggregator excerpts available",
@@ -109,5 +109,9 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated web page with subscription prompts, navigation elements, and incomplete review text that cuts off mid-sentence, making it unscoreable.; openai: The text is primarily navigation menus, ticket information, and promotional content, not a coherent review.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "web-search",
+    "bww-roundup"
+  ]
 }
