@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "And here is where Be More Chill stakes its most righteous claim: For all of its storyline predictability and maybe too-happy-resolutions, Joe Tracz's book and, especially, Iconis' lyrics don't flinch from the darkness and panic of the teenage mind.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-the-Critics-More-Than-Survive-at-BE-MORE-CHILL-Updating-Live-20190310",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "high",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "For all of its storyline predictability and maybe too-happy-resolutions, Joe Tracz's book and, especially, Iconis' lyrics don't flinch from the darkness and panic of the teenage mind.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt acknowledges flaws ('storyline predictability', 'too-happy-resolutions') but praises the authentic emotional core. The phrase 'stakes its most righteous claim' suggests merit despite reservations. With only one curated quote available, confidence is low. | GPT-4o: The excerpt acknowledges predictable storylines and happy resolutions but praises the book and lyrics for addressing darker themes. This suggests a positive view with some reservations. | Gemini: The review acknowledges predictability but praises the book and lyrics, indicating a positive but not rave review. Due to the limited text, confidence is low. | Kimi: The excerpt offers qualified praise, acknowledging flaws like predictability and tidy resolutions while strongly commending the book and lyrics for their unflinching portrayal of teenage darkness. Given this is a single curated excerpt with explicit caveats, it represents a mildly positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:24:49.560Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 72,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 73,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

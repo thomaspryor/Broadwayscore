@@ -12,5 +12,60 @@
   "bwwExcerpt": "How important is charisma in the selection of American leaders? Who decided who got to claim what for whose manifest destiny? What is populism, and why would anyone trust the people with it? And while we're asking, what is 'Bloody Bloody Andrew Jackson' doing on Broadway, anyway? My answer to the last question is easy. It's doing plenty, just not in the usual ways.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BLOODY-BLOODY-ANDREW-JACKSON-20101014",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "It's doing plenty, just not in the usual ways.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The excerpt ends with a qualified positive assessment, suggesting the show has merit despite being unconventional. However, with only one curated excerpt available, confidence is low as this may not represent the full review sentiment. | GPT-4o: The excerpt suggests the show is impactful and engaging, albeit unconventional. The critic acknowledges the show's effectiveness, implying a positive recommendation despite potential reservations about its traditional appeal. | Gemini: The excerpt poses questions about the show's relevance and impact, suggesting a mixed or ambivalent stance. The final sentence indicates that the show is doing something, but not in a conventional or necessarily positive way. | Kimi: The critic resolves initial skepticism with a clear endorsement that the show accomplishes much ('doing plenty'), though acknowledging its unconventional methods. The engagement with weighty themes indicates substantive value.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:11:25.554Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 80,
+    "geminiScore": 62,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

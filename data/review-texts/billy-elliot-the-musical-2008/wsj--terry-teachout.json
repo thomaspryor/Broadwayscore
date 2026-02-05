@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "No doubt Stephen Daldry, who directed both the musical and the film on which it is based, deserves some of the credit for the high quality of their performances -- and the low quality of the show in which they're performing. I've seen my share of bad Broadway musicals, but I can't recall one that was quite so vulgar and bogus as 'Billy Elliot.'",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 18,
+  "llmScore": {
+    "score": 18,
+    "confidence": "high",
+    "range": {
+      "low": 13,
+      "high": 23
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I can't recall one that was quite so vulgar and bogus as 'Billy Elliot.'",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating critique calling it 'vulgar and bogus' and worse than other 'bad Broadway musicals' the critic has seen. Single excerpt warning noted - this appears strongly negative but confidence lowered due to limited text. | GPT-4o: The critic describes the show as 'vulgar and bogus,' indicating a strongly negative opinion. Despite the lack of a full review, the excerpt suggests a deep pan. | Gemini: The critic explicitly states that the show is \"vulgar and bogus,\" indicating a strong negative opinion and a pan. | Kimi: While the critic acknowledges the cast's high-quality performances, the verdict is devastatingly negative, calling the show 'vulgar and bogus' and memorably worse than other bad musicals. However, confidence is low due to the single excerpt warning.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:06:37.132Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 18,
+    "openaiScore": 20,
+    "geminiScore": 15,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 5,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

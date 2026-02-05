@@ -12,5 +12,60 @@
   "bwwExcerpt": "Songs by Oberacker and Taylor are workmanlike and pleasant, but tend to be monochromatic. Songs that the group sings and ones that drive the plot are pretty indistinguishable, so musically it's a blur. The physical production can be one as well. Andy Blankenbuehler, the Tony-winning 'Hamilton' choreographer, handles dances and direction. There's stylized movement, ghosts of fallen military men following the vets and lots of athletic hoofing. The production is vigorous to the point of sometimes being distracting. Blankenbuehler's large cast steps up. Cott is appealing and gives his all. Osnes sings like a dream - even when the material isn't one. Tony winner Beth Leavel takes on the tiny role of Julia's mom, June, who dispenses quips and advice. 'Listen,' June sings, 'what matters when things happen is what happens after.' That's as deep as 'Bandstand' gets.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Songs are workmanlike and pleasant, but tend to be monochromatic.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: Single excerpt shows mixed assessment - praises individual performers (Cott, Osnes, Leavel) but finds songs 'monochromatic,' production 'distracting,' and material shallow. The praise for cast doesn't overcome structural criticisms. | GPT-4o: The review highlights both positive aspects, such as the performances and choreography, and negative aspects, like the music being indistinguishable and the production being distracting. The overall tone suggests a mixed reception. | Gemini: The review notes positive aspects like the performances and choreography, but also criticizes the music and overall depth. The lack of a clear recommendation and mixed signals place it in the Mixed bucket. The single excerpt and lack of a definitive verdict lower the confidence. | Kimi: The excerpt offers strong praise for the cast (Cott, Osnes, Leavel) but criticizes the songs as 'monochromatic' and the material as lacking depth, with the final line dismissing the show's substance. The single excerpt lacks a clear recommendation, showing balanced positive and negative elements.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:23:41.964Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }

@@ -12,5 +12,60 @@
   "bwwExcerpt": "Rajiv Joseph's 'Bengal Tiger at the Baghdad Zoo,' which opened last night on Broadway, blends black humor and surreal drama. Yet the comedian's portrayal of the title's big cat is so consistently understated that it becomes self-effacing. Like the show in general, it doesn't deliver on its promise.",
   "bwwScore": 4,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BENGAL-TIGER-AT-THE-BAGHDAD-ZOO-20110331",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Like the show in general, it doesn't deliver on its promise.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic finds the show disappointing and explicitly states it 'doesn't deliver on its promise.' While acknowledging the premise (black humor and surreal drama), the overall assessment is negative. | GPT-4o: The excerpt indicates that the show fails to meet expectations, with an understated performance and lack of delivery on its promise, suggesting a negative assessment. | Gemini: The review notes the show blends humor and drama but ultimately doesn't deliver on its promise. Given the single excerpt, confidence is low. | Kimi: The critic explicitly states the production fails to fulfill its potential, criticizing the lead performance as overly understated and self-effacing. While clearly negative, the limited excerpt prevents a more nuanced assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:53:48.231Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 62,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Negative",
+    "scoreDelta": 24,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

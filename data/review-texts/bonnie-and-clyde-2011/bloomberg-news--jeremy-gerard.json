@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "We can’t all be Mary Poppins. Frank Wildhorn’s “Bonnie and Clyde,” which opened last night on Broadway, has catchy songs, a fleshed out story and plenty of heart thanks to the snazzy direction by Jeff Calhoun and a design team that invokes the period in broad but astute strokes.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BONNIE-CLYDE-on-Broadway-Updating-LIVE-20111201",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Frank Wildhorn's 'Bonnie and Clyde' has catchy songs, a fleshed out story and plenty of heart thanks to the snazzy direction by Jeff Calhoun.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with clear praise for songs, story, direction and design. However, single curated quotes can be cherry-picked, so using lower-middle Positive range given excerpt-only limitation. | GPT-4o: The excerpt praises the show for its catchy songs, story, and direction, indicating a positive reception. The lack of full context and single excerpt warning suggests using the upper end of the Positive range. | Gemini: The review excerpt highlights positive aspects such as catchy songs, a fleshed out story, and heart, suggesting a positive but not overwhelmingly enthusiastic recommendation. Given it's a single excerpt, confidence is low. | Kimi: The excerpt offers unqualified praise for the production's songs, story, direction, and design, indicating a clear recommendation despite opening with a comparative caveat.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:19:03.783Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 82,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

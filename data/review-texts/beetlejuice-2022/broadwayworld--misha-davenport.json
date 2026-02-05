@@ -11,5 +11,60 @@
   "bwwExcerpt": "Justin Collette’s Beetlejuice jumps and zips around the stage like a real-life Looney Tune character come to life. He constantly breaks the fourth wall, improvising jokes about the audience as much as delivering the ones in the script by Scott Brown and Anthony King. He displays so much energy throughout the entire performance that one wonders if the cocaine he sniffs off his arm early into the first act might actually be the real thing (producers assume me it’s not). When he sings in the openin",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "medium",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Justin Collette's Beetlejuice jumps and zips around the stage like a real-life Looney Tune character come to life.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt with enthusiastic praise for the lead performance ('real-life Looney Tune', high energy throughout). Aggregator context indicates 'Up' verdict. However, confidence is low due to truncated text and limited sample. | GPT-4o: The excerpt praises Justin Collette's energetic performance, comparing him to a Looney Tune character, which suggests a positive impression. However, due to the single excerpt and lack of full context, the confidence is low. | Gemini: The review excerpt focuses on the positive performance of Justin Collette as Beetlejuice. Given the limited text, it's difficult to gauge the overall recommendation strength, but the description is positive. | Kimi: The excerpt offers enthusiastic praise for the lead performance, describing it with vibrant comic energy and improvisation. While limited to a single truncated quote, the tone is clearly positive and aligns with the aggregator's 'Up' verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:36:10.418Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 80,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

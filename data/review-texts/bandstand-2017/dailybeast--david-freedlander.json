@@ -12,5 +12,60 @@
   "bwwExcerpt": "Bandstand is more than competently pulled off. A couple of the musical numbers really do jump, the sets are lavish, the choreography a feat. Cott is far too sweet-natured to pull off the driving ambition and tormented war weariness that Donny is supposed to embody, but Osnes is a real talent, as is Beth Leavel, who plays her mother, and the rest of the cast more than holds their own.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Laura-Osnes-and-Corey-Cott-Lead-BANDSTAND-to-Broadway--Updating-Live-20170426",
+  "assignedScore": 73,
+  "llmScore": {
+    "score": 73,
+    "confidence": "medium",
+    "range": {
+      "low": 68,
+      "high": 78
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Bandstand is more than competently pulled off.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: The review acknowledges the show is 'competently pulled off' with praise for musical numbers, sets, and most performances, but notes significant reservations about the lead actor. Single excerpt limits confidence in full verdict. | GPT-4o: The review acknowledges competent execution and some positive elements like musical numbers and choreography, but also notes significant casting issues with Cott. The overall tone is balanced, with both positive and negative points, leading to a mixed verdict. | Gemini: The review notes that the show is \"more than competently pulled off\" and praises the musical numbers, sets, and choreography. However, it also mentions a casting issue, suggesting a positive but not rave review. Given the single excerpt, confidence is low. | Kimi: The excerpt offers qualified praise for production values and supporting performances while noting significant weaknesses in the lead performance, indicating a lukewarm but positive overall assessment.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:21:48.911Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Compared to other new Broadway musicals, 'Bright Star' is a total anomaly. It's wholly original and unashamedly sentimental and romantic, with a country-folk score and no well-known actors in the cast...The storytelling can be jumbled, improbable and sappy, and the characters are undeveloped. Nevertheless, it is a heartwarming and crowd-pleasing musical, sporting many pleasant country songs (backed by piano, guitar and banjo), a sunny disposition and a Southern Gothic flavor...Walter Bobbie's attractive production is marked by vibrant performances, brisk movement...and a backwoods visual design.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 75,
+  "llmScore": {
+    "score": 75,
+    "confidence": "high",
+    "range": {
+      "low": 70,
+      "high": 80
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Nevertheless, it is a heartwarming and crowd-pleasing musical, sporting many pleasant country songs",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Despite noting significant flaws (jumbled storytelling, undeveloped characters), the critic uses 'Nevertheless' to pivot to positive elements and calls it 'heartwarming and crowd-pleasing' with praise for performances and production. The 'Nevertheless' structure indicates a qualified positive recommendation. | GPT-4o: The review acknowledges flaws in storytelling and character development but ultimately describes the show as 'heartwarming and crowd-pleasing' with 'vibrant performances'. The positive elements outweigh the negatives, suggesting a recommendation with reservations. | Gemini: The review acknowledges flaws in storytelling and character development, but ultimately calls it \"heartwarming and crowd-pleasing\" with \"pleasant country songs.\" This suggests a positive but not rave recommendation. | Kimi: The critic acknowledges significant flaws in storytelling and character development, but ultimately delivers a positive verdict calling the show 'heartwarming and crowd-pleasing' with 'vibrant performances'.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:34:22.555Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 74,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

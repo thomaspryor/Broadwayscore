@@ -11,5 +11,60 @@
   "bwwExcerpt": "“Beetlejuice” is a howl. The musical theater adventures of the cartoonish demon created for the 1985 film have a gritty grace and a less panicky panache than you might expect, but the results are still highly entertaining and even a little sentimental.",
   "bwwThumb": "Up",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "\"Beetlejuice\" is a howl.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Clear positive language (\"howl\", \"highly entertaining\") with praise for grace and panache. Single excerpt limits confidence but tone is clearly enthusiastic. | GPT-4o: The excerpt describes the show as 'highly entertaining' with 'gritty grace' and 'sentimental' aspects, indicating a strong positive impression. The use of 'howl' suggests enthusiastic enjoyment. | Gemini: The review states the show is \"highly entertaining\" and even \"a little sentimental,\" indicating a positive recommendation. The phrase \"less panicky panache than you might expect\" suggests some reservations, but overall positive. | Kimi: The excerpt offers unqualified praise, describing the show as 'highly entertaining' with 'gritty grace,' indicating a clear recommendation despite limited text availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:41:16.022Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

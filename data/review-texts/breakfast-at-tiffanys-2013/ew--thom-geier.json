@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Greenberg's entire first act is a slog, bogged down with dreary exposition and the introduction of far too many quirky but uninteresting characters. (Sean Mathias' listless direction does the script no favors.) It's telling that the supporting player who makes the strongest impression is Vito Vincent, who plays Holly's adoptive feline companion, Cat (Vito shares the role with Montie and Moo). There are too many scenes that just sit there, failing to delight and robbing the play of any semblance ",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BREAKFAST-AT-TIFFANYS-Opens-on-Broadway-Updating-LIVE-20130320",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "There are too many scenes that just sit there, failing to delight and robbing the play of any semblance",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Clear negative assessment: calls first act 'a slog', criticizes 'dreary exposition', 'listless direction', and scenes that 'fail to delight'. Text appears cut off mid-sentence but negative verdict is unmistakable. | GPT-4o: The excerpt criticizes the first act as a 'slog' with 'dreary exposition' and 'uninteresting characters,' indicating a negative assessment. The mention of 'listless direction' and scenes 'failing to delight' further supports a negative verdict. However, due to the single excerpt warning, confidence is low. | Gemini: The review excerpt describes the first act as a \"slog\" with \"listless direction\" and uninteresting characters. This indicates a negative assessment, though the single excerpt and lack of a concluding statement lowers confidence. | Kimi: Extracted from malformed response",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:29:38.151Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 38,
+    "geminiScore": 45,
+    "kimiScore": 45,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "...Bright Star aspires to the kind of emotional sweep and folksy wit we associate with Golden Age musicals, from Rodgers and Hammerstein classics to Meredith Willson's The Music Man. That's a tall order in 2016, with irony and its bratty child, snark, having emerged as prevalent comic tools. But Martin, a master ironist, captures some of that old-school spirit with a book that's as forthright as it is smart, funny and charming...Director Walter Bobbie culls spirited, endearing performances from the actors cast in these roles. Carmen Cusack's Alice evolves convincingly from a mischievous girl to an accomplished but lonely and disappointed woman, while A.J. Shively makes Billy at once wholesome and credibly ambitious",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRIGHT-STAR-Opens-on-Broadway-Updating-LIVE-20160324",
+  "assignedScore": 81,
+  "llmScore": {
+    "score": 81,
+    "confidence": "high",
+    "range": {
+      "low": 76,
+      "high": 86
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Martin captures some of that old-school spirit with a book that's as forthright as it is smart, funny and charming",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The excerpt shows clear praise for the book, direction, and performances, using positive descriptors like 'smart, funny and charming' and 'spirited, endearing.' However, confidence is low due to single excerpt limitation. | GPT-4o: The excerpt praises the show's emotional sweep, wit, and performances, capturing old-school spirit. Despite the single excerpt warning, the tone is clearly positive. | Gemini: The review excerpt praises the book as smart, funny, and charming, and highlights spirited performances. However, as it is a single excerpt, the confidence is low. | Kimi: The excerpt offers clear praise for the book as 'smart, funny and charming' and the performances as 'spirited' and 'endearing,' indicating a solid recommendation. However, as a single curated excerpt, confidence is reduced.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:37:10.106Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

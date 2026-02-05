@@ -12,5 +12,60 @@
   "bwwExcerpt": "I first saw this 'Brief Encounter' in London two years ago, and then again when the production came to St. Ann's Warehouse in Brooklyn last winter. I always remember it as a delicate, whimsical creation, and worry that it might not thrive in a new environment. Yet it consistently proves sturdier and smarter than I have allowed it to be. And the current incarnation, which arrives courtesy of the Roundabout Theater Company, feels to me richer than ever. It has also been altered, ever so slightly, with the aim of seducing a Broadway audience, which likes to leave a show feeling roused and exhilarated.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Blog-Review-Roundup-BRIEF-ENCOUNTER-20100929",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Yet it consistently proves sturdier and smarter than I have allowed it to be.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: The critic expresses genuine admiration, calling the current incarnation 'richer than ever' and praising its intelligence. Despite single excerpt limitation, the positive sentiment is clear and enthusiastic. | GPT-4o: The excerpt praises the current production as 'richer than ever' and notes it has been successfully adapted for Broadway. Despite the single excerpt warning, the tone is clearly positive. | Gemini: The critic states that the current production feels \"richer than ever\", indicating a positive experience and recommendation. Despite the initial concerns, the review leans towards a strong positive assessment. | Kimi: Despite initial worries about the transfer to Broadway, Brantley praises the current production as 'richer than ever' and 'sturdier and smarter,' indicating a clear recommendation. Single excerpt limits confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:33:17.054Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

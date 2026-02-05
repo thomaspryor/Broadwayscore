@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "\"In recent years, Mueller has brought a shimmering soprano and finely tuned comic sensibility to a variety of quirky ingénue roles. Mueller's portrayal of King - far and away the best reason to see Beautiful, which opened Sunday at Broadway's Stephen Sondheim Theatre - is at once an affirmation of those virtues and a revelation...Beautiful seems less concerned with exploring King's story than with using it to string together familiar tunes...Granted, shows like Beautiful aren't generally sought ",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEAUTIFUL-THE-CAROLE-KING-MUSICAL-Opens-on-Broadway-Updating-Live-20140112",
+  "assignedScore": 77,
+  "llmScore": {
+    "score": 77,
+    "confidence": "medium",
+    "range": {
+      "low": 72,
+      "high": 82
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mueller's portrayal of King - far and away the best reason to see Beautiful",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Praises the lead performance as exceptional but criticizes the show itself as unfocused. Single excerpt with truncated ending makes full verdict unclear. | GPT-4o: The excerpt praises Mueller's performance as the standout element, suggesting a positive view of the show for her portrayal. However, the review also notes that the show is more focused on familiar tunes than exploring King's story, indicating some reservations. | Gemini: The review excerpt praises Mueller's performance as the best reason to see the show, but also notes that the show seems more concerned with stringing together familiar tunes than exploring King's story. Given the limited text, I'm scoring it as positive with reservations. | Kimi: The excerpt offers strong praise for Jessie Mueller's performance as the primary draw, calling it a 'revelation,' while criticizing the show's book for prioritizing songs over story. With only one truncated excerpt available, this appears to be a qualified positive recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:29:28.111Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 74,
+    "geminiScore": 81,
+    "kimiScore": 76,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 19,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

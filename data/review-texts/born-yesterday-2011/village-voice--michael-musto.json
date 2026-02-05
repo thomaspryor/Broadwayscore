@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Well, while Holliday was alternately woozy and growling, Arianda takes it to a higher pitch. Using a Cyndi Lauperish voice and accent, she laughs loudly and barks even more so. Her emotions are full throttle, whether she's being a child, seductress, or whistleblower. Fortunately, Arianda's got the comic chops to pull this off, especially when she can't think of her own real name or uses her foot to count.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BORN-YESTERDAY-Updating-LIVE-20110424",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Fortunately, Arianda's got the comic chops to pull this off, especially when she can't think of her own real name or uses her foot to count.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt focuses on lead performance with qualified praise ('Fortunately, Arianda's got the comic chops to pull this off'). The word 'Fortunately' suggests some initial concern but ultimate approval. Limited text and cherry-picked nature warrant low confidence and conservative positive score. | GPT-4o: The excerpt highlights Arianda's strong performance and comic ability, suggesting a positive view of the show. Given the single excerpt warning, the score is placed in the upper range of Positive to account for potential cherry-picking. | Gemini: The review excerpt focuses on praising Arianda's performance, highlighting her comic ability. Given the single excerpt, I'm placing it in the lower end of the positive bucket. | Kimi: The excerpt offers clear praise for the lead actress's comedic abilities and emotional range, indicating the performance successfully carries the material. With only one curated excerpt available, the score reflects strong positive signals while acknowledging limited context about the overall production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:27:27.995Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 73,
+    "openaiScore": 81,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 9,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

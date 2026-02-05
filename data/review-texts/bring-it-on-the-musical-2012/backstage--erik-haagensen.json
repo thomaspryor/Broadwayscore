@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "\"Bring It On: The Musical\" aspires to be nothing more than a frothy distraction with just a hint of that time-honored moral \"Winning isn't everything.\" This wisp of cotton candy about a high school cheerleading competition is \"inspired\" by the Universal Pictures film franchise of the same title. Aimed squarely at teenage girls and designed to tour the country, the show would probably feel more at home at Madison Square Garden than on the stage of the St. James Theatre.",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BRING-IT-ON-Opens-on-Broadway-Updating-Live-20120801",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "the show would probably feel more at home at Madison Square Garden than on the stage of the St. James Theatre",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic dismisses the show as a 'wisp of cotton candy' and suggests it doesn't belong on Broadway. However, with only one excerpt available, this may not represent the full verdict. | GPT-4o: The review describes the show as a 'frothy distraction' and suggests it may be better suited for a different venue, indicating a mixed reception. The single excerpt and lack of a clear recommendation or discouragement lead to a mixed classification. | Gemini: The review describes the show as a \"frothy distraction\" and suggests it's more suited for a different venue, indicating a mixed opinion. Given the single excerpt, confidence is low. | Kimi: The critic characterizes the show as lightweight 'cotton candy' and suggests it belongs in an arena tour rather than a Broadway house, implying it meets modest entertainment goals but lacks the substance expected of a St. James Theatre production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:39:21.461Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

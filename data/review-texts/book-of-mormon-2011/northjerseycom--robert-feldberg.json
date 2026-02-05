@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 86,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "\"\"The Book of Mormon\" is a gleefully funny spoof, a blend of the clever and the crass that seldom goes more than 10 seconds without a big laugh. And it's not just about the jokes. They're embedded in a satisfying story, supported by witty, character-relevant songs...one of the most purely enjoyable musicals in years.\" \n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 86,
+    "confidence": "medium",
+    "range": {
+      "low": 81,
+      "high": 91
+    },
+    "bucket": "Rave",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "one of the most purely enjoyable musicals in years",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Despite being a single excerpt, this contains superlative praise ('most purely enjoyable musicals in years') and unqualified enthusiasm ('gleefully funny', 'satisfying story'). However, confidence is low due to limited text. | GPT-4o: The excerpt praises the show as 'gleefully funny' with 'big laughs' and a 'satisfying story'. The phrase 'one of the most purely enjoyable musicals in years' indicates a strong recommendation. Due to the single excerpt warning, confidence is low. | Gemini: The excerpt is overwhelmingly positive, calling the show \"gleefully funny\" and \"one of the most purely enjoyable musicals in years.\" Given the limited text, I'm scoring it at the higher end of the positive range, but with low confidence. | Kimi: The excerpt contains strongly positive evaluative language ('most purely enjoyable musicals in years', 'seldom goes more than 10 seconds without a big laugh'), warranting a high Positive score. Confidence is low due to the single-excerpt format, which may not represent the full review's balance. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T19:22:06.916Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 88,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Rave",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
+  }
 }

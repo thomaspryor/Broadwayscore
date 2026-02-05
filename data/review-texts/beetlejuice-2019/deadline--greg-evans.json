@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "Maybe if they'd said it a fourth time. Three times - \"Beetlejuice! Beetlejuice! Beetlejuice!\" - summons to life the stripe-coated, fright-wigged demon that made a superstar of Michael Keaton way back when. Could a fourth have magically conjured that extra something needed to transform Broadway's Beetlejuice into something beyond the realm of good enough?",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "high",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Could a fourth have magically conjured that extra something needed to transform Broadway's Beetlejuice into something beyond the realm of good enough?",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Mixed | Claude: The critic directly characterizes the show as 'good enough' but suggests it lacks 'that extra something' to be truly special. This indicates a mixed verdict - not negative, but not enthusiastically positive either. Single excerpt warning applies, so confidence is low. | GPT-4o: The excerpt suggests the show is 'good enough' but lacks an 'extra something' to elevate it further. This indicates a mixed review, neither fully positive nor negative. | Gemini: The review questions if the show could have been better, implying it's currently just \"good enough,\" which suggests a mixed reaction. The truncated nature of the text lowers the confidence. | Kimi: The critic explicitly characterizes the show as merely 'good enough' and suggests it misses the 'extra something' needed for greatness, indicating a lukewarm reception. Confidence is low due to limited excerpt availability.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:30:23.385Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 62,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Mixed"
+  }
 }
