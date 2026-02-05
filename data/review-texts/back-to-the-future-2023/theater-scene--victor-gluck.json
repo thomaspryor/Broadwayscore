@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": null,
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 41,
   "source": "show-score-playwright",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The new songs by Alan Silvestri (who wrote the famous background music for the original film trilogy) and Glen Ballard, his collaborator on the scores for Zemeckis’ \"The Polar Express\" and Disney’s live action version of \"Pinocchio,\" stop the show in its tracks as they do not forward the action but tells us what we already know in rather trite and repetitive fashion. The rhymes are simplistic rather than clever and several of the titles have been used before in earlier, more effective songs.\n\nRead more",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 41,
+    "confidence": "medium",
+    "range": {
+      "low": 36,
+      "high": 46
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The new songs stop the show in its tracks as they do not forward the action but tells us what we already know in rather trite and repetitive fashion.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The excerpt heavily criticizes the new songs as trite, repetitive, and ineffective, describing them as stopping the show. However, with only one excerpt available focusing solely on the songs, the overall verdict for the entire production remains unclear. | GPT-4o: The excerpt criticizes the new songs for being trite, repetitive, and not advancing the story. This suggests a negative view of the production's musical elements. However, due to the single excerpt warning, confidence is low. | Gemini: The excerpt focuses on the negative aspects of the songs, calling them trite, repetitive, and simplistic. This suggests a negative overall assessment, despite the limited text. | Kimi: The excerpt delivers strong criticism of the new songs, describing them as trite, repetitive, and simplistic, and stating they 'stop the show in its tracks.' As this is the only available excerpt, it suggests a negative verdict on this element of the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:08:17.927Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 38,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 7,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

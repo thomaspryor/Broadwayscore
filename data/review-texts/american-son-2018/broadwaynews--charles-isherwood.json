@@ -11,5 +11,60 @@
     "bww-roundup"
   ],
   "bwwExcerpt": "But \"American Son\" derives its depth of feeling primarily from Washington, who fills her role with all the rage, frustration, fear and anguished maternal care that a woman caught up in such a trauma would feel. Slender and petite as she is, she rivets our attention with the agonized ferocity of her presence and her staunch insistence on having her son's apparent disappearance treated as a matter of grave significance. The sheer force of her performance has a powerful effect: After the play's thu",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-of-AMERICAN-SON-Updating-Live-20181104",
+  "assignedScore": 80,
+  "llmScore": {
+    "score": 80,
+    "confidence": "high",
+    "range": {
+      "low": 75,
+      "high": 85
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The sheer force of her performance has a powerful effect",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Strong praise for Washington's 'riveting' performance with 'powerful effect,' but text is truncated mid-sentence and focuses only on one element. Single excerpt warning suggests this positive assessment may not represent the full review. | GPT-4o: The excerpt praises Washington's performance as riveting and powerful, suggesting a positive view of the show. However, with only one excerpt available, the overall sentiment might not be fully captured, leading to a low confidence score. | Gemini: The review excerpt focuses heavily on Washington's performance, praising its power and emotional depth. While the text is truncated, the strong positive description suggests a recommendation, albeit with reservations due to the limited context. | Kimi: Single excerpt offers enthusiastic praise for Kerry Washington's performance ('agonized ferocity', 'powerful effect'), but limited context and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:36:59.524Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 80,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

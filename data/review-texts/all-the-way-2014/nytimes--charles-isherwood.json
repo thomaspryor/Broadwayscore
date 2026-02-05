@@ -12,5 +12,60 @@
   "bwwExcerpt": "Riding the crest of his fame from 'Breaking Bad,' Mr. Cranston strides onto the Broadway stage with an admirable confidence, meeting the challenge of animating Mr. Schenkkan's sprawling civics lesson as if he's thoroughly at home. Although Johnson is not the exclusive focus of the play -- many passages focus on the strategizing among various black civil rights organizations -- Mr. Cranston's heat-generating performance galvanizes the production. Even when Johnson is offstage or the writing sags with exposition, the show, directed solidly if a little stolidly by Bill Rauch, retains the vitalizing imprint of his performance.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALL-THE-WAY-Opens-on-Broadway-Updating-LIVE-20140306",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Mr. Cranston's heat-generating performance galvanizes the production.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises Cranston's commanding performance that elevates the material, though notes the writing sometimes sags and direction is merely solid. Single excerpt limits full assessment but clearly positive overall. | GPT-4o: The excerpt praises Bryan Cranston's performance as a key highlight that elevates the production, suggesting a strong positive impression despite some writing issues. Given the single excerpt and its positive tone, a score in the upper range of Positive is appropriate. | Gemini: The review praises Cranston's performance and its impact on the production, but notes that the writing sometimes sags and the direction is solid but stolid. This suggests a positive but not rave review. | Kimi: While noting flaws in the writing and direction, the critic clearly recommends the show based on Cranston's commanding, 'vitalizing' star turn that carries the production.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:08:52.465Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 78,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

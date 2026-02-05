@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "But O'Brien creates two interracial families for the Miller drama, set in an otherwise realistically depicted 1947, without comment. Since 'All My Sons' is an indictment of capitalism, it's odd to have a byproduct of that economic system as practiced in the United States simply ignored here. This revival acts as if racism didn't exist among these kinds of characters at that time, which isn't that far away from Joe Keller's attitude regarding his crime.",
   "bwwScore": 7,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 43,
+  "llmScore": {
+    "score": 43,
+    "confidence": "medium",
+    "range": {
+      "low": 38,
+      "high": 48
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This revival acts as if racism didn't exist among these kinds of characters at that time, which isn't that far away from Joe Keller's attitude regarding his crime.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: Single excerpt shows significant criticism of the production's directorial choices regarding race, comparing it unfavorably to the protagonist's moral blindness. However, with only one curated quote available, the full review verdict is unclear. | GPT-4o: The excerpt criticizes the production for ignoring racial issues relevant to the setting, suggesting a significant flaw in its execution. However, with only one excerpt, confidence is low. | Gemini: The review criticizes the production for ignoring racism in its depiction of 1947, which is a significant flaw. Given the single excerpt and negative tone, I've classified it as negative with low confidence. | Kimi: The critic fundamentally objects to the director's handling of interracial casting without historical context, arguing this oversight undermines the play's indictment of capitalism and parallels the protagonist's moral blindness. This represents a substantial critique of the production's conceptual framework.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:04:25.624Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 60,
+    "openaiScore": 40,
+    "geminiScore": 45,
+    "kimiScore": 44,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 20,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

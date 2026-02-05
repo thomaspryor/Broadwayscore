@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "American Buffalo feels thin, too. And sour. Like a cup of diner coffee left to cool. It's a showcase for actors. But what really is it showcasing? It's a play about men who feel that life has done them wrong. The way they speak of others - women, queer people, \"Mexicans\" - suggests that they believe they are owed more, that they are possessors dispossessed, that the American dream is their birthright, even if they never do much to make that dream come through. They fight over scraps - imagined s",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "American Buffalo feels thin, too. And sour. Like a cup of diner coffee left to cool.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: The critic uses vivid negative imagery ('thin', 'sour', 'left to cool') and questions what the production is actually showcasing. However, this is only a single excerpt that appears cut off mid-sentence, so confidence is low. | GPT-4o: The review excerpt describes the play as 'thin' and 'sour,' with a negative tone comparing it to 'diner coffee left to cool.' It questions the value of the showcase and criticizes the characters' perspectives, indicating a negative overall impression. | Gemini: The review excerpt uses negative language like \"thin\" and \"sour\" to describe the play, and questions what the play is showcasing. Given the limited excerpt, I'm scoring it as negative with low confidence. | Kimi: The critic describes the production as 'thin' and 'sour' with dismissive rhetorical questions ('what really is it showcasing?'), indicating a disappointing experience despite acknowledging it as an actor showcase. The single excerpt and truncation warrant low confidence.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:20:54.277Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 45,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

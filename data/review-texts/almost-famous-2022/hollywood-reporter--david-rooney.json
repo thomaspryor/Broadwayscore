@@ -15,5 +15,59 @@
   "showScoreExcerpt": "\"For anyone who spent their youth obsessing over great music and believing rock stars were, well, rock stars, 'Almost Famous' will carry a dulcet pang of recognition. Pass the Quaaludes.\"\n\nRead more",
   "bwwExcerpt": "Did it need to become a stage musical? Debatable. But one thing the effusive show gets right, like the movie that spawned it, is the infectious energy of rock 'n' roll at a transitional moment - 1973 - when the raw, rebellious spirit of great rock was making way for the slicker, more commercialized sound of mass-consumption superstardom. For many epochal bands and solo artists, that year was an artistic peak they would never again match. That gives Crowe's quasi-memoir, in both incarnations, a bittersweet undertow of simultaneous discovery and loss.",
   "bwwScore": 6,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ALMOST-FAMOUS-Opens-On-Broadway--See-What-The-Critics-Are-Saying-20221103",
+  "assignedScore": 76,
+  "llmScore": {
+    "score": 76,
+    "confidence": "medium",
+    "range": {
+      "low": 71,
+      "high": 81
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "'Almost Famous' will carry a dulcet pang of recognition.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 2/3 models agree: Positive | GPT-4o: The excerpt suggests nostalgia and recognition for fans of rock music, but lacks a clear recommendation or critique of the production itself. The tone is neutral, indicating a mixed review. | Gemini: The phrase \"dulcet pang of recognition\" suggests a positive, nostalgic experience, indicating a recommendation, though the truncated text and lack of explicit recommendation language lowers the confidence. | Kimi: The excerpt offers warm appreciation for the show's nostalgic appeal and emotional resonance, though the brevity of the available text prevents a fuller assessment of the critic's complete verdict.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:13:20.720Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": null,
+    "openaiScore": 60,
+    "geminiScore": 75,
+    "kimiScore": 76,
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 16,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "2/3 models agree: Positive"
+  }
 }

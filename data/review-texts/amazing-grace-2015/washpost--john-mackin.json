@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "With a feel-good ending, you might call \"Amazing Grace\" a triumphalist view on advancement in persons and politics. Culture is a bolt that ratchets in only one direction in the play: toward greater freedom and compassion. But the musical is not just soothing and includes clear depictions of the horrors of slavery. The show opens with the audience immediately implicated as eager auctioneers at a brutal slave auction. There are several on-stage whippings of black characters by white characters. An",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 70,
+  "llmScore": {
+    "score": 70,
+    "confidence": "medium",
+    "range": {
+      "low": 65,
+      "high": 75
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "With a feel-good ending, you might call 'Amazing Grace' a triumphalist view on advancement in persons and politics.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Positive/Mixed) - using median score | Claude: The excerpt describes the show as having a 'feel-good ending' and 'triumphalist view' but also notes it's 'not just soothing' and includes serious content. The text appears cut off mid-sentence, limiting confidence in the full verdict. | GPT-4o: The excerpt suggests a mixed view, highlighting both positive aspects ('feel-good ending', 'triumphalist view') and serious content ('horrors of slavery', 'brutal slave auction'). The lack of a clear recommendation or discouragement places it in the Mixed bucket, with a low confidence due to the single excerpt. | Gemini: The review excerpt highlights both positive and negative aspects, suggesting a qualified recommendation. The \"feel-good ending\" and \"triumphalist view\" are tempered by the depiction of slavery's horrors. | Kimi: The excerpt describes the show as having a 'feel-good ending' and 'triumphalist' worldview, suggesting a linear progress narrative, while acknowledging it includes depictions of slavery's horrors. The term 'triumphalist' often implies critical distance from an overly celebratory approach, and with only one truncated excerpt available, the overall verdict remains unclear. | Buckets: claude=Positive, openai=Mixed, gemini=Positive, kimi=Mixed",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:16:46.617Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 74,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 62,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Mixed",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Positive/Mixed) - using median score"
+  }
 }

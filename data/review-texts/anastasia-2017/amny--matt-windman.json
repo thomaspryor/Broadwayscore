@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "Combine early 20th-century Russian history with bits and pieces of 'Les Miz,' 'My Fair Lady' and 'Newsies,' and you've got 'Anastasia,' the uneven but well-meaning and mostly pleasant new Broadway musical based on the 1997 animated film of the same title from 20th Century Fox.",
   "bwwScore": 8,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Have-You-Heard-ANASTASIA-Opens-on-Broadway-Tonight--Updating-Live-20170424",
+  "assignedScore": 63,
+  "llmScore": {
+    "score": 63,
+    "confidence": "medium",
+    "range": {
+      "low": 58,
+      "high": 68
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Combine early 20th-century Russian history with bits and pieces of 'Les Miz,' 'My Fair Lady' and 'Newsies,' and you've got 'Anastasia,' the uneven but well-meaning and mostly pleasant new Broadway musical",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Mixed | Claude: The critic calls it 'uneven but well-meaning and mostly pleasant' - mixed language that acknowledges flaws ('uneven') while finding some merit ('pleasant', 'well-meaning'). Single excerpt limits confidence. | GPT-4o: The review describes the show as 'uneven but well-meaning and mostly pleasant,' indicating a mixed assessment with some positive elements. However, the lack of a full review and the single excerpt warning suggest a cautious approach to scoring. | Gemini: The review uses the word \"uneven\" but also \"mostly pleasant\", suggesting a mixed reaction. Due to the limited excerpt, confidence is low. | Kimi: The excerpt offers mild praise ('mostly pleasant', 'well-meaning') tempered by criticism ('uneven'), suggesting a qualified recommendation at the lower end of the Positive range.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:51:34.332Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 62,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Mixed",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Mixed"
+  }
 }

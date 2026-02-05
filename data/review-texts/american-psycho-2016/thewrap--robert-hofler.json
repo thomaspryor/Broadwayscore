@@ -14,5 +14,60 @@
   "bwwScore": 7,
   "contentTier": "excerpt",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-PSYCHO-Opens-on-Broadway-Updating-Live-20160421",
-  "playbillVerdictUrl": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-bret-easton-ellis-duncan-sheik/"
+  "playbillVerdictUrl": "https://www.thewrap.com/american-psycho-broadway-review-benjamin-walker-musical-bret-easton-ellis-duncan-sheik/",
+  "assignedScore": 69,
+  "llmScore": {
+    "score": 69,
+    "confidence": "medium",
+    "range": {
+      "low": 64,
+      "high": 74
+    },
+    "bucket": "Mixed",
+    "thumb": "Flat",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Goold and his book writer sometimes scrape the bottom.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Mixed/Positive) - using median score | Claude: Mixed signals with praise for music, lead performance, and design balanced against criticism of the book. Single excerpt makes full verdict unclear. | GPT-4o: The excerpt presents a mix of positive and negative elements, with praise for the music and set design but criticism of the narrative and book. The verdict is ambiguous, suggesting both positive and negative interpretations. | Gemini: The review highlights positive aspects like the music, performance, and set design, but also mentions scraping the bottom at times, suggesting a qualified recommendation. | Kimi: The excerpt offers specific praise for the music, set design, and narrative adaptation while criticizing the book and direction, suggesting a qualified but genuine recommendation. | Buckets: claude=Mixed, openai=Mixed, gemini=Positive, kimi=Positive",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:35:28.579Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 62,
+    "openaiScore": 65,
+    "geminiScore": 75,
+    "kimiScore": 72,
+    "claudeBucket": "Mixed",
+    "openaiBucket": "Mixed",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 13,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-no-consensus",
+    "modelAgreement": "Adjacent bucket split (Mixed/Positive) - using median score"
+  }
 }

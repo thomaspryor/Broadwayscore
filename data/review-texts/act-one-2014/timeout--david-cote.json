@@ -12,5 +12,60 @@
   "bwwExcerpt": "In its trajectory and most memorable scenes and players, Lapine's stage adaptation of Hart's sprawling tale -- part rags-to-riches fable, part showbiz fantasy, part professional handbook -- is quite faithful and wrought with abundant skill and empathy...Less smoothly transferred from page to stage is Hart's narrative tone...But Lapine's Act One is a play, not an audiobook or TV miniseries. If this adaptation included considerably more narration, it would invite complaints of too much telling, not enough showing. So credit is due to Lapine for efffectively distilling a fast-moving memory play...Lapine has a superb cast at his disposal -- the thoroughly charming Fontana, the drolly tetchy and bilious Shalhoub, and, in a few crucial, nurturing mother-figure roles, the grace-filled Andrea Martin.",
   "bwwScore": 8,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 79,
+  "llmScore": {
+    "score": 79,
+    "confidence": "medium",
+    "range": {
+      "low": 74,
+      "high": 84
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Lapine's stage adaptation of Hart's sprawling tale is quite faithful and wrought with abundant skill and empathy.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Praises the adaptation as skillful and empathetic, credits Lapine's distillation choices, and calls the cast 'superb.' However, notes structural issues with narrative tone transfer. Single excerpt limits confidence. | GPT-4o: The excerpt praises the adaptation's faithfulness and skill, as well as the cast's performances, suggesting a positive review. The single excerpt and absence of a clear rating lead to a low confidence level, but the positive tone justifies a score in the upper range of the Positive bucket. | Gemini: The review praises the adaptation's faithfulness, skill, and empathy, as well as the cast. However, it also notes some issues with the narrative tone, resulting in a positive but not rave recommendation. | Kimi: This single excerpt offers strong praise for the adaptation's craft ('abundant skill and empathy'), the effective distillation of the source material, and a 'superb cast' with specific performance highlights. While noting minor reservations about narrative tone, the overall verdict is clearly positive. Per instructions for clearly positive single excerpts, this scores in the upper Positive range (80-84).",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:46:59.601Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 76,
+    "openaiScore": 81,
+    "geminiScore": 77,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 6,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

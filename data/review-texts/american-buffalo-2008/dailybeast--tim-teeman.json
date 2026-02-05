@@ -12,5 +12,60 @@
   "bwwExcerpt": "Invective, repetition, manly backchat: the Mamet staples are here, but truly what gives with the damn coins? The actors make as much sense as they can of the foggy mystery and verbal extremity Mamet has written for them around these misplaced little shiny objects, but the playwright's hot air-so visible on Fox News this week-barely seems to merit his characters' heightened tempers, much less our interest. Still, Rockwell rocks it.",
   "bwwScore": 5,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMERICAN-BUFFALO-Opens-On-Broadway-Starring-Darren-Criss-Sam-Rockwell-and-Laurence-Fishburne-20220414",
+  "assignedScore": 44,
+  "llmScore": {
+    "score": 44,
+    "confidence": "high",
+    "range": {
+      "low": 39,
+      "high": 49
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "The playwright's hot air barely seems to merit our interest.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite praising Rockwell's performance, the critic finds the play's core mystery confusing and Mamet's writing unworthy of audience interest. Single excerpt warning requires caution, but the dismissive tone suggests negative overall verdict. | GPT-4o: The review criticizes the play's writing as 'foggy' and 'hot air,' indicating a negative view of the production. However, the excerpt praises Rockwell's performance, which slightly tempers the negativity. | Gemini: The review criticizes the play's writing and overall interest, despite acknowledging Rockwell's performance. The phrase \"barely seems to merit his characters' heightened tempers, much less our interest\" indicates a negative assessment. | Kimi: While praising Sam Rockwell's performance, the critic dismisses the play as 'hot air' and 'foggy mystery' that fails to merit audience interest, constituting a clear non-recommendation.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:18:22.290Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 42,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 3,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

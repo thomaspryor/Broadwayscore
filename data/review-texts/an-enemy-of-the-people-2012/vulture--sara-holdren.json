@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Their two leads are also a real asset here, and not for their famous names. As the brothers locking horns at the play’s center — the principled Dr. Thomas Stockmann and the political animal Mayor Peter Stockmann — Jeremy Strong and Michael Imperioli both bring a vigorous contemporary affect to the material. You can feel the toughness and tension, the roiling potential energy, of their more modern characters flexing within David Zinn’s costumes, which land us softly in the 1880s without feeling rigid in their period accuracy.",
   "bwwScore": 8,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 78,
+  "llmScore": {
+    "score": 78,
+    "confidence": "medium",
+    "range": {
+      "low": 73,
+      "high": 83
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Their two leads are also a real asset here, and not for their famous names.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt praising lead performances and production elements with vivid positive language ('vigorous', 'toughness and tension', 'roiling potential energy'), but limited text makes full verdict uncertain. | GPT-4o: The excerpt praises the lead performances and the contemporary feel they bring to the play, indicating a positive view. However, the single excerpt and lack of overall context suggest a cautious approach, placing it at the lower end of the Positive range. | Gemini: The review excerpt praises the leads' performances and their modern take on the characters. Given the limited text, it's difficult to determine the overall recommendation strength, but the positive comments suggest a 'Positive' bucket with a score in the lower-middle range. | Kimi: The excerpt enthusiastically praises the lead actors as 'real assets' who bring 'vigorous contemporary affect' and 'roiling potential energy' to their roles, indicating a clearly favorable assessment of the performances.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:48:25.487Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 72,
+    "geminiScore": 75,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 10,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

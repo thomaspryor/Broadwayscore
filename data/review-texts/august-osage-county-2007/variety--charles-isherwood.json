@@ -9,7 +9,7 @@
   "isFullReview": false,
   "dtliExcerpt": "Tracy Letts has written a magnificent play, a sprawling family drama that crackles with verbal wit and seethes with emotional truth.",
   "originalScore": null,
-  "assignedScore": null,
+  "assignedScore": 82,
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
@@ -17,5 +17,60 @@
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "Tracy Letts has written a magnificent play, a sprawling family drama that crackles with verbal wit and seethes with emotional truth.",
   "contentTier": "excerpt",
-  "contentTierReason": "Only aggregator excerpts available"
+  "contentTierReason": "Only aggregator excerpts available",
+  "llmScore": {
+    "score": 82,
+    "confidence": "medium",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Tracy Letts has written a magnificent play, a sprawling family drama that crackles with verbal wit and seethes with emotional truth.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Positive | Claude: Strong praise calling it 'magnificent' with vivid positive language ('crackles', 'seethes with emotional truth'), but single excerpt warning requires caution about representativeness. | GPT-4o: The excerpt uses strong positive language ('magnificent', 'crackles', 'seethes') indicating a highly favorable view. However, the single excerpt warning suggests caution, so a low confidence is assigned. | Gemini: The excerpt contains very strong positive language (\"magnificent\", \"crackles with verbal wit\", \"seethes with emotional truth\"), suggesting a highly favorable review. Given the single excerpt, I'm placing it at the higher end of the positive range. | Kimi: The excerpt contains unambiguously enthusiastic praise ('magnificent,' 'crackles with verbal wit'), warranting a score at the upper end of the Positive bucket. However, as a single potentially cherry-picked excerpt with no broader context, confidence is low per scoring guidelines.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:05:22.741Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0,
+    "previousScore": null
+  },
+  "ensembleData": {
+    "claudeScore": 82,
+    "openaiScore": 90,
+    "geminiScore": 82,
+    "kimiScore": 83,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Rave",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 8,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Positive"
+  }
 }

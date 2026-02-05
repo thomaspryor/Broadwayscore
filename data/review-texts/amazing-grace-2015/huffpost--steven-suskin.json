@@ -12,5 +12,60 @@
   "bwwExcerpt": "Amazing Grace earns a place right alongside the Aimee Semple McPherson musical, Scandalous, and the Shroud of Turin musical, Into the Light; not because of the faith-based subject matter, but due to the overall effect. There is nothing wrong with bringing to Broadway a new musical written by a newcomer; both The Music Man and 1776 came from first-timers, although both were professional musicians with pop song hits to their credit (and both had composed incidental music for Broadway plays). In this case, the program bio of Christopher Smith--'the concept creator, composer, lyricist and co-author of the book'--proudly states that this is his 'first work of professional writing.' While there is indeed a lightning strike on the stage of Nederlander, it comes courtesy of the electrician.",
   "bwwScore": 6,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AMAZING-GRACE-Opens-on-Broadway-Updating-Live-20150716",
+  "assignedScore": 40,
+  "llmScore": {
+    "score": 40,
+    "confidence": "medium",
+    "range": {
+      "low": 35,
+      "high": 45
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Amazing Grace earns a place right alongside the Aimee Semple McPherson musical, Scandalous, and the Shroud of Turin musical, Into the Light",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Negative | Claude: The critic compares Amazing Grace to notorious Broadway failures and sarcastically notes that the only 'lightning strike' comes from the electrician, not the show. However, confidence is low as this is a single curated excerpt that may not represent the full review. | GPT-4o: The comparison to other musicals with negative reputations suggests a negative verdict. The mention of 'lightning strike' being attributed to the electrician implies the show lacks impactful content. However, with only one excerpt, confidence is low. | Gemini: The review excerpt compares the show negatively to other poorly received musicals and highlights the inexperience of the writer, suggesting a negative overall assessment despite the limited text. | Kimi: The critic compares the show to failed Broadway musicals (Scandalous, Into the Light) and mocks the composer/lyricist's lack of professional experience, implying the writing is amateurish. The final quip suggests the only striking element is the literal stage effect, not the content.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:15:17.182Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 40,
+    "geminiScore": 40,
+    "kimiScore": 40,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Negative"
+  }
 }

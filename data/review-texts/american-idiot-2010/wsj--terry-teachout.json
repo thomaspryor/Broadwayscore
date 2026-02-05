@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "All this being the case, 'American Idiot' rises or falls almost entirely on the strength of the songs themselves, and I regret to say that I found them to be brain-numbingly dull. Perhaps I might have felt differently if I were 14, but I was all but incapable of attending to the puerile maunderings of Billie Joe Armstrong, Green Day's lyricist, of which the following specimens are representative:\n• 'Well maybe I am the faggot America / I'm not a part of a redneck agenda.'\n• 'Lost children with dirty faces today / No one really seems to care.'\n• 'Summer has come and passed / The innocent can never last.'\nAs for the music, it reminded me of an amphetamine-crazed hamster running on a treadmill.",
   "bwwScore": 2,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 20,
+  "llmScore": {
+    "score": 20,
+    "confidence": "high",
+    "range": {
+      "low": 15,
+      "high": 25
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "I found them to be brain-numbingly dull.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Pan | Claude: Devastating critique calling the songs 'brain-numbingly dull' and 'puerile maunderings', comparing the music to 'an amphetamine-crazed hamster running on a treadmill'. However, confidence is medium due to single excerpt warning - this could be cherry-picked from a longer review. | GPT-4o: The critic expresses strong dissatisfaction with the songs, describing them as 'brain-numbingly dull' and 'puerile maunderings.' The negative tone and lack of redeeming qualities indicate a Pan verdict. | Gemini: The critic clearly pans the songs, calling them \"brain-numbingly dull\" and comparing the music to \"an amphetamine-crazed hamster running on a treadmill.\" | Kimi: The critic condemns the show's essential element, describing the songs as 'brain-numbingly dull' and the music as resembling an 'amphetamine-crazed hamster,' indicating a strong recommendation against attendance.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T17:31:56.843Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 18,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Pan",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Pan"
+  }
 }

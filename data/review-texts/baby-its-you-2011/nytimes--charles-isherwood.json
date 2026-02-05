@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Mama said there'll be shows like this. But she didn't tell me there would be quite so many, or that any one of them could be this dismal. Invitations to sing along are flung at the audience regularly, as if they were life preservers. Further inducements to wallow in visions of happy yesterdays are provided by the slide shows of drive-ins and diners and other cultural markers of the period, accompanied by the silky narration of Geno Henderson, playing a sort",
   "bwwRoundupUrl": "https://www.broadwayworld.com/article/Broadway-Review-Roundup-BABY-ITS-YOU-Updating-Live-20010101",
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 21,
+  "llmScore": {
+    "score": 21,
+    "confidence": "medium",
+    "range": {
+      "low": 16,
+      "high": 26
+    },
+    "bucket": "Pan",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "But she didn't tell me there would be quite so many, or that any one of them could be this dismal.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-majority] | 3/4 models agree: Pan | Claude: The critic uses harsh language ('dismal') and sardonic tone ('Mama said there'll be shows like this') indicating strong negativity. The description of audience participation as 'life preservers' suggests desperation. | GPT-4o: The excerpt describes the show as 'dismal' and criticizes the frequent audience engagement as desperate. The tone is strongly negative, indicating a pan. | Gemini: The review excerpt uses the word \"dismal\" to describe the show, and the tone is clearly negative. The critic seems to be warning the audience away from the show. | Kimi: The critic describes the show as 'dismal' and suggests it relies on desperate measures like audience sing-alongs and nostalgic slide shows to engage viewers. Confidence is low due to the availability of only a single excerpt.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:07:03.523Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 22,
+    "openaiScore": 20,
+    "geminiScore": 20,
+    "kimiScore": 38,
+    "claudeBucket": "Pan",
+    "openaiBucket": "Pan",
+    "geminiBucket": "Pan",
+    "kimiBucket": "Negative",
+    "scoreDelta": 18,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-majority",
+    "modelAgreement": "3/4 models agree: Pan"
+  }
 }

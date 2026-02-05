@@ -12,5 +12,60 @@
   "bwwExcerpt": "So much love and care and ambition have been poured into 'Act One,' playwright/director James Lapine's sprawling stage adaptation of playwright/director Moss Hart's celebrated 1959 memoir. But as the Lincoln Center Theater's in-house magazine reminds us, Hart himself wrote, 'Playwrighting is not a gentle or sentimental profession, nor, may I add, is any part or portion of the theater.' Putting gentleness aside, one therefore must report that this play about the theater has a dazzling theatrical set but a dispiriting lack of drama. Autobiographical peaks and valleys that read with such charm and intensity in Hart's words are translated here into almost three hours of busy, flatline narrative.",
   "bwwScore": 7,
   "contentTier": "excerpt",
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-ACT-ONE-Opens-on-Broadway-Updating-LIVE-20140417",
+  "assignedScore": 45,
+  "llmScore": {
+    "score": 45,
+    "confidence": "high",
+    "range": {
+      "low": 40,
+      "high": 50
+    },
+    "bucket": "Negative",
+    "thumb": "Down",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "This play about the theater has a dazzling theatrical set but a dispiriting lack of drama.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Negative | Claude: Despite acknowledging the love, care, and ambition poured into the production and praising the theatrical set, the critic ultimately finds it dramatically lacking with 'flatline narrative' over nearly three hours. The overall assessment is clearly negative. | GPT-4o: The review acknowledges the love, care, and ambition in the production but criticizes it for lacking drama, describing it as a 'busy, flatline narrative.' The excerpt suggests a negative verdict, but the single excerpt warning reduces confidence. | Gemini: The review acknowledges ambition and a dazzling set, but ultimately finds the play lacking in drama and intensity, translating to a dispiriting experience. The overall tone is negative despite the positive aspects mentioned. | Kimi: While the critic acknowledges the 'dazzling theatrical set' and the effort poured into the production, the final verdict emphasizes a 'dispiriting lack of drama' and 'flatline narrative,' indicating the show fails to engage despite its visual merits.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:46:03.688Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 42,
+    "openaiScore": 45,
+    "geminiScore": 45,
+    "kimiScore": 46,
+    "claudeBucket": "Negative",
+    "openaiBucket": "Negative",
+    "geminiBucket": "Negative",
+    "kimiBucket": "Negative",
+    "scoreDelta": 4,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Negative"
+  }
 }

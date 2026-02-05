@@ -13,5 +13,60 @@
   ],
   "bwwExcerpt": "for the most part, After Midnight is a show that's as light on its feet as its very talented ensemble. Be sure to hang around after the curtain call for Ellington's 'Rockin' in Rhythm,' a kind of it-ain't-overture by Marsalis' incomparable orchestra that is sure to put a spring in your step for days to come. A-",
   "bwwScore": 9,
-  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103"
+  "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "After Midnight is a show that's as light on its feet as its very talented ensemble.",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: A- grade with enthusiastic language about the ensemble and orchestra, recommending audiences stay for post-show content. Strong positive despite single excerpt limitation. | GPT-4o: The excerpt praises the show for its talented ensemble and highlights a memorable musical moment, suggesting a positive experience. The original rating of 'A-' aligns with a strong positive recommendation. However, the single excerpt warning reduces confidence. | Gemini: The review excerpt is overwhelmingly positive, praising the ensemble and the overall feel of the show. The 'A-' grade suggests a strong recommendation. | Kimi: The critic awards the production an A- and praises its nimble staging and talented cast, though the single-excerpt format limits certainty about the full review's tone.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T16:48:50.658Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 83,
+    "openaiScore": 82,
+    "geminiScore": 82,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }

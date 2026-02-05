@@ -10,5 +10,60 @@
   ],
   "bwwExcerpt": "Bathed in lush lavender lights it's all very inviting up there. Director/choreographer Kathleen Marshall completes the picture with her knockout staging of the two biggest numbers 'Anything Goes' and 'Blow Gabriel Blow' featuring some fancy dancing from her star. My favorites though were the deliciously delightful duets, 'You're The Top' and 'It's De-Lovely.'",
   "bwwScore": 9,
-  "contentTier": "excerpt"
+  "contentTier": "excerpt",
+  "assignedScore": 82,
+  "llmScore": {
+    "score": 82,
+    "confidence": "high",
+    "range": {
+      "low": 77,
+      "high": 87
+    },
+    "bucket": "Positive",
+    "thumb": "Up",
+    "components": {
+      "book": null,
+      "music": null,
+      "performances": null,
+      "direction": null
+    },
+    "keyPhrases": [
+      {
+        "quote": "Director/choreographer Kathleen Marshall completes the picture with her knockout staging",
+        "sentiment": "neutral",
+        "strength": 3
+      }
+    ],
+    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Consistent praise for direction, choreography, and musical numbers with terms like 'knockout staging' and 'deliciously delightful.' Single excerpt warning warrants low confidence but clear positive sentiment suggests upper Positive range. | GPT-4o: The excerpt provides strong praise for the direction and choreography, describing the staging as 'knockout' and highlighting the enjoyment of the musical numbers. The positive language suggests a strong recommendation, but the single excerpt limits confidence. | Gemini: The review excerpt uses positive language such as \"lush\", \"inviting\", \"knockout\", and \"deliciously delightful\", indicating a positive recommendation. Given that it is a single excerpt, I'm scoring it at the higher end of the positive range. | Kimi: The excerpt features enthusiastic praise for the director's 'knockout staging' and describes the musical numbers as 'deliciously delightful,' indicating a strong positive reception.",
+    "flags": {
+      "hasExplicitRecommendation": false,
+      "focusedOnPerformances": false,
+      "comparesToPrevious": false,
+      "mixedSignals": false
+    }
+  },
+  "llmMetadata": {
+    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
+    "scoredAt": "2026-02-05T18:01:17.798Z",
+    "promptVersion": "5.2.0",
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "ensembleData": {
+    "claudeScore": 81,
+    "openaiScore": 82,
+    "geminiScore": 81,
+    "kimiScore": 82,
+    "claudeBucket": "Positive",
+    "openaiBucket": "Positive",
+    "geminiBucket": "Positive",
+    "kimiBucket": "Positive",
+    "scoreDelta": 1,
+    "thumbsMatch": null,
+    "expectedThumb": null,
+    "needsReview": false,
+    "needsReviewReasons": [],
+    "ensembleSource": "ensemble-unanimous",
+    "modelAgreement": "All 4 models agree: Positive"
+  }
 }
