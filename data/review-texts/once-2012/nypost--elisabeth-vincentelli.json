@@ -13,7 +13,7 @@
   "source": "web-search",
   "dtliThumb": null,
   "dtliUrl": null,
-  "bwwExcerpt": null,
+  "bwwExcerpt": "The new Broadway musical “Once” doesn’t have a swinging chandelier, tap-dancing showgirls or brand-name stars. There’s only one set — and it doesn’t levitate. The show wins its standing ovations the old-fashioned way: with a love story, great songs, compelling characters and inventive stagecraft. At this point in Broadway history, this feels downright revolutionary.",
   "bwwRoundupUrl": null,
   "showScoreExcerpt": "The show's ace in the hole is its use of the actors as musicians — they all play their own instruments, and the stage becomes an extension of an Irish pub where impromptu sessions regularly break out.",
   "contentTier": "invalid",
@@ -23,5 +23,10 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "not_a_review",
   "rejectionReasoning": "claude: This appears to be a single sentence excerpt or quote, not a complete review with an evaluative verdict about whether to see the show; openai: The text is a description of a production element without any evaluative content or overall assessment of the show.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "bwwScore": 9,
+  "sources": [
+    "web-search",
+    "bww-reviews"
+  ]
 }
