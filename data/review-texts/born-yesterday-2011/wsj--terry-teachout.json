@@ -6,64 +6,11 @@
   "url": "http://online.wsj.com/article/SB10001424052748703521304576278922627668728.html",
   "source": "bww-reviews",
   "sources": [
-    "bww-reviews"
+    "bww-reviews",
+    "web-search"
   ],
   "bwwExcerpt": "The sound that you're hearing at the Cort Theatre these days is one of the rarest in the world: It's the collective purr of an audience falling in love with a brand-new face. Nina Arianda made a huge impression on everyone who saw her make her professional stage debut last year in the Off-Broadway premiere of David Ives's 'Venus in Fur.' Now she's playing the not-so-dumb-blonde in a Broadway revival of Garson Kanin's 'Born Yesterday,' the play that put Judy Holliday on the map in 1946 and is going to do the same thing for Ms. Arianda. Ms. Arianda is a charismatic comedienne who is as funny as she is sexy, and anyone capable of resisting her charms is both blind and deaf.",
   "bwwScore": 9,
   "contentTier": "excerpt",
-  "assignedScore": 87,
-  "llmScore": {
-    "score": 87,
-    "confidence": "medium",
-    "range": {
-      "low": 82,
-      "high": 92
-    },
-    "bucket": "Rave",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Ms. Arianda is a charismatic comedienne who is as funny as she is sexy, and anyone capable of resisting her charms is both blind and deaf.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-no-consensus] | Adjacent bucket split (Rave/Positive) - using median score | Claude: Extremely enthusiastic praise with superlatives ('rarest in the world', 'huge impression', 'charismatic') and declares the star irresistible. However, confidence is medium due to single excerpt warning - this could be cherry-picked praise from a more mixed review. | GPT-4o: The excerpt provides strong praise for Nina Arianda's performance, suggesting an enthusiastic audience reaction and a must-see experience. The language used ('collective purr', 'charismatic comedienne') indicates a rave review. | Gemini: The review is overwhelmingly positive, praising Nina Arianda's performance and predicting it will make her a star. The critic clearly recommends seeing the show to witness her talent. | Kimi: The single excerpt offers effusive praise for the lead performance, describing the audience 'falling in love' and declaring the actress irresistible. Following single-excerpt guidelines for clearly positive quotes, this falls in the upper Positive range. | Buckets: claude=Rave, openai=Rave, gemini=Positive, kimi=Positive",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T19:22:05.048Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0
-  },
-  "ensembleData": {
-    "claudeScore": 92,
-    "openaiScore": 90,
-    "geminiScore": 82,
-    "kimiScore": 83,
-    "claudeBucket": "Rave",
-    "openaiBucket": "Rave",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 10,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-no-consensus",
-    "modelAgreement": "Adjacent bucket split (Rave/Positive) - using median score"
-  }
+  "publishDate": "April 5, 2011"
 }

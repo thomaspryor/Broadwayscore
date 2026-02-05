@@ -18,59 +18,7 @@
   "showScoreExcerpt": "“Nostalgic ’80s charm mingled with 2023 theatrical capability is a winning combination. Even if certain numbers had me desperate for my own little bout of plutonium poisoning, the toddler ate them up. And ultimately, her joy is what I walked out of the theater holding on to.”\n\nRead more",
   "contentTier": "excerpt",
   "contentTierReason": "Only aggregator excerpts available",
-  "llmScore": {
-    "score": 76,
-    "confidence": "medium",
-    "range": {
-      "low": 71,
-      "high": 81
-    },
-    "bucket": "Positive",
-    "thumb": "Up",
-    "components": {
-      "book": null,
-      "music": null,
-      "performances": null,
-      "direction": null
-    },
-    "keyPhrases": [
-      {
-        "quote": "Nostalgic '80s charm mingled with 2023 theatrical capability is a winning combination.",
-        "sentiment": "neutral",
-        "strength": 3
-      }
-    ],
-    "reasoning": "[ensemble-unanimous] | All 4 models agree: Positive | Claude: Single excerpt shows mixed elements - praise for the combination of nostalgia and modern capability, but admits some numbers made them 'desperate for plutonium poisoning.' The positive takeaway about the child's joy suggests overall recommendation despite flaws. Low confidence due to single curated excerpt that may not represent full verdict. | GPT-4o: The excerpt highlights a positive aspect of the show with 'winning combination', but also notes some reservations with 'desperate for my own little bout of plutonium poisoning'. The overall sentiment leans positive, but the single excerpt limits confidence. | Gemini: The review mentions a winning combination but also expresses some reservations about certain numbers. Given the limited excerpt, a score in the lower-middle of the positive range seems appropriate. | Kimi: The critic calls the production a 'winning combination' and emphasizes the joy it delivers, despite hyperbolic complaints about certain numbers. The overall sentiment is clearly favorable but qualified.",
-    "flags": {
-      "hasExplicitRecommendation": false,
-      "focusedOnPerformances": false,
-      "comparesToPrevious": false,
-      "mixedSignals": false
-    }
-  },
-  "llmMetadata": {
-    "model": "ensemble:claude-sonnet-4-20250514+gpt-4o+gemini-2.0-flash+moonshotai/kimi-k2.5",
-    "scoredAt": "2026-02-05T18:10:21.553Z",
-    "promptVersion": "5.2.0",
-    "inputTokens": 0,
-    "outputTokens": 0,
-    "previousScore": null
-  },
-  "ensembleData": {
-    "claudeScore": 73,
-    "openaiScore": 74,
-    "geminiScore": 75,
-    "kimiScore": 81,
-    "claudeBucket": "Positive",
-    "openaiBucket": "Positive",
-    "geminiBucket": "Positive",
-    "kimiBucket": "Positive",
-    "scoreDelta": 8,
-    "thumbsMatch": null,
-    "expectedThumb": null,
-    "needsReview": false,
-    "needsReviewReasons": [],
-    "ensembleSource": "ensemble-unanimous",
-    "modelAgreement": "All 4 models agree: Positive"
-  }
+  "sources": [
+    "show-score-playwright"
+  ]
 }

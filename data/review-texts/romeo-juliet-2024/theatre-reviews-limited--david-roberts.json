@@ -22,5 +22,8 @@
   "rejectedBy": "ensemble-scoreability-check",
   "rejectionReason": "garbage_text",
   "rejectionReasoning": "claude: This appears to be a truncated fragment with no actual review content - just a partial sentence followed by 'Read more' which suggests website navigation elements rather than substantive critical evaluation.; openai: The provided text is an incomplete sentence that lacks evaluative content. It does not provide enough information to determine a recommendation or critique of the show.; kimi: The excerpt is a single descriptive fragment discussing gender fluidity in the context of the tragedy, but contains no evaluative language, critical judgment, or recommendation regarding the show's quality.",
-  "promptVersion": "5.2.0"
+  "promptVersion": "5.2.0",
+  "sources": [
+    "show-score-playwright"
+  ]
 }
