@@ -20,7 +20,7 @@ Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secre
 | `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline after scrape |
 | `scrape-bww-reviews.yml` | ✅ | ✅ | Weekly BWW /reviews/ pages + roundups, rebuilds after scrape |
 | `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
-| `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (fetch → scrape → audit → gather → rebuild) |
+| `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (audit → parallel gather → scrape PV/NYC → rebuild) |
 
 **For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
 ```bash
@@ -333,32 +333,23 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `close-coverage-gaps.yml`
 - **Runs:** Manual trigger only (workflow_dispatch)
-- **Does:** Orchestrates full coverage gap closure for a given era: fetches missing aggregator archives, scrapes PV/NYC Theatre, re-audits, gathers reviews for genuine gaps, rebuilds reviews.json
+- **Does:** Orchestrates full coverage gap closure for a given era: audits gaps, gathers reviews in parallel (aggregators-only mode), scrapes PV/NYC Theatre, validates, rebuilds reviews.json
 - **Options:**
   - `era`: `2021-2026` | `2016-2020` | `2011-2015` | `pre-2011` | `all`
-  - `skip_fetch`: Skip archive fetching (just re-audit and gather)
+  - `parallel_jobs`: Number of parallel gather jobs (1-10, default 5)
   - `dry_run`: Audit only, no gathering
 - **Manual trigger:**
   ```bash
-  gh workflow run "Close Coverage Gaps" --field era="2021-2026" --field skip_fetch=false --field dry_run=false
+  gh workflow run "Close Coverage Gaps" --field era="2021-2026" --field parallel_jobs=5 --field dry_run=false
   ```
-- **Job pipeline (6 jobs):**
-  1. `prepare` — Filters shows by opening year, outputs comma-separated IDs
-  2. `fetch-archives` — Runs `fetch-aggregator-pages.ts --aggregator all` for era shows (120 min timeout)
-  3. `scrape-pv-nyc` — Runs Playbill Verdict + NYC Theatre scrapers (120 min timeout, continue-on-error)
-  4. `audit` — Re-runs `audit-aggregator-coverage.js --output-gaps`, identifies truly missing reviews
-  5. `gather-gaps` — Runs `gather-reviews.js` per show with git checkpointing every 5 shows (360 min timeout). Progress is preserved even on timeout.
-  6. `rebuild` — Rebuilds reviews.json, writes step summary
-- **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN
-- **Era breakdown (as of Feb 2026):**
-  | Era | Shows | DTLI/SS/BWW never-searched | Estimated scrape cost |
-  |-----|-------|---------------------------|----------------------|
-  | 2021-2026 | 182 | ~115 | ~$3 |
-  | 2016-2020 | 141 | ~138 | ~$3 |
-  | 2011-2015 | 198 | ~195 | ~$4 |
-  | Pre-2011 | 213 | ~210 | ~$5 |
-- **Total cost for all eras:** ~$26 (one-time, covers all 734 shows)
-- **Parallel-safe:** All jobs use 5-retry push with random 10-30s backoff
+- **Job pipeline (4 jobs):**
+  1. `prepare` — Filters shows by era, runs coverage audit, identifies gap shows, partitions into matrix batches, uploads gap-data artifact
+  2. `gather-gaps` (matrix, N parallel jobs) — Runs `gather-reviews.js --aggregators-only` per show, checkpoint commits every 10 shows, pre-commit JSON validation, failure tracking via artifacts. No ANTHROPIC_API_KEY needed.
+  3. `scrape-pv-nyc` — Runs Playbill Verdict + NYC Theatre for gap shows (60 min, continue-on-error)
+  4. `rebuild` — Validates data, rebuilds reviews.json, writes step summary
+- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN (no ANTHROPIC_API_KEY needed — aggregators-only mode)
+- **Performance:** ~20 sec/show (vs ~5 min/show previously). 100 gap shows in ~7 min with 5 parallel jobs.
+- **Parallel-safe:** Matrix strategy with round-robin distribution, 30s stagger, 5-retry push with rebase, fail-fast: false, pre-commit JSON validation, atomic file writes
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
